@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -35,7 +36,7 @@ public class NOP extends JVMInstruction {
     // nothing to do
   }
   
-  public Conditional<Instruction> execute (ThreadInfo th) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo th) {
     return new One<>(getNext(th));
   }
 

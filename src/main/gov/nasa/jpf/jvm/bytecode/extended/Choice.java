@@ -1,5 +1,8 @@
 package gov.nasa.jpf.jvm.bytecode.extended;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class Choice<T> extends Conditional<T> {
@@ -32,8 +35,8 @@ public class Choice<T> extends Conditional<T> {
 			return thenBranch.simplify(ctx.and(featureExpr));
 		}
 
-		final Conditional<T> eb = elseBranch.simplify(ctx.andNot(featureExpr));
-		final Conditional<T> tb = thenBranch.simplify(ctx.and(featureExpr));
+		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplify(ctx.andNot(featureExpr));
+		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplify(ctx.and(featureExpr));
 		if (tb.equals(eb)) {
 			return tb;
 		}
@@ -67,5 +70,21 @@ public class Choice<T> extends Conditional<T> {
 		System.out.println("---------------------------------------------------");
 		return thenBranch.getValue();
 //		throw new RuntimeException("Get value of choice called");
+	}
+	
+	@Override
+	public T getValue(boolean ignore) {
+		if (ignore) {
+			return thenBranch.getValue(ignore);
+		}
+		return getValue();
+	}
+
+	@Override
+	public List<T> toList() {
+		List<T> list = new LinkedList<>();
+		list.addAll(thenBranch.toList());
+		list.addAll(elseBranch.toList());
+		return list;
 	}
 }

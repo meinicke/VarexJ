@@ -25,6 +25,7 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * this is used to return from a DirectCallStackFrame
@@ -60,7 +61,7 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
   }
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     // pop the current frame but do not advance the new top frame, and do
     // not touch its operand stack
     
@@ -74,7 +75,7 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
       
     } else {
       StackFrame frame = ti.popDirectCallFrame();
-      return new One<>(frame.getPC());
+      return frame.getPC();
     }
   }
 }

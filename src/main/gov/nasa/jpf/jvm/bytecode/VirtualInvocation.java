@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -45,7 +46,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
     super(clsDescriptor, methodName, signature);
   }
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     int objRef = ti.getCalleeThis(getArgSize());
 
     if (objRef == MJIEnv.NULL) {
@@ -73,7 +74,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 
     setupCallee( ti, callee); // this creates, initializes and pushes the callee StackFrame
 
-    return new One<>(ti.getPC()); // we can't just return the first callee insn if a listener throws an exception
+    return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
   }
   
   /**

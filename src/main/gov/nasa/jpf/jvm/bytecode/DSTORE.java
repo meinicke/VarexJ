@@ -23,6 +23,7 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * Store double into local variable
@@ -35,7 +36,7 @@ public class DSTORE extends LocalVariableInstruction implements StoreInstruction
   }
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.storeLongOperand(index);

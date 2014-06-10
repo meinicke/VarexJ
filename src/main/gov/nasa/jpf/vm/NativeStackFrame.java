@@ -124,7 +124,7 @@ public abstract class NativeStackFrame extends StackFrame {
     // on the other hand, we have to make sure we don't mark a return value from
     // a previous transition
 
-    if (pc instanceof NATIVERETURN){
+    if (pc.getValue() instanceof NATIVERETURN){
       if (ret != null && ret instanceof Integer && mi.isReferenceReturnType()) {
         int ref = ((Integer) ret).intValue();
         heap.markThreadRoot(ref, tid);

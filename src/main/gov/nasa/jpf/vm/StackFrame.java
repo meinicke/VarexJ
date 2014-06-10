@@ -19,7 +19,11 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.NOP;
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.BitSet1024;
 import gov.nasa.jpf.util.BitSet256;
@@ -35,6 +39,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -77,7 +84,7 @@ public abstract class StackFrame implements Cloneable {
   protected int attributes;
 
   
-  protected int top;                // top index of the operand stack (NOT size)
+  protected Conditional<Integer> top;                // top index of the operand stack (NOT size)
                                     // this points to the last pushed value
 
   protected int thisRef = MJIEnv.NULL;       // slots[0] can change, but we have to keep 'this'
@@ -101,7 +108,7 @@ public abstract class StackFrame implements Cloneable {
    */
   protected Object[] attrs = null;  // the combined user-defined callerSlots (set on demand)
 
-  protected Instruction pc;         // the next insn to execute (program counter)
+  protected Conditional<Instruction> pc;         // the next insn to execute (program counter)
   protected MethodInfo mi;          // which method is executed in this frame
 
   static final One<Integer>[] EMPTY_ARRAY = new One[0];
@@ -109,10 +116,10 @@ public abstract class StackFrame implements Cloneable {
 
   protected StackFrame (MethodInfo callee, int nLocals, int nOperands){
     mi = callee;
-    pc = mi.getInstruction(0);
+    pc = new One<>(mi.getInstruction(0));
 
     stackBase = nLocals;
-    top = nLocals-1;
+    top = new One<>(nLocals-1);
 
     int nSlots = nLocals + nOperands;
     if (nSlots > 0){
@@ -146,14 +153,14 @@ public abstract class StackFrame implements Cloneable {
     stackBase = nLocals;
     slots = new One[nLocals + nOperands];
     isRef = createReferenceMap(slots.length);
-    top = nLocals-1;  // index, not size!
+    top = new One<>(nLocals-1);  // index, not size!
   }
   
   /**
    * re-execute method from the beginning - use with care
    */
   public void reset() {
-    pc = mi.getInstruction(0);
+    pc = new One<>(mi.getInstruction(0));
   }  
   
 
@@ -191,11 +198,11 @@ public abstract class StackFrame implements Cloneable {
   public int getCalleeThis (int size) {
     // top is the topmost index
     int i = size-1;
-    if (top < i) {
+    if (top.getValue() < i) {
       return -1;
     }
 
-    return slots[top-i].getValue();
+    return slots[top.getValue()-i].getValue();
   }
 
   public StackFrame getPrevious() {
@@ -212,7 +219,7 @@ public abstract class StackFrame implements Cloneable {
 
   public Object getLocalOrFieldValue (String id) {
     // try locals first
-    LocalVarInfo lv = mi.getLocalVar(id, pc.getPosition());
+    LocalVarInfo lv = mi.getLocalVar(id, pc.getValue().getPosition());
     if (lv != null){
       return getLocalValueObject(lv);
     }
@@ -286,7 +293,7 @@ public abstract class StackFrame implements Cloneable {
    */
   public boolean includesReferenceOperand (int nTopSlots, int objRef){
 
-    for (int i=0, j=top-nTopSlots+1; i<nTopSlots && j>=0; i++, j++) {
+    for (int i=0, j=top.getValue()-nTopSlots+1; i<nTopSlots && j>=0; i++, j++) {
       if (isRef.get(j) && (slots[j].getValue() == objRef)){
         return true;
       }
@@ -300,7 +307,7 @@ public abstract class StackFrame implements Cloneable {
    */
   public boolean includesReferenceOperand (int objRef){
 
-    for (int i=stackBase; i<=top; i++) {
+    for (int i=stackBase; i<=top.getValue(); i++) {
       if (isRef.get(i) && (slots[i].getValue() == objRef)){
         return true;
       }
@@ -327,7 +334,7 @@ public abstract class StackFrame implements Cloneable {
 
   // gets and sets some derived information
   public int getLine () {
-    return mi.getLineNumber(pc);
+    return mi.getLineNumber(pc.getValue());
   }
 
 
@@ -337,7 +344,7 @@ public abstract class StackFrame implements Cloneable {
   public void processRefArguments (MethodInfo miCallee, ReferenceProcessor visitor){
     int nArgSlots = miCallee.getArgumentsSize();
 
-    for (int i=top-1; i>=top-nArgSlots; i--){
+    for (int i=top.getValue()-1; i>=top.getValue()-nArgSlots; i--){
       if (isRef.get(i)){
         visitor.processReference(slots[i].getValue());
       }
@@ -353,7 +360,7 @@ public abstract class StackFrame implements Cloneable {
 
 
   public void setOperand (int offset, int v, boolean isRefValue){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     slots[i] = new One(v);
     isRef.set(i, isRefValue);
   }
@@ -432,14 +439,14 @@ public abstract class StackFrame implements Cloneable {
   //--- the top single-slot operand attrs
 
   public boolean hasOperandAttr(){
-    if ((top >= stackBase) && (attrs != null)){
-      return (attrs[top] != null);
+    if ((top.getValue() >= stackBase) && (attrs != null)){
+      return (attrs[top.getValue()] != null);
     }
     return false;
   }
   public boolean hasOperandAttr(Class<?> type){
-    if ((top >= stackBase) && (attrs != null)){
-      return ObjectList.containsType(attrs[top], type);
+    if ((top.getValue() >= stackBase) && (attrs != null)){
+      return ObjectList.containsType(attrs[top.getValue()], type);
     }
     return false;
   }
@@ -449,8 +456,8 @@ public abstract class StackFrame implements Cloneable {
    * one attribute at callerSlots time, or check/process result with ObjectList
    */
   public Object getOperandAttr () {
-    if ((top >= stackBase) && (attrs != null)){
-      return attrs[top];
+    if ((top.getValue() >= stackBase) && (attrs != null)){
+      return attrs[top.getValue()];
     }
     return null;
   }
@@ -462,12 +469,12 @@ public abstract class StackFrame implements Cloneable {
    *  - you constructed callerSlots multi value list with ObjectList.createList()
    */
   public void setOperandAttr (Object a){
-    assert (top >= stackBase);
+    assert (top.getValue() >= stackBase);
     if (attrs == null) {
       if (a == null) return;
       attrs = new Object[slots.length];
     }
-    attrs[top] = a;
+    attrs[top.getValue()] = a;
   }
 
   
@@ -476,54 +483,54 @@ public abstract class StackFrame implements Cloneable {
    * if you don't use client private types or the provided type is too general
    */
   public <T> T getOperandAttr (Class<T> attrType){
-    assert (top >= stackBase);
+    assert (top.getValue() >= stackBase);
     
     if ((attrs != null)){
-      return ObjectList.getFirst( attrs[top], attrType);
+      return ObjectList.getFirst( attrs[top.getValue()], attrType);
     }
     return null;
   }
   public <T> T getNextOperandAttr (Class<T> attrType, Object prev){
-    assert (top >= stackBase);
+    assert (top.getValue() >= stackBase);
     if (attrs != null){
-      return ObjectList.getNext( attrs[top], attrType, prev);
+      return ObjectList.getNext( attrs[top.getValue()], attrType, prev);
     }
     return null;
   }
   public Iterator operandAttrIterator(){
-    assert (top >= stackBase);
-    Object a = (attrs != null) ? attrs[top] : null;
+    assert (top.getValue() >= stackBase);
+    Object a = (attrs != null) ? attrs[top.getValue()] : null;
     return ObjectList.iterator(a);
   }
   public <T> Iterator<T> operandAttrIterator(Class<T> attrType){
-    assert (top >= stackBase);
-    Object a = (attrs != null) ? attrs[top] : null;
+    assert (top.getValue() >= stackBase);
+    Object a = (attrs != null) ? attrs[top.getValue()] : null;
     return ObjectList.typedIterator(a, attrType);
   }
   
 
   public void addOperandAttr (Object a){
-    assert (top >= stackBase);
+    assert (top.getValue() >= stackBase);
     if (a != null){
       if (attrs == null) {
         attrs = new Object[slots.length];
       }
 
-      attrs[top] = ObjectList.add(attrs[top], a);
+      attrs[top.getValue()] = ObjectList.add(attrs[top.getValue()], a);
     }        
   }
   
   public void removeOperandAttr (Object a){
-    assert (top >= stackBase) && (a != null);
+    assert (top.getValue() >= stackBase) && (a != null);
     if (attrs != null){
-      attrs[top] = ObjectList.remove(attrs[top], a);
+      attrs[top.getValue()] = ObjectList.remove(attrs[top.getValue()], a);
     }        
   }
   
   public void replaceOperandAttr (Object oldAttr, Object newAttr){
-    assert (top >= stackBase) && (oldAttr != null) && (newAttr != null);
+    assert (top.getValue() >= stackBase) && (oldAttr != null) && (newAttr != null);
     if (attrs != null){
-      attrs[top] = ObjectList.replace(attrs[top], oldAttr, newAttr);
+      attrs[top.getValue()] = ObjectList.replace(attrs[top.getValue()], oldAttr, newAttr);
     }        
   }
   
@@ -531,7 +538,7 @@ public abstract class StackFrame implements Cloneable {
   //--- offset operand attrs
 
   public boolean hasOperandAttr(int offset){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
     if (attrs != null){
       return (attrs[i] != null);
@@ -539,7 +546,7 @@ public abstract class StackFrame implements Cloneable {
     return false;
   }
   public boolean hasOperandAttr(int offset, Class<?> type){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
     if (attrs != null){
       return ObjectList.containsType(attrs[i], type);
@@ -552,7 +559,7 @@ public abstract class StackFrame implements Cloneable {
    * one attribute at callerSlots time, or check/process result with ObjectList
    */
   public Object getOperandAttr (int offset) {
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
     
     if (attrs != null) {
@@ -568,7 +575,7 @@ public abstract class StackFrame implements Cloneable {
    *  - you constructed callerSlots multi value list with ObjectList.createList()
    */  
   public void setOperandAttr (int offset, Object a){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
 
     if (attrs == null) {
@@ -583,7 +590,7 @@ public abstract class StackFrame implements Cloneable {
    * if you don't use client private types or the provided type is too general
    */
   public <T> T getOperandAttr (int offset, Class<T> attrType){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
     if (attrs != null){
       return ObjectList.getFirst( attrs[i], attrType);
@@ -591,7 +598,7 @@ public abstract class StackFrame implements Cloneable {
     return null;
   }
   public <T> T getNextOperandAttr (int offset, Class<T> attrType, Object prev){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
     if (attrs != null){
       return ObjectList.getNext( attrs[i], attrType, prev);
@@ -599,13 +606,13 @@ public abstract class StackFrame implements Cloneable {
     return null;
   }
   public ObjectList.Iterator operandAttrIterator(int offset){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
     Object a = (attrs != null) ? attrs[i] : null;
     return ObjectList.iterator(a);
   }
   public <T> ObjectList.TypedIterator<T> operandAttrIterator(int offset, Class<T> attrType){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
     Object a = (attrs != null) ? attrs[i] : null;
     return ObjectList.typedIterator(a, attrType);
@@ -613,7 +620,7 @@ public abstract class StackFrame implements Cloneable {
 
 
   public void addOperandAttr (int offset, Object a){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase);
 
     if (a != null){
@@ -625,7 +632,7 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public void removeOperandAttr (int offset, Object a){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase) && (a != null);
     if (attrs != null){
       attrs[i] = ObjectList.remove(attrs[i], a);
@@ -633,7 +640,7 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public void replaceOperandAttr (int offset, Object oldAttr, Object newAttr){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     assert (i >= stackBase) && (oldAttr != null) && (newAttr != null);
     if (attrs != null){
       attrs[i] = ObjectList.replace(attrs[i], oldAttr, newAttr);
@@ -897,7 +904,7 @@ public abstract class StackFrame implements Cloneable {
   // -- end attrs --
   
   public void setLocalReferenceVariable (int index, int ref){
-    if (slots[index].getValue() != MJIEnv.NULL){
+    if (slots[index] != null && slots[index].getValue() != MJIEnv.NULL){
       VM.getVM().getSystemState().activateGC();
     }
     
@@ -925,11 +932,11 @@ public abstract class StackFrame implements Cloneable {
 
   
   // <2do> replace with non-ref version
-  public void setLocalVariable (int index, int v, boolean ref) {
+  public void setLocalVariable (int index, Conditional<Integer> v, boolean ref) {
     // <2do> activateGc should be replaced by local refChanged
     boolean activateGc = ref || (isRef.get(index) && (slots[index].getValue() != MJIEnv.NULL));
 
-    slots[index] = new One(v);
+    slots[index] = v;
     isRef.set(index,ref);
 
     if (activateGc) {
@@ -937,14 +944,14 @@ public abstract class StackFrame implements Cloneable {
     }
   }
 
-  public int getLocalVariable (int i) {
-    return slots[i].getValue();
+  public Conditional<Integer> getLocalVariable (int i) {
+    return slots[i];
   }
 
   public int getLocalVariable (String name) {
     int idx = getLocalVariableSlotIndex(name);
     if (idx >= 0) {
-      return getLocalVariable(idx);
+      return getLocalVariable(idx).getValue();
     } else {
       throw new JPFException("local variable not found: " + name);
     }
@@ -967,7 +974,7 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public String getLocalVariableType (String name) {
-    LocalVarInfo lv = mi.getLocalVar(name, pc.getPosition()+pc.getLength());
+    LocalVarInfo lv = mi.getLocalVar(name, pc.getValue().getPosition()+pc.getValue().getLength());
     if (lv != null){
       return lv.getType();
     }
@@ -976,7 +983,7 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public String getLocalVariableType (int idx){
-    LocalVarInfo lv = mi.getLocalVar(idx, pc.getPosition()+pc.getLength());
+    LocalVarInfo lv = mi.getLocalVar(idx, pc.getValue().getPosition()+pc.getValue().getLength());
     if (lv != null){
       return lv.getType();
     }
@@ -985,11 +992,11 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public LocalVarInfo getLocalVarInfo (String name){
-    return mi.getLocalVar(name, pc.getPosition()+pc.getLength());
+    return mi.getLocalVar(name, pc.getValue().getPosition()+pc.getValue().getLength());
   }
 
   public LocalVarInfo getLocalVarInfo (int idx){
-    return mi.getLocalVar(idx, pc.getPosition()+pc.getLength());
+    return mi.getLocalVar(idx, pc.getValue().getPosition()+pc.getValue().getLength());
   }
 
 
@@ -1035,7 +1042,7 @@ public abstract class StackFrame implements Cloneable {
   
 
   public void visitReferenceSlots (ReferenceProcessor visitor){
-    for (int i=isRef.nextSetBit(0); i>=0 && i<=top; i=isRef.nextSetBit(i+1)){
+    for (int i=isRef.nextSetBit(0); i>=0 && i<=top.getValue(); i=isRef.nextSetBit(i+1)){
       visitor.processReference(slots[i].getValue());
     }
   }
@@ -1093,38 +1100,38 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public boolean isOperandRef (int offset) {
-    return isRef.get(top-offset);
+    return isRef.get(top.getValue()-offset);
   }
 
   public boolean isOperandRef () {
-    return isRef.get(top);
+    return isRef.get(top.getValue());
   }
 
   //--- direct pc modification
   // NOTE: this is dangerous, caller has to guarantee stack consistency
-  public void setPC (Instruction newpc) {
+  public void setPC (Conditional<Instruction>  newpc) {
     pc = newpc;
   }
 
-  public Instruction getPC () {
-    return pc;
+  public Conditional<Instruction> getPC () {
+    return pc.simplify();
   }
 
   public void advancePC() {
-    int i = pc.getInstructionIndex() + 1;
+    int i = pc.getValue().getInstructionIndex() + 1;
     if (i < mi.getNumberOfInstructions()) {
-      pc = mi.getInstruction(i);
+      pc = new One<>(mi.getInstruction(i));
     } else {
       pc = null;
     }
   }
 
   public int getTopPos() {
-    return top;
+    return top.getValue();
   }
 
   ExceptionHandler getHandlerFor (ClassInfo ciException){
-    return mi.getHandlerFor (ciException, pc);
+    return mi.getHandlerFor (ciException, pc.getValue());
   }
   
   public boolean isFirewall (){
@@ -1139,7 +1146,7 @@ public abstract class StackFrame implements Cloneable {
     	
     	if(pc != null) {
     		sb.append('(');
-            sb.append( pc.getFilePos());
+            sb.append( pc.getValue().getFilePos());
             sb.append(')');
     	}
     } else {
@@ -1166,12 +1173,12 @@ public abstract class StackFrame implements Cloneable {
   // stack operations
   public void clearOperandStack () {
     if (attrs != null){
-      for (int i=stackBase; i<= top; i++){
+      for (int i=stackBase; i<= top.getValue(); i++){
         attrs[i] = null;
       }
     }
     
-    top = stackBase-1;
+    top = new One<>(stackBase-1);
   }
   
   // this is callerSlots deep copy
@@ -1233,7 +1240,7 @@ public abstract class StackFrame implements Cloneable {
     // .. A A
     //    ^
 
-    int t= top;
+    int t= top.getValue();
 
     int td=t+1;
     slots[td] = slots[t];
@@ -1243,7 +1250,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[td] = attrs[t];
     }
 
-    top = td;
+    top = new One<>(td);
   }
 
   public void dup2 () {
@@ -1252,7 +1259,7 @@ public abstract class StackFrame implements Cloneable {
     //      ^
 
     int ts, td;
-    int t=top;
+    int t=top.getValue();
 
     // duplicate A
     td = t+1; ts = t-1;
@@ -1270,7 +1277,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[td] = attrs[ts];
     }
 
-    top = td;
+    top = new One<>(td);
   }
 
   public void dup2_x1 () {
@@ -1282,7 +1289,7 @@ public abstract class StackFrame implements Cloneable {
     boolean bRef, cRef;
     Object bAnn = null, cAnn = null;
     int ts, td;
-    int t = top;
+    int t = top.getValue();
 
     // duplicate C
     ts=t; td = t+2;                              // ts=top, td=top+2
@@ -1326,7 +1333,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[td] = cAnn;
     }
 
-    top += 2;
+    top = new One<>(top.getValue() + 2);
   }
 
   public void dup2_x2 () {
@@ -1338,7 +1345,7 @@ public abstract class StackFrame implements Cloneable {
     boolean cRef, dRef;
     Object cAnn = null, dAnn = null;
     int ts, td;
-    int t = top;
+    int t = top.getValue();
 
     // duplicate C
     ts = t-1; td = t+1;                          // ts=top-1, td=top+1
@@ -1389,8 +1396,7 @@ public abstract class StackFrame implements Cloneable {
     if (attrs != null){
       attrs[td] = cAnn;
     }
-
-    top += 2;
+    top = new One<>(top.getValue() + 2);
   }
 
   public void dup_x1 () {
@@ -1402,7 +1408,7 @@ public abstract class StackFrame implements Cloneable {
     boolean bRef;
     Object bAnn = null;
     int ts, td;
-    int t = top;
+    int t = top.getValue();
 
     // duplicate B
     ts = t; td = t+1;
@@ -1429,7 +1435,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[td] = bAnn;
     }
 
-    top++;
+    top = new One<>(top.getValue() + 1);
   }
 
   public void dup_x2 () {
@@ -1441,7 +1447,7 @@ public abstract class StackFrame implements Cloneable {
     boolean cRef;
     Object cAnn = null;
     int ts, td;
-    int t = top;
+    int t = top.getValue();
 
     // duplicate C
     ts = t; td = t+1;
@@ -1476,7 +1482,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[td] = cAnn;
     }
 
-    top++;
+    top = new One<>(top.getValue() + 1);
   }
 
 
@@ -1501,7 +1507,7 @@ public abstract class StackFrame implements Cloneable {
 
       Conditional<Integer>[] otherSlots = other.slots;
       FixedBitSet otherIsRef = other.isRef;
-      for (int i=0; i<=top; i++){
+      for (int i=0; i<=top.getValue(); i++){
         if ( slots[i] != otherSlots[i]){
           return false;
         }
@@ -1510,7 +1516,7 @@ public abstract class StackFrame implements Cloneable {
         }
       }
 
-      if (!Misc.compare(top,attrs,other.attrs)){
+      if (!Misc.compare(top.getValue(),attrs,other.attrs)){
         return false;
       }
       
@@ -1532,11 +1538,11 @@ public abstract class StackFrame implements Cloneable {
     h = OATHash.hashMixin( h, mi.getGlobalId());
     
     if (pc != null){
-      h = OATHash.hashMixin(h, pc.getInstructionIndex());
+      h = OATHash.hashMixin(h, pc.getValue().getInstructionIndex());
       // we don't need the bytecode since there can only be one insn with this index in this method
     }
     
-    for (int i=0; i<top; i++) {
+    for (int i=0; i<top.getValue(); i++) {
       h = OATHash.hashMixin(h, slots[i].getValue());
     }
    
@@ -1550,10 +1556,10 @@ public abstract class StackFrame implements Cloneable {
     hd.add(mi.getGlobalId());
 
     if (pc != null){
-      hd.add(pc.getInstructionIndex());
+      hd.add(pc.getValue().getInstructionIndex());
     }
 
-    for (int i=0; i<=top; i++){
+    for (int i=0; i<=top.getValue(); i++){
       hd.add(slots[i]);
     }
 
@@ -1565,7 +1571,7 @@ public abstract class StackFrame implements Cloneable {
     // it's debatable if we add the attributes to the state, but whatever it
     // is, it should be kept consistent with the Fields.hash()
     if (attrs != null){
-      for (int i=0; i<=top; i++){
+      for (int i=0; i<=top.getValue(); i++){
         ObjectList.hash( attrs[i], hd);
       }
     }
@@ -1599,7 +1605,7 @@ public abstract class StackFrame implements Cloneable {
       }
     }
     **/
-    for (int i = 0; i <= top; i++) {
+    for (int i = 0; i <= top.getValue(); i++) {
       if (isRef.get(i)) {
         int objref = slots[i].getValue();
         if (objref != MJIEnv.NULL) {
@@ -1613,7 +1619,7 @@ public abstract class StackFrame implements Cloneable {
 
   public void printOperands (PrintStream pw){
     pw.print("operands = [");
-    for (int i=stackBase; i<=top; i++){
+    for (int i=stackBase; i<=top.getValue(); i++){
       if (i>0){
         pw.print(',');
       }
@@ -1621,7 +1627,7 @@ public abstract class StackFrame implements Cloneable {
         pw.print('^');
       }
       pw.print(slots[i]);
-      Object a = getOperandAttr(top-i);
+      Object a = getOperandAttr(top.getValue()-i);
       if (a != null){
         pw.print(" {");
         pw.print(a);
@@ -1641,13 +1647,13 @@ public abstract class StackFrame implements Cloneable {
     pw.print( mi.getFullName());
 
     if (pc != null) {
-      pw.println( ":" + pc.getPosition());
+      pw.println( ":" + pc.getValue().getPosition());
     } else {
       pw.println();
     }
 
     pw.print("\t slots: ");
-    for (int i=0; i<=top; i++){
+    for (int i=0; i<=top.getValue(); i++){
       if (i == stackBase){
         pw.println("\t      ----------- operand stack");
       }
@@ -1674,20 +1680,20 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public void swap () {
-    int t = top-1;
+    int t = top.getValue()-1;
 
-    int v = slots[top].getValue();
-    boolean isTopRef = isRef.get(top);
+    int v = slots[top.getValue()].getValue();
+    boolean isTopRef = isRef.get(top.getValue());
 
-    slots[top] = slots[t];
-    isRef.set( top, isRef.get(t));
+    slots[top.getValue()] = slots[t];
+    isRef.set( top.getValue(), isRef.get(t));
 
     slots[t] = new One<>(v);
     isRef.set( t, isTopRef);
 
     if (attrs != null){
-      Object a = attrs[top];
-      attrs[top] = attrs[t];
+      Object a = attrs[top.getValue()];
+      attrs[top.getValue()] = attrs[t];
       attrs[t] = a;
     }
   }
@@ -1700,7 +1706,7 @@ public abstract class StackFrame implements Cloneable {
     pw.print(",top="); pw.print(top);
     pw.print(",slots=[");
 
-    for (int i = 0; i <= top; i++) {
+    for (int i = 0; i <= top.getValue(); i++) {
       if (i == stackBase){
         pw.print("||");
       } else {
@@ -1722,7 +1728,7 @@ public abstract class StackFrame implements Cloneable {
     }
 
     pw.print("],pc=");
-    pw.print(pc != null ? pc.getPosition() : "null");
+    pw.print(pc != null ? pc.getValue().getPosition() : "null");
 
     pw.print(']');
 
@@ -1730,7 +1736,7 @@ public abstract class StackFrame implements Cloneable {
   
   // <2do> there are way too many different print/debug methods here
   public void printSlots (PrintStream ps){
-    for (int i = 0; i <= top; i++) {
+    for (int i = 0; i <= top.getValue(); i++) {
       if (i == stackBase){
         ps.print("||");
       } else {
@@ -1774,86 +1780,86 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public float peekFloat() {
-    return Float.intBitsToFloat(slots[top].getValue());
+    return Float.intBitsToFloat(slots[top.getValue()].getValue());
   }
 
   public float peekFloat (int offset){
-    return Float.intBitsToFloat(slots[top-offset].getValue());    
+    return Float.intBitsToFloat(slots[top.getValue()-offset].getValue());    
   }
   
   public double peekDouble() {
-    int i = top;
+    int i = top.getValue();
     return Types.intsToDouble( slots[i].getValue(), slots[i-1].getValue());
   }
   
   public double peekDouble (int offset){
-    int i = top-offset;
+    int i = top.getValue()-offset;
     return Types.intsToDouble( slots[i].getValue(), slots[i-1].getValue());
   }
   
   public long peekLong () {
-    int i = top;
+    int i = top.getValue();
     return Types.intsToLong( slots[i].getValue(), slots[i-1].getValue());
   }
 
   public long peekLong (int offset) {
-    int i = top - offset;
+    int i = top.getValue() - offset;
     return Types.intsToLong( slots[i].getValue(), slots[i-1].getValue());
   }
 
   public void pushLong (long v) {
-    push( (int) (v>>32));
-    push( (int) v);
+    push(FeatureExprFactory.True(), new One<>((int) (v>>32)));
+    push(FeatureExprFactory.True(), new One<>((int) v));
   }
 
   public void pushDouble (double v) {
     long l = Double.doubleToLongBits(v);
-    push( (int) (l>>32));
-    push( (int) l);
+    push(FeatureExprFactory.True(), new One<>((int) (l>>32)));
+    push(FeatureExprFactory.True(), new One<>((int) l));
   }
 
   public void pushFloat (float v) {
-    push( Float.floatToIntBits(v));
+    push(FeatureExprFactory.True(), new One<>(Float.floatToIntBits(v)));
   }
   
   public double popDouble () {
-    int i = top;
+    int i = top.getValue();
 
     int lo = slots[i--].getValue();
     int hi = slots[i--].getValue();
 
     if (attrs != null){
-      i = top;
+      i = top.getValue();
       attrs[i--] = null; // not really required
       attrs[i--] = null; // that's where the attribute should be
     }
 
-    top = i;
+    top = new One<>(i);
     return Types.intsToDouble(lo, hi);
   }
 
   public long popLong () {
-    int i = top;
+    int i = top.getValue();
 
     int lo = slots[i--].getValue();
     int hi = slots[i--].getValue();
 
     if (attrs != null){
-      i = top;
+      i = top.getValue();
       attrs[i--] = null; // not really required
       attrs[i--] = null; // that's where the attribute should be
     }
 
-    top = i;
+    top = new One<>(i);
     return Types.intsToLong(lo, hi);
   }
 
   public Conditional<Integer> peek () {
-    return slots[top];
+    return slots[top.getValue()];
   }
 
   public int peek (int offset) {
-    return slots[top-offset].getValue();
+    return slots[top.getValue()-offset].getValue();
   }
 
   public void removeArguments (MethodInfo mi) {
@@ -1867,10 +1873,10 @@ public abstract class StackFrame implements Cloneable {
   public void pop (int n) {
     //assert (top >= stackBase) : "stack empty";
 
-    int t = top - n;
+    int t = top.getValue() - n;
 
     // <2do> get rid of this !
-    for (int i=top; i>t; i--) {
+    for (int i=top.getValue(); i>t; i--) {
       if (isRef.get(i) && (slots[i].getValue() != MJIEnv.NULL)) {
         VM.getVM().getSystemState().activateGC();
         break;
@@ -1878,43 +1884,49 @@ public abstract class StackFrame implements Cloneable {
     }
 
     if (attrs != null){  // just to avoid memory leaks
-      for (int i=top; i>t; i--){
+      for (int i=top.getValue(); i>t; i--){
         attrs[i] = null;
       }
     }
 
-    top = t;
+    top = new One<>(t);
   }
 
   public float popFloat() {    
-    int v = slots[top].getValue();
+    int v = slots[top.getValue()].getValue();
 
     if (attrs != null){ // just to avoid memory leaks
-      attrs[top] = null;
+      attrs[top.getValue()] = null;
     }
 
-    top--;
+    top = new One(top.getValue() - 1);
 
     return Float.intBitsToFloat(v);
   }
   
   public Conditional<Integer> pop () {
     //assert (top >= stackBase) : "stack empty";
-    
-    Conditional<Integer> v = slots[top];
+    Conditional<Integer> v = slots[top.getValue()];
 
     // <2do> get rid of this
-    if (isRef.get(top)) {
+    if (isRef.get(top.getValue())) {
       if (v.getValue() != MJIEnv.NULL) {
         VM.getVM().getSystemState().activateGC();
       }
     }
 
     if (attrs != null){ // just to avoid memory leaks
-      attrs[top] = null;
+      attrs[top.getValue()] = null;
     }
 
-    top--;
+    top = top.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			return new Choice<>(x, new One<>(y - 1), new One<>(y));
+		}
+    	
+	}).simplify();
+//    top = new One<>(top.getValue() - 1);
 
     // note that we don't reset the operands or oRefs values, so that
     // we can still access them after the insn doing the pop got executed
@@ -1924,17 +1936,18 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public void pushLocal (int index) {
-    top++;
-    slots[top] = slots[index];
-    isRef.set(top, isRef.get(index));
+	  top = new One<>(top.getValue() + 1);
+    
+    slots[top.getValue()] = slots[index];
+    isRef.set(top.getValue(), isRef.get(index));
 
     if (attrs != null){
-      attrs[top] = attrs[index];
+      attrs[top.getValue()] = attrs[index];
     }
   }
 
   public void pushLongLocal (int index){
-    int t = top;
+    int t = top.getValue();
 
     slots[++t] = slots[index];
     isRef.clear(t);
@@ -1945,24 +1958,22 @@ public abstract class StackFrame implements Cloneable {
       attrs[t-1] = attrs[index];
       attrs[t] = null;
     }
-
-    top = t;
+    top = new One<>(t);
   }
 
   public void storeOperand (int index){
-    slots[index] = slots[top];
-    isRef.set( index, isRef.get(top));
+    slots[index] = slots[top.getValue()];
+    isRef.set( index, isRef.get(top.getValue()));
 
     if (attrs != null){
-      attrs[index] = attrs[top];
-      attrs[top] = null;
+      attrs[index] = attrs[top.getValue()];
+      attrs[top.getValue()] = null;
     }
-
-    top--;
+    top = new One<>(top.getValue() - 1);
   }
 
   public void storeLongOperand (int index){
-    int t = top-1;
+    int t = top.getValue()-1;
     int i = index;
 
     slots[i] = slots[t];
@@ -1978,18 +1989,23 @@ public abstract class StackFrame implements Cloneable {
       attrs[t] = null;
       attrs[t+1] = null;
     }
-
-    top -=2;
+    top = new One<>(top.getValue() - 2);
   }
 
-  public void push (int one){
-	  push(new One(one));
-  }
-  
-  public void push (Conditional<Integer> one){
-    top++;
-    slots[top] = one;
-    isRef.clear(top);
+  public void push (final FeatureExpr ctx, final Conditional<Integer> one) {
+	  top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+		public Conditional<Integer> apply(FeatureExpr f, Integer oldValue) {
+			if (f.isContradiction()) {
+				return new One<>(oldValue);
+			}
+			Conditional<Integer> oldSlot = slots[oldValue+1];
+			slots[oldValue+1] = new Choice<>(f.and(ctx), one, oldSlot).simplify();
+			return new Choice<>(f.and(ctx), new One<>(oldValue + 1), new One<>(oldValue)).simplify();
+		} 
+	  }).simplify();
+	  
+//    slots[top.getValue()] = one;
+    isRef.clear(top.getValue(true));
 
     //if (attrs != null){ // done on pop
     //  attrs[top] = null;
@@ -1997,9 +2013,9 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public void pushRef (int ref){
-    top++;
-    slots[top] = new One(ref);
-    isRef.set(top);
+	  top = new One<>(top.getValue() + 1);
+    slots[top.getValue()] = new One<>(ref);
+    isRef.set(top.getValue());
 
     //if (attrs != null){ // done on pop
     //  attrs[top] = null;
@@ -2011,9 +2027,9 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public void push (int v, boolean ref) {
-    top++;
-    slots[top] = new One(v);
-    isRef.set(top, ref);
+	  top = new One<>(top.getValue() + 1);
+    slots[top.getValue()] = new One<>(v);
+    isRef.set(top.getValue(), ref);
 
     //if (attrs != null){ // done on pop
     //  attrs[top] = null;
@@ -2026,7 +2042,7 @@ public abstract class StackFrame implements Cloneable {
 
   // return the value of callerSlots variable given the name
   public int getLocalVariableSlotIndex (String name) {
-    LocalVarInfo lv = mi.getLocalVar(name, pc.getPosition());
+    LocalVarInfo lv = mi.getLocalVar(name, pc.getValue().getPosition());
 
     if (lv != null){
       return lv.getSlotIndex();
@@ -2045,7 +2061,7 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public void setResult (int r, Object attr){
-    push(r);
+    push(FeatureExprFactory.True(), new One<>(r));
     if (attr != null){
       setOperandAttr(attr);
     }    

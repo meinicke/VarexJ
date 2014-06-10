@@ -39,6 +39,7 @@ public class BigIntegerTest extends TestJPF {
       BigInteger x = big.add(notSoBig);
       String s = x.toString();
       System.out.println("x = " + s);
+      System.out.println("i=" + s);
       assert s.equals("4200000000000000001");
 
       x = big.divide(o);

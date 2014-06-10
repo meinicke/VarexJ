@@ -212,7 +212,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       if (ss.setNextChoiceGenerator(cg)) {
         env.repeatInvocation();
       } else {
-        Instruction insn = tiCurrent.getPC();
+        Instruction insn = tiCurrent.getPC().getValue();
         log.info(tiStartee.getName(), " start not a scheduling point in ", insn.getMethodInfo().getFullName());
       }
       

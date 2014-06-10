@@ -1,5 +1,8 @@
 package gov.nasa.jpf.jvm.bytecode.extended;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class One<T> extends Conditional<T> {
@@ -20,6 +23,10 @@ public class One<T> extends Conditional<T> {
 			return ((Conditional<T>) value).getValue();
 		}
 		return value;
+	}
+	
+	public T getValue(boolean ignore) {
+		return getValue();
 	}
 
 	@Override
@@ -56,6 +63,13 @@ public class One<T> extends Conditional<T> {
 	@Override
 	public boolean equals(Object obj) {
 		 return (obj != null && obj instanceof One && ((One<?>)obj).value == value);
+	}
+
+	@Override
+	public List<T> toList() {
+		List<T> list = new LinkedList<>();
+		list.add(value);
+		return list;
 	}
 
 }

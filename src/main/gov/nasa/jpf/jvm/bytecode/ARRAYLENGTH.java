@@ -25,6 +25,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -33,7 +34,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class ARRAYLENGTH extends ArrayInstruction {
     
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
     arrayRef = frame.pop().getValue();

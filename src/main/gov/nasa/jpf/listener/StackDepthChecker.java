@@ -21,12 +21,13 @@ package gov.nasa.jpf.listener;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.JPFLogger;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.VM;
 
 /**
  * listener that throws a java.lang.StackOverflowError in case a thread
@@ -60,7 +61,7 @@ public class StackDepthChecker extends ListenerAdapter {
 
       Instruction nextPc = ti.createAndThrowException("java.lang.StackOverflowError");
       StackFrame topFrame = ti.getModifiableTopFrame();
-      topFrame.setPC(nextPc);
+      topFrame.setPC(new One<>(nextPc));
     }
   }
 }

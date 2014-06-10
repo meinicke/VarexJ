@@ -19,6 +19,8 @@
 
 package gov.nasa.jpf.jvm;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MethodInfo;
 
@@ -85,7 +87,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int setArgument (int slotIdx, int v, Object attr){
-    push(v);
+    push(FeatureExprFactory.True(), new One<>(v));
     if (attr != null){
       setOperandAttr(attr);
     }

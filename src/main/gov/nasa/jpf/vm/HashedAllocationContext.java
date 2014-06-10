@@ -19,13 +19,15 @@
 package gov.nasa.jpf.vm;
 
 // see mixinJPFStack() comments
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import sun.misc.SharedSecrets;
 import sun.misc.JavaLangAccess;
-
 import gov.nasa.jpf.Config;
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.OATHash;
 import gov.nasa.jpf.util.SparseObjVector;
-
 import static gov.nasa.jpf.util.OATHash.*;
 
 /**
@@ -58,7 +60,27 @@ public class HashedAllocationContext implements AllocationContext {
     
     for (StackFrame frame = ti.getTopFrame(); frame != null; frame = frame.getPrevious() ) {
       if (!(frame instanceof DirectCallStackFrame)) {
-        Instruction insn = frame.getPC();
+    	  // TODO jens maybe just get the smalest pc
+    	  
+    	  int min = Integer.MAX_VALUE;
+    	  Instruction insn = null;
+      	  for (Instruction i : frame.getPC().toList()) {
+      		  if (i.getPosition() < min) {
+      			  min = i.getPosition();
+      			  insn = i;
+      		  }
+      	  }
+    	  
+//    	  
+//    	  
+//        Instruction insn = frame.getPC().mapf(new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+//        	
+//			
+//			public Conditional<Instruction> apply(FeatureExpr x, Instruction y) {
+//				return new One<>(y);// TODO jens check if this is correct
+//			}
+//        	
+//		}).simplify().getValue();
         
         //h = hashMixin(h, insn.hashCode()); // this is the Instruction object system hash - not reproducible between runs
         
@@ -147,22 +169,22 @@ public class HashedAllocationContext implements AllocationContext {
    * this one is for allocations that should depend on the SUT thread context (such as all
    * explicit NEW executions)
    */
-  public static AllocationContext getSUTAllocationContext (ClassInfo ci, ThreadInfo ti) {
+  public static AllocationContext getSUTAllocationContext(ClassInfo ci, ThreadInfo ti) {
     int h = 0;
     
     //--- the type that gets allocated
     h = hashMixin(h, ci.getUniqueId()); // ClassInfo instances can change upon backtrack
     
     //--- the SUT execution context (allocating ThreadInfo and its stack)
-    h = mixinSUTStack( h, ti);
+    h = mixinSUTStack(h, ti);
     
     //--- the JPF execution context (from where in the JPF code the allocation happens)
     h = mixinJPFStack( h);
     
     h = hashFinalize(h);
-    HashedAllocationContext ctx = new HashedAllocationContext(h);
+    HashedAllocationContext hactx = new HashedAllocationContext(h);
 
-    return ctx;
+    return hactx;
   }
   
   /**

@@ -16,7 +16,7 @@ public class VA_PUTSTATIC extends PUTSTATIC {
 	}
 
 	@Override
-	public Conditional<Instruction> execute(ThreadInfo ti) {
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		AnnotationInfo[] annotations = getFieldInfo().getAnnotations();
 		boolean annotated = false;
 		for (AnnotationInfo ai : annotations) {
@@ -32,9 +32,9 @@ public class VA_PUTSTATIC extends PUTSTATIC {
 			frame.pop();
 //			frame.push(0);
 //			frame.push(new One<>(0));
-			frame.push(new Choice<>(feature, new One<>(1), new One<>(0)));
+			frame.push(ctx, new Choice<>(feature, new One<>(1), new One<>(0)));
 		}
-		return super.execute(ti);
+		return super.execute(ctx, ti);
 	}
 
 }

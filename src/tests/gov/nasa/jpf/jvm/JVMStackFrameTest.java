@@ -19,11 +19,14 @@
 
 package gov.nasa.jpf.jvm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
 
 import org.junit.Test;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -37,9 +40,9 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(0, 10);
 
-    frame.push(1);
-    frame.push(2);
-    frame.push(3);
+    frame.push(FeatureExprFactory.True(), new One<>(1));
+    frame.push(FeatureExprFactory.True(), new One<>(2));
+    frame.push(FeatureExprFactory.True(), new One<>(3));
     frame.printOperands(System.out);
 
     frame.dup2_x1();
@@ -59,9 +62,9 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(0, 10);
 
-    frame.push(1); frame.setOperandAttr("1");
-    frame.push(2); frame.setOperandAttr("2");
-    frame.push(3); frame.setOperandAttr("3");
+    frame.push(FeatureExprFactory.True(), new One<>(1)); frame.setOperandAttr("1");
+    frame.push(FeatureExprFactory.True(), new One<>(2)); frame.setOperandAttr("2");
+    frame.push(FeatureExprFactory.True(), new One<>(3)); frame.setOperandAttr("3");
     frame.printOperands(System.out);
 
     frame.dup2_x1();
@@ -82,10 +85,10 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(0, 10);
 
-    frame.push(1);
-    frame.push(2);
-    frame.push(3);
-    frame.push(4);
+    frame.push(FeatureExprFactory.True(), new One<>(1));
+    frame.push(FeatureExprFactory.True(), new One<>(2));
+    frame.push(FeatureExprFactory.True(), new One<>(3));
+    frame.push(FeatureExprFactory.True(), new One<>(4));
     frame.printOperands(System.out);
 
     frame.dup2_x2();
@@ -106,10 +109,10 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(0, 10);
 
-    frame.push(1); frame.setOperandAttr("1");
-    frame.push(2); frame.setOperandAttr("2");
-    frame.push(3); frame.setOperandAttr("3");
-    frame.push(4); frame.setOperandAttr("4");
+    frame.push(FeatureExprFactory.True(), new One<>(1)); frame.setOperandAttr("1");
+    frame.push(FeatureExprFactory.True(), new One<>(2)); frame.setOperandAttr("2");
+    frame.push(FeatureExprFactory.True(), new One<>(3)); frame.setOperandAttr("3");
+    frame.push(FeatureExprFactory.True(), new One<>(4)); frame.setOperandAttr("4");
     frame.printOperands(System.out);
 
     frame.dup2_x2();
@@ -150,9 +153,9 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(2, 10);
     // Initialize local values and the stack frame
-    frame.push(1);
-    frame.push(2);
-    frame.push(3);
+    frame.push(FeatureExprFactory.True(), new One<>(1));
+    frame.push(FeatureExprFactory.True(), new One<>(2));
+    frame.push(FeatureExprFactory.True(), new One<>(3));
 
     double value = Math.PI;
 

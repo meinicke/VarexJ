@@ -55,7 +55,7 @@ public class JPF_java_lang_Class extends NativePeer {
   public int getComponentType____Ljava_lang_Class_2 (MJIEnv env, int robj) {
     if (isArray____Z(env, robj)) {
       ThreadInfo ti = env.getThreadInfo();
-      Instruction insn = ti.getPC();
+      Instruction insn = ti.getPC().getValue();
       ClassInfo ci = env.getReferredClassInfo( robj).getComponentClassInfo();
 
     if (ci.pushRequiredClinits(ti)){
@@ -155,7 +155,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
   public static int getClassObject (MJIEnv env, ClassInfo ci){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC();
+    Instruction insn = ti.getPC().getValue();
 
     if (ci.pushRequiredClinits(ti)){
       env.repeatInvocation();
@@ -254,7 +254,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // re-execution
-      int objRef = frame.getLocalVariable(0); // that's the object ref we set in (1)
+      int objRef = frame.getLocalVariable(0).getValue(); // that's the object ref we set in (1)
       return objRef;
     }      
   }
@@ -490,7 +490,7 @@ public class JPF_java_lang_Class extends NativePeer {
   // this is only used for system classes such as java.lang.reflect.Method
   ClassInfo getInitializedClassInfo (MJIEnv env, String clsName){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC();
+    Instruction insn = ti.getPC().getValue();
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo( clsName);
     
     if (ci.pushRequiredClinits(ti)){
@@ -508,7 +508,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
   Set<ClassInfo> getInitializedInterfaces (MJIEnv env, ClassInfo ci){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC();
+    Instruction insn = ti.getPC().getValue();
 
     Set<ClassInfo> ifcs = ci.getAllInterfaceClassInfos();
     for (ClassInfo ciIfc : ifcs){

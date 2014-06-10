@@ -152,7 +152,10 @@ public final class IntVector implements Comparable<IntVector>, Cloneable {
     if (newSize > data.length) {
       ensureCapacity(newSize);
     }
-    System.arraycopy(x, pos, data, size, len);
+    for (int i = pos; i < pos + len; i++) {
+        data[size + i] = new One<>(x[i]);
+    }
+//    System.arraycopy(x, pos, data, size, len);
     size = newSize;
   }
 

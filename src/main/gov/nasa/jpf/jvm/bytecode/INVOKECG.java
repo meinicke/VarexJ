@@ -34,6 +34,8 @@ import gov.nasa.jpf.vm.choice.InvocationCG;
 
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * a sytnthetic INVOKE instruction that gets it's parameters from an
  * InvocationCG. Whoever uses this better makes sure the frame this
@@ -54,7 +56,7 @@ public class INVOKECG extends JVMInstruction {
     this.invokes = invokes;
   }
   
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     
     if (!ti.isFirstStepInsn()) {
       InvocationCG cg = new InvocationCG( "INVOKECG", invokes);

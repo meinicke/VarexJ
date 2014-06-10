@@ -30,6 +30,8 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.Iterator;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 
 /**
  * abstraction for the various return instructions
@@ -135,7 +137,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
   
   // -- end attribute accessors --
   
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
 
     if (!ti.isFirstStepInsn()) {
       ti.leave();  // takes care of unlocking before potentially creating a CG
@@ -178,7 +180,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
       setReturnAttr(ti, attr);
     }
 
-    return new One<>(frame.getPC().getNext());
+    return new One<>(frame.getPC().getValue().getNext());
   }
   
   public void accept(InstructionVisitor insVisitor) {

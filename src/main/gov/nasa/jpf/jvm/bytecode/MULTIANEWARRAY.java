@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -60,7 +61,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
     return eiArray.getObjectRef();
   }
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     String compType = Types.getComponentTerminal(type);
 
     // resolve the component class first
@@ -68,7 +69,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
       try {
         ti.resolveReferencedClass(compType);
       } catch(LoadOnJPFRequired lre) {
-        return new One<>(ti.getPC());
+        return ti.getPC();
       }
     }
 

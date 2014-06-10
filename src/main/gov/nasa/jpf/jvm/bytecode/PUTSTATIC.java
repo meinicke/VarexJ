@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -52,7 +53,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
   }
   
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     
     if (!ti.isFirstStepInsn()) { // top half
       FieldInfo fieldInfo;
@@ -60,7 +61,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
       try {
         fieldInfo = getFieldInfo();
       } catch(LoadOnJPFRequired lre) {
-        return new One<>(ti.getPC());
+        return ti.getPC();
       }
       
       if (fieldInfo == null) {
@@ -70,7 +71,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
       ClassInfo ciField = fi.getClassInfo();
       if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ti)) {
         // note - this returns the next insn in the topmost clinit that just got pushed
-        return new One<>(ti.getPC());
+        return ti.getPC();
       }
       
       ElementInfo ei = ciField.getStaticElementInfo();

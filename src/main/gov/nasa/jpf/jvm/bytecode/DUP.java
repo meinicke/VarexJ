@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -32,7 +33,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class DUP extends JVMInstruction {
 
-  public Conditional<Instruction> execute (ThreadInfo th) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo th) {
     StackFrame frame = th.getModifiableTopFrame();
     
     frame.dup();

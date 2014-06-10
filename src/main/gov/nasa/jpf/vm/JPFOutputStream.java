@@ -180,7 +180,7 @@ public class JPFOutputStream extends OutputStream {
     }
     
     ps.print("pc:");
-    ps.print(frame.getPC().getInstructionIndex());
+    ps.print(frame.getPC().getValue().getInstructionIndex());
     
     ps.print(",slots:[");
     frame.printSlots(ps);

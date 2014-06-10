@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;
 import gov.nasa.jpf.vm.ByteArrayFields;
@@ -43,7 +45,7 @@ public class BALOAD extends ArrayLoadInstruction {
       value = ei.getBooleanElement(index) ? 1 : 0;
     }
 
-    frame.push( value);
+    frame.push(FeatureExprFactory.True(), new One<>(value));
   }
 
 

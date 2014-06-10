@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -50,7 +51,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
   }
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     Heap heap = ti.getHeap();
     ClassInfo ci;
 
@@ -58,7 +59,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     try {
       ci = ti.resolveReferencedClass(cname);
     } catch(LoadOnJPFRequired lre) {
-      return new One<>(ti.getPC());
+      return ti.getPC();
     }
 
     if (!ci.isRegistered()){
@@ -68,7 +69,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     // since this is a NEW, we also have to pushClinit
     if (!ci.isInitialized()) {
       if (ci.initializeClass(ti)) {
-        return new One<>(ti.getPC());  // reexecute this instruction once we return from the clinits
+        return ti.getPC();  // reexecute this instruction once we return from the clinits
       }
     }
 

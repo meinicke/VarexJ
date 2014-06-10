@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -47,7 +48,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
     return 0xB7;
   }
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     int argSize = getArgSize();
     int objRef = ti.getCalleeThis( argSize);
     lastObj = objRef;
@@ -60,7 +61,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
     try {
       callee = getInvokedMethod(ti);
     } catch(LoadOnJPFRequired rre) {
-      return new One<>(ti.getPC());
+      return ti.getPC();
     }      
 
     if (callee == null){
@@ -77,7 +78,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 
     setupCallee( ti, callee); // this creates, initializes and pushes the callee StackFrame
 
-    return new One<>(ti.getPC()); // we can't just return the first callee insn if a listener throws an exception
+    return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
   }
 
   /**

@@ -25,6 +25,7 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * base class for double double compare instructions
@@ -32,7 +33,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 public abstract class DoubleCompareInstruction extends JVMInstruction {
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
     double v1 = frame.popDouble();
@@ -40,7 +41,7 @@ public abstract class DoubleCompareInstruction extends JVMInstruction {
     
     int condVal = conditionValue(v1, v2);
     
-    frame.push( condVal);
+    frame.push(ctx, new One<>( condVal));
     
     return new One<>(getNext(ti));
   }

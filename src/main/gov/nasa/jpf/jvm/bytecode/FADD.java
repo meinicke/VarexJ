@@ -25,6 +25,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -33,7 +34,7 @@ import gov.nasa.jpf.vm.Types;
  */
 public class FADD extends JVMInstruction {
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
     float v1 = frame.popFloat();

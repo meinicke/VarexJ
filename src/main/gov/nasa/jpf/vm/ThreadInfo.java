@@ -25,7 +25,11 @@ import gov.nasa.jpf.SystemAttribute;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
+import gov.nasa.jpf.jvm.bytecode.NOP;
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.JPFLogger;
@@ -45,6 +49,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -207,7 +214,7 @@ public class ThreadInfo extends InfoObject
   protected DirectCallStackFrame returnedDirectCall;
 
   /** the next insn to enter (null prior to execution) */
-  protected Instruction nextPc;
+  protected Conditional<Instruction> nextPc;
 
   /**
    * not so nice we cross-couple the NativePeers with ThreadInfo,
@@ -1042,15 +1049,15 @@ public class ThreadInfo extends InfoObject
       return false;
     }
 
-    Instruction pc = getPC();
+    Conditional<Instruction> pc = getPC();
 
     if (pc == null ||
-        !(pc instanceof InvokeInstruction) ||
-        pc instanceof INVOKESTATIC) {
+        !(pc.getValue() instanceof InvokeInstruction) ||
+        pc.getValue() instanceof INVOKESTATIC) {
       return false;
     }
 
-    InvokeInstruction call = (InvokeInstruction) pc;
+    InvokeInstruction call = (InvokeInstruction) pc.getValue();
 
     return getCalleeThis(Types.getArgumentsSize(call.getInvokedMethodSignature()) + 1) == r.getObjectRef();
   }
@@ -1308,7 +1315,7 @@ public class ThreadInfo extends InfoObject
   /**
    * Sets the program counter of the top stack frame.
    */
-  public void setPC (Instruction pc) {
+  public void setPC (Conditional<Instruction> pc) {
     getModifiableTopFrame().setPC(pc);
   }
 
@@ -1319,7 +1326,7 @@ public class ThreadInfo extends InfoObject
   /**
    * Returns the program counter of the top stack frame.
    */
-  public Instruction getPC () {
+  public Conditional<Instruction> getPC () {
     if (top != null) {
       return top.getPC();
     } else {
@@ -1328,7 +1335,7 @@ public class ThreadInfo extends InfoObject
   }
 
   public Instruction getNextPC () {
-    return nextPc;
+    return nextPc == null ? null : nextPc.getValue();
   }
 
 
@@ -1415,8 +1422,8 @@ public class ThreadInfo extends InfoObject
     if (top == null) {
       return false;
     } else {
-      Instruction pc = getPC();
-      return pc != null && pc.getPosition() == position;
+      Conditional<Instruction> pc = getPC();
+      return pc != null && pc.getValue().getPosition() == position;
     }
   }
 
@@ -1424,7 +1431,7 @@ public class ThreadInfo extends InfoObject
     if (top == null) {
       return false;
     } else {
-      Instruction pc = getPC();
+      Instruction pc = getPC().getValue();
       return pc instanceof ReturnInstruction;
     }
   }
@@ -1530,7 +1537,7 @@ public class ThreadInfo extends InfoObject
 
     for (; frame != null; frame = frame.getPrevious()){
       snap[j++] = frame.getMethodInfo().getGlobalId();
-      snap[j++] = frame.getPC().getInstructionIndex();
+      snap[j++] = frame.getPC().getValue().getInstructionIndex();
     }
 
     return snap;
@@ -1759,7 +1766,7 @@ public class ThreadInfo extends InfoObject
   protected void processPendingSUTExceptionRequest (){
     if (pendingSUTExceptionRequest != null){
       // <2do> we could do more specific checks for ClassNotFoundExceptions here
-      nextPc = createAndThrowException( pendingSUTExceptionRequest.getExceptionClassName(), pendingSUTExceptionRequest.getDetails());
+      nextPc = new One<>(createAndThrowException( pendingSUTExceptionRequest.getExceptionClassName(), pendingSUTExceptionRequest.getDetails()));
       pendingSUTExceptionRequest = null;
     }
   }
@@ -1786,7 +1793,7 @@ public class ThreadInfo extends InfoObject
 
     if (!ci.isInitialized()){
       if (ci.initializeClass(this)) {
-        return getPC();
+        return getPC().getValue();
       }
     }
 
@@ -1834,15 +1841,15 @@ public class ThreadInfo extends InfoObject
    * this is the inner interpreter loop of JPF
    */
   protected void executeTransition (SystemState ss) throws JPFException {
-    Instruction pc = getPC();
-    Instruction nextPc = null;
+    Conditional<Instruction> pc = getPC();
+    Conditional<Instruction> nextPc = null;
 
     currentThread = this;
     executedInstructions = 0;
     pendingException = null;
 
     if (isStopped()){
-      pc = throwStopException();
+      pc = new One<>(throwStopException());
       setPC(pc);
     }
     
@@ -1858,13 +1865,12 @@ public class ThreadInfo extends InfoObject
         
       } else {
         if (executedInstructions >= maxTransitionLength){ // try to preempt the current thread
-          if (pc.isBackJump() && (pc != nextPc) && (top != null && !top.isNative())) {
+          if (pc.getValue().isBackJump() && (pc.equals(nextPc)) && (top != null && !top.isNative())) {
             log.info("max transition length exceeded, breaking transition on ", nextPc);
             reschedule("maxTransitionLenth");
             break;
           }
         }
-        
         pc = nextPc;
       }
     }
@@ -1873,8 +1879,8 @@ public class ThreadInfo extends InfoObject
   /**
    * Execute next instruction.
    */
-  public Instruction executeInstruction () {
-    Instruction pc = getPC();
+  public Conditional<Instruction> executeInstruction () {
+    Conditional<Instruction> pc = getPC();
     SystemState ss = vm.getSystemState();
 
     // the default, might be changed by the insn depending on if it's the first
@@ -1887,7 +1893,7 @@ public class ThreadInfo extends InfoObject
     // note that we don't reset pendingSUTExceptionRequest since it could be set outside executeInstruction()
     
     if (log.isLoggable(Level.FINER)) {
-      log.fine( pc.getMethodInfo().getFullName() + " " + pc.getPosition() + " : " + pc);
+      log.fine( pc.getValue().getMethodInfo().getFullName() + " " + pc.getValue().getPosition() + " : " + pc);
     }
 
     // this is the pre-execution notification, during which a listener can perform
@@ -1897,15 +1903,45 @@ public class ThreadInfo extends InfoObject
     if (!skipInstruction) {
         // enter the next bytecode
         try {
-        	System.out.println("EXECUTE: "+pc.getMethodInfo().getFullName() + " " + pc.getPosition() + " : " + pc);
-          Conditional<Instruction> res = pc.execute(this);
-          if (res != null) {
-        	  nextPc = res.getValue();
-          } else {
-        	  nextPc = null;
-          }
+        	
+//        	System.out.println("EXECUTE: "+pc.getValue().getMethodInfo().getFullName() + " " + pc.getValue().getPosition() + " : " + pc);
+        	
+//        	pc.getValue().getPosition()
+      	  Conditional<Integer> positions = pc.map(new Function<Instruction, Integer>() {
+      		public Integer apply(Instruction x) {
+      			if (x != null) {
+      				return x.getPosition();
+      			} 
+      			return Integer.MAX_VALUE;
+      		}
+      	  });
+      	  int min = Integer.MAX_VALUE;
+      	  for (Integer i : positions.toList()) {
+      		  if (i < min) {
+      			  min = i;
+      		  }
+      	  }
+      	  final int minf = min;
+      	  final ThreadInfo ti = this;
+      	  nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+
+      		@Override
+      		public Conditional<Instruction> apply(FeatureExpr f, Instruction x) {
+      			if (x != null && x.getPosition() == minf) {
+//      				System.out.println("exe: " + x + " if " + f);
+      				return x.execute(f, ti);
+      			}
+      			return new One<>(x);
+      		}
+      		  
+      	  });
+      	  if (nextPc != null) {
+      		  nextPc.simplify();
+      	  }
+      		
+//          nextPc = pc.getValue().execute(this);
         } catch (ClassInfoException cie) {
-          nextPc = this.createAndThrowException(cie.getExceptionClass(), cie.getMessage());
+          nextPc = new One<>(this.createAndThrowException(cie.getExceptionClass(), cie.getMessage()));
         }
     }
 
@@ -1913,7 +1949,7 @@ public class ThreadInfo extends InfoObject
     executedInstructions++;
     
     if (logInstruction) {
-      ss.recordExecutionStep(pc);
+      ss.recordExecutionStep(pc.getValue(true));
     }
 
     // here we have our post exec bytecode exec observation point
@@ -1923,7 +1959,15 @@ public class ThreadInfo extends InfoObject
     vm.getSearch().checkAndResetProbeRequest();
     
     // clean up whatever might have been stored by enter
-    pc.cleanupTransients();
+    pc.map(new Function<Instruction, Object>() {
+
+		@Override
+		public Object apply(Instruction x) {
+			x.cleanupTransients();
+			return null;
+		}
+    	
+    });
 
     if (pendingSUTExceptionRequest != null){
       processPendingSUTExceptionRequest();
@@ -1947,7 +1991,7 @@ public class ThreadInfo extends InfoObject
    * record it in the path
    */
   public Instruction executeInstructionHidden () {
-    Instruction pc = getPC();
+    Instruction pc = getPC().getValue();
     SystemState ss = vm.getSystemState();
     KernelState ks = vm.getKernelState();
 
@@ -1958,9 +2002,9 @@ public class ThreadInfo extends InfoObject
     }
 
     try {
-        nextPc = pc.execute(this).getValue();
+        nextPc = pc.execute(FeatureExprFactory.True(), this);
       } catch (ClassInfoException cie) {
-        nextPc = this.createAndThrowException(cie.getExceptionClass(), cie.getMessage());
+        nextPc = new One<>(this.createAndThrowException(cie.getExceptionClass(), cie.getMessage()));
       }
 
     // since this is part of the inner execution loop, it is a convenient place  to check probe notifications
@@ -1971,7 +2015,7 @@ public class ThreadInfo extends InfoObject
       setPC(nextPc);
     }
 
-    return nextPc;
+    return nextPc.getValue();
   }
 
   /**
@@ -1998,7 +2042,7 @@ public class ThreadInfo extends InfoObject
     skipInstruction = true;
     
     //assert nextInsn != null;
-    nextPc = nextInsn;
+    nextPc = new One<>(nextInsn);
   }
 
   /**
@@ -2008,7 +2052,7 @@ public class ThreadInfo extends InfoObject
    */
   @Deprecated
   public void skipInstruction(){
-    skipInstruction(getPC().getNext());
+    skipInstruction(getPC().getValue().getNext());
   }
 
   public boolean isInstructionSkipped() {
@@ -2032,12 +2076,12 @@ public class ThreadInfo extends InfoObject
       // this is pre-execution, if we don't skip the next insn.execute() is going
       // to override what we set here
       skipInstruction = true;
-      nextPc = insn;
+      nextPc = new One<>(insn);
       return true;
       
     } else {
       if (top != null && nextPc != top.getPC()){ // this needs to be re-executed
-        nextPc = insn;   
+        nextPc = new One<>(insn);   
         return true;
       }
     }
@@ -2059,13 +2103,13 @@ public class ThreadInfo extends InfoObject
 
     pushFrame(frame);
     int    depth = countStackFrames();
-    Instruction pc = frame.getPC();
+    Instruction pc = frame.getPC().getValue();
     SystemState ss = vm.getSystemState();
 
     ss.incAtomic(); // to shut off avoidable context switches (MONITOR_ENTER and wait() can still block)
 
     while (depth <= countStackFrames()) {
-      Instruction nextPC = executeInstruction();
+      Instruction nextPC = executeInstruction().getValue();
 
       if (ss.getNextChoiceGenerator() != null) {
         // BANG - we can't have CG's here
@@ -2105,7 +2149,7 @@ public class ThreadInfo extends InfoObject
     pushFrame(frame);
     
     int depth = countStackFrames(); // this includes the DirectCallStackFrame
-    Instruction pc = frame.getPC();
+    Instruction pc = frame.getPC().getValue();
 
     vm.getSystemState().incAtomic(); // to shut off avoidable context switches (MONITOR_ENTER and wait() can still block)
 
@@ -2718,7 +2762,7 @@ public class ThreadInfo extends InfoObject
     int xRef = ei.getReferenceField("stopException");
     ei.setReferenceField("stopException", MJIEnv.NULL);
 
-    Instruction insn = getPC();
+    Instruction insn = getPC().getValue();
     if (insn instanceof EXECUTENATIVE){
       // we only get here if there was a CG in a native method and we might
       // have to reacquire a lock to go on
@@ -2852,7 +2896,7 @@ public class ThreadInfo extends InfoObject
       if ("java.lang.ThreadDeath".equals(exceptionName)) { // gracefully shut down
         unwindToFirstFrame();
         pendingException = null;
-        return top.getPC().getNext(); // the final DIRECTCALLRETURN
+        return top.getPC().getValue().getNext(); // the final DIRECTCALLRETURN
 
       } else { // we have a NoUncaughtPropertyViolation
         //NoUncaughtExceptionsProperty.setExceptionInfo(pendingException);
@@ -2872,7 +2916,7 @@ public class ThreadInfo extends InfoObject
       // jump to the exception handler and set pc so that listeners can see it
       int handlerOffset = matchingHandler.getHandler();
       insn = handlerFrame.getMethodInfo().getInstructionAt(handlerOffset);
-      handlerFrame.setPC(insn);
+      handlerFrame.setPC(new One<>(insn));
 
       // notify before we reset the pendingException
       vm.notifyExceptionHandled(this);
@@ -3030,7 +3074,7 @@ public class ThreadInfo extends InfoObject
     frame.setFrameAttr( uchContext);
     
     pushFrame(frame);
-    return frame.getPC();
+    return frame.getPC().getValue();
   }
   
   protected StackFrame popUncaughtHandlerFrame(){    
@@ -3302,7 +3346,7 @@ public class ThreadInfo extends InfoObject
     }
 
     for(; frame != null; frame = frame.getPrevious()){
-      if (frame.getPC() == insn){
+      if (frame.getPC().getValue() == insn){
         return frame;
       }
     }
@@ -3377,7 +3421,7 @@ public class ThreadInfo extends InfoObject
     
     // if we are timedout, the top pc has to be either on a native Object.wait() or Unsafe.park()
     if (isTimedOut()){
-      Instruction insn = top.getPC();
+      Instruction insn = top.getPC().getValue();
       checkAssertion( insn instanceof EXECUTENATIVE, "thread timedout outside of native method");
       
       // this is a bit dangerous in case we introduce new timeout points

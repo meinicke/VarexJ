@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -43,7 +45,7 @@ public class IRETURN extends ReturnInstruction {
   }
   
   protected void pushReturnValue (StackFrame ti) {
-    ti.push(ret);
+    ti.push(FeatureExprFactory.True(), new One<>(ret));
   }
   
   public int getReturnValue () {

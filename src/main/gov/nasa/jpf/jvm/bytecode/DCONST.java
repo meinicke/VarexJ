@@ -24,6 +24,7 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -40,7 +41,7 @@ public class DCONST extends JVMInstruction {
   }
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushDouble(value);
 

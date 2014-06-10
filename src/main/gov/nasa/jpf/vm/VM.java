@@ -24,6 +24,7 @@ import gov.nasa.jpf.JPFConfigException;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.JPFListenerException;
 import gov.nasa.jpf.jvm.bytecode.FieldInstruction;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.ClassFile;
 import gov.nasa.jpf.vm.FinalizerThreadInfo;
 import gov.nasa.jpf.search.Search;
@@ -715,7 +716,7 @@ public abstract class VM {
   protected void notifyChoiceGeneratorRegistered (ChoiceGenerator<?>cg, ThreadInfo ti) {
     try {
       for (int i = 0; i < listeners.length; i++) {
-        listeners[i].choiceGeneratorRegistered(this, cg, ti, ti.getPC());
+        listeners[i].choiceGeneratorRegistered(this, cg, ti, ti.getPC() == null ? null : ti.getPC().getValue());
       }
     } catch (UncaughtException x) {
       throw x;
@@ -768,10 +769,10 @@ public abstract class VM {
     }
   }
 
-  protected void notifyExecuteInstruction (ThreadInfo ti, Instruction insn) {
+  protected void notifyExecuteInstruction (ThreadInfo ti, Conditional<Instruction> pc) {
     try {
       for (int i = 0; i < listeners.length; i++) {
-        listeners[i].executeInstruction(this, ti, insn);
+        listeners[i].executeInstruction(this, ti, pc == null ? null : pc.getValue(true));
       }
     } catch (UncaughtException x) {
       throw x;
@@ -782,11 +783,11 @@ public abstract class VM {
     }
   }
 
-  protected void notifyInstructionExecuted (ThreadInfo ti, Instruction insn, Instruction nextInsn) {
+  protected void notifyInstructionExecuted (ThreadInfo ti, Conditional<Instruction> insn, Conditional<Instruction> nextPc) {
     try {
       //listener.instructionExecuted(this);
       for (int i = 0; i < listeners.length; i++) {
-        listeners[i].instructionExecuted(this, ti, nextInsn, insn);
+        listeners[i].instructionExecuted(this, ti, nextPc == null ? null : nextPc.getValue(true), insn == null ? null : insn.getValue(true));
       }
     } catch (UncaughtException x) {
       throw x;
@@ -1159,7 +1160,7 @@ public abstract class VM {
   // VMListener acquisition
   public Instruction getInstruction () {
     ThreadInfo ti = ThreadInfo.getCurrentThread();
-    return ti.getPC();
+    return ti.getPC().getValue();
   }
 
   /**

@@ -29,7 +29,8 @@ public class IdleLoopTest extends TestJPF {
 
   static final String LISTENER = "+listener=.listener.IdleFilter";
 
-  @Test public void testBreak () {
+  @Test 
+  public void testBreak () {
     if (verifyNoPropertyViolation(LISTENER, "+idle.action=break", 
                                   "+log.warning=gov.nasa.jpf.listener.IdleFilter",
                                   "+vm.max_transition_length=MAX")) {
@@ -47,7 +48,8 @@ public class IdleLoopTest extends TestJPF {
     }
   }
 
-  @Test public void testPrune () {
+  @Test
+  public void testPrune () {
     if (verifyNoPropertyViolation(LISTENER, "+idle.action=prune",
                                   "+log.warning=gov.nasa.jpf.listener.IdleFilter",
                                   "+vm.max_transition_length=MAX")) {

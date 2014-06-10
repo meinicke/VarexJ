@@ -1328,7 +1328,10 @@ public abstract class ElementInfo implements Cloneable {
   }
   public int getIntElement(int idx) {
     checkArray(idx);
-    return fields.getIntValue(idx).getValue();
+    Conditional<Integer> res = fields.getIntValue(idx);
+    System.out.println(res);
+    
+    return res == null ? 0 : res.getValue();
   }
   public long getLongElement(int idx) {
     checkArray(idx);

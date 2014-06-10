@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -35,7 +36,7 @@ public class IFNONNULL extends IfInstruction {
   }
 
 
-  public Conditional<Boolean> popConditionValue (StackFrame frame) {
+  public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
     return new One(frame.pop().getValue().intValue() != MJIEnv.NULL);
   }
 

@@ -324,7 +324,7 @@ public class Perturbator extends ListenerAdapter {
     } else {
       StackFrame caller = ti.getCallerStackFrame();
       if (caller != null) {
-        Instruction invokeInsn = caller.getPC();
+        Instruction invokeInsn = caller.getPC().getValue();
         return p.sref.equals(invokeInsn.getFilePos());
       } else {
         return false;

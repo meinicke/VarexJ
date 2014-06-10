@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * Set field in object
@@ -50,7 +51,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
   }
     
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
     int objRef = frame.peek( size);
     lastThis = objRef;

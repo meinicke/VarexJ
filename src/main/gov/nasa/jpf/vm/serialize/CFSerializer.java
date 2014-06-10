@@ -116,7 +116,7 @@ public class CFSerializer extends FilteringSerializer {
   protected void serializeFrame(StackFrame frame){
     buf.add(frame.getMethodInfo().getGlobalId());
 
-    Instruction pc = frame.getPC();
+    Instruction pc = frame.getPC().getValue();
     buf.add( pc != null ? pc.getInstructionIndex() : -1);
 
     int len = frame.getTopPos()+1;

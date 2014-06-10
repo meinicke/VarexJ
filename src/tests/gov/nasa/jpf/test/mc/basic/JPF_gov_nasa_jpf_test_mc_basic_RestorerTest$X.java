@@ -58,7 +58,7 @@ public class JPF_gov_nasa_jpf_test_mc_basic_RestorerTest$X extends NativePeer {
   public void $init (MJIEnv env, int objref){
     ThreadInfo ti = env.getThreadInfo();
     StackFrame caller = ti.getCallerStackFrame();
-    Instruction insn = caller.getPC();
+    Instruction insn = caller.getPC().getValue();
         
     InsnExecCount a = insn.getAttr(InsnExecCount.class);
     if (a == null){

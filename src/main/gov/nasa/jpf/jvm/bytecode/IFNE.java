@@ -18,7 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.StackFrame;
 
@@ -34,8 +36,13 @@ public class IFNE extends IfInstruction {
   }
 
 
-  public Conditional<Boolean> popConditionValue (StackFrame frame) {
-    return new One(frame.pop().getValue().intValue() != 0);
+  public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
+	  return frame.pop().map(new Function<Integer, Boolean>() {
+			public Boolean apply(Integer x) {
+				return x != 0;
+			}});
+	  
+//	  return new One(frame.pop().getValue().intValue() != 0);
   }
 
   public int getByteCode () {

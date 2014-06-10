@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.IntTable;
 import gov.nasa.jpf.vm.GenericHeap.GenericHeapMemento;

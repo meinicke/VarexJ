@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
@@ -31,6 +29,8 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * abstraction for all comparison instructions
@@ -67,7 +67,7 @@ public abstract class IfInstruction extends JVMInstruction {
    * (not ideal to have this public, but some listeners might need it for
    * skipping the insn, plus we require it for subclass factorization)
    */
-  public abstract Conditional<Boolean> popConditionValue(StackFrame frame);
+  public abstract Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame);
   
   public Instruction getTarget() {
     if (target == null) {
@@ -76,10 +76,10 @@ public abstract class IfInstruction extends JVMInstruction {
     return target;
   }
   
-  public Conditional<Instruction> execute (final ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, final ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    conditionValue = popConditionValue(frame);
+    conditionValue = popConditionValue(ctx, frame);
     
 //    v1.mapr(v1 => v2.mapr(v2 =>
 //    if (v2 >= v1)
@@ -119,7 +119,7 @@ public abstract class IfInstruction extends JVMInstruction {
       } else {
         StackFrame frame = ti.getModifiableTopFrame();
         // some listener did override the CG, fallback to normal operation
-        conditionValue = popConditionValue(frame);
+        conditionValue = popConditionValue(FeatureExprFactory.True(), frame);
         if (conditionValue.getValue()) {
           return getTarget();
         } else {
@@ -132,9 +132,9 @@ public abstract class IfInstruction extends JVMInstruction {
       assert (cg != null) : "no BooleanChoiceGenerator";
       
       StackFrame frame = ti.getModifiableTopFrame();
-      popConditionValue(frame); // we are not interested in concrete values
+      popConditionValue(FeatureExprFactory.True(), frame); // we are not interested in concrete values
       
-      conditionValue = new One(cg.getNextChoice());
+      conditionValue = new One<>(cg.getNextChoice());
       
       if (conditionValue.getValue()) {
         return getTarget();

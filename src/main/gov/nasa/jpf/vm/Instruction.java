@@ -18,7 +18,14 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.List;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Source;
 
@@ -170,7 +177,7 @@ public abstract class Instruction implements Cloneable {
    * enter() in the listener. It would be better if we factor this
    * 'prepareExecution' out of enter()
    */
-  public abstract Conditional<Instruction> execute(ThreadInfo ti);
+  public abstract Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti);
 
   public String toString() {
     return getMnemonic();
@@ -317,7 +324,20 @@ public abstract class Instruction implements Cloneable {
    * as ThreadInfo state (TERMINATED), rather than purged stacks
    */
   public Instruction getNext (ThreadInfo ti) {
-    return ti.getPC().getNext();
+	  if (ti.getPC() instanceof One) {
+		  return ti.getPC().getValue().getNext();
+	  }
+	  int min = Integer.MAX_VALUE;
+  	  Instruction next = null;
+  	  for (Instruction i : ti.getPC().toList()) {
+  		  if (i.getPosition() < min) {
+  			  min = i.getPosition();
+  			  next = i;
+  		  }
+  	  }
+  	  
+  	  return next.getNext();
+//    return ti.getPC().getValue().getNext();
   }
 
   

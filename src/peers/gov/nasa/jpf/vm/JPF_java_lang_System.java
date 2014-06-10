@@ -70,7 +70,7 @@ public class JPF_java_lang_System extends NativePeer {
   
   int createPrintStream (MJIEnv env, int clsObjRef){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC();
+    Instruction insn = ti.getPC().getValue();
     StackFrame frame = ti.getTopFrame();
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("gov.nasa.jpf.ConsoleOutputStream");
 

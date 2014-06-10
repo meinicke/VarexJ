@@ -45,7 +45,7 @@ public class JPF_gov_nasa_jpf_SerializationConstructor extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // re-execution, 
-      int objRef = frame.getLocalVariable(0); // that's the object ref we stored in (1)
+      int objRef = frame.getLocalVariable(0).getValue(); // that's the object ref we stored in (1)
       return objRef;
     }
   }

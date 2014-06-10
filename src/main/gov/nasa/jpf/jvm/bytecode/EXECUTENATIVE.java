@@ -29,6 +29,8 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.lang.reflect.Method;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * this is a synthetic instruction to (re-)execute native methods
  *
@@ -65,7 +67,7 @@ public class EXECUTENATIVE extends JVMInstruction {
 	  insVisitor.visit(this);
   }
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
 
     // we don't have to enter/leave or push/pop a frame, that's all done
     // in NativeMethodInfo.execute()

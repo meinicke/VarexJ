@@ -58,7 +58,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
   protected int    size;  // is it a word or a double word field
   protected boolean isReferenceField;
 
-  protected Conditional<Integer> lastValue;
+  protected Conditional<?> lastValue;
   
   
    public static void init (Config config) {
@@ -93,7 +93,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
    * only defined in instructionExecuted() notification context
    */
   public long getLastValue() {
-    return lastValue.getValue();
+    return (long)lastValue.getValue();
   }
 
 
@@ -175,7 +175,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
   protected Instruction put2 (ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
     Object attr = frame.getLongOperandAttr();
     long val = frame.peekLong();
-    lastValue = new One(val);
+    lastValue = new One<>(val);
 
     if ((eiFieldOwner.get2SlotField(fi) != val) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
       eiFieldOwner = eiFieldOwner.getModifiableInstance();

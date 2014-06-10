@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -44,7 +45,7 @@ public class WIDE extends JVMInstruction {
   }
 
   @Override
-  public Conditional<Instruction> execute(ThreadInfo ti) {
+  public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
     // nothing, BCEL doesn't even pass this on;
     return new One<>(getNext(ti));
   }

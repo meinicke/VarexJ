@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -37,7 +38,7 @@ import gov.nasa.jpf.vm.VM;
 public class MONITORENTER extends LockInstruction {
 
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
 
     int objref = frame.peek().getValue();      // Don't pop yet before we know we really enter

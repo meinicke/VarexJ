@@ -26,6 +26,8 @@ import gov.nasa.jpf.vm.NativeStackFrame;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * synthetic return instruction for native method invocations, so that
@@ -41,7 +43,7 @@ public class NATIVERETURN extends ReturnInstruction {
   // this is more simple than a normal ReturnInstruction because NativeMethodInfos
   // are not synchronized, and NativeStackFrames are never the first frame in a thread
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     if (!ti.isFirstStepInsn()) {
       ti.leave();  // takes care of unlocking before potentially creating a CG
       // NativeMethodInfo is never synchronized, so no thread CG here
@@ -62,7 +64,7 @@ public class NATIVERETURN extends ReturnInstruction {
       setReturnAttr(ti, retAttr);
     }
 
-    return new One<>(frame.getPC().getNext());
+    return new One<>(frame.getPC().getValue().getNext());
   }
 
   @Override
@@ -140,23 +142,23 @@ public class NATIVERETURN extends ReturnInstruction {
       switch (retType) {
       case Types.T_BOOLEAN:
         ival = Types.booleanToInt(((Boolean) ret).booleanValue());
-        fr.push(ival);
+        fr.push(FeatureExprFactory.True(), new One<>(ival));
         break;
 
       case Types.T_BYTE:
-        fr.push(((Byte) ret).byteValue());
+        fr.push(FeatureExprFactory.True(), new One<>((int)((Byte) ret).byteValue()));
         break;
 
       case Types.T_CHAR:
-        fr.push(((Character) ret).charValue());
+        fr.push(FeatureExprFactory.True(), new One<>((int)((Character) ret).charValue()));
         break;
 
       case Types.T_SHORT:
-        fr.push(((Short) ret).shortValue());
+        fr.push(FeatureExprFactory.True(), new One<>((int)((Short) ret).shortValue()));
         break;
 
       case Types.T_INT:
-        fr.push(((Integer) ret).intValue());
+        fr.push(FeatureExprFactory.True(), new One<>(((Integer) ret).intValue()));
         break;
 
       case Types.T_LONG:
@@ -166,7 +168,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
       case Types.T_FLOAT:
         ival = Types.floatToInt(((Float) ret).floatValue());
-        fr.push(ival);
+        fr.push(FeatureExprFactory.True(), new One<>(ival));
         break;
 
       case Types.T_DOUBLE:

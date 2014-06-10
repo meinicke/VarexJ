@@ -18,9 +18,11 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Load short from array
@@ -31,7 +33,7 @@ public class SALOAD extends ArrayLoadInstruction {
   protected void push (StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(index);
     short value = ei.getShortElement(index);
-    frame.push( value);
+    frame.push(FeatureExprFactory.True(), new One<>((int)value));
   }
 
 

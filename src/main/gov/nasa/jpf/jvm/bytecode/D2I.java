@@ -24,6 +24,7 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -32,11 +33,11 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class D2I extends JVMInstruction {
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
     double v = frame.popDouble();
-    frame.push( (int)v);
+    frame.push(ctx, new One<>( (int)v));
     
     return new One<>(getNext(ti));
   }

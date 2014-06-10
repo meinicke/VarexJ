@@ -42,7 +42,7 @@ public class IntArrayFields extends ArrayFields {
 	  int[] array = new int[values.length];
 	  int i = 0;
 	  for (Conditional<Integer> v : values) {
-		  array[i++] = v.getValue();
+		  array[i++] = v == null ? 0 : v.getValue();
 	  }
 	  return array;
 	  

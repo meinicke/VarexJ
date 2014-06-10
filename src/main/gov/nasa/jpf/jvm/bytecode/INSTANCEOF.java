@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -44,7 +45,7 @@ public class INSTANCEOF extends JVMInstruction {
     type = Types.getTypeSignature(typeName, false);
   }
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     if(Types.isReferenceSignature(type)) {
       String t;
       if(Types.isArray(type)) {
@@ -58,7 +59,7 @@ public class INSTANCEOF extends JVMInstruction {
       try {
         ti.resolveReferencedClass(t);
       } catch(LoadOnJPFRequired lre) {
-        return new One<>(ti.getPC());
+        return ti.getPC();
       }
     }
 
@@ -66,11 +67,11 @@ public class INSTANCEOF extends JVMInstruction {
     int objref = frame.pop().getValue();
 
     if (objref == MJIEnv.NULL) {
-      frame.push(0);
+      frame.push(ctx, new One<>(0));
     } else if (ti.getElementInfo(objref).instanceOf(type)) {
-      frame.push(1);
+      frame.push(ctx, new One<>(1));
     } else {
-      frame.push(0);
+      frame.push(ctx, new One<>(0));
     }
 
     return new One<>(getNext(ti));

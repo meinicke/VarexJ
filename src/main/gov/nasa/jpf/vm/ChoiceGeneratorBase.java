@@ -159,7 +159,7 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
 
   public void setContext(ThreadInfo tiCreator) {
     ti = tiCreator;
-    insn = tiCreator.getPC();
+    insn = tiCreator.getPC() == null ? null : tiCreator.getPC().getValue();
   }
 
   public String getSourceLocation() {

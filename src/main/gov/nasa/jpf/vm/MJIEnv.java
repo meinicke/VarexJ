@@ -1495,7 +1495,7 @@ public class MJIEnv {
   }
 
   public Instruction getInstruction () {
-    return ti.getPC();
+    return ti.getPC().getValue();
   }
 
   /**

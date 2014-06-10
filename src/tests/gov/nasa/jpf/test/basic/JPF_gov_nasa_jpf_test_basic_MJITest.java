@@ -185,7 +185,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       // this shows how to get information back from the JPF roundtrip into
       // the native method
       int r = frame.getResult(); // the return value of the direct call above
-      int i = frame.getLocalVariable(0);
+      int i = frame.getLocalVariable(0).getValue();
 
       if (i < 3) { // repeat the round trip
         // we have to reset so that the PC is re-initialized

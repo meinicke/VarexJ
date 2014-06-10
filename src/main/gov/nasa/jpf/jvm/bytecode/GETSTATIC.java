@@ -29,6 +29,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -52,14 +53,14 @@ public class GETSTATIC extends StaticFieldInstruction {
   }
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     ClassInfo ciField;
     FieldInfo fieldInfo;
     
     try {
       fieldInfo = getFieldInfo();
     } catch(LoadOnJPFRequired lre) {
-      return new One<>(ti.getPC());
+      return ti.getPC();
     }
     
     if (fieldInfo == null) {
@@ -72,7 +73,7 @@ public class GETSTATIC extends StaticFieldInstruction {
     
     if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ti)) {
       // note - this returns the next insn in the topmost clinit that just got pushed
-      return new One<>(ti.getPC());
+      return ti.getPC();
     }
 
     ElementInfo ei = ciField.getStaticElementInfo();
@@ -98,7 +99,7 @@ public class GETSTATIC extends StaticFieldInstruction {
       if (fieldInfo.isReference()) {
         frame.pushRef(ival.getValue());
       } else {
-        frame.push(ival);
+        frame.push(ctx, ival);
       }
       
       if (attr != null) {

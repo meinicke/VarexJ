@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * Exit monitor for object 
@@ -34,7 +35,7 @@ import gov.nasa.jpf.vm.VM;
  */
 public class MONITOREXIT extends LockInstruction {
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
     int objref = frame.peek().getValue();

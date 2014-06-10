@@ -29,6 +29,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * common root class for LOOKUPSWITCH and TABLESWITCH insns
@@ -73,7 +74,7 @@ public abstract class SwitchInstruction extends JVMInstruction {
     return mi.getInstructionAt(target);
   }
   
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     // this can be overridden by subclasses, so we have to delegate the conditional execution
     // to avoid getting recursive in executeAllBranches()
     return new One<>(executeConditional(ti));

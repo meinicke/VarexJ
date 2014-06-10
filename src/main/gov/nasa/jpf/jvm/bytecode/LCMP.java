@@ -24,6 +24,7 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -33,7 +34,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 public class LCMP extends JVMInstruction {
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
     long v1 = frame.popLong();
@@ -41,7 +42,7 @@ public class LCMP extends JVMInstruction {
     
     int condVal = conditionValue( v1, v2);
     
-    frame.push(condVal);
+    frame.push(ctx, new One<>(condVal));
 
     return new One<>(getNext(ti));
   }

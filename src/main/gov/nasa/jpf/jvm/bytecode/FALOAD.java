@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -31,7 +33,7 @@ public class FALOAD extends ArrayLoadInstruction {
   protected void push (StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(index);
     float value = ei.getFloatElement(index);
-    frame.push( Float.floatToIntBits(value));
+    frame.push(FeatureExprFactory.True(), new One<>( Float.floatToIntBits(value)));
   }
 
   public int getByteCode () {

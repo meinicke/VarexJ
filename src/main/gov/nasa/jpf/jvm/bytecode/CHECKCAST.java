@@ -29,6 +29,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -48,7 +49,7 @@ public class CHECKCAST extends JVMInstruction {
     return type;
   }
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
     int objref = frame.peek().getValue();
 
@@ -71,7 +72,7 @@ public class CHECKCAST extends JVMInstruction {
         try {
           ti.resolveReferencedClass(t);
         } catch(LoadOnJPFRequired lre) {
-          return new One<>(ti.getPC());
+          return ti.getPC();
         }
       }
 

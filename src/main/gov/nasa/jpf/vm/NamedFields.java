@@ -119,27 +119,27 @@ public class NamedFields extends Fields {
   //--- the field modifier methods (both instance and static)
 
   public void setReferenceValue (int index, int newValue) {
-    values[index] = new One(newValue);
+    values[index] = new One<>(newValue);
   }
 
   public void setBooleanValue (int index, boolean newValue) {
-    values[index] = new One(newValue ? 1 : 0);
+    values[index] = new One<>(newValue ? 1 : 0);
   }
 
   public void setByteValue (int index, byte newValue) {
-    values[index] = new One(newValue);
+    values[index] = new One<>((int)newValue);
   }
 
   public void setCharValue (int index, char newValue) {
-    values[index] = new One((int)newValue);
+    values[index] = new One<>((int)newValue);
   }
 
   public void setShortValue (int index, short newValue) {
-    values[index] = new One(newValue);
+    values[index] = new One<>((int)newValue);
   }
 
   public void setFloatValue (int index, float newValue) {
-    values[index] = new One(Types.floatToInt(newValue));
+    values[index] = new One<>(Types.floatToInt(newValue));
   }
 
   public void setIntValue (int index, Conditional<Integer> newValue) {
@@ -147,13 +147,13 @@ public class NamedFields extends Fields {
   }
 
   public void setLongValue (int index, long newValue) {
-		values[index++] = new One(Types.hiLong(newValue));
-    values[index] = new One(Types.loLong(newValue));
+		values[index++] = new One<>(Types.hiLong(newValue));
+    values[index] = new One<>(Types.loLong(newValue));
   }
 
   public void setDoubleValue (int index, double newValue) {
-    values[index++] = new One(Types.hiDouble(newValue));
-    values[index] = new One(Types.loDouble(newValue));
+    values[index++] = new One<>(Types.hiDouble(newValue));
+    values[index] = new One<>(Types.loDouble(newValue));
   }
 
 

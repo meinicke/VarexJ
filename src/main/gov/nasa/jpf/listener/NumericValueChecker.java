@@ -143,7 +143,7 @@ public class NumericValueChecker extends PropertyListenerAdapter {
           int pc = insn.getPosition()+1; // the scope would begin on the next insn, we are still at the xSTORE
           LocalVarInfo lvar = vc.getMatch(mi, pc, slotIdx);
           if (lvar != null) {
-            long v = lvar.getSlotSize() == 1 ? frame.getLocalVariable(slotIdx) : frame.getLongLocalVariable(slotIdx);
+            long v = lvar.getSlotSize() == 1 ? frame.getLocalVariable(slotIdx).getValue() : frame.getLongLocalVariable(slotIdx);
             String errorCond = lvar.isFloatingPoint()
                     ? vc.check(Double.longBitsToDouble(v)) : vc.check(v);
 

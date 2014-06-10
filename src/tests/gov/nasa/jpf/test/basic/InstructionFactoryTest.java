@@ -29,6 +29,8 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * basic test for InstructionFactories
  */
@@ -40,7 +42,7 @@ public class InstructionFactoryTest extends TestJPF {
    */
   public static class DADD extends gov.nasa.jpf.jvm.bytecode.DADD {
     @Override
-    public Conditional<Instruction> execute (ThreadInfo ti) {
+    public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
       StackFrame frame = ti.getModifiableTopFrame();
       
       double v1 = frame.popDouble();

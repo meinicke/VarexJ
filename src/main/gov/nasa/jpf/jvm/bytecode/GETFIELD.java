@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -49,7 +50,7 @@ public class GETFIELD extends InstanceFieldInstruction {
   }
   
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
     int objRef = frame.peek().getValue(); // don't pop yet, we might re-enter
@@ -80,13 +81,13 @@ public class GETFIELD extends InstanceFieldInstruction {
     // We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
     if (fi.getStorageSize() == 1) { // 1 slotter
       int ival = ei.get1SlotField(fi).getValue();
-      lastValue = new One(ival);
+      lastValue = new One<>(ival);
       
       if (fi.isReference()){
         frame.pushRef(ival);
         
       } else {
-        frame.push(ival);
+        frame.push(ctx, new One<>(ival));
       }
       
       if (attr != null) {

@@ -80,7 +80,7 @@ public class PreciseAllocationContext implements AllocationContext {
 
     int i=0;
     for (StackFrame f = ti.getTopFrame(); f != null; f = f.getPrevious()){
-      Instruction insn = f.getPC();
+      Instruction insn = f.getPC().getValue();
       cc[i++] = insn;
       h = OATHash.hashMixin(h, insn.hashCode());
     }

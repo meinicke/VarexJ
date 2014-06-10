@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -67,7 +68,7 @@ public class LDC extends JVMInstruction {
 
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
     switch (type){
@@ -80,7 +81,7 @@ public class LDC extends JVMInstruction {
 
       case INT:
       case FLOAT:
-        frame.push(value);
+        frame.push(ctx, new One<>(value));
         break;
 
       case CLASS:
@@ -89,7 +90,7 @@ public class LDC extends JVMInstruction {
         try {
           ci = ti.resolveReferencedClass(string);
         } catch(LoadOnJPFRequired lre) {
-          return new One<>(frame.getPC());
+          return frame.getPC();
         }
 
         // LDC doesn't cause a <clinit> - we only register all required classes

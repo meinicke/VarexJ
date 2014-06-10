@@ -117,7 +117,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // reflection call returned
-      int objRef = frame.getLocalVariable(0); // that's the object ref we stored in (1)
+      int objRef = frame.getLocalVariable(0).getValue(); // that's the object ref we stored in (1)
       return objRef;
     }
   }

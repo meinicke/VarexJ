@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -40,7 +41,7 @@ public class GOTO extends JVMInstruction {
     this.targetPosition = targetPosition;
   }
 
-  public Conditional<Instruction> execute (ThreadInfo th) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo th) {
     return new One<>(getTarget());
   }
 

@@ -19,11 +19,14 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -41,15 +44,19 @@ public class IINC extends JVMInstruction {
 	}
 
 	@Override
-	public Conditional<Instruction> execute (ThreadInfo ti) {
+	public Conditional<Instruction> execute (final FeatureExpr ctx,ThreadInfo ti) {
 	  StackFrame frame = ti.getModifiableTopFrame();
 	  
-	  int v = frame.getLocalVariable(index);
-	  v += increment;
+	  Conditional<Integer> v = frame.getLocalVariable(index);
+	  v = v.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		public Conditional<Integer> apply(FeatureExpr x, Integer value) {
+			return new Choice<>(x.and(ctx), new One<>(value + increment), new One<>(value));
+		}
+	  }).simplify();
 	  
 	  frame.setLocalVariable(index, v, false);
-
-		return new One<>(getNext(ti));
+	  return new One<>(getNext(ti));
 	}
 
 	public int getLength() {

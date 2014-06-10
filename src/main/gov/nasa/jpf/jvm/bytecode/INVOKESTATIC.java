@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StaticElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -62,13 +63,13 @@ public class INVOKESTATIC extends InvokeInstruction {
     return getClassInfo().getStaticElementInfo().getClassObjectRef();
   }
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     MethodInfo callee;
     
     try {
       callee = getInvokedMethod(ti);
     } catch (LoadOnJPFRequired lre) {
-      return new One<>(ti.getPC());
+      return ti.getPC();
     }
         
     if (callee == null) {
@@ -81,7 +82,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     if ( ciCallee.pushRequiredClinits(ti)) {
       // do class initialization before continuing
       // note - this returns the next insn in the topmost clinit that just got pushed
-      return new One<>(ti.getPC());
+      return ti.getPC();
     }
 
     if (callee.isSynchronized()) {
@@ -94,7 +95,7 @@ public class INVOKESTATIC extends InvokeInstruction {
         
     setupCallee( ti, callee); // this creates, initializes and pushes the callee StackFrame
 
-    return new One<>(ti.getPC()); // we can't just return the first callee insn if a listener throws an exception
+    return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
   }
 
   public MethodInfo getInvokedMethod(){

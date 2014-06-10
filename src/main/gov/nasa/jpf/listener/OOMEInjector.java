@@ -140,7 +140,7 @@ public class OOMEInjector extends ListenerAdapter {
     if (executedInsn instanceof InvokeInstruction){
       StackFrame frame = ti.getTopFrame();
       
-      if (frame.getPC() != executedInsn){ // means the call did succeed
+      if (frame.getPC().getValue() != executedInsn){ // means the call did succeed
         if (checkCallerForOOM(frame.getPrevious(), executedInsn)){
           frame.addFrameAttr(throwOOME); // propagate caller OOME context
         }

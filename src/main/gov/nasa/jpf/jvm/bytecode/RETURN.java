@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -32,7 +33,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class RETURN extends ReturnInstruction {
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
 
     // Constructors don't return anything so this is the only instruction that can be used to return from a constructor.
 
@@ -55,7 +56,7 @@ public class RETURN extends ReturnInstruction {
       }
     }
 
-    return super.execute(ti);
+    return super.execute(ctx, ti);
   }
 
   public int getReturnTypeSize() {

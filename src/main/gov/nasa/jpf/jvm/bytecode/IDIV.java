@@ -24,6 +24,7 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -32,7 +33,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class IDIV extends JVMInstruction {
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
     int v1 = frame.pop().getValue();
@@ -43,7 +44,7 @@ public class IDIV extends JVMInstruction {
                                         "division by zero"));
     }
 
-    frame.push(v2 / v1);
+    frame.push(ctx, new One<>(v2 / v1));
 
     return new One<>(getNext(ti));
   }

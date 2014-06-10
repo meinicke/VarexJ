@@ -1,4 +1,6 @@
 package gov.nasa.jpf.jvm.bytecode.extended;
+import java.util.List;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -6,6 +8,8 @@ public abstract class Conditional<T> {
 	
 	
 	public abstract T getValue();
+	public abstract T getValue(boolean ignore);
+	
 	protected static final FeatureExpr True = FeatureExprFactory.True();
 	
 //  def map[U](f: T => U): Conditional[U] = mapr(x => One(f(x)))
@@ -52,5 +56,7 @@ public abstract class Conditional<T> {
 	
 	protected abstract Conditional<T> simplify(FeatureExpr ctx);
 	
+	public abstract List<T> toList();
+
 	
 }

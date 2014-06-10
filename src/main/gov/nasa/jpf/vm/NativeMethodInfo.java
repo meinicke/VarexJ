@@ -133,7 +133,7 @@ public class NativeMethodInfo extends MethodInfo {
 
         if (env.isInvocationRepeated()){
           // don't advance
-          return nativeFrame.getPC();
+          return nativeFrame.getPC().getValue();
 
         } else {
           // we don't have to do a ti.topClone() because the last insn left
@@ -143,14 +143,14 @@ public class NativeMethodInfo extends MethodInfo {
           nativeFrame.setReturnValue(ret);
           nativeFrame.setReturnAttr(env.getReturnAttribute());
 
-          return nativeFrame.getPC().getNext(); // that should be the NATIVERETURN
+          return nativeFrame.getPC().getValue().getNext(); // that should be the NATIVERETURN
         }
 
       } else {
         // direct calls from within the native method, i.e. nativeFrame is not
         // on top anymore, but its current instruction (invoke) will be reexecuted
         // because DirectCallStackFrames don't advance the pc of the new top top upon return
-        return top.getPC();
+        return top.getPC().getValue();
       }
 
     } catch (IllegalArgumentException iax) {

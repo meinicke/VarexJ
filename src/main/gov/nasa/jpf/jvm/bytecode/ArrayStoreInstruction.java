@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -36,7 +37,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 public abstract class ArrayStoreInstruction extends ArrayElementInstruction implements StoreInstruction {
 
   @Override
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     int aref = peekArrayRef(ti); // need to be poly, could be LongArrayStore
     if (aref == MJIEnv.NULL) {
       return new One<>(ti.createAndThrowException("java.lang.NullPointerException"));

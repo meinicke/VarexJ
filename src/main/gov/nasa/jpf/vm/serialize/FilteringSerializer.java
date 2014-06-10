@@ -309,7 +309,7 @@ public class FilteringSerializer extends AbstractSerializer implements Reference
 
     // there can be (rare) cases where a listener sets a null nextPc in
     // a frame that is still on the stack
-    Instruction pc = frame.getPC();
+    Instruction pc = frame.getPC().getValue();
     if (pc != null){
       buf.add(pc.getInstructionIndex());
     } else {

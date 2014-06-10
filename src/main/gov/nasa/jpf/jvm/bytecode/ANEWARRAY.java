@@ -29,6 +29,7 @@ import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -41,14 +42,14 @@ public class ANEWARRAY extends NewArrayInstruction {
     type = Types.getTypeSignature(typeDescriptor, true);
   }
 
-  public Conditional<Instruction> execute (ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx,ThreadInfo ti) {
     // resolve the component class first
     String compType = Types.getTypeName(type);
     if(Types.isReferenceSignature(type)) {
       try {
         ti.resolveReferencedClass(compType);
       } catch(LoadOnJPFRequired lre) {
-        return new One<>(ti.getPC());
+        return ti.getPC();
       }
     }
 
