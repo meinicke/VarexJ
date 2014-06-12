@@ -19,6 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
+
 import java.util.HashMap;
 
 /**

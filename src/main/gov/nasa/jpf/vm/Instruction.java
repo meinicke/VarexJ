@@ -25,7 +25,6 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Source;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 
@@ -321,11 +320,7 @@ public abstract class Instruction implements Cloneable {
    *
    * note: the System.exit() problem should be gone, now that it is implemented
    * as ThreadInfo state (TERMINATED), rather than purged stacks
-   */
-  public Instruction getNext (ThreadInfo ti) {
-	  return getNext(FeatureExprFactory.True(), ti).getValue();
-  }
-  
+   */  
   public Conditional<Instruction> getNext (final FeatureExpr ctx, ThreadInfo ti) {
 	 return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 

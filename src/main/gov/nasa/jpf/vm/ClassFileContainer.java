@@ -19,8 +19,6 @@
 
 package gov.nasa.jpf.vm;
 
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * abstract class that represents the source of a classfile, such

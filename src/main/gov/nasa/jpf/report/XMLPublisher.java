@@ -6,12 +6,12 @@ import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.util.RepositoryEntry;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Path;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.Step;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Transition;
+import gov.nasa.jpf.vm.VM;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

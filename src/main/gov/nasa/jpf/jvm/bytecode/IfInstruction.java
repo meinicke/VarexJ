@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
@@ -31,6 +29,8 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * abstraction for all comparison instructions
@@ -116,7 +116,7 @@ public abstract class IfInstruction extends JVMInstruction {
         if (conditionValue.getValue()) {
           return getTarget();
         } else {
-          return getNext(ti);
+          return getNext(FeatureExprFactory.True(),ti).getValue();
         }
       }
       
@@ -132,7 +132,7 @@ public abstract class IfInstruction extends JVMInstruction {
       if (conditionValue.getValue()) {
         return getTarget();
       } else {
-        return getNext(ti);
+    	  return getNext(FeatureExprFactory.True(),ti).getValue();
       }
 
     }

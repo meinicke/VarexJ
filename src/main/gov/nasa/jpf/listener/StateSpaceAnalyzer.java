@@ -36,9 +36,9 @@ import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DoubleChoiceGenerator;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.IntChoiceGenerator;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadChoiceGenerator;
+import gov.nasa.jpf.vm.VM;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;

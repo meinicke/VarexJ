@@ -18,9 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.util.SparseClusterArray;
 
 /**
  * A specialized version of ElementInfo that represents heap objects

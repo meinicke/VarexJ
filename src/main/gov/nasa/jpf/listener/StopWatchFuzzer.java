@@ -18,16 +18,17 @@
 //
 package gov.nasa.jpf.listener;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.LCMP;
 import gov.nasa.jpf.jvm.bytecode.LSUB;
 import gov.nasa.jpf.jvm.bytecode.NATIVERETURN;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.StackFrame;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
 
 
@@ -100,7 +101,7 @@ public class StopWatchFuzzer extends ListenerAdapter {
       // attributes are stored on the first slot of a long val
       if (frame.hasOperandAttr(1, TimeVal.class) || frame.hasOperandAttr(3, TimeVal.class)){      
         // enter insn (this pops the 4 top operand slots and pushes the long result
-        ti.skipInstruction(insnToExecute.execute(null, ti).getValue());
+        ti.skipInstruction(insnToExecute.execute(FeatureExprFactory.True(), ti).getValue());
       
         // propagate TimeVal attr, now we need a modifiable frame
         frame = ti.getModifiableTopFrame();

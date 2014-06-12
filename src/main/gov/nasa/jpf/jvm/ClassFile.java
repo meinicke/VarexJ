@@ -19,17 +19,12 @@
 
 package gov.nasa.jpf.jvm;
 
-import gov.nasa.jpf.jvm.JVMByteCodeReader;
-import gov.nasa.jpf.vm.ClassParseException;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.BailOut;
 import gov.nasa.jpf.util.BinaryClassSource;
+import gov.nasa.jpf.vm.ClassParseException;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * class to read and dissect Java classfile contents (as specified by the Java VM

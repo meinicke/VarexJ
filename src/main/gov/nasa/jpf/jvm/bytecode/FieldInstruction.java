@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
@@ -33,6 +32,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.VM;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * parent class for PUT/GET FIELD/STATIC insns
@@ -174,7 +174,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     return getNext(ctx, ti);
   }
   
-  protected Instruction put2 (ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
+  protected Conditional<Instruction> put2 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
     Object attr = frame.getLongOperandAttr();
     long val = frame.peekLong();
     lastValue = new One<>(val);
@@ -189,14 +189,14 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     
     frame = ti.getModifiableTopFrame(); // now we have to modify it    
     popOperands2(frame); // .. highVal,lowVal => ..
-    return getNext(ti);
+    return getNext(ctx, ti);
   }
   
   protected Conditional<Instruction> put (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
     if (size == 1) {
       return put1(ctx, ti, frame, eiFieldOwner);
     } else {
-      return new One<>(put2( ti, frame, eiFieldOwner));
+      return put2(ctx, ti, frame, eiFieldOwner);
     }
   }
   

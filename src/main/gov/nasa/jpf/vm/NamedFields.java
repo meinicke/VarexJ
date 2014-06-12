@@ -19,7 +19,6 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;

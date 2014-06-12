@@ -19,7 +19,6 @@
 
 package gov.nasa.jpf.util;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**

@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.util;
 
-import java.util.NoSuchElementException;
-
 import gov.nasa.jpf.JPFException;
+
+import java.util.NoSuchElementException;
 
 /**
  *

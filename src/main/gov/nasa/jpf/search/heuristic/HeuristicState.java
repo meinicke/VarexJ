@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.search.heuristic;
 
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.RestorableVMState;
+import gov.nasa.jpf.vm.VM;
 
 
 /**

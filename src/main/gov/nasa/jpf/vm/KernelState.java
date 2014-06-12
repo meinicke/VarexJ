@@ -19,9 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.HashData;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 

@@ -22,9 +22,9 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.ChoiceGenerator;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Path;
 import gov.nasa.jpf.vm.Transition;
+import gov.nasa.jpf.vm.VM;
 
 import java.io.PrintWriter;
 import java.util.Formatter;

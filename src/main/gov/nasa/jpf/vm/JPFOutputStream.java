@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.util.FinalBitSet;
+import gov.nasa.jpf.util.PrintUtils;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-
-import gov.nasa.jpf.util.FinalBitSet;
-import gov.nasa.jpf.util.PrintUtils;
 
 /**
  * stream to write program state info in a readable and diff-able format.

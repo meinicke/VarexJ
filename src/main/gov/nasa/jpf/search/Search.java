@@ -30,10 +30,10 @@ import gov.nasa.jpf.report.Reporter;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.JPFLogger;
 import gov.nasa.jpf.util.Misc;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Path;
 import gov.nasa.jpf.vm.ThreadList;
 import gov.nasa.jpf.vm.Transition;
+import gov.nasa.jpf.vm.VM;
 
 import java.util.ArrayList;
 import java.util.List;

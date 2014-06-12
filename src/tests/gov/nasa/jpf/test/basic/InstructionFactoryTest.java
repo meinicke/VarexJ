@@ -56,7 +56,7 @@ public class InstructionFactoryTest extends TestJPF {
 
       frame.pushDouble(r);
 
-      return new One<>(getNext(ti));
+      return getNext(ctx, ti);
     }
   }
   

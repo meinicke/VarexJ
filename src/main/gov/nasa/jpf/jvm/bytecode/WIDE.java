@@ -19,12 +19,11 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * modifies following insn, no stack manipulation
@@ -47,7 +46,7 @@ public class WIDE extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
     // nothing, BCEL doesn't even pass this on;
-    return new One<>(getNext(ti));
+    return getNext(ctx, ti);
   }
 
   public void accept(InstructionVisitor insVisitor) {

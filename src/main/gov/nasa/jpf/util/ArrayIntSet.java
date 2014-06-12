@@ -18,8 +18,9 @@
 //
 package gov.nasa.jpf.util;
 
-import java.util.NoSuchElementException;
 import gov.nasa.jpf.JPFException;
+
+import java.util.NoSuchElementException;
 
 /**
  * common base for array based IntSet implementations

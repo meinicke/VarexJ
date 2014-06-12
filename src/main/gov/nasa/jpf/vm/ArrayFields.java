@@ -22,7 +22,6 @@ import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
 
 
 

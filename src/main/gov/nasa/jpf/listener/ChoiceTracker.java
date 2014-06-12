@@ -8,8 +8,8 @@ import gov.nasa.jpf.report.Publisher;
 import gov.nasa.jpf.report.PublisherExtension;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.ChoiceGenerator;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.SystemState;
+import gov.nasa.jpf.vm.VM;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

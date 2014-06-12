@@ -24,8 +24,8 @@ import gov.nasa.jpf.search.DFSearch;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.search.heuristic.BFSHeuristic;
 import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.VM;
 
 import java.util.ArrayList;
 import java.util.Arrays;

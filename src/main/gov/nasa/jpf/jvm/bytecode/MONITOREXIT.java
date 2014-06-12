@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ChoiceGenerator;
@@ -28,6 +27,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * Exit monitor for object 
@@ -72,7 +72,7 @@ public class MONITOREXIT extends LockInstruction {
     frame = ti.getModifiableTopFrame(); // now we need to modify it
     frame.pop();
 
-    return new One<>(getNext(ti));
+    return getNext(ctx, ti);
   }
 
 

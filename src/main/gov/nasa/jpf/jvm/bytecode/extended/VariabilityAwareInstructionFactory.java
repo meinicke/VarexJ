@@ -1,7 +1,6 @@
 package gov.nasa.jpf.jvm.bytecode.extended;
 
 import gov.nasa.jpf.jvm.bytecode.InstructionFactory;
-import gov.nasa.jpf.jvm.bytecode.PUTFIELD;
 import gov.nasa.jpf.vm.Instruction;
 
 public class VariabilityAwareInstructionFactory extends InstructionFactory {

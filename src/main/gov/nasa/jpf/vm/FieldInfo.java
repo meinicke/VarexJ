@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.ObjectList;
-
 import java.lang.reflect.Modifier;
 
 

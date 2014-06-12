@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -29,6 +28,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -89,7 +89,7 @@ public class MONITORENTER extends LockInstruction {
     frame.pop();
     ei.lock(ti);  // Still have to increment the lockCount
     
-    return new One<>(getNext(ti));
+    return getNext(ctx, ti);
   }  
 
   public int getByteCode () {

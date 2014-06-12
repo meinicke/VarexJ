@@ -19,13 +19,12 @@
 package gov.nasa.jpf.vm;
 
 // see mixinJPFStack() comments
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import sun.misc.SharedSecrets;
-import sun.misc.JavaLangAccess;
+import static gov.nasa.jpf.util.OATHash.hashFinalize;
+import static gov.nasa.jpf.util.OATHash.hashMixin;
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.OATHash;
-import gov.nasa.jpf.util.SparseObjVector;
-import static gov.nasa.jpf.util.OATHash.*;
+import sun.misc.JavaLangAccess;
+import sun.misc.SharedSecrets;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * an AllocationContext that uses a hash value for comparison. This is

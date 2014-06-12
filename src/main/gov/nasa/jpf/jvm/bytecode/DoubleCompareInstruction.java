@@ -19,13 +19,12 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * base class for double double compare instructions
@@ -43,7 +42,7 @@ public abstract class DoubleCompareInstruction extends JVMInstruction {
     
     frame.push( condVal);
     
-    return new One<>(getNext(ti));
+    return getNext(ctx, ti);
   }
 
   protected abstract int conditionValue (double v1, double v2);

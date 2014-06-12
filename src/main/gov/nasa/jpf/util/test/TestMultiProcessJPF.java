@@ -21,7 +21,6 @@ package gov.nasa.jpf.util.test;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.Property;
-import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.util.TypeRef;
 import gov.nasa.jpf.vm.NotDeadlockedProperty;
 

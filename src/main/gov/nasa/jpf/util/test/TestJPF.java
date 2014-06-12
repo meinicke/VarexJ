@@ -26,13 +26,11 @@ import gov.nasa.jpf.Property;
 import gov.nasa.jpf.annotation.FilterField;
 import gov.nasa.jpf.tool.RunTest;
 import gov.nasa.jpf.util.DevNullPrintStream;
-import gov.nasa.jpf.util.TypeRef;
 import gov.nasa.jpf.util.JPFSiteUtils;
-import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.util.Reflection;
+import gov.nasa.jpf.util.TypeRef;
 import gov.nasa.jpf.vm.ExceptionInfo;
 import gov.nasa.jpf.vm.NoUncaughtExceptionsProperty;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.NotDeadlockedProperty;
 
 import java.io.PrintStream;

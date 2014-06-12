@@ -19,8 +19,8 @@
 
 package gov.nasa.jpf.util;
 
-import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Locale;
 
 /**

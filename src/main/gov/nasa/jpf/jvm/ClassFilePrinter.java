@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.jvm;
 
-import gov.nasa.jpf.jvm.JVMByteCodePrinter;
 import gov.nasa.jpf.util.StructuredPrinter;
 import gov.nasa.jpf.vm.ClassParseException;
+
 import java.io.PrintWriter;
 
 /**

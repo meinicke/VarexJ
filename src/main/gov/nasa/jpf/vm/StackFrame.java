@@ -1928,7 +1928,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[top.getValue()] = null;
     }
 
-    top = new One(top.getValue() - 1);
+    top = new One<>(top.getValue() - 1);
 
     return Float.intBitsToFloat(v);
   }

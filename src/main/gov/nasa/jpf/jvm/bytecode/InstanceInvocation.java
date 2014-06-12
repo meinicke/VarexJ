@@ -19,11 +19,8 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.util.FixedBitSet;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
 /**

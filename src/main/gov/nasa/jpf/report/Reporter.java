@@ -24,9 +24,8 @@ import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFListener;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.search.SearchListenerAdapter;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Path;
+import gov.nasa.jpf.vm.VM;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -374,7 +373,6 @@ public class Reporter extends SearchListenerAdapter {
     }
     
     sb.append(" - (C) RIACS/NASA Ames Research Center");
-    
     if (conf.getBoolean("report.show_repository", false)) {
       String repInfo =  getRepositoryInfo();
       if (repInfo != null) {

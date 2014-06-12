@@ -23,17 +23,14 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFClassLoader;
 import gov.nasa.jpf.util.FileUtils;
 import gov.nasa.jpf.util.JPFSiteUtils;
-import gov.nasa.jpf.util.StringMatcher;
+
 import java.io.File;
 import java.lang.reflect.Field;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * tool to run JPF test with configured classpath

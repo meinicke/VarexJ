@@ -19,14 +19,14 @@
 
 package gov.nasa.jpf.vm.serialize;
 
-import java.util.Iterator;
-
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.ThreadList;
+
+import java.util.Iterator;
 
 /**
  * a FilteringSerializer that performs on-the-fly heap canonicalization to

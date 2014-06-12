@@ -19,9 +19,6 @@
 
 package gov.nasa.jpf.listener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -32,11 +29,14 @@ import gov.nasa.jpf.util.TypeSpec;
 import gov.nasa.jpf.vm.AllocInstruction;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.VM;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * simulator for OutOfMemoryErrors. This can be configured to either

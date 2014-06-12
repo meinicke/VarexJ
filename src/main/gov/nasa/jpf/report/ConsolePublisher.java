@@ -21,15 +21,14 @@ package gov.nasa.jpf.report;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.Error;
 import gov.nasa.jpf.util.Left;
-import gov.nasa.jpf.util.RepositoryEntry;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.Path;
 import gov.nasa.jpf.vm.Step;
 import gov.nasa.jpf.vm.Transition;
+import gov.nasa.jpf.vm.VM;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -127,6 +126,8 @@ public class ConsolePublisher extends Publisher {
 
   protected void publishJPF() {
     out.println(reporter.getJPFBanner());
+    out.println();
+    out.println("    Variability-Aware Interpreter v0.1");
     out.println();
   }
 

@@ -24,8 +24,8 @@ import gov.nasa.jpf.vm.ChoiceGeneratorBase;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Heap;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.ReferenceChoiceGenerator;
+import gov.nasa.jpf.vm.VM;
 
 import java.util.ArrayList;
 

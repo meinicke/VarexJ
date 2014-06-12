@@ -19,10 +19,8 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.IntTable;
 import gov.nasa.jpf.util.ObjVector;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**

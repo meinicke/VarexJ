@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -26,6 +25,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -47,7 +47,7 @@ public class ARRAYLENGTH extends ArrayInstruction {
     ElementInfo ei = ti.getElementInfo(arrayRef);
     frame.push(ei.arrayLength(), false);
 
-    return new One<>(getNext(ti));
+    return getNext(ctx, ti);
   }
   
   @Override

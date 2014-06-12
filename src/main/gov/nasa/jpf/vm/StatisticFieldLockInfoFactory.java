@@ -21,7 +21,6 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 /**

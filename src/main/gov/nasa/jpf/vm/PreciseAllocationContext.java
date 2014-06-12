@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import static gov.nasa.jpf.util.OATHash.hash;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.OATHash;
 

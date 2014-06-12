@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
-import java.util.Iterator;
-
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.IntTable;
 import gov.nasa.jpf.util.ObjVector;
+
+import java.util.Iterator;
 
 /**
  * Statics implementation that uses a simple ObjVector as the underlying container.

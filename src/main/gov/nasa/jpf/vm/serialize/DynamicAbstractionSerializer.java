@@ -32,12 +32,12 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Fields;
 import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ReferenceArrayFields;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.StaticElementInfo;
 import gov.nasa.jpf.vm.Statics;
+import gov.nasa.jpf.vm.VM;
 
 import java.util.LinkedList;
 import java.util.List;

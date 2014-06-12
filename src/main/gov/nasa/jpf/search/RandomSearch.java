@@ -20,8 +20,8 @@ package gov.nasa.jpf.search;
 
 
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.RestorableVMState;
+import gov.nasa.jpf.vm.VM;
 
 
 /**

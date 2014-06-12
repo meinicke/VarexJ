@@ -19,8 +19,8 @@
 package gov.nasa.jpf.search.heuristic;
 
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Path;
+import gov.nasa.jpf.vm.VM;
 
 
 /**

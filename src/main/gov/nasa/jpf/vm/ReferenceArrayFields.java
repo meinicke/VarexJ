@@ -23,7 +23,6 @@ import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.PrintUtils;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
 
 /**
  * element values for reference array objects

@@ -18,6 +18,14 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.SystemAttribute;
+import gov.nasa.jpf.util.JPFLogger;
+import gov.nasa.jpf.util.SparseIntVector;
+import gov.nasa.jpf.util.StringSetMatcher;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -29,13 +37,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.SystemAttribute;
-import gov.nasa.jpf.util.JPFLogger;
-import gov.nasa.jpf.util.SparseIntVector;
-import gov.nasa.jpf.util.StringSetMatcher;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

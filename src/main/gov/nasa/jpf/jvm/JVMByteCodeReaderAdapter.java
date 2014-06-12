@@ -19,7 +19,6 @@
 
 package gov.nasa.jpf.jvm;
 
-import gov.nasa.jpf.jvm.JVMByteCodeReader;
 
 /**
  * empty implementation of a JVMByteCodeReader, to efficiently allow overriding

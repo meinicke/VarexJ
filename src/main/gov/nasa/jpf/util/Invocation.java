@@ -22,9 +22,9 @@ package gov.nasa.jpf.util;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ObjRef;
+import gov.nasa.jpf.vm.VM;
 
 /**
  * a record that includes all information to perform a call

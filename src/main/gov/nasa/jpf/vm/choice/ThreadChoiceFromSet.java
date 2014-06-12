@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.vm.choice;
 
-import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.ChoiceGeneratorBase;
 import gov.nasa.jpf.vm.ThreadChoiceGenerator;
 import gov.nasa.jpf.vm.ThreadInfo;
