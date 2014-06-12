@@ -76,7 +76,7 @@ public class RETURN extends ReturnInstruction {
     // we don't have any
   }
 
-  protected void pushReturnValue (StackFrame frame) {
+  protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
     // nothing to do
   }
 

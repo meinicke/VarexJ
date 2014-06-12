@@ -74,8 +74,8 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     }
 
     if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
-      return new One<>(ti.createAndThrowException("java.lang.OutOfMemoryError",
-                                        "trying to allocate new " + cname));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.OutOfMemoryError", "trying to allocate new " + cname));
     }
 
     ElementInfo ei = heap.newObject(ctx, ci, ti);
@@ -84,7 +84,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
 
     // pushes the return value onto the stack
     StackFrame frame = ti.getModifiableTopFrame();
-    frame.pushRef( objRef);
+    frame.pushRef( objRef, ctx);
 
     return getNext(ctx, ti);
   }

@@ -40,8 +40,8 @@ public class MONITOREXIT extends LockInstruction {
     
     int objref = frame.peek();
     if (objref == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException",
-                                        "attempt to release lock for null object"));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.NullPointerException", "attempt to release lock for null object"));
     }
 
     lastLockRef = objref;

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -42,8 +43,8 @@ public class ARETURN extends ReturnInstruction {
     ret = frame.pop();
   }
   
-  protected void pushReturnValue (StackFrame frame) {
-    frame.pushRef(ret);
+  protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
+    frame.pushRef(ret, ctx);
   }
 
   public int getReturnValue () {

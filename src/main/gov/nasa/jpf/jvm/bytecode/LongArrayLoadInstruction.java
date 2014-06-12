@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -28,9 +29,9 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public abstract class LongArrayLoadInstruction extends ArrayLoadInstruction {
 
-  protected void push (StackFrame frame, ElementInfo e, int index)
+  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index)
                 throws ArrayIndexOutOfBoundsExecutiveException {
-    e.checkArrayBounds(index);
+    e.checkArrayBounds(ctx, index);
     frame.pushLong(e.getLongElement(index));
   }
   

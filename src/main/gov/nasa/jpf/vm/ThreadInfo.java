@@ -816,7 +816,7 @@ public class ThreadInfo extends InfoObject
         // remember the exception to be thrown when we return from the native method
         env.throwException(throwableRef);
       } else {
-        Instruction nextPc = throwException(throwableRef);
+        Instruction nextPc = throwException(throwableRef, FeatureExprFactory.True());
         setNextPC(nextPc);
       }
 
@@ -1764,7 +1764,7 @@ public class ThreadInfo extends InfoObject
   protected void processPendingSUTExceptionRequest (){
     if (pendingSUTExceptionRequest != null){
       // <2do> we could do more specific checks for ClassNotFoundExceptions here
-      nextPc = new One<>(createAndThrowException( pendingSUTExceptionRequest.getExceptionClassName(), pendingSUTExceptionRequest.getDetails()));
+      nextPc = new One<>(createAndThrowException( FeatureExprFactory.True(), pendingSUTExceptionRequest.getExceptionClassName(), pendingSUTExceptionRequest.getDetails()));
       pendingSUTExceptionRequest = null;
     }
   }
@@ -1783,8 +1783,9 @@ public class ThreadInfo extends InfoObject
   /**
    * Creates and throws an exception. This is what is used if the exception is
    * thrown by the VM (or a listener)
+ * @param ctx TODO
    */
-  public Instruction createAndThrowException (ClassInfo ci, String details) {
+  public Instruction createAndThrowException (FeatureExpr ctx, ClassInfo ci, String details) {
     if (!ci.isRegistered()) {
       ci.registerClass(this);
     }
@@ -1796,17 +1797,18 @@ public class ThreadInfo extends InfoObject
     }
 
     int objref = createException(ci,details, MJIEnv.NULL);
-    return throwException(objref);
+    return throwException(objref, ctx);
   }
 
   /**
    * Creates an exception and throws it.
+ * @param ctx TODO
    */
-  public Instruction createAndThrowException (String cname) {
-    return createAndThrowException(cname, null);
+  public Instruction createAndThrowException (FeatureExpr ctx, String cname) {
+    return createAndThrowException(ctx, cname, null);
   }
 
-  public Instruction createAndThrowException (String cname, String details) {
+  public Instruction createAndThrowException (FeatureExpr ctx, String cname, String details) {
     try {
       ClassInfo ci = null;
       try {
@@ -1820,12 +1822,12 @@ public class ThreadInfo extends InfoObject
           throw cie;
         }
       }
-      return createAndThrowException(ci, details);
+      return createAndThrowException(ctx, ci, details);
       
     } catch (ClassInfoException cie){
       if(!cname.equals(cie.getExceptionClass())) {
         ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cie.getExceptionClass());
-        return createAndThrowException(ci, cie.getMessage());
+        return createAndThrowException(ctx, ci, cie.getMessage());
       } else {
         throw cie;
       }
@@ -1933,7 +1935,7 @@ public class ThreadInfo extends InfoObject
         	
 //          nextPc = pc.getValue().execute(this);
         } catch (ClassInfoException cie) {
-          nextPc = new One<>(this.createAndThrowException(cie.getExceptionClass(), cie.getMessage()));
+          nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
       }
 
@@ -1988,7 +1990,7 @@ public class ThreadInfo extends InfoObject
     try {
         nextPc = pc.execute(FeatureExprFactory.True(), this);
       } catch (ClassInfoException cie) {
-        nextPc = new One<>(this.createAndThrowException(cie.getExceptionClass(), cie.getMessage()));
+        nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
       }
 
     // since this is part of the inner execution loop, it is a convenient place  to check probe notifications
@@ -2760,7 +2762,7 @@ public class ThreadInfo extends InfoObject
       return insn;
     }
 
-    return throwException(xRef);
+    return throwException(xRef, FeatureExprFactory.True());
   }
   
   /**
@@ -2803,8 +2805,9 @@ public class ThreadInfo extends InfoObject
   
   /**
    * unwind stack frames until we find a matching handler for the exception object
+ * @param ctx TODO
    */
-  public Instruction throwException (int exceptionObjRef) {
+  public Instruction throwException (int exceptionObjRef, FeatureExpr ctx) {
     Heap heap = vm.getHeap();
     ElementInfo eiException = heap.get(exceptionObjRef);
     ClassInfo ciException = eiException.getClassInfo();
@@ -2895,7 +2898,7 @@ public class ThreadInfo extends InfoObject
       // to reset the operand stack to contain only the exception reference
       // (4.9.2 - "4. merge the state of the operand stack..")
       handlerFrame = getModifiableTopFrame();
-      handlerFrame.setExceptionReference(exceptionObjRef);
+      handlerFrame.setExceptionReference(exceptionObjRef, ctx);
 
       // jump to the exception handler and set pc so that listeners can see it
       int handlerOffset = matchingHandler.getHandler();

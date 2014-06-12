@@ -1934,16 +1934,25 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public int pop () {
-	  return pop2().getValue();
+	  return pop(FeatureExprFactory.True()).getValue();
   }
 	  
-  public Conditional<Integer> pop2() {
+  public Conditional<Integer> pop(FeatureExpr ctx) {
     //assert (top >= stackBase) : "stack empty";
-    Conditional<Integer> v = slots[top.getValue()];
+//    Conditional<Integer> v = slots[top.getValue()];
 
+    Conditional<Integer> v = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			return slots[y];
+		}
+    	
+	}).simplify();
+    
     // <2do> get rid of this
-    if (isRef.get(top.getValue())) {
-      if (v.getValue() != MJIEnv.NULL) {
+    if (isRef.get(top.simplify(ctx).getValue(true))) {
+      if (v.simplify(ctx).getValue().intValue() != MJIEnv.NULL) {
         VM.getVM().getSystemState().activateGC();
       }
     }
@@ -1952,7 +1961,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[top.getValue()] = null;
     }
 
-    top = top.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
 		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
 			return new Choice<>(x, new One<>(y - 1), new One<>(y));
@@ -1994,15 +2003,34 @@ public abstract class StackFrame implements Cloneable {
     top = new One<>(t);
   }
 
-  public void storeOperand (int index){
-    slots[index] = slots[top.getValue()];
-    isRef.set( index, isRef.get(top.getValue()));
+  public void storeOperand (final FeatureExpr ctx, final int index){
+	  slots[index] = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			Conditional<Integer> oldValue = slots[index];
+			return new Choice<>(ctx.and(x), slots[y], oldValue);
+		}
+		
+	}).simplify();
+	  
+//    slots[index] = slots[top.getValue()];
+    isRef.set( index, isRef.get(top.simplify(ctx).getValue()));
 
     if (attrs != null){
       attrs[index] = attrs[top.getValue()];
       attrs[top.getValue()] = null;
     }
-    top = new One<>(top.getValue() - 1);
+    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			return new Choice<>(ctx.and(x), new One<>(y-1), new One<>(y));
+		}
+    	
+	}).simplify();
+    
+//    top = new One<>(top.getValue() - 1);
   }
 
   public void storeLongOperand (int index){
@@ -2052,7 +2080,7 @@ public abstract class StackFrame implements Cloneable {
     //}
   }
 
-  public void pushRef (int ref){
+  public void pushRef (int ref, FeatureExpr ctx){
 	  top = new One<>(top.getValue() + 1);
     slots[top.getValue()] = new One<>(ref);
     isRef.set(top.getValue());
@@ -2094,7 +2122,7 @@ public abstract class StackFrame implements Cloneable {
   //--- abstract argument & return passing that is shared between VM types
   
   public void setReferenceResult (int ref, Object attr){
-    pushRef(ref);
+    pushRef(ref, FeatureExprFactory.True());
     if (attr != null){
       setOperandAttr(attr);
     }
@@ -2150,8 +2178,8 @@ public abstract class StackFrame implements Cloneable {
   
   //--- VM independent exception handler setup
   
-  public void setExceptionReference (int exRef){
-    pushRef(exRef);
+  public void setExceptionReference (int exRef, FeatureExpr ctx){
+    pushRef(exRef, FeatureExprFactory.True());
   }
   
   public int getExceptionReference (){

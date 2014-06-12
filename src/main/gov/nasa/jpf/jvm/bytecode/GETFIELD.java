@@ -56,16 +56,16 @@ public class GETFIELD extends InstanceFieldInstruction {
     int objRef = frame.peek(); // don't pop yet, we might re-enter
     lastThis = objRef;
     if (objRef == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException",
-                                        "referencing field '" + fname + "' on null object"));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
     }
 
     ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 
     FieldInfo fi = getFieldInfo();
     if (fi == null) {
-      return new One<>(ti.createAndThrowException("java.lang.NoSuchFieldError",
-                                        "referencing field '" + fname + "' in " + ei));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
     }
     
     // check if this breaks the current transition
@@ -84,7 +84,7 @@ public class GETFIELD extends InstanceFieldInstruction {
       lastValue = new One<>(ival);
       
       if (fi.isReference()){
-        frame.pushRef(ival);
+        frame.pushRef(ival, ctx);
         
       } else {
         frame.push(ival);

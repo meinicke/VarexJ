@@ -65,7 +65,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
     }      
 
     if (callee == null){
-      return new One<>(ti.createAndThrowException("java.lang.NoSuchMethodException", "Calling " + cname + '.' + mname));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodException", "Calling " + cname + '.' + mname));
     }
 
     ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);

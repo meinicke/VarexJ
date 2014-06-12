@@ -41,7 +41,7 @@ public class FREM extends JVMInstruction {
     float v2 = frame.popFloat();
 
     if (v1 == 0){
-      return new One<>(ti.createAndThrowException("java.lang.ArithmeticException","division by zero"));
+      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
     }
 
     float r = v2 % v1;

@@ -38,6 +38,8 @@ import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * regression test for cascaded ChoiceGenerators
  */
@@ -140,7 +142,7 @@ public class CascadedCGTest extends TestJPF {
               StackFrame frame = ti.getModifiableTopFrame();
 
               frame.pop();
-              frame.pushRef( getInsn.getLastThis());
+              frame.pushRef( getInsn.getLastThis(), FeatureExprFactory.True());
             }
 
             cg = new IntChoiceFromSet("fieldReplace", 42, 43);

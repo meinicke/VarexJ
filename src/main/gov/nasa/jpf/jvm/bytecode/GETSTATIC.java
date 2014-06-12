@@ -63,8 +63,8 @@ public class GETSTATIC extends StaticFieldInstruction {
     }
     
     if (fieldInfo == null) {
-      return new One<>(ti.createAndThrowException("java.lang.NoSuchFieldError",
-          (className + '.' + fname)));
+      return new One<>(ti.createAndThrowException(ctx,
+          "java.lang.NoSuchFieldError", (className + '.' + fname)));
     }
 
     // this can be actually different (can be a base)
@@ -96,7 +96,7 @@ public class GETSTATIC extends StaticFieldInstruction {
       lastValue = ival;
 
       if (fieldInfo.isReference()) {
-        frame.pushRef(ival.getValue());
+        frame.pushRef(ival.getValue(), ctx);
       } else {
         frame.push(ival);
       }

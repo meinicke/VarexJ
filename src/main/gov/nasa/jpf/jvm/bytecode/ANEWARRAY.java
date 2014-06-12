@@ -67,13 +67,13 @@ public class ANEWARRAY extends NewArrayInstruction {
 
     arrayLength = frame.pop();
     if (arrayLength < 0){
-      return new One<>(ti.createAndThrowException("java.lang.NegativeArraySizeException"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
     }
 
     Heap heap = ti.getHeap();
     if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
-      return new One<>(ti.createAndThrowException("java.lang.OutOfMemoryError",
-                                        "trying to allocate new " +
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.OutOfMemoryError", "trying to allocate new " +
                                           Types.getTypeName(type) +
                                         "[" + arrayLength + "]"));
     }

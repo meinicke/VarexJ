@@ -34,6 +34,8 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * listener to inject exceptions according to user specifications. This
  * tool is meant to be used for exception handler verification, esp. if
@@ -356,7 +358,7 @@ public class ExceptionInjector extends ListenerAdapter {
     }
 
     if (e != null){
-      Instruction nextInsn = ti.createAndThrowException(e.getExceptionClassInfo(ti), e.getExceptionDetails());
+      Instruction nextInsn = ti.createAndThrowException(FeatureExprFactory.True(), e.getExceptionClassInfo(ti), e.getExceptionDetails());
       ti.skipInstruction(nextInsn);
       return;
     }

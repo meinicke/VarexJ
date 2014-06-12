@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.StackFrame;
@@ -34,7 +35,7 @@ public class IF_ACMPEQ extends IfInstruction {
   }
 
 
-  public Conditional<Boolean> popConditionValue (StackFrame frame) {
+  public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
     int v1 = frame.pop();
     int v2 = frame.pop();
 

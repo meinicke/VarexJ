@@ -83,7 +83,7 @@ public class INVOKECG extends JVMInstruction {
         realInvoke = insnFactory.invokevirtual(clsName, mthName, signature);
       }
       
-      pushArguments(ti, call.getArguments(), call.getAttrs());
+      pushArguments(ctx, ti, call.getArguments(), call.getAttrs());
       
       return new One<>(realInvoke);
     }
@@ -91,7 +91,7 @@ public class INVOKECG extends JVMInstruction {
     return new One<>(getNext());
   }
 
-  void pushArguments (ThreadInfo ti, Object[] args, Object[] attrs){
+  private void pushArguments (FeatureExpr ctx, ThreadInfo ti, Object[] args, Object[] attrs){
     StackFrame frame = ti.getModifiableTopFrame();
     
     if (args != null){
@@ -101,7 +101,7 @@ public class INVOKECG extends JVMInstruction {
         
         if (a != null){
           if (a instanceof ObjRef){
-            frame.pushRef(((ObjRef)a).getReference());
+            frame.pushRef(((ObjRef)a).getReference(), ctx);
           } else if (a instanceof Boolean){
             frame.push((Boolean)a ? 1 : 0, false);
           } else if (a instanceof Integer){

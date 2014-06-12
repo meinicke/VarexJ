@@ -40,10 +40,10 @@ public class ATHROW extends JVMInstruction {
     int objref = frame.pop();
 
     if (objref == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
     }
 
-    return new One<>(ti.throwException(objref));
+    return new One<>(ti.throwException(objref, ctx));
   }
 
   public int getByteCode () {

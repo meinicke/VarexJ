@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.listener;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -59,7 +60,7 @@ public class StackDepthChecker extends ListenerAdapter {
       // i.e. before we get the instructionExecuted(). Throwing exceptions is
       // therefore a bit harder since we have to set the next pc explicitly
 
-      Instruction nextPc = ti.createAndThrowException("java.lang.StackOverflowError");
+      Instruction nextPc = ti.createAndThrowException(FeatureExprFactory.True(), "java.lang.StackOverflowError");
       StackFrame topFrame = ti.getModifiableTopFrame();
       topFrame.setPC(new One<>(nextPc));
     }

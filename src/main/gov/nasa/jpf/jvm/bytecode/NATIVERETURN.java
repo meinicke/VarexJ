@@ -56,7 +56,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
     // remove args, push return value and continue with next insn
     frame.removeArguments(mi);
-    pushReturnValue(frame);
+    pushReturnValue(ctx, frame);
 
     if (retAttr != null) {
       setReturnAttr(ti, retAttr);
@@ -128,7 +128,7 @@ public class NATIVERETURN extends ReturnInstruction {
   // <2do> this should use the getResult..() methods of NativeStackFrame
   
   @Override
-  protected void pushReturnValue (StackFrame fr) {
+  protected void pushReturnValue (FeatureExpr ctx, StackFrame fr) {
     int  ival;
     long lval;
     int  retSize = 1;

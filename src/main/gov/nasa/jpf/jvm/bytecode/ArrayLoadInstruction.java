@@ -43,7 +43,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
     // we need to get the object first, to check if it is shared
     int aref = frame.peek(1); // ..,arrayRef,idx
     if (aref == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
     }
     
     ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
@@ -60,7 +60,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
     arrayRef = frame.pop();
     
     try {
-      push(frame, e, index);
+      push(ctx, frame, e, index);
 
       Object attr = e.getElementAttr(index);
       if (attr != null) {
@@ -96,7 +96,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
     return ti.getTopFrame().peek();
   }
 
-  protected abstract void push (StackFrame frame, ElementInfo e, int index)
+  protected abstract void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index)
                 throws ArrayIndexOutOfBoundsExecutiveException;
 
   

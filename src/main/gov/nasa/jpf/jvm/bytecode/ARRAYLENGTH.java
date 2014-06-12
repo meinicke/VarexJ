@@ -40,8 +40,8 @@ public class ARRAYLENGTH extends ArrayInstruction {
     arrayRef = frame.pop();
 
     if (arrayRef == MJIEnv.NULL){
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException",
-                                        "array length of null object"));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.NullPointerException", "array length of null object"));
     }
 
     ElementInfo ei = ti.getElementInfo(arrayRef);

@@ -19,6 +19,8 @@
 
 package gov.nasa.jpf.jvm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MethodInfo;
 
@@ -59,9 +61,9 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   }
 
   @Override
-  public void setExceptionReference (int exRef){
+  public void setExceptionReference (int exRef, FeatureExpr ctx){
     clearOperandStack();
-    pushRef( exRef);
+    pushRef( exRef, ctx);
   }
   
   @Override
@@ -95,7 +97,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int setReferenceArgument (int slotIdx, int ref, Object attr){
-    pushRef(ref);
+    pushRef(ref, FeatureExprFactory.True());
     if (attr != null){
       setOperandAttr(attr);
     }

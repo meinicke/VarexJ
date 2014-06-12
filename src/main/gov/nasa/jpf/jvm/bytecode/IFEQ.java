@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.vm.StackFrame;
@@ -34,8 +35,8 @@ public class IFEQ extends IfInstruction {
   }
 
 
-  public Conditional<Boolean> popConditionValue (StackFrame frame) {
-	  return frame.pop2().map(new Function<Integer, Boolean>() {
+  public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
+	  return frame.pop(ctx).map(new Function<Integer, Boolean>() {
 			public Boolean apply(Integer x) {
 				return x == 0;
 			}}).simplify();

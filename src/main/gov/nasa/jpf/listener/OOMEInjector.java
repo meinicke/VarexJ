@@ -38,6 +38,8 @@ import gov.nasa.jpf.vm.VM;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * simulator for OutOfMemoryErrors. This can be configured to either
  * fire for a specified location range (file:line) or specified types.
@@ -128,7 +130,7 @@ public class OOMEInjector extends ListenerAdapter {
         // we could use Heap.setOutOfMemory(true), but then we would have to reset
         // if the app handles it so that it doesn't throw outside the specified locations.
         // This would require more effort than throwing explicitly
-        Instruction nextInsn = ti.createAndThrowException("java.lang.OutOfMemoryError");
+        Instruction nextInsn = ti.createAndThrowException(FeatureExprFactory.True(), "java.lang.OutOfMemoryError");
         ti.skipInstruction(nextInsn);
       }
     }
@@ -152,7 +154,7 @@ public class OOMEInjector extends ListenerAdapter {
         if (objRef != MJIEnv.NULL) {
           ClassInfo ci = vm.getClassInfo(objRef);
           if (ci.hasAttr(OOME.class)) {
-            Instruction nextInsn = ti.createAndThrowException("java.lang.OutOfMemoryError");
+            Instruction nextInsn = ti.createAndThrowException(FeatureExprFactory.True(), "java.lang.OutOfMemoryError");
             ti.setNextPC(nextInsn);
           }
         }

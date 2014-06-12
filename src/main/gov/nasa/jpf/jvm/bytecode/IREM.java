@@ -40,7 +40,7 @@ public class IREM extends JVMInstruction {
     int v2 = frame.pop();
 
     if (v1 == 0){
-      return new One<>(ti.createAndThrowException("java.lang.ArithmeticException", "division by zero"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "division by zero"));
     }
     
     frame.push(v2 % v1);

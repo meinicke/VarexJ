@@ -41,7 +41,7 @@ public class LDIV extends JVMInstruction {
     long v2 = frame.popLong();
 
     if (v1 == 0) {
-      return new One<>(ti.createAndThrowException("java.lang.ArithmeticException", "long division by zero"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "long division by zero"));
     }
     
     long r = v2 / v1;

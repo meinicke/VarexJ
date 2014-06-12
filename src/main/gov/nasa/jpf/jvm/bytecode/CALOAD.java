@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -29,8 +30,8 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class CALOAD extends ArrayLoadInstruction {
 
-  protected void push (StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException {
-    e.checkArrayBounds(index);
+  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+    e.checkArrayBounds(ctx, index);
     frame.push( e.getCharElement(index), isReference());
   }
 

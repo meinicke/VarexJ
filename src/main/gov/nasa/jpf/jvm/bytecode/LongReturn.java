@@ -23,6 +23,8 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.Iterator;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * common base for DRETURN and LRETURN
  */
@@ -42,7 +44,7 @@ public abstract class LongReturn extends ReturnInstruction {
     ret = frame.popLong();
   }
 
-  protected void pushReturnValue (StackFrame frame) {
+  protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
     frame.pushLong(ret);
   }
 

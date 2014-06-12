@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.BooleanChoiceGenerator;
 import gov.nasa.jpf.vm.Instruction;
@@ -66,8 +67,9 @@ public abstract class IfInstruction extends JVMInstruction {
    * retrieve value of jump condition from operand stack
    * (not ideal to have this public, but some listeners might need it for
    * skipping the insn, plus we require it for subclass factorization)
+ * @param ctx TODO
    */
-  public abstract Conditional<Boolean> popConditionValue(StackFrame frame);
+  public abstract Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame);
   
   public Instruction getTarget() {
     if (target == null) {
@@ -79,7 +81,7 @@ public abstract class IfInstruction extends JVMInstruction {
   public Conditional<Instruction> execute (final FeatureExpr ctx, final ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    conditionValue = popConditionValue(frame);
+    conditionValue = popConditionValue(ctx, frame);
 //    if (conditionValue) {
 //      return getTarget();
 //    } else {
@@ -112,7 +114,7 @@ public abstract class IfInstruction extends JVMInstruction {
       } else {
         StackFrame frame = ti.getModifiableTopFrame();
         // some listener did override the CG, fallback to normal operation
-        conditionValue = popConditionValue(frame);
+        conditionValue = popConditionValue(FeatureExprFactory.True(), frame);
         if (conditionValue.getValue()) {
           return getTarget();
         } else {
@@ -125,7 +127,7 @@ public abstract class IfInstruction extends JVMInstruction {
       assert (cg != null) : "no BooleanChoiceGenerator";
       
       StackFrame frame = ti.getModifiableTopFrame();
-      popConditionValue(frame); // we are not interested in concrete values
+      popConditionValue(FeatureExprFactory.True(), frame); // we are not interested in concrete values
       
       conditionValue = new One<>(cg.getNextChoice());
       
@@ -167,4 +169,27 @@ public abstract class IfInstruction extends JVMInstruction {
 
     return clone;
   }
+  
+  protected Conditional<Boolean> mapr(final Conditional<Integer> v1, final Conditional<Integer> v2) {
+	  return v1.mapr(new Function<Integer, Conditional<Boolean>>() {
+
+			@Override
+			public Conditional<Boolean> apply(final Integer x1) {
+				return v2.mapr(new Function<Integer, Conditional<Boolean>>() {
+
+					@Override
+					public Conditional<Boolean> apply(Integer x2) {
+						return new One<>(x1.intValue() != x2.intValue());
+					}
+					
+				}); 
+			}
+	    	
+		}).simplify();
+  }
+  
+  protected boolean compare(int x, int y) {
+	  throw new RuntimeException("compare not implemented");
+  }
+  
 }
