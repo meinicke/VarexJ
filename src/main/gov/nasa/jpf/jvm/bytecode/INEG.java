@@ -25,28 +25,30 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Negate int
- * ..., value => ..., result
+ * Negate int ..., value => ..., result
  */
 public class INEG extends JVMInstruction {
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    int v = frame.pop();
-    
-    frame.push(-v);
+		Conditional<Integer> v = frame.pop(ctx);
+		frame.push(ctx, maprInt(v, 0));
 
-    return getNext(ctx, ti);
-  }
+		return getNext(ctx, ti);
+	}
 
-  public int getByteCode () {
-    return 0x74;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	@Override
+	protected int instruction(int v1, int v2) {
+		return -v1;
+	}
+
+	public int getByteCode() {
+		return 0x74;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

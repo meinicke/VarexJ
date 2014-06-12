@@ -27,6 +27,8 @@ import gov.nasa.jpf.util.Misc;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * a stack frame for MJI methods
  * 
@@ -212,7 +214,7 @@ public abstract class NativeStackFrame extends StackFrame {
   
   //--- exception refs
   @Override
-  public void setExceptionReference (int exRef){
+  public void setExceptionReference (int exRef, FeatureExpr ctx){
     throw new JPFException("NativeStackFrames don't support exception handlers");    
   }
 

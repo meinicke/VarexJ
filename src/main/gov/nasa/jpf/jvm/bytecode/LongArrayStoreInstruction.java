@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -30,9 +31,9 @@ import gov.nasa.jpf.vm.ThreadInfo;
  * ... array, index, long-value => ...
  */
 public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
-  protected void setField (ElementInfo e, int index, long value)
+  protected void setField (FeatureExpr ctx, ElementInfo e, int index, long value)
                     throws ArrayIndexOutOfBoundsExecutiveException {
-    e.checkArrayBounds(index);
+    e.checkArrayBounds(ctx, index);
     e.setLongElement(index, value);
   }
 

@@ -42,12 +42,12 @@ public class GETSTATIC extends StaticFieldInstruction {
   }
 
   @Override
-  protected void popOperands1 (StackFrame frame) {
+  protected void popOperands1 (FeatureExpr ctx, StackFrame frame) {
     // nothing to pop
   }
   
   @Override
-  protected void popOperands2 (StackFrame frame) {
+  protected void popOperands2 (FeatureExpr ctx, StackFrame frame) {
     // nothing to pop
   }
 
@@ -63,8 +63,8 @@ public class GETSTATIC extends StaticFieldInstruction {
     }
     
     if (fieldInfo == null) {
-      return new One<>(ti.createAndThrowException("java.lang.NoSuchFieldError",
-          (className + '.' + fname)));
+      return new One<>(ti.createAndThrowException(ctx,
+          "java.lang.NoSuchFieldError", (className + '.' + fname)));
     }
 
     // this can be actually different (can be a base)
@@ -96,9 +96,9 @@ public class GETSTATIC extends StaticFieldInstruction {
       lastValue = ival;
 
       if (fieldInfo.isReference()) {
-        frame.pushRef(ival.getValue());
+        frame.pushRef(ival.getValue(), ctx);
       } else {
-        frame.push(ival);
+        frame.push(ctx, ival);
       }
       
       if (attr != null) {

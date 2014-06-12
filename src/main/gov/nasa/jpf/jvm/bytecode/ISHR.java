@@ -35,8 +35,8 @@ public class ISHR extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v1 = frame.pop();
-    int v2 = frame.pop();
+    int v1 = frame.pop(ctx).getValue();
+    int v2 = frame.pop(ctx).getValue();
 
     frame.push(v2 >> v1);
 

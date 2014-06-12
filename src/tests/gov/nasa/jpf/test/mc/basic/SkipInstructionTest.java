@@ -33,6 +33,8 @@ import gov.nasa.jpf.vm.choice.IntChoiceFromList;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 public class SkipInstructionTest extends TestJPF {
 
   //--- replacing field access
@@ -53,7 +55,7 @@ public class SkipInstructionTest extends TestJPF {
           // simulate the operand stack behavior of the skipped insn
           StackFrame frame = ti.getModifiableTopFrame();
 
-          frame.pop();
+          frame.pop(FeatureExprFactory.True());
           frame.push(42);
 
           ti.skipInstruction(pc.getNext());

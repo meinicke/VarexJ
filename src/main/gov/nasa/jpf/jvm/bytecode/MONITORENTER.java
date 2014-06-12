@@ -43,7 +43,7 @@ public class MONITORENTER extends LockInstruction {
 
     int objref = frame.peek();      // Don't pop yet before we know we really enter
     if (objref == MJIEnv.NULL){
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException", "Attempt to acquire lock for null object"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Attempt to acquire lock for null object"));
     }
 
     lastLockRef = objref;
@@ -86,7 +86,7 @@ public class MONITORENTER extends LockInstruction {
 
     // this is only executed in the bottom half
     frame = ti.getModifiableTopFrame(); // now we need to modify it
-    frame.pop();
+    frame.pop(ctx);
     ei.lock(ti);  // Still have to increment the lockCount
     
     return getNext(ctx, ti);

@@ -29,6 +29,7 @@ import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * common root class for LOOKUPSWITCH and TABLESWITCH insns
@@ -56,10 +57,10 @@ public abstract class SwitchInstruction extends JVMInstruction {
     return targets.length;
   }
 
-  protected Instruction executeConditional (ThreadInfo ti){
+  protected Instruction executeConditional (FeatureExpr ctx, ThreadInfo ti){
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int value = frame.pop();
+    int value = frame.pop(ctx).getValue();
 
     lastIdx = DEFAULT;
 
@@ -76,7 +77,7 @@ public abstract class SwitchInstruction extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     // this can be overridden by subclasses, so we have to delegate the conditional execution
     // to avoid getting recursive in executeAllBranches()
-    return new One<>(executeConditional(ti));
+    return new One<>(executeConditional(ctx, ti));
   }
 
   /** useful for symbolic execution modes */
@@ -88,7 +89,7 @@ public abstract class SwitchInstruction extends JVMInstruction {
 
       } else {
         // listener did override CG, fall back to conditional execution
-        return executeConditional(ti);
+        return executeConditional(FeatureExprFactory.True(), ti);
       }
       
     } else {
@@ -96,7 +97,7 @@ public abstract class SwitchInstruction extends JVMInstruction {
       assert (cg != null) : "no IntIntervalGenerator";
       
       StackFrame frame = ti.getModifiableTopFrame();
-      int idx = frame.pop(); // but we are not using it
+      int idx = frame.pop(FeatureExprFactory.True()).getValue(); // but we are not using it
       idx = cg.getNextChoice();
       
       if (idx == matches.length){ // default branch

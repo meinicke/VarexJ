@@ -41,34 +41,34 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
   }
   
   @Override
-  protected void popOperands1 (StackFrame frame) {
-    frame.pop(2); // .. objref, val => ..
+  protected void popOperands1 (FeatureExpr ctx, StackFrame frame) {
+    frame.pop(ctx, 2); // .. objref, val => ..
   }
   
   @Override
-  protected void popOperands2 (StackFrame frame) {
-    frame.pop(3); // .. objref, highVal,lowVal => ..
+  protected void popOperands2 (FeatureExpr ctx, StackFrame frame) {
+    frame.pop(ctx, 3); // .. objref, highVal,lowVal => ..
   }
     
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
-    int objRef = frame.peek( size);
+    int objRef = frame.peek(ctx, size).simplify(ctx).getValue();
     lastThis = objRef;
     
     if (!ti.isFirstStepInsn()) { // top half
 
       // if this produces an NPE, force the error w/o further ado
       if (objRef == MJIEnv.NULL) {
-        return new One<>(ti.createAndThrowException("java.lang.NullPointerException",
-                                   "referencing field '" + fname + "' on null object"));
+        return new One<>(ti.createAndThrowException(ctx,
+                                   "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
       }
       
       ElementInfo ei = ti.getModifiableElementInfoWithUpdatedSharedness(objRef);
       FieldInfo fi = getFieldInfo();
       if (fi == null) {
-        return new One<>(ti.createAndThrowException("java.lang.NoSuchFieldError", 
-            "no field " + fname + " in " + ei));
+        return new One<>(ti.createAndThrowException(ctx, 
+            "java.lang.NoSuchFieldError", "no field " + fname + " in " + ei));
       }
 
       // check if this breaks the current transition

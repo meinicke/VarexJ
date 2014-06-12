@@ -27,6 +27,8 @@ import gov.nasa.jpf.util.Processor;
 
 import java.io.PrintWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * Describes an element of memory containing the field values of a class or an
  * object. In the case of a class, contains the values of the static fields. For
@@ -1612,12 +1614,12 @@ public abstract class ElementInfo implements Cloneable {
     return monitor.canLock(th);
   }
 
-  public void checkArrayBounds(int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  public void checkArrayBounds(FeatureExpr ctx, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     if (fields instanceof ArrayFields) {
       if (index < 0 || index >= ((ArrayFields)fields).arrayLength()){
         throw new ArrayIndexOutOfBoundsExecutiveException(
               ThreadInfo.getCurrentThread().createAndThrowException(
-              "java.lang.ArrayIndexOutOfBoundsException", Integer.toString(index)));
+              ctx, "java.lang.ArrayIndexOutOfBoundsException", Integer.toString(index)));
       }
     } else {
       throw new JPFException("object is not an array: " + this);

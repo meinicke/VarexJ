@@ -157,7 +157,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
   public static int getClassObject (MJIEnv env, ClassInfo ci){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC().getValue();
+//    Instruction insn = ti.getPC().getValue();
 
     if (ci.pushRequiredClinits(ti)){
       env.repeatInvocation();

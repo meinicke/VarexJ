@@ -37,13 +37,13 @@ public class ATHROW extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int objref = frame.pop();
+    int objref = frame.pop(ctx).simplify(ctx).getValue();
 
     if (objref == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
     }
 
-    return new One<>(ti.throwException(objref));
+    return new One<>(ti.throwException(ctx, objref));
   }
 
   public int getByteCode () {

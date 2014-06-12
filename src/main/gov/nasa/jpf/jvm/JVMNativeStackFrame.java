@@ -54,31 +54,31 @@ public class JVMNativeStackFrame extends NativeStackFrame {
          i++, j--, k--) {
       switch (argTypes[k]) {
       case Types.T_BOOLEAN:
-        ival = callerFrame.peek2(stackOffset);
+        ival = callerFrame.peek(ctx, stackOffset);
         a[j] = Boolean.valueOf(Types.intToBoolean(ival.getValue()));
 
         break;
 
       case Types.T_BYTE:
-        ival = callerFrame.peek2(stackOffset);
+        ival = callerFrame.peek(ctx, stackOffset);
         a[j] = Byte.valueOf((byte) ival.getValue().intValue());
 
         break;
 
       case Types.T_CHAR:
-        ival = callerFrame.peek2(stackOffset);
+        ival = callerFrame.peek(ctx, stackOffset);
         a[j] = Character.valueOf((char) ival.getValue().intValue());
 
         break;
 
       case Types.T_SHORT:
-        ival = callerFrame.peek2(stackOffset);
+        ival = callerFrame.peek(ctx, stackOffset);
         a[j] = new Short((short) ival.getValue().intValue());
 
         break;
 
       case Types.T_INT:
-        ival = callerFrame.peek2(stackOffset).simplify(ctx);
+        ival = callerFrame.peek(ctx, stackOffset).simplify(ctx);
         a[j] = new Integer(ival.getValue().intValue());
 
         break;
@@ -91,7 +91,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
         break;
 
       case Types.T_FLOAT:
-        ival = callerFrame.peek2(stackOffset);
+        ival = callerFrame.peek(ctx, stackOffset);
         a[j] = new Float(Types.intToFloat(ival.getValue()));
 
         break;
@@ -106,7 +106,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
       default:
         // NOTE - we have to store T_REFERENCE as an Integer, because
         // it shows up in our native method as an 'int'
-        ival = callerFrame.peek2(stackOffset);
+        ival = callerFrame.peek(ctx, stackOffset).simplify(ctx);
         a[j] = new Integer(ival.getValue());
       }
 
@@ -119,7 +119,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
     if (nmi.isStatic()) {
       a[1] = new Integer( nmi.getClassInfo().getClassObjectRef());
     } else {
-      int thisRef = callerFrame.getCalleeThis(nmi);
+      int thisRef = callerFrame.getCalleeThis(ctx, nmi);
       a[1] = new Integer( thisRef);
       
       setThis(thisRef);

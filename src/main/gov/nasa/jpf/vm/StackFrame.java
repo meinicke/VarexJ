@@ -188,23 +188,25 @@ public abstract class StackFrame implements Cloneable {
    * return the object reference for an instance method to be called (we are still in the
    * caller's frame). This only makes sense after all params have been pushed, before the
    * INVOKEx insn is executed
+ * @param ctx TODO
    */
-  public int getCalleeThis (MethodInfo mi) {
-    return getCalleeThis(mi.getArgumentsSize());
+  public int getCalleeThis (FeatureExpr ctx, MethodInfo mi) {
+    return getCalleeThis(ctx, mi.getArgumentsSize());
   }
 
   /**
    * return reference of called object in the context of the caller
    * (i.e. we are in the caller frame)
+ * @param ctx TODO
    */
-  public int getCalleeThis (int size) {
+  public int getCalleeThis (FeatureExpr ctx, int size) {
     // top is the topmost index
     int i = size-1;
-    if (top.getValue() < i) {
+    if (top.simplify(ctx).getValue() < i) {
       return -1;
     }
 
-    return slots[top.getValue()-i].getValue();
+    return slots[top.simplify(ctx).getValue()-i].simplify(ctx).getValue();
   }
 
   public StackFrame getPrevious() {
@@ -456,10 +458,11 @@ public abstract class StackFrame implements Cloneable {
   /**
    * this returns all of them - use either if you know there will be only
    * one attribute at callerSlots time, or check/process result with ObjectList
+ * @param ctx TODO
    */
-  public Object getOperandAttr () {
-    if ((top.getValue() >= stackBase) && (attrs != null)){
-      return attrs[top.getValue()];
+  public Object getOperandAttr (FeatureExpr ctx) {
+    if ((top.simplify(ctx).getValue() >= stackBase) && (attrs != null)){
+      return attrs[top.simplify(ctx).getValue()];
     }
     return null;
   }
@@ -1143,12 +1146,16 @@ public abstract class StackFrame implements Cloneable {
     }
   }
 
-  public int getTopPos() {
-    return top.getValue();
+  public int getTopPos() {// TODO remove
+    return getTopPos2().getValue();
+  }
+  
+  public Conditional<Integer> getTopPos2() {
+	    return top;
   }
 
-  ExceptionHandler getHandlerFor (ClassInfo ciException){
-    return mi.getHandlerFor (ciException, pc.getValue());
+  ExceptionHandler getHandlerFor (FeatureExpr ctx, ClassInfo ciException){
+    return mi.getHandlerFor (ciException, pc.simplify(ctx).getValue());
   }
   
   public boolean isFirewall (){
@@ -1252,22 +1259,31 @@ public abstract class StackFrame implements Cloneable {
   // all the dupses don't have any GC side effect (everything is already
   // on the stack), so skip the GC requests associated with push()/pop()
 
-  public void dup () {
+  public void dup (final FeatureExpr ctx) {
     // .. A     =>
     // .. A A
     //    ^
 
-    int t= top.getValue();
+    Conditional<Integer> td = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-    int td=t+1;
-    slots[td] = slots[t];
-    isRef.set(td, isRef.get(t));
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			Conditional<Integer> oldValue = slots[y + 1];
+			slots[y + 1] = new Choice<>(ctx.and(x), slots[y], oldValue).simplify();
+			return new Choice<>(ctx.and(x), new One<>(y + 1), new One<>(y));
+		}
+    	
+	}).simplify();
+//    int td=t+1;
+    
+//    slots[td] = slots[t];
+    isRef.set(top.simplify(ctx).getValue() + 1, isRef.get(top.simplify(ctx).getValue()));
 
     if (attrs != null){
-      attrs[td] = attrs[t];
+      attrs[td.getValue()] = attrs[top.getValue()];
     }
-
-    top = new One<>(td);
+    top = td;
+//    top = new One<>(td);
   }
 
   public void dup2 () {
@@ -1877,13 +1893,28 @@ public abstract class StackFrame implements Cloneable {
   public Conditional<Integer> peek2 () {// TODO
     return slots[top.getValue()];
   }
+  
+  public Conditional<Integer> peek(FeatureExpr ctx) {
+	  return top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-  public Conditional<Integer> peek2(int offset) {
-	  Conditional<Integer> v = slots[top.getValue() - offset];
-      return v;
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			return slots[y];
+		}
+	}).simplify();
+  }
+
+  public Conditional<Integer> peek(FeatureExpr ctx, final int offset) {
+	  return top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			return slots[y-offset];
+		}
+	}).simplify();
 	  
-	  
-	  
+//	  Conditional<Integer> v = slots[top.getValue() - offset];
+//      return v;
 //    return slots[top-offset];
   }
   
@@ -1891,34 +1922,43 @@ public abstract class StackFrame implements Cloneable {
     return slots[top.getValue()-offset].getValue();
   }
 
-  public void removeArguments (MethodInfo mi) {
+  public void removeArguments (FeatureExpr ctx, MethodInfo mi) {
     int i = mi.getArgumentsSize();
 
     if (i != 0) {
-      pop(i);
+      pop(ctx, i);
     }
   }
   
-  public void pop (int n) {
+  public void pop (final FeatureExpr ctx, final int n) {//TODO
     //assert (top >= stackBase) : "stack empty";
 
-    int t = top.getValue() - n;
+	  int current = top.simplify(ctx).getValue(); 
+    int t =  current - n;
 
     // <2do> get rid of this !
-    for (int i=top.getValue(); i>t; i--) {
-      if (isRef.get(i) && (slots[i].getValue() != MJIEnv.NULL)) {
+    for (int i=top.simplify(ctx).getValue(); i>t; i--) {
+      if (isRef.get(i) && (slots[i].simplify(ctx).getValue() != MJIEnv.NULL)) {
         VM.getVM().getSystemState().activateGC();
         break;
       }
     }
 
     if (attrs != null){  // just to avoid memory leaks
-      for (int i=top.getValue(); i>t; i--){
+      for (int i=current; i>t; i--){
         attrs[i] = null;
       }
     }
 
-    top = new One<>(t);
+    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			return new Choice<>(ctx.and(x), new One<>(y - n), new One<>(y));
+		}
+	}).simplify();
+    
+//    top = new One<>(t);
   }
 
   public float popFloat() {    
@@ -1932,18 +1972,23 @@ public abstract class StackFrame implements Cloneable {
 
     return Float.intBitsToFloat(v);
   }
-  
-  public int pop () {
-	  return pop2().getValue();
-  }
 	  
-  public Conditional<Integer> pop2() {
+  public Conditional<Integer> pop(FeatureExpr ctx) {
     //assert (top >= stackBase) : "stack empty";
-    Conditional<Integer> v = slots[top.getValue()];
+//    Conditional<Integer> v = slots[top.getValue()];
 
+    Conditional<Integer> v = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			return slots[y];
+		}
+    	
+	}).simplify();
+    
     // <2do> get rid of this
-    if (isRef.get(top.getValue())) {
-      if (v.getValue() != MJIEnv.NULL) {
+    if (isRef.get(top.simplify(ctx).getValue(true))) {
+      if (v.simplify(ctx).getValue().intValue() != MJIEnv.NULL) {
         VM.getVM().getSystemState().activateGC();
       }
     }
@@ -1952,7 +1997,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[top.getValue()] = null;
     }
 
-    top = top.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
 		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
 			return new Choice<>(x, new One<>(y - 1), new One<>(y));
@@ -1968,14 +2013,29 @@ public abstract class StackFrame implements Cloneable {
     return v;
   }
   
-  public void pushLocal (int index) {
-	  top = new One<>(top.getValue() + 1);
-    
-    slots[top.getValue()] = slots[index];
-    isRef.set(top.getValue(), isRef.get(index));
+  public void pushLocal (final FeatureExpr ctx, final int index) {
+	    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+			public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+				return new Choice<>(ctx.and(x), new One<>(y + 1), new One<>(y));
+			}
+	    	
+		}).simplify();
+	
+	    top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+			public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+				Conditional<Integer> oldValue = slots[y];
+				slots[y] = new Choice<>(ctx.and(x), slots[index], oldValue).simplify();
+				return null;
+			}
+	    	
+		});
+//    slots[top.getValue()] = slots[index];
+    isRef.set(top.simplify(ctx).getValue(true), isRef.get(index));
 
     if (attrs != null){
-      attrs[top.getValue()] = attrs[index];
+      attrs[top.simplify(ctx).getValue(true)] = attrs[index];
     }
   }
 
@@ -1994,15 +2054,34 @@ public abstract class StackFrame implements Cloneable {
     top = new One<>(t);
   }
 
-  public void storeOperand (int index){
-    slots[index] = slots[top.getValue()];
-    isRef.set( index, isRef.get(top.getValue()));
+  public void storeOperand (final FeatureExpr ctx, final int index){
+	  slots[index] = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			Conditional<Integer> oldValue = slots[index];
+			return new Choice<>(ctx.and(x), slots[y], oldValue);
+		}
+		
+	}).simplify();
+	  
+//    slots[index] = slots[top.getValue()];
+    isRef.set( index, isRef.get(top.simplify(ctx).getValue()));
 
     if (attrs != null){
       attrs[index] = attrs[top.getValue()];
       attrs[top.getValue()] = null;
     }
-    top = new One<>(top.getValue() - 1);
+    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			return new Choice<>(ctx.and(x), new One<>(y-1), new One<>(y));
+		}
+    	
+	}).simplify();
+    
+//    top = new One<>(top.getValue() - 1);
   }
 
   public void storeLongOperand (int index){
@@ -2052,10 +2131,21 @@ public abstract class StackFrame implements Cloneable {
     //}
   }
 
-  public void pushRef (int ref){
-	  top = new One<>(top.getValue() + 1);
-    slots[top.getValue()] = new One<>(ref);
-    isRef.set(top.getValue());
+  public void pushRef (final int ref, final FeatureExpr ctx){
+	  top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+			public Conditional<Integer> apply(FeatureExpr f, Integer oldValue) {
+				if (f.and(ctx).isContradiction()) {
+					return new One<>(oldValue);
+				}
+				Conditional<Integer> oldSlot = slots[oldValue+1];
+				slots[oldValue+1] = new Choice<>(f.and(ctx), new One<>(ref), oldSlot).simplify();
+				return new Choice<>(f.and(ctx), new One<>(oldValue + 1), new One<>(oldValue)).simplify();
+			} 
+		  }).simplify();
+		  
+//	  top = new One<>(top.getValue() + 1);
+//    slots[top.getValue()] = new One<>(ref);
+    isRef.set(top.simplify(ctx).getValue());
 
     //if (attrs != null){ // done on pop
     //  attrs[top] = null;
@@ -2066,10 +2156,23 @@ public abstract class StackFrame implements Cloneable {
     }
   }
 
-  public void push (int v, boolean ref) {
-	  top = new One<>(top.getValue() + 1);
-    slots[top.getValue()] = new One<>(v);
-    isRef.set(top.getValue(), ref);
+  public void push (final FeatureExpr ctx, final int v, boolean ref) {
+	  top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+			public Conditional<Integer> apply(FeatureExpr f, Integer oldValue) {
+				if (ctx.and(f).isContradiction()) {
+					return new One<>(oldValue);
+				}
+				Conditional<Integer> oldSlot = slots[oldValue+1];
+				slots[oldValue+1] = new Choice<>(f.and(ctx), new One<>(v), oldSlot).simplify();
+				return new Choice<>(f.and(ctx), new One<>(oldValue + 1), new One<>(oldValue)).simplify();
+			} 
+		  }).simplify();
+	  
+//	  top = new One<>(top.getValue() + 1);
+	  
+	  
+//    slots[top.getValue()] = new One<>(v);
+    isRef.set(top.simplify(ctx).getValue(), ref);
 
     //if (attrs != null){ // done on pop
     //  attrs[top] = null;
@@ -2094,7 +2197,7 @@ public abstract class StackFrame implements Cloneable {
   //--- abstract argument & return passing that is shared between VM types
   
   public void setReferenceResult (int ref, Object attr){
-    pushRef(ref);
+    pushRef(ref, FeatureExprFactory.True());
     if (attr != null){
       setOperandAttr(attr);
     }
@@ -2115,7 +2218,7 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public int getResult(){
-    return pop();
+    return pop(FeatureExprFactory.True()).getValue();
   }
   
   public long getLongResult(){
@@ -2123,15 +2226,15 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public int getReferenceResult () {
-    return pop();
+    return pop(FeatureExprFactory.True()).getValue();
   }
   
   public Object getResultAttr () {
-    return getOperandAttr();
+    return getOperandAttr(FeatureExprFactory.True());
   }
 
   public Object getLongResultAttr () {
-    return getOperandAttr();
+    return getOperandAttr(FeatureExprFactory.True());
   }
   
   public float getFloatResult(){
@@ -2150,12 +2253,12 @@ public abstract class StackFrame implements Cloneable {
   
   //--- VM independent exception handler setup
   
-  public void setExceptionReference (int exRef){
-    pushRef(exRef);
+  public void setExceptionReference (int exRef, FeatureExpr ctx){
+    pushRef(exRef, FeatureExprFactory.True());
   }
   
   public int getExceptionReference (){
-    return pop();
+    return pop(FeatureExprFactory.True()).getValue();
   }
   
   public void setExceptionReferenceAttribute (Object attr){
@@ -2163,7 +2266,7 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public Object getExceptionReferenceAttribute (){
-    return getOperandAttr();
+    return getOperandAttr(FeatureExprFactory.True());
   }
   
   

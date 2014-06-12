@@ -40,7 +40,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     int aref = peekArrayRef(ti); // need to be poly, could be LongArrayStore
     if (aref == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
     }
 
     ElementInfo e = ti.getModifiableElementInfoWithUpdatedSharedness(aref);
@@ -53,20 +53,20 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
     int esize = getElementSize();
     StackFrame frame = ti.getModifiableTopFrame();
 
-    Object attr = esize == 1 ? frame.getOperandAttr() : frame.getLongOperandAttr();
+    Object attr = esize == 1 ? frame.getOperandAttr(ctx) : frame.getLongOperandAttr();
     
-    popValue(frame);
-    index = frame.pop();
+    popValue(ctx, frame);
+    index = frame.pop(ctx).getValue();
     // don't set 'arrayRef' before we do the CG check (would kill loop optimization)
-    arrayRef = frame.pop();
+    arrayRef = frame.pop(ctx).getValue();
 
-    Instruction xInsn = checkArrayStoreException(ti, e);
+    Instruction xInsn = checkArrayStoreException(ctx, ti, e);
     if (xInsn != null){
       return new One<>(xInsn);
     }
 
     try {
-      setField(e, index);
+      setField(ctx, e, index);
       e.setElementAttrNoClone(index,attr); // <2do> what if the value is the same but not the attr?
       return getNext(ctx, ti);
 
@@ -88,13 +88,13 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
     return ti.getTopFrame().peek(1);
   }
 
-  protected Instruction checkArrayStoreException(ThreadInfo ti, ElementInfo ei){
+  protected Instruction checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei){
     return null;
   }
 
-  protected abstract void popValue(StackFrame frame);
+  protected abstract void popValue(FeatureExpr ctx, StackFrame frame);
 
-  protected abstract void setField (ElementInfo e, int index)
+  protected abstract void setField (FeatureExpr ctx, ElementInfo e, int index)
                     throws ArrayIndexOutOfBoundsExecutiveException;
 
 

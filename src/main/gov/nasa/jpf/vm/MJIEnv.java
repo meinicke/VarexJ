@@ -1009,7 +1009,7 @@ public class MJIEnv {
   }
 
   public int newIntArray (int[] buf){
-    ElementInfo eiArray = heap.newArray(FeatureExprFactory.True(), "I", buf.length, ti);
+    ElementInfo eiArray = heap.newArray(NativeMethodInfo.CTX, "I", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setIntElement( i, buf[i]);
     }
@@ -1336,13 +1336,13 @@ public class MJIEnv {
   public void throwException (String clsName) {
     ClassInfo ciX = ClassInfo.getInitializedClassInfo(clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
-    exceptionRef = ti.createException(ciX, null, NULL);
+    exceptionRef = ti.createException(NativeMethodInfo.CTX, ciX, null, NULL);
   }
 
   public void throwException (String clsName, String details) {
     ClassInfo ciX = ClassInfo.getInitializedClassInfo(clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
-    exceptionRef = ti.createException(ciX, details, NULL);
+    exceptionRef = ti.createException(NativeMethodInfo.CTX, ciX, details, NULL);
   }
 
   public void throwAssertion (String details) {

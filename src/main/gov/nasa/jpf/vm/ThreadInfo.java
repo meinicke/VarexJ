@@ -801,7 +801,7 @@ public class ThreadInfo extends InfoObject
     if (throwableRef == MJIEnv.NULL){
       // if no throwable was provided (the normal case), throw a java.lang.ThreadDeath Error
       ClassInfo cix = ClassInfo.getInitializedSystemClassInfo("java.lang.ThreadDeath", this);
-      throwableRef = createException(cix, null, MJIEnv.NULL);
+      throwableRef = createException(NativeMethodInfo.CTX, cix, null, MJIEnv.NULL);
     }
 
     // now the tricky part - this thread is alive but might be blocked, notified
@@ -816,7 +816,7 @@ public class ThreadInfo extends InfoObject
         // remember the exception to be thrown when we return from the native method
         env.throwException(throwableRef);
       } else {
-        Instruction nextPc = throwException(throwableRef);
+        Instruction nextPc = throwException(FeatureExprFactory.True(), throwableRef);
         setNextPC(nextPc);
       }
 
@@ -1028,14 +1028,15 @@ public class ThreadInfo extends InfoObject
    * Returns the this pointer of the callee from the stack.
    */
   public int getCalleeThis (MethodInfo mi) {
-    return top.getCalleeThis(mi);
+    return top.getCalleeThis(FeatureExprFactory.True(), mi);
   }
 
   /**
    * Returns the this pointer of the callee from the stack.
+ * @param ctx TODO
    */
-  public int getCalleeThis (int size) {
-    return top.getCalleeThis(size);
+  public int getCalleeThis (FeatureExpr ctx, int size) {
+    return top.getCalleeThis(ctx, size);
   }
 
   public ClassInfo getClassInfo (int objref) {
@@ -1057,7 +1058,7 @@ public class ThreadInfo extends InfoObject
 
     InvokeInstruction call = (InvokeInstruction) pc.getValue();
 
-    return getCalleeThis(Types.getArgumentsSize(call.getInvokedMethodSignature()) + 1) == r.getObjectRef();
+    return getCalleeThis(FeatureExprFactory.True(), Types.getArgumentsSize(call.getInvokedMethodSignature()) + 1) == r.getObjectRef();
   }
 
   public ApplicationContext getApplicationContext(){
@@ -1516,8 +1517,9 @@ public class ThreadInfo extends InfoObject
   /**
    * get a stack snapshot that consists of an array of {mthId,pc} pairs.
    * strip stackframes that enter instance methods of the exception object
+ * @param ctx TODO
    */
-  public int[] getSnapshot (int xObjRef) {
+  public int[] getSnapshot (FeatureExpr ctx, int xObjRef) {
     StackFrame frame = top;
     int n = stackDepth;
     
@@ -1535,7 +1537,7 @@ public class ThreadInfo extends InfoObject
 
     for (; frame != null; frame = frame.getPrevious()){
       snap[j++] = frame.getMethodInfo().getGlobalId();
-      snap[j++] = frame.getPC().getValue().getInstructionIndex();
+      snap[j++] = frame.getPC().simplify(ctx).getValue().getInstructionIndex();
     }
 
     return snap;
@@ -1764,7 +1766,7 @@ public class ThreadInfo extends InfoObject
   protected void processPendingSUTExceptionRequest (){
     if (pendingSUTExceptionRequest != null){
       // <2do> we could do more specific checks for ClassNotFoundExceptions here
-      nextPc = new One<>(createAndThrowException( pendingSUTExceptionRequest.getExceptionClassName(), pendingSUTExceptionRequest.getDetails()));
+      nextPc = new One<>(createAndThrowException( FeatureExprFactory.True(), pendingSUTExceptionRequest.getExceptionClassName(), pendingSUTExceptionRequest.getDetails()));
       pendingSUTExceptionRequest = null;
     }
   }
@@ -1774,17 +1776,19 @@ public class ThreadInfo extends InfoObject
    * <2do> pcm - this is only valid for java.* and our own Throwables that don't
    * need ctor execution since we only initialize the Throwable fields. This method
    * is here to avoid round trips in case of exceptions
+ * @param ctx TODO
    */
-  int createException (ClassInfo ci, String details, int causeRef){
-    int[] snap = getSnapshot(MJIEnv.NULL);
+  int createException (FeatureExpr ctx, ClassInfo ci, String details, int causeRef){
+    int[] snap = getSnapshot(ctx, MJIEnv.NULL);
     return vm.getHeap().newSystemThrowable(ci, details, snap, causeRef, this, 0).getObjectRef();
   }
 
   /**
    * Creates and throws an exception. This is what is used if the exception is
    * thrown by the VM (or a listener)
+ * @param ctx TODO
    */
-  public Instruction createAndThrowException (ClassInfo ci, String details) {
+  public Instruction createAndThrowException (FeatureExpr ctx, ClassInfo ci, String details) {
     if (!ci.isRegistered()) {
       ci.registerClass(this);
     }
@@ -1795,18 +1799,19 @@ public class ThreadInfo extends InfoObject
       }
     }
 
-    int objref = createException(ci,details, MJIEnv.NULL);
-    return throwException(objref);
+    int objref = createException(ctx,ci, details, MJIEnv.NULL);
+    return throwException(ctx, objref);
   }
 
   /**
    * Creates an exception and throws it.
+ * @param ctx TODO
    */
-  public Instruction createAndThrowException (String cname) {
-    return createAndThrowException(cname, null);
+  public Instruction createAndThrowException (FeatureExpr ctx, String cname) {
+    return createAndThrowException(ctx, cname, null);
   }
 
-  public Instruction createAndThrowException (String cname, String details) {
+  public Instruction createAndThrowException (FeatureExpr ctx, String cname, String details) {
     try {
       ClassInfo ci = null;
       try {
@@ -1820,12 +1825,12 @@ public class ThreadInfo extends InfoObject
           throw cie;
         }
       }
-      return createAndThrowException(ci, details);
+      return createAndThrowException(ctx, ci, details);
       
     } catch (ClassInfoException cie){
       if(!cname.equals(cie.getExceptionClass())) {
         ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cie.getExceptionClass());
-        return createAndThrowException(ci, cie.getMessage());
+        return createAndThrowException(ctx, ci, cie.getMessage());
       } else {
         throw cie;
       }
@@ -1933,10 +1938,9 @@ public class ThreadInfo extends InfoObject
         	
 //          nextPc = pc.getValue().execute(this);
         } catch (ClassInfoException cie) {
-          nextPc = new One<>(this.createAndThrowException(cie.getExceptionClass(), cie.getMessage()));
+          nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
       }
-
     // we also count the skipped ones
     executedInstructions++;
     
@@ -1988,7 +1992,7 @@ public class ThreadInfo extends InfoObject
     try {
         nextPc = pc.execute(FeatureExprFactory.True(), this);
       } catch (ClassInfoException cie) {
-        nextPc = new One<>(this.createAndThrowException(cie.getExceptionClass(), cie.getMessage()));
+        nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
       }
 
     // since this is part of the inner execution loop, it is a convenient place  to check probe notifications
@@ -2760,7 +2764,7 @@ public class ThreadInfo extends InfoObject
       return insn;
     }
 
-    return throwException(xRef);
+    return throwException(FeatureExprFactory.True(), xRef);
   }
   
   /**
@@ -2776,7 +2780,7 @@ public class ThreadInfo extends InfoObject
         ciException = ClassInfo.getInitializedSystemClassInfo("java.lang.reflect.InvocationTargetException", this);
       }
 
-      matchingHandler = frame.getHandlerFor( ciException);
+      matchingHandler = frame.getHandlerFor( FeatureExprFactory.True(), ciException);
       if (matchingHandler != null){
         return new HandlerContext( this, ciException, frame, matchingHandler);
       }
@@ -2803,8 +2807,9 @@ public class ThreadInfo extends InfoObject
   
   /**
    * unwind stack frames until we find a matching handler for the exception object
+ * @param ctx TODO
    */
-  public Instruction throwException (int exceptionObjRef) {
+  public Instruction throwException (FeatureExpr ctx, int exceptionObjRef) {
     Heap heap = vm.getHeap();
     ElementInfo eiException = heap.get(exceptionObjRef);
     ClassInfo ciException = eiException.getClassInfo();
@@ -2820,7 +2825,7 @@ public class ThreadInfo extends InfoObject
 
     // we don't have to store the stacktrace explicitly anymore, since that is now
     // done in the Throwable ctor (more specifically the native fillInStackTrace)
-    pendingException = new ExceptionInfo(this, eiException);
+    pendingException = new ExceptionInfo(ctx, this, eiException);
 
     vm.notifyExceptionThrown(this, eiException);
 
@@ -2836,13 +2841,13 @@ public class ThreadInfo extends InfoObject
       // that means we have to turn the exception into an InvocationTargetException
       if (frame.isReflection()) {
         ciException = ClassInfo.getInitializedSystemClassInfo("java.lang.reflect.InvocationTargetException", this);
-        exceptionObjRef  = createException(ciException, exceptionName, exceptionObjRef);
+        exceptionObjRef  = createException(ctx, ciException, exceptionName, exceptionObjRef);
         exceptionName = ciException.getName();
         eiException = heap.get(exceptionObjRef);
-        pendingException = new ExceptionInfo(this, eiException);
+        pendingException = new ExceptionInfo(ctx, this, eiException);
       }
 
-      matchingHandler = frame.getHandlerFor( ciException);
+      matchingHandler = frame.getHandlerFor( ctx, ciException);
       if (matchingHandler != null){
         handlerFrame = frame;
         break;
@@ -2895,7 +2900,7 @@ public class ThreadInfo extends InfoObject
       // to reset the operand stack to contain only the exception reference
       // (4.9.2 - "4. merge the state of the operand stack..")
       handlerFrame = getModifiableTopFrame();
-      handlerFrame.setExceptionReference(exceptionObjRef);
+      handlerFrame.setExceptionReference(exceptionObjRef, ctx);
 
       // jump to the exception handler and set pc so that listeners can see it
       int handlerOffset = matchingHandler.getHandler();

@@ -35,7 +35,7 @@ public class LSHL extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v1 = frame.pop();
+    int v1 = frame.pop(ctx).getValue();
     long v2 = frame.popLong();
 
     frame.pushLong(v2 << v1);

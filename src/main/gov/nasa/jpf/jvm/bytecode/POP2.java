@@ -36,7 +36,7 @@ public class POP2 extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    frame.pop(2);
+    frame.pop(ctx, 2);
 
     return getNext(ctx, ti);
   }

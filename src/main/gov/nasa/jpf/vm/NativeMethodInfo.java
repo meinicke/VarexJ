@@ -119,8 +119,8 @@ public class NativeMethodInfo extends MethodInfo {
     env.setCallEnvironment(this);
 
     if (isUnsatisfiedLinkError(env)) {
-      return new One<>(ti.createAndThrowException("java.lang.UnsatisfiedLinkError",
-                                        "cannot find native " + ci.getName() + '.' + getName()));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.UnsatisfiedLinkError", "cannot find native " + ci.getName() + '.' + getName()));
     }
 
     try {
@@ -135,7 +135,7 @@ public class NativeMethodInfo extends MethodInfo {
         // something that's not wrapped into a InvocationTargetException
         // (e.g. InterruptedException), which is why there still is a
         // MJIEnv.throwException()
-        return new One<>(ti.throwException( env.popException()));
+        return new One<>(ti.throwException( ctx, env.popException()));
       }
 
       StackFrame top = ti.getTopFrame();
@@ -174,18 +174,18 @@ public class NativeMethodInfo extends MethodInfo {
 
     } catch (IllegalArgumentException iax) {
       logger.warning(iax.toString());
-      return new One<>(ti.createAndThrowException("java.lang.IllegalArgumentException",
-                                        "calling " + ci.getName() + '.' + getName()));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.IllegalArgumentException", "calling " + ci.getName() + '.' + getName()));
     } catch (IllegalAccessException ilax) {
       logger.warning(ilax.toString());
-      return new One<>(ti.createAndThrowException("java.lang.IllegalAccessException",
-                                        "calling " + ci.getName() + '.' + getName()));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.IllegalAccessException", "calling " + ci.getName() + '.' + getName()));
     } catch (InvocationTargetException itx) {
 
       // if loading a class throws an exception
       if(itx.getTargetException() instanceof ClassInfoException) {
         ClassInfoException cie = (ClassInfoException) itx.getTargetException();
-        return new One<>(ti.createAndThrowException(cie.getExceptionClass(), cie.getMessage()));
+        return new One<>(ti.createAndThrowException(ctx, cie.getExceptionClass(), cie.getMessage()));
       }
 
       if (itx.getTargetException() instanceof UncaughtException) {  // Native methods could 

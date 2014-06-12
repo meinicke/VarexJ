@@ -35,7 +35,7 @@ public class I2F extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v = frame.pop();
+    int v = frame.pop(ctx).getValue();
     
     frame.pushFloat((float)v);
 

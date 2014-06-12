@@ -40,7 +40,7 @@ public class FDIV extends JVMInstruction {
     float v2 = frame.popFloat();
     
     float r = v2 / v1;
-    frame.push(Types.floatToInt(r), false);
+    frame.push(ctx, Types.floatToInt(r), false);
 
     return getNext(ctx, ti);
   }

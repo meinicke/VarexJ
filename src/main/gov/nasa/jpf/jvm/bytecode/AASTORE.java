@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -35,16 +36,16 @@ public class AASTORE extends ArrayStoreInstruction {
 
   int value;
 
-  protected void popValue(StackFrame frame){
-    value = frame.pop();
+  protected void popValue(FeatureExpr ctx, StackFrame frame){
+    value = frame.pop(ctx).getValue();
   }
 
-  protected void setField (ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
-    ei.checkArrayBounds(index);
+  protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+    ei.checkArrayBounds(ctx, index);
     ei.setReferenceElement(index, value);
   }
 
-  protected Instruction checkArrayStoreException(ThreadInfo ti, ElementInfo ei){
+  protected Instruction checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei){
     ClassInfo c = ei.getClassInfo();
 
     if (value != MJIEnv.NULL) { // no checks for storing 'null'
@@ -53,7 +54,7 @@ public class AASTORE extends ArrayStoreInstruction {
       if (!elementCi.isInstanceOf(arrayElementCi)) {
         String exception = "java.lang.ArrayStoreException";
         String exceptionDescription = elementCi.getName();
-        return ti.createAndThrowException(exception, exceptionDescription);
+        return ti.createAndThrowException(ctx, exception, exceptionDescription);
       }
     }
 

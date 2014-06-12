@@ -18,34 +18,37 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.StackFrame;
 
-
 /**
- * Branch if int comparison succeeds
- * ..., value1, value2 => ...
+ * Branch if int comparison succeeds ..., value1, value2 => ...
  */
 public class IF_ICMPEQ extends IfInstruction {
 
-  public IF_ICMPEQ(int targetPc) {
-    super(targetPc);
-  }
+	public IF_ICMPEQ(int targetPc) {
+		super(targetPc);
+	}
 
+	public Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame) {
+		Conditional<Integer> v1 = frame.pop(ctx);
+		Conditional<Integer> v2 = frame.pop(ctx);
+		return mapr(v1, v2);
+		// return new One<>((v1 == v2));
+	}
 
-  public Conditional<Boolean> popConditionValue (StackFrame frame) {
-    int v1 = frame.pop();
-    int v2 = frame.pop();
+	@Override
+	protected boolean compare(int x, int y) {
+		return x == y;
+	}
 
-    return new One<>((v1 == v2));
-  }
+	public int getByteCode() {
+		return 0x9F;
+	}
 
-  public int getByteCode () {
-    return 0x9F;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

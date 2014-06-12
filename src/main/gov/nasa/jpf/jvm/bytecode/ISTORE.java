@@ -39,7 +39,7 @@ public class ISTORE extends LocalVariableInstruction implements StoreInstruction
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    frame.storeOperand(index);
+    frame.storeOperand(ctx, index);
     
     return getNext(ctx, ti);
 

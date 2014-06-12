@@ -20,6 +20,8 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -35,13 +37,18 @@ public class IMUL extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v1 = frame.pop();
-    int v2 = frame.pop();
+    Conditional<Integer> v1 = frame.pop(ctx);
+    Conditional<Integer> v2 = frame.pop(ctx);
 
-    frame.push(v1 * v2);
+    frame.push(maprInt(v1, v2));
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected int instruction(int v1, int v2) {
+		return v1 * v2;
+	}
 
   public int getByteCode () {
     return 0x68;

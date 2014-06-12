@@ -73,7 +73,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     }
         
     if (callee == null) {
-      return new One<>(ti.createAndThrowException("java.lang.NoSuchMethodException", cname + '.' + mname));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodException", cname + '.' + mname));
     }
 
     // this can be actually different than (can be a base)

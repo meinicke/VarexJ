@@ -63,7 +63,7 @@ public class INSTANCEOF extends JVMInstruction {
     }
 
     StackFrame frame = ti.getModifiableTopFrame();
-    int objref = frame.pop();
+    int objref = frame.pop(ctx).getValue();
 
     if (objref == MJIEnv.NULL) {
       frame.push(0);

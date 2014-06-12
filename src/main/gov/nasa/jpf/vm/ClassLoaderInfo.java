@@ -562,7 +562,7 @@ public class ClassLoaderInfo
       if (frame != null){ // there was a roundtrip, but make sure it wasn't a recursive one
         LoadClassRequest a = frame.getFrameAttr(LoadClassRequest.class);
         if (a != null && a.isRequestFor(typeName)){ // the roundtrip is completed
-          int clsObjRef = frame.pop();
+          int clsObjRef = frame.pop(FeatureExprFactory.True()).getValue();
 
           if (clsObjRef == MJIEnv.NULL) {
             throw new ClassInfoException("class not found: " + typeName, this, "java.lang.NoClassDefFoundError", typeName);

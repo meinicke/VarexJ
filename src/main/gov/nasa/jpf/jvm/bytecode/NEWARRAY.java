@@ -44,11 +44,11 @@ public class NEWARRAY extends NewArrayInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    arrayLength = frame.pop();
+    arrayLength = frame.pop(ctx).getValue();
     Heap heap = ti.getHeap();
 
     if (arrayLength < 0){
-      return new One<>(ti.createAndThrowException("java.lang.NegativeArraySizeException"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
     }
 
     // there is no clinit for array classes, but we still have  to create a class object
@@ -62,8 +62,8 @@ public class NEWARRAY extends NewArrayInstruction {
     }
    
     if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
-      return new One<>(ti.createAndThrowException("java.lang.OutOfMemoryError",
-                                        "trying to allocate new " +
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.OutOfMemoryError", "trying to allocate new " +
                                           getTypeName() +
                                         "[" + arrayLength + "]"));
     }
@@ -71,7 +71,7 @@ public class NEWARRAY extends NewArrayInstruction {
     ElementInfo eiArray = heap.newArray(ctx, type, arrayLength, ti);
     int arrayRef = eiArray.getObjectRef();
     
-    frame.pushRef(arrayRef);
+    frame.pushRef(arrayRef, ctx);
 
     return getNext(ctx, ti);
   }

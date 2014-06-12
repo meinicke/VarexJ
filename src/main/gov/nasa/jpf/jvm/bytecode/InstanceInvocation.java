@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -38,7 +39,7 @@ public abstract class InstanceInvocation extends InvokeInstruction {
   public int getCalleeThis (ThreadInfo ti) {
     if (!ti.isPostExec()){
       // we have to dig out the 'this' reference from the callers stack
-      return ti.getCalleeThis( getArgSize());
+      return ti.getCalleeThis( FeatureExprFactory.True(), getArgSize());
     } else {
       // enter() cached it
       return lastObj;

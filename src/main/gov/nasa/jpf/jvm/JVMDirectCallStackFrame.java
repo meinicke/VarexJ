@@ -19,6 +19,8 @@
 
 package gov.nasa.jpf.jvm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MethodInfo;
 
@@ -35,12 +37,12 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int getResult(){
-    return pop();
+    return pop(FeatureExprFactory.True()).getValue();
   }
   
   @Override
   public int getReferenceResult(){
-    return pop();
+    return pop(FeatureExprFactory.True()).getValue();
   }
   
   @Override
@@ -50,7 +52,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
 
   @Override
   public Object getResultAttr(){
-    return getOperandAttr();
+    return getOperandAttr(FeatureExprFactory.True());
   }
   
   @Override
@@ -59,14 +61,14 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   }
 
   @Override
-  public void setExceptionReference (int exRef){
+  public void setExceptionReference (int exRef, FeatureExpr ctx){
     clearOperandStack();
-    pushRef( exRef);
+    pushRef( exRef, ctx);
   }
   
   @Override
   public int getExceptionReference(){
-    return pop();
+    return pop(FeatureExprFactory.True()).getValue();
   }
 
   @Override
@@ -76,7 +78,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public Object getExceptionReferenceAttribute (){
-    return getOperandAttr();
+    return getOperandAttr(FeatureExprFactory.True());
   }
   
   //--- direct call argument initialization
@@ -95,7 +97,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int setReferenceArgument (int slotIdx, int ref, Object attr){
-    pushRef(ref);
+    pushRef(ref, FeatureExprFactory.True());
     if (attr != null){
       setOperandAttr(attr);
     }

@@ -40,7 +40,7 @@ public class FMUL extends JVMInstruction {
     float v2 = frame.popFloat();
     
     float r = v1 * v2;    
-    frame.push(Types.floatToInt(r), false);
+    frame.push(ctx, Types.floatToInt(r), false);
 
     return getNext(ctx, ti);
   }

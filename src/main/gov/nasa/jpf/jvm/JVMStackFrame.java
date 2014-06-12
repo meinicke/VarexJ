@@ -60,7 +60,7 @@ public class JVMStackFrame extends StackFrame {
       int[] callerSlots = caller.getSlots(ctx);
       FixedBitSet callerRefs = caller.getReferenceMap();
 
-      for (int i = 0, j = caller.getTopPos() - nArgSlots + 1; i < nArgSlots; i++, j++) {
+      for (int i = 0, j = caller.getTopPos2().simplify(ctx).getValue() - nArgSlots + 1; i < nArgSlots; i++, j++) {
         calleeSlots[i] = new One<>(callerSlots[j]);
         if (callerRefs.get(j)) {
           calleeRefs.set(i);
@@ -78,9 +78,9 @@ public class JVMStackFrame extends StackFrame {
   }
 
   @Override
-  public void setExceptionReference (int exRef){
+  public void setExceptionReference (int exRef, FeatureExpr ctx){
     clearOperandStack();
-    pushRef( exRef);
+    pushRef( exRef, ctx);
   }
   
   //--- these are for setting up arguments from a VM / listener caller

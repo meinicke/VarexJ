@@ -36,12 +36,12 @@ public class IDIV extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v1 = frame.pop();
-    int v2 = frame.pop();
+    int v1 = frame.pop(ctx).getValue();
+    int v2 = frame.pop(ctx).getValue();
 
     if (v1 == 0) {
-      return new One<>(ti.createAndThrowException("java.lang.ArithmeticException",
-                                        "division by zero"));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.ArithmeticException", "division by zero"));
     }
 
     frame.push(v2 / v1);

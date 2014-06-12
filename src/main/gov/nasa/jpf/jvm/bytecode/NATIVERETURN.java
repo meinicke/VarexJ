@@ -48,15 +48,15 @@ public class NATIVERETURN extends ReturnInstruction {
     }
 
     StackFrame frame = ti.getModifiableTopFrame();    
-    getAndSaveReturnValue(frame);
+    getAndSaveReturnValue(frame, ctx);
 
     // NativeStackFrame can never can be the first stack frame, so no thread CG
 
     frame = ti.popAndGetModifiableTopFrame();
 
     // remove args, push return value and continue with next insn
-    frame.removeArguments(mi);
-    pushReturnValue(frame);
+    frame.removeArguments(ctx, mi);
+    pushReturnValue(ctx, frame);
 
     if (retAttr != null) {
       setReturnAttr(ti, retAttr);
@@ -90,7 +90,7 @@ public class NATIVERETURN extends ReturnInstruction {
   }
 
   @Override
-  protected void getAndSaveReturnValue (StackFrame frame) {
+  protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
     // it's got to be a NativeStackFrame since this insn is created by JPF
     NativeStackFrame nativeFrame = (NativeStackFrame)frame;
 
@@ -121,14 +121,14 @@ public class NATIVERETURN extends ReturnInstruction {
   }
 
   // this is only called internally right before we return
-  protected Object getReturnedOperandAttr (StackFrame frame) {
+  protected Object getReturnedOperandAttr (FeatureExpr ctx, StackFrame frame) {
     return retAttr;
   }
 
   // <2do> this should use the getResult..() methods of NativeStackFrame
   
   @Override
-  protected void pushReturnValue (StackFrame fr) {
+  protected void pushReturnValue (FeatureExpr ctx, StackFrame fr) {
     int  ival;
     long lval;
     int  retSize = 1;
@@ -177,7 +177,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
       default:
         // everything else is supposed to be a reference
-        fr.push(((Integer) ret).intValue(), true);
+        fr.push(ctx, ((Integer) ret).intValue(), true);
       }
 
       if (retAttr != null) {

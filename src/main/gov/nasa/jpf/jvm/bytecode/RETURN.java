@@ -63,7 +63,7 @@ public class RETURN extends ReturnInstruction {
     return 0;
   }
   
-  protected Object getReturnedOperandAttr (StackFrame frame) {
+  protected Object getReturnedOperandAttr (FeatureExpr ctx, StackFrame frame) {
     return null;
   }
 
@@ -72,11 +72,11 @@ public class RETURN extends ReturnInstruction {
     return null; // no return value
   }
 
-  protected void getAndSaveReturnValue (StackFrame frame) {
+  protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
     // we don't have any
   }
 
-  protected void pushReturnValue (StackFrame frame) {
+  protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
     // nothing to do
   }
 

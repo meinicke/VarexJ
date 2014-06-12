@@ -50,7 +50,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     int argSize = getArgSize();
-    int objRef = ti.getCalleeThis( argSize);
+    int objRef = ti.getCalleeThis( ctx, argSize);
     lastObj = objRef;
 
     // we don't have to check for NULL objects since this is either a ctor, a 
@@ -65,7 +65,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
     }      
 
     if (callee == null){
-      return new One<>(ti.createAndThrowException("java.lang.NoSuchMethodException", "Calling " + cname + '.' + mname));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodException", "Calling " + cname + '.' + mname));
     }
 
     ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);

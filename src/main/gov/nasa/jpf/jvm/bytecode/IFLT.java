@@ -18,8 +18,11 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
+import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 
 
@@ -34,8 +37,12 @@ public class IFLT extends IfInstruction {
   }
 
 
-  public Conditional<Boolean> popConditionValue (StackFrame frame) {
-    return new One<>((frame.pop() < 0));
+  public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
+	  return frame.pop(ctx).map(new Function<Integer, Boolean>() {
+			public Boolean apply(Integer x) {
+				return x.intValue() < 0;
+			}
+		}).simplify();
   }
 
   public int getByteCode () {

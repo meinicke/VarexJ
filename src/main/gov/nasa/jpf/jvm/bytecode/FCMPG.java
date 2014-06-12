@@ -38,7 +38,7 @@ public class FCMPG extends JVMInstruction {
     float v1 = frame.popFloat();
     float v2 = frame.popFloat();
     
-    frame.push(conditionValue(v1, v2), false);
+    frame.push(ctx, conditionValue(v1, v2), false);
 
     return getNext(ctx, ti);
   }

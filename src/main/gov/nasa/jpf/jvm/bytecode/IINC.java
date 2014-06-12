@@ -45,14 +45,8 @@ public class IINC extends JVMInstruction {
 	public Conditional<Instruction> execute(final FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
 		Conditional<Integer> v = (frame.getLocalVariable2(index));
-		v = v.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-			public Conditional<Integer> apply(FeatureExpr x, Integer value) {
-				return new Choice<>(x.and(ctx), new One<>(value + increment), new One<>(value));
-			}
-			
-		}).simplify();
-
+		v = maprInt(v, increment);
+		
 		frame.setLocalVariable(index, v, false);
 		return getNext(ctx, ti);
 
@@ -64,6 +58,11 @@ public class IINC extends JVMInstruction {
 		// frame.setLocalVariable(index, v, false);
 		//
 		// return getNext(ctx, ti);
+	}
+	
+	@Override
+	protected int instruction(int v1, int v2) {
+		return v1 + v2;
 	}
 
 	public int getLength() {

@@ -34,9 +34,9 @@ public class I2B extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    int v = frame.pop();
+    Conditional<Integer> v = frame.pop(ctx);
     
-    frame.push((byte) v, false);
+    frame.push(ctx, (byte) v.getValue().intValue(), false);
 
     return getNext(ctx, ti);
   }

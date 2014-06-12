@@ -37,15 +37,15 @@ public class ARRAYLENGTH extends ArrayInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    arrayRef = frame.pop();
+    arrayRef = frame.pop(ctx).getValue();
 
     if (arrayRef == MJIEnv.NULL){
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException",
-                                        "array length of null object"));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.NullPointerException", "array length of null object"));
     }
 
     ElementInfo ei = ti.getElementInfo(arrayRef);
-    frame.push(ei.arrayLength(), false);
+    frame.push(ctx, ei.arrayLength(), false);
 
     return getNext(ctx, ti);
   }

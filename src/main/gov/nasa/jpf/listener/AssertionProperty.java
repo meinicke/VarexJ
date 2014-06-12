@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.listener;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.PropertyListenerAdapter;
@@ -99,7 +100,7 @@ public class AssertionProperty extends PropertyListenerAdapter {
           log.warning(msg);
 
           frame = ti.getModifiableTopFrame();
-          frame.pop(); // ensure operand stack integrity (ATHROW pops)
+          frame.pop(FeatureExprFactory.True()); // ensure operand stack integrity (ATHROW pops)
           
           ti.skipInstruction(insn.getNext());
 

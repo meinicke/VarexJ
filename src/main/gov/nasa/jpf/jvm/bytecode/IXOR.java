@@ -35,13 +35,17 @@ public class IXOR extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v1 = frame.pop();
-    int v2 = frame.pop();
-
-    frame.push(v1 ^ v2);
+    Conditional<Integer> v1 = frame.pop(ctx);
+    Conditional<Integer> v2 = frame.pop(ctx);
+    frame.push(ctx, maprInt(v1, v2));
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected int instruction(int v1, int v2) {
+		return v1 ^ v2;
+	}
 
   public int getByteCode () {
     return 0x82;

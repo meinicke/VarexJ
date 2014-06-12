@@ -39,7 +39,7 @@ public class ILOAD extends LocalVariableInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    frame.pushLocal(index);
+    frame.pushLocal(ctx, index);
 
     return getNext(ctx, ti);
   }

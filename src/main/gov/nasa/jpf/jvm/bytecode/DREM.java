@@ -41,7 +41,7 @@ public class DREM extends JVMInstruction {
     double v2 = frame.popDouble();
     
     if (v1 == 0){
-      return new One<>(ti.createAndThrowException("java.lang.ArithmeticException","division by zero"));
+      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
     }
     
     double r = v2 % v1;

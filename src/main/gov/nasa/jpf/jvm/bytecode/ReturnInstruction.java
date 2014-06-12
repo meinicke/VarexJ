@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.VM;
 import java.util.Iterator;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -42,12 +43,12 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
   protected StackFrame returnFrame;
 
   abstract public int getReturnTypeSize();
-  abstract protected Object getReturnedOperandAttr(StackFrame frame);
+  abstract protected Object getReturnedOperandAttr(FeatureExpr ctx, StackFrame frame);
   
   // note these are only callable from within the same enter - thread interleavings
   // would cause races
-  abstract protected void getAndSaveReturnValue (StackFrame frame);
-  abstract protected void pushReturnValue (StackFrame frame);
+  abstract protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx);
+  abstract protected void pushReturnValue (FeatureExpr ctx, StackFrame frame);
 
   public abstract Object getReturnValue(ThreadInfo ti);
 
@@ -93,7 +94,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
    */
   public Object getReturnAttr (ThreadInfo ti){
     StackFrame frame = ti.getTopFrame();
-    return frame.getOperandAttr();
+    return frame.getOperandAttr(FeatureExprFactory.True());
   }
 
   /**
@@ -164,8 +165,8 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
 
     StackFrame frame = ti.getModifiableTopFrame();
     returnFrame = frame;
-    Object attr = getReturnedOperandAttr(frame); // the return attr - get this before we pop
-    getAndSaveReturnValue(frame);
+    Object attr = getReturnedOperandAttr(ctx, frame); // the return attr - get this before we pop
+    getAndSaveReturnValue(frame, ctx);
     
     // note that this is never the first frame, since we start all threads (incl. main)
     // through a direct call
@@ -173,8 +174,8 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
 
     // remove args, push return value and continue with next insn
     // (DirectCallStackFrames don't use this)
-    frame.removeArguments(mi);
-    pushReturnValue(frame);
+    frame.removeArguments(ctx, mi);
+    pushReturnValue(ctx, frame);
 
     if (attr != null) {
       setReturnAttr(ti, attr);

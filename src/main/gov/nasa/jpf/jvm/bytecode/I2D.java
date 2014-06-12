@@ -35,9 +35,9 @@ public class I2D extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int ival = frame.pop();
+    Conditional<Integer> ival = frame.pop(ctx);
     
-    frame.pushDouble((double) ival);
+    frame.pushDouble((double) ival.getValue());
 
     return getNext(ctx, ti);
   }

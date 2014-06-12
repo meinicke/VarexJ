@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;
 import gov.nasa.jpf.vm.ByteArrayFields;
@@ -33,12 +34,12 @@ public class BASTORE extends ArrayStoreInstruction {
 
   byte value;
 
-  protected void popValue(StackFrame frame){
-    value = (byte)frame.pop();
+  protected void popValue(FeatureExpr ctx, StackFrame frame){
+    value = (byte)frame.pop(ctx).getValue().intValue();
   }
 
-  protected void setField (ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
-    ei.checkArrayBounds(index);
+  protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+    ei.checkArrayBounds(ctx, index);
 
     Fields f = ei.getFields();
 

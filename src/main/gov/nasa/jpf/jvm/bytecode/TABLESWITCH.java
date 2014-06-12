@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
@@ -56,10 +57,10 @@ public class TABLESWITCH extends SwitchInstruction implements gov.nasa.jpf.vm.Ta
     }
   }
 
-  protected Instruction executeConditional (ThreadInfo ti){
+  protected Instruction executeConditional (FeatureExpr ctx, ThreadInfo ti){
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int value = frame.pop();
+    int value = frame.pop(ctx).getValue();
     int i = value-min;
     int pc;
 

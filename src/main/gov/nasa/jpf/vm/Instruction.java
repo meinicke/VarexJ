@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Source;
@@ -413,4 +414,35 @@ public abstract class Instruction implements Cloneable {
 
     return clone;
   }
+  
+  protected Conditional<Integer> maprInt(final Conditional<Integer> v1, final Conditional<Integer> v2) {
+	  return v1.mapr(new Function<Integer, Conditional<Integer>>() {
+
+			@Override
+			public Conditional<Integer> apply(final Integer x1) {
+				return v2.mapr(new Function<Integer, Conditional<Integer>>() {
+
+					@Override
+					public Conditional<Integer> apply(Integer x2) {
+						return new One<>(instruction(x1.intValue(), x2.intValue()));
+					}
+					
+				}); 
+			}
+	    	
+		}).simplify();
+  }
+  protected Conditional<Integer> maprInt(final Conditional<Integer> v1, final int v2) {
+	  return v1.mapr(new Function<Integer, Conditional<Integer>>() {
+
+			@Override
+			public Conditional<Integer> apply(final Integer x1) {
+				return new One<>(instruction(x1.intValue(), v2)); 
+			}
+	    	
+		}).simplify();
+  }
+   protected int instruction(int v1, int v2) {
+		throw new RuntimeException("apply not implemented");
+	}
 }

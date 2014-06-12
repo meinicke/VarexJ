@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -34,15 +35,15 @@ public class FRETURN extends ReturnInstruction {
     return 1;
   }
 
-  protected Object getReturnedOperandAttr (StackFrame frame) {
-    return frame.getOperandAttr();
+  protected Object getReturnedOperandAttr (FeatureExpr ctx, StackFrame frame) {
+    return frame.getOperandAttr(ctx);
   }
   
-  protected void getAndSaveReturnValue (StackFrame frame) {
+  protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
     ret = frame.popFloat();
   }
   
-  protected void pushReturnValue (StackFrame frame) {
+  protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
     frame.pushFloat(ret);
   }
   

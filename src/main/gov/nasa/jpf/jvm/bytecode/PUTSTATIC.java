@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.sat.SATFeatureExprFactory;
 
 
@@ -46,13 +47,13 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
   }
 
   @Override
-  protected void popOperands1 (StackFrame frame) {
-    frame.pop2(); // .. val => ..
+  protected void popOperands1 (FeatureExpr ctx, StackFrame frame) {
+    frame.pop(FeatureExprFactory.True()); // .. val => ..
   }
   
   @Override
-  protected void popOperands2 (StackFrame frame) {
-    frame.pop(2);  // .. highVal, lowVal => ..
+  protected void popOperands2 (FeatureExpr ctx, StackFrame frame) {
+    frame.pop(ctx, 2);  // .. highVal, lowVal => ..
   }
   
   @Override
@@ -69,7 +70,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			StackFrame frame = ti.getModifiableTopFrame();
 			FeatureExpr feature = SATFeatureExprFactory.createDefinedExternal(fname);
 			
-			frame.pop();
+			frame.pop(ctx);
 //			frame.push(0);
 //			frame.push(new One<>(0));
 			frame.push(new Choice<>(feature, new One<>(1), new One<>(0)));
@@ -86,7 +87,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
       }
       
       if (fieldInfo == null) {
-        return new One<>(ti.createAndThrowException("java.lang.NoSuchFieldError", (className + '.' + fname)));
+        return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", (className + '.' + fname)));
       }
       
       ClassInfo ciField = fi.getClassInfo();

@@ -20,16 +20,24 @@ package gov.nasa.jpf.vm;
 
 import java.io.PrintWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * helper class to store context of an exception
  */
 public class ExceptionInfo {
   ElementInfo  ei;
   ThreadInfo ti;
+  final FeatureExpr ctx;
   
-  ExceptionInfo (ThreadInfo xThread, ElementInfo xEi) {
+  public ExceptionInfo (FeatureExpr ctx, ThreadInfo xThread, ElementInfo xEi) {
+	  this.ctx = ctx;
     ti = xThread;
     ei = xEi;
+  }
+  
+  public FeatureExpr getCtx() {
+	return ctx;
   }
   
   public ElementInfo getException() {

@@ -44,7 +44,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
   @MJI
   public int fillInStackTrace____Ljava_lang_Throwable_2 (MJIEnv env, int objref) {
     ThreadInfo ti = env.getThreadInfo();
-    int[] snap = ti.getSnapshot(objref);
+    int[] snap = ti.getSnapshot(NativeMethodInfo.CTX, objref);
     
     int aref = env.newIntArray(snap);
     env.setReferenceField(objref, "snapshot", aref);

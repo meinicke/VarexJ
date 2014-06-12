@@ -65,15 +65,15 @@ public class ANEWARRAY extends NewArrayInstruction {
 
     StackFrame frame = ti.getModifiableTopFrame();
 
-    arrayLength = frame.pop();
+    arrayLength = frame.pop(ctx).getValue();
     if (arrayLength < 0){
-      return new One<>(ti.createAndThrowException("java.lang.NegativeArraySizeException"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
     }
 
     Heap heap = ti.getHeap();
     if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
-      return new One<>(ti.createAndThrowException("java.lang.OutOfMemoryError",
-                                        "trying to allocate new " +
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.OutOfMemoryError", "trying to allocate new " +
                                           Types.getTypeName(type) +
                                         "[" + arrayLength + "]"));
     }
@@ -82,7 +82,7 @@ public class ANEWARRAY extends NewArrayInstruction {
     int aRef = eiArray.getObjectRef();
     
     // pushes the object reference on the top stack frame
-    frame.push(aRef, true);
+    frame.push(ctx, aRef, true);
     
     return getNext(ctx, ti);
   }

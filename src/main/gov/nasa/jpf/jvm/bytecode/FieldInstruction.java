@@ -111,10 +111,10 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
   public abstract ElementInfo peekElementInfo (ThreadInfo ti);
 
   // pop operands for a 1 slot value
-  protected abstract void popOperands1( StackFrame frame);
+  protected abstract void popOperands1( FeatureExpr ctx, StackFrame frame);
 
   // pop operands for a 2 slot value
-  protected abstract void popOperands2( StackFrame frame);
+  protected abstract void popOperands2( FeatureExpr ctx, StackFrame frame);
 
   protected abstract boolean isSkippedFinalField (ElementInfo ei);
 
@@ -124,17 +124,17 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
   }
 
   protected Conditional<Instruction> put1 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
-    Object attr = frame.getOperandAttr();
-    Conditional<Integer> val = frame.peek2();
+    Object attr = frame.getOperandAttr(ctx);
+    Conditional<Integer> val = frame.peek(ctx);
     lastValue = val;
 
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter
-    if ((eiFieldOwner.get1SlotField(fi).getValue() != val.getValue(true)) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
+    if ((eiFieldOwner.get1SlotField(fi).simplify(ctx).getValue() != val.simplify(ctx).getValue(true)) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       
       if (fi.isReference()) {
-        eiFieldOwner.setReferenceField(fi, val.getValue());
+        eiFieldOwner.setReferenceField(fi, val.simplify(ctx).getValue());
         
         // this is kind of policy, but it seems more natural to overwrite instead of accumulate
         // (if we want to accumulate, this has to happen in ElementInfo/Fields)
@@ -170,7 +170,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     }
     
     frame = ti.getModifiableTopFrame(); // now we have to modify it
-    popOperands1(frame); // .. val => ..
+    popOperands1(ctx, frame); // .. val => ..
     return getNext(ctx, ti);
   }
   
@@ -188,7 +188,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     }
     
     frame = ti.getModifiableTopFrame(); // now we have to modify it    
-    popOperands2(frame); // .. highVal,lowVal => ..
+    popOperands2(ctx, frame); // .. highVal,lowVal => ..
     return getNext(ctx, ti);
   }
   

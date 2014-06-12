@@ -35,9 +35,9 @@ public class I2S extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v = frame.pop();
+    Conditional<Integer> v = frame.pop(ctx);
     
-    frame.push((short)v);
+    frame.push(v);
 
     return getNext(ctx, ti);
   }

@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -47,11 +48,11 @@ public abstract class VirtualInvocation extends InstanceInvocation {
   }
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    int objRef = ti.getCalleeThis(getArgSize());
+    int objRef = ti.getCalleeThis(ctx, getArgSize());
 
     if (objRef == MJIEnv.NULL) {
       lastObj = MJIEnv.NULL;
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
     }
 
     MethodInfo callee = getInvokedMethod(ti, objRef);
@@ -59,10 +60,10 @@ public abstract class VirtualInvocation extends InstanceInvocation {
     
     if (callee == null) {
       String clsName = ti.getClassInfo(objRef).getName();
-      return new One<>(ti.createAndThrowException("java.lang.NoSuchMethodError", clsName + '.' + mname));
+      return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodError", clsName + '.' + mname));
     } else {
       if (callee.isAbstract()){
-        return new One<>(ti.createAndThrowException("java.lang.AbstractMethodError", callee.getFullName() + ", object: " + ei));
+        return new One<>(ti.createAndThrowException(ctx, "java.lang.AbstractMethodError", callee.getFullName() + ", object: " + ei));
       }
     }
 
@@ -98,7 +99,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
     int objRef;
 
     if (ti.getNextPC() == null){ // this is pre-exec
-      objRef = ti.getCalleeThis(getArgSize());
+      objRef = ti.getCalleeThis(FeatureExprFactory.True(), getArgSize());
     } else {                     // this is post-exec
       objRef = lastObj;
     }

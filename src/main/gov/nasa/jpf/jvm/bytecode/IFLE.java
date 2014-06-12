@@ -19,8 +19,9 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.vm.StackFrame;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * Branch if int comparison with zero succeeds
@@ -33,8 +34,12 @@ public class IFLE extends IfInstruction {
   }
 
 
-  public Conditional<Boolean> popConditionValue (StackFrame frame) {
-    return new One<>((frame.pop() <= 0));
+  public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
+	  return frame.pop(ctx).map(new Function<Integer, Boolean>() {
+			public Boolean apply(Integer x) {
+				return x.intValue() <= 0;
+			}
+		}).simplify();
   }
 
   public int getByteCode () {

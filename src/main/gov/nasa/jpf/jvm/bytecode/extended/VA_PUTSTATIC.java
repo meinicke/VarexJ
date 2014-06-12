@@ -29,7 +29,7 @@ public class VA_PUTSTATIC extends PUTSTATIC {
 			StackFrame frame = ti.getModifiableTopFrame();
 			FeatureExpr feature = SATFeatureExprFactory.createDefinedExternal(fname);
 			
-			frame.pop();
+			frame.pop(ctx);
 //			frame.push(0);
 //			frame.push(new One<>(0));
 			frame.push(ctx, new Choice<>(feature, new One<>(1), new One<>(0)));

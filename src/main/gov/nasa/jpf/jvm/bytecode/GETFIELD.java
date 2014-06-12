@@ -40,32 +40,32 @@ public class GETFIELD extends InstanceFieldInstruction {
   }
 
   @Override
-  protected void popOperands1 (StackFrame frame) {
-    frame.pop(); // .. val => ..
+  protected void popOperands1 (FeatureExpr ctx, StackFrame frame) {
+    frame.pop(ctx); // .. val => ..
   }
   
   @Override
-  protected void popOperands2 (StackFrame frame) {
-    frame.pop(2);  // .. highVal, lowVal => ..
+  protected void popOperands2 (FeatureExpr ctx, StackFrame frame) {
+    frame.pop(ctx, 2);  // .. highVal, lowVal => ..
   }
   
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    int objRef = frame.peek(); // don't pop yet, we might re-enter
+    int objRef = frame.peek(ctx).simplify(ctx).getValue(); // don't pop yet, we might re-enter
     lastThis = objRef;
     if (objRef == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException("java.lang.NullPointerException",
-                                        "referencing field '" + fname + "' on null object"));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
     }
 
     ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 
     FieldInfo fi = getFieldInfo();
     if (fi == null) {
-      return new One<>(ti.createAndThrowException("java.lang.NoSuchFieldError",
-                                        "referencing field '" + fname + "' in " + ei));
+      return new One<>(ti.createAndThrowException(ctx,
+                                        "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
     }
     
     // check if this breaks the current transition
@@ -75,7 +75,7 @@ public class GETFIELD extends InstanceFieldInstruction {
       }
     }
 
-    frame.pop(); // Ok, now we can remove the object ref from the stack
+    frame.pop(ctx); // Ok, now we can remove the object ref from the stack
     Object attr = ei.getFieldAttr(fi);
 
     // We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
@@ -84,7 +84,7 @@ public class GETFIELD extends InstanceFieldInstruction {
       lastValue = new One<>(ival);
       
       if (fi.isReference()){
-        frame.pushRef(ival);
+        frame.pushRef(ival, ctx);
         
       } else {
         frame.push(ival);
