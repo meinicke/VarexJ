@@ -19,13 +19,10 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.FieldInfo;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.util.Locale;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class JPF_java_util_Locale extends NativePeer {
 
@@ -68,21 +65,21 @@ public class JPF_java_util_Locale extends NativePeer {
   public int getDisplayName__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref) {
     Locale locale = getLocale(env, locref);
     String name = locale.getDisplayName();
-    return env.newString(name);
+    return env.newString(FeatureExprFactory.True(), name);
   }
   
   @MJI
   public int getDisplayVariant__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref) {
     Locale locale = getLocale(env, locref);
     String variant = locale.getDisplayVariant();
-    return env.newString(variant);    
+    return env.newString(FeatureExprFactory.True(), variant);    
   }
   
   @MJI
   public int getDisplayCountry__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref) {
     Locale locale = getLocale(env, locref);
     String country = locale.getDisplayCountry();
-    return env.newString(country);
+    return env.newString(FeatureExprFactory.True(), country);
 
   }
 
@@ -90,21 +87,21 @@ public class JPF_java_util_Locale extends NativePeer {
   public int getDisplayLanguage__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref) {
     Locale locale = getLocale(env, locref);
     String language = locale.getDisplayLanguage();
-    return env.newString(language);
+    return env.newString(FeatureExprFactory.True(), language);
   }
 
   @MJI
   public int getISO3Country____Ljava_lang_String_2 (MJIEnv env, int objref) {
     Locale locale = getLocale(env, objref);
     String s = locale.getISO3Country();
-    return env.newString(s);    
+    return env.newString(FeatureExprFactory.True(), s);    
   }
 
   @MJI
   public int getISO3Language____Ljava_lang_String_2 (MJIEnv env, int objref) {
     Locale locale = getLocale(env, objref);
     String s = locale.getISO3Language();
-    return env.newString(s);
+    return env.newString(FeatureExprFactory.True(), s);
   }
 
   //--- the static ones
@@ -114,7 +111,7 @@ public class JPF_java_util_Locale extends NativePeer {
 
     int aref = env.newObjectArray("java.lang.String", s.length);
     for (int i=0; i<s.length; i++) {
-      env.setReferenceArrayElement(aref, i, env.newString(s[i]));
+      env.setReferenceArrayElement(aref, i, env.newString(FeatureExprFactory.True(), s[i]));
     }
     
     return aref;
@@ -126,7 +123,7 @@ public class JPF_java_util_Locale extends NativePeer {
 
     int aref = env.newObjectArray("java.lang.String", s.length);
     for (int i=0; i<s.length; i++) {
-      env.setReferenceArrayElement(aref, i, env.newString(s[i]));
+      env.setReferenceArrayElement(aref, i, env.newString(FeatureExprFactory.True(), s[i]));
     }
     
     return aref;    

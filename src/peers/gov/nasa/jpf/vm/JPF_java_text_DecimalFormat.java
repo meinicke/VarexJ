@@ -19,15 +19,14 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 // NOTE - this only works because DecimalFormat is a Format subclass, i.e.
 // the java.text.Format native peer will be initialized first
@@ -116,7 +115,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
     NumberFormat fmt = getInstance(env,objref);
     if (fmt != null) {
       String s = fmt.format(number);
-      int sref = env.newString(s);
+      int sref = env.newString(FeatureExprFactory.True(), s);
       return sref;
     }
     
@@ -128,7 +127,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
     NumberFormat fmt = getInstance(env,objref);
     if (fmt != null) {
       String s = fmt.format(number);
-      int sref = env.newString(s);
+      int sref = env.newString(FeatureExprFactory.True(), s);
       return sref;
     }
     

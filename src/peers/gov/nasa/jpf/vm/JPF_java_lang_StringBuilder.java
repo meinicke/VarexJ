@@ -19,8 +19,8 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class JPF_java_lang_StringBuilder extends NativePeer {
   
@@ -41,7 +41,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
       if (m < n) {
         m = n;
       }
-      int arefNew = env.newCharArray(m);
+      int arefNew = env.newCharArray(FeatureExprFactory.True(), m);
       for (i=0; i<count; i++) {
         env.setCharArrayElement(arefNew, i, env.getCharArrayElement(aref, i));
       }
@@ -59,13 +59,14 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
   // we skip the AbstractStringBuilder ctor here, which is a bit dangerous
   // This is only justified because StringBuilders are used everywhere (implicitly)
   @MJI
-  public void $init____V (MJIEnv env, int objref){
-    int aref = env.newCharArray(16);
+  public void $init____V (FeatureExpr ctx, MJIEnv env, int objref){
+	  System.out.println("$init____V" + ctx);
+    int aref = env.newCharArray(ctx, 16);
     env.setReferenceField(objref, "value", aref);
   }
   @MJI
   public void $init__I__V (MJIEnv env, int objref, int len){
-    int aref = env.newCharArray(len);
+    int aref = env.newCharArray(FeatureExprFactory.True(), len);
     env.setReferenceField(objref, "value", aref);
   }
   @MJI
@@ -76,7 +77,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
     }
     
     char[] src = env.getStringChars(sRef);
-    int aref = env.newCharArray(src.length + 16);
+    int aref = env.newCharArray(NativeMethodInfo.CTX, src.length + 16);
     char[] dst = env.getCharArrayObject(aref);
     System.arraycopy(src,0,dst,0,src.length);
     
@@ -141,7 +142,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
       env.setCharArrayElement(aref, count, c);
     } else {
       int m = 3 * alen / 2;
-      int arefNew = env.newCharArray(m);
+      int arefNew = env.newCharArray(FeatureExprFactory.True(), m);
       for (i=0; i<count; i++) {
         env.setCharArrayElement(arefNew, i, env.getCharArrayElement(aref, i));
       }
@@ -156,12 +157,14 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
   }
 
   @MJI
-  public int toString____Ljava_lang_String_2 (MJIEnv env, int objref) {
+  public int toString____Ljava_lang_String_2 (FeatureExpr ctx, MJIEnv env, int objref) {
+	  System.out.println("toString____Ljava_lang_String_2: " + ctx);
+	  
     int aref = env.getReferenceField(objref, "value");
     int count = env.getIntField(objref, "count");
 
     char[] buf = env.getCharArrayObject(aref);
     String s = new String(buf, 0, count);
-    return env.newString(s);
+    return env.newString(ctx, s);
   }
 }

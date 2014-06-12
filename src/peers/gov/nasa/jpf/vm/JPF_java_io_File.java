@@ -19,15 +19,14 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * intercept and forward some of the filesystem access methods. This is very
@@ -46,7 +45,7 @@ public class JPF_java_io_File extends NativePeer {
     int newFileRef = env.newObject("java.io.File");
     ElementInfo fileEI = env.getModifiableElementInfo(newFileRef);
 
-    int fileNameRef = env.newString(file.getPath());
+    int fileNameRef = env.newString(FeatureExprFactory.True(), file.getPath());
     fileEI.setReferenceField("filename", fileNameRef);
 
     return newFileRef;
@@ -63,7 +62,7 @@ public class JPF_java_io_File extends NativePeer {
   @MJI
   public int getAbsolutePath____Ljava_lang_String_2 (MJIEnv env, int objref) {
     String pn = getFile(env,objref).getAbsolutePath();
-    return env.newString(pn);
+    return env.newString(FeatureExprFactory.True(), pn);
   }
 
   @MJI
@@ -76,7 +75,7 @@ public class JPF_java_io_File extends NativePeer {
   public int getCanonicalPath____Ljava_lang_String_2 (MJIEnv env, int objref) {
     try {
       String pn = getFile(env,objref).getCanonicalPath();
-      return env.newString(pn);
+      return env.newString(FeatureExprFactory.True(), pn);
     } catch (IOException iox) {
       env.throwException("java.io.IOException", iox.getMessage());
       return MJIEnv.NULL;
@@ -102,7 +101,7 @@ public class JPF_java_io_File extends NativePeer {
     try {
       File f = getFile(env,objref);
       URL url = f.toURL();
-      return env.newString(url.toString());
+      return env.newString(FeatureExprFactory.True(), url.toString());
     } catch (MalformedURLException mfux) {
       env.throwException("java.net.MalformedURLException", mfux.getMessage());
       return MJIEnv.NULL;
@@ -113,7 +112,7 @@ public class JPF_java_io_File extends NativePeer {
   public int getURISpec____Ljava_lang_String_2 (MJIEnv env, int objref){
     File f = getFile(env, objref);
     URI uri = f.toURI();
-    return env.newString(uri.toString());
+    return env.newString(FeatureExprFactory.True(), uri.toString());
   }
 
   @MJI

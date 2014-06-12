@@ -1,13 +1,6 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.DirectCallStackFrame;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.NativePeer;
-import gov.nasa.jpf.vm.StackFrame;
-import gov.nasa.jpf.vm.ThreadInfo;
 
 
 public class JPF_gov_nasa_jpf_SerializationConstructor extends NativePeer {
@@ -45,7 +38,7 @@ public class JPF_gov_nasa_jpf_SerializationConstructor extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // re-execution, 
-      int objRef = frame.getLocalVariable(0).getValue(); // that's the object ref we stored in (1)
+      int objRef = frame.getLocalVariable(0); // that's the object ref we stored in (1)
       return objRef;
     }
   }

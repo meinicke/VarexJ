@@ -20,6 +20,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer for Annotation Proxies
@@ -164,6 +165,6 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
     }
     
     
-    return env.newString(sb.toString());
+    return env.newString(FeatureExprFactory.True(), sb.toString());
   }
 }

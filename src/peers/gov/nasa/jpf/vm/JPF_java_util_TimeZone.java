@@ -19,12 +19,12 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer for java.util.TimeZone
@@ -64,7 +64,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
     int rawOffset = tz.getRawOffset();
     String realId = tz.getID(); // could have been changed if id was unknown
     if (!realId.equals(id)){
-      idRef = env.newString(realId);
+      idRef = env.newString(FeatureExprFactory.True(), realId);
     }
 
     int tzRef = env.newObject("java.util.TimeZone");
@@ -82,7 +82,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
   
   @MJI
   public int createDefaultZone____Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef){
-    int idRef = env.newString(defaultID);
+    int idRef = env.newString(FeatureExprFactory.True(), defaultID);
 
     int tzRef = env.newObject("java.util.TimeZone");
     env.setReferenceField(tzRef, "ID", idRef);
@@ -118,7 +118,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
     int rawOffset = tz.getRawOffset();
     String realId = tz.getID(); // could have been changed if id was unknown
     if (!realId.equals(id)){
-      idRef = env.newString(realId);
+      idRef = env.newString(FeatureExprFactory.True(), realId);
     }
     
     env.setReferenceField(objRef, "ID", idRef);
@@ -183,7 +183,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
     Locale displayLocale = JPF_java_util_Locale.getLocale(env, localeRef);
     String s = tz.getDisplayName(daylight, style, displayLocale);
     
-    int sref = env.newString(s);
+    int sref = env.newString(FeatureExprFactory.True(), s);
     return sref;
   }
   

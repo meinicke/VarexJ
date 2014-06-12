@@ -18,13 +18,15 @@
 //
 package gov.nasa.jpf.vm;
 
-import java.lang.reflect.Modifier;
-
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.MethodInfoRegistry;
 import gov.nasa.jpf.util.RunListener;
 import gov.nasa.jpf.util.RunRegistry;
+
+import java.lang.reflect.Modifier;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer for rudimentary constructor reflection.
@@ -75,7 +77,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     
     int nameRef = env.getReferenceField( objRef, "name");
     if (nameRef == MJIEnv.NULL) {
-      nameRef = env.newString(mi.getName());
+      nameRef = env.newString(FeatureExprFactory.True(), mi.getName());
       env.setReferenceField(objRef, "name", nameRef);
     }
    
@@ -117,7 +119,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // reflection call returned
-      int objRef = frame.getLocalVariable(0).getValue(); // that's the object ref we stored in (1)
+      int objRef = frame.getLocalVariable(0); // that's the object ref we stored in (1)
       return objRef;
     }
   }
@@ -184,7 +186,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     
     sb.append(')');
     
-    int sref = env.newString(sb.toString());
+    int sref = env.newString(FeatureExprFactory.True(), sb.toString());
     return sref;
   }
 

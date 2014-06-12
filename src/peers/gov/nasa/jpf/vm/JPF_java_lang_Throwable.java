@@ -19,13 +19,11 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
-import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -71,7 +69,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
     String stackTrace = sw.toString();
     pw.close();
     
-    return env.newString(stackTrace);
+    return env.newString(FeatureExprFactory.True(), stackTrace);
   }
   
   @MJI
@@ -84,6 +82,6 @@ public class JPF_java_lang_Throwable extends NativePeer {
       s += ": " + env.getStringObject(msgRef);
     }
     
-    return env.newString(s);
+    return env.newString(FeatureExprFactory.True(), s);
   }
 }

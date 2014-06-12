@@ -19,8 +19,6 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 /**
  * native peer for java.util.concurrent.atomic.AtomicLongArray

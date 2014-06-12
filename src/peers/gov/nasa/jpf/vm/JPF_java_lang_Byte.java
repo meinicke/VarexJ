@@ -1,8 +1,6 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 public class JPF_java_lang_Byte extends NativePeer {
   // <2do> at this point we deliberately do not override clinit

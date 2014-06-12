@@ -19,8 +19,6 @@
 package java.io;
 
 import java.nio.channels.FileChannel;
-
-import java.io.FileDescriptor;
 /**
  * MJI model class for java.io.RandomAccessFile
  * This class cannot yet handle File I/O correctly

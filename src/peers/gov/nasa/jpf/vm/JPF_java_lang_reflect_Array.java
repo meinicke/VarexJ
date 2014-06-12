@@ -19,10 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
-import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * MJI NativePeer class for java.lang.reflect.Array library abstraction
@@ -57,7 +54,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
     
     if ("boolean".equals(clsName)) { aRef = env.newBooleanArray(length); }
     else if ("byte".equals(clsName)) { aRef = env.newByteArray(length); }
-    else if ("char".equals(clsName)) { aRef = env.newCharArray(length); }
+    else if ("char".equals(clsName)) { aRef = env.newCharArray(FeatureExprFactory.True(), length); }
     else if ("short".equals(clsName)) { aRef = env.newShortArray(length); }
     else if ("int".equals(clsName)) { aRef = env.newIntArray(length); }
     else if ("long".equals(clsName)) { aRef = env.newLongArray(length); }

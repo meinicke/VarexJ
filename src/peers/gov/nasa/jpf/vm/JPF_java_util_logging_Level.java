@@ -18,10 +18,10 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.util.logging.Level;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * this is only a skeleton to make basic logging work under JPF
@@ -54,6 +54,6 @@ public class JPF_java_util_logging_Level extends NativePeer {
     }
     
     String localizedName = (level != null) ? level.getLocalizedName() : "UNKNOWN";    
-    return env.newString(localizedName); 
+    return env.newString(FeatureExprFactory.True(), localizedName); 
   }
 }

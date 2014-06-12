@@ -19,10 +19,10 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.text.DecimalFormatSymbols;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * MJI NativePeer class for java.text.DecimalFormatSymbols library abstraction
@@ -40,9 +40,9 @@ public class JPF_java_text_DecimalFormatSymbols extends NativePeer {
     env.setCharField(objRef,"digit", dfs.getDigit());
     env.setCharField(objRef,"minusSign", dfs.getMinusSign());
     env.setCharField(objRef,"perMill", dfs.getPerMill());
-    env.setReferenceField(objRef,"infinity", env.newString(dfs.getInfinity()));
-    env.setReferenceField(objRef,"NaN", env.newString(dfs.getNaN()));
-    env.setReferenceField(objRef,"currencySymbol", env.newString(dfs.getCurrencySymbol()));
+    env.setReferenceField(objRef,"infinity", env.newString(FeatureExprFactory.True(), dfs.getInfinity()));
+    env.setReferenceField(objRef,"NaN", env.newString(FeatureExprFactory.True(), dfs.getNaN()));
+    env.setReferenceField(objRef,"currencySymbol", env.newString(FeatureExprFactory.True(), dfs.getCurrencySymbol()));
     env.setCharField(objRef,"monetarySeparator", dfs.getMonetaryDecimalSeparator());
 
     env.setCharField(objRef,"decimalSeparator", dfs.getDecimalSeparator());

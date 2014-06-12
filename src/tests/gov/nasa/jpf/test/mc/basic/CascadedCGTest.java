@@ -23,7 +23,6 @@ package gov.nasa.jpf.test.mc.basic;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ChoiceGenerator;
@@ -38,8 +37,6 @@ import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
 import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
 
 import org.junit.Test;
-
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * regression test for cascaded ChoiceGenerators
@@ -156,8 +153,8 @@ public class CascadedCGTest extends TestJPF {
             StackFrame frame = ti.getModifiableTopFrame();
 
             int v = cg.getNextChoice();
-            int n = frame.pop().getValue();
-            frame.push(FeatureExprFactory.True(), new One<>(v));
+            int n = frame.pop();
+            frame.push(v);
 
             System.out.println("# listener replacing " + n + " with " + v);
           }

@@ -22,12 +22,6 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.jvm.bytecode.ReturnInstruction;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.VM;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.NativePeer;
 
 /**
  * native peer for MemoryGoal tests

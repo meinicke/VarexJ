@@ -19,10 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.text.DateFormat;
 import java.text.Format;
@@ -30,6 +27,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * this is just the minimal support for DateFormat.parse(String)
@@ -84,7 +83,7 @@ public class JPF_java_text_DateFormat extends NativePeer {
       Date d = env.getDateObject(dateRef);
       
       String s = fmt.format(d);
-      int sref = env.newString(s);
+      int sref = env.newString(FeatureExprFactory.True(), s);
       return sref;
     }
     

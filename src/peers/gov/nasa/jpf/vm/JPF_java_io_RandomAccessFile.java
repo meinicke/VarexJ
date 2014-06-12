@@ -18,11 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
 
 import java.util.HashMap;
-
-import gov.nasa.jpf.Config;
 
 /**
  * MJI NativePeer class for java.io.RandomAccessFile library abstraction

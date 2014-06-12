@@ -20,6 +20,7 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.Predicate;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
@@ -60,7 +61,7 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
     assert (oldValues.length>0);
     
     int len = oldValues.length - 1;
-    ElementInfo newQueue = env.getHeap().newArray("Ljava/lang/Object;", len, ti);
+    ElementInfo newQueue = env.getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", len, ti);
     int[] newValues = newQueue.asReferenceArray();
     
     System.arraycopy(oldValues, 1, newValues, 0, len);

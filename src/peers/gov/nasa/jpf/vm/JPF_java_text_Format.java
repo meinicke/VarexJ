@@ -20,8 +20,6 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.text.Format;
 import java.util.HashMap;

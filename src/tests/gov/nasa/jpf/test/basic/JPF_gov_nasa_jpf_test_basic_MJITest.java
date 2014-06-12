@@ -23,9 +23,9 @@ import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
-import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.UncaughtException;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer class for unit testing MJI
@@ -86,7 +86,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     System.out.println("# entering nativeCreateStringArray()");
 
     int ar = env.newObjectArray("Ljava/lang/String;", size);
-    env.setReferenceArrayElement(ar, 1, env.newString("one"));
+    env.setReferenceArrayElement(ar, 1, env.newString(FeatureExprFactory.True(), "one"));
 
     return ar;
   }
@@ -185,7 +185,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       // this shows how to get information back from the JPF roundtrip into
       // the native method
       int r = frame.getResult(); // the return value of the direct call above
-      int i = frame.getLocalVariable(0).getValue();
+      int i = frame.getLocalVariable(0);
 
       if (i < 3) { // repeat the round trip
         // we have to reset so that the PC is re-initialized

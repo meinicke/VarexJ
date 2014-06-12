@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * MJI NativePeer class for java.lang.Class library abstraction
@@ -254,7 +256,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // re-execution
-      int objRef = frame.getLocalVariable(0).getValue(); // that's the object ref we set in (1)
+      int objRef = frame.getLocalVariable(0); // that's the object ref we set in (1)
       return objRef;
     }      
   }
@@ -815,7 +817,7 @@ public class JPF_java_lang_Class extends NativePeer {
   @MJI
   public int getCanonicalName____Ljava_lang_String_2 (MJIEnv env, int clsRef){
     ClassInfo ci = env.getReferredClassInfo(clsRef);
-    return env.newString(getCanonicalName(ci));
+    return env.newString(FeatureExprFactory.True(), getCanonicalName(ci));
   }
 
   @MJI
@@ -946,6 +948,6 @@ public class JPF_java_lang_Class extends NativePeer {
         rname = rname.substring(1);
     }
 
-    return env.newString(rname);
+    return env.newString(FeatureExprFactory.True(), rname);
   }
 }

@@ -29,7 +29,6 @@ import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -164,7 +163,7 @@ public final class Class<T> implements Serializable, GenericDeclaration, Type, A
 
       T[] ae = getEnumConstants();
       for (T e: ae) {
-        map.put(((Enum)e).name(), e);
+        map.put(((Enum<?>)e).name(), e);
       }
 
       enumConstantDirectory = map;

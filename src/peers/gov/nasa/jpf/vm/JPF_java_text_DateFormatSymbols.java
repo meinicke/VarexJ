@@ -1,10 +1,10 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.text.DateFormatSymbols;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class JPF_java_text_DateFormatSymbols extends NativePeer {
   @MJI
@@ -37,7 +37,7 @@ public class JPF_java_text_DateFormatSymbols extends NativePeer {
     }
     
     String localPatternChars = dfs.getLocalPatternChars();
-    env.setReferenceField(objRef, "localPatternChars", env.newString(localPatternChars));
+    env.setReferenceField(objRef, "localPatternChars", env.newString(FeatureExprFactory.True(), localPatternChars));
 
   }
 }

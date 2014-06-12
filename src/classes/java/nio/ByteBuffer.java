@@ -231,7 +231,7 @@ public class ByteBuffer extends Buffer {
 		long x3 = ((long)(array[position+4] & 0xff) << 24);
 		long x2 = ((long)(array[position+5] & 0xff) << 16);
 		long x1 = ((long)(array[position+6] & 0xff) <<  8);
-		long x0 = ((long)(array[position+7] & 0xff)      );
+		long x0 = (array[position+7] & 0xff      );
 		position += 8;
 
 		return (x7 | x6 | x5 | x4 | x3 | x2 | x1 | x0);

@@ -24,8 +24,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * MJI NativePeer class for java.lang.Short library abstraction
@@ -61,7 +60,7 @@ public class JPF_java_lang_Short extends NativePeer {
 
   @MJI
   public int toString__S__Ljava_lang_String_2 (MJIEnv env, int objref, short val) {
-    return env.newString(Short.toString(val));
+    return env.newString(FeatureExprFactory.True(), Short.toString(val));
   }
 
   @MJI

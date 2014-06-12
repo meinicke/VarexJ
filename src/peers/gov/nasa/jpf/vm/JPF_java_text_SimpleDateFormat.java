@@ -19,15 +19,14 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * (incomplete) native peer for SimpleDateFormat. See Format for details
@@ -79,6 +78,6 @@ public class JPF_java_text_SimpleDateFormat extends NativePeer {
     Date date = new Date(dateTime);
     SimpleDateFormat f = getInstance(env,objref);
     String s = f.format(date);
-    return env.newString(s);
+    return env.newString(FeatureExprFactory.True(), s);
   }
 }

@@ -33,7 +33,7 @@ public class AnnotationType {
   public static synchronized AnnotationType getInstance (Class<?> annotationClass) {
     AnnotationType at = SharedSecrets.getJavaLangAccess().getAnnotationType(annotationClass);
     if (at == null) {
-      at = new AnnotationType((Class<?>) annotationClass);
+      at = new AnnotationType(annotationClass);
     }
     return at;
   }

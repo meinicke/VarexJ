@@ -19,9 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -64,7 +62,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
       if (m < n) {
         m = n;
       }
-      int arefNew = env.newCharArray(m);
+      int arefNew = env.newCharArray(FeatureExprFactory.True(), m);
       for (i=0; i<count; i++) {
         env.setCharArrayElement(arefNew, i, env.getCharArrayElement(aref, i));
       }
@@ -155,7 +153,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
       env.setCharArrayElement(aref, count, c);
     } else {
       int m = 3 * alen / 2;
-      int arefNew = env.newCharArray(m);
+      int arefNew = env.newCharArray(FeatureExprFactory.True(), m);
       for (int i=0; i<count; i++) {
         env.setCharArrayElement(arefNew, i, env.getCharArrayElement(aref, i));
       }

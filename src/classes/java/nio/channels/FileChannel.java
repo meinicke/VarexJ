@@ -18,9 +18,8 @@
 //
 package java.nio.channels;
 
-import java.io.IOException;
 import java.io.FileDescriptor;
-
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 //This class uses the methods from FileDescriptor in order to access files

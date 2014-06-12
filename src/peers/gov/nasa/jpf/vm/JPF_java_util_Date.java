@@ -1,10 +1,10 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.util.Date;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class JPF_java_util_Date extends NativePeer {
 
@@ -22,7 +22,7 @@ public class JPF_java_util_Date extends NativePeer {
     Date d = getDate(env,dateRef);
     String s = d.toString();
 
-    int sRef = env.newString(s);
+    int sRef = env.newString(FeatureExprFactory.True(), s);
     return sRef;
   }
 }

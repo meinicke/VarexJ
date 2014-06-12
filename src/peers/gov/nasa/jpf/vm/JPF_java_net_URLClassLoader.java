@@ -19,11 +19,13 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.JPFLogger;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.JPFLogger;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
@@ -91,7 +93,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
     String resourcePath = cl.findResource(rname);
 
-    return env.newString(resourcePath);
+    return env.newString(FeatureExprFactory.True(), resourcePath);
   }
 
   @MJI

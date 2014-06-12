@@ -18,7 +18,6 @@
 //
 package java.lang;
 
-import gov.nasa.jpf.vm.Verify;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -104,7 +103,7 @@ public abstract class ClassLoader {
 
   @SuppressWarnings({"unchecked","rawtypes"})
   public Enumeration<URL> getResources(String name) throws IOException {
-    Enumeration<URL>[] resEnum = (Enumeration<URL>[])new Enumeration[2];
+    Enumeration<URL>[] resEnum = new Enumeration[2];
 
     if(parent == null) {
       resEnum[0] = getSystemClassLoader().getResourcesURL(name);

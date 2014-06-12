@@ -25,8 +25,6 @@ import gov.nasa.jpf.JPFConfigException;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.FileUtils;
 import gov.nasa.jpf.util.JPFLogger;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

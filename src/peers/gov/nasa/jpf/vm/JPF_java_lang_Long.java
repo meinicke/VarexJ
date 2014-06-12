@@ -19,8 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * MJI NativePeer class for java.lang.Long library abstraction
@@ -54,27 +53,27 @@ public class JPF_java_lang_Long extends NativePeer {
 
   @MJI
   public int toBinaryString__J__Ljava_lang_String_2 (MJIEnv env, int objref, long val) {
-    return env.newString(Long.toBinaryString(val));
+    return env.newString(FeatureExprFactory.True(), Long.toBinaryString(val));
   }
 
   @MJI
   public int toHexString__J__Ljava_lang_String_2 (MJIEnv env, int objref, long val) {
-    return env.newString(Long.toHexString(val));
+    return env.newString(FeatureExprFactory.True(), Long.toHexString(val));
   }
 
   @MJI
   public int toOctalString__J__Ljava_lang_String_2 (MJIEnv env, int objref, long val) {
-    return env.newString(Long.toOctalString(val));
+    return env.newString(FeatureExprFactory.True(), Long.toOctalString(val));
   }
 
   @MJI
   public int toString__J__Ljava_lang_String_2 (MJIEnv env, int objref, long val) {
-    return env.newString(Long.toString(val));
+    return env.newString(FeatureExprFactory.True(), Long.toString(val));
   }
 
   @MJI
   public int toString__JI__Ljava_lang_String_2 (MJIEnv env, int objref, long val, int radix) {
-    return env.newString(Long.toString(val, radix));
+    return env.newString(FeatureExprFactory.True(), Long.toString(val, radix));
   }
 
   @MJI

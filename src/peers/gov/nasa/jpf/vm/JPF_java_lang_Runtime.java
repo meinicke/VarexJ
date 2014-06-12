@@ -20,9 +20,6 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.JPF_gov_nasa_jpf_vm_Verify;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 /**
  * just a dummy for now, to avoid UnsatisfiedLinkErrors

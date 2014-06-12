@@ -20,12 +20,13 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.choice.BreakGenerator;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * MJI NativePeer class for java.lang.System library abstraction
@@ -63,7 +64,7 @@ public class JPF_java_lang_System extends NativePeer {
     if (v == null){
       return MJIEnv.NULL;
     } else {
-      return env.newString(v);
+      return env.newString(FeatureExprFactory.True(), v);
     }
   }
 
@@ -107,9 +108,9 @@ public class JPF_java_lang_System extends NativePeer {
     
     for (Map.Entry<Object,Object> e : p.entrySet() ){
       env.setReferenceArrayElement(aref,i++, 
-                                   env.newString(e.getKey().toString()));
+                                   env.newString(FeatureExprFactory.True(), e.getKey().toString()));
       env.setReferenceArrayElement(aref,i++,
-                                   env.newString(e.getValue().toString()));
+                                   env.newString(FeatureExprFactory.True(), e.getValue().toString()));
     }
     
     return aref;
@@ -147,7 +148,7 @@ public class JPF_java_lang_System extends NativePeer {
     
     ThreadInfo ti = vm.getCurrentThread();
     Heap heap = vm.getHeap();
-    ElementInfo eiClassPath = heap.newString(JAVA_CLASS_PATH, ti);
+    ElementInfo eiClassPath = heap.newString(FeatureExprFactory.True(), JAVA_CLASS_PATH, ti);
     
     MethodInfo miGetProperty = system.getMethod("getProperty(Ljava/lang/String;)Ljava/lang/String;", true);
     DirectCallStackFrame frame = miGetProperty.createDirectCallStackFrame(ti, 0);
@@ -165,7 +166,7 @@ public class JPF_java_lang_System extends NativePeer {
        return null;
     }
     
-    int ref = frame.peek().getValue();
+    int ref = frame.peek();
     ElementInfo metaResult = heap.get(ref);
     String result = metaResult.asString();
     
@@ -221,8 +222,8 @@ public class JPF_java_lang_System extends NativePeer {
       }
             
       if (v != null){
-        env.setReferenceArrayElement(aref,i++, env.newString(s));
-        env.setReferenceArrayElement(aref,i++, env.newString(v));
+        env.setReferenceArrayElement(aref,i++, env.newString(FeatureExprFactory.True(), s));
+        env.setReferenceArrayElement(aref,i++, env.newString(FeatureExprFactory.True(), v));
       }
     }
         

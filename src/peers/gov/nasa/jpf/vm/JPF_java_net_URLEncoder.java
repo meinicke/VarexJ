@@ -20,11 +20,11 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer for java.net.URLEncoder forwarding
@@ -40,7 +40,7 @@ public class JPF_java_net_URLEncoder extends NativePeer {
 
     try {
       String e = URLEncoder.encode(s, enc);
-      return env.newString(e);
+      return env.newString(FeatureExprFactory.True(), e);
 
     } catch (UnsupportedEncodingException x){
       env.throwException("java.io.UnsupportedEncodingException", x.getMessage());

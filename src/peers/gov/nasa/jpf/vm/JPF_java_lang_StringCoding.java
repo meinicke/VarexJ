@@ -20,8 +20,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * we are not really interested in model checking this, so we intercept
@@ -37,7 +36,7 @@ public class JPF_java_lang_StringCoding extends NativePeer {
       int bref, int off, int len) {
 
     
-    int cref = env.newCharArray(len);
+    int cref = env.newCharArray(FeatureExprFactory.True(), len);
     for (int i=0,j=off; i<len; i++,j++) {
       env.setCharArrayElement(cref, i, (char)env.getByteArrayElement(bref,j));
     }

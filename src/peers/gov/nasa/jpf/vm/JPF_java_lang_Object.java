@@ -20,15 +20,7 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.ChoiceGenerator;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.Heap;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
-import gov.nasa.jpf.vm.SystemState;
-import gov.nasa.jpf.vm.ThreadInfo;
-import gov.nasa.jpf.vm.Types;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -67,10 +59,10 @@ public class JPF_java_lang_Object extends NativePeer {
           componentType = cci.getType();
         }
 
-        eiClone = heap.newArray(componentType, ei.arrayLength(), env.getThreadInfo());
+        eiClone = heap.newArray(FeatureExprFactory.True(), componentType, ei.arrayLength(), env.getThreadInfo());
         
       } else {
-        eiClone = heap.newObject(ci, env.getThreadInfo());
+        eiClone = heap.newObject(null, ci, env.getThreadInfo());
       }
       
       // Ok, this is nasty but efficient
@@ -207,7 +199,7 @@ public class JPF_java_lang_Object extends NativePeer {
     int hc = hashCode____I(env,objref);
     
     String s = ci.getName() + '@' + hc;
-    int sref = env.newString(s);
+    int sref = env.newString(FeatureExprFactory.True(), s);
     return sref;
   }
 }

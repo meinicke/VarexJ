@@ -22,19 +22,16 @@ import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
 import gov.nasa.jpf.jvm.bytecode.IRETURN;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.choice.IntChoiceFromList;
 
 import org.junit.Test;
-
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class SkipInstructionTest extends TestJPF {
 
@@ -57,7 +54,7 @@ public class SkipInstructionTest extends TestJPF {
           StackFrame frame = ti.getModifiableTopFrame();
 
           frame.pop();
-          frame.push(FeatureExprFactory.True(), new One<>(42));
+          frame.push(42);
 
           ti.skipInstruction(pc.getNext());
         }
@@ -130,7 +127,7 @@ public class SkipInstructionTest extends TestJPF {
             assert lastInsn instanceof IRETURN : "last instruction not an IRETURN ";
             StackFrame frame = ti.getModifiableTopFrame(); // we are modifying it
             System.out.println("listener is skipping method body of " + mi + " returning " + choice);
-            frame.push(FeatureExprFactory.True(), new One<>(choice));
+            frame.push(choice);
             ti.setNextPC(lastInsn);
           } else {
             System.out.println("unexpected CG: " + cg);

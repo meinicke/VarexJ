@@ -21,12 +21,12 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer for a regex Matcher
@@ -143,14 +143,14 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     Matcher matcher = getInstance( env, objref);
     String grp = matcher.group(i);
     
-    return env.newString(grp);
+    return env.newString(FeatureExprFactory.True(), grp);
   }
 
   @MJI
   public int quoteReplacement__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjref, int string) {
     String parm = env.getStringObject(string);
     String result = Matcher.quoteReplacement(parm);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @MJI
@@ -159,7 +159,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     String replacement = env.getStringObject(string);
     String result = matcher.replaceAll(replacement);
 
-    int resultref = env.newString(result);
+    int resultref = env.newString(FeatureExprFactory.True(), result);
     return resultref;
   }
   
@@ -169,7 +169,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     String replacement = env.getStringObject(string);
     String result = matcher.replaceFirst(replacement);
 
-    int resultref = env.newString(result);
+    int resultref = env.newString(FeatureExprFactory.True(), result);
     return resultref;
   }
 
@@ -208,7 +208,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     Matcher matcher = getInstance(env, objref);
     String str = matcher.toString();
 
-    return env.newString(str);
+    return env.newString(FeatureExprFactory.True(), str);
   }
 
   @MJI

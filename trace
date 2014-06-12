@@ -1,0 +1,5 @@
+/* cut off here.. */
+application: gov.nasa.jpf.test.mc.basic.TraceTest
+[0] gov.nasa.jpf.vm.choice.ThreadChoiceFromSet 1
+[1] gov.nasa.jpf.vm.choice.IntIntervalGenerator 1
+[2] #1 1

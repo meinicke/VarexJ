@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.lang.reflect.Modifier;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 public class JPF_java_lang_reflect_Field extends NativePeer {
 
   // the registry is rather braindead, let's hope we don't have many lookups - 
@@ -393,7 +395,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     int nameRef = env.getReferenceField( objRef, "name");
     if (nameRef == MJIEnv.NULL) {
-      nameRef = env.newString(fi.getName());
+      nameRef = env.newString(FeatureExprFactory.True(), fi.getName());
       env.setReferenceField(objRef, "name", nameRef);
     }
    
@@ -567,7 +569,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     sb.append(fi.getType());
     sb.append(' ');
     sb.append(fi.getFullName());
-    int sref = env.newString(sb.toString());
+    int sref = env.newString(FeatureExprFactory.True(), sb.toString());
     return sref;
   }
 

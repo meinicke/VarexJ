@@ -19,7 +19,6 @@
 package java.util;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * a concrete TimeZone that forwards to the host VM. This is required to avoid Java version compatibility
@@ -60,7 +59,7 @@ public class TimeZone implements Serializable, Cloneable {
   // clone handles CloneNotSupportedException
   public Object clone() {
     try {
-      return (TimeZone) super.clone();
+      return super.clone();
     } catch (CloneNotSupportedException e) {
       throw new InternalError();
     }

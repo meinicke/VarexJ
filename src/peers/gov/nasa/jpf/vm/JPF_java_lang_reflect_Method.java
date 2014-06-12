@@ -27,6 +27,8 @@ import gov.nasa.jpf.util.RunRegistry;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 public class JPF_java_lang_reflect_Method extends NativePeer {
 
   static MethodInfoRegistry registry;
@@ -74,7 +76,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     
     int nameRef = env.getReferenceField( objRef, "name");
     if (nameRef == MJIEnv.NULL) {
-      nameRef = env.newString(mi.getName());
+      nameRef = env.newString(FeatureExprFactory.True(), mi.getName());
       env.setReferenceField(objRef, "name", nameRef);
     }
    
@@ -614,7 +616,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     
     sb.append(')');
     
-    int sref = env.newString(sb.toString());
+    int sref = env.newString(FeatureExprFactory.True(), sb.toString());
     return sref;
   }
 

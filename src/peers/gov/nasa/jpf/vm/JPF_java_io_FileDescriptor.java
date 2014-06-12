@@ -23,8 +23,6 @@ import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.DynamicObjectArray;
 import gov.nasa.jpf.util.JPFLogger;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.io.File;
 import java.io.FileInputStream;

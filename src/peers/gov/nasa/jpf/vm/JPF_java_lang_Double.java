@@ -19,8 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * MJI NativePeer class for java.lang.Double library abstraction
@@ -43,7 +42,7 @@ public class JPF_java_lang_Double extends NativePeer {
 
   @MJI
   public int toString__D__Ljava_lang_String_2 (MJIEnv env, int objref, double d) {
-    return env.newString(Double.toString(d));
+    return env.newString(FeatureExprFactory.True(), Double.toString(d));
   }
   
   // we need to intercept this because it compares double values, which might

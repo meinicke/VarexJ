@@ -22,9 +22,6 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ConfigChangeListener;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.JPF_gov_nasa_jpf_vm_Verify;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.lang.reflect.Field;
 import java.util.Random;

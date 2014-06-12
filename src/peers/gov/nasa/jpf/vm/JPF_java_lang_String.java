@@ -19,15 +19,12 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.CharArrayFields;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.Fields;
-import gov.nasa.jpf.vm.Heap;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * MJI NativePeer class for java.lang.String library abstraction
@@ -39,14 +36,14 @@ public class JPF_java_lang_String extends NativePeer {
   public int init___3CII__Ljava_lang_String_2 (MJIEnv env, int objRef, int valueRef, int offset, int count) {
     char[] value = env.getCharArrayObject(valueRef);
     String result = new String(value, offset, count);
-    return env.newString(result);
+    return env.newString(NativeMethodInfo.CTX, result);
   }
 
   @MJI
   public int init___3III__Ljava_lang_String_2 (MJIEnv env, int objRef, int codePointsRef, int offset, int count) {
     int[] codePoints = env.getIntArrayObject(codePointsRef);
     String result = new String(codePoints, offset, count);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @SuppressWarnings("deprecation")
@@ -54,7 +51,7 @@ public class JPF_java_lang_String extends NativePeer {
   public int init___3BIII__Ljava_lang_String_2 (MJIEnv env, int objRef, int asciiRef, int hibyte, int offset, int count) {
     byte[] ascii = env.getByteArrayObject(asciiRef);
     String result = new String(ascii, hibyte, offset, count);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @MJI
@@ -62,14 +59,14 @@ public class JPF_java_lang_String extends NativePeer {
     byte[] bytes = env.getByteArrayObject(bytesRef);
     String charsetName = env.getStringObject(charsetNameRef);
     String result = new String(bytes, offset, length, charsetName);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @MJI
   public int init___3BII__Ljava_lang_String_2 (MJIEnv env, int objRef, int bytesRef, int offset, int length) {
     byte[] bytes = env.getByteArrayObject(bytesRef);
     String result = new String(bytes, offset, length);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @MJI
@@ -354,7 +351,7 @@ public class JPF_java_lang_String extends NativePeer {
   public int substring__I__Ljava_lang_String_2 (MJIEnv env, int objRef, int beginIndex) {
     String obj = env.getStringObject(objRef);
     String result = obj.substring(beginIndex);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
 
   }
 
@@ -362,7 +359,7 @@ public class JPF_java_lang_String extends NativePeer {
   public int substring__II__Ljava_lang_String_2 (MJIEnv env, int objRef, int beginIndex, int endIndex) {
     String obj = env.getStringObject(objRef);
     String result = obj.substring(beginIndex, endIndex);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
 
   }
 
@@ -386,7 +383,7 @@ public class JPF_java_lang_String extends NativePeer {
     System.arraycopy(thisChars, 0, resultChars, 0, thisLength);
     System.arraycopy(otherChars, 0, resultChars, thisLength, otherLength);
 
-    return env.newString(new String(resultChars));
+    return env.newString(FeatureExprFactory.True(), new String(resultChars));
   }
 
   // --- the various replaces
@@ -424,7 +421,7 @@ public class JPF_java_lang_String extends NativePeer {
 
     if (newValues != null) {
       String s = new String(newValues);
-      return env.newString(s);
+      return env.newString(FeatureExprFactory.True(), s);
 
     } else { // oldChar not found, return the original string
       return objRef;
@@ -446,7 +443,7 @@ public class JPF_java_lang_String extends NativePeer {
     String replacementStr = env.getStringObject(replacementRef);
 
     String result = thisStr.replaceFirst(regexStr, replacementStr);
-    return (result != thisStr) ? env.newString(result) : objRef;
+    return (result != thisStr) ? env.newString(FeatureExprFactory.True(), result) : objRef;
   }
 
   @MJI
@@ -456,7 +453,7 @@ public class JPF_java_lang_String extends NativePeer {
     String replacementStr = env.getStringObject(replacementRef);
 
     String result = thisStr.replaceAll(regexStr, replacementStr);
-    return (result != thisStr) ? env.newString(result) : objRef;
+    return (result != thisStr) ? env.newString(FeatureExprFactory.True(), result) : objRef;
   }
 
   @MJI
@@ -486,7 +483,7 @@ public class JPF_java_lang_String extends NativePeer {
 
     String lower = s.toLowerCase(loc);
 
-    return (s == lower) ? objRef : env.newString(lower);
+    return (s == lower) ? objRef : env.newString(FeatureExprFactory.True(), lower);
   }
 
   @MJI
@@ -494,7 +491,7 @@ public class JPF_java_lang_String extends NativePeer {
     String s = env.getStringObject(objRef);
     String lower = s.toLowerCase();
 
-    return (s == lower) ? objRef : env.newString(lower);
+    return (s == lower) ? objRef : env.newString(FeatureExprFactory.True(), lower);
   }
 
   @MJI
@@ -504,7 +501,7 @@ public class JPF_java_lang_String extends NativePeer {
 
     String upper = s.toUpperCase(loc);
 
-    return (s == upper) ? objRef : env.newString(upper);
+    return (s == upper) ? objRef : env.newString(FeatureExprFactory.True(), upper);
   }
 
   @MJI
@@ -512,7 +509,7 @@ public class JPF_java_lang_String extends NativePeer {
     String s = env.getStringObject(objRef);
     String upper = s.toUpperCase();
 
-    return (s == upper) ? objRef : env.newString(upper);
+    return (s == upper) ? objRef : env.newString(FeatureExprFactory.True(), upper);
   }
 
   @MJI
@@ -541,7 +538,7 @@ public class JPF_java_lang_String extends NativePeer {
     }
 
     String result = new String(thisChars, start, end - start);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @MJI
@@ -556,13 +553,13 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int format__Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int fmtRef, int argRef) {
-    return env.newString(env.format(fmtRef, argRef));
+    return env.newString(FeatureExprFactory.True(), env.format(fmtRef, argRef));
   }
 
   @MJI
   public int format__Ljava_util_Locale_2Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int locRef, int fmtRef, int argRef) {
     Locale loc = JPF_java_util_Locale.getLocale(env, locRef);
-    return env.newString(env.format(loc, fmtRef, argRef));
+    return env.newString(FeatureExprFactory.True(), env.format(loc, fmtRef, argRef));
   }
 
   @MJI
@@ -571,7 +568,7 @@ public class JPF_java_lang_String extends NativePeer {
     Heap heap = env.getHeap();
 
     String s = env.getStringObject(robj);
-    ElementInfo ei = heap.newInternString(s, env.getThreadInfo());
+    ElementInfo ei = heap.newInternString(FeatureExprFactory.True(), s, env.getThreadInfo());
 
     return ei.getObjectRef();
   }
@@ -579,24 +576,24 @@ public class JPF_java_lang_String extends NativePeer {
   @MJI
   public int valueOf__I__Ljava_lang_String_2 (MJIEnv env, int clsref, int i) {
     String result = String.valueOf(i);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @MJI
   public int valueOf__J__Ljava_lang_String_2 (MJIEnv env, int clsref, long l) {
     String result = String.valueOf(l);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @MJI
   public int valueOf__F__Ljava_lang_String_2 (MJIEnv env, int clsref, float f) {
     String result = String.valueOf(f);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 
   @MJI
   public int valueOf__D__Ljava_lang_String_2 (MJIEnv env, int clsref, double d) {
     String result = String.valueOf(d);
-    return env.newString(result);
+    return env.newString(FeatureExprFactory.True(), result);
   }
 }

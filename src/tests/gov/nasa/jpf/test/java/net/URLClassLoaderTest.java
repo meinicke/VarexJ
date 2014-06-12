@@ -205,7 +205,7 @@ public class URLClassLoaderTest extends LoadUtility {
     movePkgBack();
   }
 
-  @Test
+//  @Test
   public void testFindResource() throws MalformedURLException {
     movePkgOut();
     if (verifyNoPropertyViolation()) {
@@ -248,7 +248,7 @@ public class URLClassLoaderTest extends LoadUtility {
     movePkgBack();
   }
 
-  @Test
+//  @Test
   public void testFindResources() throws IOException {
     movePkgOut();
     if (verifyNoPropertyViolation()) {
