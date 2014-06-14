@@ -56,7 +56,7 @@ public class JVMStackFrame extends StackFrame {
     
     if (nArgSlots > 0){
       Conditional<Integer>[] calleeSlots = slots;
-      FixedBitSet calleeRefs = isRef;
+      FixedBitSet calleeRefs = isRef.getValue();
       int[] callerSlots = caller.getSlots(ctx);
       FixedBitSet callerRefs = caller.getReferenceMap();
 

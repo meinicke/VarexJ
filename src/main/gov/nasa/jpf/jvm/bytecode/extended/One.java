@@ -65,7 +65,14 @@ public class One<T> extends Conditional<T> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		 return (obj != null && obj instanceof One && ((One<?>)obj).value == value);
+		 if (obj != null && obj instanceof One) {
+			 if (((One<?>)obj).value == null && value == null) {
+				 return true;
+			 }
+			 if (((One<?>)obj).value != null && value != null && ((One<?>)obj).value.equals(value))
+				 return true;
+		 }
+		 return false;
 	}
 
 	@Override

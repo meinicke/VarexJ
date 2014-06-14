@@ -298,4 +298,5 @@ public class BitSet64 implements FixedBitSet, Cloneable, IntSet {
   public IntIterator intIterator() {
     return new SetBitIterator();
   }
+
 }

@@ -44,4 +44,6 @@ public interface FixedBitSet extends Cloneable {
   
   int longSize();
   long getLong(int i);
+  
+  public boolean equals(Object o);
 }
