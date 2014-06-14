@@ -140,7 +140,6 @@ public class CascadedCGTest extends TestJPF {
             if (!ti.willReExecuteInstruction()){
               // restore old operand stack contents
               StackFrame frame = ti.getModifiableTopFrame();
-
               frame.pop(FeatureExprFactory.True());
               frame.pushRef( getInsn.getLastThis(), FeatureExprFactory.True());
             }

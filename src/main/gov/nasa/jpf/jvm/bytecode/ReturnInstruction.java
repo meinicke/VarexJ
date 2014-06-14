@@ -48,6 +48,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
   // note these are only callable from within the same enter - thread interleavings
   // would cause races
   abstract protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx);
+
   abstract protected void pushReturnValue (FeatureExpr ctx, StackFrame frame);
 
   public abstract Object getReturnValue(ThreadInfo ti);

@@ -55,6 +55,7 @@ public class NATIVERETURN extends ReturnInstruction {
     frame = ti.popAndGetModifiableTopFrame();
 
     // remove args, push return value and continue with next insn
+
     frame.removeArguments(ctx, mi);
     pushReturnValue(ctx, frame);
 

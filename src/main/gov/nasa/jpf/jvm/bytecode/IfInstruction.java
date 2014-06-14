@@ -191,5 +191,4 @@ public abstract class IfInstruction extends JVMInstruction {
   protected boolean compare(int x, int y) {
 	  throw new RuntimeException("compare not implemented");
   }
-    
 }

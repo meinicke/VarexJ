@@ -1972,14 +1972,12 @@ public abstract class StackFrame implements Cloneable {
 
     return Float.intBitsToFloat(v);
   }
-	  
+    
   public Conditional<Integer> pop(FeatureExpr ctx) {
     //assert (top >= stackBase) : "stack empty";
-//    Conditional<Integer> v = slots[top.getValue()];
-
     Conditional<Integer> v = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-		@Override
+    	@Override
 		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
 			return slots[y];
 		}
