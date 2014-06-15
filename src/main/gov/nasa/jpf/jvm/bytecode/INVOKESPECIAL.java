@@ -50,7 +50,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     int argSize = getArgSize();
-    int objRef = ti.getCalleeThis( ctx, argSize);
+    int objRef = ti.getCalleeThis( ctx, argSize).simplify(ctx).getValue();
     lastObj = objRef;
 
     // we don't have to check for NULL objects since this is either a ctor, a 

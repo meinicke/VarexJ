@@ -80,7 +80,7 @@ public class RETURN extends ReturnInstruction {
     // nothing to do
   }
 
-  public Object getReturnValue(ThreadInfo ti) {
+  public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
     //return Void.class; // Hmm, not sure if this is right, but we have to distinguish from ARETURN <null>
     return null;
   }

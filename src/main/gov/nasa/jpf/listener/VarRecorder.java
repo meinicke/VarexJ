@@ -41,6 +41,8 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * Simple listener tool to record the values of variables as they are accessed.
  * Records the information in Step.setComment() so that when the trace is
@@ -199,7 +201,7 @@ public class VarRecorder extends ListenerAdapter {
       return(false);
     }
 
-    int objRef = frame.peek();
+    int objRef = frame.peek(FeatureExprFactory.True()).getValue();
     if (objRef == MJIEnv.NULL) {
       return(false);
     }
@@ -333,7 +335,7 @@ public class VarRecorder extends ListenerAdapter {
        if (frame.getTopPos() < 0)
          return(null);
 
-       lo = frame.peek();
+       lo = frame.peek(FeatureExprFactory.True()).getValue();
        hi = frame.getTopPos() >= 1 ? frame.peek(1) : 0;
 
        return(decodeValue(type, lo, hi));
@@ -381,7 +383,7 @@ public class VarRecorder extends ListenerAdapter {
     int lo, hi;
 
     frame = ti.getTopFrame();
-    lo    = frame.peek();
+    lo    = frame.peek(FeatureExprFactory.True()).getValue();
     hi    = frame.getTopPos() >= 1 ? frame.peek(1) : 0;
 
     return(decodeValue(type, lo, hi));

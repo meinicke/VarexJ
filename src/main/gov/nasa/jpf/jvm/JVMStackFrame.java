@@ -58,7 +58,7 @@ public class JVMStackFrame extends StackFrame {
       Conditional<Integer>[] calleeSlots = slots;
       FixedBitSet calleeRefs = isRef.getValue();
       int[] callerSlots = caller.getSlots(ctx);
-      FixedBitSet callerRefs = caller.getReferenceMap();
+      FixedBitSet callerRefs = caller.getReferenceMap(ctx);
 
       for (int i = 0, j = caller.getTopPos2().simplify(ctx).getValue() - nArgSlots + 1; i < nArgSlots; i++, j++) {
         calleeSlots[i] = new One<>(callerSlots[j]);

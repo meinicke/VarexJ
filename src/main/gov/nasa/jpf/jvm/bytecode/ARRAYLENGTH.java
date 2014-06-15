@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -62,6 +63,6 @@ public class ARRAYLENGTH extends ArrayInstruction {
 
   @Override
   protected int peekArrayRef (ThreadInfo ti) {
-    return ti.getTopFrame().peek();
+    return ti.getTopFrame().peek(FeatureExprFactory.True()).getValue();
   }
 }

@@ -44,7 +44,7 @@ public class JSR extends JVMInstruction {
     
     int tgtAdr = getNext(ctx, ti).getValue().getPosition();
     
-    frame.push( tgtAdr);
+    frame.push(ctx, new One<>( tgtAdr));
 
     return new One<>(mi.getInstructionAt(target));
   }

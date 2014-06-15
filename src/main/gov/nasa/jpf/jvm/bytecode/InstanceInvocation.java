@@ -39,7 +39,7 @@ public abstract class InstanceInvocation extends InvokeInstruction {
   public int getCalleeThis (ThreadInfo ti) {
     if (!ti.isPostExec()){
       // we have to dig out the 'this' reference from the callers stack
-      return ti.getCalleeThis( FeatureExprFactory.True(), getArgSize());
+      return ti.getCalleeThis( FeatureExprFactory.True(), getArgSize()).getValue();
     } else {
       // enter() cached it
       return lastObj;

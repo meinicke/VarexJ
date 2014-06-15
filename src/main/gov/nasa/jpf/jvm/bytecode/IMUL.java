@@ -40,7 +40,7 @@ public class IMUL extends JVMInstruction {
     Conditional<Integer> v1 = frame.pop(ctx);
     Conditional<Integer> v2 = frame.pop(ctx);
 
-    frame.push(maprInt(v1, v2));
+    frame.push(ctx, maprInt(v1, v2));
 
     return getNext(ctx, ti);
   }

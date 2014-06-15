@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -51,10 +51,10 @@ public class ARETURN extends ReturnInstruction {
     return ret;
   }
   
-  public Object getReturnValue(ThreadInfo ti) {
+  public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
     if (!isCompleted(ti)) { // we have to pull it from the operand stack
       StackFrame frame = ti.getTopFrame();
-      ret = frame.peek();
+      ret = frame.peek(ctx).getValue();
     }
     
     if (ret == MJIEnv.NULL) {

@@ -91,7 +91,7 @@ public abstract class NativeStackFrame extends StackFrame {
   }
 
   @Override
-  public boolean hasAnyRef() {
+  public boolean hasAnyRef(FeatureExpr ctx) {
     return false;
   }
 

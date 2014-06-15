@@ -161,12 +161,12 @@ public class JPF_java_lang_System extends NativePeer {
       
     } catch (UncaughtException e) {
        ti.clearPendingException();
-       StackFrame caller = ti.popAndGetModifiableTopFrame();
+       StackFrame caller = ti.popAndGetModifiableTopFrame(NativeMethodInfo.CTX);
        caller.advancePC();
        return null;
     }
     
-    int ref = frame.peek();
+    int ref = frame.peek(NativeMethodInfo.CTX).getValue();
     ElementInfo metaResult = heap.get(ref);
     String result = metaResult.asString();
     

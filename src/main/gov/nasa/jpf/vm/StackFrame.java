@@ -190,7 +190,7 @@ public abstract class StackFrame implements Cloneable {
    * INVOKEx insn is executed
  * @param ctx TODO
    */
-  public int getCalleeThis (FeatureExpr ctx, MethodInfo mi) {
+  public Conditional<Integer> getCalleeThis (FeatureExpr ctx, MethodInfo mi) {
     return getCalleeThis(ctx, mi.getArgumentsSize());
   }
 
@@ -199,14 +199,25 @@ public abstract class StackFrame implements Cloneable {
    * (i.e. we are in the caller frame)
  * @param ctx TODO
    */
-  public int getCalleeThis (FeatureExpr ctx, int size) {
+  public Conditional<Integer> getCalleeThis (FeatureExpr ctx, int size) {
     // top is the topmost index
-    int i = size-1;
-    if (top.simplify(ctx).getValue() < i) {
-      return -1;
-    }
+    final int i = size-1;
+//    if (top.simplify(ctx).getValue() < i) {
+//      return new One<>(-1);
+//    }
 
-    return slots[top.simplify(ctx).getValue()-i].simplify(ctx).getValue();
+    return top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			if (y < i) {
+				return new One<>(-1);
+			}
+			return slots[y - i];
+		}
+	}).simplify();
+    
+//    return slots[top.simplify(ctx).getValue()-i].simplify(ctx);
   }
 
   public StackFrame getPrevious() {
@@ -954,25 +965,14 @@ public abstract class StackFrame implements Cloneable {
 		} 
 	  });
     
-    isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
-
-		@Override
-		public Conditional<FixedBitSet> apply(FeatureExpr x, FixedBitSet oldSet) {
-			if (ctx.and(x).isContradiction()) {
-				return new One<>(oldSet);
-			}
-			FixedBitSet clone = oldSet.clone();
-			clone.set(index, ref);
-			return new Choice<>(ctx.and(x), new One<>(clone), new One<>(oldSet));
-		}
-	}).simplify();
+    setRefIndex(ctx, index, ref);
 //    isRef.getValue().set(index,ref);
 
     if (activateGc) {
         VM.getVM().getSystemState().activateGC();
     }
   }
-
+  
   public Conditional<Integer> getLocalVariable2 (int i) {
 	    return slots[i];
 	  }
@@ -1050,8 +1050,8 @@ public abstract class StackFrame implements Cloneable {
 	 }
     return clone; // we should probably clone
   }
-  public FixedBitSet getReferenceMap(){
-    return isRef.getValue();
+  public FixedBitSet getReferenceMap(FeatureExpr ctx){
+    return isRef.simplify(ctx).getValue();
   }
   public Object[] getSlotAttrs(){
     return attrs;
@@ -1221,7 +1221,9 @@ public abstract class StackFrame implements Cloneable {
         attrs[i] = null;
       }
     }
-    
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(stackBase-1);
   }
   
@@ -1284,26 +1286,199 @@ public abstract class StackFrame implements Cloneable {
     // .. A A
     //    ^
 
-    Conditional<Integer> td = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-		@Override
-		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
-			Conditional<Integer> oldValue = slots[y + 1];
-			slots[y + 1] = new Choice<>(ctx.and(x), slots[y], oldValue).simplify();
-			return new Choice<>(ctx.and(x), new One<>(y + 1), new One<>(y));
-		}
-    	
-	}).simplify();
+//    Conditional<Integer> td = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+//
+//		@Override
+//		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+//			Conditional<Integer> oldValue = slots[y + 1];
+//			slots[y + 1] = new Choice<>(ctx.and(x), slots[y], oldValue).simplify();
+//			return new Choice<>(ctx.and(x), new One<>(y + 1), new One<>(y));
+//		}
+//    	
+//	}).simplify();
 //    int td=t+1;
     
+    setSlots(ctx, 0, 1);
 //    slots[td] = slots[t];
-    isRef.getValue().set(top.getValue() + 1, isRef.getValue().get(top.getValue()));
-
+//    isRef.getValue().set(top.getValue() + 1, isRef.getValue().get(top.getValue()));
+    setRef(ctx, 1, 0);
+    
     if (attrs != null){
-      attrs[td.getValue()] = attrs[top.getValue()];
+      attrs[top.getValue() + 1] = attrs[top.getValue()];
     }
-    top = td;
+    setTop(ctx, 1);
+//    top = td;
 //    top = new One<>(td);
+  }
+  
+  private Conditional<Boolean> getRef(final FeatureExpr ctx) {
+	  return isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<Boolean>>() {
+
+			@Override
+			public Conditional<Boolean> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
+				return top.mapf(ctx.and(x), new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
+
+					@Override
+					public Conditional<Boolean> apply(FeatureExpr y, Integer top) {
+						return new One<>(oldBitSet.get(top));
+					}
+					
+				}).simplify();
+			}
+		}).simplify();
+	  }
+  
+  private void setRef(final FeatureExpr ctx) {
+	  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
+
+		@Override
+		public Conditional<FixedBitSet> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
+			return top.mapf(ctx.and(x), new BiFunction<FeatureExpr, Integer, Conditional<FixedBitSet>>() {
+
+				@Override
+				public Conditional<FixedBitSet> apply(FeatureExpr y, Integer top) {
+					if (ctx.and(x).and(y).isContradiction()) {
+						return new One<>(oldBitSet);
+					}
+					FixedBitSet clone = oldBitSet.clone();
+					clone.set(top);
+					return new Choice<>(ctx.and(x).and(y), new One<>(clone), new One<>(oldBitSet));
+				}
+				
+			}).simplify();
+		}
+	}).simplify();
+  }
+
+  private void setRef(final FeatureExpr ctx, final boolean ref) {
+	  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
+
+		@Override
+		public Conditional<FixedBitSet> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
+			return top.mapf(ctx.and(x), new BiFunction<FeatureExpr, Integer, Conditional<FixedBitSet>>() {
+
+				@Override
+				public Conditional<FixedBitSet> apply(FeatureExpr y, Integer top) {
+					if (ctx.and(x).and(y).isContradiction()) {
+						return new One<>(oldBitSet);
+					}
+					FixedBitSet clone = oldBitSet.clone();
+					clone.set(top, ref);
+					return new Choice<>(ctx.and(x).and(y), new One<>(clone), new One<>(oldBitSet));
+				}
+				
+			}).simplify();
+		}
+	}).simplify();
+  }
+  
+  // TODO ???
+  private void setRef(final FeatureExpr ctx, final int offset, final Conditional<Boolean> ref) {
+	  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
+
+		@Override
+		public Conditional<FixedBitSet> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
+			return ref.mapf(ctx.and(x), new BiFunction<FeatureExpr, Boolean, Conditional<FixedBitSet>>() {
+
+				@Override
+				public Conditional<FixedBitSet> apply(final FeatureExpr y, final Boolean ref) {
+					return top.mapf(ctx.and(x).and(y), new BiFunction<FeatureExpr, Integer, Conditional<FixedBitSet>>() {
+
+						@Override
+						public Conditional<FixedBitSet> apply(FeatureExpr z, Integer top) {
+							if (ctx.and(x).and(y).and(z).isContradiction()) {
+								return new One<>(oldBitSet);
+							}
+							FixedBitSet clone = oldBitSet.clone();
+							clone.set(top + 1, ref);
+							return new Choice<>(ctx.and(x).and(y).and(z), new One<>(clone), new One<>(oldBitSet));
+						}
+				    }).simplify();
+				}
+			}).simplify();
+		}
+	}).simplify();
+  }
+  
+  private void setRef(final FeatureExpr ctx, final int setOffset, final int getOffset) {
+	  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
+
+		@Override
+		public Conditional<FixedBitSet> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
+			return top.mapf(ctx.and(x), new BiFunction<FeatureExpr, Integer, Conditional<FixedBitSet>>() {
+
+				@Override
+				public Conditional<FixedBitSet> apply(FeatureExpr y, Integer top) {
+					if (ctx.and(x).and(y).isContradiction()) {
+						return new One<>(oldBitSet);
+					}
+					FixedBitSet clone = oldBitSet.clone();
+					clone.set(top + setOffset, clone.get(top + getOffset));
+					return new Choice<>(ctx.and(x).and(y), new One<>(clone), new One<>(oldBitSet));
+				}
+				
+			}).simplify();
+		}
+	}).simplify();
+  }
+  
+  private void setRefIndex(final FeatureExpr ctx, final int index, final boolean ref) {
+	    isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
+
+			@Override
+			public Conditional<FixedBitSet> apply(FeatureExpr x, FixedBitSet oldSet) {
+				if (ctx.and(x).isContradiction()) {
+					return new One<>(oldSet);
+				}
+				FixedBitSet clone = oldSet.clone();
+				clone.set(index, ref);
+				return new Choice<>(ctx.and(x), new One<>(clone), new One<>(oldSet));
+			}
+		}).simplify();
+  }
+
+  private void setRefIndex(final FeatureExpr ctx, final int index, final int getOffset) {
+	  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
+
+		@Override
+		public Conditional<FixedBitSet> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
+			return top.mapf(ctx.and(x), new BiFunction<FeatureExpr, Integer, Conditional<FixedBitSet>>() {
+
+				@Override
+				public Conditional<FixedBitSet> apply(FeatureExpr y, Integer top) {
+					if (ctx.and(x).and(y).isContradiction()) {
+						return new One<>(oldBitSet);
+					}
+					FixedBitSet clone = oldBitSet.clone();
+					clone.set(index, clone.get(top + getOffset));
+					return new Choice<>(ctx.and(x).and(y), new One<>(clone), new One<>(oldBitSet));
+				}
+				
+			}).simplify();
+		}
+	}).simplify();
+  }
+  
+  private void setRefIndex(final FeatureExpr ctx, final int index) {
+	  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
+
+		@Override
+		public Conditional<FixedBitSet> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
+			return top.mapf(ctx.and(x), new BiFunction<FeatureExpr, Integer, Conditional<FixedBitSet>>() {
+
+				@Override
+				public Conditional<FixedBitSet> apply(FeatureExpr y, Integer top) {
+					if (ctx.and(x).and(y).isContradiction()) {
+						return new One<>(oldBitSet);
+					}
+					FixedBitSet clone = oldBitSet.clone();
+					clone.set(top, clone.get(index));
+					return new Choice<>(ctx.and(x).and(y), new One<>(clone), new One<>(oldBitSet));
+				}
+				
+			}).simplify();
+		}
+	}).simplify();
   }
 
   public void dup2 () {
@@ -1330,6 +1505,9 @@ public abstract class StackFrame implements Cloneable {
       attrs[td] = attrs[ts];
     }
 
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(td);
   }
 
@@ -1386,6 +1564,9 @@ public abstract class StackFrame implements Cloneable {
       attrs[td] = cAnn;
     }
 
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(top.getValue() + 2);
   }
 
@@ -1449,49 +1630,108 @@ public abstract class StackFrame implements Cloneable {
     if (attrs != null){
       attrs[td] = cAnn;
     }
+    
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(top.getValue() + 2);
   }
 
-  public void dup_x1 () {
-    // .. A B     =>
-    // .. B A B
-    //      ^
+	public void dup_x1(FeatureExpr ctx) {
+		// .. A B =>
+		// .. B A B
+		// ^
 
-	  Conditional<Integer> b;
-    boolean bRef;
-    Object bAnn = null;
-    int ts, td;
-    int t = top.getValue();
+		Conditional<Integer> b;
+		Conditional<Boolean> bRef;
+		Object bAnn = null;
+//		int ts, td;
+//		int t = top.getValue();
 
-    // duplicate B
-    ts = t; td = t+1;
-    slots[td] = b = slots[ts];
-    bRef = isRef.getValue().get(ts);
-    isRef.getValue().set(td, bRef);
-    if (attrs != null){
-      attrs[td] = bAnn = attrs[ts];
-    }
+		// duplicate B
+//		ts = t;
+//		td = t + 1;
 
-    // shuffle A
-    ts--; td = t;       // ts=top-1, td = top
-    slots[td] = slots[ts];
-    isRef.getValue().set( td, isRef.getValue().get(ts));
-    if (attrs != null){
-      attrs[td] = attrs[ts];
-    }
+		b = setSlots(ctx, 0, 1);
+		// slots[td] = b = slots[ts];
+		// bRef = isRef.getValue().get(ts);
+		bRef = getRef(ctx);
 
-    // shuffle B
-    td = ts;            // td=top-1
-    slots[td] = b;
-    isRef.getValue().set( td, bRef);
-    if (attrs != null){
-      attrs[td] = bAnn;
-    }
+		// isRef.getValue().set(td, bRef);
+		setRef(ctx, 1, bRef);
 
-    top = new One<>(top.getValue() + 1);
-  }
+		if (attrs != null) {
+			attrs[top.getValue() + 1] = bAnn = attrs[top.getValue()];
+		}
 
-  public void dup_x2 () {
+		// shuffle A
+//		ts--;
+//		td = t; // ts=top-1, td = top
+		setSlots(ctx, -1, 0);
+		// slots[td] = slots[ts];
+
+		setRef(ctx, 0, -1);
+		// isRef.getValue().set( td, isRef.getValue().get(ts));
+		if (attrs != null) {
+			attrs[top.getValue()] = attrs[top.getValue() - 1];
+		}
+
+		// shuffle B
+//		td = ts; // td=top-1
+
+		setSlots(ctx, b, -1);
+		// slots[td] = b;
+		// isRef.getValue().set( td, bRef);
+		setRef(ctx, -1, bRef);
+		if (attrs != null) {
+			attrs[top.getValue() - 1] = bAnn;
+		}
+		setTop(ctx, 1);
+//		top = new One<>(top.getValue() + 1);
+	}
+
+	/**
+	 * Sets top by the given increment.
+	 * @param ctx
+	 * @param inrement
+	 */
+	private void setTop(final FeatureExpr ctx, final int inrement) {
+		top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+			@Override
+			public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+				return new Choice<>(ctx.and(x), new One<>(y + inrement), new One<>(y));
+			}
+		}).simplify();
+	}
+
+private Conditional<Integer> setSlots(final FeatureExpr ctx, final int sourceOffset, final int destOffset) {
+	  return top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			Conditional<Integer> oldValue = slots[y + destOffset];
+			slots[y + destOffset] = new Choice<>(ctx.and(x), slots[y + sourceOffset], oldValue).simplify();
+			return slots[y + destOffset];
+		}
+		  
+	}).simplify();	
+}
+  
+  private Conditional<Integer> setSlots(final FeatureExpr ctx, final Conditional<Integer> source, final int destOffset) {
+	  return top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			Conditional<Integer> oldValue = slots[y + destOffset];
+			slots[y + destOffset] = new Choice<>(ctx.and(x), source, oldValue).simplify();
+			return slots[y + destOffset];
+		}
+		  
+	}).simplify();	
+}
+
+public void dup_x2 () {
     // .. A B C     =>
     // .. C A B C
     //        ^
@@ -1535,6 +1775,9 @@ public abstract class StackFrame implements Cloneable {
       attrs[td] = cAnn;
     }
 
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(top.getValue() + 1);
   }
 
@@ -1583,8 +1826,15 @@ public abstract class StackFrame implements Cloneable {
     return false;
   }
   
-  public boolean hasAnyRef () {
-    return isRef.getValue().cardinality() > 0;
+  public boolean hasAnyRef (FeatureExpr ctx) {
+	  // TODO revise?
+	  for (FixedBitSet ref : isRef.simplify(ctx).toList()) {
+		  if (ref.cardinality() > 0) {
+			  return true;
+		  }
+	  }
+	  return false;
+//    return isRef.simplify(ctx).getValue().cardinality() > 0;
   }
   
   public int mixinExecutionStateHash (int h) {
@@ -1887,6 +2137,9 @@ public abstract class StackFrame implements Cloneable {
       attrs[i--] = null; // that's where the attribute should be
     }
 
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(i);
     return Types.intsToDouble(lo, hi);
   }
@@ -1903,17 +2156,13 @@ public abstract class StackFrame implements Cloneable {
       attrs[i--] = null; // that's where the attribute should be
     }
 
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(i);
     return Types.intsToLong(lo, hi);
   }
 
-  public int peek () {
-	  return peek2().getValue();
-  }
-  public Conditional<Integer> peek2 () {// TODO
-    return slots[top.getValue()];
-  }
-  
   public Conditional<Integer> peek(FeatureExpr ctx) {
 	  return top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
@@ -1924,11 +2173,14 @@ public abstract class StackFrame implements Cloneable {
 	}).simplify();
   }
 
-  public Conditional<Integer> peek(FeatureExpr ctx, final int offset) {
+  public Conditional<Integer> peek(final FeatureExpr ctx, final int offset) {
 	  return top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
 		@Override
 		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+			if (ctx.and(x).isContradiction()) {
+				return new One<>(null);
+			}
 			return slots[y-offset];
 		}
 	}).simplify();
@@ -1958,7 +2210,7 @@ public abstract class StackFrame implements Cloneable {
 
     // <2do> get rid of this !
     for (int i=top.simplify(ctx).getValue(); i>t; i--) {
-      if (isRef.getValue().get(i) && (slots[i].simplify(ctx).getValue() != MJIEnv.NULL)) {
+      if (isRef.simplify(ctx).getValue(true).get(i) && (slots[i].simplify(ctx).getValue(true) != MJIEnv.NULL)) {
         VM.getVM().getSystemState().activateGC();
         break;
       }
@@ -1969,15 +2221,8 @@ public abstract class StackFrame implements Cloneable {
         attrs[i] = null;
       }
     }
-
-    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-		@Override
-		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
-			return new Choice<>(ctx.and(x), new One<>(y - n), new One<>(y));
-		}
-	}).simplify();
     
+    setTop(ctx, -n);
 //    top = new One<>(t);
   }
 
@@ -1988,6 +2233,9 @@ public abstract class StackFrame implements Cloneable {
       attrs[top.getValue()] = null;
     }
 
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(top.getValue() - 1);
 
     return Float.intBitsToFloat(v);
@@ -2015,13 +2263,14 @@ public abstract class StackFrame implements Cloneable {
       attrs[top.getValue()] = null;
     }
 
-    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
-			return new Choice<>(x, new One<>(y - 1), new One<>(y));
-		}
-    	
-	}).simplify();
+    setTop(ctx, -1);
+//    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+//
+//		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
+//			return new Choice<>(x, new One<>(y - 1), new One<>(y));
+//		}
+//    	
+//	}).simplify();
 //    top = new One<>(top.getValue() - 1);
 
     // note that we don't reset the operands or oRefs values, so that
@@ -2032,45 +2281,11 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public void pushLocal (final FeatureExpr ctx, final int index) {
-	    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-			public Conditional<Integer> apply(FeatureExpr x, Integer y) {
-				return new Choice<>(ctx.and(x), new One<>(y + 1), new One<>(y));
-			}
-	    	
-		}).simplify();
-	
-	    top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-			public Conditional<Integer> apply(FeatureExpr x, Integer y) {
-				Conditional<Integer> oldValue = slots[y];
-				slots[y] = new Choice<>(ctx.and(x), slots[index], oldValue).simplify();
-				return null;
-			}
-	    	
-		});
+	  setTop(ctx, 1);
+	  setSlots(ctx, slots[index], 0);
 //    slots[top.getValue()] = slots[index];
-		  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
-
-				@Override
-				public Conditional<FixedBitSet> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
-					return top.mapf(ctx.and(x), new BiFunction<FeatureExpr, Integer, Conditional<FixedBitSet>>() {
-
-						@Override
-						public Conditional<FixedBitSet> apply(FeatureExpr y, Integer top) {
-							if (ctx.and(x).and(y).isContradiction()) {
-								return new One<>(oldBitSet);
-							}
-							FixedBitSet clone = oldBitSet.clone();
-							clone.set(top, clone.get(index));
-							return new Choice<>(ctx.and(x).and(y), new One<>(clone), new One<>(oldBitSet));
-						}
-						
-					}).simplify();
-				}
-			}).simplify();
-//	    isRef.set(top, isRef.get(index));
-//    isRef.getValue().set(top.simplify(ctx).getValue(true), isRef.getValue().get(index));
+	  setRefIndex(ctx, index);
+//	  isRef.set(top, isRef.get(index));
 
     if (attrs != null){
       attrs[top.simplify(ctx).getValue(true)] = attrs[index];
@@ -2089,6 +2304,10 @@ public abstract class StackFrame implements Cloneable {
       attrs[t-1] = attrs[index];
       attrs[t] = null;
     }
+    
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(t);
   }
 
@@ -2101,44 +2320,18 @@ public abstract class StackFrame implements Cloneable {
 			return new Choice<>(ctx.and(x), slots[y], oldValue);
 		}
 		
-	}).simplify();
-	  
+	}).simplify();	  
 //    slots[index] = slots[top.getValue()];
 	  
-	  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
-
-		@Override
-		public Conditional<FixedBitSet> apply(final FeatureExpr x, final FixedBitSet oldBitSet) {
-			return top.mapf(ctx.and(x), new BiFunction<FeatureExpr, Integer, Conditional<FixedBitSet>>() {
-
-				@Override
-				public Conditional<FixedBitSet> apply(FeatureExpr y, Integer top) {
-					if (ctx.and(x).and(y).isContradiction()) {
-						return new One<>(oldBitSet);
-					}
-					FixedBitSet clone = oldBitSet.clone();
-					clone.set(index, clone.get(top));
-					return new Choice<>(ctx.and(x).and(y), new One<>(clone), new One<>(oldBitSet));
-				}
-				
-			}).simplify();
-		}
-	}).simplify();
+	  setRefIndex(ctx, index, 0);
 //    isRef.getValue().set( index, isRef.getValue().get(top.getValue()));
 
     if (attrs != null){
       attrs[index] = attrs[top.getValue()];
       attrs[top.getValue()] = null;
     }
-    top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-		@Override
-		public Conditional<Integer> apply(FeatureExpr x, Integer y) {
-			return new Choice<>(ctx.and(x), new One<>(y-1), new One<>(y));
-		}
-    	
-	}).simplify();
     
+    setTop(ctx, -1);
 //    top = new One<>(top.getValue() - 1);
   }
 
@@ -2159,16 +2352,13 @@ public abstract class StackFrame implements Cloneable {
       attrs[t] = null;
       attrs[t+1] = null;
     }
+    
+    if (top instanceof Choice) {
+    	throw new RuntimeException("TOP overwritten");
+    }
     top = new One<>(top.getValue() - 2);
   }
   
-  public void push (final int one) {
-	  push(new One<>(one));
-  }
-  public void push (final Conditional<Integer> one) {
-	  push(FeatureExprFactory.True(), one);
-	  
-  }
   public void push (final FeatureExpr ctx, final Conditional<Integer> one) {
 	  top = top.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 		public Conditional<Integer> apply(FeatureExpr f, Integer oldValue) {
@@ -2183,6 +2373,15 @@ public abstract class StackFrame implements Cloneable {
 	  
 //    slots[top.getValue()] = one;
 	  
+	  clearRef(ctx);
+//    isRef.getValue().clear(top.getValue());
+
+    //if (attrs != null){ // done on pop
+    //  attrs[top] = null;
+    //}
+  }
+  
+  private void clearRef(final FeatureExpr ctx) {
 	  isRef = isRef.mapf(ctx, new BiFunction<FeatureExpr, FixedBitSet, Conditional<FixedBitSet>>() {
 
 		@Override
@@ -2202,11 +2401,6 @@ public abstract class StackFrame implements Cloneable {
 			}).simplify();
 		}
 	}).simplify();
-//    isRef.getValue().clear(top.getValue());
-
-    //if (attrs != null){ // done on pop
-    //  attrs[top] = null;
-    //}
   }
 
   public void pushRef (final int ref, final FeatureExpr ctx){
@@ -2223,7 +2417,9 @@ public abstract class StackFrame implements Cloneable {
 		  
 //	  top = new One<>(top.getValue() + 1);
 //    slots[top.getValue()] = new One<>(ref);
-    isRef.getValue().set(top.simplify(ctx).getValue());
+	  
+	  setRef(ctx);
+//    isRef.getValue().set(top.simplify(ctx).getValue());
 
     //if (attrs != null){ // done on pop
     //  attrs[top] = null;
@@ -2250,7 +2446,9 @@ public abstract class StackFrame implements Cloneable {
 	  
 	  
 //    slots[top.getValue()] = new One<>(v);
-    isRef.getValue().set(top.simplify(ctx).getValue(), ref);
+	  
+	setRef(ctx, ref);
+//    isRef.getValue().set(top.simplify(ctx).getValue(), ref);
 
     //if (attrs != null){ // done on pop
     //  attrs[top] = null;
@@ -2359,4 +2557,5 @@ public abstract class StackFrame implements Cloneable {
   public void setDoubleArgumentLocal (int idx, double value, Object attr){
     setLongArgumentLocal( idx, Double.doubleToLongBits(value), attr);
   }
+
 }

@@ -38,7 +38,7 @@ public class MONITOREXIT extends LockInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    int objref = frame.peek();
+    int objref = frame.peek(ctx).getValue();
     if (objref == MJIEnv.NULL) {
       return new One<>(ti.createAndThrowException(ctx,
                                         "java.lang.NullPointerException", "attempt to release lock for null object"));

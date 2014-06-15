@@ -18,9 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -40,21 +41,21 @@ public class IRETURN extends ReturnInstruction {
   }
   
   protected void getAndSaveReturnValue (StackFrame ti, FeatureExpr ctx) {
-    ret = ti.pop(ctx).getValue();
+    ret = ti.pop(ctx).simplify(ctx).getValue();
   }
   
   protected void pushReturnValue (FeatureExpr ctx, StackFrame ti) {
-    ti.push(ret);
+    ti.push(ctx, new One<>(ret));
   }
   
   public int getReturnValue () {
     return ret;
   }
   
-  public Object getReturnValue(ThreadInfo ti) {
+  public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
     if (!isCompleted(ti)) { // we have to pull it from the operand stack
       StackFrame frame = ti.getTopFrame();
-      ret = frame.peek();
+      ret = frame.peek(ctx).getValue();
     }
 
     return new Integer(ret);

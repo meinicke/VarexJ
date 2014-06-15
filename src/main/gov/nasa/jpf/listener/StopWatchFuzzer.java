@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.listener;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.LCMP;
 import gov.nasa.jpf.jvm.bytecode.LSUB;
 import gov.nasa.jpf.jvm.bytecode.NATIVERETURN;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -130,7 +131,7 @@ public class StopWatchFuzzer extends ListenerAdapter {
           frame.popLong();
           frame.popLong();
           
-          frame.push(choice);
+          frame.push(FeatureExprFactory.True(), new One<>(choice));
           
           ti.skipInstruction(insnToExecute.getNext());
         }

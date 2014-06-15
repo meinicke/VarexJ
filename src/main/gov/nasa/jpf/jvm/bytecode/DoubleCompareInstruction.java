@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -40,7 +41,7 @@ public abstract class DoubleCompareInstruction extends JVMInstruction {
     
     int condVal = conditionValue(v1, v2);
     
-    frame.push( condVal);
+    frame.push(ctx, new One<>( condVal));
     
     return getNext(ctx, ti);
   }

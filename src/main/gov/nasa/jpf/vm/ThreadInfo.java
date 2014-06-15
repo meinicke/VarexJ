@@ -1028,14 +1028,14 @@ public class ThreadInfo extends InfoObject
    * Returns the this pointer of the callee from the stack.
    */
   public int getCalleeThis (MethodInfo mi) {
-    return top.getCalleeThis(FeatureExprFactory.True(), mi);
+    return top.getCalleeThis(FeatureExprFactory.True(), mi).getValue();
   }
 
   /**
    * Returns the this pointer of the callee from the stack.
  * @param ctx TODO
    */
-  public int getCalleeThis (FeatureExpr ctx, int size) {
+  public Conditional<Integer> getCalleeThis (FeatureExpr ctx, int size) {
     return top.getCalleeThis(ctx, size);
   }
 
@@ -1058,7 +1058,7 @@ public class ThreadInfo extends InfoObject
 
     InvokeInstruction call = (InvokeInstruction) pc.getValue();
 
-    return getCalleeThis(FeatureExprFactory.True(), Types.getArgumentsSize(call.getInvokedMethodSignature()) + 1) == r.getObjectRef();
+    return getCalleeThis(FeatureExprFactory.True(), Types.getArgumentsSize(call.getInvokedMethodSignature()) + 1).getValue().intValue() == r.getObjectRef();
   }
 
   public ApplicationContext getApplicationContext(){
@@ -2275,9 +2275,10 @@ public class ThreadInfo extends InfoObject
   /**
    * this should only be called from the top half of the last DIRECTCALLRETURN of
    * a thread.
+ * @param ctx TODO
    * @return true - if the thread is done, false - if instruction has to be re-executed
    */
-  public boolean exit(){
+  public boolean exit(FeatureExpr ctx){
     int objref = getThreadObjectRef();
     ElementInfo ei = getModifiableElementInfo(objref);
     SystemState ss = vm.getSystemState();
@@ -2343,7 +2344,7 @@ public class ThreadInfo extends InfoObject
         ss.setMandatoryNextChoiceGenerator(cg, "thread terminated without CG: ");
       }
 
-      popFrame(); // we need to do this *after* setting the CG (so that we still have a CG insn)
+      popFrame(ctx); // we need to do this *after* setting the CG (so that we still have a CG insn)
       
       return true;
     }
@@ -2636,12 +2637,13 @@ public class ThreadInfo extends InfoObject
 
   /**
    * Removes a stack frame
+ * @param ctx TODO
    */
-  public void popFrame() {
+  public void popFrame(FeatureExpr ctx) {
     StackFrame frame = top;
 
     //--- do our housekeeping
-    if (frame.hasAnyRef()) {
+    if (frame.hasAnyRef(ctx)) {
       vm.getSystemState().activateGC();
     }
 
@@ -2650,8 +2652,8 @@ public class ThreadInfo extends InfoObject
     stackDepth--;
   }
 
-  public StackFrame popAndGetModifiableTopFrame() {
-    popFrame();
+  public StackFrame popAndGetModifiableTopFrame(FeatureExpr ctx) {
+    popFrame(ctx);
 
     if (top.isFrozen()) {
       top = top.clone();
@@ -2660,22 +2662,23 @@ public class ThreadInfo extends InfoObject
     return top;
   }
   
-  public StackFrame popAndGetTopFrame(){
-    popFrame();
+  public StackFrame popAndGetTopFrame(FeatureExpr ctx){
+    popFrame(ctx);
     return top;
   }
   
   /**
    * removing DirectCallStackFrames is a bit different (only happens from
    * DIRECTCALLRETURN insns)
+ * @param ctx TODO
    */
-  public StackFrame popDirectCallFrame() {
+  public StackFrame popDirectCallFrame(FeatureExpr ctx) {
     //assert top instanceof DirectCallStackFrame;
 
     returnedDirectCall = (DirectCallStackFrame) top;
 
     if (top.hasFrameAttr( UncaughtHandlerAttr.class)){
-      return popUncaughtHandlerFrame();
+      return popUncaughtHandlerFrame(ctx);
     }
     
     top = top.getPrevious();
@@ -2858,7 +2861,7 @@ public class ThreadInfo extends InfoObject
         // (e.g. for <clinit>, or hidden direct calls)
         // <2do> if this is a <clinit>, we should probably turn into an
         // ExceptionInInitializerError first
-        unwindTo(frame);
+        unwindTo(frame, ctx);
         //NoUncaughtExceptionsProperty.setExceptionInfo(pendingException);
         throw new UncaughtException(this, exceptionObjRef);
       }
@@ -2883,7 +2886,7 @@ public class ThreadInfo extends InfoObject
 
       // there was no overridden uncaughtHandler, or we already executed it
       if ("java.lang.ThreadDeath".equals(exceptionName)) { // gracefully shut down
-        unwindToFirstFrame();
+        unwindToFirstFrame(ctx);
         pendingException = null;
         return top.getPC().getValue().getNext(); // the final DIRECTCALLRETURN
 
@@ -2894,7 +2897,7 @@ public class ThreadInfo extends InfoObject
 
     } else { // we found a matching handler
 
-      unwindTo(handlerFrame);
+      unwindTo(handlerFrame, ctx);
 
       // according to the VM spec, before transferring control to the handler we have
       // to reset the operand stack to contain only the exception reference
@@ -3066,7 +3069,7 @@ public class ThreadInfo extends InfoObject
     return frame.getPC().getValue();
   }
   
-  protected StackFrame popUncaughtHandlerFrame(){    
+  protected StackFrame popUncaughtHandlerFrame(FeatureExpr fexpr){    
     // we return from an overridden uncaughtException() direct call, but
     // its debatable if this counts as 'handled'. For handlers that just do
     // reporting this is probably false and we want JPF to report the defect.
@@ -3076,7 +3079,7 @@ public class ThreadInfo extends InfoObject
     
     if (passUncaughtHandler) {
       // gracefully shutdown this thread
-      unwindToFirstFrame(); // this will take care of notifying
+      unwindToFirstFrame(fexpr); // this will take care of notifying
       
       getModifiableTopFrame().advancePC();
       assert top.getPC() instanceof ReturnInstruction : "topframe PC not a ReturnInstruction: " + top.getPC();
@@ -3092,21 +3095,21 @@ public class ThreadInfo extends InfoObject
   }
 
   
-  protected void unwindTo (StackFrame newTopFrame){
+  protected void unwindTo (StackFrame newTopFrame, FeatureExpr ctx){
     for (StackFrame frame = top; (frame != null) && (frame != newTopFrame); frame = frame.getPrevious()) {
       leave(); // that takes care of releasing locks
       vm.notifyExceptionBailout(this); // notify before we pop the frame
-      popFrame();
+      popFrame(ctx);
     }
   }
 
-  protected StackFrame unwindToFirstFrame(){
+  protected StackFrame unwindToFirstFrame(FeatureExpr ctx){
     StackFrame frame;
 
     for (frame = top; frame.getPrevious() != null; frame = frame.getPrevious()) {
       leave(); // that takes care of releasing locks
       vm.notifyExceptionBailout(this); // notify before we pop the frame
-      popFrame();
+      popFrame(ctx);
     }
 
     return frame;

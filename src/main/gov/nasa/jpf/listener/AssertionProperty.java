@@ -84,7 +84,7 @@ public class AssertionProperty extends PropertyListenerAdapter {
       
       Heap heap = vm.getHeap();
       StackFrame frame = ti.getTopFrame();
-      int xobjref = frame.peek();
+      int xobjref = frame.peek(FeatureExprFactory.True()).getValue();
       ElementInfo ei = heap.get(xobjref);
       ClassInfo ci = ei.getClassInfo();
       

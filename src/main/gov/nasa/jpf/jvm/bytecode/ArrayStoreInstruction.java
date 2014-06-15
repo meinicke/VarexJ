@@ -45,7 +45,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 
     ElementInfo e = ti.getModifiableElementInfoWithUpdatedSharedness(aref);
     if (isNewPorBoundary(e, ti)) {
-      if (createAndSetArrayCG(e,ti, aref, peekIndex(ti), false)) {
+      if (createAndSetArrayCG(e,ti, aref, peekIndex(ctx, ti), false)) {
         return new One<Instruction>(this);
       }
     }
@@ -84,7 +84,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
   }
 
   @Override
-  public int peekIndex(ThreadInfo ti){
+  public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
     return ti.getTopFrame().peek(1);
   }
 

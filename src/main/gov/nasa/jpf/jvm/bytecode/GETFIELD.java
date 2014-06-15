@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -87,7 +88,7 @@ public class GETFIELD extends InstanceFieldInstruction {
         frame.pushRef(ival, ctx);
         
       } else {
-        frame.push(ival);
+        frame.push(ctx, new One<>(ival));
       }
       
       if (attr != null) {
@@ -109,7 +110,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 
   public ElementInfo peekElementInfo (ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
-    int objRef = frame.peek();
+    int objRef = frame.peek(FeatureExprFactory.True()).getValue();
     ElementInfo ei = ti.getElementInfo(objRef);
     return ei;
   }

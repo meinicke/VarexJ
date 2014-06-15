@@ -119,7 +119,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
     if (nmi.isStatic()) {
       a[1] = new Integer( nmi.getClassInfo().getClassObjectRef());
     } else {
-      int thisRef = callerFrame.getCalleeThis(ctx, nmi);
+      int thisRef = callerFrame.getCalleeThis(ctx, nmi).simplify(ctx).getValue();
       a[1] = new Integer( thisRef);
       
       setThis(thisRef);

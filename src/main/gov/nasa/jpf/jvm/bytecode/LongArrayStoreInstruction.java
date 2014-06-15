@@ -51,7 +51,7 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
   }
 
   @Override
-  public int peekIndex(ThreadInfo ti){
+  public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
     return ti.getTopFrame().peek(2);
   }
   

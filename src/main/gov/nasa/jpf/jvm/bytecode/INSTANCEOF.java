@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -66,11 +67,11 @@ public class INSTANCEOF extends JVMInstruction {
     int objref = frame.pop(ctx).getValue();
 
     if (objref == MJIEnv.NULL) {
-      frame.push(0);
+      frame.push(ctx, new One<>(0));
     } else if (ti.getElementInfo(objref).instanceOf(type)) {
-      frame.push(1);
+      frame.push(ctx, new One<>(1));
     } else {
-      frame.push(0);
+      frame.push(ctx, new One<>(0));
     }
 
     return getNext(ctx, ti);

@@ -44,7 +44,7 @@ public class IDIV extends JVMInstruction {
                                         "java.lang.ArithmeticException", "division by zero"));
     }
 
-    frame.push(v2 / v1);
+    frame.push(ctx, new One<>(v2 / v1));
 
     return getNext(ctx, ti);
   }

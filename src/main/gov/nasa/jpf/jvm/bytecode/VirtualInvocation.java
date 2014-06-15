@@ -48,7 +48,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
   }
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    int objRef = ti.getCalleeThis(ctx, getArgSize());
+    int objRef = ti.getCalleeThis(ctx, getArgSize()).simplify(ctx).getValue();
 
     if (objRef == MJIEnv.NULL) {
       lastObj = MJIEnv.NULL;
@@ -99,7 +99,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
     int objRef;
 
     if (ti.getNextPC() == null){ // this is pre-exec
-      objRef = ti.getCalleeThis(FeatureExprFactory.True(), getArgSize());
+      objRef = ti.getCalleeThis(FeatureExprFactory.True(), getArgSize()).getValue();
     } else {                     // this is post-exec
       objRef = lastObj;
     }

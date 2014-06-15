@@ -51,7 +51,7 @@ public class CHECKCAST extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
-    int objref = frame.peek();
+    int objref = frame.peek(ctx).getValue();
 
     if (objref == MJIEnv.NULL) {
        // we can cast 'null' to anything

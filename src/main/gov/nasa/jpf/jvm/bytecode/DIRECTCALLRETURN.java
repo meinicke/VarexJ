@@ -67,14 +67,14 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
     
     if (ti.getStackDepth() == 1){ // thread exit point (might be re-executed)
     
-      if (!ti.exit()){
+      if (!ti.exit(ctx)){
         return new One<Instruction>(this); // repeat, we couldn't get the lock
       } else {
         return new One<>(null);
       }      
       
     } else {
-      StackFrame frame = ti.popDirectCallFrame();
+      StackFrame frame = ti.popDirectCallFrame(ctx);
       return frame.getPC();
     }
   }

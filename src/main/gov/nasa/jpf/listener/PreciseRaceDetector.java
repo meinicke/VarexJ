@@ -36,6 +36,8 @@ import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * This is a Race Detection Algorithm that is precise in its calculation of races, i.e. no false warnings.
  * It exploits the fact that every thread choice selection point could be due to a possible race. It just runs
@@ -231,7 +233,7 @@ public class PreciseRaceDetector extends PropertyListenerAdapter {
 
           // these insns have been through their top half since they created CGs, but they haven't
           // removed the operands from the stack
-          int idx = ainsn.peekIndex(ti);
+          int idx = ainsn.peekIndex(FeatureExprFactory.True(), ti);
 
           candidate = ArrayElementRace.check(candidate, ti, ainsn, ei, idx);
         }

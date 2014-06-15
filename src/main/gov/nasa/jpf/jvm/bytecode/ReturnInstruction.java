@@ -51,7 +51,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
 
   abstract protected void pushReturnValue (FeatureExpr ctx, StackFrame frame);
 
-  public abstract Object getReturnValue(ThreadInfo ti);
+  public abstract Object getReturnValue(FeatureExpr ctx, ThreadInfo ti);
 
   public StackFrame getReturnFrame() {
     return returnFrame;
@@ -171,7 +171,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     
     // note that this is never the first frame, since we start all threads (incl. main)
     // through a direct call
-    frame = ti.popAndGetModifiableTopFrame();
+    frame = ti.popAndGetModifiableTopFrame(ctx);
 
     // remove args, push return value and continue with next insn
     // (DirectCallStackFrames don't use this)

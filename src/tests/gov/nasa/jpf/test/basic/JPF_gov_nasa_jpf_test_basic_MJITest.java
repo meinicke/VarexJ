@@ -22,6 +22,7 @@ import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.UncaughtException;
@@ -228,7 +229,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     } catch (UncaughtException ux) {  // frame's method is firewalled
       System.out.println("# hidden method execution failed, leaving nativeHiddenRoundtrip: " + ux);
       ti.clearPendingException();
-      ti.popFrame(); // this is still the DirectCallStackFrame, and we want to continue execution
+      ti.popFrame(NativeMethodInfo.CTX); // this is still the DirectCallStackFrame, and we want to continue execution
       return -1;
     }
 

@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -80,7 +81,7 @@ public class LDC extends JVMInstruction {
 
       case INT:
       case FLOAT:
-        frame.push(value);
+        frame.push(ctx, new One<>(value));
         break;
 
       case CLASS:

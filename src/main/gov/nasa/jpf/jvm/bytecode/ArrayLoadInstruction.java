@@ -48,7 +48,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
     
     ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
     if (isNewPorBoundary(e, ti)) {
-      if (createAndSetArrayCG(e,ti, aref,peekIndex(ti),true)) {
+      if (createAndSetArrayCG(e,ti, aref,peekIndex(ctx, ti),true)) {
         return new One<Instruction>(this);
       }
     }
@@ -92,8 +92,8 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
   // wouldn't really be required for loads, but this is a general
   // ArrayInstruction API
   @Override
-  public int peekIndex (ThreadInfo ti){
-    return ti.getTopFrame().peek();
+  public int peekIndex (FeatureExpr ctx, ThreadInfo ti){
+    return ti.getTopFrame().peek(ctx).getValue();
   }
 
   protected abstract void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index)

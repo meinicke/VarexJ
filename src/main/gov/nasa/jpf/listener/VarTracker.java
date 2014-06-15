@@ -49,6 +49,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * simple listener tool to find out which variables (locals and fields) are
@@ -175,7 +177,7 @@ public class VarTracker extends ListenerAdapter {
       // we cannot easily retrieve them in a subsequent xASTORE, which follows
       // a pattern like:  ..GETFIELD.. some-stack-operations .. xASTORE
       StackFrame frame = ti.getTopFrame();
-      int objRef = frame.peek();
+      int objRef = frame.peek(FeatureExprFactory.True()).getValue();
       if (objRef != MJIEnv.NULL) {
         ElementInfo ei = ti.getElementInfo(objRef);
         if (ei.isArray()) {

@@ -23,15 +23,16 @@ package gov.nasa.jpf.test.mc.basic;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Verify;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
 import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
@@ -155,7 +156,7 @@ public class CascadedCGTest extends TestJPF {
 
             int v = cg.getNextChoice();
             int n = frame.pop(FeatureExprFactory.True()).getValue();
-            frame.push(v);
+            frame.push(FeatureExprFactory.True(), new One<>(v));
 
             System.out.println("# listener replacing " + n + " with " + v);
           }

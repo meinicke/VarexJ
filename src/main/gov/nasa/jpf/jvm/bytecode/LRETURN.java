@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -32,7 +33,7 @@ public class LRETURN extends LongReturn {
     return ret;
   }
 
-  public Object getReturnValue(ThreadInfo ti) {
+  public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
     if (!isCompleted(ti)) { // we have to pull it from the operand stack
       StackFrame frame = ti.getTopFrame();      
       ret = frame.peekLong();

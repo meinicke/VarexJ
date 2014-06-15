@@ -51,7 +51,7 @@ public class FRETURN extends ReturnInstruction {
     return ret;
   }
   
-  public Float getReturnValue (ThreadInfo ti) {
+  public Float getReturnValue (FeatureExpr ctx, ThreadInfo ti) {
     if (!isCompleted(ti)) { // we have to pull it from the operand stack
       StackFrame frame = ti.getTopFrame();
       ret = frame.peekFloat();

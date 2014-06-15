@@ -20,6 +20,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.NativeStackFrame;
 import gov.nasa.jpf.vm.StackFrame;
@@ -52,7 +53,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
     // NativeStackFrame can never can be the first stack frame, so no thread CG
 
-    frame = ti.popAndGetModifiableTopFrame();
+    frame = ti.popAndGetModifiableTopFrame(ctx);
 
     // remove args, push return value and continue with next insn
 
@@ -141,23 +142,23 @@ public class NATIVERETURN extends ReturnInstruction {
       switch (retType) {
       case Types.T_BOOLEAN:
         ival = Types.booleanToInt(((Boolean) ret).booleanValue());
-        fr.push(ival);
+        fr.push(ctx, new One<>(ival));
         break;
 
       case Types.T_BYTE:
-        fr.push(((Byte) ret).byteValue());
+        fr.push(ctx, new One<>((int)(((Byte) ret).byteValue())));
         break;
 
       case Types.T_CHAR:
-        fr.push(((Character) ret).charValue());
+        fr.push(ctx, new One<>((int)((Character) ret).charValue()));
         break;
 
       case Types.T_SHORT:
-        fr.push(((Short) ret).shortValue());
+        fr.push(ctx, new One<>((int)((Short) ret).shortValue()));
         break;
 
       case Types.T_INT:
-        fr.push(((Integer) ret).intValue());
+        fr.push(ctx, new One<>(((Integer) ret).intValue()));
         break;
 
       case Types.T_LONG:
@@ -167,7 +168,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
       case Types.T_FLOAT:
         ival = Types.floatToInt(((Float) ret).floatValue());
-        fr.push(ival);
+        fr.push(ctx, new One<>(ival));
         break;
 
       case Types.T_DOUBLE:
@@ -203,7 +204,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
 
   @Override
-  public Object getReturnValue(ThreadInfo ti) {
+  public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
     if (isCompleted(ti)){
       return ret;
     } else {

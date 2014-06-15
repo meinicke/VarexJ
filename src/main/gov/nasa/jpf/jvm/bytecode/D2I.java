@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -36,7 +37,7 @@ public class D2I extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     double v = frame.popDouble();
-    frame.push( (int)v);
+    frame.push(ctx, new One<>((int)v));
     
     return getNext(ctx, ti);
   }
