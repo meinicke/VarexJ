@@ -2171,7 +2171,7 @@ public void dup_x2 () {
 			return new Choice<>(f, new One<>(oldValue + 1), new One<>(oldValue)).simplify();
 		} 
 	  }).simplify();
-	  
+//	  top++;
 //    slots[top.getValue()] = one;
 	  
 	  clearRef(ctx);
