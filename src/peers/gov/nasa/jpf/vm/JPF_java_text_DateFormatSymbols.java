@@ -37,7 +37,7 @@ public class JPF_java_text_DateFormatSymbols extends NativePeer {
     }
     
     String localPatternChars = dfs.getLocalPatternChars();
-    env.setReferenceField(objRef, "localPatternChars", env.newString(FeatureExprFactory.True(), localPatternChars));
+    env.setReferenceField(objRef, "localPatternChars", env.newString(NativeMethodInfo.CTX, localPatternChars));
 
   }
 }

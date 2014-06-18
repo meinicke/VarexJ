@@ -64,7 +64,7 @@ public class JPF_java_lang_System extends NativePeer {
     if (v == null){
       return MJIEnv.NULL;
     } else {
-      return env.newString(FeatureExprFactory.True(), v);
+      return env.newString(NativeMethodInfo.CTX, v);
     }
   }
 
@@ -108,9 +108,9 @@ public class JPF_java_lang_System extends NativePeer {
     
     for (Map.Entry<Object,Object> e : p.entrySet() ){
       env.setReferenceArrayElement(aref,i++, 
-                                   env.newString(FeatureExprFactory.True(), e.getKey().toString()));
+                                   env.newString(NativeMethodInfo.CTX, e.getKey().toString()));
       env.setReferenceArrayElement(aref,i++,
-                                   env.newString(FeatureExprFactory.True(), e.getValue().toString()));
+                                   env.newString(NativeMethodInfo.CTX, e.getValue().toString()));
     }
     
     return aref;
@@ -148,7 +148,7 @@ public class JPF_java_lang_System extends NativePeer {
     
     ThreadInfo ti = vm.getCurrentThread();
     Heap heap = vm.getHeap();
-    ElementInfo eiClassPath = heap.newString(FeatureExprFactory.True(), JAVA_CLASS_PATH, ti);
+    ElementInfo eiClassPath = heap.newString(NativeMethodInfo.CTX, JAVA_CLASS_PATH, ti);
     
     MethodInfo miGetProperty = system.getMethod("getProperty(Ljava/lang/String;)Ljava/lang/String;", true);
     DirectCallStackFrame frame = miGetProperty.createDirectCallStackFrame(ti, 0);
@@ -222,8 +222,8 @@ public class JPF_java_lang_System extends NativePeer {
       }
             
       if (v != null){
-        env.setReferenceArrayElement(aref,i++, env.newString(FeatureExprFactory.True(), s));
-        env.setReferenceArrayElement(aref,i++, env.newString(FeatureExprFactory.True(), v));
+        env.setReferenceArrayElement(aref,i++, env.newString(NativeMethodInfo.CTX, s));
+        env.setReferenceArrayElement(aref,i++, env.newString(NativeMethodInfo.CTX, v));
       }
     }
         

@@ -115,7 +115,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
     NumberFormat fmt = getInstance(env,objref);
     if (fmt != null) {
       String s = fmt.format(number);
-      int sref = env.newString(FeatureExprFactory.True(), s);
+      int sref = env.newString(NativeMethodInfo.CTX, s);
       return sref;
     }
     
@@ -127,7 +127,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
     NumberFormat fmt = getInstance(env,objref);
     if (fmt != null) {
       String s = fmt.format(number);
-      int sref = env.newString(FeatureExprFactory.True(), s);
+      int sref = env.newString(NativeMethodInfo.CTX, s);
       return sref;
     }
     

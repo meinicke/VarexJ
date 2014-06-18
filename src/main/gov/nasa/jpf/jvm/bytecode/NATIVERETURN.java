@@ -94,7 +94,7 @@ public class NATIVERETURN extends ReturnInstruction {
   @Override
   protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
     // it's got to be a NativeStackFrame since this insn is created by JPF
-    NativeStackFrame nativeFrame = (NativeStackFrame)frame;
+	  NativeStackFrame nativeFrame = (NativeStackFrame)frame;
 
     returnFrame = nativeFrame;
 

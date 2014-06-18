@@ -78,6 +78,6 @@ public class JPF_java_text_SimpleDateFormat extends NativePeer {
     Date date = new Date(dateTime);
     SimpleDateFormat f = getInstance(env,objref);
     String s = f.format(date);
-    return env.newString(FeatureExprFactory.True(), s);
+    return env.newString(NativeMethodInfo.CTX, s);
   }
 }

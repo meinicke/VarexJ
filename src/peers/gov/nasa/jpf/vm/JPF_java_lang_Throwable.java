@@ -69,7 +69,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
     String stackTrace = sw.toString();
     pw.close();
     
-    return env.newString(FeatureExprFactory.True(), stackTrace);
+    return env.newString(NativeMethodInfo.CTX, stackTrace);
   }
   
   @MJI
@@ -82,6 +82,6 @@ public class JPF_java_lang_Throwable extends NativePeer {
       s += ": " + env.getStringObject(msgRef);
     }
     
-    return env.newString(FeatureExprFactory.True(), s);
+    return env.newString(NativeMethodInfo.CTX, s);
   }
 }

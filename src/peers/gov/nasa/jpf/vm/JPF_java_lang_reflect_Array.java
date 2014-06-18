@@ -54,7 +54,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
     
     if ("boolean".equals(clsName)) { aRef = env.newBooleanArray(length); }
     else if ("byte".equals(clsName)) { aRef = env.newByteArray(length); }
-    else if ("char".equals(clsName)) { aRef = env.newCharArray(FeatureExprFactory.True(), length); }
+    else if ("char".equals(clsName)) { aRef = env.newCharArray(NativeMethodInfo.CTX, length); }
     else if ("short".equals(clsName)) { aRef = env.newShortArray(length); }
     else if ("int".equals(clsName)) { aRef = env.newIntArray(length); }
     else if ("long".equals(clsName)) { aRef = env.newLongArray(length); }

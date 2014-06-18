@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * main class of the JPF verification framework. This reads the configuration,

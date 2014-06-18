@@ -157,7 +157,7 @@ public class NativeMethodInfo extends MethodInfo {
 
      		@Override
      		public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
-     			return new Choice<>(ctx.and(f), new One<>(y.getNext()), new One<>(y));
+     			return new Choice<>(f, new One<>(y.getNext()), new One<>(y));
      		}
      		  
      	}).simplify();

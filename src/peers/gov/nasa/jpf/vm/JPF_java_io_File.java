@@ -45,7 +45,7 @@ public class JPF_java_io_File extends NativePeer {
     int newFileRef = env.newObject("java.io.File");
     ElementInfo fileEI = env.getModifiableElementInfo(newFileRef);
 
-    int fileNameRef = env.newString(FeatureExprFactory.True(), file.getPath());
+    int fileNameRef = env.newString(NativeMethodInfo.CTX, file.getPath());
     fileEI.setReferenceField("filename", fileNameRef);
 
     return newFileRef;
@@ -62,7 +62,7 @@ public class JPF_java_io_File extends NativePeer {
   @MJI
   public int getAbsolutePath____Ljava_lang_String_2 (MJIEnv env, int objref) {
     String pn = getFile(env,objref).getAbsolutePath();
-    return env.newString(FeatureExprFactory.True(), pn);
+    return env.newString(NativeMethodInfo.CTX, pn);
   }
 
   @MJI
@@ -75,7 +75,7 @@ public class JPF_java_io_File extends NativePeer {
   public int getCanonicalPath____Ljava_lang_String_2 (MJIEnv env, int objref) {
     try {
       String pn = getFile(env,objref).getCanonicalPath();
-      return env.newString(FeatureExprFactory.True(), pn);
+      return env.newString(NativeMethodInfo.CTX, pn);
     } catch (IOException iox) {
       env.throwException("java.io.IOException", iox.getMessage());
       return MJIEnv.NULL;
@@ -101,7 +101,7 @@ public class JPF_java_io_File extends NativePeer {
     try {
       File f = getFile(env,objref);
       URL url = f.toURL();
-      return env.newString(FeatureExprFactory.True(), url.toString());
+      return env.newString(NativeMethodInfo.CTX, url.toString());
     } catch (MalformedURLException mfux) {
       env.throwException("java.net.MalformedURLException", mfux.getMessage());
       return MJIEnv.NULL;
@@ -112,7 +112,7 @@ public class JPF_java_io_File extends NativePeer {
   public int getURISpec____Ljava_lang_String_2 (MJIEnv env, int objref){
     File f = getFile(env, objref);
     URI uri = f.toURI();
-    return env.newString(FeatureExprFactory.True(), uri.toString());
+    return env.newString(NativeMethodInfo.CTX, uri.toString());
   }
 
   @MJI

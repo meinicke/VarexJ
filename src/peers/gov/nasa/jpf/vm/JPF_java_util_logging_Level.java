@@ -54,6 +54,6 @@ public class JPF_java_util_logging_Level extends NativePeer {
     }
     
     String localizedName = (level != null) ? level.getLocalizedName() : "UNKNOWN";    
-    return env.newString(FeatureExprFactory.True(), localizedName); 
+    return env.newString(NativeMethodInfo.CTX, localizedName); 
   }
 }

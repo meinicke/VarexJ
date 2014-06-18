@@ -37,7 +37,7 @@ public class L2D extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     long v = frame.popLong();
-    frame.pushDouble( (double)v);
+    frame.pushDouble(v);
     
     return getNext(ctx, ti);
   }

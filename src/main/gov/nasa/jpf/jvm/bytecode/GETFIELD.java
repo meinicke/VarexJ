@@ -81,14 +81,14 @@ public class GETFIELD extends InstanceFieldInstruction {
 
     // We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
     if (fi.getStorageSize() == 1) { // 1 slotter
-      int ival = ei.get1SlotField(fi).getValue();
-      lastValue = new One<>(ival);
+    	Conditional<Integer> ival = ei.get1SlotField(fi);
+        lastValue = ival;
       
       if (fi.isReference()){
-        frame.pushRef(ival, ctx);
+        frame.pushRef(ival.getValue(), ctx);
         
       } else {
-        frame.push(ctx, new One<>(ival));
+        frame.push(ctx, ival);
       }
       
       if (attr != null) {

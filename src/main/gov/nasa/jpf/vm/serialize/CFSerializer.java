@@ -19,6 +19,8 @@
 
 package gov.nasa.jpf.vm.serialize;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -27,6 +29,9 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.ThreadList;
 
 import java.util.Iterator;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * a FilteringSerializer that performs on-the-fly heap canonicalization to
@@ -113,25 +118,45 @@ public class CFSerializer extends FilteringSerializer {
   }
   
   @Override
-  protected void serializeFrame(StackFrame frame){
+  protected void serializeFrame(final StackFrame frame){
     buf.add(frame.getMethodInfo().getGlobalId());
 
-    Instruction pc = frame.getPC().getValue();
-    buf.add( pc != null ? pc.getInstructionIndex() : -1);
-
-    int len = frame.getTopPos()+1;
-    buf.add(len);
-
-    // unfortunately we can't do this as a block operation because that
-    // would use concrete reference values as hash data, i.e. break heap symmetry
-    int[] slots = frame.getSlots();
-    for (int i = 0; i < len; i++) {
-      if (frame.isReferenceSlot(i)) {
-        processReference(slots[i]);
-      } else {
-        buf.add(slots[i]);
-      }
-    }
+    // TODO Jens make conditional
+    Instruction pc = null;
+    int min = Integer.MAX_VALUE;
+	for (Instruction i : frame.getPC().toList()) {
+		if (i != null && i.getPosition() < min) {
+			min = i.getPosition();
+			pc = i;
+		}
+	}
+	final Instruction finalPC = pc;
+	frame.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Object>>() {
+		@Override
+		public Conditional<Object> apply(FeatureExpr f, Instruction x) {
+			if (x == finalPC) {
+				buf.add( finalPC != null ? finalPC.getInstructionIndex() : -1);
+	
+			    int len = frame.getTopPos2().simplify(f).getValue()+1;
+			    buf.add(len);
+	
+			    // unfortunately we can't do this as a block operation because that
+			    // would use concrete reference values as hash data, i.e. break heap symmetry
+			    int[] slots = frame.getSlots(f);
+			    for (int i = 0; i < len; i++) {
+			      if (frame.getRef(f, i).simplify(f).getValue()) {
+			        processReference(slots[i]);
+			      } else {
+			        buf.add(slots[i]);
+			      }
+			    }
+			}
+			return null;
+		}
+		
+	});
+	
+    
   }
 
   @Override

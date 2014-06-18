@@ -64,7 +64,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
     int rawOffset = tz.getRawOffset();
     String realId = tz.getID(); // could have been changed if id was unknown
     if (!realId.equals(id)){
-      idRef = env.newString(FeatureExprFactory.True(), realId);
+      idRef = env.newString(NativeMethodInfo.CTX, realId);
     }
 
     int tzRef = env.newObject("java.util.TimeZone");
@@ -82,7 +82,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
   
   @MJI
   public int createDefaultZone____Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef){
-    int idRef = env.newString(FeatureExprFactory.True(), defaultID);
+    int idRef = env.newString(NativeMethodInfo.CTX, defaultID);
 
     int tzRef = env.newObject("java.util.TimeZone");
     env.setReferenceField(tzRef, "ID", idRef);
@@ -118,7 +118,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
     int rawOffset = tz.getRawOffset();
     String realId = tz.getID(); // could have been changed if id was unknown
     if (!realId.equals(id)){
-      idRef = env.newString(FeatureExprFactory.True(), realId);
+      idRef = env.newString(NativeMethodInfo.CTX, realId);
     }
     
     env.setReferenceField(objRef, "ID", idRef);
@@ -183,7 +183,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
     Locale displayLocale = JPF_java_util_Locale.getLocale(env, localeRef);
     String s = tz.getDisplayName(daylight, style, displayLocale);
     
-    int sref = env.newString(FeatureExprFactory.True(), s);
+    int sref = env.newString(NativeMethodInfo.CTX, s);
     return sref;
   }
   

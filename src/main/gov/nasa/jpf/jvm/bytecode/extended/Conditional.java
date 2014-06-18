@@ -1,11 +1,12 @@
 package gov.nasa.jpf.jvm.bytecode.extended;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public abstract class Conditional<T> {
-	
 	
 	public abstract T getValue();
 	public abstract T getValue(boolean ignore);
@@ -57,5 +58,13 @@ public abstract class Conditional<T> {
 	public abstract Conditional<T> simplify(FeatureExpr ctx);
 	
 	public abstract List<T> toList();
+	
+	public Map<T, FeatureExpr> toMap() {
+		Map<T,FeatureExpr> map = new HashMap<>();
+		toMap(FeatureExprFactory.True(), map);
+		return map;
+	}
+    
+    protected abstract void toMap(FeatureExpr f, Map<T, FeatureExpr> map);
 	
 }

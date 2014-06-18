@@ -369,7 +369,8 @@ public class ThreadInfo extends InfoObject
     
     porUnsharedInit = porInEffect && config.getBoolean("vm.por.unshared_init", true);
     
-    maxTransitionLength = config.getInt("vm.max_transition_length", 5000);
+    maxTransitionLength = Integer.MAX_VALUE; // because we do not model check // TODO could be done via configuration 
+//    maxTransitionLength = config.getInt("vm.max_transition_length", 5000);
 
     SharedObjectPolicy.init(config);
     
@@ -1033,7 +1034,6 @@ public class ThreadInfo extends InfoObject
 
   /**
    * Returns the this pointer of the callee from the stack.
- * @param ctx TODO
    */
   public Conditional<Integer> getCalleeThis (FeatureExpr ctx, int size) {
     return top.getCalleeThis(ctx, size);
@@ -1517,7 +1517,6 @@ public class ThreadInfo extends InfoObject
   /**
    * get a stack snapshot that consists of an array of {mthId,pc} pairs.
    * strip stackframes that enter instance methods of the exception object
- * @param ctx TODO
    */
   public int[] getSnapshot (FeatureExpr ctx, int xObjRef) {
     StackFrame frame = top;
@@ -1776,7 +1775,6 @@ public class ThreadInfo extends InfoObject
    * <2do> pcm - this is only valid for java.* and our own Throwables that don't
    * need ctor execution since we only initialize the Throwable fields. This method
    * is here to avoid round trips in case of exceptions
- * @param ctx TODO
    */
   int createException (FeatureExpr ctx, ClassInfo ci, String details, int causeRef){
     int[] snap = getSnapshot(ctx, MJIEnv.NULL);
@@ -1786,7 +1784,6 @@ public class ThreadInfo extends InfoObject
   /**
    * Creates and throws an exception. This is what is used if the exception is
    * thrown by the VM (or a listener)
- * @param ctx TODO
    */
   public Instruction createAndThrowException (FeatureExpr ctx, ClassInfo ci, String details) {
     if (!ci.isRegistered()) {
@@ -1805,7 +1802,6 @@ public class ThreadInfo extends InfoObject
 
   /**
    * Creates an exception and throws it.
- * @param ctx TODO
    */
   public Instruction createAndThrowException (FeatureExpr ctx, String cname) {
     return createAndThrowException(ctx, cname, null);
@@ -1881,6 +1877,8 @@ public class ThreadInfo extends InfoObject
   }
   
   private static boolean main = false;
+  
+  private MethodInfo currentMethod = null;
 
   /**
    * Execute next instruction.
@@ -1902,7 +1900,7 @@ public class ThreadInfo extends InfoObject
       log.fine( pc.getValue().getMethodInfo().getFullName() + " " + pc.getValue().getPosition() + " : " + pc);
     }
     
-    if (pc.getValue(true).getMethodInfo().getFullName().contains("Main2")) {
+    if (!main && pc.getValue(true).getMethodInfo().getFullName().contains("VariabilityAwareTest")) {
     	main = true;
     }
 
@@ -1913,30 +1911,54 @@ public class ThreadInfo extends InfoObject
     if (!skipInstruction) {
         // enter the next bytecode
         try {
-        	int min = Integer.MAX_VALUE;
-        	for (Instruction i : pc.toList()) {
-        		if (i.getPosition() < min) {
-        			min = i.getPosition();
+        	
+        	if (pc instanceof One) {// avoid overhead for calculating the next instruction
+        		if (main) {
+  					System.out.println("exe: " + pc.getValue() + " if True");
+  				}
+        		nextPc = pc.getValue().execute(FeatureExprFactory.True(), this);
+        		
+        		if (nextPc.getValue(true) == null) {
+        			currentMethod = null;
+        		} else {
+        			currentMethod = nextPc.getValue(true).getMethodInfo();
         		}
-        	}
-        	final int finalMin = min;
-        	final ThreadInfo ti = this;
-        	
-        	nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
-
-          		@Override
-          		public Conditional<Instruction> apply(FeatureExpr f, Instruction x) {
-          			if (x != null && x.getPosition() == finalMin) {
-          				if (main) {
-          					System.out.println("exe: " + x + " if " + f);
-          				}
-          				return x.execute(f, ti);
-          			}
-          			return new One<>(x);
-          		} 
-          	  }).simplify();
-        	
-//          nextPc = pc.getValue().execute(this);
+        	} else {
+        		int min = Integer.MAX_VALUE;
+	        	for (Instruction i : pc.toList()) {
+	        		if (i != null && i.getPosition() < min) {
+	        			if (currentMethod == null || i.getMethodInfo() == currentMethod) {
+	        				min = i.getPosition();
+	        			}
+	        		}
+	        	}
+	        	final int finalMin = min;
+	        	final ThreadInfo ti = this;
+	        	nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+	
+	          		@Override
+	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction x) {
+	          			if (x != null && x.getPosition() == finalMin) {
+	          				if (main) {
+	          					System.out.println("exe: " + x + " if " + ctx);
+	          				}
+	          				Conditional<Instruction> next = x.execute(ctx, ti).simplify(ctx);
+	          				
+	          				// the executed instruction defines the next method 
+	          				for (Instruction i : next.toList()) {
+	          					if (i != null) {
+		          					currentMethod = i.getMethodInfo();
+		          					break;
+	          					} else {
+	          						currentMethod = null;
+	          					}
+	          				}
+	          				return next;
+	          			}
+	          			return new One<>(x);
+	          		} 
+	          	  }).simplify();
+	        	}
         } catch (ClassInfoException cie) {
           nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
@@ -2275,7 +2297,7 @@ public class ThreadInfo extends InfoObject
   /**
    * this should only be called from the top half of the last DIRECTCALLRETURN of
    * a thread.
- * @param ctx TODO
+ * 
    * @return true - if the thread is done, false - if instruction has to be re-executed
    */
   public boolean exit(FeatureExpr ctx){
@@ -2637,13 +2659,12 @@ public class ThreadInfo extends InfoObject
 
   /**
    * Removes a stack frame
- * @param ctx TODO
    */
   public void popFrame(FeatureExpr ctx) {
     StackFrame frame = top;
 
     //--- do our housekeeping
-    if (frame.hasAnyRef(ctx)) {
+    if (frame.hasAnyRef()) {
       vm.getSystemState().activateGC();
     }
 
@@ -2670,7 +2691,7 @@ public class ThreadInfo extends InfoObject
   /**
    * removing DirectCallStackFrames is a bit different (only happens from
    * DIRECTCALLRETURN insns)
- * @param ctx TODO
+ * 
    */
   public StackFrame popDirectCallFrame(FeatureExpr ctx) {
     //assert top instanceof DirectCallStackFrame;
@@ -2810,7 +2831,6 @@ public class ThreadInfo extends InfoObject
   
   /**
    * unwind stack frames until we find a matching handler for the exception object
- * @param ctx TODO
    */
   public Instruction throwException (FeatureExpr ctx, int exceptionObjRef) {
     Heap heap = vm.getHeap();

@@ -77,7 +77,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     
     int nameRef = env.getReferenceField( objRef, "name");
     if (nameRef == MJIEnv.NULL) {
-      nameRef = env.newString(FeatureExprFactory.True(), mi.getName());
+      nameRef = env.newString(NativeMethodInfo.CTX, mi.getName());
       env.setReferenceField(objRef, "name", nameRef);
     }
    
@@ -186,7 +186,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     
     sb.append(')');
     
-    int sref = env.newString(FeatureExprFactory.True(), sb.toString());
+    int sref = env.newString(NativeMethodInfo.CTX, sb.toString());
     return sref;
   }
 

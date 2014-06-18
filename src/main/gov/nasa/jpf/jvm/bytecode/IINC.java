@@ -46,9 +46,9 @@ public class IINC extends JVMInstruction {
 		StackFrame frame = ti.getModifiableTopFrame();
 		Conditional<Integer> v = (frame.getLocalVariable2(index));
 		v = maprInt(v, increment);
-		
 		frame.setLocalVariable(ctx, index, v, false);
-		return getNext(ctx, ti);
+		Conditional<Instruction> next = getNext(ctx, ti);
+		return next;
 
 		// StackFrame frame = ti.getModifiableTopFrame();
 		//

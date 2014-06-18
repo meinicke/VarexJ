@@ -83,7 +83,7 @@ public class JPF_java_text_DateFormat extends NativePeer {
       Date d = env.getDateObject(dateRef);
       
       String s = fmt.format(d);
-      int sref = env.newString(FeatureExprFactory.True(), s);
+      int sref = env.newString(NativeMethodInfo.CTX, s);
       return sref;
     }
     

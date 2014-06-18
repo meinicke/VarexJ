@@ -73,7 +73,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
     String resourcePath = cl.findResource(rname);
 
-    return env.newString(FeatureExprFactory.True(), resourcePath);
+    return env.newString(NativeMethodInfo.CTX, resourcePath);
   }
 
   @MJI
@@ -247,14 +247,14 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     int pkgRef = env.newObject(pkgClass);
     ElementInfo ei = env.getModifiableElementInfo(pkgRef);
 
-    ei.setReferenceField("pkgName", env.newString(FeatureExprFactory.True(), pkgName));
+    ei.setReferenceField("pkgName", env.newString(NativeMethodInfo.CTX, pkgName));
     ei.setReferenceField("loader", cl.getClassLoaderObjectRef());
     // the rest of the fields set to some dummy value
-    ei.setReferenceField("specTitle", env.newString(FeatureExprFactory.True(), "spectitle"));
-    ei.setReferenceField("specVersion", env.newString(FeatureExprFactory.True(), "specversion"));
-    ei.setReferenceField("specVendor", env.newString(FeatureExprFactory.True(), "specvendor"));
-    ei.setReferenceField("implTitle", env.newString(FeatureExprFactory.True(), "impltitle"));
-    ei.setReferenceField("implVersion", env.newString(FeatureExprFactory.True(), "implversion"));
+    ei.setReferenceField("specTitle", env.newString(NativeMethodInfo.CTX, "spectitle"));
+    ei.setReferenceField("specVersion", env.newString(NativeMethodInfo.CTX, "specversion"));
+    ei.setReferenceField("specVendor", env.newString(NativeMethodInfo.CTX, "specvendor"));
+    ei.setReferenceField("implTitle", env.newString(NativeMethodInfo.CTX, "impltitle"));
+    ei.setReferenceField("implVersion", env.newString(NativeMethodInfo.CTX, "implversion"));
     ei.setReferenceField("sealBase", MJIEnv.NULL);
 
     return pkgRef;

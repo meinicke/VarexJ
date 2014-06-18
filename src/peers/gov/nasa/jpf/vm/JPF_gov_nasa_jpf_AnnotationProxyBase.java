@@ -165,6 +165,6 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
     }
     
     
-    return env.newString(FeatureExprFactory.True(), sb.toString());
+    return env.newString(NativeMethodInfo.CTX, sb.toString());
   }
 }

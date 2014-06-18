@@ -61,7 +61,7 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
     assert (oldValues.length>0);
     
     int len = oldValues.length - 1;
-    ElementInfo newQueue = env.getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", len, ti);
+    ElementInfo newQueue = env.getHeap().newArray(NativeMethodInfo.CTX, "Ljava/lang/Object;", len, ti);
     int[] newValues = newQueue.asReferenceArray();
     
     System.arraycopy(oldValues, 1, newValues, 0, len);

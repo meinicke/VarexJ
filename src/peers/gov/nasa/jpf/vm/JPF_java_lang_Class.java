@@ -817,7 +817,7 @@ public class JPF_java_lang_Class extends NativePeer {
   @MJI
   public int getCanonicalName____Ljava_lang_String_2 (MJIEnv env, int clsRef){
     ClassInfo ci = env.getReferredClassInfo(clsRef);
-    return env.newString(FeatureExprFactory.True(), getCanonicalName(ci));
+    return env.newString(NativeMethodInfo.CTX, getCanonicalName(ci));
   }
 
   @MJI
@@ -948,6 +948,6 @@ public class JPF_java_lang_Class extends NativePeer {
         rname = rname.substring(1);
     }
 
-    return env.newString(FeatureExprFactory.True(), rname);
+    return env.newString(NativeMethodInfo.CTX, rname);
   }
 }

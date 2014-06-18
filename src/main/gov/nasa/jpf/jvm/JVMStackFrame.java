@@ -19,8 +19,9 @@
 
 package gov.nasa.jpf.jvm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.FixedBitSet;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -49,30 +50,40 @@ public class JVMStackFrame extends StackFrame {
   /**
    * this sets up arguments from a bytecode caller 
    */
-  protected void setCallArguments (FeatureExpr ctx, ThreadInfo ti){
-    StackFrame caller = ti.getTopFrame();
+  protected <U> void setCallArguments (final FeatureExpr ctx, ThreadInfo ti){
+    final StackFrame caller = ti.getTopFrame();
     MethodInfo miCallee = mi;
-    int nArgSlots = miCallee.getArgumentsSize();
+    final int nArgSlots = miCallee.getArgumentsSize();
     
     if (nArgSlots > 0){
-      Conditional<Integer>[] calleeSlots = slots;
-      FixedBitSet calleeRefs = isRef.getValue();
-      int[] callerSlots = caller.getSlots(ctx);
-      FixedBitSet callerRefs = caller.getReferenceMap(ctx);
+    	final JVMStackFrame callee = this;
+      final Conditional<Integer>[] calleeSlots = slots;
+      Conditional<FixedBitSet> calleeRefs = isRef;
+      final Conditional<Integer>[] callerSlots = caller.getSlots2();
+//      FixedBitSet callerRefs = caller.getReferenceMap(ctx);
 
-      for (int i = 0, j = caller.getTopPos2().simplify(ctx).getValue() - nArgSlots + 1; i < nArgSlots; i++, j++) {
-        calleeSlots[i] = new One<>(callerSlots[j]);
-        if (callerRefs.get(j)) {
-          calleeRefs.set(i);
-        }
-        Object a = caller.getSlotAttr(j);
-        if (a != null) {
-          setSlotAttr(i, a);
-        }
-      }
+      caller.getTopPos2().simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<U>>() {
+
+		@Override
+		public Conditional<U> apply(FeatureExpr x, Integer top) {
+			for (int i = 0, j = top - nArgSlots + 1; i < nArgSlots; i++, j++) {
+				Conditional<Integer> oldValue = calleeSlots[i];
+		        calleeSlots[i] = new Choice<>(x, callerSlots[j], oldValue).simplify();
+		        callee.setRefIndex(x, i, caller.getRef(x, j));
+//		        if (callerRefs.get(j)) {
+//		          calleeRefs.getValue().set(i);
+//		        }
+		        Object a = caller.getSlotAttr(j);
+		        if (a != null) {
+		          setSlotAttr(i, a);
+		        }
+		      }
+			return null;
+		}
+      });
 
       if (!miCallee.isStatic()) {
-        thisRef = calleeSlots[0].getValue();
+        thisRef = calleeSlots[0].simplify(ctx).getValue();
       }
     }
   }

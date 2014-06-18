@@ -13,10 +13,11 @@
 	<classpathentry kind="lib" path="lib/cparser_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/crewrite_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/ctypechecker_2.10-0.3.4.jar"/>
-	<classpathentry kind="lib" path="lib/featureexprlib_2.10-0.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/featureexprlib_2.10-0.3.4.jar" sourcepath="/FeatureExprLib/src"/>
 	<classpathentry kind="lib" path="lib/frontend_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/org.sat4j.core-2.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/scala-library-2.10.3.jar"/>
+	<classpathentry kind="lib" path="lib/javabdd_1.0b2/javabdd-1.0b2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_55"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

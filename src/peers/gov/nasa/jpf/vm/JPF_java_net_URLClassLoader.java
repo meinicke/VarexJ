@@ -93,7 +93,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
     String resourcePath = cl.findResource(rname);
 
-    return env.newString(FeatureExprFactory.True(), resourcePath);
+    return env.newString(NativeMethodInfo.CTX, resourcePath);
   }
 
   @MJI

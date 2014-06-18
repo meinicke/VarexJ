@@ -42,7 +42,7 @@ public class JPF_java_lang_Double extends NativePeer {
 
   @MJI
   public int toString__D__Ljava_lang_String_2 (MJIEnv env, int objref, double d) {
-    return env.newString(FeatureExprFactory.True(), Double.toString(d));
+    return env.newString(NativeMethodInfo.CTX, Double.toString(d));
   }
   
   // we need to intercept this because it compares double values, which might

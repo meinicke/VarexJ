@@ -39,7 +39,7 @@ public class JPF_java_net_URLDecoder extends NativePeer {
 
     try {
       String e = URLDecoder.decode(s, enc);
-      return env.newString(FeatureExprFactory.True(), e);
+      return env.newString(NativeMethodInfo.CTX, e);
 
     } catch (UnsupportedEncodingException x){
       env.throwException("java.io.UnsupportedEncodingException", x.getMessage());

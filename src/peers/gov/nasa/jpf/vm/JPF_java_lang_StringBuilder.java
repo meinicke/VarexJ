@@ -41,7 +41,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
       if (m < n) {
         m = n;
       }
-      int arefNew = env.newCharArray(FeatureExprFactory.True(), m);
+      int arefNew = env.newCharArray(NativeMethodInfo.CTX, m);
       for (i=0; i<count; i++) {
         env.setCharArrayElement(arefNew, i, env.getCharArrayElement(aref, i));
       }
@@ -66,7 +66,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
   }
   @MJI
   public void $init__I__V (MJIEnv env, int objref, int len){
-    int aref = env.newCharArray(FeatureExprFactory.True(), len);
+    int aref = env.newCharArray(NativeMethodInfo.CTX, len);
     env.setReferenceField(objref, "value", aref);
   }
   @MJI
@@ -142,7 +142,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
       env.setCharArrayElement(aref, count, c);
     } else {
       int m = 3 * alen / 2;
-      int arefNew = env.newCharArray(FeatureExprFactory.True(), m);
+      int arefNew = env.newCharArray(NativeMethodInfo.CTX, m);
       for (i=0; i<count; i++) {
         env.setCharArrayElement(arefNew, i, env.getCharArrayElement(aref, i));
       }

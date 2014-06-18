@@ -36,7 +36,7 @@ public class F2D extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     float f = frame.popFloat();
     
-    frame.pushDouble((double)f);
+    frame.pushDouble(f);
 
     return getNext(ctx, ti);
   }

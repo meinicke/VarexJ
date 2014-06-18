@@ -60,7 +60,7 @@ public class JPF_java_lang_Short extends NativePeer {
 
   @MJI
   public int toString__S__Ljava_lang_String_2 (MJIEnv env, int objref, short val) {
-    return env.newString(FeatureExprFactory.True(), Short.toString(val));
+    return env.newString(NativeMethodInfo.CTX, Short.toString(val));
   }
 
   @MJI

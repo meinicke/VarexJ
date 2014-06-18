@@ -59,7 +59,7 @@ public class JPF_java_lang_Object extends NativePeer {
           componentType = cci.getType();
         }
 
-        eiClone = heap.newArray(FeatureExprFactory.True(), componentType, ei.arrayLength(), env.getThreadInfo());
+        eiClone = heap.newArray(NativeMethodInfo.CTX, componentType, ei.arrayLength(), env.getThreadInfo());
         
       } else {
         eiClone = heap.newObject(null, ci, env.getThreadInfo());
@@ -199,7 +199,7 @@ public class JPF_java_lang_Object extends NativePeer {
     int hc = hashCode____I(env,objref);
     
     String s = ci.getName() + '@' + hc;
-    int sref = env.newString(FeatureExprFactory.True(), s);
+    int sref = env.newString(NativeMethodInfo.CTX, s);
     return sref;
   }
 }

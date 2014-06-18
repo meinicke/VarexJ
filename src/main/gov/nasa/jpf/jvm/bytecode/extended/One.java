@@ -2,12 +2,14 @@ package gov.nasa.jpf.jvm.bytecode.extended;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class One<T> extends Conditional<T> {
 
 	private T value;
+	
 	public One(T value) {
 		this.value = value;
 		if (value instanceof Conditional) {
@@ -18,6 +20,7 @@ public class One<T> extends Conditional<T> {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public T getValue() {
 		if (value instanceof Conditional) {
 			return ((Conditional<T>) value).getValue();
@@ -80,6 +83,11 @@ public class One<T> extends Conditional<T> {
 		List<T> list = new LinkedList<>();
 		list.add(value);
 		return list;
+	}
+
+	@Override
+	protected void toMap(FeatureExpr f, Map<T, FeatureExpr> map) {
+		map.put(value, f);
 	}
 
 }

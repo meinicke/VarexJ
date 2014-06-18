@@ -143,14 +143,14 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     Matcher matcher = getInstance( env, objref);
     String grp = matcher.group(i);
     
-    return env.newString(FeatureExprFactory.True(), grp);
+    return env.newString(NativeMethodInfo.CTX, grp);
   }
 
   @MJI
   public int quoteReplacement__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjref, int string) {
     String parm = env.getStringObject(string);
     String result = Matcher.quoteReplacement(parm);
-    return env.newString(FeatureExprFactory.True(), result);
+    return env.newString(NativeMethodInfo.CTX, result);
   }
 
   @MJI
@@ -159,7 +159,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     String replacement = env.getStringObject(string);
     String result = matcher.replaceAll(replacement);
 
-    int resultref = env.newString(FeatureExprFactory.True(), result);
+    int resultref = env.newString(NativeMethodInfo.CTX, result);
     return resultref;
   }
   
@@ -169,7 +169,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     String replacement = env.getStringObject(string);
     String result = matcher.replaceFirst(replacement);
 
-    int resultref = env.newString(FeatureExprFactory.True(), result);
+    int resultref = env.newString(NativeMethodInfo.CTX, result);
     return resultref;
   }
 
@@ -208,7 +208,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     Matcher matcher = getInstance(env, objref);
     String str = matcher.toString();
 
-    return env.newString(FeatureExprFactory.True(), str);
+    return env.newString(NativeMethodInfo.CTX, str);
   }
 
   @MJI

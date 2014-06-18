@@ -36,7 +36,7 @@ public class JPF_java_lang_StringCoding extends NativePeer {
       int bref, int off, int len) {
 
     
-    int cref = env.newCharArray(FeatureExprFactory.True(), len);
+    int cref = env.newCharArray(NativeMethodInfo.CTX, len);
     for (int i=0,j=off; i<len; i++,j++) {
       env.setCharArrayElement(cref, i, (char)env.getByteArrayElement(bref,j));
     }

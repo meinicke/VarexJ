@@ -67,7 +67,7 @@ public abstract class IfInstruction extends JVMInstruction {
    * retrieve value of jump condition from operand stack
    * (not ideal to have this public, but some listeners might need it for
    * skipping the insn, plus we require it for subclass factorization)
- * @param ctx TODO
+ * 
    */
   public abstract Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame);
   
@@ -95,7 +95,7 @@ public abstract class IfInstruction extends JVMInstruction {
 			if (condition) {
 		      return new One<>(getTarget());
 		    } else {
-		      return getNext(ctx.and(x), ti);
+		      return getNext(x, ti);
 		    }
 		}
 	}).simplify();

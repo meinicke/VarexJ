@@ -53,27 +53,27 @@ public class JPF_java_lang_Long extends NativePeer {
 
   @MJI
   public int toBinaryString__J__Ljava_lang_String_2 (MJIEnv env, int objref, long val) {
-    return env.newString(FeatureExprFactory.True(), Long.toBinaryString(val));
+    return env.newString(NativeMethodInfo.CTX, Long.toBinaryString(val));
   }
 
   @MJI
   public int toHexString__J__Ljava_lang_String_2 (MJIEnv env, int objref, long val) {
-    return env.newString(FeatureExprFactory.True(), Long.toHexString(val));
+    return env.newString(NativeMethodInfo.CTX, Long.toHexString(val));
   }
 
   @MJI
   public int toOctalString__J__Ljava_lang_String_2 (MJIEnv env, int objref, long val) {
-    return env.newString(FeatureExprFactory.True(), Long.toOctalString(val));
+    return env.newString(NativeMethodInfo.CTX, Long.toOctalString(val));
   }
 
   @MJI
   public int toString__J__Ljava_lang_String_2 (MJIEnv env, int objref, long val) {
-    return env.newString(FeatureExprFactory.True(), Long.toString(val));
+    return env.newString(NativeMethodInfo.CTX, Long.toString(val));
   }
 
   @MJI
   public int toString__JI__Ljava_lang_String_2 (MJIEnv env, int objref, long val, int radix) {
-    return env.newString(FeatureExprFactory.True(), Long.toString(val, radix));
+    return env.newString(NativeMethodInfo.CTX, Long.toString(val, radix));
   }
 
   @MJI

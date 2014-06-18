@@ -22,7 +22,7 @@ public class JPF_java_util_Date extends NativePeer {
     Date d = getDate(env,dateRef);
     String s = d.toString();
 
-    int sRef = env.newString(FeatureExprFactory.True(), s);
+    int sRef = env.newString(NativeMethodInfo.CTX, s);
     return sRef;
   }
 }
