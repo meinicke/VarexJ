@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -41,7 +42,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     // we need to get the object first, to check if it is shared
-    int aref = frame.peek(1); // ..,arrayRef,idx
+    int aref = frame.peek(ctx, 1).getValue(); // ..,arrayRef,idx
     if (aref == MJIEnv.NULL) {
       return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
     }
@@ -86,7 +87,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
    */
   @Override
   public int peekArrayRef (ThreadInfo ti){
-    return ti.getTopFrame().peek(1);
+    return ti.getTopFrame().peek(FeatureExprFactory.True(), 1).getValue();
   }
 
   // wouldn't really be required for loads, but this is a general

@@ -36,7 +36,7 @@ public class D2I extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    double v = frame.popDouble();
+    double v = frame.popDouble(ctx);
     frame.push(ctx, new One<>((int)v));
     
     return getNext(ctx, ti);

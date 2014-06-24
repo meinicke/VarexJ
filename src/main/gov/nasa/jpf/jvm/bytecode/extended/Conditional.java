@@ -67,4 +67,7 @@ public abstract class Conditional<T> {
     
     protected abstract void toMap(FeatureExpr f, Map<T, FeatureExpr> map);
 	
+    @Override
+    protected abstract Object clone() throws CloneNotSupportedException;
+    
 }

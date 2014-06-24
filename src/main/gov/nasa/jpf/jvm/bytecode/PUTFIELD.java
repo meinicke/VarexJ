@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Set field in object
@@ -92,7 +93,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
   public ElementInfo peekElementInfo (ThreadInfo ti) {
     FieldInfo fi = getFieldInfo();
     int storageSize = fi.getStorageSize();
-    int objRef = ti.getTopFrame().peek( (storageSize == 1) ? 1 : 2);
+    int objRef = ti.getTopFrame().peek(FeatureExprFactory.True(), (storageSize == 1) ? 1 : 2).getValue();
     ElementInfo ei = ti.getElementInfo( objRef);
 
     return ei;

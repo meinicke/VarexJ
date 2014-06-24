@@ -84,7 +84,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
         break;
 
       case Types.T_LONG:
-        lval = callerFrame.peekLong(stackOffset);
+        lval = callerFrame.peekLong(ctx, stackOffset);
         stackOffset++; // 2 stack words
         a[j] = new Long(lval);
 
@@ -97,7 +97,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
         break;
 
       case Types.T_DOUBLE:
-        lval = callerFrame.peekLong(stackOffset);
+        lval = callerFrame.peekLong(ctx, stackOffset);
         stackOffset++; // 2 stack words
         a[j] = new Double(Types.longToDouble(lval));
 

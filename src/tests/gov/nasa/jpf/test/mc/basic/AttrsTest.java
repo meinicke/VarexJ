@@ -35,6 +35,8 @@ import gov.nasa.jpf.vm.Verify;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * raw test for field/operand/local attribute handling
  */
@@ -441,7 +443,7 @@ public class AttrsTest extends TestJPF {
           // we are still in the caller stackframe
           frame.addLongOperandAttr("foo-arg");
           
-          Long v = Long.valueOf( frame.peekLong());
+          Long v = Long.valueOf( frame.peekLong(FeatureExprFactory.True()));
           frame.addLongOperandAttr( v);
           
           System.out.println("   operand attrs:");
@@ -498,7 +500,7 @@ public class AttrsTest extends TestJPF {
           assertTrue( frame.getNextLocalAttr(varIdx, String.class, sAttr) == null);
           
           Object lAttr = frame.getLocalAttr(varIdx, Long.class);
-          assertTrue( lAttr != null && lAttr.equals( frame.getLongLocalVariable(varIdx)));
+          assertTrue( lAttr != null && lAttr.equals( frame.getLongLocalVariable(FeatureExprFactory.True(), varIdx)));
           assertTrue( frame.getNextLocalAttr(varIdx, Long.class, lAttr) == null);
           
           frame.removeLocalAttr(varIdx, lAttr);

@@ -37,8 +37,8 @@ public class DREM extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    double v1 = frame.popDouble();
-    double v2 = frame.popDouble();
+    double v1 = frame.popDouble(ctx);
+    double v2 = frame.popDouble(ctx);
     
     if (v1 == 0){
       return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));

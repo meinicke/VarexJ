@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.listener;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFConfigException;
 import gov.nasa.jpf.PropertyListenerAdapter;
@@ -151,7 +152,7 @@ public class NumericValueChecker extends PropertyListenerAdapter {
           int pc = insn.getPosition()+1; // the scope would begin on the next insn, we are still at the xSTORE
           LocalVarInfo lvar = vc.getMatch(mi, pc, slotIdx);
           if (lvar != null) {
-            long v = lvar.getSlotSize() == 1 ? frame.getLocalVariable(slotIdx) : frame.getLongLocalVariable(slotIdx);
+            long v = lvar.getSlotSize() == 1 ? frame.getLocalVariable(FeatureExprFactory.True(), slotIdx).getValue() : frame.getLongLocalVariable(FeatureExprFactory.True(), slotIdx);
             String errorCond = lvar.isFloatingPoint()
                     ? vc.check(Double.longBitsToDouble(v)) : vc.check(v);
 

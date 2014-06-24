@@ -36,8 +36,8 @@ public class DSUB extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    double v1 = frame.popDouble();
-    double v2 = frame.popDouble();
+    double v1 = frame.popDouble(ctx);
+    double v2 = frame.popDouble(ctx);
     
     double r = v2 - v1;
     

@@ -41,7 +41,7 @@ public class RET extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
-    int jumpTgt = frame.getLocalVariable(index);
+    int jumpTgt = frame.getLocalVariable(ctx, index).getValue();
     return new One<>(mi.getInstructionAt(jumpTgt));
   }
 

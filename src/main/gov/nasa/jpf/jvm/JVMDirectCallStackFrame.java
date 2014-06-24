@@ -63,7 +63,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
 
   @Override
   public void setExceptionReference (int exRef, FeatureExpr ctx){
-    clearOperandStack();
+    clearOperandStack(ctx);
     pushRef( exRef, ctx);
   }
   
@@ -88,7 +88,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int setArgument (int slotIdx, int v, Object attr){
-    push(FeatureExprFactory.True(), new One<>(v));
+    push(TRUE, new One<>(v));
     if (attr != null){
       setOperandAttr(attr);
     }

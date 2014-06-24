@@ -38,7 +38,7 @@ public class DRETURN extends LongReturn {
   public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
     if (!isCompleted(ti)) { // we have to pull it from the operand stack
       StackFrame frame = ti.getTopFrame();
-      ret = frame.peekLong();
+      ret = frame.peekLong(ctx);
     }
 
     return new Double(Types.longToDouble(ret));

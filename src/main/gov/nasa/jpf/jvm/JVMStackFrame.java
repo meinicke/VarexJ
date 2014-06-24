@@ -19,14 +19,17 @@
 
 package gov.nasa.jpf.jvm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
-import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.FixedBitSet;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.NativeMethodInfo;
+import gov.nasa.jpf.vm.Stack;
 import gov.nasa.jpf.vm.StackFrame;
+import gov.nasa.jpf.vm.StackHandler;
 import gov.nasa.jpf.vm.ThreadInfo;
-import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.Types;
 
 /**
  * a stackframe that is used for executing Java bytecode, supporting both
@@ -49,48 +52,59 @@ public class JVMStackFrame extends StackFrame {
   
   /**
    * this sets up arguments from a bytecode caller 
+ * @param <U>
    */
-  protected <U> void setCallArguments (final FeatureExpr ctx, ThreadInfo ti){
+  protected <U> void setCallArguments (FeatureExpr ctx, ThreadInfo ti){
     final StackFrame caller = ti.getTopFrame();
     MethodInfo miCallee = mi;
     final int nArgSlots = miCallee.getArgumentsSize();
     
     if (nArgSlots > 0){
-    	final JVMStackFrame callee = this;
-      final Conditional<Integer>[] calleeSlots = slots;
-      Conditional<FixedBitSet> calleeRefs = isRef;
-      final Conditional<Integer>[] callerSlots = caller.getSlots2();
-//      FixedBitSet callerRefs = caller.getReferenceMap(ctx);
-
-      caller.getTopPos2().simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<U>>() {
+      final StackHandler calleeSlots = stack;
+//      FixedBitSet calleeRefs = isRef;
+      StackHandler callerSlots = caller.stack;
+//      FixedBitSet callerRefs = caller.getReferenceMap();
+      
+      caller.stack.stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<U>>() {
 
 		@Override
-		public Conditional<U> apply(FeatureExpr x, Integer top) {
-			for (int i = 0, j = top - nArgSlots + 1; i < nArgSlots; i++, j++) {
-				Conditional<Integer> oldValue = calleeSlots[i];
-		        calleeSlots[i] = new Choice<>(x, callerSlots[j], oldValue).simplify();
-		        callee.setRefIndex(x, i, caller.getRef(x, j));
-//		        if (callerRefs.get(j)) {
-//		          calleeRefs.getValue().set(i);
-//		        }
+		public Conditional<U> apply(FeatureExpr ctx, Stack y) {
+			if (ctx.isContradiction()) {
+				return null;
+			}
+			for (int i = 0, j = y.top - nArgSlots + 1; i < nArgSlots; i++, j++) {
+		        calleeSlots.setIndex(ctx, i, y.get(j), y.isRefIndex(j));
 		        Object a = caller.getSlotAttr(j);
 		        if (a != null) {
 		          setSlotAttr(i, a);
 		        }
-		      }
+			}
 			return null;
 		}
+    	  
       });
+      
+//      for (int i = 0, j = caller.stack.getTop().simplify(ctx).getValue() - nArgSlots + 1; i < nArgSlots; i++, j++) {
+//        calleeSlots.setIndex(ctx, i, callerSlots.get(ctx, j), callerSlots.isRefIndex(ctx, j));
+//    	  calleeSlots[i] = callerSlots[j];
+//        if (callerRefs.get(j)) {
+//          calleeRefs.set(i);
+//        }
+//        Object a = caller.getSlotAttr(j);
+//        if (a != null) {
+//          setSlotAttr(i, a);
+//        }
+//      }
 
       if (!miCallee.isStatic()) {
-        thisRef = calleeSlots[0].simplify(ctx).getValue();
+        thisRef = calleeSlots.get(ctx, 0).simplify(ctx).getValue();
       }
     }
   }
 
   @Override
   public void setExceptionReference (int exRef, FeatureExpr ctx){
-    clearOperandStack();
+    clearOperandStack(ctx);
     pushRef( exRef, ctx);
   }
   
@@ -102,14 +116,14 @@ public class JVMStackFrame extends StackFrame {
    */
   @Override
   public void setArgumentLocal (int idx, int v, Object attr){
-    setLocalVariable( idx, v);
+    setLocalVariable( NativeMethodInfo.CTX, idx, v);
     if (attr != null){
       setLocalAttr( idx, attr);
     }
   }
   @Override
   public void setReferenceArgumentLocal (int idx, int ref, Object attr){
-    setLocalReferenceVariable( idx, ref);
+    setLocalReferenceVariable( TRUE, idx, ref);
     if (attr != null){
       setLocalAttr( idx, attr);
     }

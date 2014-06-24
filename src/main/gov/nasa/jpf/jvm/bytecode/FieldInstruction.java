@@ -130,7 +130,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
 
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter
-    if ((eiFieldOwner.get1SlotField(fi).simplify(ctx).getValue() != val.simplify(ctx).getValue(true)) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
+    if ((eiFieldOwner.get1SlotField(fi).simplify(ctx).getValue().intValue() != val.simplify(ctx).getValue(true).intValue()) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       
       if (fi.isReference()) {
@@ -176,7 +176,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
   
   protected Conditional<Instruction> put2 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
     Object attr = frame.getLongOperandAttr();
-    long val = frame.peekLong();
+    long val = frame.peekLong(ctx);
     lastValue = new One<>(val);
 
     if ((eiFieldOwner.get2SlotField(fi) != val) || (eiFieldOwner.getFieldAttr(fi) != attr)) {

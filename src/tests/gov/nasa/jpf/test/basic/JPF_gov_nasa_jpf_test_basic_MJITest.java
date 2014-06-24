@@ -167,7 +167,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
 
     if (frame == null){ // first time
       frame = mi.createDirectCallStackFrame(ti, 1);
-      frame.setLocalVariable( 0, 0);
+      frame.setLocalVariable(NativeMethodInfo.CTX, 0, 0);
       
       int argOffset = frame.setReferenceArgument(0, robj, null);
       frame.setArgument( argOffset, a+1, null);
@@ -186,12 +186,12 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       // this shows how to get information back from the JPF roundtrip into
       // the native method
       int r = frame.getResult(); // the return value of the direct call above
-      int i = frame.getLocalVariable(0);
+      int i = frame.getLocalVariable(NativeMethodInfo.CTX, 0).getValue();
 
       if (i < 3) { // repeat the round trip
         // we have to reset so that the PC is re-initialized
         frame.reset();
-        frame.setLocalVariable(0, i + 1);
+        frame.setLocalVariable(NativeMethodInfo.CTX, 0, i + 1);
         
         int argOffset = frame.setReferenceArgument( 0, robj, null);
         frame.setArgument( argOffset, r+1, null);

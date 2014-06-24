@@ -90,4 +90,9 @@ public class One<T> extends Conditional<T> {
 		map.put(value, f);
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return new One<>(value);
+	}
+
 }

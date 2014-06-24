@@ -228,50 +228,50 @@ public class NativeMethodInfo extends MethodInfo {
          i++, j--, k--) {
       switch (argTypes[k]) {
       case Types.T_BOOLEAN:
-        ival = caller.peek(stackOffset);
+        ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
         a[j] = Boolean.valueOf(Types.intToBoolean(ival));
 
         break;
 
       case Types.T_BYTE:
-        ival = caller.peek(stackOffset);
+        ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
         a[j] = Byte.valueOf((byte) ival);
 
         break;
 
       case Types.T_CHAR:
-        ival = caller.peek(stackOffset);
+        ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
         a[j] = Character.valueOf((char) ival);
 
         break;
 
       case Types.T_SHORT:
-        ival = caller.peek(stackOffset);
+        ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
         a[j] = new Short((short) ival);
 
         break;
 
       case Types.T_INT:
-        ival = caller.peek(stackOffset);
+        ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
         a[j] = new Integer(ival);
 
         break;
 
       case Types.T_LONG:
-        lval = caller.peekLong(stackOffset);
+        lval = caller.peekLong(FeatureExprFactory.True(), stackOffset);
         stackOffset++; // 2 stack words
         a[j] = new Long(lval);
 
         break;
 
       case Types.T_FLOAT:
-        ival = caller.peek(stackOffset);
+        ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
         a[j] = new Float(Types.intToFloat(ival));
 
         break;
 
       case Types.T_DOUBLE:
-        lval = caller.peekLong(stackOffset);
+        lval = caller.peekLong(FeatureExprFactory.True(), stackOffset);
         stackOffset++; // 2 stack words
         a[j] = new Double(Types.longToDouble(lval));
 
@@ -280,7 +280,7 @@ public class NativeMethodInfo extends MethodInfo {
       default:
         // NOTE - we have to store T_REFERENCE as an Integer, because
         // it shows up in our native method as an 'int'
-        ival = caller.peek(stackOffset);
+        ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
         a[j] = new Integer(ival);
       }
 

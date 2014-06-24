@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.VM;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -201,7 +202,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
     int nArgSlots = callee.getArgumentsSize();
     for (int i=0; i<nArgSlots; i++){
       if (frame.isOperandRef(i)){
-        ElementInfo ei = ti.getElementInfo(frame.peek(i));
+        ElementInfo ei = ti.getElementInfo(frame.peek(FeatureExprFactory.True(), i).getValue());
         if (ei != null){
           if (ei.getObjectAttr(type) != null){
             return true;
@@ -227,7 +228,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
       case Types.T_ARRAY:
       //case Types.T_OBJECT:
       case Types.T_REFERENCE:
-        int ref = frame.peek(off);
+        int ref = frame.peek(FeatureExprFactory.True(), off).getValue();
         if (ref != MJIEnv.NULL) {
           args[i] = ti.getElementInfo(ref);
         } else {
@@ -237,36 +238,36 @@ public abstract class InvokeInstruction extends JVMInstruction {
         break;
 
       case Types.T_LONG:
-        args[i] = new Long(frame.peekLong(off));
+        args[i] = new Long(frame.peekLong(FeatureExprFactory.True(), off));
         off+=2;
         break;
       case Types.T_DOUBLE:
-        args[i] = new Double(Types.longToDouble(frame.peekLong(off)));
+        args[i] = new Double(Types.longToDouble(frame.peekLong(FeatureExprFactory.True(), off)));
         off+=2;
         break;
 
       case Types.T_BOOLEAN:
-        args[i] = new Boolean(frame.peek(off) != 0);
+        args[i] = new Boolean(frame.peek(FeatureExprFactory.True(), off).getValue().intValue() != 0);
         off++;
         break;
       case Types.T_BYTE:
-        args[i] = new Byte((byte)frame.peek(off));
+        args[i] = new Byte((byte)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_CHAR:
-        args[i] = new Character((char)frame.peek(off));
+        args[i] = new Character((char)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_SHORT:
-        args[i] = new Short((short)frame.peek(off));
+        args[i] = new Short((short)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_INT:
-        args[i] = new Integer((int)frame.peek(off));
+        args[i] = new Integer((int)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_FLOAT:
-        args[i] = new Float(Types.intToFloat(frame.peek(off)));
+        args[i] = new Float(Types.intToFloat(frame.peek(FeatureExprFactory.True(), off).getValue().intValue()));
         off++;
         break;
       default:

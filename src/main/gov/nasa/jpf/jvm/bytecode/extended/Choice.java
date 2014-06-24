@@ -120,5 +120,10 @@ public class Choice<T> extends Conditional<T> {
 		thenBranch.toMap(ctx.and(featureExpr), map);
 		elseBranch.toMap(ctx.andNot(featureExpr), map);
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Choice<T>(featureExpr, (Conditional<T>)thenBranch.clone(),(Conditional<T>) elseBranch.clone());
+	}
 	
 }

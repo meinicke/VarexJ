@@ -104,7 +104,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       frame = miCallee.createDirectCallStackFrame( ti, 1);
       frame.setReflection();
       
-      frame.setLocalReferenceVariable(0, objRef);  // (1) store the objRef for retrieval during re-exec
+      frame.setLocalReferenceVariable(NativeMethodInfo.CTX, 0, objRef);  // (1) store the objRef for retrieval during re-exec
       
       int argOffset = frame.setReferenceArgument(0, objRef, null);
       if (!JPF_java_lang_reflect_Method.pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef)) {
@@ -119,7 +119,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // reflection call returned
-      int objRef = frame.getLocalVariable(0); // that's the object ref we stored in (1)
+      int objRef = frame.getLocalVariable(NativeMethodInfo.CTX, 0).getValue(); // that's the object ref we stored in (1)
       return objRef;
     }
   }

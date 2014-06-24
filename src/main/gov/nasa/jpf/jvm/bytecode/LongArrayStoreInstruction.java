@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -47,12 +48,12 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
   }
   
   public int peekArrayRef(ThreadInfo ti) {
-    return ti.getTopFrame().peek(3);  // ..,ref,idx,long(value)
+    return ti.getTopFrame().peek(FeatureExprFactory.True(), 3).getValue();  // ..,ref,idx,long(value)
   }
 
   @Override
   public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame().peek(2);
+    return ti.getTopFrame().peek(FeatureExprFactory.True(), 2).getValue();
   }
   
   public void accept(InstructionVisitor insVisitor) {

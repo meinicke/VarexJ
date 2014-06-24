@@ -123,7 +123,7 @@
     <mkdir dir="build/tests"/>
     <javac srcdir="src/tests" destdir="build/tests" includeantruntime="false"
            debug="${debug}" deprecation="${deprecation}"
-           includes="*,gov/nasa/jpf/**,classloader_specific_tests/**">
+           includes="*,gov/nasa/jpf/**, cmu/**,classloader_specific_tests/**">
       <compilerarg value="-XDenableSunApiLintControl"/>
       <compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked"/>   
       <classpath>

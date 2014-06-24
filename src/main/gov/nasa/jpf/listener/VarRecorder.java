@@ -336,7 +336,7 @@ public class VarRecorder extends ListenerAdapter {
          return(null);
 
        lo = frame.peek(FeatureExprFactory.True()).getValue();
-       hi = frame.getTopPos() >= 1 ? frame.peek(1) : 0;
+       hi = frame.getTopPos() >= 1 ? frame.peek(FeatureExprFactory.True(), 1).getValue() : 0;
 
        return(decodeValue(type, lo, hi));
     }
@@ -368,7 +368,7 @@ public class VarRecorder extends ListenerAdapter {
 
     offset = calcOffset(type, store);
 
-    return(ti.getTopFrame().peek(offset));
+    return(ti.getTopFrame().peek(FeatureExprFactory.True(), offset).getValue());
   }
 
   private final static int calcOffset(byte type, boolean store) {
@@ -384,7 +384,7 @@ public class VarRecorder extends ListenerAdapter {
 
     frame = ti.getTopFrame();
     lo    = frame.peek(FeatureExprFactory.True()).getValue();
-    hi    = frame.getTopPos() >= 1 ? frame.peek(1) : 0;
+    hi    = frame.getTopPos() >= 1 ? frame.peek(FeatureExprFactory.True(), 1).getValue() : 0;
 
     return(decodeValue(type, lo, hi));
   }

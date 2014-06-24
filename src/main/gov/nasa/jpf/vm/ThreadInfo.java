@@ -1913,9 +1913,9 @@ public class ThreadInfo extends InfoObject
         try {
         	
         	if (pc instanceof One) {// avoid overhead for calculating the next instruction
-        		if (main) {
-  					System.out.println("exe: " + pc.getValue() + " if True");
-  				}
+//        		if (main) {
+//  					System.out.println("exe: " + pc.getValue() + " if True");
+//  				}
         		nextPc = pc.getValue().execute(FeatureExprFactory.True(), this);
         		
         		if (nextPc.getValue(true) == null) {
@@ -1934,14 +1934,15 @@ public class ThreadInfo extends InfoObject
 	        	}
 	        	final int finalMin = min;
 	        	final ThreadInfo ti = this;
+	        	System.out.println("PC: " + pc);
 	        	nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 	
 	          		@Override
 	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction x) {
 	          			if (x != null && x.getPosition() == finalMin) {
-	          				if (main) {
-	          					System.out.println("exe: " + x + " if " + ctx);
-	          				}
+//	          				if (main) {
+//	          					System.out.println("exe: " + x + " if " + ctx);
+//	          				}
 	          				Conditional<Instruction> next = x.execute(ctx, ti).simplify(ctx);
 	          				
 	          				// the executed instruction defines the next method 
@@ -2664,7 +2665,7 @@ public class ThreadInfo extends InfoObject
     StackFrame frame = top;
 
     //--- do our housekeeping
-    if (frame.hasAnyRef()) {
+    if (frame.hasAnyRef(ctx)) {
       vm.getSystemState().activateGC();
     }
 

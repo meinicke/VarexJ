@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -80,12 +81,12 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
    */
   @Override
   public int peekArrayRef(ThreadInfo ti) {
-    return ti.getTopFrame().peek(2);
+    return ti.getTopFrame().peek(FeatureExprFactory.True(), 2).getValue();
   }
 
   @Override
   public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame().peek(1);
+    return ti.getTopFrame().peek(FeatureExprFactory.True(), 1).getValue();
   }
 
   protected Instruction checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei){

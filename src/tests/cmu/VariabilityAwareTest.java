@@ -1,3 +1,5 @@
+package cmu;
+
 
 
 import gov.nasa.jpf.annotation.MyAnnotation;
@@ -13,44 +15,44 @@ public class VariabilityAwareTest extends TestJPF {
 	static boolean b = true;
 	@MyAnnotation
 	static boolean c = true;
-//	@MyAnnotation
-//	static boolean d = true;
-//	@MyAnnotation
-//	static boolean e = true;
-//	@MyAnnotation
-//	static boolean f = true;
-//	@MyAnnotation
-//	static boolean g = true;
-//	@MyAnnotation
-//	static boolean h = true;
-//	@MyAnnotation
-//	static boolean j = true;
-//	@MyAnnotation
-//	static boolean k = true;
-//	@MyAnnotation
-//	static boolean l = true;
-//	@MyAnnotation
-//	static boolean m = true;
-//	@MyAnnotation
-//	static boolean n = true;
-//	@MyAnnotation
-//	static boolean o = true;
-//	@MyAnnotation
-//	static boolean p = true;
-//	@MyAnnotation
-//	static boolean q = true;
-//	@MyAnnotation
-//	static boolean r = true;
-//	@MyAnnotation
-//	static boolean s = true;
-//	@MyAnnotation
-//	static boolean t = true;
-//	@MyAnnotation
-//	static boolean u = true;
-//	@MyAnnotation
-//	static boolean v = true;
-//	@MyAnnotation
-//	static boolean w = true;
+	@MyAnnotation
+	static boolean d = true;
+	@MyAnnotation
+	static boolean e = true;
+	@MyAnnotation
+	static boolean f = true;
+	@MyAnnotation
+	static boolean g = true;
+	@MyAnnotation
+	static boolean h = true;
+	@MyAnnotation
+	static boolean j = true;
+	@MyAnnotation
+	static boolean k = true;
+	@MyAnnotation
+	static boolean l = true;
+	@MyAnnotation
+	static boolean m = true;
+	@MyAnnotation
+	static boolean n = true;
+	@MyAnnotation
+	static boolean o = true;
+	@MyAnnotation
+	static boolean p = true;
+	@MyAnnotation
+	static boolean q = true;
+	@MyAnnotation
+	static boolean r = true;
+	@MyAnnotation
+	static boolean s = true;
+	@MyAnnotation
+	static boolean t = true;
+	@MyAnnotation
+	static boolean u = true;
+	@MyAnnotation
+	static boolean v = true;
+	@MyAnnotation
+	static boolean w = true;
 	@MyAnnotation
 	static boolean x = true;
 	@MyAnnotation
@@ -58,6 +60,23 @@ public class VariabilityAwareTest extends TestJPF {
 	@MyAnnotation
 	static boolean z = true;
 
+	@Test
+	public void simpleForTest() throws Exception {
+		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch")) {
+			int rounds = 1;
+			if (z) {
+				rounds = 4;
+			}
+			if (y) {
+				rounds = 2;
+			}
+			int a = 0;
+			for (int start = 0; start <= rounds; start++) {
+				a++;
+			}
+		}
+	}
+	
 	@Test
 	public void forTest() throws Exception {
 		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch")) {
@@ -149,9 +168,9 @@ public class VariabilityAwareTest extends TestJPF {
 //			 if (c) {
 //			 i *= 2;
 //			 }
-			// if (d) {
-			// i *= 3;
-			// }
+//			 if (d) {
+//			 i *= 2;
+//			 }
 			// if (e) {
 			// i *= 3;
 			// }
@@ -171,14 +190,14 @@ public class VariabilityAwareTest extends TestJPF {
 			for (int start = 1; start <= i; start++) {
 				sum++;			}
 			
-			if (x && y && z && a && b) {
+			if (x && y && z && a && b && c && d) {
 				System.out.println(sum);
 			}
 		}
 	}
 	
 	@Test
-	public void testPint() throws Exception {
+	public void testPrint() throws Exception {
 		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch")) {
 			int i = 0;
 			if (z) {
@@ -270,19 +289,35 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
 	@Test
 	public void classMethodTest() throws Exception {
 		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch")) {
-			boolean z = this.z;
-			boolean y = this.y;
 			Main main = new Main(z, y);
 			main.method(z, y);
 		}
 	}
 	
 	@Test
-	public void ifTest() throws Exception {
+	public void classMethodTest2() throws Exception {
+		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch")) {
+			boolean z = VariabilityAwareTest.z;
+			boolean y = VariabilityAwareTest.y;
+			Main main = new Main(z, y);
+			main.method(z, y);
+		}
+	}
+
+	@Test
+	public void ConditionalTest() throws Exception {
+		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch")) {
+			if (a && (!b || c)) {
+				
+			}
+		}
+	}
+	
+	@Test
+	public void ConditionalReturnTest() throws Exception {
 		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch")) {
 			if (VariabilityAwareTest.valid()) {
 				
@@ -313,8 +348,8 @@ class Main {
 	}
 	
 	void method(boolean z, boolean y) {
-		assert this.z == z;
-		assert this.y == y;
+		assert z == this.z;
+		assert y == this.y;
 	}
 
 }

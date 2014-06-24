@@ -246,7 +246,7 @@ public class JPF_java_lang_Class extends NativePeer {
       frame = miCtor.createDirectCallStackFrame(ti, 1);
       // note that we don't set this as a reflection call since it is supposed to propagate exceptions
       frame.setReferenceArgument(0, objRef, null);
-      frame.setLocalReferenceVariable(0, objRef);        // (1) store ref for retrieval during re-exec
+      frame.setLocalReferenceVariable(NativeMethodInfo.CTX, 0, objRef);        // (1) store ref for retrieval during re-exec
       ti.pushFrame(frame);
       
       // check if we have to push clinits
@@ -256,7 +256,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // re-execution
-      int objRef = frame.getLocalVariable(0); // that's the object ref we set in (1)
+      int objRef = frame.getLocalVariable(NativeMethodInfo.CTX, 0).getValue(); // that's the object ref we set in (1)
       return objRef;
     }      
   }

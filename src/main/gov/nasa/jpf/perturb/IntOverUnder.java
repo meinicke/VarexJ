@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.perturb;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.IntChoiceGenerator;
@@ -44,7 +45,7 @@ public class IntOverUnder implements OperandPerturbator {
   }
   
   public ChoiceGenerator<?> createChoiceGenerator (String id, StackFrame frame, Object refObject){
-    int val = frame.peek(offset);
+    int val = frame.peek(FeatureExprFactory.True(), offset).getValue();
 
     int[] values = new int[3];
 

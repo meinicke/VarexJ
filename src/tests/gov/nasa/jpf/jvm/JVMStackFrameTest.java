@@ -48,11 +48,11 @@ public class JVMStackFrameTest extends TestJPF {
     frame.printOperands(System.out);
 
     assert frame.getTopPos() == 4;
-    assert frame.peek(4) == 2;
-    assert frame.peek(3) == 3;
-    assert frame.peek(2) == 1;
-    assert frame.peek(1) == 2;
-    assert frame.peek(0) == 3;
+    assert frame.peek(FeatureExprFactory.True(), 4).getValue() == 2;
+    assert frame.peek(FeatureExprFactory.True(), 3).getValue() == 3;
+    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 1;
+    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 2;
+    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 3;
   }
 
   @Test
@@ -70,11 +70,11 @@ public class JVMStackFrameTest extends TestJPF {
     frame.printOperands(System.out);
 
     assert frame.getTopPos() == 4;
-    assert frame.peek(4) == 2 && frame.getOperandAttr(4) == "2"; // same const pool string
-    assert frame.peek(3) == 3 && frame.getOperandAttr(3) == "3";
-    assert frame.peek(2) == 1 && frame.getOperandAttr(2) == "1";
-    assert frame.peek(1) == 2 && frame.getOperandAttr(1) == "2";
-    assert frame.peek(0) == 3 && frame.getOperandAttr(0) == "3";
+    assert frame.peek(FeatureExprFactory.True(), 4).getValue() == 2 && frame.getOperandAttr(4) == "2"; // same const pool string
+    assert frame.peek(FeatureExprFactory.True(), 3).getValue() == 3 && frame.getOperandAttr(3) == "3";
+    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 1 && frame.getOperandAttr(2) == "1";
+    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 2 && frame.getOperandAttr(1) == "2";
+    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 3 && frame.getOperandAttr(0) == "3";
   }
 
 
@@ -94,12 +94,12 @@ public class JVMStackFrameTest extends TestJPF {
     frame.printOperands(System.out);
 
     assert frame.getTopPos() == 5;
-    assert frame.peek(5) == 3;
-    assert frame.peek(4) == 4;
-    assert frame.peek(3) == 1;
-    assert frame.peek(2) == 2;
-    assert frame.peek(1) == 3;
-    assert frame.peek(0) == 4;
+    assert frame.peek(FeatureExprFactory.True(), 5).getValue() == 3;
+    assert frame.peek(FeatureExprFactory.True(), 4).getValue() == 4;
+    assert frame.peek(FeatureExprFactory.True(), 3).getValue() == 1;
+    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 2;
+    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 3;
+    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 4;
   }
 
   @Test
@@ -118,12 +118,12 @@ public class JVMStackFrameTest extends TestJPF {
     frame.printOperands(System.out);
 
     assert frame.getTopPos() == 5;
-    assert frame.peek(5) == 3 && frame.getOperandAttr(5) == "3";  // same const pool string
-    assert frame.peek(4) == 4 && frame.getOperandAttr(4) == "4";
-    assert frame.peek(3) == 1 && frame.getOperandAttr(3) == "1";
-    assert frame.peek(2) == 2 && frame.getOperandAttr(2) == "2";
-    assert frame.peek(1) == 3 && frame.getOperandAttr(1) == "3";
-    assert frame.peek(0) == 4 && frame.getOperandAttr(0) == "4";
+    assert frame.peek(FeatureExprFactory.True(), 5).getValue() == 3 && frame.getOperandAttr(5) == "3";  // same const pool string
+    assert frame.peek(FeatureExprFactory.True(), 4).getValue() == 4 && frame.getOperandAttr(4) == "4";
+    assert frame.peek(FeatureExprFactory.True(), 3).getValue() == 1 && frame.getOperandAttr(3) == "1";
+    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 2 && frame.getOperandAttr(2) == "2";
+    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 3 && frame.getOperandAttr(1) == "3";
+    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 4 && frame.getOperandAttr(0) == "4";
   }
 
   @Test
@@ -165,14 +165,14 @@ public class JVMStackFrameTest extends TestJPF {
     assert obj_Double instanceof Double;
 
     double result_getLocValObj = (Double) obj_Double;
-    double result_popLong = frame.popDouble();
+    double result_popLong = frame.popDouble(FeatureExprFactory.True());
 
     assert result_getLocValObj == value;
     assert result_popLong == value;
 
-    assert frame.peek(0) == 3;
-    assert frame.peek(1) == 2;
-    assert frame.peek(2) == 1;
+    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 3;
+    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 2;
+    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 1;
   }
 
 }
