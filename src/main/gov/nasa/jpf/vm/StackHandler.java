@@ -281,7 +281,7 @@ public class StackHandler {
 					return stack.isRefIndex(i);
 				}
 				
-			}).getValue();
+			}).simplify().getValue();
 		}
 	}
 
@@ -312,7 +312,7 @@ public class StackHandler {
 					return stack.isRefIndex(i);
 				}
 				
-			}).getValue();
+			}).simplify(ctx).getValue();
 		}
 	}
 
@@ -466,7 +466,7 @@ public class StackHandler {
 					clone.pop();
 					i--;
 				}
-				return new Choice<>(f, new One<>(clone), new One<>(s));
+				return new Choice<>(ctx.and(f), new One<>(clone), new One<>(s));
 			}
 		}).simplify();
 	}
@@ -612,7 +612,7 @@ public class StackHandler {
 				slots[i++] = MJIEnv.NULL;
 				continue;
 			}
-			slots[i++] = l.getValue().value;
+			slots[i++] = l.simplify(ctx).getValue().value;
 		}
 		for (int o : stack.simplify(ctx).getValue().getSlots()) {
 			slots[i++] = o;

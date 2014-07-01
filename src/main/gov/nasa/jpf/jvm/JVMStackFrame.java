@@ -62,11 +62,11 @@ public class JVMStackFrame extends StackFrame {
 	    if (nArgSlots > 0){
 //	      int[] calleeSlots = stack.getSlots();
 //	      FixedBitSet calleeRefs = isRef;
-	      int[] callerSlots = caller.getSlots();
+//	      int[] callerSlots = caller.getSlots();
 //	      FixedBitSet callerRefs = caller.getReferenceMap();
 
-	      for (int i = 0, j = caller.getTopPos() - nArgSlots + 1; i < nArgSlots; i++, j++) {
-	        stack.setLocal(i, callerSlots[j], caller.isReferenceSlot(j));
+	      for (int i = 0, j = caller.getTopPos(ctx) - nArgSlots + 1; i < nArgSlots; i++, j++) {
+	        stack.setLocal(ctx, i, caller.stack.getLocal(ctx, j), caller.isReferenceSlot(ctx, j));
 //	        if (callerRefs.get(j)) {
 //	          calleeRefs.set(i);
 //	        }

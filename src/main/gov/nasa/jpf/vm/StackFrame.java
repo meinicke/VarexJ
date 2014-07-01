@@ -363,8 +363,8 @@ public int nLocals;
   public int getSlot(int idx){
     return stack.getLocal(TRUE, idx).getValue();
   }
-  public boolean isReferenceSlot(int idx){
-    return stack.isRefLocal(idx);
+  public boolean isReferenceSlot(FeatureExpr ctx, int idx){
+    return stack.isRefLocal(ctx, idx);
   }
 
 
@@ -466,7 +466,7 @@ public int nLocals;
    * one attribute at callerSlots time, or check/process result with ObjectList
    */
   public Object getOperandAttr (FeatureExpr ctx) {
-	  int top = top();
+	  int top = getTopPos(ctx);
 	  
     if ((top >= stackBase) && (attrs != null)){
       return attrs[top];
@@ -1142,6 +1142,10 @@ public int nLocals;
   public int getTopPos() {
     return top();
   }
+  
+  public int getTopPos(FeatureExpr ctx) {
+	    return stack.getTop().simplify(ctx).getValue() + nLocals;	
+	  }
 
   ExceptionHandler getHandlerFor (FeatureExpr ctx, ClassInfo ciException){
     return mi.getHandlerFor(ciException, pc.simplify(ctx).getValue());
@@ -1805,7 +1809,7 @@ public int nLocals;
   
   public void pop (FeatureExpr ctx, int n) {
 //    assert (top() >= stackBase) : "stack empty";
-	  int top = top();
+	  int top = getTopPos(ctx);
     int t = top - n;
     
     // <2do> get rid of this !
@@ -1904,7 +1908,7 @@ public int nLocals;
   }
 
   public void storeOperand (FeatureExpr ctx, int index){
-	  int top = top();
+	  int top = getTopPos(ctx);
 	  stack.storeOperand(ctx, index);
 //	  stack.duplicateIndex(ctx, index, 0, false);
 //    stack[index] = stack.peek();

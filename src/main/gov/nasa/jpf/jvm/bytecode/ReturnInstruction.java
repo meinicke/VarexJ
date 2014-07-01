@@ -188,4 +188,20 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
   public void accept(InstructionVisitor insVisitor) {
 	  insVisitor.visit(this);
   }
+  
+  @Override
+	public boolean equals(Object o) {
+	  if (o == null) {
+			return false;
+		}
+		if (o == this) {
+			return true;
+		}
+		if (o.getClass().equals(getClass()) && o instanceof Instruction) {
+			if (getMethodInfo() == ((Instruction)o).getMethodInfo()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

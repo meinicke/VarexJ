@@ -312,18 +312,19 @@ public class VariabilityAwareTest extends TestJPF {
 			if (b) {
 				return;
 			}
-			check(!a);
+			check(a);
 		}
 	}
 	
 	@Test
 	public void elseTest_3() throws Exception {
-		if ( verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			if (VariabilityAwareTest.valid()) {
 				check(a);
 				return;
 			}
 			check(!a);
+			return;
 		}
 	}
 

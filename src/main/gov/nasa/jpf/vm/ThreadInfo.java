@@ -1912,6 +1912,7 @@ public class ThreadInfo extends InfoObject
         // enter the next bytecode
         try {
         	if (pc instanceof One) {// avoid overhead for calculating the next instruction
+        		
         		if (main) {
   					System.out.println("exe: " + pc.getValue() + " if True");
   				}
@@ -1923,23 +1924,41 @@ public class ThreadInfo extends InfoObject
         			currentMethod = nextPc.getValue(true).getMethodInfo();
         		}
         	} else {
-        		// TODO this does not work for multiple return statements
+        		// TODO revise multiple returns
         		int min = Integer.MAX_VALUE;
         		Instruction ins = null;
+        		boolean retInstr = false;
+        		
 	        	for (Instruction i : pc.toList()) {
-	        		if (i != null && i.getPosition() < min) {
-	        			if (currentMethod == null || i.getMethodInfo() == currentMethod) {
-	        				min = i.getPosition();
-	        				ins = i;
+	        		if (i != null) {
+	        			if (!(i instanceof ReturnInstruction)) {
+		        			if (i.getPosition() < min) {
+			        			if (currentMethod == null || i.getMethodInfo() == currentMethod) {
+			        				min = i.getPosition();
+			        				ins = i;
+			        			}
+		        			}
+	        			} else {
+	        				if (i.getMethodInfo() == currentMethod) {
+	        					retInstr = true;
+	        				}
 	        			}
 	        		}
 	        	}
+	        	
 	        	final int finalMin = min;
 	        	final ThreadInfo ti = this;
 	        	Map<Instruction, FeatureExpr> map = pc.toMap();
 	        	Conditional<Instruction> next = null;
+	        	final MethodInfo oldMethod = currentMethod;
 	        	for (Instruction e : map.keySet()) {
           			if (e != null && e.getPosition() == finalMin && e.equals(ins)) {
+          				FeatureExpr ctx = map.get(e);
+      					System.out.println("exe: " + e + " " + ctx);
+          				next = e.execute(ctx, ti).simplify(ctx);
+          				// the executed instruction defines the next method 
+          				
+          			} else if (e != null && ins == null && retInstr && oldMethod == e.getMethodInfo()) {
           				FeatureExpr ctx = map.get(e);
           				if (main) {
           					System.out.println("exe: " + e + " " + ctx);
@@ -1947,18 +1966,30 @@ public class ThreadInfo extends InfoObject
           				
           				next = e.execute(ctx, ti).simplify(ctx);
           				// the executed instruction defines the next method 
-          				for (Instruction i : next.toList()) {
-          					if (i != null) {
-	          					currentMethod = i.getMethodInfo();
-	          					break;
-          					} else {
-          						currentMethod = null;
-          					}
-          				}
+//          				for (Instruction i : next.toList()) {
+//          					if (i != null) {
+//	          					currentMethod = i.getMethodInfo();
+//	          					break;
+//          					} else {
+//          						currentMethod = null;
+//          					}
+//          				}
+          				
           			}
 	        	}
+	        	
+	        	for (Instruction i : next.toList()) {
+  					if (i != null) {
+      					currentMethod = i.getMethodInfo();
+      					break;
+  					} else {
+  						currentMethod = null;
+  					}
+  				}
+	        	
 	        	final Conditional<Instruction> finalNext = next; 
 	        	final Instruction finalins = ins;
+	        	final boolean fret = retInstr;
 	        	
 	        	nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 	
@@ -1982,6 +2013,8 @@ public class ThreadInfo extends InfoObject
 //	          					}
 //	          				}
 //	          				return next;
+	          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {
+	          				return finalNext.simplify(ctx);
 	          			}
 	          			return new One<>(x);
 	          		} 
