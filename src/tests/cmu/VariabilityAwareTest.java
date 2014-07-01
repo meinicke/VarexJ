@@ -126,9 +126,9 @@ public class VariabilityAwareTest extends TestJPF {
 			if ( y ) {
 				i*= 2;
 			}
-//			if ( z ) {
-//				i*= 2;
-//			}
+			if ( z ) {
+				i*= 2;
+			}
 //			if ( a ) {
 //				i*=2;
 //			}
@@ -225,6 +225,38 @@ public class VariabilityAwareTest extends TestJPF {
 			}
 			check(false);
 		}
+	}
+	
+	@Test
+	public void returnTest2() throws Exception {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+
+			if (method()) {
+
+			} else {
+
+			}
+			return;
+		}
+	}
+	
+	boolean method() {
+//		System.out.println("VariabilityAwareTest.method()");
+		if (z) {
+			return false;
+		}
+		return (method2()) ;
+//
+//		} else {
+//			return false;
+//		}
+//		return true;
+	}
+
+
+	private boolean method2() {
+//		System.out.println("VariabilityAwareTest.method2()");
+		return true;
 	}
 
 	@Test

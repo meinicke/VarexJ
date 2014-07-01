@@ -62,7 +62,7 @@ public class ARRAYLENGTH extends ArrayInstruction {
   }
 
   @Override
-  protected int peekArrayRef (ThreadInfo ti) {
+  protected int peekArrayRef (FeatureExpr ctx, ThreadInfo ti) {
     return ti.getTopFrame().peek(FeatureExprFactory.True()).getValue();
   }
 }

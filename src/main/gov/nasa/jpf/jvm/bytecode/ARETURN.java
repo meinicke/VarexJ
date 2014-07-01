@@ -69,7 +69,7 @@ public class ARETURN extends ReturnInstruction {
   }
   
   public String toString() {
-    return "areturn " + mi.getFullName();
+    return super.toString() + " " + mi.getFullName();
   }
   
   public void accept(InstructionVisitor insVisitor) {

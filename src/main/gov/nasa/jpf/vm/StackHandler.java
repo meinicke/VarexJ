@@ -219,6 +219,9 @@ public class StackHandler {
 	}
 	
 	public void setLocal(final FeatureExpr ctx, final int index, final int value, final boolean isRef) {
+		if (locals[index] == null) {
+			locals[index] = new One<>(new Entry(0, false));
+		}
 		locals[index] = new Choice<>(ctx, new One<>(new Entry(value, isRef)), locals[index]).simplify();
 	}
 
@@ -305,7 +308,7 @@ public class StackHandler {
 			}).simplify().getValue();
 		} else {
 			final int i = index - locals.length;
-			return stack.map(new Function<Stack, Boolean>() {
+			return stack.simplify(ctx).map(new Function<Stack, Boolean>() {
 
 				@Override
 				public Boolean apply(Stack stack) {
@@ -455,10 +458,10 @@ public class StackHandler {
 			@Override
 			public Conditional<Stack> apply(FeatureExpr f, Stack s) {
 				if (f.and(ctx).isContradiction()) {
-					return null;
+					return new One<>(s);
 				}
 				if (f.and(ctx).equivalentTo(f.andNot(ctx))) {
-					return null;
+					return new One<>(s);
 				}
 				Stack clone = s.copy();
 				int i = n;

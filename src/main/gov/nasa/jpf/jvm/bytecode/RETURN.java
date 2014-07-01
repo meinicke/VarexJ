@@ -85,9 +85,9 @@ public class RETURN extends ReturnInstruction {
     return null;
   }
 
-  public String toString() {
-    return "return  " + mi.getFullName();
-  }
+//  public String toString() {
+//    return "return  " + mi.getFullName();
+//  }
 
   public int getByteCode () {
     return 0xB1;

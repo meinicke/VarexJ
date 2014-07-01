@@ -65,7 +65,7 @@ public class GOTO extends JVMInstruction {
   }
   
   public String toString () {
-    return getMnemonic() + " " + targetPosition;
+    return super.toString() + " " + targetPosition;
   }
   
   public void accept(InstructionVisitor insVisitor) {

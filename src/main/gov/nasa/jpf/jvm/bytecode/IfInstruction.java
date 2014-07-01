@@ -141,7 +141,7 @@ public abstract class IfInstruction extends JVMInstruction {
   }
   
   public String toString () {
-    return getMnemonic() + " " + targetPosition;
+    return super.toString() + " " + targetPosition;
   }
   
   public int getLength() {

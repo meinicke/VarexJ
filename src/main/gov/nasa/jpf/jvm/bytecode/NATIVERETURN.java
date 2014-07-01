@@ -213,12 +213,13 @@ public class NATIVERETURN extends ReturnInstruction {
     }
   }
 
-  public String toString(){
-    StringBuilder sb = new StringBuilder();
-    sb.append("nativereturn ");
-    sb.append(mi.getFullName());
-
-    return sb.toString();
-  }
+//  public String toString(){
+//    StringBuilder sb = new StringBuilder();
+//    sb.append(super.toString());
+//    sb.append(" ");
+//    sb.append(mi.getFullName());
+//
+//    return sb.toString();
+//  }
 
 }

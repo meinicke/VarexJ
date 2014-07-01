@@ -82,7 +82,7 @@ public abstract class LocalVariableInstruction extends JVMInstruction
   }
   
   public String toString(){
-    String baseMnemonic = getBaseMnemonic();
+    String baseMnemonic = super.toString();
     
     if (index <= 3){
       return baseMnemonic + '_' + index;

@@ -1876,7 +1876,7 @@ public class ThreadInfo extends InfoObject
     }
   }
   
-  private static boolean main = false;
+  private static boolean debug = false;
   
   private MethodInfo currentMethod = null;
 
@@ -1900,10 +1900,6 @@ public class ThreadInfo extends InfoObject
       log.fine( pc.getValue().getMethodInfo().getFullName() + " " + pc.getValue().getPosition() + " : " + pc);
     }
     
-    if (!main && pc.getValue(true).getMethodInfo().getFullName().contains("VariabilityAwareTest")) {
-    	main = true;
-    }
-
     // this is the pre-execution notification, during which a listener can perform
     // on-the-fly instrumentation or even replace the instruction alltogether
     vm.notifyExecuteInstruction(this, pc.getValue(true));// TODO revise
@@ -1913,7 +1909,7 @@ public class ThreadInfo extends InfoObject
         try {
         	if (pc instanceof One) {// avoid overhead for calculating the next instruction
         		
-        		if (main) {
+        		if (debug) {
   					System.out.println("exe: " + pc.getValue() + " if True");
   				}
         		nextPc = pc.getValue().execute(FeatureExprFactory.True(), this);
@@ -1954,13 +1950,15 @@ public class ThreadInfo extends InfoObject
 	        	for (Instruction e : map.keySet()) {
           			if (e != null && e.getPosition() == finalMin && e.equals(ins)) {
           				FeatureExpr ctx = map.get(e);
-      					System.out.println("exe: " + e + " " + ctx);
+          				if (debug) {
+          					System.out.println("exe: " + e + " " + ctx);
+						}
           				next = e.execute(ctx, ti).simplify(ctx);
           				// the executed instruction defines the next method 
           				
           			} else if (e != null && ins == null && retInstr && oldMethod == e.getMethodInfo()) {
           				FeatureExpr ctx = map.get(e);
-          				if (main) {
+          				if (debug) {
           					System.out.println("exe: " + e + " " + ctx);
           				}
           				

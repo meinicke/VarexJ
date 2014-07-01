@@ -84,7 +84,8 @@ public class EXECUTENATIVE extends JVMInstruction {
 
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("executenative");
+    sb.append(super.toString());
+    sb.append(" ");
 
     if (executedMethod != null){
       Method m = executedMethod.getMethod();

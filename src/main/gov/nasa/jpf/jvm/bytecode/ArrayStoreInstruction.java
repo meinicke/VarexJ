@@ -39,7 +39,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    int aref = peekArrayRef(ti); // need to be poly, could be LongArrayStore
+    int aref = peekArrayRef(ctx, ti); // need to be poly, could be LongArrayStore
     if (aref == MJIEnv.NULL) {
       return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
     }
@@ -80,13 +80,13 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
    * this is for pre-exec use
    */
   @Override
-  public int peekArrayRef(ThreadInfo ti) {
-    return ti.getTopFrame().peek(FeatureExprFactory.True(), 2).getValue();
+  public int peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {
+    return ti.getTopFrame().peek(ctx, 2).getValue();
   }
 
   @Override
   public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame().peek(FeatureExprFactory.True(), 1).getValue();
+    return ti.getTopFrame().peek(ctx, 1).getValue();
   }
 
   protected Instruction checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei){

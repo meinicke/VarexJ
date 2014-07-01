@@ -115,7 +115,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
   }
 
   public String toString() {
-    return ("invokespecial " + cname + '.' + mname);
+    return (super.toString() + " " + cname + '.' + mname);
   }
 
   @Override

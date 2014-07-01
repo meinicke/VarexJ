@@ -41,7 +41,7 @@ public class INVOKEINTERFACE extends VirtualInvocation {
 
   public String toString() {
     // methodInfo not set outside real call context (requires target object)
-    return "invokeinterface " + cname + '.' + mname;
+    return super.toString() + " " + cname + '.' + mname;
   }
 
   public void accept(InstructionVisitor insVisitor) {

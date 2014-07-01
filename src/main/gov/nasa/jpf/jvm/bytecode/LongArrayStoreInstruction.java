@@ -47,7 +47,7 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
     return frame.popLong();
   }
   
-  public int peekArrayRef(ThreadInfo ti) {
+  public int peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {
     return ti.getTopFrame().peek(FeatureExprFactory.True(), 3).getValue();  // ..,ref,idx,long(value)
   }
 

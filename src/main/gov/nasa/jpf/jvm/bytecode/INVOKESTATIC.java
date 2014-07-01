@@ -147,7 +147,7 @@ public class INVOKESTATIC extends InvokeInstruction {
   
   public String toString() {
     // methodInfo not set outside real call context (requires target object)
-    return "invokestatic " + cname + '.' + mname;
+    return super.toString() + " " + cname + '.' + mname;
   }
 
   public Object getFieldValue (String id, ThreadInfo ti) {

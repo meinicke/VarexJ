@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -35,13 +37,13 @@ public abstract class ArrayInstruction extends JVMInstruction {
    */
   public int getArrayRef (ThreadInfo ti){
     if (ti.isPreExec()){
-      return peekArrayRef(ti);
+      return peekArrayRef(FeatureExprFactory.True(), ti);
     } else {
       return arrayRef;
     }
   }
 
-  abstract protected int peekArrayRef (ThreadInfo ti);
+  abstract protected int peekArrayRef (FeatureExpr ctx, ThreadInfo ti);
 
   @Override
   public void accept(InstructionVisitor insVisitor) {

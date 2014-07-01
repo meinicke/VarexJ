@@ -86,7 +86,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
    * only makes sense pre-exec
    */
   @Override
-  public int peekArrayRef (ThreadInfo ti){
+  public int peekArrayRef (FeatureExpr ctx, ThreadInfo ti){
     return ti.getTopFrame().peek(FeatureExprFactory.True(), 1).getValue();
   }
 

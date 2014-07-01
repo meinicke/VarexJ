@@ -171,7 +171,7 @@ public abstract class Instruction implements Cloneable {
 	public abstract Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti);
 
 	public String toString() {
-		return getMnemonic() + " " + getPosition();
+		return mi.getFullName() + " " + getMnemonic() + " " + getPosition();
 	}
 
 	public String getMnemonic() {
