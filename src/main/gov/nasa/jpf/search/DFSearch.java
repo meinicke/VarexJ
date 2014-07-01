@@ -63,6 +63,7 @@ public class DFSearch extends Search {
     depth = 0;
 
     notifySearchStarted();
+    System.out.println("====================================================== DFSSearch");
 
     while (!done) {
       if (checkAndResetBacktrackRequest() || !isNewState() || isEndState() || isIgnoredState() || depthLimitReached ) {

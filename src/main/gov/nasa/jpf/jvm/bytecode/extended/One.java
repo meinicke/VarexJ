@@ -87,7 +87,12 @@ public class One<T> extends Conditional<T> {
 
 	@Override
 	protected void toMap(FeatureExpr f, Map<T, FeatureExpr> map) {
-		map.put(value, f);
+		FeatureExpr ctx = map.get(value);
+		if (ctx == null) {
+			map.put(value, f);
+		} else {
+			map.put(value, f.or(ctx));
+		}
 	}
 
 	@Override

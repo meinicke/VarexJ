@@ -32,7 +32,8 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class I2L extends JVMInstruction {
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
+  @SuppressWarnings("cast")
+public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
     int v = frame.pop(ctx).getValue();

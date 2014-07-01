@@ -54,53 +54,33 @@ public class JVMStackFrame extends StackFrame {
    * this sets up arguments from a bytecode caller 
  * @param <U>
    */
-  protected <U> void setCallArguments (FeatureExpr ctx, ThreadInfo ti){
-    final StackFrame caller = ti.getTopFrame();
-    MethodInfo miCallee = mi;
-    final int nArgSlots = miCallee.getArgumentsSize();
-    
-    if (nArgSlots > 0){
-      final StackHandler calleeSlots = stack;
-//      FixedBitSet calleeRefs = isRef;
-      StackHandler callerSlots = caller.stack;
-//      FixedBitSet callerRefs = caller.getReferenceMap();
-      
-      caller.stack.stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<U>>() {
+  protected void setCallArguments (FeatureExpr ctx, ThreadInfo ti){
+	    StackFrame caller = ti.getTopFrame();
+	    MethodInfo miCallee = mi;
+	    int nArgSlots = miCallee.getArgumentsSize();
+	    
+	    if (nArgSlots > 0){
+//	      int[] calleeSlots = stack.getSlots();
+//	      FixedBitSet calleeRefs = isRef;
+	      int[] callerSlots = caller.getSlots();
+//	      FixedBitSet callerRefs = caller.getReferenceMap();
 
-		@Override
-		public Conditional<U> apply(FeatureExpr ctx, Stack y) {
-			if (ctx.isContradiction()) {
-				return null;
-			}
-			for (int i = 0, j = y.top - nArgSlots + 1; i < nArgSlots; i++, j++) {
-		        calleeSlots.setIndex(ctx, i, y.get(j), y.isRefIndex(j));
-		        Object a = caller.getSlotAttr(j);
-		        if (a != null) {
-		          setSlotAttr(i, a);
-		        }
-			}
-			return null;
-		}
-    	  
-      });
-      
-//      for (int i = 0, j = caller.stack.getTop().simplify(ctx).getValue() - nArgSlots + 1; i < nArgSlots; i++, j++) {
-//        calleeSlots.setIndex(ctx, i, callerSlots.get(ctx, j), callerSlots.isRefIndex(ctx, j));
-//    	  calleeSlots[i] = callerSlots[j];
-//        if (callerRefs.get(j)) {
-//          calleeRefs.set(i);
-//        }
-//        Object a = caller.getSlotAttr(j);
-//        if (a != null) {
-//          setSlotAttr(i, a);
-//        }
-//      }
+	      for (int i = 0, j = caller.getTopPos() - nArgSlots + 1; i < nArgSlots; i++, j++) {
+	        stack.setLocal(i, callerSlots[j], caller.isReferenceSlot(j));
+//	        if (callerRefs.get(j)) {
+//	          calleeRefs.set(i);
+//	        }
+	        Object a = caller.getSlotAttr(j);
+	        if (a != null) {
+	          setSlotAttr(i, a);
+	        }
+	      }
 
-      if (!miCallee.isStatic()) {
-        thisRef = calleeSlots.get(ctx, 0).simplify(ctx).getValue();
-      }
-    }
-  }
+	      if (!miCallee.isStatic()) {
+	        thisRef = stack.getLocal(TRUE, 0).getValue();
+	      }
+	    }
+	  }
 
   @Override
   public void setExceptionReference (int exRef, FeatureExpr ctx){

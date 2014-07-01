@@ -1911,11 +1911,10 @@ public class ThreadInfo extends InfoObject
     if (!skipInstruction) {
         // enter the next bytecode
         try {
-        	
         	if (pc instanceof One) {// avoid overhead for calculating the next instruction
-//        		if (main) {
-//  					System.out.println("exe: " + pc.getValue() + " if True");
-//  				}
+        		if (main) {
+  					System.out.println("exe: " + pc.getValue() + " if True");
+  				}
         		nextPc = pc.getValue().execute(FeatureExprFactory.True(), this);
         		
         		if (nextPc.getValue(true) == null) {
@@ -1924,37 +1923,65 @@ public class ThreadInfo extends InfoObject
         			currentMethod = nextPc.getValue(true).getMethodInfo();
         		}
         	} else {
+        		// TODO this does not work for multiple return statements
         		int min = Integer.MAX_VALUE;
+        		Instruction ins = null;
 	        	for (Instruction i : pc.toList()) {
 	        		if (i != null && i.getPosition() < min) {
 	        			if (currentMethod == null || i.getMethodInfo() == currentMethod) {
 	        				min = i.getPosition();
+	        				ins = i;
 	        			}
 	        		}
 	        	}
 	        	final int finalMin = min;
 	        	final ThreadInfo ti = this;
-	        	System.out.println("PC: " + pc);
+	        	Map<Instruction, FeatureExpr> map = pc.toMap();
+	        	Conditional<Instruction> next = null;
+	        	for (Instruction e : map.keySet()) {
+          			if (e != null && e.getPosition() == finalMin && e.equals(ins)) {
+          				FeatureExpr ctx = map.get(e);
+          				if (main) {
+          					System.out.println("exe: " + e + " " + ctx);
+          				}
+          				
+          				next = e.execute(ctx, ti).simplify(ctx);
+          				// the executed instruction defines the next method 
+          				for (Instruction i : next.toList()) {
+          					if (i != null) {
+	          					currentMethod = i.getMethodInfo();
+	          					break;
+          					} else {
+          						currentMethod = null;
+          					}
+          				}
+          			}
+	        	}
+	        	final Conditional<Instruction> finalNext = next; 
+	        	final Instruction finalins = ins;
+	        	
 	        	nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 	
 	          		@Override
 	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction x) {
-	          			if (x != null && x.getPosition() == finalMin) {
+	          			if (x != null && x.getPosition() == finalMin && x.equals(finalins)) {
+	          				return finalNext.simplify(ctx);
+	          				
 //	          				if (main) {
 //	          					System.out.println("exe: " + x + " if " + ctx);
 //	          				}
-	          				Conditional<Instruction> next = x.execute(ctx, ti).simplify(ctx);
-	          				
-	          				// the executed instruction defines the next method 
-	          				for (Instruction i : next.toList()) {
-	          					if (i != null) {
-		          					currentMethod = i.getMethodInfo();
-		          					break;
-	          					} else {
-	          						currentMethod = null;
-	          					}
-	          				}
-	          				return next;
+//	          				Conditional<Instruction> next = x.execute(ctx, ti).simplify(ctx);
+//	          				
+//	          				// the executed instruction defines the next method 
+//	          				for (Instruction i : next.toList()) {
+//	          					if (i != null) {
+//		          					currentMethod = i.getMethodInfo();
+//		          					break;
+//	          					} else {
+//	          						currentMethod = null;
+//	          					}
+//	          				}
+//	          				return next;
 	          			}
 	          			return new One<>(x);
 	          		} 

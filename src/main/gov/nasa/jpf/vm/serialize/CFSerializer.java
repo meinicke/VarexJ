@@ -137,15 +137,14 @@ public class CFSerializer extends FilteringSerializer {
 			if (x == finalPC) {
 				buf.add( finalPC != null ? finalPC.getInstructionIndex() : -1);
 	
-			    int len = frame.stack.getTop().simplify(f).getValue()+1;
+			    int len = frame.getTopPos() + 1;
 			    buf.add(len);
 	
 			    // unfortunately we can't do this as a block operation because that
 			    // would use concrete reference values as hash data, i.e. break heap symmetry
-//			    System.out.println(f);
 			    int[] slots = frame.stack.getSlots(f);
 			    for (int i = 0; i < len; i++) {
-			      if (frame.stack.isRefIndex(f, i)) {
+			      if (frame.stack.isRefLocal(f, i)) {
 			        processReference(slots[i]);
 			      } else {
 			        buf.add(slots[i]);

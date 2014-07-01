@@ -109,8 +109,10 @@ public abstract class StackFrame implements Cloneable {
 
   public StackHandler stack;
 
+public int nLocals;
+
   protected int top() {// TODO remove
-	  return stack.getTop().getValue();	
+	  return stack.getTop().getValue() + nLocals;	
   }
 
   static final int[] EMPTY_ARRAY = new int[0];
@@ -119,7 +121,7 @@ public abstract class StackFrame implements Cloneable {
   protected StackFrame (MethodInfo callee, int nLocals, int nOperands){
     mi = callee;
     pc = new One<>(mi.getInstruction(0)); // ???
-
+    this.nLocals = nLocals;
     stackBase = nLocals;
 //    int top() = nLocals-1;
 
@@ -239,7 +241,7 @@ public abstract class StackFrame implements Cloneable {
     if (lv != null) { // might not have been compiled with debug info
       String sig = lv.getSignature();
       int slotIdx = lv.getSlotIndex();
-      int v = stack.get(TRUE, slotIdx).getValue();//slots[slotIdx];
+      int v = stack.getLocal(TRUE, slotIdx).getValue();//slots[slotIdx];
 
       switch (sig.charAt(0)) {
         case 'Z':
@@ -253,11 +255,11 @@ public abstract class StackFrame implements Cloneable {
         case 'I':
           return new Integer((int) v);
         case 'J':
-          return new Long(Types.intsToLong(stack.get(TRUE, slotIdx + 1).getValue(), v)); // Java is big endian, Types expects low,high TODO remove +1
+          return new Long(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)); // Java is big endian, Types expects low,high TODO remove +1
         case 'F':
           return new Float(Float.intBitsToFloat(v));
         case 'D':
-          return new Double(Double.longBitsToDouble(Types.intsToLong(stack.get(TRUE, slotIdx + 1).getValue(), v)));//TODO rempve +1
+          return new Double(Double.longBitsToDouble(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)));//TODO rempve +1
         default:  // reference
           if (v >= 0) {
             return VM.getVM().getHeap().get(v);
@@ -301,7 +303,7 @@ public abstract class StackFrame implements Cloneable {
   public boolean includesReferenceOperand (int nTopSlots, int objRef){
 
     for (int i=0, j=top()-nTopSlots+1; i<nTopSlots && j>=0; i++, j++) {
-      if (stack.isRefIndex(j) && (stack.get(TRUE, j).getValue().intValue() == objRef)){
+      if (stack.isRefLocal(j) && (stack.getLocal(TRUE, j).getValue().intValue() == objRef)){
         return true;
       }
     }
@@ -315,7 +317,7 @@ public abstract class StackFrame implements Cloneable {
   public boolean includesReferenceOperand (int objRef){
 
     for (int i=stackBase; i<=top(); i++) {
-    	if (stack.isRefIndex(i) && (stack.get(TRUE, i).getValue().intValue() == objRef)){
+    	if (stack.isRefLocal(i) && (stack.getLocal(TRUE, i).getValue().intValue() == objRef)){
         return true;
       }
     }
@@ -352,17 +354,17 @@ public abstract class StackFrame implements Cloneable {
     int nArgSlots = miCallee.getArgumentsSize();
 
     for (int i=top()-1; i>=top()-nArgSlots; i--){
-      if (stack.isRefIndex(i)){
-        visitor.processReference(stack.get(TRUE, i).getValue());
+      if (stack.isRefLocal(i)){
+        visitor.processReference(stack.getLocal(TRUE, i).getValue());
       }
     }
   }
 
   public int getSlot(int idx){
-    return stack.get(TRUE, idx).getValue();
+    return stack.getLocal(TRUE, idx).getValue();
   }
   public boolean isReferenceSlot(int idx){
-    return stack.isRefIndex(idx);
+    return stack.isRefLocal(idx);
   }
 
 
@@ -464,7 +466,7 @@ public abstract class StackFrame implements Cloneable {
    * one attribute at callerSlots time, or check/process result with ObjectList
    */
   public Object getOperandAttr (FeatureExpr ctx) {
-	  int top = stack.getTop().simplify(ctx).getValue();
+	  int top = top();
 	  
     if ((top >= stackBase) && (attrs != null)){
       return attrs[top];
@@ -914,11 +916,11 @@ public abstract class StackFrame implements Cloneable {
   // -- end attrs --
   
   public void setLocalReferenceVariable (FeatureExpr ctx, int index, int ref){
-    if (stack.get(ctx, index).getValue().intValue() != MJIEnv.NULL){
+    if (stack.getLocal(ctx, index).getValue().intValue() != MJIEnv.NULL){
       VM.getVM().getSystemState().activateGC();
     }
     
-    stack.setIndex(index, ref, true);
+    stack.setLocal(ctx, index, ref, true);
     
 //    stack.get(index) = ref;
 //    isRef.set(index);
@@ -926,11 +928,11 @@ public abstract class StackFrame implements Cloneable {
 
   public void setLocalVariable (FeatureExpr ctx, int index, int v){
     // Hmm, should we treat this an error?
-    if (stack.isRefIndex(index) && stack.get(ctx, index).getValue().intValue() != MJIEnv.NULL){
+    if (stack.isRefLocal(index) && stack.getLocal(ctx, index).getValue().intValue() != MJIEnv.NULL){
       VM.getVM().getSystemState().activateGC();      
     }
     
-    stack.setIndex(index, v, false);
+    stack.setLocal(index, v, false);
     
 //    stack.get(index) = v;
 //    isRef.clear(index);
@@ -948,9 +950,9 @@ public abstract class StackFrame implements Cloneable {
   // <2do> replace with non-ref version
   public void setLocalVariable (FeatureExpr ctx, int index, Conditional<Integer> v, boolean ref) {
     // <2do> activateGc should be replaced by local refChanged
-    boolean activateGc = ref || (stack.isRefIndex(index) && (stack.get(ctx, index).getValue().intValue() != MJIEnv.NULL));
+    boolean activateGc = ref || (stack.isRefLocal(index) && (stack.getLocal(ctx, index).getValue().intValue() != MJIEnv.NULL));
 
-    stack.setIndex(ctx, index, v, ref);
+    stack.setLocal(ctx, index, v, ref);
 //    stack.get(index) = v;
 //    isRef.set(index,ref);
 
@@ -960,7 +962,7 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public Conditional<Integer> getLocalVariable (FeatureExpr ctx, int i) {
-    return stack.get(ctx, i);
+    return stack.getLocal(ctx, i);
   }
 
   public int getLocalVariable (String name) {
@@ -985,7 +987,7 @@ public abstract class StackFrame implements Cloneable {
 
 
   public boolean isLocalVariableRef (int idx) {
-    return stack.isRefIndex(idx);
+    return stack.isRefLocal(idx);
   }
 
   public String getLocalVariableType (String name) {
@@ -1049,8 +1051,8 @@ public abstract class StackFrame implements Cloneable {
 
   public void visitReferenceSlots (ReferenceProcessor visitor){ 
     for (int i=0; i>=0 && i<=top(); i++){
-    	if (stack.isRefIndex(i)) {
-    		visitor.processReference(stack.get(TRUE, i).getValue());
+    	if (stack.isRefLocal(i)) {
+    		visitor.processReference(stack.getLocal(TRUE, i).getValue());
     	}
     }
   }
@@ -1059,27 +1061,27 @@ public abstract class StackFrame implements Cloneable {
     // WATCH OUT: apparently, slots can change type, so we have to
     // reset the reference flag (happened in JavaSeq)
 
-    stack.setIndex(index, Types.hiLong(v), false);// = Types.hiLong(v);
-    stack.setRef(index, false);
+    stack.setLocal(index, Types.hiLong(v), false);// = Types.hiLong(v);
+//    stack.setRef(index, false);
 //    isRef.clear(index);
 
     index++;
-    stack.setIndex(index, Types.loLong(v), false);
-    stack.setRef(index, false);
+    stack.setLocal(index, Types.loLong(v), false);
+//    stack.setRef(index, false);
 //    stack.get(index) = Types.loLong(v);
 //    isRef.clear(index);
   }
 
   public long getLongLocalVariable (FeatureExpr ctx, int idx) {
-    return Types.intsToLong(stack.get(ctx, idx + 1).getValue(), stack.get(ctx, idx).getValue());
+    return Types.intsToLong(stack.getLocal(ctx, idx + 1).getValue(), stack.getLocal(ctx, idx).getValue());
   }
   
   public double getDoubleLocalVariable (int idx) {
-    return Types.intsToDouble(stack.get(TRUE, idx + 1).getValue(), stack.get(TRUE, idx).getValue());
+    return Types.intsToDouble(stack.getLocal(TRUE, idx + 1).getValue(), stack.getLocal(TRUE, idx).getValue());
   }
 
   public float getFloatLocalVariable (int idx) {
-    int bits = stack.get(TRUE, idx).getValue();
+    int bits = stack.getLocal(TRUE, idx).getValue();
     return Float.intBitsToFloat(bits);
   }
 
@@ -1188,7 +1190,8 @@ public abstract class StackFrame implements Cloneable {
         attrs[i] = null;
       }
     }
-    stack.setTop(ctx, stackBase-1);
+//    stack.setTop(ctx, stackBase-1);
+    stack.clear(ctx);
 //    top() = stackBase-1;
   }
   
@@ -1250,281 +1253,171 @@ public abstract class StackFrame implements Cloneable {
     // .. A     =>
     // .. A A
     //    ^
-
-	  stack.duplicate(ctx, 0, 1); 
 	  
-//    int t= top();
-//    int td=t+1;
-//    slots[td] = slots[t];
-//    isRef.set(td, isRef.get(t));
-
     if (attrs != null){
       attrs[top() + 1] = attrs[top()];
     }
+    stack.dup(ctx);
 
-    stack.incrTop(ctx, 1);
-//    top() = td;
   }
 
-  public void dup2 () {
+  public void dup2 (FeatureExpr ctx) {
     // .. A B        =>
     // .. A B A B
     //      ^
-
-//    int ts, td;
-//    int t=top();
-
-    // duplicate A
-//    td = t+1; ts = t-1;
-//    slots[td] = slots[ts];
-//    isRef.set(td, isRef.get(ts));
-    stack.duplicate(-1, 1);
-    
-    
-    if (attrs != null){
+	if (attrs != null){
       attrs[top() + 1] = attrs[top() - 1];
     }
-
-    // duplicate B
-//    td++; ts=t;
-//    slots[td] = slots[ts];
-//    isRef.set(td, isRef.get(ts));
-    stack.duplicate(0, 2);
-    
     if (attrs != null){
       attrs[top() + 2] = attrs[top()];
     }
-    stack.incrTop(2);
-//    top() = td;
+    
+	  stack.dup2(ctx);
+
   }
 
-  public void dup2_x1 () {
+  public void dup2_x1 (FeatureExpr ctx) {
     // .. A B C       =>
     // .. B C A B C
     //        ^
 
-    int b, c;
-    boolean bRef, cRef;
     Object bAnn = null, cAnn = null;
     int ts, td;
-    int t = top();
+    int t = top();    
+    stack.dup2_x1(ctx);
 
-    // duplicate C
     ts=t; td = t+2;                              // ts=top, td=top+2
-//    slots[td] = c = slots[ts];
-//    cRef = isRef.get(ts);
-//    isRef.set(td,cRef);
-    stack.duplicate(0, 2);						// ABC_C
     if (attrs != null){
       attrs[td] = cAnn = attrs[ts];
     }
 
-    // duplicate B
     ts--; td--;                                  // ts=top-1, td=top+1
-//    slots[td] = b = slots[ts];
-//    bRef = isRef.get(ts);
-//    isRef.set(td, bRef);
-    stack.duplicate(-1, 1);						// ABCBC
     if (attrs != null){
       attrs[td] = bAnn = attrs[ts];
     }
 
     // shuffle A
     ts=t-2; td=t;                                // ts=top-2, td=top
-//    slots[td] = slots[ts];
-//    isRef.set(td, isRef.get(ts));
-    stack.duplicate(-1, 0);						// ABABC
     if (attrs != null){
       attrs[td] = attrs[ts];
     }
 
     // shuffle B
     td = ts;                                     // td=top-2
-//    slots[td] = b;
-//    isRef.set(td, bRef);
-    stack.duplicate(-1, -2);					// BBABC
     if (attrs != null){
       attrs[td] = bAnn;
     }
 
     // shuffle C
     td++;                                        // td=top-1
-//    slots[td] = c;
-//    isRef.set(td, cRef);						
-    stack.duplicate(2, -1);						// BCABC
     if (attrs != null){
       attrs[td] = cAnn;
     }
-    
-
-//    top() += 2;
-    stack.incrTop(2);
   }
 
-  public void dup2_x2 () {
+  public void dup2_x2 (FeatureExpr ctx) {
     // .. A B C D       =>
     // .. C D A B C D
     //          ^
-
-    int c, d;
-    boolean cRef, dRef;
     Object cAnn = null, dAnn = null;
     int ts, td;
     int t = top();
+    stack.dup2_x2(ctx);
 
     // duplicate C
     ts = t-1; td = t+1;                          // ts=top-1, td=top+1
-//    slots[td] = c = slots[ts];
-//    cRef = isRef.get(ts);
-//    isRef.set(td, cRef);
-    stack.duplicate(-1, 1);						// ABCDC
     if (attrs != null){
       attrs[td] = cAnn = attrs[ts];
     }
 
     // duplicate D
     ts=t; td++;                                  // ts=top, td=top+2
-//    slots[td] = d = slots[ts];
-//    dRef = isRef.get(ts);
-//    isRef.set(td, dRef);
-    stack.duplicate(0, 2);						// ABCDCD
     if (attrs != null){
       attrs[td] = dAnn = attrs[ts];
     }
 
     // shuffle A
     ts = t-3; td = t-1;                          // ts=top-3, td=top-1
-//    slots[td] = slots[ts];
-//    isRef.set( td, isRef.get(ts));
-    stack.duplicate(-3, -1);					// ABADCD
     if (attrs != null){
       attrs[td] = attrs[ts];
     }
 
     // shuffle B
     ts++; td = t;                                // ts = top()-2
-//    slots[td] = slots[ts];
-//    isRef.set( td, isRef.get(ts));
-    stack.duplicate(-2, 0);						// ABABCD
     if (attrs != null){
       attrs[td] = attrs[ts];
     }
 
     // shuffle D
     td = ts;                                     // td = top()-2
-//    slots[td] = d;
-//    isRef.set( td, dRef);
-    stack.duplicate(2, -2);						// ADABCD
     if (attrs != null){
       attrs[td] = dAnn;
     }
 
     // shuffle C
     td--;                                        // td = top()-3
-//    slots[td] = c;
-//    isRef.set(td, cRef);
-    stack.duplicate(1, -1);						// CDABCD
     if (attrs != null){
       attrs[td] = cAnn;
     }
-
-    stack.incrTop(2);
-//    top() += 2;
   }
 
   public void dup_x1 (FeatureExpr ctx) {
     // .. A B     =>
     // .. B A B
     //      ^
-
-    int b;
-    boolean bRef;
     Object bAnn = null;
     int ts, td;
     int t = top();
-
-    // duplicate B
-    ts = t; td = t+1;
-//    slots[td] = b = slots[ts];
-//    bRef = isRef.get(ts);
-//    isRef.set(td, bRef);
-    stack.duplicate(0, 1);						// ABB    
+    stack.dup_x1(ctx);
+    ts = t; td = t+1;    
     if (attrs != null){
       attrs[td] = bAnn = attrs[ts];
     }
 
-    // shuffle A
-    ts--; td = t;       // ts=top-1, td = top
-//    slots[td] = slots[ts];
-//    isRef.set( td, isRef.get(ts));
-    stack.duplicate(-1, 0);						// AAB
+    ts--; td = t;
     if (attrs != null){
       attrs[td] = attrs[ts];
     }
 
-    // shuffle B
-    td = ts;            // td=top-1
-//    slots[td] = b;
-//    isRef.set( td, bRef);
-    stack.duplicate(1, -1);						// BAB
+    td = ts;
     if (attrs != null){
       attrs[td] = bAnn;
     }
-
-//    top++;
-    stack.incrTop(1);
   }
 
-  public void dup_x2 () {
+  public void dup_x2 (FeatureExpr ctx) {
     // .. A B C     =>
     // .. C A B C
     //        ^
 
-    int c;
-    boolean cRef;
     Object cAnn = null;
     int ts, td;
     int t = top();
 
+    stack.dup_x2(ctx);
     // duplicate C
     ts = t; td = t+1;
-//    slots[td] = c = slots[ts];
-//    cRef = isRef.get(ts);
-//    isRef.set( td, cRef);
-    stack.duplicate(0, 1);				// ABCC
     if (attrs != null){
       attrs[td] = cAnn = attrs[ts];
     }
 
     // shuffle B
     td = ts; ts--;               // td=top, ts=top-1
-//    slots[td] = slots[ts];
-//    isRef.set( td, isRef.get(ts));
-    stack.duplicate(-1, 0);				// ABBC
     if (attrs != null){
       attrs[td] = attrs[ts];
     }
 
     // shuffle A
     td=ts; ts--;                 // td=top-1, ts=top-2
-//    slots[td] = slots[ts];
-//    isRef.set( td, isRef.get(ts));
-    stack.duplicate(-2, -1);			// AABC
     if (attrs != null){
       attrs[td] = attrs[ts];
     }
 
     // shuffle C
     td = ts;                     // td = top()-2
-//    slots[td] = c;
-//    isRef.set(td, cRef);
-    stack.duplicate(1, -2);				// CABC
     if (attrs != null){
       attrs[td] = cAnn;
     }
-
-//    top++;
-    stack.incrTop(1);
   }
 
 
@@ -1589,7 +1482,7 @@ public abstract class StackFrame implements Cloneable {
     }
     
     for (int i=0; i<top(); i++) {
-      h = OATHash.hashMixin(h, stack.get(TRUE, i).getValue());
+      h = OATHash.hashMixin(h, stack.getLocal(TRUE, i).getValue());
     }
    
     return h;
@@ -1606,7 +1499,7 @@ public abstract class StackFrame implements Cloneable {
     }
 
     for (int i=0; i<=top(); i++){
-      hd.add(stack.get(TRUE, i).getValue());
+      hd.add(stack.getLocal(TRUE, i).getValue());
     }
 
     // TODO ??? implement
@@ -1653,8 +1546,8 @@ public abstract class StackFrame implements Cloneable {
     }
     **/
     for (int i = 0; i <= top(); i++) {
-      if (stack.isRefIndex(i)) {
-        int objref = stack.get(TRUE, i).getValue();
+      if (stack.isRefLocal(i)) {
+        int objref = stack.getLocal(TRUE, i).getValue();
         if (objref != MJIEnv.NULL) {
           heap.markThreadRoot(objref, tid);
         }
@@ -1673,7 +1566,7 @@ public abstract class StackFrame implements Cloneable {
       if (isOperandRef(i)){
         pw.print('^');
       }
-      pw.print(stack.get(TRUE, i).getValue());
+      pw.print(stack.getLocal(TRUE, i).getValue());
       Object a = getOperandAttr(top()-i);
       if (a != null){
         pw.print(" {");
@@ -1708,10 +1601,10 @@ public abstract class StackFrame implements Cloneable {
       pw.print( "\t    [");
       pw.print(i);
       pw.print("] ");
-      if (stack.isRefIndex(i)) {
+      if (stack.isRefLocal(i)) {
         pw.print( "@");
       }
-      pw.print( stack.get(TRUE, i).getValue());
+      pw.print( stack.getLocal(TRUE, i).getValue());
 
       if (attrs != null){
         pw.print("  attr=");
@@ -1727,23 +1620,14 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public void swap () {
-    int t = top()-1;
-
-    int v = stack.peek(TRUE).getValue();
-    boolean isTopRef = stack.isRef(TRUE, 0);
-
-    stack.duplicate(-1, 0);
-//    slots[top()] = slots[t];
-//    isRef.set( top, isRef.get(t));
-
-    stack.set(-1, v, isTopRef);
-//    slots[t] = v;
-//    isRef.set( t, isTopRef);
+    int t = top();
+    
+    stack.swap(TRUE);
 
     if (attrs != null){
-      Object a = attrs[top()];
-      attrs[top()] = attrs[t];
-      attrs[t] = a;
+      Object a = attrs[t];
+      attrs[t] = attrs[t - 1];
+      attrs[t - 1] = a;
     }
   }
 
@@ -1764,10 +1648,10 @@ public abstract class StackFrame implements Cloneable {
         }
       }
 
-      if (stack.isRefIndex(i)){
+      if (stack.isRefLocal(i)){
         pw.print('@');
       }
-      pw.print(stack.get(TRUE, i).getValue());
+      pw.print(stack.getLocal(TRUE, i).getValue());
 
       if (attrs != null && attrs[i] != null) {
         pw.print('(');
@@ -1794,10 +1678,10 @@ public abstract class StackFrame implements Cloneable {
         }
       }
 
-      if (stack.isRefIndex(i)){
-        PrintUtils.printReference(ps, stack.get(TRUE, i).getValue());
+      if (stack.isRefLocal(i)){
+        PrintUtils.printReference(ps, stack.getLocal(TRUE, i).getValue());
       } else {
-        ps.print(stack.get(TRUE, i).getValue());
+        ps.print(stack.getLocal(TRUE, i).getValue());
       }
     }    
   }
@@ -1837,62 +1721,60 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public double peekDouble(FeatureExpr ctx) {
-    int i = top();
-    return Types.intsToDouble( stack.get(ctx, i).getValue(), stack.get(ctx, i-1).getValue());
+    return peekDouble(ctx, 0);
   }
   
   public double peekDouble (FeatureExpr ctx, int offset){
-    int i = top()-offset;
-    return Types.intsToDouble( stack.get(ctx, i).getValue(), stack.get(ctx, i-1).getValue());
+	 return stack.peekDouble(ctx, offset).getValue();
+//	  return Types.intsToDouble( stack.peek(ctx, offset).getValue(), stack.peek(ctx, offset + 1).getValue());
   }
   
-  public long peekLong (FeatureExpr ctx) {// TODO
-    int i = top();
-    return Types.intsToLong( stack.get(ctx, i).getValue(), stack.get(ctx, i-1).getValue());
+  public long peekLong (FeatureExpr ctx) {
+    return peekLong(ctx, 0);
   }
 
-  public long peekLong (FeatureExpr ctx, int offset) {// TODO
-    int i = top() - offset;
-    return Types.intsToLong( stack.get(ctx, i).getValue(), stack.get(ctx, i-1).getValue());
+  public long peekLong (FeatureExpr ctx, int offset) {
+	  return stack.peekLong(ctx, offset).getValue();
+//    return Types.intsToLong( stack.peek(ctx, offset).getValue(), stack.peek(ctx, offset + 1).getValue());
   }
 
   public void pushLong (long v) {
-    push(TRUE, new One<>((int) (v>>32)));
-    push(TRUE, new One<>((int) v));
+	  stack.push(TRUE, v);
+//    push(TRUE, new One<>((int) (v>>32)));
+//    push(TRUE, new One<>((int) v));	  
   }
 
   public void pushDouble (double v) {
-    long l = Double.doubleToLongBits(v);
-    push(TRUE, new One<>((int) (l>>32)));
-    push(TRUE, new One<>((int) l));
+    stack.push(TRUE, v);
+//    push(TRUE, new One<>((int) (l>>32)));
+//    push(TRUE, new One<>((int) l));
   }
 
   public void pushFloat (float v) {
-    push(TRUE, new One<>(Float.floatToIntBits(v)));
+	  stack.push(TRUE, v);  
+//    push(TRUE, new One<>(Float.floatToIntBits(v)));
   }
   
   public double popDouble (FeatureExpr ctx) {// TODO
-    int i = top();
-
-    int lo = stack.get(ctx, i--).getValue();//slots[i--];
-    int hi = stack.get(ctx, i--).getValue();//slots[i--];
+      int i = top();
+//    int lo = stack.pop(ctx).getValue();//slots[i--];
+//    int hi = stack.pop(ctx).getValue();//slots[i--];
 
     if (attrs != null){
-      i = top();
+
       attrs[i--] = null; // not really required
       attrs[i--] = null; // that's where the attribute should be
     }
 
-    stack.incrTop(-2);
-//    top() = i;
-    return Types.intsToDouble(lo, hi);
+    return stack.popDouble(ctx).getValue();
+//    return Types.intsToDouble(lo, hi);
   }
 
   public long popLong () {
     int i = top();
 
-    int lo = stack.pop(TRUE).getValue();//get(i--);//slots[i--];
-    int hi = stack.pop(TRUE).getValue();////slots[i--];
+//    int lo = stack.pop(TRUE).getValue();//get(i--);//slots[i--];
+//    int hi = stack.pop(TRUE).getValue();////slots[i--];
 
     if (attrs != null){
 //      i = top();
@@ -1901,7 +1783,8 @@ public abstract class StackFrame implements Cloneable {
     }
 
 //    stack.incrTop(-2);//top() = i;
-    return Types.intsToLong(lo, hi);
+//    return Types.intsToLong(lo, hi);
+    return stack.popLong(TRUE).getValue();
   }
 
   public Conditional<Integer> peek (FeatureExpr ctx) {
@@ -1922,7 +1805,7 @@ public abstract class StackFrame implements Cloneable {
   
   public void pop (FeatureExpr ctx, int n) {
 //    assert (top() >= stackBase) : "stack empty";
-	  int top = stack.getTop().simplify(ctx).getValue(true);
+	  int top = top();
     int t = top - n;
     
     // <2do> get rid of this !
@@ -1939,25 +1822,19 @@ public abstract class StackFrame implements Cloneable {
       }
     }
     
-    for(int i = 0;i < n; i++) {
-    	stack.pop(ctx);
-    }
-
-    //top = t;
-    
-//    stack.incrTop(-n);
+    stack.pop(ctx, n);
   }
 
   public float popFloat() {
-    int v = stack.pop(TRUE).getValue();//stack.peek();//stack.peek();
+//    int v = stack.pop(TRUE).getValue();//stack.peek();//stack.peek();
 
     if (attrs != null){ // just to avoid memory leaks
-      attrs[top()+1] = null;
+      attrs[top()] = null;
     }
 
-//    top()--;
-
-    return Float.intBitsToFloat(v);
+    return stack.popFloat(TRUE).getValue();
+    
+//    return Float.intBitsToFloat(v);
   }
   
   public Conditional<Integer> pop (FeatureExpr ctx) {
@@ -1986,8 +1863,9 @@ public abstract class StackFrame implements Cloneable {
   }
   
   public void pushLocal (FeatureExpr ctx, int index) {
-	  stack.incrTop(ctx, 1);
-	  stack.duplicateIndex(ctx, index, 0, true);
+	  stack.pushLocal(ctx, index);
+//	  stack.incrTop(ctx, 1);
+//	  stack.duplicateIndex(ctx, index, 0, true);
 	  
 //	top++;
 //    slots[top()] = stack.get(index);
@@ -2000,9 +1878,15 @@ public abstract class StackFrame implements Cloneable {
 
   public void pushLongLocal (int index){
 	  FeatureExpr ctx = TRUE;
-	  stack.duplicateIndex(ctx, index, 1, true);
-	  stack.duplicateIndex(ctx, index+1, 2, true);
-	  stack.incrTop(ctx, 2);  
+	  
+	  stack.pushLongLocal(ctx, index);
+	  
+//	  stack.pushLocal(ctx, index);
+//	  stack.pushLocal(ctx, index + 1);
+	  
+//	  stack.duplicateIndex(ctx, index, 1, true);
+//	  stack.duplicateIndex(ctx, index+1, 2, true);
+//	  stack.incrTop(ctx, 2);  
 	  
     int t = top();
 //
@@ -2020,29 +1904,34 @@ public abstract class StackFrame implements Cloneable {
   }
 
   public void storeOperand (FeatureExpr ctx, int index){
-	  stack.duplicateIndex(ctx, index, 0, false);
+	  int top = top();
+	  stack.storeOperand(ctx, index);
+//	  stack.duplicateIndex(ctx, index, 0, false);
 //    stack[index] = stack.peek();
 //    isRef.set( index, stack.isRef(0));
 
     if (attrs != null){
-      attrs[index] = attrs[top()];
-      attrs[top()] = null;
+      attrs[index] = attrs[top];
+      attrs[top] = null;
     }
-    stack.incrTop(ctx, -1);
+//    stack.incrTop(ctx, -1);
 //    top()--;
   }
 
-  public void storeLongOperand (int index){
+  public void storeLongOperand (FeatureExpr ctx, int index){
     int t = top()-1;
 //    int i = index;
-
-    stack.duplicateIndex(TRUE, index, -1, false);
-    stack.setRef(index, false);
+//    stack.storeOperand(ctx, index + 1);
+//    stack.storeOperand(ctx, index);
+    
+    stack.storeLongOperand(ctx, index);
+//    stack.duplicateIndex(ctx, index, -1, false);
+//    stack.setRef(index, false);
 //    stack.get(i) = slots[t];
 //    isRef.clear(i);
     
-    stack.duplicateIndex(TRUE, index + 1, 0, false);
-    stack.setRef(index + 1, false);
+//    stack.duplicateIndex(ctx, index + 1, 0, false);
+//    stack.setRef(index + 1, false);
 //    slots[++i] = slots[t+1];
 //    isRef.clear(i);
 
@@ -2053,7 +1942,7 @@ public abstract class StackFrame implements Cloneable {
       attrs[t] = null;
       attrs[t+1] = null;
     }
-    stack.incrTop(-2);
+//    stack.incrTop(ctx, -2);
 //    top() -=2;
   }
 

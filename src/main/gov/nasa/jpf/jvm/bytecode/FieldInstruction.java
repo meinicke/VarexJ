@@ -130,7 +130,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
 
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter
-    if ((eiFieldOwner.get1SlotField(fi).simplify(ctx).getValue().intValue() != val.simplify(ctx).getValue(true).intValue()) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
+    if ((!eiFieldOwner.get1SlotField(fi).simplify(ctx).equals(val.simplify(ctx))) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       
       if (fi.isReference()) {

@@ -39,7 +39,7 @@ public class LSTORE extends LocalVariableInstruction implements StoreInstruction
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    frame.storeLongOperand(index);
+    frame.storeLongOperand(ctx, index);
     
     return getNext(ctx, ti);
   }

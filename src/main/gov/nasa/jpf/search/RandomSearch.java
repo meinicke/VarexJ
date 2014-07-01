@@ -52,8 +52,11 @@ public class RandomSearch extends Search {
     
     //vm.forward();
     RestorableVMState init_state = vm.getRestorableState();
-    
+   
     notifySearchStarted();
+    
+    System.out.println("====================================================== Random Search");
+    
     while (!done) {
       if ((depth < depthLimit) && forward()) {
         notifyStateAdvanced();
@@ -62,12 +65,12 @@ public class RandomSearch extends Search {
           notifyPropertyViolated();
 
           if (hasPropertyTermination()) {
-            return;
+            break;
           }
         }
 
         if (isEndState()){
-          return;
+          break;
         }
 
         depth++;

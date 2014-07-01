@@ -36,11 +36,13 @@ public class IFEQ extends IfInstruction {
 
 
   public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
-		return frame.pop(ctx).map(new Function<Integer, Boolean>() {
+	  Conditional<Integer> pop = frame.pop(ctx);
+	  Conditional<Boolean> res = pop.map(new Function<Integer, Boolean>() {
 			public Boolean apply(Integer x) {
-				return x == 0;
+				return x.intValue() == 0;
 			}
 		}).simplify();
+	  return res;
   }
   
 

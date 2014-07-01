@@ -454,6 +454,9 @@ public class MJIEnv {
 
   public int getIntField (int objref, String fname) {
     ElementInfo ei = heap.get(objref);
+    if (ei == null) {
+    	System.out.println();
+    }
     return ei.getIntField(fname);
   }
 
@@ -901,6 +904,9 @@ public class MJIEnv {
 
   public double[] getDoubleArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
+    if (ei == null) {
+    	System.out.println("MJIEnv.getDoubleArrayObject(" + objref +  ")");
+    }
     double[] a = ei.asDoubleArray();
 
     return a;

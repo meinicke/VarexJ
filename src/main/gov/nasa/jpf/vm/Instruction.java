@@ -26,6 +26,7 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Source;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * common root of all JPF bytecode instruction classes
@@ -170,7 +171,7 @@ public abstract class Instruction implements Cloneable {
 	public abstract Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti);
 
 	public String toString() {
-		return getMnemonic();
+		return getMnemonic() + " " + getPosition();
 	}
 
 	public String getMnemonic() {
@@ -313,17 +314,23 @@ public abstract class Instruction implements Cloneable {
 	 * implemented as ThreadInfo state (TERMINATED), rather than purged stacks
 	 */
 	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
-		return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+		return ti.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
-				if (f.isContradiction()) {
+				if (f.and(ctx).isContradiction()) {
 					return new One<>(y);
 				}
-				if (f.isTautology()) {
+				if (f.and(ctx).isTautology()) {
 					return new One<>(y.getNext());
 				}
-				return new Choice<>(f, new One<>(y.getNext()), new One<>(y));
+				if (f.equivalentTo(f.and(ctx))) {
+					return new One<>(y.getNext());
+				}
+				if (f.equivalentTo(f.andNot(ctx))) {
+					return new One<>(y);
+				}
+				return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
 			}
 
 		}).simplify();

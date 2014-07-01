@@ -153,11 +153,23 @@ public class NativeMethodInfo extends MethodInfo {
           nativeFrame.setReturnValue(ret);
           nativeFrame.setReturnAttr(env.getReturnAttribute());
 
-     	 return nativeFrame.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+     	 return nativeFrame.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
      		@Override
      		public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
-     			return new Choice<>(f, new One<>(y.getNext()), new One<>(y));
+     			if (f.and(ctx).isContradiction()) {
+					return new One<>(y);
+				}
+				if (f.and(ctx).isTautology()) {
+					return new One<>(y.getNext());
+				}
+				if (f.equivalentTo(f.and(ctx))) {
+					return new One<>(y.getNext());
+				}
+				if (f.equivalentTo(f.andNot(ctx))) {
+					return new One<>(y);
+				}
+     			return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
      		}
      		  
      	}).simplify();

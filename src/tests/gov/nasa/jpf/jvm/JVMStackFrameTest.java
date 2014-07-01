@@ -44,7 +44,7 @@ public class JVMStackFrameTest extends TestJPF {
     frame.push(FeatureExprFactory.True(), new One<>(3));
     frame.printOperands(System.out);
 
-    frame.dup2_x1();
+    frame.dup2_x1(FeatureExprFactory.True());
     frame.printOperands(System.out);
 
     assert frame.getTopPos() == 4;
@@ -66,7 +66,7 @@ public class JVMStackFrameTest extends TestJPF {
     frame.push(FeatureExprFactory.True(), new One<>(3)); frame.setOperandAttr("3");
     frame.printOperands(System.out);
 
-    frame.dup2_x1();
+    frame.dup2_x1(FeatureExprFactory.True());
     frame.printOperands(System.out);
 
     assert frame.getTopPos() == 4;
@@ -90,7 +90,7 @@ public class JVMStackFrameTest extends TestJPF {
     frame.push(FeatureExprFactory.True(), new One<>(4));
     frame.printOperands(System.out);
 
-    frame.dup2_x2();
+    frame.dup2_x2(FeatureExprFactory.True());
     frame.printOperands(System.out);
 
     assert frame.getTopPos() == 5;
@@ -114,7 +114,7 @@ public class JVMStackFrameTest extends TestJPF {
     frame.push(FeatureExprFactory.True(), new One<>(4)); frame.setOperandAttr("4");
     frame.printOperands(System.out);
 
-    frame.dup2_x2();
+    frame.dup2_x2(FeatureExprFactory.True());
     frame.printOperands(System.out);
 
     assert frame.getTopPos() == 5;

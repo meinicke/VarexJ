@@ -306,7 +306,7 @@ public class JPF_java_lang_Thread extends NativePeer {
    */
   static void join0 (MJIEnv env, int joineeRef, long timeout){
     ThreadInfo tiJoiner = env.getThreadInfo(); // this is the CURRENT thread (joiner)
-    
+    System.out.println("JPF_java_lang_Thread.join0(" + joineeRef + ")");
     ThreadInfo tiJoinee = env.getThreadInfoForObjRef(joineeRef);
     boolean isAlive = tiJoinee.isAlive();
 

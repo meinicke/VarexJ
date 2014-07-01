@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.bdd.SatSolver;
 
 public class Choice<T> extends Conditional<T> {
 
@@ -36,13 +35,22 @@ public class Choice<T> extends Conditional<T> {
 		if ((ctx.andNot(featureExpr)).isContradiction()) {
 			return thenBranch.simplify(ctx.and(featureExpr));
 		}
-
 		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplify(ctx.and(featureExpr));
 		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplify(ctx.andNot(featureExpr));
+		
+		if (tb == null) {
+			return eb;
+		}
+		if (eb == null) {
+			return tb;
+		}
+		
+		
 		
 		if (tb.equals(eb)) {
 			return tb;
 		}
+		
 		
 		
 		// TODO revise, causes huge formulas
@@ -89,14 +97,14 @@ public class Choice<T> extends Conditional<T> {
 
 	@Override
 	public T getValue() {
-//		System.out.println("___________________________________________________");
-//		System.out.println("Get value of choice called: " + toString());
-//		for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
-//			System.out.println(e);
-//		}
-//		System.out.println("---------------------------------------------------");
-//		return thenBranch.getValue();
-		throw new RuntimeException("Get value of choice called: " +  toString());
+		System.out.println("___________________________________________________");
+		System.out.println("Get value of choice called: " + toString());
+		for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
+			System.out.println(e);
+		}
+		System.out.println("---------------------------------------------------");
+		return thenBranch.getValue();
+//		throw new RuntimeException("Get value of choice called: " +  toString());
 	}
 	
 	@Override

@@ -6,13 +6,21 @@ package gov.nasa.jpf.vm;
  *
  */
 public class Stack {
-	
+
 	public int top;
-	private Entry[] slots;
+	public Entry[] slots;
+
+	public Stack(int nOperands) {
+		top = -1;
+		slots = new Entry[nOperands];
+	}
 	
-	public Stack(int nLocals, int nOperands) {
-		top = nLocals-1;
-		slots = new Entry[nLocals + nOperands];
+	public void clear() {
+		top = -1;
+		for (int i  = 0; i < slots.length; i++) {
+			slots[i] = null;
+		}
+//		slots = new Entry[slots.length]; // alternative
 	}
 
 	public void setRef(int index, boolean ref) {
@@ -40,26 +48,6 @@ public class Stack {
 		return clone;
 	}
 
-	public void duplicateIndex(int index, int offset, boolean direction) {
-		if (direction) {
-			if (slots[index] == null) {
-				slots[top + offset] = null;
-			} else {
-				slots[top + offset] = slots[index].copy();// copy might be unnecessary
-			}
-		} else {
-			if (slots[top + offset] == null) {
-				slots[index] = null;
-			} else {
-				slots[index] = slots[top + offset].copy();// copy might be unnecessary
-			}
-		}
-	}
-
-	public void duplicate(int sourceOffset, int targetOffset) {
-		slots[top + targetOffset] = slots[top + sourceOffset].copy();// copy might be unnecessary
-	}
-
 	public Integer get(int index) {
 		if (index < 0) {
 			return -1;
@@ -67,11 +55,7 @@ public class Stack {
 		if (slots[index] != null) {
 			return slots[index].value;
 		}
-		return 0;
-	}
-
-	public Stack(int size) {
-		slots = new Entry[size];
+		return MJIEnv.NULL;
 	}
 
 	public Integer peek(int offset) {
@@ -79,22 +63,26 @@ public class Stack {
 			return -1;
 		}
 		if (slots[top - offset] == null) {
-			return 0;
+			return MJIEnv.NULL;
 		}
 		return slots[top - offset].value;
 	}
 
 	public Integer pop() {
-		Integer res = slots[top] == null ? 0 : slots[top].value;
+		Integer res = slots[top] == null ? MJIEnv.NULL : slots[top].value;
 		slots[top] = null;
 		top--;
-		return  res;
+		return res;
+	}
+	
+	public Entry popEntry() {
+		return slots[top--];
 	}
 
 	public void push(Integer value, boolean isRef) {
 		slots[++top] = new Entry(value, isRef);
 	}
-	
+
 	public boolean isRef(int offset) {
 		if (slots[top - offset] == null) {
 			return false;
@@ -108,15 +96,15 @@ public class Stack {
 		}
 		return false;
 	}
-	
+
 	public void set(int offset, int value, boolean isRef) {
 		slots[top - offset] = new Entry(value, isRef);
 	}
-	
+
 	public void setIndex(int index, Integer value, boolean isRef) {
 		slots[index] = new Entry(value, isRef);
 	}
-	
+
 	Stack copy() {
 		Stack clone = new Stack(slots.length);
 		clone.top = top;
@@ -127,7 +115,7 @@ public class Stack {
 		}
 		return clone;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder string = new StringBuilder();
@@ -138,8 +126,8 @@ public class Stack {
 				string.append(" =>");
 			}
 			if (e == null) {
-				string.append(" 0 ");
-			} else {			
+				string.append(" null ");
+			} else {
 				string.append(e);
 			}
 			if (i == top) {
@@ -150,7 +138,7 @@ public class Stack {
 		string.append('}');
 		return string.toString();
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Stack) {
@@ -170,27 +158,125 @@ public class Stack {
 		}
 		return false;
 	}
+
+	/**
+	 * .. A B => .. B A B
+	 */
+	public void dup_x1() {
+		Entry A = slots[top - 1];
+		Entry B = slots[top];
+
+		slots[top - 1] = B;
+		slots[top] = A;
+		slots[top + 1] = B;
+		top++;
+	}
+
+	/**
+	 * .. A B C D => .. C D A B C D
+	 */
+	public void dup2_x2() {
+		Entry A = slots[top - 3];
+		Entry B = slots[top - 2];
+		Entry C = slots[top - 1];
+		Entry D = slots[top];
+		
+		slots[top - 3] = C;
+		slots[top - 2] = D;
+		slots[top - 1] = A;
+		slots[top] = B;
+		slots[top + 1] = C;
+		slots[top + 2] = D;
+		
+		top += 2;
+	}
+
+	/**
+	 * .. A B C => .. B C A B C
+	 */
+	public void dup2_x1() {
+		Entry A = slots[top - 2];
+		Entry B = slots[top - 1];
+		Entry C = slots[top];
+		
+		slots[top - 2] = B;
+		slots[top - 1] = C;
+		slots[top] = A;
+		slots[top + 1] = B;
+		slots[top + 2] = C;
+		
+		top += 2;
+		
+	}
+
+    /**
+	 * .. A B => .. A B A B
+     */
+	public void dup2() {
+		Entry A = slots[top - 1];
+		Entry B = slots[top];
+		
+		slots[top - 1] = A;
+		slots[top] = B;
+		slots[top + 1] = A;
+		slots[top + 2] = B;
+		
+		top += 2;
+	}
 	
+    /**
+	 * .. A => .. A A
+     */
+	public void dup() {
+		slots[top + 1] = slots[top];
+		top++;
+	}
+	
+    /**
+	 * .. A B C => .. C A B C
+     */
+	public void dup_x2() {
+		Entry A = slots[top - 2];
+		Entry B = slots[top - 1];
+		Entry C = slots[top];
+		
+		slots[top - 2] = C;
+		slots[top - 1] = A;
+		slots[top] = B;
+		slots[top + 1] = C;
+		
+		top++;
+	}
+
+    /**
+	 * .. A B => .. B A
+     */
+	public void swap() {
+		Entry A = slots[top - 1];
+		Entry B = slots[top];
+		
+		slots[top - 1] = B;
+		slots[top] = A;
+	}
+
+
+
 }
 
 class Entry {
 	boolean isRef = false;
 	Integer value;
 	Integer attr;
-	
-	public Entry(Integer value) {
-		this.value = value;
-	}
-	
+
 	Entry copy() {
 		return new Entry(value, isRef);
 	}
 
 	public Entry(Integer value, boolean isRef) {
-		this(value);
+		this.value = value;
 		this.isRef = isRef;
 	}
-	
+
 	@Override
 	public String toString() {
 		if (isRef) {
@@ -198,11 +284,11 @@ class Entry {
 		}
 		return " [" + value + "] ";
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Entry) {
-			return ((Entry) o).value.equals(value) && ((Entry)o).isRef == isRef;
+			return ((Entry) o).value.equals(value) && ((Entry) o).isRef == isRef;
 		}
 		return false;
 	}

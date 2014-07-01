@@ -34,7 +34,7 @@ public class DUP2_X1 extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    frame.dup2_x1();
+    frame.dup2_x1(ctx);
 
     return getNext(ctx, ti);
   }
