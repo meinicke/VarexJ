@@ -1924,7 +1924,6 @@ public class ThreadInfo extends InfoObject
         		int min = Integer.MAX_VALUE;
         		Instruction ins = null;
         		boolean retInstr = false;
-        		
 	        	for (Instruction i : pc.toList()) {
 	        		if (i != null) {
 	        			if (!(i instanceof ReturnInstruction)) {

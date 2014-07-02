@@ -1,14 +1,11 @@
-package cmu;
+package cmu.datatypes;
 
-
-
-import static org.junit.Assert.*;
 import gov.nasa.jpf.annotation.MyAnnotation;
 import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
 
-public class VariabilityAwareTestDataTypes extends TestJPF {
+public class FloatTest extends TestJPF {
 
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
 	
@@ -28,25 +25,6 @@ public class VariabilityAwareTestDataTypes extends TestJPF {
 	@MyAnnotation
 	static boolean z = true;
 
-	@Test
-	public void testInt() throws Exception {
-		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			int i = 1;
-			int j = 3;
-			if (z) {
-				i = 2;
-			}
-			if (y) {
-				j = 4;
-			}
-			
-			int k = 0;
-			k = i + j;
-			k = i * j;
-			k = i / j;
-			k = i % j;
-		}
-	}
 	
 	@Test
 	public void testFloat() throws Exception {
@@ -67,5 +45,6 @@ public class VariabilityAwareTestDataTypes extends TestJPF {
 			k = i % j;
 		}
 	}
+
 
 }

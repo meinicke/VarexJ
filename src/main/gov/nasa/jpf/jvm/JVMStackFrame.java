@@ -32,86 +32,83 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 
 /**
- * a stackframe that is used for executing Java bytecode, supporting both
- * locals and an operand stack. This is essentially the JVm stack machine
+ * a stackframe that is used for executing Java bytecode, supporting both locals
+ * and an operand stack. This is essentially the JVm stack machine
  * implementation
  */
 public class JVMStackFrame extends StackFrame {
 
-  public JVMStackFrame (MethodInfo callee){
-    super( callee);
-  }
-  
-  /**
-   * creates callerSlots dummy Stackframe for testing of operand/local operations
-   * NOTE - TESTING ONLY! this does not have callerSlots MethodInfo
-   */
-  protected JVMStackFrame (int nLocals, int nOperands){
-    super( nLocals, nOperands);
-  }
-  
-  /**
-   * this sets up arguments from a bytecode caller 
- * @param <U>
-   */
-  protected void setCallArguments (FeatureExpr ctx, ThreadInfo ti){
-	    StackFrame caller = ti.getTopFrame();
-	    MethodInfo miCallee = mi;
-	    int nArgSlots = miCallee.getArgumentsSize();
-	    
-	    if (nArgSlots > 0){
-//	      int[] calleeSlots = stack.getSlots();
-//	      FixedBitSet calleeRefs = isRef;
-//	      int[] callerSlots = caller.getSlots();
-//	      FixedBitSet callerRefs = caller.getReferenceMap();
+	public JVMStackFrame(MethodInfo callee) {
+		super(callee);
+	}
 
-	      for (int i = 0, j = caller.getTopPos(ctx) - nArgSlots + 1; i < nArgSlots; i++, j++) {
-	        stack.setLocal(ctx, i, caller.stack.getLocal(ctx, j), caller.isReferenceSlot(ctx, j));
-//	        if (callerRefs.get(j)) {
-//	          calleeRefs.set(i);
-//	        }
-	        Object a = caller.getSlotAttr(j);
-	        if (a != null) {
-	          setSlotAttr(i, a);
-	        }
-	      }
+	/**
+	 * creates callerSlots dummy Stackframe for testing of operand/local
+	 * operations NOTE - TESTING ONLY! this does not have callerSlots MethodInfo
+	 */
+	protected JVMStackFrame(int nLocals, int nOperands) {
+		super(nLocals, nOperands);
+	}
 
-	      if (!miCallee.isStatic()) {
-	        thisRef = stack.getLocal(ctx, 0).getValue();
-	      }
-	    }
-	  }
+	/**
+	 * this sets up arguments from a bytecode caller
+	 * 
+	 * @param <U>
+	 */
+	protected void setCallArguments(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame caller = ti.getTopFrame();
+		MethodInfo miCallee = mi;
+		int nArgSlots = miCallee.getArgumentsSize();
 
-  @Override
-  public void setExceptionReference (int exRef, FeatureExpr ctx){
-    clearOperandStack(ctx);
-    pushRef( exRef, ctx);
-  }
-  
-  //--- these are for setting up arguments from a VM / listener caller
+		if (nArgSlots > 0) {
+			for (int i = 0, j = nArgSlots - 1; i < nArgSlots; i++, j--) {
+				stack.setLocal(ctx, i, caller.stack.peek(ctx, j), caller.stack.isRef(ctx, j));
+				if (caller.hasAttrs()) {
+					Object a = caller.getSlotAttr(caller.getTopPos(ctx) - j);
+					if (a != null) {
+						setSlotAttr(i, a);
+					}
+				}
+			}
+			if (!miCallee.isStatic()) {
+				thisRef = stack.getLocal(ctx, 0).getValue();
+			}
+		}
+	}
 
-  /*
-   * to be used to initialize locals of a stackframe (only required for explicit construction without a caller,
-   * otherwise the Stackframe ctor/invoke insn will take care of copying the values from its caller)
-   */
-  @Override
-  public void setArgumentLocal (int idx, int v, Object attr){
-    setLocalVariable( NativeMethodInfo.CTX, idx, v);
-    if (attr != null){
-      setLocalAttr( idx, attr);
-    }
-  }
-  @Override
-  public void setReferenceArgumentLocal (int idx, int ref, Object attr){
-    setLocalReferenceVariable( TRUE, idx, ref);
-    if (attr != null){
-      setLocalAttr( idx, attr);
-    }
-  }
-  public void setLongArgumentLocal (int idx, long v, Object attr){
-    setLongLocalVariable( idx, v);
-    if (attr != null){
-      setLocalAttr( idx, attr);
-    }
-  }
+	@Override
+	public void setExceptionReference(int exRef, FeatureExpr ctx) {
+		clearOperandStack(ctx);
+		pushRef(exRef, ctx);
+	}
+
+	// --- these are for setting up arguments from a VM / listener caller
+
+	/*
+	 * to be used to initialize locals of a stackframe (only required for
+	 * explicit construction without a caller, otherwise the Stackframe
+	 * ctor/invoke insn will take care of copying the values from its caller)
+	 */
+	@Override
+	public void setArgumentLocal(int idx, int v, Object attr) {
+		setLocalVariable(NativeMethodInfo.CTX, idx, v);
+		if (attr != null) {
+			setLocalAttr(idx, attr);
+		}
+	}
+
+	@Override
+	public void setReferenceArgumentLocal(int idx, int ref, Object attr) {
+		setLocalReferenceVariable(TRUE, idx, ref);
+		if (attr != null) {
+			setLocalAttr(idx, attr);
+		}
+	}
+
+	public void setLongArgumentLocal(int idx, long v, Object attr) {
+		setLongLocalVariable(idx, v);
+		if (attr != null) {
+			setLocalAttr(idx, attr);
+		}
+	}
 }

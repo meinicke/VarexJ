@@ -466,10 +466,8 @@ public int nLocals;
    * one attribute at callerSlots time, or check/process result with ObjectList
    */
   public Object getOperandAttr (FeatureExpr ctx) {
-	  int top = getTopPos(ctx);
-	  
-    if ((top >= stackBase) && (attrs != null)){
-      return attrs[top];
+    if (attrs != null && (getTopPos(ctx) >= stackBase)){
+      return attrs[getTopPos(ctx)];
     }
     return null;
   }
@@ -1809,8 +1807,7 @@ public int nLocals;
   
   public void pop (FeatureExpr ctx, int n) {
 //    assert (top() >= stackBase) : "stack empty";
-	  int top = getTopPos(ctx);
-    int t = top - n;
+
     
     // <2do> get rid of this !
 //    for (int i=top(); i>t; i--) {
@@ -1819,13 +1816,15 @@ public int nLocals;
 //        break;
 //      }
 //    }
-
-    if (attrs != null){  // just to avoid memory leaks // TODO
-      for (int i=top; i>t; i--){
-        attrs[i] = null;
-      }
-    }
-    
+		if (hasAttrs()) {
+			int top = getTopPos(ctx);
+			int t = top - n;
+			if (attrs != null) { // just to avoid memory leaks // TODO
+				for (int i = top; i > t; i--) {
+					attrs[i] = null;
+				}
+			}
+		}
     stack.pop(ctx, n);
   }
 
