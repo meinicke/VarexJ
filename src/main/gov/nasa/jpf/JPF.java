@@ -243,6 +243,7 @@ public class JPF implements Runnable {
    * check for null
    */
   public JPF(Config conf) {
+	  
     config = conf;
 
     setNativeClassPath(config); // before we do anything else
@@ -285,6 +286,14 @@ public class JPF implements Runnable {
       if (reporter != null){
         search.setReporter(reporter);
       }
+      
+      String factory = config.getString("factory", "BDD");
+      if (factory.equals("BDD")) {
+    	  FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
+      } else {
+    	  FeatureExprFactory.setDefault(FeatureExprFactory.sat());
+      }
+      
       
       addListeners();
       

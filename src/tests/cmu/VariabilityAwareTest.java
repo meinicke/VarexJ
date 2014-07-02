@@ -1,19 +1,19 @@
 package cmu;
 
-
-
-import static org.junit.Assert.*;
 import gov.nasa.jpf.annotation.MyAnnotation;
 import gov.nasa.jpf.util.test.TestJPF;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class VariabilityAwareTest extends TestJPF {
 
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
 
 	static boolean RUN_WITH_JPF = true;
-	
+
 	@MyAnnotation
 	static boolean a = true;
 	@MyAnnotation
@@ -22,7 +22,17 @@ public class VariabilityAwareTest extends TestJPF {
 	static boolean c = true;
 	@MyAnnotation
 	static boolean d = true;
-	
+	@MyAnnotation
+	static boolean e = true;
+	@MyAnnotation
+	static boolean f = true;
+	@MyAnnotation
+	static boolean g = true;
+	@MyAnnotation
+	static boolean h = true;
+	@MyAnnotation
+	static boolean j = true;
+
 	@MyAnnotation
 	static boolean x = true;
 	@MyAnnotation
@@ -46,7 +56,7 @@ public class VariabilityAwareTest extends TestJPF {
 			}
 		}
 	}
-	
+
 	@Test
 	public void forTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -64,18 +74,18 @@ public class VariabilityAwareTest extends TestJPF {
 			}
 
 			if (z) {
-				check( a * a == 16);
+				check(a * a == 16);
 				if (y) {
-					check( a == -4);
+					check(a == -4);
 				} else {
-					check( a == 4);
+					check(a == 4);
 				}
 			} else {
-				check( a * a == 1);
+				check(a * a == 1);
 				if (y) {
-					check( a == -1);
+					check(a == -1);
 				} else {
-					check( a == 1);
+					check(a == 1);
 				}
 			}
 		}
@@ -98,74 +108,74 @@ public class VariabilityAwareTest extends TestJPF {
 			}
 
 			if (z) {
-				check( a * a == 16);
+				check(a * a == 16);
 				if (y) {
-					check( a == -4);
+					check(a == -4);
 				} else {
-					check( a == 4);
+					check(a == 4);
 				}
 			} else {
-				check ( a * a == 1);
+				check(a * a == 1);
 				if (y) {
-					check( a == 1);
+					check(a == 1);
 				} else {
-					check( a == 1);
+					check(a == 1);
 				}
 			}
 		}
 	}
 
-	@Test// TODO has to work completely one day
-	public void forEfficencyTest() throws Exception {
+	public void earlyJoinTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 1;
-			int j = 10;
-			if ( x ) {
-				i*= 2;
+			if (x) {
+				i *= 2;
 			}
-			if ( y ) {
-				i*= 2;
+			if (y) {
+				i *= 2;
 			}
-			if ( z ) {
-				i*= 2;
+			if (z) {
+				i *= 2;
 			}
-//			if ( a ) {
-//				i*=2;
-//			}
-//			 if ( b ) {
-//				 i *= 2;
-//			 }
-//			 if ( c ) {
-//			 i *= 2;
-//			 }
-//			 if (d) {
-//			 i *= 2;
-//			 }
-			// if (e) {
-			// i *= 3;
-			// }
-			// if (f) {
-			// i *= 3;
-			// }
-			// if (g) {
-			// i *= 3;
-			// }
-			// if (h) {
-			// i *= 3;
-			// }
-			// if (j) {
-			// i *= 3;
-			// }
+			if (a) {
+				i *= 2;
+			}
+			if (b) {
+				i *= 2;
+			}
+			i = 10;// early join
+			if (c) {
+				i *= 2;
+			}
+			if (d) {
+				i *= 2;
+			}
+			if (e) {
+				i *= 2;
+			}
+			if (f) {
+				i *= 2;
+			}
+
+			if (g) {
+				i *= 3;
+			}
+			if (h) {
+				i *= 3;
+			}
+			if (j) {
+				i *= 3;
+			}
+
+			i = 1000;// early join
 			int sum = 0;
 			for (int start = 1; start <= i; start++) {
-				sum++;			}
-			
-			if (x && y && z && a && b && c && d) {
-				System.out.println(sum);
+				sum++;
 			}
+			System.out.println(sum);
 		}
 	}
-	
+
 	@Test
 	public void testPrint() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -180,7 +190,7 @@ public class VariabilityAwareTest extends TestJPF {
 			}
 		}
 	}
-	
+
 	@Test
 	public void testPint_2() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -226,7 +236,7 @@ public class VariabilityAwareTest extends TestJPF {
 			check(false);
 		}
 	}
-	
+
 	@Test
 	public void returnTest2() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -239,23 +249,20 @@ public class VariabilityAwareTest extends TestJPF {
 			return;
 		}
 	}
-	
+
 	boolean method() {
-//		System.out.println("VariabilityAwareTest.method()");
 		if (z) {
 			return false;
 		}
-		return (method2()) ;
-//
-//		} else {
-//			return false;
-//		}
-//		return true;
+		if (method2()) {
+
+		} else {
+			return false;
+		}
+		return true;
 	}
 
-
 	private boolean method2() {
-//		System.out.println("VariabilityAwareTest.method2()");
 		return true;
 	}
 
@@ -290,7 +297,7 @@ public class VariabilityAwareTest extends TestJPF {
 			new Main(true);
 		}
 	}
-	
+
 	@Test
 	public void classMethodTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -298,7 +305,7 @@ public class VariabilityAwareTest extends TestJPF {
 			main.method(z, y);
 		}
 	}
-	
+
 	@Test
 	public void classMethodTest2() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -308,14 +315,14 @@ public class VariabilityAwareTest extends TestJPF {
 			main.method(z, y);
 		}
 	}
-	
+
 	@Test
 	public void classMethodTest3() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			boolean z = VariabilityAwareTest.z;
 			boolean y = VariabilityAwareTest.y;
 			Main main = new Main(z, y);
-			
+
 			int value = 4;
 			if (a) {
 				value = value + 10;
@@ -330,11 +337,11 @@ public class VariabilityAwareTest extends TestJPF {
 	public void ConditionalTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			if (a && (!b || c)) {
-				
+
 			}
 		}
 	}
-	
+
 	@Test
 	public void multipleReturnTest() throws Exception {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
@@ -347,7 +354,7 @@ public class VariabilityAwareTest extends TestJPF {
 			check(a);
 		}
 	}
-	
+
 	@Test
 	public void elseTest_3() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -364,28 +371,28 @@ public class VariabilityAwareTest extends TestJPF {
 	public void elseTest_2() throws Exception {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			if (a) {
-				check (a);
+				check(a);
 				return;
 			}
-			check(a );
+			check(a);
 		}
 	}
-	
+
 	@Test
 	public void elseTest() throws Exception {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			if (a) {
-				check( a);
+				check(a);
 			} else {
 				check(a);
 			}
 		}
 	}
-	
+
 	private static boolean valid() {
-		return a; 
+		return a;
 	}
-	
+
 	static void check(boolean cond) {
 		if (RUN_WITH_JPF) {
 			assert cond;
@@ -393,23 +400,21 @@ public class VariabilityAwareTest extends TestJPF {
 			System.out.println(cond);
 			assertTrue(cond);
 		}
-			
+
 	}
 
 }
 
-
-
 class Main {
-	
+
 	final int x = VariabilityAwareTest.x ? 10 : 0;
-	
+
 	boolean z = false;
 	boolean y = false;
 
 	public Main(boolean z) {
 		if (!z) {
-			VariabilityAwareTest.check( false);
+			VariabilityAwareTest.check(false);
 		}
 	}
 
@@ -417,21 +422,17 @@ class Main {
 		this.z = z;
 		this.y = y;
 	}
-	
+
 	void method(boolean z, boolean y) {
-		VariabilityAwareTest.check( z == this.z);
-		VariabilityAwareTest.check( y == this.y);
+		VariabilityAwareTest.check(z == this.z);
+		VariabilityAwareTest.check(y == this.y);
 	}
-	
+
 	boolean method2(int value) {
 		if (value < x) {
 			return true;
 		}
 		return false;
 	}
-	
-	
-	
-
 
 }

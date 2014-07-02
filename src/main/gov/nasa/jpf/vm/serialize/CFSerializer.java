@@ -137,7 +137,7 @@ public class CFSerializer extends FilteringSerializer {
 			if (x == finalPC) {
 				buf.add( finalPC != null ? finalPC.getInstructionIndex() : -1);
 	
-			    int len = frame.getTopPos() + 1;
+			    int len = frame.getTopPos(f) + 1;
 			    buf.add(len);
 	
 			    // unfortunately we can't do this as a block operation because that

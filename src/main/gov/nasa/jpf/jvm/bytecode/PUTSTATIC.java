@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import de.fosd.typechef.featureexpr.bdd.BDDFeatureExprFactory;
 import de.fosd.typechef.featureexpr.sat.SATFeatureExprFactory;
 
 
@@ -62,17 +63,14 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 		boolean annotated = false;
 		for (AnnotationInfo ai : annotations) {
 			if (ai.getName().equals("gov.nasa.jpf.annotation.MyAnnotation")) {
-				System.out.println("Found Feature: " + fname);
+//				System.out.println("Found Feature: " + fname);
 				annotated = true;
 			}
 		}
 		if (annotated) {
 			StackFrame frame = ti.getModifiableTopFrame();
-			FeatureExpr feature = SATFeatureExprFactory.createDefinedExternal(fname);
-			
+			FeatureExpr feature = FeatureExprFactory.createDefinedExternal(fname);
 			frame.pop(ctx);
-//			frame.push(0);
-//			frame.push(new One<>(0));
 			frame.push(ctx, new Choice<>(feature, new One<>(1), new One<>(0)));
 		}
 	  

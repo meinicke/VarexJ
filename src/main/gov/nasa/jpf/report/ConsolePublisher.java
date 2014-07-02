@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 public class ConsolePublisher extends Publisher {
 
   // output destinations
@@ -127,7 +129,7 @@ public class ConsolePublisher extends Publisher {
   protected void publishJPF() {
     out.println(reporter.getJPFBanner());
     out.println();
-    out.println("    Variability-Aware Interpreter v0.1");
+    out.println("    Variability-Aware Interpreter v0.2 (" + FeatureExprFactory.dflt().getClass().getSimpleName().substring(0, 3) + ")");
     out.println();
   }
 
