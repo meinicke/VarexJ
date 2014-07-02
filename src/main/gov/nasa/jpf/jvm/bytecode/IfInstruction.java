@@ -170,7 +170,7 @@ public abstract class IfInstruction extends JVMInstruction {
     return clone;
   }
   
-  protected Conditional<Boolean> mapr(final Conditional<Integer> v1, final Conditional<Integer> v2) {
+  protected Conditional<Boolean> maprIf(final Conditional<Integer> v1, final Conditional<Integer> v2) {
 	  return v1.mapr(new Function<Integer, Conditional<Boolean>>() {
 
 			@Override

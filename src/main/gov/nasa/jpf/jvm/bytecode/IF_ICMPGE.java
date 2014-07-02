@@ -34,7 +34,7 @@ public class IF_ICMPGE extends IfInstruction {
 	public Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame) {
 		Conditional<Integer> v1 = frame.pop(ctx);
 		Conditional<Integer> v2 = frame.pop(ctx);
-		return mapr(v1, v2);
+		return maprIf(v1, v2);
 	}
 
 	@Override

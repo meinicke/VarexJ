@@ -5,7 +5,7 @@ import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
 
-public class IntTest extends TestJPF {
+public class LongTest extends TestJPF {
 
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
 	
@@ -25,11 +25,12 @@ public class IntTest extends TestJPF {
 	@MyAnnotation
 	static boolean z = true;
 
+	
 	@Test
-	public void testAll() throws Exception {
+	public void testFloat() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			int i = 1;
-			int j = 3;
+			long i = 13;
+			long j = 36;
 			if (z) {
 				i = 2;
 			}
@@ -37,7 +38,7 @@ public class IntTest extends TestJPF {
 				j = 4;
 			}
 			
-			int k = 0;
+			long k = 0;
 			k = i + j;
 			k = i - j;
 			k = i * j;
@@ -45,38 +46,6 @@ public class IntTest extends TestJPF {
 			k = i % j;
 		}
 	}
-	
-	@Test
-	public void testDivNull() throws Exception {
-		if (verifyUnhandledException("java.lang.ArithmeticException", JPF_CONFIGURATION)) {
-			int i = 1;
-			int j = 3;
-			if (z) {
-				i = 2;
-			}
-			if (y) {
-				j = 0;
-			}
-			
-			int k = 0;
-			k = i / j;
-		}
-	}
-	
-	@Test
-	public void testModNull() throws Exception {
-		if (verifyUnhandledException("java.lang.ArithmeticException", JPF_CONFIGURATION)) {
-			int i = 1;
-			int j = 3;
-			if (z) {
-				i = 2;
-			}
-			if (y) {
-				j = 0;
-			}
-			
-			int k = 0;
-			k = i % j;
-		}
-	}
+
+
 }

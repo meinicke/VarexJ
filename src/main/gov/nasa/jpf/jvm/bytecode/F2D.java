@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -34,9 +35,16 @@ public class F2D extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    float f = frame.popFloat();
+    Conditional<Float> f = frame.popFloat(ctx);
     
-    frame.pushDouble(f);
+    frame.push(ctx, f.map(new Function<Float, Double>() {
+
+		@Override
+		public Double apply(Float f) {
+			return (double)f;
+		}
+    	
+	}));
 
     return getNext(ctx, ti);
   }

@@ -140,7 +140,7 @@ public class JVMStackFrameTest extends TestJPF {
     assert obj_Long instanceof Long;
 
     long result_getLocValObj = (Long) obj_Long;
-    long result_popLong = frame.popLong();
+    long result_popLong = frame.popLong(FeatureExprFactory.True()).getValue();
 
     assert result_getLocValObj == value;
     assert result_popLong == value;
@@ -165,7 +165,7 @@ public class JVMStackFrameTest extends TestJPF {
     assert obj_Double instanceof Double;
 
     double result_getLocValObj = (Double) obj_Double;
-    double result_popLong = frame.popDouble(FeatureExprFactory.True());
+    double result_popLong = frame.popDouble(FeatureExprFactory.True()).getValue();
 
     assert result_getLocValObj == value;
     assert result_popLong == value;

@@ -34,7 +34,7 @@ public class IF_ACMPNE extends IfInstruction {
 	public Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame) {
 		final Conditional<Integer> v1 = frame.pop(ctx);
 		final Conditional<Integer> v2 = frame.pop(ctx);
-		return mapr(v1, v2);
+		return maprIf(v1, v2);
 	}
 
 	@Override

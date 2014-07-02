@@ -48,7 +48,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public long getLongResult(){
-    return popLong();
+    return popLong(TRUE).getValue();
   }
 
   @Override

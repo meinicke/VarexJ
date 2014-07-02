@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Map;
+
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -26,38 +28,41 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Divide long
- * ..., value1, value2 => ..., result
+ * Divide long ..., value1, value2 => ..., result
  */
 public class LDIV extends JVMInstruction {
 
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
-    
-    long v1 = frame.popLong();
-    long v2 = frame.popLong();
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    if (v1 == 0) {
-      return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "long division by zero"));
-    }
-    
-    long r = v2 / v1;
-    
-    frame.pushLong(r);
+		Conditional<Long> v1 = frame.popLong(ctx);
+		Conditional<Long> v2 = frame.popLong(ctx);
 
-    return getNext(ctx, ti);
-  }
+		Map<Long, FeatureExpr> map = v1.toMap();
+		for (long v : map.keySet()) {
+			if (v == 0) {
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "division by zero"));
+			}
+		}
 
-  @Override
-  public int getByteCode () {
-    return 0x6D;
-  }
-  
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+		frame.push(ctx, mapr(v1, v2));
+		return getNext(ctx, ti);
+	}
+
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return v2.longValue() / v1.longValue();
+	}
+
+	@Override
+	public int getByteCode() {
+		return 0x6D;
+	}
+
+	@Override
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

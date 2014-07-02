@@ -25,30 +25,33 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Negate double
- * ..., value => ..., result
+ * Negate double ..., value => ..., result
  */
 public class DNEG extends JVMInstruction {
 
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
-    
-    double v = frame.popDouble(ctx);
-    frame.pushDouble(-v);
-    
-    return getNext(ctx, ti);
-  }
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-  @Override
-  public int getByteCode () {
-    return 0x77;
-  }
-  
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+		Conditional<Double> v1 = frame.popDouble(ctx);
+
+		frame.push(ctx, mapr2(v1, null));
+		return getNext(ctx, ti);
+	}
+
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return -v1.doubleValue();
+	}
+
+	@Override
+	public int getByteCode() {
+		return 0x77;
+	}
+
+	@Override
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

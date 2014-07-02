@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Map;
+
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -26,38 +28,43 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Remainder float
- * ..., value1, value2 => ..., result
+ * Remainder float ..., value1, value2 => ..., result
  */
 public class FREM extends JVMInstruction {
 
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    float v1 = frame.popFloat();
-    float v2 = frame.popFloat();
+		Conditional<Float> v1 = frame.popFloat(ctx);
+		Conditional<Float> v2 = frame.popFloat(ctx);
 
-    if (v1 == 0){
-      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
-    }
+		Map<Float, FeatureExpr> map = v1.toMap();
+		for (Float v : map.keySet()) {
+			if (v == 0) {
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "division by zero"));
+			}
+		}
 
-    float r = v2 % v1;
-    
-    frame.pushFloat(r);
+		frame.push(ctx, mapr(v1, v2));
 
-    return getNext(ctx, ti);
-  }
+		return getNext(ctx, ti);
 
-  @Override
-  public int getByteCode () {
-    return 0x72;
-  }
-  
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	}
+
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return v2.floatValue() % v1.floatValue();
+	}
+
+	@Override
+	public int getByteCode() {
+		return 0x72;
+	}
+
+	@Override
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

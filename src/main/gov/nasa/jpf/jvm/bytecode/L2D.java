@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -36,8 +37,16 @@ public class L2D extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    long v = frame.popLong();
-    frame.pushDouble(v);
+    Conditional<Long> v = frame.popLong(ctx);
+    
+    frame.push(ctx, v.map(new Function<Long, Double>() {
+
+		@Override
+		public Double apply(Long l) {
+			return (double)l.longValue();
+		}
+    	
+	}));
     
     return getNext(ctx, ti);
   }

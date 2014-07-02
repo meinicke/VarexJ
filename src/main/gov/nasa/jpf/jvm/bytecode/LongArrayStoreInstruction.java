@@ -44,7 +44,7 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
 
   protected long getValue (ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();    
-    return frame.popLong();
+    return frame.popLong(FeatureExprFactory.True()).getValue();
   }
   
   public int peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {

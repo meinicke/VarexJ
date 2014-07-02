@@ -24,36 +24,59 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+
+import java.util.Map;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Divide int
- * ..., value1, value2  =>..., result
+ * Divide int ..., value1, value2 =>..., result
  */
 public class IDIV extends JVMInstruction {
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    int v1 = frame.pop(ctx).getValue();
-    int v2 = frame.pop(ctx).getValue();
+		Conditional<Integer> v1 = frame.pop(ctx);
+		Conditional<Integer> v2 = frame.pop(ctx);
 
-    if (v1 == 0) {
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.ArithmeticException", "division by zero"));
-    }
+		// TODO revise
+		// check if there is any division by zero
+//		One<Instruction> exception = null;
+//		FeatureExpr exceptionCtx = null;
+		Map<Integer, FeatureExpr> map = v1.toMap();
+		for (int v : map.keySet()) {
+			if (v == 0) {
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "division by zero"));
+//				exception = new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "division by zero"));
+//				exceptionCtx = map.get(v);
+//				v1 = v1.simplify(exceptionCtx.not());
+			}
+		}
+		
+		frame.push(ctx, mapr(v1, v2));
+		
+//		if (exception == null) {
+			return getNext(ctx, ti);
+//		} 
+//		else {
+//			Choice<Instruction> res = new Choice<>(exceptionCtx, exception, getNext(ctx.andNot(exceptionCtx), ti));
+//			System.out.println(res);
+//			return res;
+////			return new Choice<>(exceptionCtx, exception, getNext(ctx.andNot(exceptionCtx), ti));
+//		}
+	}
 
-    frame.push(ctx, new One<>(v2 / v1));
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return v2.intValue() / v1.intValue();
+	}
 
-    return getNext(ctx, ti);
-  }
+	public int getByteCode() {
+		return 0x6C;
+	}
 
-  public int getByteCode () {
-    return 0x6C;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

@@ -36,12 +36,16 @@ public class FNEG extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    float v = frame.popFloat();
+    Conditional<Float> v = frame.popFloat(ctx);
     
-    frame.pushFloat( -v);
-
+    frame.push(ctx, mapr(v, null));
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return -v1.floatValue();
+	}
 
   @Override
   public int getByteCode () {

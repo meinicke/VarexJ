@@ -25,31 +25,31 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Add double
- * ..., value1, value2 => ..., result
+ * Add double ..., value1, value2 => ..., result
  */
 public class DADD extends JVMInstruction {
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
-    
-    double v1 = frame.popDouble(ctx);
-    double v2 = frame.popDouble(ctx);
-    
-    double r = v1 + v2;
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    frame.pushDouble(r);
+		Conditional<Double> v1 = frame.popDouble(ctx);
+		Conditional<Double> v2 = frame.popDouble(ctx);
 
-    return getNext(ctx, ti);
-  }
+		frame.push(ctx, mapr(v1, v2));
+		return getNext(ctx, ti);
+	}
 
-  public int getByteCode () {
-    return 0x63;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return v1.doubleValue() + v2.doubleValue();
+	}
+
+	public int getByteCode() {
+		return 0x63;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

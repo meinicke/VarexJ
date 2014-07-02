@@ -26,31 +26,31 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Multiply float
- * ..., value1, value2 => ..., result
+ * Multiply float ..., value1, value2 => ..., result
  */
 public class FMUL extends JVMInstruction {
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    float v1 = frame.popFloat();
-    float v2 = frame.popFloat();
-    
-    float r = v1 * v2;    
-    frame.push(ctx, Types.floatToInt(r), false);
+		Conditional<Float> v1 = frame.popFloat(ctx);
+		Conditional<Float> v2 = frame.popFloat(ctx);
 
-    return getNext(ctx, ti);
-  }
+		frame.push(ctx, mapr(v1, v2));
+		return getNext(ctx, ti);
+	}
 
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return Types.floatToInt(v1.floatValue() * v2.floatValue());
+	}
 
-  public int getByteCode () {
-    return 0x6A;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	public int getByteCode() {
+		return 0x6A;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

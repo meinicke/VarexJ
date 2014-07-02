@@ -33,7 +33,7 @@ public class DASTORE extends LongArrayStoreInstruction {
   double value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = Double.longBitsToDouble(frame.popLong());
+    value = Double.longBitsToDouble(frame.popLong(ctx).getValue());
   }
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {

@@ -36,14 +36,27 @@ public class FADD extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    float v1 = frame.popFloat();
-    float v2 = frame.popFloat();
-    
-    float r = v1 + v2;
-    frame.push( ctx, Types.floatToInt(r), false);
-
+    Conditional<Float> v1 = frame.popFloat(ctx);
+    Conditional<Float> v2 = frame.popFloat(ctx);
+  
+    frame.push(ctx, mapr(v1, v2));
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return v1.floatValue() + v2.floatValue();
+	}
+
+    
+    
+//    float r = v1 + v2;
+//    frame.push( ctx, Types.floatToInt(r), false);
+//
+//    return getNext(ctx, ti);
+//  }
+  
+  
 
   public int getByteCode () {
     return 0x62;

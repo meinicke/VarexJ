@@ -417,29 +417,30 @@ public abstract class Instruction implements Cloneable {
 		return clone;
 	}
 
-	protected Conditional<Integer> maprInt(final Conditional<Integer> v1, final Conditional<Integer> v2) {
-		return v2.mapr(new Function<Integer, Conditional<Integer>>() {
+	protected <T, U> Conditional<T> mapr(final Conditional<T> v1, final Conditional<U> v2) {
+		return v2.mapr(new Function<U, Conditional<T>>() {
 
 			@Override
-			public Conditional<Integer> apply(final Integer x2) {
-				return maprInt(v1, x2.intValue());
+			public Conditional<T> apply(final U x2) {
+				return mapr2(v1, x2);
 			}
 
 		}).simplify();
 	}
 
-	protected Conditional<Integer> maprInt(final Conditional<Integer> v1, final int v2) {
-		return v1.mapr(new Function<Integer, Conditional<Integer>>() {
+	protected <T, U> Conditional<T> mapr2(final Conditional<T> v1, final U v2) {
+		return v1.mapr(new Function<T, Conditional<T>>() {
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public Conditional<Integer> apply(final Integer x1) {
-				return new One<>(instruction(x1.intValue(), v2));
+			public Conditional<T> apply(final T x1) {
+				return new One<>((T) instruction((Number)x1, (Number)v2));
 			}
 
 		}).simplify();
 	}
 
-	protected int instruction(int v1, int v2) {
+	protected Number instruction(Number v1, Number v2) {
 		throw new RuntimeException("apply not implemented");
 	}
 	

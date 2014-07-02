@@ -34,14 +34,14 @@ public class INEG extends JVMInstruction {
 		StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Integer> v = frame.pop(ctx);
-		frame.push(ctx, maprInt(v, 0));
+		frame.push(ctx, mapr2(v, 0));
 
 		return getNext(ctx, ti);
 	}
 
 	@Override
-	protected int instruction(int v1, int v2) {
-		return -v1;
+	protected Number instruction(Number v1, Number v2) {
+		return -v1.intValue();
 	}
 
 	public int getByteCode() {

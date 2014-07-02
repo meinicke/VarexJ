@@ -128,8 +128,8 @@ public class StopWatchFuzzer extends ListenerAdapter {
           StackFrame frame = ti.getModifiableTopFrame();
           
           // pop the operands 
-          frame.popLong();
-          frame.popLong();
+          frame.popLong(FeatureExprFactory.True()).getValue();
+          frame.popLong(FeatureExprFactory.True()).getValue();
           
           frame.push(FeatureExprFactory.True(), new One<>(choice));
           

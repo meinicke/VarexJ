@@ -40,6 +40,7 @@ public class FloatTest extends TestJPF {
 			
 			float k = 0.0f;
 			k = i + j;
+			k = i - j;
 			k = i * j;
 			k = i / j;
 			k = i % j;

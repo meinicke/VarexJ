@@ -27,7 +27,7 @@ package gov.nasa.jpf.jvm.bytecode;
 public class DCMPG extends DoubleCompareInstruction {
 
   @Override
-  protected int conditionValue(double v1, double v2) {
+  protected Integer conditionValue (double v1, double v2) {
     if (Double.isNaN(v1) || Double.isNaN(v2)) {
       return 1;
     } else if (v1 == v2) {

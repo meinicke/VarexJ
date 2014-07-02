@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -32,13 +33,19 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class I2F extends JVMInstruction {
 
-  @SuppressWarnings("cast")
-public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v = frame.pop(ctx).getValue();
+    Conditional<Integer> v = frame.pop(ctx);
     
-    frame.pushFloat((float)v);
+    frame.push(ctx, v.map(new Function<Integer, Float>() {
+
+		@Override
+		public Float apply(Integer f) {
+			return (float)f.intValue();
+		}
+    	
+	}));
 
     return getNext(ctx, ti);
   }

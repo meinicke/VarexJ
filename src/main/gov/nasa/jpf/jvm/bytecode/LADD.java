@@ -36,15 +36,18 @@ public class LADD extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    long v1 = frame.popLong();
-    long v2 = frame.popLong();
-    
-    long r = v1 + v2;
-    
-    frame.pushLong(r);
+		Conditional<Long> v1 = frame.popLong(ctx);
+		Conditional<Long> v2 = frame.popLong(ctx);
 
-    return getNext(ctx, ti);
-  }
+		frame.push(ctx, mapr(v1, v2));
+		return getNext(ctx, ti);
+	}
+
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return v1.longValue() + v2.longValue();
+	}
+
 
   @Override
   public int getByteCode () {

@@ -41,7 +41,7 @@ public abstract class LongReturn extends ReturnInstruction {
   }
   
   protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
-    ret = frame.popLong();
+    ret = frame.popLong(ctx).getValue();
   }
 
   protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {

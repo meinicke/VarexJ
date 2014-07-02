@@ -36,12 +36,16 @@ public class LNEG extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    long v = frame.popLong();    
-    frame.pushLong(-v);
-
+    Conditional<Long> v1 = frame.popLong(ctx);
+    
+    frame.push(ctx, mapr2(v1, null));
     return getNext(ctx, ti);
   }
-
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return -v1.longValue();
+	}
   @Override
   public int getByteCode () {
     return 0x75;

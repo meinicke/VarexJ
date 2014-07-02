@@ -36,15 +36,18 @@ public abstract class DoubleCompareInstruction extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    double v1 = frame.popDouble(ctx);
-    double v2 = frame.popDouble(ctx);
+    Conditional<Double> v1 = frame.popDouble(ctx);
+    Conditional<Double> v2 = frame.popDouble(ctx);
     
-    int condVal = conditionValue(v1, v2);
-    
-    frame.push(ctx, new One<>( condVal));
+    frame.push(ctx, mapr(v1, v2));
     
     return getNext(ctx, ti);
   }
+  
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return conditionValue(v1.doubleValue(), v2.doubleValue());
+	}
 
-  protected abstract int conditionValue (double v1, double v2);
+  protected abstract Integer conditionValue (double v1, double v2);
 }

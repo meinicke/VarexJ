@@ -33,7 +33,7 @@ public class LASTORE extends LongArrayStoreInstruction {
   long value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = frame.popLong();
+    value = frame.popLong(ctx).getValue();
   }
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {

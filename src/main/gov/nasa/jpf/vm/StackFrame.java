@@ -1714,8 +1714,9 @@ public int nLocals;
     return sw.toString();
   }
 
-  public float peekFloat(FeatureExpr ctx) {
-    return Float.intBitsToFloat(stack.peek(ctx).getValue());
+  public Conditional<Float> peekFloat(FeatureExpr ctx) {
+	  return stack.peekFloat(ctx, 0);
+//    return Float.intBitsToFloat(stack.peek(ctx).getValue());
   }
 
   public float peekFloat (int offset){
@@ -1740,24 +1741,26 @@ public int nLocals;
 //    return Types.intsToLong( stack.peek(ctx, offset).getValue(), stack.peek(ctx, offset + 1).getValue());
   }
 
+  // TODO remove
   public void pushLong (long v) {
 	  stack.push(TRUE, v);
 //    push(TRUE, new One<>((int) (v>>32)));
 //    push(TRUE, new One<>((int) v));	  
   }
 
+  // TODO remove
   public void pushDouble (double v) {
     stack.push(TRUE, v);
 //    push(TRUE, new One<>((int) (l>>32)));
 //    push(TRUE, new One<>((int) l));
   }
 
-  public void pushFloat (float v) {
-	  stack.push(TRUE, v);  
+//  public void pushFloat (float v) {
+//	  stack.push(TRUE, v);  
 //    push(TRUE, new One<>(Float.floatToIntBits(v)));
-  }
+//  }
   
-  public double popDouble (FeatureExpr ctx) {// TODO
+  public Conditional<Double> popDouble (FeatureExpr ctx) {// TODO
       int i = top();
 //    int lo = stack.pop(ctx).getValue();//slots[i--];
 //    int hi = stack.pop(ctx).getValue();//slots[i--];
@@ -1768,11 +1771,11 @@ public int nLocals;
       attrs[i--] = null; // that's where the attribute should be
     }
 
-    return stack.popDouble(ctx).getValue();
+    return stack.popDouble(ctx);
 //    return Types.intsToDouble(lo, hi);
   }
 
-  public long popLong () {
+  public Conditional<Long> popLong (FeatureExpr ctx) {
     int i = top();
 
 //    int lo = stack.pop(TRUE).getValue();//get(i--);//slots[i--];
@@ -1786,7 +1789,7 @@ public int nLocals;
 
 //    stack.incrTop(-2);//top() = i;
 //    return Types.intsToLong(lo, hi);
-    return stack.popLong(TRUE).getValue();
+    return stack.popLong(ctx);
   }
 
   public Conditional<Integer> peek (FeatureExpr ctx) {
@@ -1828,14 +1831,14 @@ public int nLocals;
     stack.pop(ctx, n);
   }
 
-  public float popFloat() {
+  public Conditional<Float> popFloat(FeatureExpr ctx) {
 //    int v = stack.pop(TRUE).getValue();//stack.peek();//stack.peek();
 
     if (attrs != null){ // just to avoid memory leaks
       attrs[top()] = null;
     }
 
-    return stack.popFloat(TRUE).getValue();
+    return stack.popFloat(ctx);
     
 //    return Float.intBitsToFloat(v);
   }
@@ -1949,7 +1952,7 @@ public int nLocals;
 //    top() -=2;
   }
 
-  public void push (FeatureExpr ctx, Conditional<Integer> v){
+  public <T> void push (FeatureExpr ctx, Conditional<T> v){
 	  stack.push(ctx, v, false);
 //    top++;
 //    slots[top()] = v.getValue();
@@ -2029,7 +2032,7 @@ public int nLocals;
   }
   
   public long getLongResult(){
-    return popLong();
+    return popLong(TRUE).getValue();
   }
 
   public int getReferenceResult () {

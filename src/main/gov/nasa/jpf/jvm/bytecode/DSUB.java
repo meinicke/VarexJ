@@ -25,34 +25,34 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Subtract double
- * ..., value1, value2 => ..., result
+ * Subtract double ..., value1, value2 => ..., result
  */
 public class DSUB extends JVMInstruction {
 
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    double v1 = frame.popDouble(ctx);
-    double v2 = frame.popDouble(ctx);
-    
-    double r = v2 - v1;
-    
-    frame.pushDouble(r);
-    
-    return getNext(ctx, ti);
-  }
+		Conditional<Double> v1 = frame.popDouble(ctx);
+		Conditional<Double> v2 = frame.popDouble(ctx);
 
-  @Override
-  public int getByteCode () {
-    return 0x67;
-  }
-  
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+		frame.push(ctx, mapr(v1, v2));
+		return getNext(ctx, ti);
+	}
+
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return v2.doubleValue() - v1.doubleValue();
+	}
+
+	@Override
+	public int getByteCode() {
+		return 0x67;
+	}
+
+	@Override
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

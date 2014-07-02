@@ -26,44 +26,40 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
- * Compare long
- * ..., value1, value2 => ..., result
+ * Compare long ..., value1, value2 => ..., result
  */
 public class LCMP extends JVMInstruction {
 
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
-    
-    long v1 = frame.popLong();
-    long v2 = frame.popLong();
-    
-    int condVal = conditionValue( v1, v2);
-    
-    frame.push(ctx, new One<>(condVal));
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    return getNext(ctx, ti);
-  }
-  
-  protected int conditionValue(long v1, long v2) {
-      if (v1 == v2) {
-        return 0;
-      } else if (v2 > v1) {
-        return 1;
-      } else {
-        return -1;
-      }
-  }
+		Conditional<Long> v1 = frame.popLong(ctx);
+		Conditional<Long> v2 = frame.popLong(ctx);
 
-  @Override
-  public int getByteCode () {
-    return 0x94;
-  }
-  
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+		frame.push(ctx, mapr(v1, v2));
+		return getNext(ctx, ti);
+	}
+
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		if (v1.longValue() == v2.longValue()) {
+			return 0;
+		} else if (v2.longValue() > v1.longValue()) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
+	@Override
+	public int getByteCode() {
+		return 0x94;
+	}
+
+	@Override
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

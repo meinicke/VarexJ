@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Map;
+
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -37,19 +39,25 @@ public class DREM extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    double v1 = frame.popDouble(ctx);
-    double v2 = frame.popDouble(ctx);
+    Conditional<Double> v1 = frame.popDouble(ctx);
+    Conditional<Double> v2 = frame.popDouble(ctx);
     
-    if (v1 == 0){
-      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
-    }
+	Map<Double, FeatureExpr> map = v1.toMap();
+	for (double v : map.keySet()) {
+	    if (v == 0){
+	      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
+	    }
+	}
     
-    double r = v2 % v1;
-    
-    frame.pushDouble(r);
+	frame.push(ctx, mapr(v1, v2));
 
     return getNext(ctx, ti);
   }
+  
+	@Override
+	protected Number instruction(Number v1, Number v2) {
+		return v2.doubleValue() / v1.doubleValue();
+	}
 
   @Override
   public int getByteCode () {

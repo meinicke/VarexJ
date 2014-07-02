@@ -18,9 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -29,7 +30,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class FRETURN extends ReturnInstruction {
 
-  float ret;
+  Conditional<Float> ret;
   
   public int getReturnTypeSize() {
     return 1;
@@ -40,24 +41,24 @@ public class FRETURN extends ReturnInstruction {
   }
   
   protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
-    ret = frame.popFloat();
+    ret = frame.popFloat(ctx);
   }
   
   protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
-    frame.pushFloat(ret);
+    frame.push(ctx, ret);
   }
   
-  public float getReturnValue () {
+  public Conditional<Float> getReturnValue () {
     return ret;
   }
   
-  public Float getReturnValue (FeatureExpr ctx, ThreadInfo ti) {
+  public Conditional<Float> getReturnValue (FeatureExpr ctx, ThreadInfo ti) {
     if (!isCompleted(ti)) { // we have to pull it from the operand stack
       StackFrame frame = ti.getTopFrame();
       ret = frame.peekFloat(ctx);
     }
     
-    return new Float(ret);
+    return ret;
   }
   
   public int getByteCode () {
