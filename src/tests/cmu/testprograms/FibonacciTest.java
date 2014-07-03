@@ -5,7 +5,7 @@ import org.junit.Test;
 import gov.nasa.jpf.annotation.MyAnnotation;
 import gov.nasa.jpf.util.test.TestJPF;
 
-public class Fibonacci extends TestJPF {
+public class FibonacciTest extends TestJPF {
 
 	@MyAnnotation
 	static boolean a = true;
@@ -35,11 +35,11 @@ public class Fibonacci extends TestJPF {
 			if (a) x = 2;
 			if (b) x = 3;
 			if (c) x = 4;
-//			if (d) x = 5;
-//			if (e) x = 6;
+			if (d) x = 5;
+			if (e) x = 6;
 
 			int m = max(x, 25);
-//			fibo(m);
+			fibo(m);
 		}
 	}
 			
