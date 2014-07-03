@@ -6,7 +6,7 @@ import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
 
-public class ExampleRunnerTest extends TestJPF {
+public class ExampleRunner extends TestJPF {
 
 	/**
 	 * Case Study: <b>Bank-Account</b><br>
