@@ -16,7 +16,7 @@ public class ExampleRunnerTest extends TestJPF {
 	@Test(timeout = 3000)
 	public void runBankAccount() {
 		// TODO revise (call example directly?)
-		Config config = JPF.createConfig(new String[] { "C:\\Users\\Loaner\\workspace\\jpf-core-vai\\src\\tests\\cmu\\BankAccount.jpf" });
+		Config config = JPF.createConfig(new String[] { "C:\\Users\\Loaner\\git\\Variability-Aware-Interpreter\\src\\tests\\cmu\\BankAccount.jpf" });
 		JPF jpf = new JPF(config);
 		jpf.run();
 	}
