@@ -27,8 +27,6 @@ import gov.nasa.jpf.util.RunRegistry;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 public class JPF_java_lang_reflect_Method extends NativePeer {
 
   static MethodInfoRegistry registry;

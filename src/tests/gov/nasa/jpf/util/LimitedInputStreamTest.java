@@ -19,6 +19,7 @@
 package gov.nasa.jpf.util;
 
 import gov.nasa.jpf.util.test.TestJPF;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

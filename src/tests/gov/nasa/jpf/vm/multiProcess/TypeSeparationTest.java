@@ -19,14 +19,14 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
+import gov.nasa.jpf.util.test.TestMultiProcessJPF;
+import gov.nasa.jpf.vm.ClassInfo;
+import gov.nasa.jpf.vm.ClassLoaderInfo;
+
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
-
-import gov.nasa.jpf.util.test.TestMultiProcessJPF;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.ClassLoaderInfo;
 
 import org.junit.Test;
 

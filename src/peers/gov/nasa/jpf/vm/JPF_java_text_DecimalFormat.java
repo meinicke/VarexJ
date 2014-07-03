@@ -26,8 +26,6 @@ import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 // NOTE - this only works because DecimalFormat is a Format subclass, i.e.
 // the java.text.Format native peer will be initialized first
 // (otherwise we shouldn't depend on static data of other native peers)

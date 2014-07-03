@@ -21,8 +21,6 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.logging.Level;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * this is only a skeleton to make basic logging work under JPF
  */

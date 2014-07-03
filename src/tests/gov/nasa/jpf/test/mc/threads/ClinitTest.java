@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.mc.threads;
 
-import org.junit.Test;
-
 import gov.nasa.jpf.util.test.TestJPF;
+
+import org.junit.Test;
 
 /**
  * regression test for concurrent clinit execution

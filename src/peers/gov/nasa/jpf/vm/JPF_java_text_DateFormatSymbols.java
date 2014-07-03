@@ -4,8 +4,6 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.text.DateFormatSymbols;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 public class JPF_java_text_DateFormatSymbols extends NativePeer {
   @MJI
   public void initializeData__Ljava_util_Locale_2__V (MJIEnv env, int objRef, int localeRef) {

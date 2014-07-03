@@ -24,8 +24,8 @@ import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.VM;
 
 import org.junit.Test;
 

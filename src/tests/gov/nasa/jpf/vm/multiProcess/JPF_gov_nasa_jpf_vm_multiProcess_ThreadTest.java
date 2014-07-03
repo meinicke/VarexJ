@@ -19,13 +19,13 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.ThreadInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

@@ -1,9 +1,9 @@
 package cmu.testprograms;
 
-import org.junit.Test;
-
 import gov.nasa.jpf.annotation.MyAnnotation;
 import gov.nasa.jpf.util.test.TestJPF;
+
+import org.junit.Test;
 
 public class FibonacciTest extends TestJPF {
 
@@ -38,7 +38,7 @@ public class FibonacciTest extends TestJPF {
 			if (d) x = 5;
 			if (e) x = 6;
 
-			int m = max(x, 25);
+			int m = max(x, 10);
 			fibo(m);
 		}
 	}

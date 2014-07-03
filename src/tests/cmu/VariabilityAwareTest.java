@@ -3,9 +3,9 @@ package cmu;
 import gov.nasa.jpf.annotation.MyAnnotation;
 import gov.nasa.jpf.util.test.TestJPF;
 
-import org.junit.Before;
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class VariabilityAwareTest extends TestJPF {
@@ -13,6 +13,8 @@ public class VariabilityAwareTest extends TestJPF {
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
 
 	static boolean RUN_WITH_JPF = true;
+	
+	
 
 	@MyAnnotation
 	static boolean a = true;
@@ -125,6 +127,7 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 
+	@Test
 	public void earlyJoinTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 1;
@@ -316,7 +319,7 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 
-	@Test
+//	@Test
 	public void classMethodTest3() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			boolean z = VariabilityAwareTest.z;
@@ -403,6 +406,31 @@ public class VariabilityAwareTest extends TestJPF {
 
 	}
 
+	@Test
+	public void classExtendTest() throws Exception {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			boolean z = VariabilityAwareTest.z;
+			boolean y = VariabilityAwareTest.y;
+			Main main = new Main(z, y);
+			if (x) {
+				main = new Main2(z, y);
+			}
+			
+			main.method2(0);
+			
+			int value = 4;
+			if (a) {
+				value = value + 10;
+			}
+//			if (b) {
+				main.method2(value);
+				
+//			}
+//			int i = 0;
+
+		}
+	}
+	
 }
 
 class Main {
@@ -429,10 +457,23 @@ class Main {
 	}
 
 	boolean method2(int value) {
-		if (value < x) {
+		if (value < 10) {
 			return true;
 		}
 		return false;
 	}
 
+}
+
+class Main2 extends Main {
+
+	public Main2(boolean z, boolean y) {
+		super(z, y);
+	}
+	
+	@Override
+	boolean method2(int value) {
+		return super.method2(value);
+	}
+	
 }

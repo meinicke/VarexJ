@@ -28,8 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * this is just the minimal support for DateFormat.parse(String)
  */

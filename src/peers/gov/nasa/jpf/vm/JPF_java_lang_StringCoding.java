@@ -20,7 +20,6 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * we are not really interested in model checking this, so we intercept

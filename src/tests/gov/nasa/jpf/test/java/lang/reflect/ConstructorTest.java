@@ -1,7 +1,9 @@
 package gov.nasa.jpf.test.java.lang.reflect;
 
 import gov.nasa.jpf.util.test.TestJPF;
+
 import java.lang.reflect.Constructor;
+
 import org.junit.Test;
 
 public class ConstructorTest extends TestJPF {

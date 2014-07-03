@@ -25,7 +25,6 @@ import gov.nasa.jpf.vm.ClassParseException;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.MethodInfo;
 
-
 import java.io.File;
 
 import org.junit.Test;

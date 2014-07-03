@@ -20,6 +20,7 @@
 package gov.nasa.jpf.test.mc.basic;
 
 import gov.nasa.jpf.util.test.TestJPF;
+
 import org.junit.Test;
 
 /**

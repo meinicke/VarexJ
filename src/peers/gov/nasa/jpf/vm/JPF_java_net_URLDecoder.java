@@ -24,8 +24,6 @@ import gov.nasa.jpf.annotation.MJI;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * native peer for java.net.URLDecoder forwarding
  */

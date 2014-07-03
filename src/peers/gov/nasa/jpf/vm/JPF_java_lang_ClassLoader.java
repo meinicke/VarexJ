@@ -22,8 +22,6 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.Map;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 

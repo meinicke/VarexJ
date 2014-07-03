@@ -20,12 +20,14 @@
 package gov.nasa.jpf.util;
 
 import gov.nasa.jpf.util.test.TestJPF;
+
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+
 import org.junit.Test;
 
 /**

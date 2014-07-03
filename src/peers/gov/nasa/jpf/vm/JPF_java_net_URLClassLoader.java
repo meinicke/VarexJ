@@ -25,8 +25,6 @@ import gov.nasa.jpf.util.JPFLogger;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 

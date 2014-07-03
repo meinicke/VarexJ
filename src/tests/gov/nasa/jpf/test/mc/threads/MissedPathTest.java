@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.mc.threads;
 
-import org.junit.Test;
-
 import gov.nasa.jpf.util.test.TestJPF;
+
+import org.junit.Test;
 
 /**
  * test for missed paths in concurrent threads with very little interaction

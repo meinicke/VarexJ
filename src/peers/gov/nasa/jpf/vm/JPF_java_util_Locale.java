@@ -22,8 +22,6 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.Locale;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 public class JPF_java_util_Locale extends NativePeer {
 
   static Locale getLocale (MJIEnv env, int locref) {

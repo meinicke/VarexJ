@@ -19,7 +19,6 @@
 
 package gov.nasa.jpf.listener;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFConfigException;
 import gov.nasa.jpf.PropertyListenerAdapter;
@@ -43,6 +42,7 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * little listener that checks value ranges of specified numeric fields and local vars

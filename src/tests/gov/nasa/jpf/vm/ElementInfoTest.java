@@ -21,8 +21,6 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.DynamicElementInfo;
-import gov.nasa.jpf.vm.ElementInfo;
 
 import org.junit.Test;
 

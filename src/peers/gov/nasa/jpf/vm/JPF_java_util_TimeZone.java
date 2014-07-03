@@ -24,8 +24,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * native peer for java.util.TimeZone
  * 

@@ -1,8 +1,8 @@
 package gov.nasa.jpf.test.vm.basic;
 
-import java.util.EnumSet;
-
 import gov.nasa.jpf.util.test.TestJPF;
+
+import java.util.EnumSet;
 
 import org.junit.Test;
 

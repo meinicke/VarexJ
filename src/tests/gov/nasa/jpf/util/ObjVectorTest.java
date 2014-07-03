@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.util;
 
-import org.junit.Test;
-
 import gov.nasa.jpf.util.test.TestJPF;
+
+import org.junit.Test;
 
 /**
  * regression test for ObjVector

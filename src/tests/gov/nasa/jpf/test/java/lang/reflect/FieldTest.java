@@ -1,6 +1,7 @@
 package gov.nasa.jpf.test.java.lang.reflect;
 
 import gov.nasa.jpf.util.test.TestJPF;
+
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

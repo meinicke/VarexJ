@@ -22,8 +22,6 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.text.DecimalFormatSymbols;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * MJI NativePeer class for java.text.DecimalFormatSymbols library abstraction
  * 

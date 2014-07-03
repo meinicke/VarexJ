@@ -1,12 +1,13 @@
 package gov.nasa.jpf.util;
 
+import static gov.nasa.jpf.util.OATHash.hashFinalize;
+import static gov.nasa.jpf.util.OATHash.hashMixin;
+import gov.nasa.jpf.util.test.TestJPF;
+
 import java.util.HashSet;
 import java.util.Random;
 
 import org.junit.Test;
-
-import gov.nasa.jpf.util.test.TestJPF;
-import static gov.nasa.jpf.util.OATHash.*;
 
 /**
  * just the very basic sanity checks for a hash function.

@@ -24,7 +24,6 @@ import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.SingleProcessVM;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Verify;
 
 import org.junit.Test;
