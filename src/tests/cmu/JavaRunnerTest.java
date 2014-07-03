@@ -14,7 +14,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 
 @RunWith(Parameterized.class)
-public class JavaRunner extends VariabilityAwareTest {
+public class JavaRunnerTest extends VariabilityAwareTest {
 
 	@Before
 	public void setJava() {
@@ -23,7 +23,7 @@ public class JavaRunner extends VariabilityAwareTest {
 	
 	
 	// TODO maybe push top
-	public JavaRunner(Boolean a, Boolean b, Boolean c, Boolean d,
+	public JavaRunnerTest(Boolean a, Boolean b, Boolean c, Boolean d,
 			Boolean x, Boolean y, Boolean z) {
 		VariabilityAwareTest.a = a; 
 		VariabilityAwareTest.b = b;

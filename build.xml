@@ -413,6 +413,7 @@
 
       <classpath>
         <path refid="lib.path"/>
+      	<pathelement location="lib/*"/>
         <pathelement location="build/tests"/>
         <pathelement location="build/classes"/>
         <pathelement location="build/annotations"/>
