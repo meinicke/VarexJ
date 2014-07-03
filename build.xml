@@ -391,7 +391,7 @@
 			</not>
 		</condition>
 
-		<junit printsummary="on" showoutput="off" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="1024m" outputtoformatters="true">
+		<junit printsummary="on" showoutput="no" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="1024m" outputtoformatters="true">
 			<formatter type="plain" usefile="${junit.usefile}" />
 
 			<assertions>
@@ -406,10 +406,11 @@
 				<pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
-			<batchtest todir="build/tests">
+			<batchtest todir="build/tests">-p
 				<fileset dir="build/tests">
 					<exclude name="**/JPF_*.class" />
-					<include name="**/*Test.class" />
+					<include name="**cmu/*Test.class" />
+					<include name="**cmu/*/*Test.class" />
 
 				</fileset>
 			</batchtest>

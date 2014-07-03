@@ -1,12 +1,9 @@
 package cmu;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -14,7 +11,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 
 @RunWith(Parameterized.class)
-public class JavaRunnerTest extends VariabilityAwareTest {
+public class JavaRunner extends VariabilityAwareTest {
 
 	@Before
 	public void setJava() {
@@ -23,7 +20,7 @@ public class JavaRunnerTest extends VariabilityAwareTest {
 	
 	
 	// TODO maybe push top
-	public JavaRunnerTest(Boolean a, Boolean b, Boolean c, Boolean d,
+	public JavaRunner(Boolean a, Boolean b, Boolean c, Boolean d,
 			Boolean x, Boolean y, Boolean z) {
 		VariabilityAwareTest.a = a; 
 		VariabilityAwareTest.b = b;
