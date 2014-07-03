@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 
 /**
  * MJI NativePeer class for java.lang.Class library abstraction

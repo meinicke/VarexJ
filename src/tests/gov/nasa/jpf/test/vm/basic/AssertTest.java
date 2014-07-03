@@ -18,14 +18,13 @@
 //
 package gov.nasa.jpf.test.vm.basic;
 
+import gov.nasa.jpf.test.java.net.LoadUtility;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-
-import gov.nasa.jpf.test.java.net.LoadUtility;
-import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
 

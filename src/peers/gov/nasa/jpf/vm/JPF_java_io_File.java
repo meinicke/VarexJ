@@ -26,8 +26,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * intercept and forward some of the filesystem access methods. This is very
  * slow, if a program uses this heavily we should keep the forwarding File

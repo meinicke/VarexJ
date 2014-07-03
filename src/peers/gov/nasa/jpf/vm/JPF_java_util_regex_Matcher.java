@@ -26,8 +26,6 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * native peer for a regex Matcher
  * this is just a delegatee peer

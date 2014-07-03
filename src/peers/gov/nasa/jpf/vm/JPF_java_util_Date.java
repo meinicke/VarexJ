@@ -4,8 +4,6 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.Date;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 public class JPF_java_util_Date extends NativePeer {
 
   static Date getDate (MJIEnv env, int dateRef){

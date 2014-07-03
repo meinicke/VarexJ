@@ -1,9 +1,9 @@
 package cmu.testprograms;
 
-import org.junit.Test;
-
 import gov.nasa.jpf.annotation.MyAnnotation;
 import gov.nasa.jpf.util.test.TestJPF;
+
+import org.junit.Test;
 
 public class FibonacciTest extends TestJPF {
 

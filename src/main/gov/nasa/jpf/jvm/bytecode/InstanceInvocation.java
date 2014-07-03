@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.ThreadInfo;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * base class for INVOKEVIRTUAL, INVOKESPECIAL and INVOLEINTERFACE

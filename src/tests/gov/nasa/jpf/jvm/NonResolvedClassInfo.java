@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm;
 import gov.nasa.jpf.jvm.bytecode.InstructionFactory;
 import gov.nasa.jpf.vm.ClassParseException;
 import gov.nasa.jpf.vm.NativePeer;
+
 import java.io.File;
 
 /**

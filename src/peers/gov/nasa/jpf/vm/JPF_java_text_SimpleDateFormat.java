@@ -26,8 +26,6 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * (incomplete) native peer for SimpleDateFormat. See Format for details
  * about native formatter delegation

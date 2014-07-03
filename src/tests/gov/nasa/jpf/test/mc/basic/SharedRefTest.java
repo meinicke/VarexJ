@@ -18,10 +18,7 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
-import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Verify;
 
 import org.junit.Test;

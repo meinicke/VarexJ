@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * MJI NativePeer class for java.lang.System library abstraction
  */

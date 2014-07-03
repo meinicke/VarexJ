@@ -3,10 +3,7 @@ package cmu;
 import gov.nasa.jpf.annotation.MyAnnotation;
 import gov.nasa.jpf.util.test.TestJPF;
 
-import org.junit.Before;
 import org.junit.Test;
-
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class VariabilityAwareTest extends TestJPF {
 
@@ -125,6 +122,7 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 
+	@Test
 	public void earlyJoinTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 1;

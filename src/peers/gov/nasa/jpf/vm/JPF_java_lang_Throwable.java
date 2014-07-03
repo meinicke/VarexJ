@@ -23,8 +23,6 @@ import gov.nasa.jpf.annotation.MJI;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 
 /**
  * MJI NativePeer class for java.lang.Throwable library abstraction

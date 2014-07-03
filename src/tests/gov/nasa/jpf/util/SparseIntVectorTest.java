@@ -1,8 +1,8 @@
 package gov.nasa.jpf.util;
 
-import org.junit.Test;
-
 import gov.nasa.jpf.util.test.TestJPF;
+
+import org.junit.Test;
 
 public class SparseIntVectorTest extends TestJPF {
   

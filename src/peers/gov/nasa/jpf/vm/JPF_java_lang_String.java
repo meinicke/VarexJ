@@ -23,9 +23,6 @@ import gov.nasa.jpf.annotation.MJI;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * MJI NativePeer class for java.lang.String library abstraction
  */

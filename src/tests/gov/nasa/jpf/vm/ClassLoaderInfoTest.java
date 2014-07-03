@@ -21,13 +21,6 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.ClassLoaderInfo;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.Heap;
-import gov.nasa.jpf.vm.VM;
-import gov.nasa.jpf.vm.SystemClassLoaderInfo;
-import gov.nasa.jpf.vm.ThreadInfo;
 
 import org.junit.Test;
 

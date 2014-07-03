@@ -20,7 +20,6 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Types;
 
 import org.junit.Test;
 

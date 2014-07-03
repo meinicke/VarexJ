@@ -23,8 +23,6 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.lang.reflect.Modifier;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 public class JPF_java_lang_reflect_Field extends NativePeer {
 
   // the registry is rather braindead, let's hope we don't have many lookups - 

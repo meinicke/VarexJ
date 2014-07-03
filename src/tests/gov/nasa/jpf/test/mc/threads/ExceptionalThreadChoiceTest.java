@@ -21,8 +21,10 @@ package gov.nasa.jpf.test.mc.threads;
 
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
+
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+
 import org.junit.Test;
 
 /**

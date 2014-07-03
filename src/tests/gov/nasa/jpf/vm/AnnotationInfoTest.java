@@ -24,6 +24,7 @@ import gov.nasa.jpf.jvm.DirClassFileContainer;
 import gov.nasa.jpf.jvm.JVMAnnotationParser;
 import gov.nasa.jpf.jvm.JVMClassFileContainer;
 import gov.nasa.jpf.util.test.TestJPF;
+
 import java.io.File;
 
 import org.junit.Test;

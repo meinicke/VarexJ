@@ -26,8 +26,6 @@ import gov.nasa.jpf.util.RunRegistry;
 
 import java.lang.reflect.Modifier;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * native peer for rudimentary constructor reflection.
  * 
