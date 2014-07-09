@@ -38,7 +38,7 @@ public class VariabilityAwareTest extends TestJPF {
 	static boolean z = true;
 
 	@Test
-	public void simpleForTest() throws Exception {
+	public void simpleForTest() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int rounds = 1;
 			if (z) {
@@ -55,7 +55,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void forTest() throws Exception {
+	public void forTest() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int rounds = 1;
 			int increment = 1;
@@ -89,7 +89,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void forTest_2() throws Exception {
+	public void forTest_2() {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			int rounds = 1;
 			int increment = 1;
@@ -123,7 +123,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void earlyJoinTest() throws Exception {
+	public void earlyJoinTest() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 1;
 			if (x) {
@@ -175,7 +175,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void testPrint() throws Exception {
+	public void testPrint() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 0;
 			if (z) {
@@ -190,7 +190,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void testPint_2() throws Exception {
+	public void testPint_2() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 0;
 			if (z) {
@@ -205,14 +205,14 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void assertTest_1() throws Exception {
+	public void assertTest_1() {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			check(!z);
 		}
 	}
 
 	@Test
-	public void assertTest_2() throws Exception {
+	public void assertTest_2() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			if (z) {
 				if (!z) {
@@ -223,7 +223,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void returnTest() throws Exception {
+	public void returnTest() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			if (z) {
 				return;
@@ -236,7 +236,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void returnTest2() throws Exception {
+	public void returnTest2() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 
 			if (method()) {
@@ -265,7 +265,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void returnTest_2() throws Exception {
+	public void returnTest_2() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			if (x || !x) {
 				return;
@@ -275,21 +275,21 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void classTest_1() throws Exception {
+	public void classTest_1() {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			new Main(z);
 		}
 	}
 
 	@Test
-	public void classTest_2() throws Exception {
+	public void classTest_2() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			new Main(z, y);
 		}
 	}
 
 	@Test
-	public void classTest_3() throws Exception {
+	public void classTest_3() {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			new Main(false);
 			new Main(true);
@@ -297,7 +297,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void classMethodTest() throws Exception {
+	public void classMethodTest() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			Main main = new Main(z, y);
 			main.method(z, y);
@@ -305,7 +305,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void classMethodTest2() throws Exception {
+	public void classMethodTest2() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			boolean z = VariabilityAwareTest.z;
 			boolean y = VariabilityAwareTest.y;
@@ -314,8 +314,8 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 
-//	@Test
-	public void classMethodTest3() throws Exception {
+	// @Test
+	public void classMethodTest3() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			boolean z = VariabilityAwareTest.z;
 			boolean y = VariabilityAwareTest.y;
@@ -332,7 +332,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void ConditionalTest() throws Exception {
+	public void ConditionalTest() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			if (a && (!b || c)) {
 
@@ -341,7 +341,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void multipleReturnTest() throws Exception {
+	public void multipleReturnTest() {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			if (a) {
 				return;
@@ -354,7 +354,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void elseTest_3() throws Exception {
+	public void elseTest_3() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			if (VariabilityAwareTest.valid()) {
 				check(a);
@@ -366,7 +366,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void elseTest_2() throws Exception {
+	public void elseTest_2() {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			if (a) {
 				check(a);
@@ -377,12 +377,48 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void elseTest() throws Exception {
+	public void elseTest() {
 		if (RUN_WITH_JPF && verifyAssertionError(JPF_CONFIGURATION)) {
 			if (a) {
 				check(a);
 			} else {
 				check(a);
+			}
+		}
+	}
+
+	@Test
+	public void classExtendTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			boolean z = VariabilityAwareTest.z;
+			boolean y = VariabilityAwareTest.y;
+			Main main = new Main(z, y);
+			if (x) {
+				main = new Main2(z, y);
+			}
+			main.method2(0);
+		}
+	}
+
+	@Test
+	public void classExtendTest_2() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			boolean z = VariabilityAwareTest.z;
+			boolean y = VariabilityAwareTest.y;
+			Main main = new Main(z, y);
+			if (x) {
+				main = new Main2(z, y);
+			}
+
+			int v = VariabilityAwareTest.b ? 10 : 2;
+			main.method2(v);
+
+			int value = 4;
+			if (a) {
+				value = value + 10;
+			}
+			if (b) {
+				main.method2(value);
 			}
 		}
 	}
@@ -401,31 +437,6 @@ public class VariabilityAwareTest extends TestJPF {
 
 	}
 
-//	@Test
-	public void classExtendTest() throws Exception {
-		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			boolean z = VariabilityAwareTest.z;
-			boolean y = VariabilityAwareTest.y;
-			Main main = new Main(z, y);
-			if (x) {
-				main = new Main2(z, y);
-			}
-			
-			main.method2(0);
-			
-			int value = 4;
-			if (a) {
-				value = value + 10;
-			}
-			if (b) {
-				main.method2(value);
-				
-			}
-//			int i = 0;
-
-		}
-	}
-	
 }
 
 class Main {
@@ -465,10 +476,10 @@ class Main2 extends Main {
 	public Main2(boolean z, boolean y) {
 		super(z, y);
 	}
-	
+
 	@Override
 	boolean method2(int value) {
 		return super.method2(value);
 	}
-	
+
 }

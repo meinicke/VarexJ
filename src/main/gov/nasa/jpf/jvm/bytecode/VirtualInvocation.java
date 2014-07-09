@@ -18,9 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.Map;
-
-import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -28,9 +26,10 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.Stack;
-import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+
+import java.util.Map;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -55,50 +54,52 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 	}
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
-		Conditional<Integer> objRef = ti.getCalleeThis(ctx, getArgSize());
-		final boolean split = objRef.toList().size() > 1; 
-		final VirtualInvocation finalThis = this;
-		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		Conditional<Integer> allRefs = ti.getCalleeThis(ctx, getArgSize());
+		// final boolean split = allRefs.toList().size() > 1;
+		Map<Integer, FeatureExpr> map = allRefs.toMap();
+		for (Integer objRef : map.keySet()) {
+			ctx = ctx.and(map.get(objRef));
+			// }
 
-			@Override
-			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objRef) {
+			// final VirtualInvocation finalThis = this;
+			// return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer,
+			// Conditional<Instruction>>() {
+			//
+			// @Override
+			// public Conditional<Instruction> apply(FeatureExpr ctx, Integer
+			// objRef) {
 
-				if (objRef == MJIEnv.NULL) {
-					lastObj = MJIEnv.NULL;
-					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
-				}
-
-				MethodInfo callee = getInvokedMethod(ti, objRef);
-				ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
-
-				if (callee == null) {
-					String clsName = ti.getClassInfo(objRef).getName();
-					return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodError", clsName + '.' + mname));
-				} else {
-					if (callee.isAbstract()) {
-						return new One<>(ti.createAndThrowException(ctx, "java.lang.AbstractMethodError", callee.getFullName() + ", object: " + ei));
-					}
-				}
-
-				if (callee.isSynchronized()) {
-					if (checkSyncCG(ei, ti)) {
-						return new One<Instruction>(finalThis);
-					}
-				}
-
-			      StackFrame callerStack = ti.getTopFrame();
-			      Map<Stack, FeatureExpr> map = callerStack.stack.stack.toMap();
-				
-				
-				setupCallee(ctx, ti, callee); // this creates, initializes and
-												// pushes the callee StackFrame
-
-				return ti.getPC(); // we can't just return the first callee insn
-									// if a listener throws an exception
-				// TODO Auto-generated method stub
-
+			if (objRef == MJIEnv.NULL) {
+				lastObj = MJIEnv.NULL;
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
 			}
-		});
+
+			MethodInfo callee = getInvokedMethod(ti, objRef);
+			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
+
+			if (callee == null) {
+				String clsName = ti.getClassInfo(objRef).getName();
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodError", clsName + '.' + mname));
+			} else {
+				if (callee.isAbstract()) {
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.AbstractMethodError", callee.getFullName() + ", object: " + ei));
+				}
+			}
+
+			if (callee.isSynchronized()) {
+				if (checkSyncCG(ei, ti)) {
+					return new One<Instruction>(this);
+				}
+			}
+
+			setupCallee(ctx, ti, callee); // this creates, initializes and
+											// pushes the callee StackFrame
+
+			return new Choice<>(ctx, ti.getPC(), new One<Instruction>(this)).simplify(); // we can't just return the first callee insn
+								// if a listener throws an exception
+
+		}
+		throw new RuntimeException("Something went wrong");
 	}
 
 	/**
