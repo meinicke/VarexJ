@@ -97,14 +97,14 @@ public class Choice<T> extends Conditional<T> {
 
 	@Override
 	public T getValue() {
-		System.out.println("___________________________________________________");
-		System.out.println("Get value of choice called: " + toString());
-		for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
-			System.out.println(e);
-		}
-		System.out.println("---------------------------------------------------");
-		return thenBranch.getValue();
-//		throw new RuntimeException("Get value of choice called: " +  toString());
+//		System.out.println("___________________________________________________");
+//		System.out.println("Get value of choice called: " + toString());
+//		for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
+//			System.out.println(e);
+//		}
+//		System.out.println("---------------------------------------------------");
+//		return thenBranch.getValue();
+		throw new RuntimeException("Get value of choice called: " +  toString());
 	}
 	
 	@Override
@@ -129,9 +129,10 @@ public class Choice<T> extends Conditional<T> {
 		elseBranch.toMap(ctx.andNot(featureExpr), map);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		return new Choice<T>(featureExpr, (Conditional<T>)thenBranch.clone(),(Conditional<T>) elseBranch.clone());
+		return new Choice<>(featureExpr, (Conditional<T>)thenBranch.clone(),(Conditional<T>) elseBranch.clone());
 	}
 	
 }

@@ -204,7 +204,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       DirectCallStackFrame runFrame = miRun.createRunStartStackFrame(tiStartee);
       runFrame.setReferenceArgument(0, runnableRef, null);
             
-      tiStartee.pushFrame(runFrame);
+      tiStartee.pushFrame(NativeMethodInfo.CTX, runFrame, false);
       tiStartee.setState(ThreadInfo.State.RUNNING);
       
       // now we have a new thread, create a CG for scheduling it
@@ -212,7 +212,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       if (ss.setNextChoiceGenerator(cg)) {
         env.repeatInvocation();
       } else {
-        Instruction insn = tiCurrent.getPC().getValue();
+        Instruction insn = tiCurrent.getPC(NativeMethodInfo.CTX).getValue();
         log.info(tiStartee.getName(), " start not a scheduling point in ", insn.getMethodInfo().getFullName());
       }
       

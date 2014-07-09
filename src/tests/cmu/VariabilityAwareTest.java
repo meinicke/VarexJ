@@ -5,9 +5,6 @@ import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 public class VariabilityAwareTest extends TestJPF {
 
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
@@ -422,10 +419,10 @@ public class VariabilityAwareTest extends TestJPF {
 			if (a) {
 				value = value + 10;
 			}
-//			if (b) {
+			if (b) {
 				main.method2(value);
 				
-//			}
+			}
 //			int i = 0;
 
 		}

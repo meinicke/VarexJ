@@ -24,6 +24,8 @@ import gov.nasa.jpf.vm.ClassLoaderInfo;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /*
  * VM.registerStartupClass must be kept in sync with ClassInfo.registerClass.
  * This test ensures that the interfaces of the main class are registered 
@@ -42,7 +44,7 @@ public class InitializeInterfaceClassObjectRefTest extends TestJPF implements In
       }
       else
       {
-         ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo( InitializeInterfaceClassObjectRefTestInterface.class.getName());
+         ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo( FeatureExprFactory.True(), InitializeInterfaceClassObjectRefTestInterface.class.getName());
          
          if (ci.getClassObjectRef() < 0)
             throw new AssertionError("ci.getClassObjectRef() < 0 : " + ci.getClassObjectRef());

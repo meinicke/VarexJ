@@ -60,7 +60,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
 	
   static ClassInfo getDataRepresentationClassInfo (MJIEnv env) {
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC().getValue();
+    Instruction insn = ti.getPC(NativeMethodInfo.CTX).getValue();
     
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo(DataRepresentation);
     if (ci.pushRequiredClinits(ti)){

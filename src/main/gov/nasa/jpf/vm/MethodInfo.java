@@ -658,6 +658,7 @@ public class MethodInfo extends InfoObject implements GenericSignatureHolder  {
     }
 
     if ((i < 0) || (i >= code.length)) {
+    	System.out.println("ERRRRR");
       return null;
     }
 

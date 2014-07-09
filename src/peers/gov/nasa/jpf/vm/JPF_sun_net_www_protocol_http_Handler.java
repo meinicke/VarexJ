@@ -94,7 +94,7 @@ public class JPF_sun_net_www_protocol_http_Handler extends NativePeer {
         if (map[i].matcher.matches(url)) {
           String clsName = map[i].clsName;
 
-          ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+          ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
 
           // this might re-execute if there is a clinit
           int clsObjRef = JPF_java_lang_Class.getClassObject(env, ci);

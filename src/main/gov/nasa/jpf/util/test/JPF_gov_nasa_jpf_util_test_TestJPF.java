@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -51,7 +52,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
 
     DirectCallStackFrame frame = mi.createDirectCallStackFrame(ti, 0);
     frame.setReferenceArgument( 0, objRef, null);
-    ti.pushFrame(frame);
+    ti.pushFrame(NativeMethodInfo.CTX, frame, false);
   }
 
   private boolean initializeTestMethods(MJIEnv env, String[] selectedTests) {

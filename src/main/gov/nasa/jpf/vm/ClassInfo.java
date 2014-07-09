@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -1115,7 +1116,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     //interfaceNames can have static fields too
     // <2do> why would that not be already resolved here ?
     for (String interfaceName : getAllInterfaces()) {
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(interfaceName);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), interfaceName);
         fi = ci.getDeclaredStaticField(fName);
         if (fi != null) return fi;
     }
@@ -1841,7 +1842,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * an exception. NO STATIC BLOCKS / FIELDS ALLOWED
    */
   public static ClassInfo getInitializedClassInfo (String clsName, ThreadInfo ti){
-    ClassLoaderInfo cl = ClassLoaderInfo.getCurrentClassLoader();
+    ClassLoaderInfo cl = ClassLoaderInfo.getCurrentClassLoader(FeatureExprFactory.True());
     return cl.getInitializedClassInfo(clsName, ti);
   }
 
@@ -2079,7 +2080,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
         MethodInfo mi = getMethod("<clinit>()V", false);
         if (mi != null) {
           DirectCallStackFrame frame = createDirectCallStackFrame(ti, mi, 0);
-          ti.pushFrame( frame);
+          ti.pushFrame( FeatureExprFactory.True(), frame, false);
           return true;
 
         } else {

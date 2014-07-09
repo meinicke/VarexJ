@@ -52,6 +52,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		Conditional<Integer> objRef = ti.getCalleeThis(ctx, getArgSize());
+		final boolean split = objRef.toList().size() > 1; 
 		final VirtualInvocation finalThis = this;
 		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
@@ -81,10 +82,10 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					}
 				}
 
-				setupCallee(ctx, ti, callee); // this creates, initializes and
+				setupCallee(ctx, ti, callee, split); // this creates, initializes and
 												// pushes the callee StackFrame
 
-				return ti.getPC(); // we can't just return the first callee insn
+				return ti.getPC(ctx); // we can't just return the first callee insn
 									// if a listener throws an exception
 				// TODO Auto-generated method stub
 
@@ -108,7 +109,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		return ei.getLockCount() == 1;
 	}
 
-	public MethodInfo getInvokedMethod(ThreadInfo ti) {
+	public MethodInfo getInvokedMethod(FeatureExpr ctx, ThreadInfo ti) {
 		int objRef;
 
 		if (ti.getNextPC() == null) { // this is pre-exec

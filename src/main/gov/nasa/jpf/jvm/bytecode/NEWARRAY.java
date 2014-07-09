@@ -54,7 +54,7 @@ public class NEWARRAY extends NewArrayInstruction {
     // there is no clinit for array classes, but we still have  to create a class object
     // since its a builtin class, we also don't have to bother with NoClassDefFoundErrors
     String clsName = "[" + type;
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(ctx, clsName);
 
     if (!ci.isRegistered()) {
       ci.registerClass(ti);

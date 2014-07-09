@@ -93,7 +93,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     int[] ar = new int[argTypeNames.length];
 
     for (int i = 0; i < argTypeNames.length; i++) {
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(argTypeNames[i]);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, argTypeNames[i]);
       if (!ci.isRegistered()) {
         ci.registerClass(ti);
       }
@@ -125,7 +125,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     int[] ar = new int[exceptionNames.length];
      
     for (int i = 0; i < exceptionNames.length; i++) {
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(exceptionNames[i]);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, exceptionNames[i]);
       if (!ci.isRegistered()) {
         ci.registerClass(ti);
       }
@@ -151,7 +151,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     MethodInfo mi = getMethodInfo(env, objRef);
     ThreadInfo ti = env.getThreadInfo();
 
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(mi.getReturnTypeName());
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, mi.getReturnTypeName());
     if (!ci.isRegistered()) {
       ci.registerClass(ti);
     }
@@ -448,7 +448,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       //--- check accessibility
       ElementInfo eiMth = ti.getElementInfo(mthRef);
       if (! (Boolean) eiMth.getFieldValueObject("isAccessible")) {
-        StackFrame caller = ti.getTopFrame().getPrevious();
+        StackFrame caller = ti.getTopFrame(NativeMethodInfo.CTX).getPrevious();
         ClassInfo callerClass = caller.getClassInfo();
 
         if (callerClass != calleeClass) {
@@ -471,7 +471,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
         // we've got a IllegalArgumentException
         return MJIEnv.NULL;  
       }
-      ti.pushFrame(frame);
+      ti.pushFrame(NativeMethodInfo.CTX, frame, false);
       
       
       //--- check for and push required clinits

@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.util;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 
@@ -59,7 +60,7 @@ public class TypeRef {
    * This will cause on-demand class loading by JPF
    */
   public ClassInfo getClassInfo (){
-    return ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    return ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), clsName);
   }
   
   public String toString(){

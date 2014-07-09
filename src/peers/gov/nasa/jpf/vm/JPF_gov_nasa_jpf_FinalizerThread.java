@@ -43,7 +43,7 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
       // create and push a stack frame for finalize()V
       DirectCallStackFrame frame = mi.createDirectCallStackFrame(finalizerTi, 0);
       frame.setReferenceArgument(0, objRef, frame);
-      finalizerTi.pushFrame(frame);
+      finalizerTi.pushFrame(NativeMethodInfo.CTX, frame, false);
     
       removeElement(env, tiRef, objRef);
     }

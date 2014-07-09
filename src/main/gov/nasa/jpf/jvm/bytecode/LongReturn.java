@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import java.util.Iterator;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * common base for DRETURN and LRETURN
@@ -51,11 +52,11 @@ public abstract class LongReturn extends ReturnInstruction {
   //--- attribute accessors 
   
   public boolean hasReturnAttr (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame();
+    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
     return frame.hasLongOperandAttr();
   }
   public boolean hasReturnAttr (ThreadInfo ti, Class<?> type){
-    StackFrame frame = ti.getTopFrame();
+    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
     return frame.hasLongOperandAttr(type);
   }
   
@@ -67,7 +68,7 @@ public abstract class LongReturn extends ReturnInstruction {
    * the value is pushed during the enter(). Use ObjectList to access values
    */
   public Object getReturnAttr (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame();
+    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
     return frame.getLongOperandAttr();
   }
   
@@ -89,19 +90,19 @@ public abstract class LongReturn extends ReturnInstruction {
    * if you don't use client private types or the provided type is too general
    */
   public <T> T getReturnAttr (ThreadInfo ti, Class<T> type){
-    StackFrame frame = ti.getTopFrame();
+    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
     return frame.getLongOperandAttr(type);
   }
   public <T> T getNextReturnAttr (ThreadInfo ti, Class<T> type, Object prev){
-    StackFrame frame = ti.getTopFrame();
+    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
     return frame.getNextLongOperandAttr(type, prev);
   }
   public Iterator returnAttrIterator (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame();
+    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
     return frame.longOperandAttrIterator();
   }
   public <T> Iterator<T> returnAttrIterator (ThreadInfo ti, Class<T> type){
-    StackFrame frame = ti.getTopFrame();
+    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
     return frame.longOperandAttrIterator(type);
   }
   

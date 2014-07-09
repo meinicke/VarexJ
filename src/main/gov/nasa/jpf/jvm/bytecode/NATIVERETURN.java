@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * synthetic return instruction for native method invocations, so that
@@ -44,7 +45,7 @@ public class NATIVERETURN extends ReturnInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     if (!ti.isFirstStepInsn()) {
-      ti.leave();  // takes care of unlocking before potentially creating a CG
+      ti.leave(ctx);  // takes care of unlocking before potentially creating a CG
       // NativeMethodInfo is never synchronized, so no thread CG here
     }
 
@@ -197,7 +198,7 @@ public class NATIVERETURN extends ReturnInstruction {
     if (isCompleted(ti)){
       return retAttr;
     } else {
-      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
+      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame(FeatureExprFactory.True());
       return nativeFrame.getReturnAttr();
     }
   }
@@ -208,7 +209,7 @@ public class NATIVERETURN extends ReturnInstruction {
     if (isCompleted(ti)){
       return ret;
     } else {
-      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
+      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame(ctx);
       return nativeFrame.getReturnValue();
     }
   }

@@ -54,7 +54,7 @@ public class IRETURN extends ReturnInstruction {
   
   public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
     if (!isCompleted(ti)) { // we have to pull it from the operand stack
-      StackFrame frame = ti.getTopFrame();
+      StackFrame frame = ti.getTopFrame(ctx);
       ret = frame.peek(ctx);
     }
 

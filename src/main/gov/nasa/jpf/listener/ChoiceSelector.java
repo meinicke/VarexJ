@@ -35,6 +35,8 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.Random;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * this is a listener that only executes single choices until it detects
  * that it should start to search. If nothing is specified, this is pretty
@@ -150,7 +152,7 @@ public class ChoiceSelector extends ListenerAdapter {
   public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute) {
     if (singleChoice && !callSeen && (calls != null)) {
       if (insnToExecute instanceof InvokeInstruction) {
-        String mthName = ((InvokeInstruction)insnToExecute).getInvokedMethod(ti).getBaseName();
+        String mthName = ((InvokeInstruction)insnToExecute).getInvokedMethod(FeatureExprFactory.True(), ti).getBaseName();
 
         if (calls.matchesAny(mthName)){
           callSeen = true;

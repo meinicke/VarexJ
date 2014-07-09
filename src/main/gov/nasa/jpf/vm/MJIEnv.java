@@ -588,7 +588,7 @@ public class MJIEnv {
   
   public void setStaticBooleanField (String clsName, String fname,
                                      boolean value) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     ci.getStaticElementInfo().setBooleanField(fname, value);
   }
   public void setStaticBooleanField (int clsObjRef, String fname, boolean val) {
@@ -597,35 +597,35 @@ public class MJIEnv {
   }
   
   public boolean getStaticBooleanField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return ci.getStaticElementInfo().getBooleanField(fname);
   }
 
   public void setStaticByteField (String clsName, String fname, byte value) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     ci.getStaticElementInfo().setByteField(fname, value);  }
 
   public byte getStaticByteField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return ci.getStaticElementInfo().getByteField(fname);
   }
 
   public void setStaticCharField (String clsName, String fname, char value) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     ci.getStaticElementInfo().setCharField(fname, value);  }
 
   public char getStaticCharField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return ci.getStaticElementInfo().getCharField(fname);
   }
 
   public void setStaticDoubleField (String clsName, String fname, double val) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     ci.getStaticElementInfo().setDoubleField(fname, val);
   }
 
   public double getStaticDoubleField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return ci.getStaticElementInfo().getDoubleField(fname);
   }
   
@@ -640,17 +640,17 @@ public class MJIEnv {
   }
   
   public void setStaticFloatField (String clsName, String fname, float val) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     ci.getStaticElementInfo().setFloatField(fname, val);
   }
 
   public float getStaticFloatField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return ci.getStaticElementInfo().getFloatField(fname);
   }
 
   public void setStaticIntField (String clsName, String fname, int val) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     ci.getStaticElementInfo().setIntField(fname, val);
   }
 
@@ -660,7 +660,7 @@ public class MJIEnv {
   }
 
   public int getStaticIntField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return ci.getStaticElementInfo().getIntField(fname);
   }
   
@@ -675,7 +675,7 @@ public class MJIEnv {
   }
 
   public void setStaticLongField (String clsName, String fname, long value) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     ci.getStaticElementInfo().setLongField(fname, value);
   }
 
@@ -690,7 +690,7 @@ public class MJIEnv {
   }
 
   public long getStaticLongField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return getStaticLongField(ci, fname);
   }
 
@@ -700,7 +700,7 @@ public class MJIEnv {
   }
 
   public void setStaticReferenceField (String clsName, String fname, int objref) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
 
     // <2do> - we should REALLY check for type compatibility here
     ci.getModifiableStaticElementInfo().setReferenceField(fname, objref);
@@ -714,7 +714,7 @@ public class MJIEnv {
   }
 
   public int getStaticReferenceField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return ci.getStaticElementInfo().getReferenceField(fname);
   }
 
@@ -728,7 +728,7 @@ public class MJIEnv {
   }
 
   public short getStaticShortField (String clsName, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     return ci.getStaticElementInfo().getShortField(fname);
   }
 
@@ -1067,7 +1067,7 @@ public class MJIEnv {
   }
   
   public int newObject (String clsName) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
     if (ci != null){
       return newObject(ci);
     } else {
@@ -1504,7 +1504,7 @@ public class MJIEnv {
   }
 
   public Instruction getInstruction () {
-    return ti.getPC().getValue();
+    return ti.getPC(NativeMethodInfo.CTX).getValue();
   }
 
   /**
@@ -1608,7 +1608,7 @@ public class MJIEnv {
       String eCls = ev.getEnumClassName();
       String eConst = ev.getEnumConstName();
 
-      ClassInfo eci = ClassLoaderInfo.getCurrentResolvedClassInfo(eCls);
+      ClassInfo eci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, eCls);
       if (!eci.isInitialized()){
         throw new ClinitRequired(eci);
       }
@@ -1619,7 +1619,7 @@ public class MJIEnv {
 
     } else if (v instanceof AnnotationInfo.ClassValue){ // a class
       String clsName = v.toString();
-      ClassInfo cci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+      ClassInfo cci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
       // <2do> should throw ClassNotFoundError here if cci is null
 
       if (!cci.isInitialized()){
@@ -1662,7 +1662,7 @@ public class MJIEnv {
         aref = newObjectArray("java.lang.Class", a.length);
         for (int i=0; i<a.length; i++){
           String clsName = ((AnnotationInfo.ClassValue)a[i]).getName();
-          ClassInfo cci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+          ClassInfo cci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, clsName);
           if (!cci.isInitialized()){
             throw new ClinitRequired(cci);
           }
@@ -1703,7 +1703,7 @@ public class MJIEnv {
     if ((ai != null) && (ai.length > 0)){
       int aref = newObjectArray("Ljava/lang/annotation/Annotation;", ai.length);
       for (int i=0; i<ai.length; i++){
-        ClassInfo aci = ClassLoaderInfo.getCurrentResolvedClassInfo(ai[i].getName());
+        ClassInfo aci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, ai[i].getName());
         ClassInfo aciProxy = aci.getAnnotationProxy();
 
         int ar = newAnnotationProxy(aciProxy, ai[i]);

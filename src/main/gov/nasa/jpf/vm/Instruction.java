@@ -171,7 +171,7 @@ public abstract class Instruction implements Cloneable {
 	public abstract Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti);
 
 	public String toString() {
-		return mi.getFullName() + " " + getMnemonic() + " " + getPosition();
+		return mi.getFullName() + " " + getMnemonic() + " " + getFilePos();//getPosition();
 	}
 
 	public String getMnemonic() {
@@ -314,7 +314,7 @@ public abstract class Instruction implements Cloneable {
 	 * implemented as ThreadInfo state (TERMINATED), rather than purged stacks
 	 */
 	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
-		return ti.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+		return ti.getPC(ctx).mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
@@ -330,7 +330,7 @@ public abstract class Instruction implements Cloneable {
 				if (f.equivalentTo(f.andNot(ctx))) {
 					return new One<>(y);
 				}
-				return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
+				return new Choice<>(ctx.and(f), new One<>(y.getNext()), new One<>(y));
 			}
 
 		}).simplify();
@@ -452,6 +452,7 @@ public abstract class Instruction implements Cloneable {
 		if (o == this) {
 			return true;
 		}
+		
 		if (o.getClass().equals(getClass()) && o instanceof Instruction) {
 			if (insnIndex == ((Instruction)o).insnIndex &&
 					position == ((Instruction)o).position  &&
@@ -459,6 +460,7 @@ public abstract class Instruction implements Cloneable {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	

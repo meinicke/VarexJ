@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -147,8 +148,8 @@ public class ClassLoaderInfo
     return loadedClasses.size();
   }
   
-  public static ClassInfo getCurrentResolvedClassInfo (String clsName){
-    ClassLoaderInfo cl = getCurrentClassLoader();
+  public static ClassInfo getCurrentResolvedClassInfo (FeatureExpr ctx, String clsName){
+    ClassLoaderInfo cl = getCurrentClassLoader(ctx);
     return cl.getResolvedClassInfo(clsName);
   }
 
@@ -267,12 +268,12 @@ public class ClassLoaderInfo
     return false;
   }
   
-  public static ClassLoaderInfo getCurrentClassLoader() {
-    return getCurrentClassLoader( ThreadInfo.getCurrentThread());
+  public static ClassLoaderInfo getCurrentClassLoader(FeatureExpr ctx) {
+    return getCurrentClassLoader( ctx, ThreadInfo.getCurrentThread());
   }
 
-  public static ClassLoaderInfo getCurrentClassLoader (ThreadInfo ti) {
-    for (StackFrame frame = ti.getTopFrame(); frame != null; frame = frame.getPrevious()){
+  public static ClassLoaderInfo getCurrentClassLoader (FeatureExpr ctx, ThreadInfo ti) {
+    for (StackFrame frame = ti.getTopFrame(ctx); frame != null; frame = frame.getPrevious()){
       MethodInfo miFrame = frame.getMethodInfo();
       ClassInfo ciFrame =  miFrame.getClassInfo();
       if (ciFrame != null){
@@ -597,7 +598,7 @@ public class ClassLoaderInfo
 
     frame.setFrameAttr( new LoadClassRequest(typeName));
     
-    ti.pushFrame(frame);
+    ti.pushFrame(FeatureExprFactory.True(), frame, false);
   }
 
   protected ClassInfo getDefinedClassInfo(String typeName){

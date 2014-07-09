@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm.serialize;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -47,7 +48,7 @@ public class TopFrameSerializer extends CFSerializer {
   @Override
   protected void serializeStackFrames(ThreadInfo ti){
     // we just look at the top frame
-    serializeFrame(ti.getTopFrame());
+    serializeFrame(ti.getTopFrame(FeatureExprFactory.True()));
   }
 
 

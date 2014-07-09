@@ -49,6 +49,8 @@ import gov.nasa.jpf.vm.VM;
 import java.util.HashMap;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * serializer that can ignore marked fields and stackframes for state matching
@@ -279,7 +281,7 @@ public class FilteringSerializer extends AbstractSerializer implements Reference
     // we need to add the thread object itself as a root
     processReference( ti.getThreadObjectRef());
     
-    for (StackFrame frame = ti.getTopFrame(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = ti.getTopFrame(FeatureExprFactory.True()); frame != null; frame = frame.getPrevious()){
       serializeFrame(frame);
     }
   }

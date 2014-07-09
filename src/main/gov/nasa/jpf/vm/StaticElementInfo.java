@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.HashData;
 
@@ -151,7 +152,7 @@ public final class StaticElementInfo extends ElementInfo {
 
   
   protected FieldInfo getDeclaredFieldInfo (String clsBase, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsBase); // <2do> should use CL argument
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), clsBase); // <2do> should use CL argument
     FieldInfo fi = ci.getDeclaredStaticField(fname);
     
     if (fi == null) {

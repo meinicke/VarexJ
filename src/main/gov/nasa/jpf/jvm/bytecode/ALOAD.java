@@ -44,7 +44,7 @@ public class ALOAD extends LocalVariableInstruction {
   
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+    StackFrame frame = ti.getModifiableTopFrame(ctx);
     frame.pushLocal(ctx, index);
     return getNext(ctx, ti);
   }

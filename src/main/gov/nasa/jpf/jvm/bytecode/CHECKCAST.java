@@ -50,7 +50,7 @@ public class CHECKCAST extends JVMInstruction {
   }
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getTopFrame();
+    StackFrame frame = ti.getTopFrame(ctx);
     int objref = frame.peek(ctx).getValue();
 
     if (objref == MJIEnv.NULL) {
@@ -72,7 +72,7 @@ public class CHECKCAST extends JVMInstruction {
         try {
           ti.resolveReferencedClass(t);
         } catch(LoadOnJPFRequired lre) {
-          return ti.getPC();
+          return ti.getPC(ctx);
         }
       }
 

@@ -37,7 +37,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
   }
   
   public void setArguments (final FeatureExpr ctx, ThreadInfo ti){
-    StackFrame callerFrame = ti.getTopFrame(); // we are not going to modify it
+    StackFrame callerFrame = ti.getTopFrame(ctx); // we are not going to modify it
     NativeMethodInfo nmi = (NativeMethodInfo) mi;
     int      nArgs = nmi.getNumberOfArguments();
     byte[]   argTypes = nmi.getArgumentTypes();

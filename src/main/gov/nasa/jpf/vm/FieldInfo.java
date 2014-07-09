@@ -20,6 +20,8 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.Modifier;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * type, name and attribute information of a field.
@@ -240,7 +242,7 @@ public abstract class FieldInfo extends InfoObject implements GenericSignatureHo
   }
 
   public ClassInfo getTypeClassInfo () {
-    return ClassLoaderInfo.getCurrentResolvedClassInfo(getType());
+    return ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), getType());
   }
 
   public Class<? extends ChoiceGenerator<?>> getChoiceGeneratorType (){

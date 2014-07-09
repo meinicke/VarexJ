@@ -25,6 +25,8 @@ import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.Random;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * abstract root class for configurable choice generators
  */
@@ -159,7 +161,7 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
 
   public void setContext(ThreadInfo tiCreator) {
     ti = tiCreator;
-    insn = tiCreator.getPC().getValue();
+    insn = tiCreator.getPC(FeatureExprFactory.True()).getValue();
   }
 
   public String getSourceLocation() {

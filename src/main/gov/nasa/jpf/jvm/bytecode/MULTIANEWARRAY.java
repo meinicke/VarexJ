@@ -69,7 +69,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
       try {
         ti.resolveReferencedClass(compType);
       } catch(LoadOnJPFRequired lre) {
-        return ti.getPC();
+        return ti.getPC(ctx);
       }
     }
 
@@ -82,7 +82,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 
     // there is no clinit for array classes, but we still have  to create a class object
     // since its a builtin class, we also don't have to bother with NoClassDefFoundErrors
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(type);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(ctx, type);
     if (!ci.isRegistered()) {
       ci.registerClass(ti);
       ci.setInitialized();

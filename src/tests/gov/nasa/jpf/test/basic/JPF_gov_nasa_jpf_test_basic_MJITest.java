@@ -172,7 +172,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       int argOffset = frame.setReferenceArgument(0, robj, null);
       frame.setArgument( argOffset, a+1, null);
       
-      ti.pushFrame(frame);
+      ti.pushFrame(NativeMethodInfo.CTX, frame, false);
 
       return 42; // whatever, we come back
 
@@ -196,7 +196,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
         int argOffset = frame.setReferenceArgument( 0, robj, null);
         frame.setArgument( argOffset, r+1, null);
         
-        ti.pushFrame(frame);
+        ti.pushFrame(NativeMethodInfo.CTX, frame, false);
         return 42;
 
       } else { // done, return the final value

@@ -1428,7 +1428,6 @@ public int nLocals;
   public boolean equals (Object o) {
     if (o instanceof StackFrame){
       StackFrame other = (StackFrame)o;
-
       if (prev != other.prev) {
         return false;
       }
@@ -1438,9 +1437,12 @@ public int nLocals;
       if (mi != other.mi) {
         return false;
       }
-      if (top() != other.top()){
-        return false;
+      if (getDepth() != other.getDepth()) {
+    	  return false;
       }
+//      if (top() != other.top()){
+//        return false;
+//      }
       
       if (!other.stack.equals(stack)) {
     	  return false;
@@ -1457,7 +1459,7 @@ public int nLocals;
 ////        }
 //      }
 
-      if (!Misc.compare(top(),attrs,other.attrs)){
+      if (!Misc.compare(attrs,other.attrs)){
         return false;
       }
       
@@ -1496,13 +1498,13 @@ public int nLocals;
     }
     hd.add(mi.getGlobalId());
 
-    if (pc != null){
-      hd.add(pc.getValue().getInstructionIndex());
+    if (pc != null && pc.getValue(true) != null){
+      hd.add(pc.getValue(true).getInstructionIndex());
     }
 
-    for (int i=0; i<=top(); i++){
-      hd.add(stack.getLocal(TRUE, i).getValue());
-    }
+//    for (int i=0; i<=top(); i++){
+//      hd.add(stack.getLocal(TRUE, i).getValue(true));
+//    }
 
     // TODO ??? implement
 //    int ls = isRef.longSize();
@@ -1638,32 +1640,36 @@ public int nLocals;
     pw.print(isFrozen());
     pw.print(",mi=");
     pw.print( mi != null ? mi.getUniqueName() : "null");
-    pw.print(",top="); pw.print(top());
+    pw.print(",top="); pw.print(stack.getTop());
     pw.print(",slots=[");
+pw.print(stack);
+//    for (int i = 0; i <= top(); i++) {
+//      if (i == stackBase){
+//        pw.print("||");
+//      } else {
+//        if (i != 0) {
+//          pw.print(',');
+//        }
+//      }
+//
+//      if (stack.isRefLocal(i)){
+//        pw.print('@');
+//      }
+//      pw.print(stack.getLocal(TRUE, i).getValue());
 
-    for (int i = 0; i <= top(); i++) {
-      if (i == stackBase){
-        pw.print("||");
-      } else {
-        if (i != 0) {
-          pw.print(',');
-        }
-      }
-
-      if (stack.isRefLocal(i)){
-        pw.print('@');
-      }
-      pw.print(stack.getLocal(TRUE, i).getValue());
-
-      if (attrs != null && attrs[i] != null) {
-        pw.print('(');
-        pw.print(attrs[i]);
-        pw.print(')');
-      }
-    }
+//      if (attrs != null && attrs[i] != null) {
+//        pw.print('(');
+//        pw.print(attrs[i]);
+//        pw.print(')');
+//      }
+//    }
 
     pw.print("],pc=");
-    pw.print(pc != null ? pc.getValue().getPosition() : "null");
+    for (Instruction p : pc.toList()) {
+    	pw.print(p != null ? p.getPosition() + " " : "null");
+    }
+    
+//    pw.print(pc != null ? pc.getValue().getPosition() : "null");
 
     pw.print(']');
 
@@ -1910,16 +1916,17 @@ public int nLocals;
   }
 
   public void storeOperand (FeatureExpr ctx, int index){
-	  int top = getTopPos(ctx);
+	  if (attrs != null){
+	  	  int top = getTopPos(ctx);
+	      attrs[index] = attrs[top];
+	      attrs[top] = null;
+	    }
 	  stack.storeOperand(ctx, index);
 //	  stack.duplicateIndex(ctx, index, 0, false);
 //    stack[index] = stack.peek();
 //    isRef.set( index, stack.isRef(0));
 
-    if (attrs != null){
-      attrs[index] = attrs[top];
-      attrs[top] = null;
-    }
+    
 //    stack.incrTop(ctx, -1);
 //    top()--;
   }

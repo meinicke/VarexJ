@@ -94,7 +94,7 @@ public class ExceptionInjector extends ListenerAdapter {
     }
 
     ClassInfo getExceptionClassInfo(ThreadInfo ti) {
-      return ClassLoaderInfo.getCurrentResolvedClassInfo(xSpec.xClsName);
+      return ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), xSpec.xClsName);
     }
 
     String getExceptionDetails() {

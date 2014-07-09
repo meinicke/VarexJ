@@ -23,6 +23,8 @@ import gov.nasa.jpf.JPFException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * various type mangling/demangling routines
@@ -1015,7 +1017,7 @@ public class Types {
       return instanceOf(type.substring(1), ofType.substring(1));
 
     case T_REFERENCE:
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(getTypeName(type));
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), getTypeName(type));
       return ci.isInstanceOf(getTypeName(ofType));
 
     default:

@@ -32,6 +32,8 @@ import gov.nasa.jpf.vm.VM;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * testing various aspects of listeners on INVOKE instructions
@@ -44,7 +46,7 @@ public class InvokeListenerTest extends TestJPF {
     void checkArgs (ThreadInfo ti, Instruction insn, boolean isPostExec){
       if (insn instanceof InvokeInstruction){
         InvokeInstruction call = (InvokeInstruction)insn;
-        MethodInfo mi = call.getInvokedMethod(ti);
+        MethodInfo mi = call.getInvokedMethod(FeatureExprFactory.True(), ti);
         String miSignature = mi.getUniqueName();
         String mname = mi.getName();
 

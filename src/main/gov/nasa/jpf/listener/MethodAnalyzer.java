@@ -39,6 +39,8 @@ import gov.nasa.jpf.vm.VM;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * analyzes call/execute sequences of methods
@@ -314,7 +316,7 @@ public class MethodAnalyzer extends ListenerAdapter {
     if (executedInsn instanceof InvokeInstruction) {
       InvokeInstruction call = (InvokeInstruction)executedInsn;
       ti = thread;
-      mi = call.getInvokedMethod(ti);
+      mi = call.getInvokedMethod(FeatureExprFactory.True(), ti);
             
       if (isAnalyzedMethod(mi)) {
         OpType type;

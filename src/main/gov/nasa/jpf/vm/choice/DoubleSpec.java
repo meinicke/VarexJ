@@ -20,6 +20,7 @@
 
 package gov.nasa.jpf.vm.choice;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
@@ -60,7 +61,7 @@ public class DoubleSpec {
     case 1: { // variable name
       ThreadInfo ti = ThreadInfo.getCurrentThread();
       try {
-        StackFrame frame = ti.getTopFrame();
+        StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
 
         ret = frame.getDoubleLocalVariable(varId[0]);
         // that throws an exception (a few calls down) if  
@@ -81,7 +82,7 @@ public class DoubleSpec {
       break;
     }
     case 2: { // static variable name TODO other cases here...
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo( varId[0]);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo( FeatureExprFactory.True(), varId[0]);
       ElementInfo ei = ci.getStaticElementInfo();
       ret = ei.getDoubleField(varId[1]);
       break;

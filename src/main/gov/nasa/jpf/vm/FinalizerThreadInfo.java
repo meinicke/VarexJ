@@ -126,7 +126,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     MethodInfo mi = ci.getMethod("run()V", false);
     DirectCallStackFrame frame = mi.createDirectCallStackFrame(this, 0);
     frame.setReferenceArgument(0, objRef, frame);
-    pushFrame(frame);
+    pushFrame(FeatureExprFactory.True(), frame, false);
   }
   
   public boolean hasQueuedFinalizers() {

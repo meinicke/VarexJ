@@ -104,11 +104,11 @@ public abstract class InvokeInstruction extends JVMInstruction {
     return mname;
   }
 
-  public abstract MethodInfo getInvokedMethod (ThreadInfo ti);
+  public abstract MethodInfo getInvokedMethod (FeatureExpr ctx, ThreadInfo ti);
 
   public MethodInfo getInvokedMethod () {
     if (invokedMethod == null){
-      invokedMethod = getInvokedMethod(ThreadInfo.getCurrentThread());
+      invokedMethod = getInvokedMethod(FeatureExprFactory.True(), ThreadInfo.getCurrentThread());
     }
 
     return invokedMethod;
@@ -122,7 +122,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
     }
 
     if (invokedMethod != null){
-      MethodInfo topMethod = ti.getTopFrame().getMethodInfo();
+      MethodInfo topMethod = ti.getTopFrame(FeatureExprFactory.True()).getMethodInfo();
       if (invokedMethod.isMJI() && (topMethod == mi)) {
         // same frame -> this was a native method that already returned
         return true;
@@ -144,12 +144,12 @@ public abstract class InvokeInstruction extends JVMInstruction {
 
   //--- invocation processing
 
-  protected void setupCallee (FeatureExpr ctx, ThreadInfo ti, MethodInfo callee){
+  protected void setupCallee (FeatureExpr ctx, ThreadInfo ti, MethodInfo callee, boolean split){
     ClassInfo ciCaller = callee.getClassInfo();
     StackFrame frame = ciCaller.createStackFrame(ctx, ti, callee);
     
-    ti.pushFrame(frame);
-    ti.enter();
+    ti.pushFrame(ctx, frame, split);
+    ti.enter(ctx);
   }
   
   /**
@@ -163,7 +163,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
    * the callee) since that works for both pre- and post-exec notification
    */
   public Object[] getArgumentValues (ThreadInfo ti) {
-    MethodInfo callee = getInvokedMethod(ti);
+    MethodInfo callee = getInvokedMethod(FeatureExprFactory.True(), ti);
     StackFrame frame = getCallerFrame(ti, callee);
 
     assert frame != null : "can't find caller stackframe for: " + this;
@@ -171,7 +171,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
   }
 
   public Object[] getArgumentAttrs (ThreadInfo ti) {
-    MethodInfo callee = getInvokedMethod(ti);
+    MethodInfo callee = getInvokedMethod(FeatureExprFactory.True(), ti);
     StackFrame frame = getCallerFrame(ti, callee);
 
     assert frame != null : "can't find caller stackframe for: " + this;
@@ -184,7 +184,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
    * (use this before using any of the more expensive retrievers)
    */
   public boolean hasArgumentAttr (ThreadInfo ti, Class<?> type){
-    MethodInfo callee = getInvokedMethod(ti);
+    MethodInfo callee = getInvokedMethod(FeatureExprFactory.True(), ti);
     StackFrame frame = getCallerFrame(ti, callee);
 
     assert frame != null : "can't find caller stackframe for: " + this;
@@ -196,7 +196,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
    * less efficient, but still without object creation
    */
   public boolean hasAttrRefArgument (ThreadInfo ti, Class<?> type){
-    MethodInfo callee = getInvokedMethod(ti);
+    MethodInfo callee = getInvokedMethod(FeatureExprFactory.True(), ti);
     StackFrame frame = getCallerFrame(ti, callee);
 
     int nArgSlots = callee.getArgumentsSize();

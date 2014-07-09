@@ -24,6 +24,8 @@ import gov.nasa.jpf.util.OATHash;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * class that captures execution context consisting of executing thread and 
  * pc's of ti's current StackFrames
@@ -78,7 +80,7 @@ public class PreciseAllocationContext implements AllocationContext {
     }
 
     int i=0;
-    for (StackFrame f = ti.getTopFrame(); f != null; f = f.getPrevious()){
+    for (StackFrame f = ti.getTopFrame(FeatureExprFactory.True()); f != null; f = f.getPrevious()){
       Instruction insn = f.getPC().getValue();
       cc[i++] = insn;
       h = OATHash.hashMixin(h, insn.hashCode());

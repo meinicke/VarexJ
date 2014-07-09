@@ -28,7 +28,7 @@ public class JPF_java_lang_reflect_Proxy extends NativePeer {
     byte[] buffer = env.getByteArrayObject(bufferRef);
     
     try {
-      ClassInfo ci = ClassLoaderInfo.getCurrentClassLoader().getResolvedClassInfo( clsName, buffer, offset, length);
+      ClassInfo ci = ClassLoaderInfo.getCurrentClassLoader(NativeMethodInfo.CTX).getResolvedClassInfo( clsName, buffer, offset, length);
       if (!ci.isRegistered()) {
         ThreadInfo ti = env.getThreadInfo();
         ci.registerClass(ti);

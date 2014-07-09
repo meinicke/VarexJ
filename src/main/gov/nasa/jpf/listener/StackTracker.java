@@ -32,6 +32,8 @@ import gov.nasa.jpf.vm.VM;
 
 import java.io.PrintWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * simple tool to log stack invocations
  *
@@ -92,11 +94,11 @@ public class StackTracker extends ListenerAdapter {
 
       } else if (insnToExecute instanceof INVOKESPECIAL) {
         INVOKESPECIAL callInsn = (INVOKESPECIAL)insnToExecute;
-        callee = callInsn.getInvokedMethod(ti);
+        callee = callInsn.getInvokedMethod(FeatureExprFactory.True(), ti);
 
       } else {
         InvokeInstruction callInsn = (InvokeInstruction)insnToExecute;
-        callee = callInsn.getInvokedMethod(ti);
+        callee = callInsn.getInvokedMethod(FeatureExprFactory.True(), ti);
       }
 
       if (callee != null) {

@@ -40,6 +40,8 @@ import java.util.LinkedHashSet;
 import java.util.ListIterator;
 import java.util.Stack;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * example of a listener that creates property specific traces. The interesting
  * thing is that it does so without the need to store steps, i.e. it maintains
@@ -80,7 +82,7 @@ public class DeadlockAnalyzer extends ListenerAdapter {
     }
 
     Instruction getReportInsn(ThreadInfo ti){
-      StackFrame frame = ti.getTopFrame();
+      StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
       if (frame != null) {
         Instruction insn = frame.getPC().getValue();
         if (insn instanceof EXECUTENATIVE) {

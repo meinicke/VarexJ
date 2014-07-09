@@ -109,7 +109,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
         // we've got a IllegalArgumentException
         return MJIEnv.NULL;
       }
-      ti.pushFrame(frame);
+      ti.pushFrame(NativeMethodInfo.CTX, frame, false);
        
       ci.pushRequiredClinits(ti);
       

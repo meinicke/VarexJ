@@ -56,6 +56,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * a listener to report coverage statistics
  *
@@ -471,7 +473,7 @@ public class CoverageAnalyzer extends ListenerAdapter implements PublisherExtens
         return true;
 
       try {
-        ci = ClassLoaderInfo.getCurrentResolvedClassInfo(className);
+        ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), className);
       } catch (ClassInfoException cie) {
         log.warning("CoverageAnalyzer problem: " + cie);   // Just log the problem but don't fail.  We still want the report to be written.
       }
@@ -603,7 +605,7 @@ public class CoverageAnalyzer extends ListenerAdapter implements PublisherExtens
     // just store one entry per qualified class name (i.e. there won't be
     // multiple entries)
     // NOTE : this doesn't yet deal with ClassLoaders, but that's also true for BCEL
-    ClassLoaderInfo cl = ClassLoaderInfo.getCurrentClassLoader();
+    ClassLoaderInfo cl = ClassLoaderInfo.getCurrentClassLoader(FeatureExprFactory.True());
     for (String s : cl.getClassPathElements()) {
       log.fine("analyzing classpath element: " + s);
       File f = new File(s);
@@ -690,7 +692,7 @@ public class CoverageAnalyzer extends ListenerAdapter implements PublisherExtens
     // middle ground, we could use BCEL
 
     for (ClassCoverage cc : classes.values()) {
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cc.className);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), cc.className);
       for (MethodInfo mi : ci.getDeclaredMethodInfos()) {
         AnnotationInfo ai = getRequirementsAnnotation(mi);
         if (ai != null) {

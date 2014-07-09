@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.StaticElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -46,7 +47,7 @@ public class INVOKESTATIC extends InvokeInstruction {
 
   protected ClassInfo getClassInfo () {
     if (ci == null) {
-      ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cname);
+      ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), cname);
     }
     return ci;
   }
@@ -67,9 +68,9 @@ public class INVOKESTATIC extends InvokeInstruction {
     MethodInfo callee;
     
     try {
-      callee = getInvokedMethod(ti);
+      callee = getInvokedMethod(ctx, ti);
     } catch (LoadOnJPFRequired lre) {
-      return ti.getPC();
+      return ti.getPC(ctx);
     }
         
     if (callee == null) {
@@ -82,7 +83,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     if ( ciCallee.pushRequiredClinits(ti)) {
       // do class initialization before continuing
       // note - this returns the next insn in the topmost clinit that just got pushed
-      return ti.getPC();
+      return ti.getPC(ctx);
     }
 
     if (callee.isSynchronized()) {
@@ -93,9 +94,9 @@ public class INVOKESTATIC extends InvokeInstruction {
       }
     }
         
-    setupCallee(ctx, ti, callee); // this creates, initializes and pushes the callee StackFrame
+    setupCallee(ctx, ti, callee, false); // this creates, initializes and pushes the callee StackFrame
 
-    return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
+    return ti.getPC(ctx); // we can't just return the first callee insn if a listener throws an exception
   }
 
   public MethodInfo getInvokedMethod(){
@@ -104,11 +105,11 @@ public class INVOKESTATIC extends InvokeInstruction {
     } else {
       // Hmm, this would be pre-exec, but if the current thread is not the one executing the insn 
       // this might result in false sharedness of the class object
-      return getInvokedMethod( ThreadInfo.getCurrentThread());
+      return getInvokedMethod( FeatureExprFactory.True(), ThreadInfo.getCurrentThread());
     }
   }
   
-  public MethodInfo getInvokedMethod (ThreadInfo ti){
+  public MethodInfo getInvokedMethod (FeatureExpr ctx, ThreadInfo ti){
     if (invokedMethod == null) {
       ClassInfo clsInfo = getClassInfo();
       if (clsInfo != null){

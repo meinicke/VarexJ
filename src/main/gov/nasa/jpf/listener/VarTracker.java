@@ -176,7 +176,7 @@ public class VarTracker extends ListenerAdapter {
       // a little extra work - we need to keep track of variable names, because
       // we cannot easily retrieve them in a subsequent xASTORE, which follows
       // a pattern like:  ..GETFIELD.. some-stack-operations .. xASTORE
-      StackFrame frame = ti.getTopFrame();
+      StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
       int objRef = frame.peek(FeatureExprFactory.True()).getValue();
       if (objRef != MJIEnv.NULL) {
         ElementInfo ei = ti.getElementInfo(objRef);
@@ -200,7 +200,7 @@ public class VarTracker extends ListenerAdapter {
         // did we have a name for the array?
         // stack is ".. ref idx [l]value => .."
         // <2do> String is not a good attribute type to retrieve
-        StackFrame frame = ti.getTopFrame();
+        StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
         String attr = frame.getOperandAttr(1, String.class);
         if (attr != null) {
           varId = attr + "[]";

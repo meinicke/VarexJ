@@ -59,7 +59,7 @@ public class INSTANCEOF extends JVMInstruction {
       try {
         ti.resolveReferencedClass(t);
       } catch(LoadOnJPFRequired lre) {
-        return ti.getPC();
+        return ti.getPC(ctx);
       }
     }
 

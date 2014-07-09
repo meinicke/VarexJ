@@ -33,7 +33,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class POP extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+    StackFrame frame = ti.getModifiableTopFrame(ctx);
     frame.pop(ctx);
 
     return getNext(ctx, ti);

@@ -13,7 +13,7 @@ public class ExampleRunner extends TestJPF {
 	 * #Feature: <b>10</b><br>
 	 * #Products: <b>144<b>
 	 */
-	@Test(timeout = 3000)
+	@Test//(timeout = 3000)
 	public void runBankAccount() {
 		// TODO revise (call example directly?)
 		Config config = JPF.createConfig(new String[] { "C:\\Users\\Loaner\\git\\Variability-Aware-Interpreter\\src\\tests\\cmu\\BankAccount.jpf" });
