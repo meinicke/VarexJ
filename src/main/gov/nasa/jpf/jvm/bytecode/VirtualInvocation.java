@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.Stack;
 import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.Map;
@@ -92,6 +93,15 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 				}
 			}
 
+			// set ctx for native method calls
+			 if (callee.isMJI()) {
+				 Map<Stack, FeatureExpr> stacks = ti.getTopFrame().stack.stack.simplify(ctx).toMap();
+				 for (FeatureExpr c : stacks.values()) {
+					 ctx = ctx.and(c);
+					 break;
+				 }
+			 }
+			
 			setupCallee(ctx, ti, callee); // this creates, initializes and
 											// pushes the callee StackFrame
 

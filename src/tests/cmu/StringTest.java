@@ -30,7 +30,7 @@ public class StringTest extends TestJPF {
 	}
 	
 	// TODO implement
-	//@Test
+	@Test
 	public void printConditionalTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 1;
