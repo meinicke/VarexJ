@@ -47,12 +47,12 @@ public class JVMStackFrameTest extends TestJPF {
     frame.dup2_x1(FeatureExprFactory.True());
     frame.printOperands(System.out);
 
-    assert frame.getTopPos() == 4;
-    assert frame.peek(FeatureExprFactory.True(), 4).getValue() == 2;
-    assert frame.peek(FeatureExprFactory.True(), 3).getValue() == 3;
-    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 1;
-    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 2;
-    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 3;
+    assertTrue(frame.getTopPos() == 4);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 4).getValue() == 2);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 3).getValue() == 3);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 1);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 2);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 3);
   }
 
   @Test
@@ -69,12 +69,12 @@ public class JVMStackFrameTest extends TestJPF {
     frame.dup2_x1(FeatureExprFactory.True());
     frame.printOperands(System.out);
 
-    assert frame.getTopPos() == 4;
-    assert frame.peek(FeatureExprFactory.True(), 4).getValue() == 2 && frame.getOperandAttr(4) == "2"; // same const pool string
-    assert frame.peek(FeatureExprFactory.True(), 3).getValue() == 3 && frame.getOperandAttr(3) == "3";
-    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 1 && frame.getOperandAttr(2) == "1";
-    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 2 && frame.getOperandAttr(1) == "2";
-    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 3 && frame.getOperandAttr(0) == "3";
+    assertTrue(frame.getTopPos() == 4);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 4).getValue() == 2 && frame.getOperandAttr(4) == "2"); // same const pool string
+    assertTrue(frame.peek(FeatureExprFactory.True(), 3).getValue() == 3 && frame.getOperandAttr(3) == "3");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 1 && frame.getOperandAttr(2) == "1");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 2 && frame.getOperandAttr(1) == "2");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 3 && frame.getOperandAttr(0) == "3");
   }
 
 
@@ -93,13 +93,13 @@ public class JVMStackFrameTest extends TestJPF {
     frame.dup2_x2(FeatureExprFactory.True());
     frame.printOperands(System.out);
 
-    assert frame.getTopPos() == 5;
-    assert frame.peek(FeatureExprFactory.True(), 5).getValue() == 3;
-    assert frame.peek(FeatureExprFactory.True(), 4).getValue() == 4;
-    assert frame.peek(FeatureExprFactory.True(), 3).getValue() == 1;
-    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 2;
-    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 3;
-    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 4;
+    assertTrue(frame.getTopPos() == 5);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 5).getValue() == 3);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 4).getValue() == 4);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 3).getValue() == 1);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 2);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 3);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 4);
   }
 
   @Test
@@ -117,13 +117,13 @@ public class JVMStackFrameTest extends TestJPF {
     frame.dup2_x2(FeatureExprFactory.True());
     frame.printOperands(System.out);
 
-    assert frame.getTopPos() == 5;
-    assert frame.peek(FeatureExprFactory.True(), 5).getValue() == 3 && frame.getOperandAttr(5) == "3";  // same const pool string
-    assert frame.peek(FeatureExprFactory.True(), 4).getValue() == 4 && frame.getOperandAttr(4) == "4";
-    assert frame.peek(FeatureExprFactory.True(), 3).getValue() == 1 && frame.getOperandAttr(3) == "1";
-    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 2 && frame.getOperandAttr(2) == "2";
-    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 3 && frame.getOperandAttr(1) == "3";
-    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 4 && frame.getOperandAttr(0) == "4";
+    assertTrue(frame.getTopPos() == 5);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 5).getValue() == 3 && frame.getOperandAttr(5) == "3");  // same const pool string
+    assertTrue(frame.peek(FeatureExprFactory.True(), 4).getValue() == 4 && frame.getOperandAttr(4) == "4");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 3).getValue() == 1 && frame.getOperandAttr(3) == "1");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 2 && frame.getOperandAttr(2) == "2");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 3 && frame.getOperandAttr(1) == "3");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 4 && frame.getOperandAttr(0) == "4");
   }
 
   @Test
@@ -136,14 +136,14 @@ public class JVMStackFrameTest extends TestJPF {
     frame.pushLong(value);
 
     Object obj_Long = frame.getLocalValueObject(new LocalVarInfo("testLong", "J", "J", 0, 0, 0));
-    assert obj_Long != null;
-    assert obj_Long instanceof Long;
+    assertTrue(obj_Long != null);
+    assertTrue(obj_Long instanceof Long);
 
     long result_getLocValObj = (Long) obj_Long;
     long result_popLong = frame.popLong(FeatureExprFactory.True()).getValue();
 
-    assert result_getLocValObj == value;
-    assert result_popLong == value;
+    assertTrue(result_getLocValObj == value);
+    assertTrue(result_popLong == value);
   }
 
   @Test
@@ -160,19 +160,18 @@ public class JVMStackFrameTest extends TestJPF {
 
     frame.pushDouble(value);
 
-    Object obj_Double = frame.getLocalValueObject(new LocalVarInfo("testDouble", "D", "D", 0, 0, frame.getTopPos() - 1));
-    assert obj_Double != null;
-    assert obj_Double instanceof Double;
+    Object obj_Double = frame.getLocalValueObject(new LocalVarInfo("testDouble", "D", "D", 0, 0, frame.getTopPos() -1));
+    assertTrue(obj_Double != null);
+    assertTrue(obj_Double instanceof Double);
 
     double result_getLocValObj = (Double) obj_Double;
     double result_popLong = frame.popDouble(FeatureExprFactory.True()).getValue();
+    assertTrue(result_getLocValObj == value);
+    assertTrue( result_popLong == value);
 
-    assert result_getLocValObj == value;
-    assert result_popLong == value;
-
-    assert frame.peek(FeatureExprFactory.True(), 0).getValue() == 3;
-    assert frame.peek(FeatureExprFactory.True(), 1).getValue() == 2;
-    assert frame.peek(FeatureExprFactory.True(), 2).getValue() == 1;
+    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 3);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 2);
+    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 1);
   }
 
 }
