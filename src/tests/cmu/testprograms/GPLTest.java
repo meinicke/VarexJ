@@ -2,21 +2,35 @@ package cmu.testprograms;
 
 import gov.nasa.jpf.util.test.TestJPF;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class GPLTest extends TestJPF {
 
-	@Test
+	@Ignore @Test
 	public void runGPLRandom1() {
 		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar")) {
-			GPL.Main.main(new String[]{"lib\\GPL\\random1-gpl-benchmark.txt", "v0"});
+			run("random1-gpl-benchmark.txt");
 		}
 	}
 	
 	@Test
-	public void runGPLSimple() {
+	public void simpleTest() {
 		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar")) {
-			GPL.Main.main(new String[]{"lib\\GPL\\simple.txt", "v0"});
+			run("Simple.txt");
 		}
+	}
+	
+	@Test
+	public void network4Test() {
+		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar")) {
+			run("gpl-4-network-benchmark.txt");
+		}
+	}
+	
+	
+	
+	private void run(String graph) {
+		GPL.Main.main(new String[]{"lib\\GPL\\" + graph, "v0"});
 	}
 }
