@@ -35,6 +35,10 @@ public class GPLTest extends TestJPF {
 	private void run(String graph) {
 		File f = new File("lib");
 		System.out.println("PATH: " + f.getAbsolutePath() + " " + f.exists());
+		File f2 = new File("lib/GPL");
+		System.out.println("PATH: " + f2.getAbsolutePath() + " " + f2.exists());
+		File f3 = new File("lib/GPL/" + graph );
+		System.out.println("PATH: " + f3.getAbsolutePath() + " " + f3.exists());
 		GPL.Main.main(new String[]{"lib\\GPL\\" + graph, "v0"});
 	}
 }
