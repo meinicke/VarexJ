@@ -8,7 +8,7 @@ public class BankAccountTest extends TestJPF {
 
 	@Test
 	public void runBankAccount() {
-		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\BankAccount.jar")) {
+		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar")) {
 			BankAccount.Main.main(null);
 		}
 	}

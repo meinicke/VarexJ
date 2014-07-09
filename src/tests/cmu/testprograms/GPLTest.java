@@ -8,7 +8,7 @@ import org.junit.Test;
 public class GPLTest extends TestJPF {
 
 	@Ignore @Test
-	public void runGPLRandom1() {
+	public void random1Test() {
 		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar")) {
 			run("random1-gpl-benchmark.txt");
 		}
