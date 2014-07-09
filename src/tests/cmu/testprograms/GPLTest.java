@@ -16,7 +16,7 @@ public class GPLTest extends TestJPF {
 	
 	@Test
 	public void simpleTest() {
-		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar")) {
+		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar,lib\\GPL\\")) {
 			run("Simple.txt");
 		}
 	}
