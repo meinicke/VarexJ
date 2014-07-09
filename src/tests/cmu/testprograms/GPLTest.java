@@ -31,6 +31,6 @@ public class GPLTest extends TestJPF {
 	
 	
 	private void run(String graph) {
-		GPL.Main.main(new String[]{"lib\\GPL\\" + graph, "v0"});
+		GPL.Main.main(new String[]{"Variability-Aware-Interpreter\\lib\\GPL\\" + graph, "v0"});
 	}
 }
