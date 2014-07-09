@@ -1,5 +1,7 @@
 package cmu.testprograms;
 
+import java.io.File;
+
 import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Ignore;
@@ -31,6 +33,9 @@ public class GPLTest extends TestJPF {
 	
 	
 	private void run(String graph) {
-		GPL.Main.main(new String[]{"Variability-Aware-Interpreter\\lib\\GPL\\" + graph, "v0"});
+		File f = new File("lib");
+		System.out.println("PATH: " + f.getAbsolutePath() + " " + f.exists());
+		
+		GPL.Main.main(new String[]{"lib\\GPL\\" + graph, "v0"});
 	}
 }
