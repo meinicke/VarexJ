@@ -9,30 +9,30 @@ import org.junit.Test;
 
 public class GPLTest extends TestJPF {
 
-	final static String SEP = System.getProperty("file.separator");
+	private static final String GPL_JAR = "+classpath=lib\\GPL.jar";
+	private static final String RANDOM_SEARCH = "+search.class=.search.RandomSearch";
+	private static final String SEP = System.getProperty("file.separator");
 	
 	@Ignore @Test
 	public void random1Test() {
-		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar")) {
+		if (verifyNoPropertyViolation(RANDOM_SEARCH, GPL_JAR)) {
 			run("random1-gpl-benchmark.txt");
 		}
 	}
 	
 	@Test
 	public void simpleTest() {
-		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar,lib\\GPL\\")) {
+		if (verifyNoPropertyViolation(RANDOM_SEARCH, GPL_JAR)) {
 			run("Simple.txt");
 		}
 	}
 	
 	@Test
 	public void network4Test() {
-		if (verifyNoPropertyViolation("+search.class=.search.RandomSearch", "+classpath=lib\\GPL.jar")) {
+		if (verifyNoPropertyViolation(RANDOM_SEARCH, GPL_JAR)) {
 			run("gpl-4-network-benchmark.txt");
 		}
 	}
-	
-	
 	
 	private void run(String graph) {
 		GPL.Main.main(new String[]{"lib" + SEP + "GPL" + SEP + graph, "v0"});
