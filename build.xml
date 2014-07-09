@@ -391,7 +391,7 @@
 			</not>
 		</condition>
 
-		<junit printsummary="on" showoutput="off" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="1024m" outputtoformatters="true">
+		<junit printsummary="on" showoutput="on" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="1024m" outputtoformatters="true">
 			<formatter type="plain" usefile="${junit.usefile}" />
 
 			<assertions>
@@ -405,6 +405,7 @@
 				<pathelement location="build/classes" />
 				<pathelement location="build/annotations" />
 			</classpath>
+			<formatter type="xml" />
 			<batchtest todir="build/tests">
 				<fileset dir="build/tests">
 					<exclude name="**/JPF_*.class" />
@@ -413,53 +414,57 @@
 				</fileset>
 			</batchtest>
 
+
 		</junit>
 
-
+		<junitreport todir="build/tests">
+			<fileset dir="build/tests" includes="TEST-*.xml" />
+			<report todir="build/tests" />
+		</junitreport>
 		<!--<fail if="test.failed" />-->
 
 	</target>
-	
+
 	<target name="testva" depends="build" description="run core regression tests" if="have_tests">
-			<condition property="junit.usefile">
-				<!-- don't set if this is running from within an IDE that collects output -->
-				<not>
-					<isset property="netbeans.home" />
-				</not>
-			</condition>
+		<condition property="junit.usefile">
+			<!-- don't set if this is running from within an IDE that collects output -->
+			<not>
+				<isset property="netbeans.home" />
+			</not>
+		</condition>
 
-			<junit printsummary="on" showoutput="off" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="1024m" outputtoformatters="true">
-				<formatter type="plain" usefile="${junit.usefile}" />
+		<junit printsummary="on" showoutput="off" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="1024m" outputtoformatters="true">
+			<formatter type="plain" usefile="${junit.usefile}" />
 
-				<assertions>
-					<enable />
-				</assertions>
+			<assertions>
+				<enable />
+			</assertions>
 
-				<classpath>
-					<path refid="lib.path" />
-					<pathelement location="lib/*" />
-					<pathelement location="lib/GPL/*" />
-					<pathelement location="build/tests" />
-					<pathelement location="build/classes" />
-					<pathelement location="build/annotations" />
-				</classpath>
-				<formatter type="xml" />
-				<batchtest todir="build/tests">
-					<fileset dir="build/tests">
-						<exclude name="**/JPF_*.class" />
-						<include name="**cmu/*Test.class" />
-						<include name="**cmu/*/*Test.class" />
-					</fileset>
-				</batchtest>
+			<classpath>
+				<path refid="lib.path" />
+				<pathelement location="lib/*" />
+				<pathelement location="lib/GPL/*" />
+				<pathelement location="build/tests" />
+				<pathelement location="build/classes" />
+				<pathelement location="build/annotations" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="build/tests">
+				<fileset dir="build/tests">
+					<exclude name="**/JPF_*.class" />
+					<include name="**cmu/*Test.class" />
+					<include name="**cmu/*/*Test.class" />
+				</fileset>
+			</batchtest>
 
-			</junit>
+		</junit>
 
-			<junitreport todir="build/tests">
-					<fileset dir="build/tests" includes="TEST-*.xml" />
-					<report todir="build/tests" />
-			</junitreport>
-			
+		<junitreport todir="build/tests">
+			<fileset dir="build/tests" includes="TEST-*.xml" />
+			<report todir="build/tests" />
+		</junitreport>
 
-		</target>
+
+	</target>
 
 </project>

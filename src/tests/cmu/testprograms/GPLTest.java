@@ -1,7 +1,5 @@
 package cmu.testprograms;
 
-import java.io.File;
-
 import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Ignore;
