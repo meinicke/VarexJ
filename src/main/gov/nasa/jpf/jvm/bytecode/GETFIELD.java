@@ -52,7 +52,7 @@ public class GETFIELD extends InstanceFieldInstruction {
   
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame(ctx);
+    StackFrame frame = ti.getModifiableTopFrame();
     
     int objRef = frame.peek(ctx).simplify(ctx).getValue(); // don't pop yet, we might re-enter
     lastThis = objRef;
@@ -109,7 +109,7 @@ public class GETFIELD extends InstanceFieldInstruction {
   }
 
   public ElementInfo peekElementInfo (ThreadInfo ti) {
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     int objRef = frame.peek(FeatureExprFactory.True()).getValue();
     ElementInfo ei = ti.getElementInfo(objRef);
     return ei;

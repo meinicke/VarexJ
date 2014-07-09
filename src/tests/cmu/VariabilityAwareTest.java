@@ -10,8 +10,6 @@ public class VariabilityAwareTest extends TestJPF {
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
 
 	static boolean RUN_WITH_JPF = true;
-	
-	
 
 	@MyAnnotation
 	static boolean a = true;
@@ -403,7 +401,7 @@ public class VariabilityAwareTest extends TestJPF {
 
 	}
 
-	@Test
+//	@Test
 	public void classExtendTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			boolean z = VariabilityAwareTest.z;

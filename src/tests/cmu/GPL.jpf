@@ -1,0 +1,11 @@
+tc-home=${jpf-core}\\lib
+apphome=C:\\Users\\Loaner\\workspace\\GPL-SE
+
+########## JPF configuration options
+target = Main
+target.args = ${apphome}\gpl-tree-4-benchmark.txt, v0
+
+classpath=${apphome}\\bin;${jpf-core}\\build\\jpf.jar;${jpf-core}\\build\\jpf-annotations.jar;${jpf-core}\\build\\RunJPF.jar;${jpf-core}\\build\\RunTest.jar;
+
+native_classpath = ${jpf-core}\\build\\jpf.jar;${jpf-core}\\build\\jpf-annotations.jar;${jpf-core}\\build\\RunJPF.jar;${jpf-core}\\build\\RunTest.jar;${tc-home}\\featureexprlib_2.10-0.3.4.jar;${tc-home}\\featureexprlib_2.10-0.3.4.jar;C:\\Users\\Loaner\\workspace\\JPFRunner\\lib\\typechef\\scala-library-2.10.3.jar
+search.class = .search.RandomSearch

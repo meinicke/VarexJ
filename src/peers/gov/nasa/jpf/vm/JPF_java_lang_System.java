@@ -69,8 +69,8 @@ public class JPF_java_lang_System extends NativePeer {
   
   int createPrintStream (MJIEnv env, int clsObjRef){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC(NativeMethodInfo.CTX).getValue();
-    StackFrame frame = ti.getTopFrame(NativeMethodInfo.CTX);
+    Instruction insn = ti.getPC().getValue();
+    StackFrame frame = ti.getTopFrame();
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("gov.nasa.jpf.ConsoleOutputStream");
 
     // it's not really used, but it would be hack'ish to use a class whose
@@ -210,7 +210,7 @@ public class JPF_java_lang_System extends NativePeer {
         if (s == JAVA_CLASS_PATH) {
           // maybe we should just use vm.classpath
           // NOTE: the curent classloader at the point it has to be a system classloader.
-          ClassPath cp = ClassLoaderInfo.getCurrentClassLoader(NativeMethodInfo.CTX).getClassPath();
+          ClassPath cp = ClassLoaderInfo.getCurrentClassLoader().getClassPath();
           // <2do> should be consistent with path.separator (this is host VM notation)
           v = cp.toString();
           

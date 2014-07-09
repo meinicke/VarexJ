@@ -78,11 +78,11 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
   // we stick to the ThreadInfo argument
   
   public boolean hasReturnAttr (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.hasOperandAttr();
   }
   public boolean hasReturnAttr (ThreadInfo ti, Class<?> type){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.hasOperandAttr(type);
   }
   
@@ -94,7 +94,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
    * the value is pushed during the enter(). Use ObjectList to access values
    */
   public Object getReturnAttr (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.getOperandAttr(FeatureExprFactory.True());
   }
 
@@ -121,19 +121,19 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
    * if you don't use client private types or the provided type is too general
    */
   public <T> T getReturnAttr (ThreadInfo ti, Class<T> type){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.getOperandAttr(type);
   }
   public <T> T getNextReturnAttr (ThreadInfo ti, Class<T> type, Object prev){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.getNextOperandAttr(type, prev);
   }
   public Iterator<?> returnAttrIterator (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.operandAttrIterator();
   }
   public <T> Iterator<T> returnAttrIterator (ThreadInfo ti, Class<T> type){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.operandAttrIterator(type);
   }
   
@@ -142,7 +142,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
 
     if (!ti.isFirstStepInsn()) {
-      ti.leave(ctx);  // takes care of unlocking before potentially creating a CG
+      ti.leave();  // takes care of unlocking before potentially creating a CG
 
       if (mi.isSynchronized()) {
         int objref = mi.isStatic() ? mi.getClassInfo().getClassObjectRef() : ti.getThis();
@@ -164,7 +164,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
       }
     }
 
-    StackFrame frame = ti.getModifiableTopFrame(ctx);
+    StackFrame frame = ti.getModifiableTopFrame();
     returnFrame = frame;
     Object attr = getReturnedOperandAttr(ctx, frame); // the return attr - get this before we pop
     getAndSaveReturnValue(frame, ctx);

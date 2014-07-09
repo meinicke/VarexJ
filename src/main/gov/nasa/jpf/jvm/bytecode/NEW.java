@@ -59,7 +59,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     try {
       ci = ti.resolveReferencedClass(cname);
     } catch(LoadOnJPFRequired lre) {
-      return ti.getPC(ctx);
+      return ti.getPC();
     }
 
     if (!ci.isRegistered()){
@@ -69,7 +69,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     // since this is a NEW, we also have to pushClinit
     if (!ci.isInitialized()) {
       if (ci.initializeClass(ti)) {
-        return ti.getPC(ctx);  // reexecute this instruction once we return from the clinits
+        return ti.getPC();  // reexecute this instruction once we return from the clinits
       }
     }
 

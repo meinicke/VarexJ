@@ -75,9 +75,9 @@ public class INVOKECLINIT extends INVOKESTATIC {
       }
     }
     
-    setupCallee(ctx, ti, callee, false); // this creates, initializes and pushes the callee StackFrame
+    setupCallee(ctx, ti, callee); // this creates, initializes and pushes the callee StackFrame
 
-    return ti.getPC(ctx); // we can't just return the first callee insn if a listener throws an exception
+    return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
   }
 
   public boolean isExtendedInstruction() {

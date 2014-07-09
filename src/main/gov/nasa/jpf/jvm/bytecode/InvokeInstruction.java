@@ -122,7 +122,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
     }
 
     if (invokedMethod != null){
-      MethodInfo topMethod = ti.getTopFrame(FeatureExprFactory.True()).getMethodInfo();
+      MethodInfo topMethod = ti.getTopFrame().getMethodInfo();
       if (invokedMethod.isMJI() && (topMethod == mi)) {
         // same frame -> this was a native method that already returned
         return true;
@@ -144,12 +144,12 @@ public abstract class InvokeInstruction extends JVMInstruction {
 
   //--- invocation processing
 
-  protected void setupCallee (FeatureExpr ctx, ThreadInfo ti, MethodInfo callee, boolean split){
+  protected void setupCallee (FeatureExpr ctx, ThreadInfo ti, MethodInfo callee){
     ClassInfo ciCaller = callee.getClassInfo();
     StackFrame frame = ciCaller.createStackFrame(ctx, ti, callee);
     
-    ti.pushFrame(ctx, frame, split);
-    ti.enter(ctx);
+    ti.pushFrame(frame);
+    ti.enter();
   }
   
   /**

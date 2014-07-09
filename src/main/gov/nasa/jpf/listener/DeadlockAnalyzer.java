@@ -82,7 +82,7 @@ public class DeadlockAnalyzer extends ListenerAdapter {
     }
 
     Instruction getReportInsn(ThreadInfo ti){
-      StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+      StackFrame frame = ti.getTopFrame();
       if (frame != null) {
         Instruction insn = frame.getPC().getValue();
         if (insn instanceof EXECUTENATIVE) {

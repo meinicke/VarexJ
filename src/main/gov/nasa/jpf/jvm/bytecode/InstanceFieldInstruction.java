@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -48,7 +47,7 @@ public abstract class InstanceFieldInstruction extends FieldInstruction
 
   public FieldInfo getFieldInfo () {
     if (fi == null) {
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), className);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(className);
       if (ci != null) {
         fi = ci.getInstanceField(fname);
       }

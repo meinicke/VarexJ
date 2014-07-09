@@ -161,7 +161,7 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
 
   public void setContext(ThreadInfo tiCreator) {
     ti = tiCreator;
-    insn = tiCreator.getPC(FeatureExprFactory.True()).getValue();
+    insn = tiCreator.getPC().getValue();
   }
 
   public String getSourceLocation() {

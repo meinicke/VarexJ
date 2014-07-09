@@ -52,11 +52,11 @@ public abstract class LongReturn extends ReturnInstruction {
   //--- attribute accessors 
   
   public boolean hasReturnAttr (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.hasLongOperandAttr();
   }
   public boolean hasReturnAttr (ThreadInfo ti, Class<?> type){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.hasLongOperandAttr(type);
   }
   
@@ -68,7 +68,7 @@ public abstract class LongReturn extends ReturnInstruction {
    * the value is pushed during the enter(). Use ObjectList to access values
    */
   public Object getReturnAttr (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.getLongOperandAttr();
   }
   
@@ -90,19 +90,19 @@ public abstract class LongReturn extends ReturnInstruction {
    * if you don't use client private types or the provided type is too general
    */
   public <T> T getReturnAttr (ThreadInfo ti, Class<T> type){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.getLongOperandAttr(type);
   }
   public <T> T getNextReturnAttr (ThreadInfo ti, Class<T> type, Object prev){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.getNextLongOperandAttr(type, prev);
   }
   public Iterator returnAttrIterator (ThreadInfo ti){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.longOperandAttrIterator();
   }
   public <T> Iterator<T> returnAttrIterator (ThreadInfo ti, Class<T> type){
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     return frame.longOperandAttrIterator(type);
   }
   

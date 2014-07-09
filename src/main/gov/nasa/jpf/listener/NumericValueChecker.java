@@ -142,7 +142,7 @@ public class NumericValueChecker extends PropertyListenerAdapter {
     void checkVarInsn (LocalVariableInstruction insn){
       if (varChecks != null){
         ThreadInfo ti = ThreadInfo.getCurrentThread();
-        StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+        StackFrame frame = ti.getTopFrame();
         int slotIdx = insn.getLocalVariableIndex();
 
         for (int i = 0; i < varChecks.length; i++) {

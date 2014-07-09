@@ -473,7 +473,7 @@ public class CoverageAnalyzer extends ListenerAdapter implements PublisherExtens
         return true;
 
       try {
-        ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), className);
+        ci = ClassLoaderInfo.getCurrentResolvedClassInfo(className);
       } catch (ClassInfoException cie) {
         log.warning("CoverageAnalyzer problem: " + cie);   // Just log the problem but don't fail.  We still want the report to be written.
       }
@@ -605,7 +605,7 @@ public class CoverageAnalyzer extends ListenerAdapter implements PublisherExtens
     // just store one entry per qualified class name (i.e. there won't be
     // multiple entries)
     // NOTE : this doesn't yet deal with ClassLoaders, but that's also true for BCEL
-    ClassLoaderInfo cl = ClassLoaderInfo.getCurrentClassLoader(FeatureExprFactory.True());
+    ClassLoaderInfo cl = ClassLoaderInfo.getCurrentClassLoader();
     for (String s : cl.getClassPathElements()) {
       log.fine("analyzing classpath element: " + s);
       File f = new File(s);
@@ -692,7 +692,7 @@ public class CoverageAnalyzer extends ListenerAdapter implements PublisherExtens
     // middle ground, we could use BCEL
 
     for (ClassCoverage cc : classes.values()) {
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), cc.className);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cc.className);
       for (MethodInfo mi : ci.getDeclaredMethodInfos()) {
         AnnotationInfo ai = getRequirementsAnnotation(mi);
         if (ai != null) {

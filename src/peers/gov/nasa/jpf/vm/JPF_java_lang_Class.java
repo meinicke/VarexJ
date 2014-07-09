@@ -55,7 +55,7 @@ public class JPF_java_lang_Class extends NativePeer {
   public int getComponentType____Ljava_lang_Class_2 (MJIEnv env, int robj) {
     if (isArray____Z(env, robj)) {
       ThreadInfo ti = env.getThreadInfo();
-      Instruction insn = ti.getPC(NativeMethodInfo.CTX).getValue();
+      Instruction insn = ti.getPC().getValue();
       ClassInfo ci = env.getReferredClassInfo( robj).getComponentClassInfo();
 
     if (ci.pushRequiredClinits(ti)){
@@ -185,7 +185,7 @@ public class JPF_java_lang_Class extends NativePeer {
     }
     
     ThreadInfo ti = env.getThreadInfo();
-    MethodInfo mi = ti.getTopFrame(NativeMethodInfo.CTX).getPrevious().getMethodInfo();
+    MethodInfo mi = ti.getTopFrame().getPrevious().getMethodInfo();
     // class of the method that includes the invocation of Class.forName() 
     ClassInfo cls = mi.getClassInfo();
 
@@ -245,7 +245,7 @@ public class JPF_java_lang_Class extends NativePeer {
       // note that we don't set this as a reflection call since it is supposed to propagate exceptions
       frame.setReferenceArgument(0, objRef, null);
       frame.setLocalReferenceVariable(NativeMethodInfo.CTX, 0, objRef);        // (1) store ref for retrieval during re-exec
-      ti.pushFrame(NativeMethodInfo.CTX, frame, false);
+      ti.pushFrame(frame);
       
       // check if we have to push clinits
       ci.pushRequiredClinits(ti);
@@ -490,7 +490,7 @@ public class JPF_java_lang_Class extends NativePeer {
   // this is only used for system classes such as java.lang.reflect.Method
   ClassInfo getInitializedClassInfo (MJIEnv env, String clsName){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC(NativeMethodInfo.CTX).getValue();
+    Instruction insn = ti.getPC().getValue();
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo( clsName);
     
     if (ci.pushRequiredClinits(ti)){
@@ -508,7 +508,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
   Set<ClassInfo> getInitializedInterfaces (MJIEnv env, ClassInfo ci){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC(NativeMethodInfo.CTX).getValue();
+    Instruction insn = ti.getPC().getValue();
 
     Set<ClassInfo> ifcs = ci.getAllInterfaceClassInfos();
     for (ClassInfo ciIfc : ifcs){
@@ -763,7 +763,7 @@ public class JPF_java_lang_Class extends NativePeer {
     int aref = MJIEnv.NULL;
     ThreadInfo ti = env.getThreadInfo();
     
-    MethodInfo mi = ti.getTopFrame(NativeMethodInfo.CTX).getPrevious().getMethodInfo();
+    MethodInfo mi = ti.getTopFrame().getPrevious().getMethodInfo();
     // class of the method that includes the invocation of Class.getDeclaredClasses 
     ClassInfo cls = mi.getClassInfo();
 

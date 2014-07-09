@@ -87,14 +87,14 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
    */
   @Override
   public int peekArrayRef (FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame(ctx).peek(FeatureExprFactory.True(), 1).getValue();
+    return ti.getTopFrame().peek(FeatureExprFactory.True(), 1).getValue();
   }
 
   // wouldn't really be required for loads, but this is a general
   // ArrayInstruction API
   @Override
   public int peekIndex (FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame(ctx).peek(ctx).getValue();
+    return ti.getTopFrame().peek(ctx).getValue();
   }
 
   protected abstract void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index)

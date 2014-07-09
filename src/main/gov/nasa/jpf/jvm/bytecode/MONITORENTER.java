@@ -39,7 +39,7 @@ public class MONITORENTER extends LockInstruction {
 
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getTopFrame(ctx);
+    StackFrame frame = ti.getTopFrame();
 
     int objref = frame.peek(ctx).getValue();      // Don't pop yet before we know we really enter
     if (objref == MJIEnv.NULL){

@@ -53,7 +53,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
     
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getTopFrame(ctx);
+    StackFrame frame = ti.getTopFrame();
     int objRef = frame.peek(ctx, size).simplify(ctx).getValue();
     lastThis = objRef;
     
@@ -93,7 +93,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
   public ElementInfo peekElementInfo (ThreadInfo ti) {
     FieldInfo fi = getFieldInfo();
     int storageSize = fi.getStorageSize();
-    int objRef = ti.getTopFrame(FeatureExprFactory.True()).peek(FeatureExprFactory.True(), (storageSize == 1) ? 1 : 2).getValue();
+    int objRef = ti.getTopFrame().peek(FeatureExprFactory.True(), (storageSize == 1) ? 1 : 2).getValue();
     ElementInfo ei = ti.getElementInfo( objRef);
 
     return ei;

@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Map;
+
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -26,6 +28,8 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.Stack;
+import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -82,10 +86,14 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					}
 				}
 
-				setupCallee(ctx, ti, callee, split); // this creates, initializes and
+			      StackFrame callerStack = ti.getTopFrame();
+			      Map<Stack, FeatureExpr> map = callerStack.stack.stack.toMap();
+				
+				
+				setupCallee(ctx, ti, callee); // this creates, initializes and
 												// pushes the callee StackFrame
 
-				return ti.getPC(ctx); // we can't just return the first callee insn
+				return ti.getPC(); // we can't just return the first callee insn
 									// if a listener throws an exception
 				// TODO Auto-generated method stub
 

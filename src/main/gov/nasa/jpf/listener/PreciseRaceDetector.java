@@ -215,7 +215,7 @@ public class PreciseRaceDetector extends PropertyListenerAdapter {
 
     for (int i = 0; i < threads.length; i++) {
       ThreadInfo ti = threads[i];
-      Instruction insn = ti.getPC(FeatureExprFactory.True()).getValue();
+      Instruction insn = ti.getPC().getValue();
       MethodInfo mi = insn.getMethodInfo();
 
       if (StringSetMatcher.isMatch(mi.getBaseName(), includes, excludes)) {

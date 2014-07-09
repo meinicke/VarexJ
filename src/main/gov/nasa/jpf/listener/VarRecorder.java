@@ -191,7 +191,7 @@ public class VarRecorder extends ListenerAdapter {
   }
 
   private final boolean isArrayReference(VM vm, ThreadInfo ti) {
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
 
     if (frame.getTopPos() < 0) {
       return(false);
@@ -219,7 +219,7 @@ public class VarRecorder extends ListenerAdapter {
     FieldInfo fi;
     String type;
 
-    frame = ti.getTopFrame(FeatureExprFactory.True());
+    frame = ti.getTopFrame();
     if ((frame.getTopPos() >= 0) && (frame.isOperandRef())) {
       return (Types.T_REFERENCE);
     }
@@ -327,7 +327,7 @@ public class VarRecorder extends ListenerAdapter {
     StackFrame frame;
     int lo, hi;
 
-    frame = ti.getTopFrame(FeatureExprFactory.True());
+    frame = ti.getTopFrame();
 
     if (((recordLocals) && (inst instanceof LocalVariableInstruction)) ||
         ((recordFields) && (inst instanceof FieldInstruction)))
@@ -353,7 +353,7 @@ public class VarRecorder extends ListenerAdapter {
 
     offset = calcOffset(type, store) + 1;
     // <2do> String is really not a good attribute type to retrieve!
-    StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame frame = ti.getTopFrame();
     attr   = frame.getOperandAttr( offset, String.class); 
 
     if (attr != null) {
@@ -368,7 +368,7 @@ public class VarRecorder extends ListenerAdapter {
 
     offset = calcOffset(type, store);
 
-    return(ti.getTopFrame(FeatureExprFactory.True()).peek(FeatureExprFactory.True(), offset).getValue());
+    return(ti.getTopFrame().peek(FeatureExprFactory.True(), offset).getValue());
   }
 
   private final static int calcOffset(byte type, boolean store) {
@@ -382,7 +382,7 @@ public class VarRecorder extends ListenerAdapter {
     StackFrame frame;
     int lo, hi;
 
-    frame = ti.getTopFrame(FeatureExprFactory.True());
+    frame = ti.getTopFrame();
     lo    = frame.peek(FeatureExprFactory.True()).getValue();
     hi    = frame.getTopPos() >= 1 ? frame.peek(FeatureExprFactory.True(), 1).getValue() : 0;
 

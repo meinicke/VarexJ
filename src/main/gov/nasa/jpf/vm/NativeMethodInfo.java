@@ -114,7 +114,7 @@ public class NativeMethodInfo extends MethodInfo {
     Object[] args = null;
     MJIEnv   env = ti.getMJIEnv();
         
-    NativeStackFrame nativeFrame = (NativeStackFrame)ti.getTopFrame(ctx);
+    NativeStackFrame nativeFrame = (NativeStackFrame)ti.getTopFrame();
 
     env.setCallEnvironment(this);
 
@@ -138,7 +138,7 @@ public class NativeMethodInfo extends MethodInfo {
         return new One<>(ti.throwException( ctx, env.popException()));
       }
 
-      StackFrame top = ti.getTopFrame(ctx);
+      StackFrame top = ti.getTopFrame();
       if (top == nativeFrame){ // no roundtrips, straight return
 
         if (env.isInvocationRepeated()){
@@ -232,7 +232,7 @@ public class NativeMethodInfo extends MethodInfo {
     int      i, j, k;
     int      ival;
     long     lval;
-    StackFrame caller = ti.getTopFrame(FeatureExprFactory.True());
+    StackFrame caller = ti.getTopFrame();
 
 
     for (i = 0, stackOffset = 0, j = nArgs + 1, k = nArgs - 1;

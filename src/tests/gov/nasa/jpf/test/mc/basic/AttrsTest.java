@@ -74,7 +74,7 @@ public class AttrsTest extends TestJPF {
             System.out.println("'i' attribute set to: " + a);
 
           } else if (localName.equals("j")){
-            StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+            StackFrame frame = ti.getTopFrame();
             
             Object a = frame.getLocalAttr(localIndex, ATTR_CLASS);
             System.out.println("'j' AttrType attribute: " + a);
@@ -137,7 +137,7 @@ public class AttrsTest extends TestJPF {
             System.out.println( a);
 
           } else if (localName.equals("r")){
-            StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+            StackFrame frame = ti.getTopFrame();
             Object a = frame.getLocalAttr(localIndex, ATTR_CLASS);
             System.out.println("'r' attribute: " + a);
             
@@ -513,7 +513,7 @@ public class AttrsTest extends TestJPF {
       } else if (executedInsn instanceof LRETURN){
         MethodInfo mi = executedInsn.getMethodInfo();
         if (mi.getUniqueName().equals("foo(J)J")){
-          StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+          StackFrame frame = ti.getTopFrame();
           
           System.out.println("--- post-exec foo() return interception");
           for (Object a: frame.longOperandAttrIterator()){

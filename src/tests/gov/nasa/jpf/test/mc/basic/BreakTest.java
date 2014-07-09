@@ -192,7 +192,7 @@ public class BreakTest extends TestJPF {
       
       ChoiceGenerator<?> cg = ss.getNextChoiceGenerator();
       if (cg.getId().equals("verifyGetInt(II)")) {
-        System.out.println("# breaking & pruning after: " + ti.getPC(FeatureExprFactory.True()));
+        System.out.println("# breaking & pruning after: " + ti.getPC());
         System.out.println("# registered (ignored) CG: " + cg);
 
         ss.setIgnored(true); // should reset the IntIntervalCG registered by the native getInt()

@@ -45,7 +45,7 @@ public class NATIVERETURN extends ReturnInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     if (!ti.isFirstStepInsn()) {
-      ti.leave(ctx);  // takes care of unlocking before potentially creating a CG
+      ti.leave();  // takes care of unlocking before potentially creating a CG
       // NativeMethodInfo is never synchronized, so no thread CG here
     }
 
@@ -198,7 +198,7 @@ public class NATIVERETURN extends ReturnInstruction {
     if (isCompleted(ti)){
       return retAttr;
     } else {
-      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame(FeatureExprFactory.True());
+      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
       return nativeFrame.getReturnAttr();
     }
   }
@@ -209,7 +209,7 @@ public class NATIVERETURN extends ReturnInstruction {
     if (isCompleted(ti)){
       return ret;
     } else {
-      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame(ctx);
+      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
       return nativeFrame.getReturnValue();
     }
   }

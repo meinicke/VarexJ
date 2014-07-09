@@ -26,7 +26,6 @@ import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
-import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
@@ -93,7 +92,7 @@ public class ThreadInfo extends InfoObject
   static ThreadInfo currentThread;
 
   protected class StackIterator implements Iterator<StackFrame> {
-    StackFrame frame = top2.getValue();
+    StackFrame frame = top;
 
     public boolean hasNext() {
       return frame != null;
@@ -115,7 +114,7 @@ public class ThreadInfo extends InfoObject
     }
   }
 
-  protected class InvokedStackIterator extends StackIterator {
+  protected class InvokedStackIterator extends StackIterator implements Iterator<StackFrame> {
     InvokedStackIterator() {
       frame = getLastInvokedStackFrame();
     }
@@ -150,7 +149,7 @@ public class ThreadInfo extends InfoObject
   
   //<2do> Hmm, why are these not in ThreadData?
   // the top stack frame
-  protected Conditional<StackFrame> top2 = new One<>(null);
+  protected StackFrame top = null;
 
   // the current stack depth (number of frames)
   protected int stackDepth;
@@ -262,7 +261,7 @@ public class ThreadInfo extends InfoObject
       this.ti = ti;
       
       threadData = ti.threadData;  // no need to clone - it's copy on first write
-      top = ti.top2.getValue(); // likewise
+      top = ti.top; // likewise
       stackDepth = ti.stackDepth; // we just copy this for efficiency reasons
       attributes = (ti.attributes & ATTR_STORE_MASK);
 
@@ -274,7 +273,7 @@ public class ThreadInfo extends InfoObject
       ti.resetVolatiles();
 
       ti.threadData = threadData;
-      ti.top2 = new One<>(top);
+      ti.top = top;
       ti.stackDepth = stackDepth;
       ti.attributes = attributes;
 
@@ -458,7 +457,7 @@ public class ThreadInfo extends InfoObject
     // 'priority', 'name', 'target' and 'group' are not taken
     // from the object, but set within the java.lang.Thread ctors
 
-    top2 = new One<>(null);
+    top = null;
     stackDepth = 0;
 
     lockedObjectReferences = emptyLockRefs;
@@ -477,7 +476,7 @@ public class ThreadInfo extends InfoObject
   }
   
   void freeze() {
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()) {
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()) {
       frame.freeze();
     }
   }
@@ -886,7 +885,7 @@ public class ThreadInfo extends InfoObject
   }
 
   public boolean isInNativeMethod(){
-    return top2.getValue() != null && top2.getValue().isNative();
+    return top != null && top.isNative();
   }
 
   public boolean hasBeenStarted(){
@@ -918,7 +917,7 @@ public class ThreadInfo extends InfoObject
   public List<StackFrame> getStack() {
     ArrayList<StackFrame> list = new ArrayList<StackFrame>(stackDepth);
 
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       list.add(frame);
     }
 
@@ -935,7 +934,7 @@ public class ThreadInfo extends InfoObject
     ArrayList<StackFrame> list = new ArrayList<StackFrame>(stackDepth);
 
     int i = stackDepth-1;
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       if (!frame.isDirectCallFrame()){
         list.add( frame);
       }
@@ -955,7 +954,7 @@ public class ThreadInfo extends InfoObject
 
   public StackFrame getCallerStackFrame (int offset){
     int n = offset;
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       if (n < 0){
         break;
       } else if (n == 0){
@@ -967,7 +966,7 @@ public class ThreadInfo extends InfoObject
   }
 
   public StackFrame getLastInvokedStackFrame() {
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       if (!frame.isDirectCallFrame()){
         return frame;
       }
@@ -977,7 +976,7 @@ public class ThreadInfo extends InfoObject
   }
 
   public StackFrame getLastNonSyntheticStackFrame (){
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       if (!frame.isSynthetic()){
         return frame;
       }
@@ -988,14 +987,14 @@ public class ThreadInfo extends InfoObject
   
   // this is ugly - it can modify deeper stack frames
   public StackFrame getModifiableLastNonSyntheticStackFrame (){
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       if (!frame.isSynthetic()){
         if (frame.isFrozen()) {
           StackFrame newFrame = frame.clone();
           
-          if (frame == top2.getValue()) {
+          if (frame == top) {
             frame = newFrame;
-            top2 = new One<>(newFrame);
+            top = newFrame;
             
           } else {
             // Ughh, now we have to clone all frozen frames above
@@ -1030,14 +1029,14 @@ public class ThreadInfo extends InfoObject
    * Returns the this pointer of the callee from the stack.
    */
   public int getCalleeThis (MethodInfo mi) {
-    return top2.getValue().getCalleeThis(FeatureExprFactory.True(), mi).getValue();
+    return top.getCalleeThis(FeatureExprFactory.True(), mi).getValue();
   }
 
   /**
    * Returns the this pointer of the callee from the stack.
    */
   public Conditional<Integer> getCalleeThis (FeatureExpr ctx, int size) {
-    return top2.simplify(ctx).getValue().getCalleeThis(ctx, size);
+    return top.getCalleeThis(ctx, size);
   }
 
   public ClassInfo getClassInfo (int objref) {
@@ -1045,11 +1044,11 @@ public class ThreadInfo extends InfoObject
   }
 
   public boolean isCalleeThis (ElementInfo r) {
-    if (top2.getValue() == null || r == null) {
+    if (top == null || r == null) {
       return false;
     }
 
-    Conditional<Instruction> pc = getPC(FeatureExprFactory.True());
+    Conditional<Instruction> pc = getPC();
 
     if (pc == null ||
         !(pc.getValue() instanceof InvokeInstruction) ||
@@ -1147,10 +1146,10 @@ public class ThreadInfo extends InfoObject
    * Returns the line number of the program counter of the top stack frame.
    */
   public int getLine () {
-    if (top2.getValue() == null) {
+    if (top == null) {
       return -1;
     } else {
-      return top2.getValue().getLine();
+      return top.getLine();
     }
   }
   
@@ -1226,8 +1225,8 @@ public class ThreadInfo extends InfoObject
    * bytecode method (executed by JPF)
    */
   public MethodInfo getTopFrameMethodInfo () {
-    if (top2.getValue() != null) {
-      return top2.getValue().getMethodInfo();
+    if (top != null) {
+      return top.getMethodInfo();
     } else {
       return null;
     }
@@ -1237,7 +1236,7 @@ public class ThreadInfo extends InfoObject
    * return the ClassInfo of the topmost stackframe that is not a direct call 
    */
   public ClassInfo getExecutingClassInfo(){
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       MethodInfo miExecuting = frame.getMethodInfo();
       ClassInfo ciExecuting = miExecuting.getClassInfo();
       if (ciExecuting != null){
@@ -1251,7 +1250,7 @@ public class ThreadInfo extends InfoObject
   
   
   public ClassInfo resolveReferencedClass (String clsName){
-    ClassInfo ciTop = top2.getValue().getClassInfo();
+    ClassInfo ciTop = top.getClassInfo();
     return ciTop.resolveReferencedClass(clsName);
             
     //return ClassLoaderInfo.getCurrentClassLoader(this).getResolvedClassInfo(clsName);
@@ -1269,7 +1268,7 @@ public class ThreadInfo extends InfoObject
   }
 
   public boolean isCtorOnStack (int objRef){
-    for (StackFrame f = top2.getValue(); f != null; f = f.getPrevious()){
+    for (StackFrame f = top; f != null; f = f.getPrevious()){
       if (f.getThis() == objRef && f.getMethodInfo().isCtor()){
         return true;
       }
@@ -1279,7 +1278,7 @@ public class ThreadInfo extends InfoObject
   }
 
   public boolean isClinitOnStack (ClassInfo ci){
-    for (StackFrame f = top2.getValue(); f != null; f = f.getPrevious()){
+    for (StackFrame f = top; f != null; f = f.getPrevious()){
       MethodInfo mi = f.getMethodInfo();
       if (mi.isClinit(ci)){
         return true;
@@ -1314,19 +1313,9 @@ public class ThreadInfo extends InfoObject
 
   /**
    * Sets the program counter of the top stack frame.
- * @param <U>
    */
-  public <U> void setPC (final Conditional<Instruction> pc) {
-	  top2.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, StackFrame, Conditional<U>>() {
-
-		@Override
-		public Conditional<U> apply(FeatureExpr x, StackFrame y) {
-			 getModifiableTopFrame(x).setPC(pc.simplify(x));
-			return null;
-		}
-		  
-	});
-    
+  public void setPC (Conditional<Instruction> pc) {
+    getModifiableTopFrame().setPC(pc);
   }
 
   public void advancePC () {
@@ -1335,26 +1324,13 @@ public class ThreadInfo extends InfoObject
 
   /**
    * Returns the program counter of the top stack frame.
- * @param ctx TODO
    */
-  public Conditional<Instruction> getPC (FeatureExpr ctx) {
-	  if (top2 instanceof One) {
-			if (top2.getValue() != null) {
-				return top2.getValue().getPC();
-			} else {
-				return new One<>(null);
-			}
-	  }
-	  
-	  Conditional<StackFrame> pc = top2.simplify(ctx);
-	  return pc.mapf(ctx, new BiFunction<FeatureExpr, StackFrame, Conditional<Instruction>>() {
-
-		@Override
-		public Conditional<Instruction> apply(FeatureExpr x, StackFrame y) {
-			return y.getPC();
-		}
-	});
-    
+  public Conditional<Instruction> getPC () {
+    if (top != null) {
+      return top.getPC();
+    } else {
+      return new One<>(null);
+    }
   }
 
   public Conditional<Instruction> getNextPC () {
@@ -1372,7 +1348,7 @@ public class ThreadInfo extends InfoObject
   public String getStackTrace () {
     StringBuilder sb = new StringBuilder(256);
 
-    for (StackFrame sf = top2.getValue(); sf != null; sf = sf.getPrevious()){
+    for (StackFrame sf = top; sf != null; sf = sf.getPrevious()){
       MethodInfo mi = sf.getMethodInfo();
 
       if (mi.isCtor()){
@@ -1413,7 +1389,7 @@ public class ThreadInfo extends InfoObject
    * Returns the pointer to the object reference of the executing method
    */
   public int getThis () {
-    return top2.getValue().getThis();
+    return top.getThis();
   }
 
   public ElementInfo getThisElementInfo(){
@@ -1425,36 +1401,36 @@ public class ThreadInfo extends InfoObject
       return false;
     }
 
-    if (top2.getValue() == null) {
+    if (top == null) {
       return false;
     }
 
     if (getTopFrameMethodInfo().isStatic()) {
       return false;
     } else {
-      int thisRef = top2.getValue().getThis();
+      int thisRef = top.getThis();
       return ei.getObjectRef() == thisRef;
     }
   }
 
   public boolean atMethod (String mname) {
-    return top2.getValue() != null && getTopFrameMethodInfo().getFullName().equals(mname);
+    return top != null && getTopFrameMethodInfo().getFullName().equals(mname);
   }
 
   public boolean atPosition (int position) {
-    if (top2.getValue() == null) {
+    if (top == null) {
       return false;
     } else {
-      Instruction pc = getPC(FeatureExprFactory.True()).getValue();
+      Instruction pc = getPC().getValue();
       return pc != null && pc.getPosition() == position;
     }
   }
 
   public boolean atReturn () {
-    if (top2.getValue() == null) {
+    if (top == null) {
       return false;
     } else {
-      Instruction pc = getPC(FeatureExprFactory.True()).getValue();
+      Instruction pc = getPC().getValue();
       return pc instanceof ReturnInstruction;
     }
   }
@@ -1543,7 +1519,7 @@ public class ThreadInfo extends InfoObject
    * strip stackframes that enter instance methods of the exception object
    */
   public int[] getSnapshot (FeatureExpr ctx, int xObjRef) {
-    StackFrame frame = top2.getValue();
+    StackFrame frame = top;
     int n = stackDepth;
     
     if (xObjRef != MJIEnv.NULL){ // filter out exception method frames
@@ -1816,7 +1792,7 @@ public class ThreadInfo extends InfoObject
 
     if (!ci.isInitialized()){
       if (ci.initializeClass(this)) {
-        return getPC(ctx).getValue();
+        return getPC().getValue();
       }
     }
 
@@ -1835,11 +1811,11 @@ public class ThreadInfo extends InfoObject
     try {
       ClassInfo ci = null;
       try {
-        ci = ClassLoaderInfo.getCurrentResolvedClassInfo(ctx, cname);
+        ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cname);
       } catch(ClassInfoException cie) {
         // the non-system class loader couldn't find the class, 
         if(cie.getExceptionClass().equals("java.lang.ClassNotFoundException") &&
-                        !ClassLoaderInfo.getCurrentClassLoader(ctx).isSystemClassLoader()) {
+                        !ClassLoaderInfo.getCurrentClassLoader().isSystemClassLoader()) {
           ci = ClassLoaderInfo.getSystemResolvedClassInfo(cname);
         } else {
           throw cie;
@@ -1849,7 +1825,7 @@ public class ThreadInfo extends InfoObject
       
     } catch (ClassInfoException cie){
       if(!cname.equals(cie.getExceptionClass())) {
-        ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(ctx, cie.getExceptionClass());
+        ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cie.getExceptionClass());
         return createAndThrowException(ctx, ci, cie.getMessage());
       } else {
         throw cie;
@@ -1864,7 +1840,7 @@ public class ThreadInfo extends InfoObject
    * this is the inner interpreter loop of JPF
    */
   protected void executeTransition (SystemState ss) throws JPFException {
-    Conditional<Instruction> pc = getPC(FeatureExprFactory.True());
+    Conditional<Instruction> pc = getPC();
     Conditional<Instruction> nextPc = new One<>(null);
 
     currentThread = this;
@@ -1888,7 +1864,7 @@ public class ThreadInfo extends InfoObject
         
       } else {
         if (executedInstructions >= maxTransitionLength){ // try to preempt the current thread
-          if (pc.getValue().isBackJump() && (pc.getValue() != nextPc.getValue()) && (top2.getValue() != null && !top2.getValue().isNative())) {
+          if (pc.getValue().isBackJump() && (pc.getValue() != nextPc.getValue()) && (top != null && !top.isNative())) {
             log.info("max transition length exceeded, breaking transition on ", nextPc);
             reschedule("maxTransitionLenth");
             break;
@@ -1908,7 +1884,7 @@ public class ThreadInfo extends InfoObject
    * Execute next instruction.
    */
   public Conditional<Instruction> executeInstruction () {
-    Conditional<Instruction> pc = getPC(FeatureExprFactory.True());
+    Conditional<Instruction> pc = getPC();
     SystemState ss = vm.getSystemState();
 
     // the default, might be changed by the insn depending on if it's the first
@@ -1944,38 +1920,61 @@ public class ThreadInfo extends InfoObject
         			currentMethod = nextPc.getValue(true).getMethodInfo();
         		}
         	} else {
-        		// STEP 1 : select next instruction
-        		
-        		// get stack-ctx with highest depth
-        		FeatureExpr c = getStackContext();
+        		// TODO revise multiple returns
+        		int min = Integer.MAX_VALUE;
+        		Instruction ins = null;
+        		boolean retInstr = false;
+	        	for (Instruction i : pc.toList()) {
+	        		if (i != null) {
+	        			if (!(i instanceof ReturnInstruction)) {
+		        			if (i.getPosition() < min) {
+			        			if (currentMethod == null || i.getMethodInfo() == currentMethod) {
+			        				min = i.getPosition();
+			        				ins = i;
+			        			}
+		        			}
+	        			} else {
+	        				if (i.getMethodInfo() == currentMethod) {
+	        					retInstr = true;
+	        				}
+	        			}
+	        		}
+	        	}
 	        	
-        		// get instruction with smallest position
-        		Conditional<Instruction> instructions = pc.simplify(c);
-        		Instruction ins = getInstruction(instructions);
-        		
-        		// get return instruction
-        		final boolean ret = ins == null;
-        		if (ret) {
-        			ins = getReturnInstruction(instructions);
-        		}
-        		
-        		// STEP 2: execute the instruction
-	        	Map<Instruction, FeatureExpr> map = instructions.toMap();
+	        	final int finalMin = min;
+	        	final ThreadInfo ti = this;
+	        	Map<Instruction, FeatureExpr> map = pc.toMap();
 	        	Conditional<Instruction> next = null;
 	        	final MethodInfo oldMethod = currentMethod;
 	        	for (Instruction e : map.keySet()) {
-          			if (e != null && e.equals(ins)) {
-          				FeatureExpr ctx = map.get(e).and(c);
-          				if (debug) System.out.println("exe: " + e + " " + ctx);
-          				next = e.execute(ctx, this).simplify(ctx);
-          			} else if (e != null && ret && currentMethod == e.getMethodInfo()) {
+          			if (e != null && e.getPosition() == finalMin && e.equals(ins)) {
           				FeatureExpr ctx = map.get(e);
-          				if (debug) System.out.println("ret: " + e + " " + ctx);
-          				next = e.execute(ctx, this).simplify(ctx);
+          				if (debug) {
+          					System.out.println("exe: " + e + " " + ctx);
+						}
+          				next = e.execute(ctx, ti).simplify(ctx);
+          				// the executed instruction defines the next method 
+          				
+          			} else if (e != null && ins == null && retInstr && oldMethod == e.getMethodInfo()) {
+          				FeatureExpr ctx = map.get(e);
+          				if (debug) {
+          					System.out.println("exe: " + e + " " + ctx);
+          				}
+          				
+          				next = e.execute(ctx, ti).simplify(ctx);
+          				// the executed instruction defines the next method 
+//          				for (Instruction i : next.toList()) {
+//          					if (i != null) {
+//	          					currentMethod = i.getMethodInfo();
+//	          					break;
+//          					} else {
+//          						currentMethod = null;
+//          					}
+//          				}
+          				
           			}
 	        	}
 	        	
-	        	// set the method for the next instruction
 	        	for (Instruction i : next.toList()) {
   					if (i != null) {
       					currentMethod = i.getMethodInfo();
@@ -1985,33 +1984,36 @@ public class ThreadInfo extends InfoObject
   					}
   				}
 	        	
-	        	// set the method if there is a instruction with a higher depth
-	        	if (top2 instanceof Choice) {
-		        	for (StackFrame t : top2.toList()) {
-		        		if (t.getPrevious().mi == currentMethod) {
-		        			currentMethod = t.mi;
-		        			break;
-		        		}
-		        	}
-	        	}
-	        	
-	        	// set the nextPC
 	        	final Conditional<Instruction> finalNext = next; 
 	        	final Instruction finalins = ins;
+	        	final boolean fret = retInstr;
 	        	
-	        	// TODO somehow redundant
-	        	nextPc = pc.mapf(c, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+	        	nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 	
 	          		@Override
-	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction e) {
-	          			if (ctx.isSatisfiable()) {// TODO expensive
-		          			if (e != null && e.equals(finalins)) {
-		          				return finalNext.simplify(ctx);
-		          			} else if (e != null && ret && oldMethod == e.getMethodInfo()) {
-		          				return finalNext.simplify(ctx);
-		          			}
+	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction x) {
+	          			if (x != null && x.getPosition() == finalMin && x.equals(finalins)) {
+	          				return finalNext.simplify(ctx);
+	          				
+//	          				if (main) {
+//	          					System.out.println("exe: " + x + " if " + ctx);
+//	          				}
+//	          				Conditional<Instruction> next = x.execute(ctx, ti).simplify(ctx);
+//	          				
+//	          				// the executed instruction defines the next method 
+//	          				for (Instruction i : next.toList()) {
+//	          					if (i != null) {
+//		          					currentMethod = i.getMethodInfo();
+//		          					break;
+//	          					} else {
+//	          						currentMethod = null;
+//	          					}
+//	          				}
+//	          				return next;
+	          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {
+	          				return finalNext.simplify(ctx);
 	          			}
-	          			return new One<>(e);
+	          			return new One<>(x);
 	          		} 
 	          	  }).simplify();
 	        	}
@@ -2033,13 +2035,7 @@ public class ThreadInfo extends InfoObject
     vm.getSearch().checkAndResetProbeRequest();
     
     // clean up whatever might have been stored by enter
-    for (Instruction p : pc.toList()) {
-    	if (p != null) {
-    		p.cleanupTransients();
-    	}
-    	break;
-    }
-//    pc.getValue(true).
+    pc.getValue(true).cleanupTransients();
 
     if (pendingSUTExceptionRequest != null){
       processPendingSUTExceptionRequest();
@@ -2049,7 +2045,7 @@ public class ThreadInfo extends InfoObject
     // Note that 'nextPc' might have been set by a listener, and/or 'top' might have
     // been changed by executing an invoke, return or throw (handler), or by
     // pushing overlay calls on the stack
-    if (top2 instanceof Choice || top2.getValue() != null) {
+    if (top != null) {
       // <2do> this is where we would have to handle general insn repeat
       setPC(nextPc);
       return nextPc;
@@ -2058,66 +2054,12 @@ public class ThreadInfo extends InfoObject
     }
   }
 
-	private FeatureExpr getStackContext() {
-		FeatureExpr ctx = FeatureExprFactory.True();
-		if (top2 instanceof Choice) {
-			Map<StackFrame, FeatureExpr> map2 = top2.toMap();
-			int maxDepth = -1;
-			for (StackFrame stack : map2.keySet()) {
-				int depth = stack.getDepth();
-				if (depth > maxDepth) {
-					maxDepth = depth;
-					ctx = map2.get(stack);
-//					currentMethod = stack.mi;// TODO ???
-				}
-			}
-		}
-		return ctx;
-	}
-	
-	private Instruction getInstruction(Conditional<Instruction> instructions) {
-		Instruction ins = null;
-		int min = Integer.MAX_VALUE;
-		if (instructions instanceof One) {
-			ins = instructions.getValue();
-		} else {
-			for (Instruction i : instructions.toList()) {
-				if (i != null) {
-					if (!(i instanceof ReturnInstruction)) {
-						if (i.getPosition() < min) {
-							if (currentMethod == null || i.getMethodInfo() == currentMethod) {
-								min = i.getPosition();
-								ins = i;
-							}
-						}
-					}
-				}
-			}
-		}
-		return ins;
-	}
-
-	private Instruction getReturnInstruction(Conditional<Instruction> instructions) {
-		if (instructions instanceof One) {
-			return instructions.getValue();
-		} else {
-			for (Instruction i : instructions.toList()) {
-				if (i != null) {
-					if (currentMethod == null || i.getMethodInfo() == currentMethod) {
-						return i;
-					}
-				}
-			}
-		}
-		return null;
-	}
-	
   /**
    * enter instruction hidden from any listeners, and do not
    * record it in the path
    */
   public Instruction executeInstructionHidden () {
-    Instruction pc = getPC(FeatureExprFactory.True()).getValue();
+    Instruction pc = getPC().getValue();
     SystemState ss = vm.getSystemState();
     KernelState ks = vm.getKernelState();
 
@@ -2137,7 +2079,7 @@ public class ThreadInfo extends InfoObject
     vm.getSearch().checkAndResetProbeRequest();
     
     // we did not return from the last frame stack
-    if (top2.getValue() != null) { // <2do> should probably bomb otherwise
+    if (top != null) { // <2do> should probably bomb otherwise
       setPC(nextPc);
     }
 
@@ -2153,11 +2095,11 @@ public class ThreadInfo extends InfoObject
   }
 
   public void reExecuteInstruction() {
-    nextPc = getPC(FeatureExprFactory.True());
+    nextPc = getPC();
   }
 
   public boolean willReExecuteInstruction() {
-    return (getPC(FeatureExprFactory.True()) == nextPc);
+    return (getPC() == nextPc);
   }
 
   /**
@@ -2178,7 +2120,7 @@ public class ThreadInfo extends InfoObject
    */
   @Deprecated
   public void skipInstruction(){
-    skipInstruction(getPC(FeatureExprFactory.True()).getValue().getNext());
+    skipInstruction(getPC().getValue().getNext());
   }
 
   public boolean isInstructionSkipped() {
@@ -2206,7 +2148,7 @@ public class ThreadInfo extends InfoObject
       return true;
       
     } else {
-      if (top2.getValue() != null && nextPc != top2.getValue().getPC()){ // this needs to be re-executed
+      if (top != null && nextPc != top.getPC()){ // this needs to be re-executed
         nextPc = new One<>(insn);   
         return true;
       }
@@ -2227,7 +2169,7 @@ public class ThreadInfo extends InfoObject
    */
   public void executeMethodAtomic (StackFrame frame) {
 
-    pushFrame(FeatureExprFactory.True(), frame, false);
+    pushFrame(frame);
     int    depth = countStackFrames();
     Instruction pc = frame.getPC().getValue();
     SystemState ss = vm.getSystemState();
@@ -2272,7 +2214,7 @@ public class ThreadInfo extends InfoObject
    */
   public void executeMethodHidden (StackFrame frame) {
 
-    pushFrame(FeatureExprFactory.True(), frame, false);
+    pushFrame(frame);
     
     int depth = countStackFrames(); // this includes the DirectCallStackFrame
     Instruction pc = frame.getPC().getValue();
@@ -2358,13 +2300,12 @@ public class ThreadInfo extends InfoObject
   
   /**
    * note - this assumes the stackframe of the method to enter is already initialized and on top (pushed)
- * @param ctx TODO
    */
-  public void enter (FeatureExpr ctx){
-    MethodInfo mi = top2.simplify(ctx).getValue().getMethodInfo();
+  public void enter (){
+    MethodInfo mi = top.getMethodInfo();
     
     if (mi.isSynchronized()){
-      int oref = mi.isStatic() ?  mi.getClassInfo().getClassObjectRef() : top2.simplify(ctx).getValue().getThis();
+      int oref = mi.isStatic() ?  mi.getClassInfo().getClassObjectRef() : top.getThis();
       ElementInfo ei = getModifiableElementInfo( oref);
       
       ei.lock(this);
@@ -2379,10 +2320,9 @@ public class ThreadInfo extends InfoObject
 
   /**
    * note - this assumes the stackframe is still on top (not yet popped)
- * @param ctx TODO
    */
-  public void leave(FeatureExpr ctx){
-    MethodInfo mi = top2.simplify(ctx).getValue().getMethodInfo();
+  public void leave(){
+    MethodInfo mi = top.getMethodInfo();
     
     // <2do> - that's not really enough, we might have suspicious bytecode that fails
     // to release locks acquired by monitor_enter (e.g. by not having a handler that
@@ -2392,7 +2332,7 @@ public class ThreadInfo extends InfoObject
     // VMs are allowed to silently fix this, so it might run on some and fail on others)
     
     if (mi.isSynchronized()) {
-      int oref = mi.isStatic() ?  mi.getClassInfo().getClassObjectRef() : top2.simplify(ctx).getValue().getThis();
+      int oref = mi.isStatic() ?  mi.getClassInfo().getClassObjectRef() : top.getThis();
       ElementInfo ei = getElementInfo( oref);
       if (ei.isLocked()){
         ei = ei.getModifiableInstance();
@@ -2663,7 +2603,7 @@ public class ThreadInfo extends InfoObject
   public void hash (HashData hd) {
     threadData.hash(hd);
 
-    for (StackFrame f = top2.getValue(); f != null; f = f.getPrevious()){
+    for (StackFrame f = top; f != null; f = f.getPrevious()){
       f.hash(hd);
     }
   }
@@ -2736,7 +2676,7 @@ public class ThreadInfo extends InfoObject
     }
     
     // 4. now all references on the stack
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       frame.markThreadRoots(heap, id);
     }
   }
@@ -2748,7 +2688,7 @@ public class ThreadInfo extends InfoObject
    * to their pre-execution contents
    */
   public void setTopFrame (StackFrame frame) {
-    top2 = new One<>(frame);
+    top = frame;
 
     // since we have swapped the top frame, the stackDepth might have changed
     int n = 0;
@@ -2760,93 +2700,50 @@ public class ThreadInfo extends InfoObject
 
   /**
    * Adds a new stack frame for a new called method.
- * @param ctx TODO
- * @param split TODO
    */
-  public void pushFrame (FeatureExpr ctx, StackFrame frame, boolean split) {
-	  if (split) {
-		    frame.setPrevious(top2.simplify(ctx).getValue());
-			
-		    top2 = new Choice<>(ctx, new One<>(frame), top2).simplify();
-		    stackDepth++;
-		
-		    // a new frame cannot have been stored yet, so we don't need to clone on the next mod
-		    // note this depends on not pushing a frame in the top half of a CG method
-		    markTfChanged(frame);
-		
-		    returnedDirectCall = null;
-			  
-	  } else if (top2 instanceof Choice){ 
-		  frame.setPrevious(top2.simplify(ctx).getValue());
-		  top2 = new Choice<>(ctx, new One<>(frame), top2).simplify();
-		    
-		    stackDepth++;
-		
-		    // a new frame cannot have been stored yet, so we don't need to clone on the next mod
-		    // note this depends on not pushing a frame in the top half of a CG method
-		    markTfChanged(frame);
-		
-		    returnedDirectCall = null;
-	  } else {
-	  
-	    frame.setPrevious(top2.getValue());
-	
-	    top2 = new One<>(frame);
-	    stackDepth++;
-	
-	    // a new frame cannot have been stored yet, so we don't need to clone on the next mod
-	    // note this depends on not pushing a frame in the top half of a CG method
-	    markTfChanged(top2.getValue());
-	
-	    returnedDirectCall = null;
-	    
-	  }
+  public void pushFrame (StackFrame frame) {
+
+    frame.setPrevious(top);
+
+    top = frame;
+    stackDepth++;
+
+    // a new frame cannot have been stored yet, so we don't need to clone on the next mod
+    // note this depends on not pushing a frame in the top half of a CG method
+    markTfChanged(top);
+
+    returnedDirectCall = null;
   }
 
   /**
    * Removes a stack frame
    */
-	public void popFrame(FeatureExpr ctx) {
-		if (top2 instanceof One) {
-			StackFrame frame = top2.getValue();
+  public void popFrame(FeatureExpr ctx) {
+    StackFrame frame = top;
 
-			// --- do our housekeeping
-			if (frame.hasAnyRef(ctx)) {
-				vm.getSystemState().activateGC();
-			}
+    //--- do our housekeeping
+    if (frame.hasAnyRef(ctx)) {
+      vm.getSystemState().activateGC();
+    }
 
-			// there always is one since we start all threads through
-			// directcalls
-			top2 = new One<>(frame.getPrevious());
-			stackDepth--;
-		} else {
-			StackFrame frame = top2.simplify(ctx).getValue();
-
-			// --- do our housekeeping
-			if (frame.hasAnyRef(ctx)) {
-				vm.getSystemState().activateGC();
-			}
-
-			// there always is one since we start all threads through
-			// directcalls
-			top2 = new Choice<>(ctx, new One<>(frame.getPrevious()), top2).simplify();
-			stackDepth--;
-		}
-	}
+    // there always is one since we start all threads through directcalls
+    top = frame.getPrevious();
+    stackDepth--;
+  }
 
   public StackFrame popAndGetModifiableTopFrame(FeatureExpr ctx) {
     popFrame(ctx);
 
-    if (top2.simplify(ctx).getValue().isFrozen()) {
-      top2 = new One<>(top2.simplify(ctx).getValue().clone());
+    if (top.isFrozen()) {
+      top = top.clone();
     }
     
-    return top2.simplify(ctx).getValue();
+    return top;
   }
   
   public StackFrame popAndGetTopFrame(FeatureExpr ctx){
     popFrame(ctx);
-    return top2.getValue();
+    return top;
   }
   
   /**
@@ -2857,16 +2754,16 @@ public class ThreadInfo extends InfoObject
   public StackFrame popDirectCallFrame(FeatureExpr ctx) {
     //assert top instanceof DirectCallStackFrame;
 
-    returnedDirectCall = (DirectCallStackFrame) top2.getValue();
+    returnedDirectCall = (DirectCallStackFrame) top;
 
-    if (top2.getValue().hasFrameAttr( UncaughtHandlerAttr.class)){
+    if (top.hasFrameAttr( UncaughtHandlerAttr.class)){
       return popUncaughtHandlerFrame(ctx);
     }
     
-    top2 = new One<>(top2.getValue().getPrevious());
+    top = top.getPrevious();
     stackDepth--;
     
-    return top2.getValue();
+    return top;
   }
 
   
@@ -2905,7 +2802,7 @@ public class ThreadInfo extends InfoObject
    * Prints the content of the stack
    */
   public void printStackContent () {
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       frame.printStackContent();
     }
   }
@@ -2914,7 +2811,7 @@ public class ThreadInfo extends InfoObject
    * Prints current stacktrace information
    */
   public void printStackTrace () {
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       frame.printStackTrace();
     }
   }
@@ -2935,7 +2832,7 @@ public class ThreadInfo extends InfoObject
     int xRef = ei.getReferenceField("stopException");
     ei.setReferenceField("stopException", MJIEnv.NULL);
 
-    Instruction insn = getPC(FeatureExprFactory.True()).getValue();
+    Instruction insn = getPC().getValue();
     if (insn instanceof EXECUTENATIVE){
       // we only get here if there was a CG in a native method and we might
       // have to reacquire a lock to go on
@@ -2959,7 +2856,7 @@ public class ThreadInfo extends InfoObject
   public HandlerContext getHandlerContextFor (ClassInfo ciException){
     ExceptionHandler matchingHandler = null; // the matching handler we found (if any)
     
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()) {
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()) {
       // that means we have to turn the exception into an InvocationTargetException
       if (frame.isReflection()) {
         ciException = ClassInfo.getInitializedSystemClassInfo("java.lang.reflect.InvocationTargetException", this);
@@ -3021,7 +2918,7 @@ public class ThreadInfo extends InfoObject
 
     // check if we find a matching handler, and if we do store it. Leave the
     // stack untouched so that listeners can still inspect it
-    for (StackFrame frame = top2.getValue(); (frame != null) && (handlerFrame == null); frame = frame.getPrevious()) {
+    for (StackFrame frame = top; (frame != null) && (handlerFrame == null); frame = frame.getPrevious()) {
       // that means we have to turn the exception into an InvocationTargetException
       if (frame.isReflection()) {
         ciException = ClassInfo.getInitializedSystemClassInfo("java.lang.reflect.InvocationTargetException", this);
@@ -3069,7 +2966,7 @@ public class ThreadInfo extends InfoObject
       if ("java.lang.ThreadDeath".equals(exceptionName)) { // gracefully shut down
         unwindToFirstFrame(ctx);
         pendingException = null;
-        return top2.getValue().getPC().getValue().getNext(); // the final DIRECTCALLRETURN
+        return top.getPC().getValue().getNext(); // the final DIRECTCALLRETURN
 
       } else { // we have a NoUncaughtPropertyViolation
         //NoUncaughtExceptionsProperty.setExceptionInfo(pendingException);
@@ -3160,7 +3057,7 @@ public class ThreadInfo extends InfoObject
   }
   
   protected boolean isUncaughtHandlerOnStack(){
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.getPrevious()) {
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()) {
       if (frame.hasFrameAttr(UncaughtHandlerAttr.class)){
         return true;
       }
@@ -3246,7 +3143,7 @@ public class ThreadInfo extends InfoObject
     UncaughtHandlerAttr uchContext = new UncaughtHandlerAttr( xi);
     frame.setFrameAttr( uchContext);
     
-    pushFrame(FeatureExprFactory.True(), frame, false);
+    pushFrame(frame);
     return frame.getPC().getValue();
   }
   
@@ -3263,8 +3160,8 @@ public class ThreadInfo extends InfoObject
       unwindToFirstFrame(fexpr); // this will take care of notifying
       
       getModifiableTopFrame().advancePC();
-      assert top2.getValue().getPC() instanceof ReturnInstruction : "topframe PC not a ReturnInstruction: " + top2.getValue().getPC();
-      return top2.getValue();
+      assert top.getPC() instanceof ReturnInstruction : "topframe PC not a ReturnInstruction: " + top.getPC();
+      return top;
 
     } else {
       // treat this still as an NoUncaughtExceptionProperty violation
@@ -3277,8 +3174,8 @@ public class ThreadInfo extends InfoObject
 
   
   protected void unwindTo (StackFrame newTopFrame, FeatureExpr ctx){
-    for (StackFrame frame = top2.getValue(); (frame != null) && (frame != newTopFrame); frame = frame.getPrevious()) {
-      leave(ctx); // that takes care of releasing locks
+    for (StackFrame frame = top; (frame != null) && (frame != newTopFrame); frame = frame.getPrevious()) {
+      leave(); // that takes care of releasing locks
       vm.notifyExceptionBailout(this); // notify before we pop the frame
       popFrame(ctx);
     }
@@ -3287,8 +3184,8 @@ public class ThreadInfo extends InfoObject
   protected StackFrame unwindToFirstFrame(FeatureExpr ctx){
     StackFrame frame;
 
-    for (frame = top2.getValue(); frame.getPrevious() != null; frame = frame.getPrevious()) {
-      leave(ctx); // that takes care of releasing locks
+    for (frame = top; frame.getPrevious() != null; frame = frame.getPrevious()) {
+      leave(); // that takes care of releasing locks
       vm.notifyExceptionBailout(this); // notify before we pop the frame
       popFrame(ctx);
     }
@@ -3418,15 +3315,15 @@ public class ThreadInfo extends InfoObject
   }
 
   public StackFrame getCallerStackFrame() {
-    if (top2.getValue() != null){
-      return top2.getValue().getPrevious();
+    if (top != null){
+      return top.getPrevious();
     } else {
       return null;
     }
   }
 
   public int mixinExecutionStateHash(int h) {
-    for (StackFrame frame = top2.getValue(); frame != null; frame = frame.prev) {
+    for (StackFrame frame = top; frame != null; frame = frame.prev) {
       if (!frame.isNative()) {
         h = frame.mixinExecutionStateHash(h);
       }
@@ -3451,27 +3348,18 @@ public class ThreadInfo extends InfoObject
    * Returns a clone of the top stack frame.
    */
   public StackFrame getModifiableTopFrame () {
-    if (top2.getValue().isFrozen()) {
-      top2 = new One<>(top2.getValue().clone());
-      markTfChanged(top2.getValue());
+    if (top.isFrozen()) {
+      top = top.clone();
+      markTfChanged(top);
     }
-    return top2.getValue();
+    return top;
   }
-  
-  public StackFrame getModifiableTopFrame (FeatureExpr ctx) {
-	    if (top2.simplify(ctx).getValue().isFrozen()) {
-	      top2 = new One<>(top2.simplify(ctx).getValue().clone());
-	      markTfChanged(top2.simplify(ctx).getValue());
-	    }
-	    return top2.simplify(ctx).getValue();
-	  }
 
   /**
    * Returns the top stack frame.
- * @param ctx TODO
    */
-  public StackFrame getTopFrame (FeatureExpr ctx) {
-    return top2.simplify(ctx).getValue();
+  public StackFrame getTopFrame () {
+    return top;
   }
 
   /**
@@ -3489,7 +3377,7 @@ public class ThreadInfo extends InfoObject
     StackFrame last = null;
     boolean done = false;
     
-    for (StackFrame f = top2.getValue(); f != null; f = f.getPrevious()){
+    for (StackFrame f = top; f != null; f = f.getPrevious()){
       done = (f == frame);
       
       if (f.isFrozen()){
@@ -3505,8 +3393,8 @@ public class ThreadInfo extends InfoObject
       
       if (done){ // done
         if (newTop != null){
-        	top2 = new One<>(newTop);
-          markTfChanged(top2.getValue());
+          top = newTop;
+          markTfChanged(top);
         }
         return f;
       }
@@ -3521,7 +3409,7 @@ public class ThreadInfo extends InfoObject
    */
   public StackFrame getStackFrameExecuting (Instruction insn, int offset){
     int n = offset;
-    StackFrame frame = top2.getValue();
+    StackFrame frame = top;
 
     for (; (n > 0) && frame != null; frame = frame.getPrevious()){
       n--;
@@ -3597,13 +3485,13 @@ public class ThreadInfo extends InfoObject
     // every thread that has been started and is not terminated has to have a stackframe with a next pc
     if (!isTerminated() && !isNew()){
       checkAssertion( stackDepth > 0, "empty stack " + getState());
-      checkAssertion( top2.getValue() != null, "no top frame");
-      checkAssertion( top2.getValue().getPC() != null, "no top PC");
+      checkAssertion( top != null, "no top frame");
+      checkAssertion( top.getPC() != null, "no top PC");
     }
     
     // if we are timedout, the top pc has to be either on a native Object.wait() or Unsafe.park()
     if (isTimedOut()){
-      Instruction insn = top2.getValue().getPC().getValue();
+      Instruction insn = top.getPC().getValue();
       checkAssertion( insn instanceof EXECUTENATIVE, "thread timedout outside of native method");
       
       // this is a bit dangerous in case we introduce new timeout points

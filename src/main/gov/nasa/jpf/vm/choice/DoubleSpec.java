@@ -61,7 +61,7 @@ public class DoubleSpec {
     case 1: { // variable name
       ThreadInfo ti = ThreadInfo.getCurrentThread();
       try {
-        StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+        StackFrame frame = ti.getTopFrame();
 
         ret = frame.getDoubleLocalVariable(varId[0]);
         // that throws an exception (a few calls down) if  
@@ -82,7 +82,7 @@ public class DoubleSpec {
       break;
     }
     case 2: { // static variable name TODO other cases here...
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo( FeatureExprFactory.True(), varId[0]);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(varId[0]);
       ElementInfo ei = ci.getStaticElementInfo();
       ret = ei.getDoubleField(varId[1]);
       break;

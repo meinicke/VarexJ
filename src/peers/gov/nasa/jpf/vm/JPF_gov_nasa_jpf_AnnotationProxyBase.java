@@ -34,7 +34,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
     // we could also pull it out from the interfaces, but we know the naming scheme
     String proxyName = ciProxy.getName();
     String annotation = proxyName.substring(0, proxyName.length() - 6); // "...$Proxy"
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(NativeMethodInfo.CTX, annotation);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(annotation);
     
     return ci.getClassObjectRef();
   }

@@ -242,7 +242,7 @@ public abstract class FieldInfo extends InfoObject implements GenericSignatureHo
   }
 
   public ClassInfo getTypeClassInfo () {
-    return ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), getType());
+    return ClassLoaderInfo.getCurrentResolvedClassInfo(getType());
   }
 
   public Class<? extends ChoiceGenerator<?>> getChoiceGeneratorType (){

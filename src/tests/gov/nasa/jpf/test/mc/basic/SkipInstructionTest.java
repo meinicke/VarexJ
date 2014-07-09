@@ -46,7 +46,7 @@ public class SkipInstructionTest extends TestJPF {
     
     @Override
     public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute) {
-      Instruction pc = ti.getPC(FeatureExprFactory.True()).getValue();
+      Instruction pc = ti.getPC().getValue();
 
       if (pc instanceof GETFIELD) {
         GETFIELD gf = (GETFIELD) pc;

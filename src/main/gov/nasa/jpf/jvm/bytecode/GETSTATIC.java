@@ -59,7 +59,7 @@ public class GETSTATIC extends StaticFieldInstruction {
     try {
       fieldInfo = getFieldInfo();
     } catch(LoadOnJPFRequired lre) {
-      return ti.getPC(ctx);
+      return ti.getPC();
     }
     
     if (fieldInfo == null) {
@@ -72,7 +72,7 @@ public class GETSTATIC extends StaticFieldInstruction {
     
     if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ti)) {
       // note - this returns the next insn in the topmost clinit that just got pushed
-      return ti.getPC(ctx);
+      return ti.getPC();
     }
 
     ElementInfo ei = ciField.getStaticElementInfo();
@@ -89,7 +89,7 @@ public class GETSTATIC extends StaticFieldInstruction {
     }
    
     Object attr = ei.getFieldAttr(fieldInfo);
-    StackFrame frame = ti.getModifiableTopFrame(ctx);
+    StackFrame frame = ti.getModifiableTopFrame();
 
     if (size == 1) {
       Conditional<Integer> ival = ei.get1SlotField(fieldInfo);

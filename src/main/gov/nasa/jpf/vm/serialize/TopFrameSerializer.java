@@ -48,7 +48,7 @@ public class TopFrameSerializer extends CFSerializer {
   @Override
   protected void serializeStackFrames(ThreadInfo ti){
     // we just look at the top frame
-    serializeFrame(ti.getTopFrame(FeatureExprFactory.True()));
+    serializeFrame(ti.getTopFrame());
   }
 
 

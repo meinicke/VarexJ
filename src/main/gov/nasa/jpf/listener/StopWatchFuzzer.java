@@ -97,7 +97,7 @@ public class StopWatchFuzzer extends ListenerAdapter {
   public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute){
 
     if (insnToExecute instanceof LSUB){  // propagate TimeVal attrs
-      StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+      StackFrame frame = ti.getTopFrame();
       // check if any of the operands have TimeVal attributes
       // attributes are stored on the first slot of a long val
       if (frame.hasOperandAttr(1, TimeVal.class) || frame.hasOperandAttr(3, TimeVal.class)){      
@@ -112,7 +112,7 @@ public class StopWatchFuzzer extends ListenerAdapter {
     } else if (insnToExecute instanceof LCMP){ // create and set CG if operand has TimeVal attr
       
       if (!ti.isFirstStepInsn()){ // this is the first time we see this insn
-        StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+        StackFrame frame = ti.getTopFrame();
         
         if (frame.hasOperandAttr(1, TimeVal.class) || frame.hasOperandAttr(3, TimeVal.class)){
           IntChoiceFromSet cg = new IntChoiceFromSet( CG_ID, -1, 0, 1);

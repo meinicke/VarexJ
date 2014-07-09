@@ -126,7 +126,7 @@ public class OOMEInjector extends ListenerAdapter {
   @Override
   public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute){
     if (insnToExecute instanceof AllocInstruction){
-      if (checkCallerForOOM(ti.getTopFrame(FeatureExprFactory.True()), insnToExecute)){
+      if (checkCallerForOOM(ti.getTopFrame(), insnToExecute)){
         // we could use Heap.setOutOfMemory(true), but then we would have to reset
         // if the app handles it so that it doesn't throw outside the specified locations.
         // This would require more effort than throwing explicitly
@@ -140,7 +140,7 @@ public class OOMEInjector extends ListenerAdapter {
   public void instructionExecuted (VM vm, ThreadInfo ti, Instruction insn, Instruction executedInsn){
     
     if (executedInsn instanceof InvokeInstruction){
-      StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+      StackFrame frame = ti.getTopFrame();
       
       if (frame.getPC().getValue() != executedInsn){ // means the call did succeed
         if (checkCallerForOOM(frame.getPrevious(), executedInsn)){

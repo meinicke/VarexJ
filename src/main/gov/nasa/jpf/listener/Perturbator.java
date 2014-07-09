@@ -353,7 +353,7 @@ public class Perturbator extends ListenerAdapter {
           if (!ti.isFirstStepInsn()){
             // save the current stackframe so that we can restore it before
             // we re-enter
-            savedFrame = ti.getTopFrame(FeatureExprFactory.True()).clone();
+            savedFrame = ti.getTopFrame().clone();
           }
         }
       }
@@ -370,7 +370,7 @@ public class Perturbator extends ListenerAdapter {
           // pop the callee stackframe and modify the caller stackframe
           // note that we don't need to enter in order to get the perturbation base
           // value because its already on the operand stack
-          ChoiceGenerator<?> cg = e.perturbator.createChoiceGenerator("perturbReturn", ti.getTopFrame(FeatureExprFactory.True()), new Integer(0));
+          ChoiceGenerator<?> cg = e.perturbator.createChoiceGenerator("perturbReturn", ti.getTopFrame(), new Integer(0));
           if (ss.setNextChoiceGenerator(cg)){
             ti.skipInstruction(insnToExecute);
           }
@@ -378,7 +378,7 @@ public class Perturbator extends ListenerAdapter {
           // re-executing, modify the operand stack top and enter
           ChoiceGenerator<?> cg = ss.getCurrentChoiceGenerator("perturbReturn", e.cgType);
           if (cg != null) {
-            e.perturbator.perturb(cg, ti.getTopFrame(FeatureExprFactory.True()));
+            e.perturbator.perturb(cg, ti.getTopFrame());
           }
         }
       }
@@ -396,7 +396,7 @@ public class Perturbator extends ListenerAdapter {
         	// first time, create and set CG and skip instruction as we want the instruction
         	// to be executed with the parameter choices we like instead of the ones that
         	// were passed in
-          ChoiceGenerator<?> cg = e.perturbator.createChoiceGenerator(mi.getFullName(), ti.getTopFrame(FeatureExprFactory.True()), mi);
+          ChoiceGenerator<?> cg = e.perturbator.createChoiceGenerator(mi.getFullName(), ti.getTopFrame(), mi);
           // check if the cg returned is null. If it is then we don't want to enter this
           // method as we are done exploring it
           if (cg != null) {
@@ -410,7 +410,7 @@ public class Perturbator extends ListenerAdapter {
           ChoiceGenerator<?> cg = ss.getChoiceGenerator(mi.getFullName());
           if (cg != null) {
             log.info("--- Using choice generator: " + mi.getFullName() + " in thread: " + ti);
-            e.perturbator.perturb(cg, ti.getTopFrame(FeatureExprFactory.True()));
+            e.perturbator.perturb(cg, ti.getTopFrame());
           }
         }
       }
@@ -425,7 +425,7 @@ public class Perturbator extends ListenerAdapter {
       FieldPerturbation p = perturbedFields.get(fi);
       if (p != null){
         if (isMatchingInstructionLocation(p, executedInsn)) {  // none or managed filePos
-          StackFrame frame = ti.getTopFrame(FeatureExprFactory.True());
+          StackFrame frame = ti.getTopFrame();
           SystemState ss = vm.getSystemState();
 
           if (ti.isFirstStepInsn()) { // retrieve value from CG and replace it on operand stack

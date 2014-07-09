@@ -79,7 +79,7 @@ public abstract class IfInstruction extends JVMInstruction {
   }
   
   public Conditional<Instruction> execute (final FeatureExpr ctx, final ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame(ctx);
+    StackFrame frame = ti.getModifiableTopFrame();
 
     conditionValue = popConditionValue(ctx, frame);
 //    if (conditionValue) {

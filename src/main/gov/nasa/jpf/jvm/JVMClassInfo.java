@@ -32,11 +32,13 @@ import gov.nasa.jpf.vm.InfoObject;
 import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.NativeMethodInfo;
+import gov.nasa.jpf.vm.Stack;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 

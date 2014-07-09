@@ -60,7 +60,7 @@ public class TypeRef {
    * This will cause on-demand class loading by JPF
    */
   public ClassInfo getClassInfo (){
-    return ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), clsName);
+    return ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
   }
   
   public String toString(){

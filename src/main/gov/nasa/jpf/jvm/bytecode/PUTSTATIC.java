@@ -79,7 +79,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
       try {
         fieldInfo = getFieldInfo();
       } catch(LoadOnJPFRequired lre) {
-        return ti.getPC(ctx);
+        return ti.getPC();
       }
       
       if (fieldInfo == null) {
@@ -89,7 +89,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
       ClassInfo ciField = fi.getClassInfo();
       if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ti)) {
         // note - this returns the next insn in the topmost clinit that just got pushed
-        return ti.getPC(ctx);
+        return ti.getPC();
       }
       
       ElementInfo ei = ciField.getStaticElementInfo();
@@ -101,7 +101,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
       }
       
       ei = ei.getModifiableInstance();
-      return put(ctx, ti, ti.getTopFrame(ctx), ei);
+      return put(ctx, ti, ti.getTopFrame(), ei);
       
     } else { // re-execution
       // no need to redo the exception checks, we already had them in the top half
@@ -109,7 +109,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
       ElementInfo ei = ciField.getStaticElementInfo();
       
       ei = ei.getModifiableInstance();
-      return put(ctx, ti, ti.getTopFrame(ctx), ei);      
+      return put(ctx, ti, ti.getTopFrame(), ei);      
     }
   }
   

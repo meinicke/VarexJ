@@ -152,7 +152,7 @@ public final class StaticElementInfo extends ElementInfo {
 
   
   protected FieldInfo getDeclaredFieldInfo (String clsBase, String fname) {
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), clsBase); // <2do> should use CL argument
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsBase); // <2do> should use CL argument
     FieldInfo fi = ci.getDeclaredStaticField(fname);
     
     if (fi == null) {

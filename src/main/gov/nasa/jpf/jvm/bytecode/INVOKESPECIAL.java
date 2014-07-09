@@ -61,7 +61,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
     try {
       callee = getInvokedMethod(ctx, ti);
     } catch(LoadOnJPFRequired rre) {
-      return ti.getPC(ctx);
+      return ti.getPC();
     }      
 
     if (callee == null){
@@ -76,9 +76,9 @@ public class INVOKESPECIAL extends InstanceInvocation {
       }
     }
 
-    setupCallee(ctx, ti, callee, false); // this creates, initializes and pushes the callee StackFrame
+    setupCallee(ctx, ti, callee); // this creates, initializes and pushes the callee StackFrame
 
-    return ti.getPC(ctx); // we can't just return the first callee insn if a listener throws an exception
+    return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
   }
 
   /**
@@ -106,7 +106,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
     // we don't have to deal with null object calls
 
     if (invokedMethod == null) {
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(ctx, cname);
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cname);
       boolean recursiveLookup = (mname.charAt(0) != '<'); // no hierarchy lookup for <init>
       invokedMethod = ci.getMethod(mname, recursiveLookup);
     }

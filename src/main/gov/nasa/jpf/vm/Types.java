@@ -1017,7 +1017,7 @@ public class Types {
       return instanceOf(type.substring(1), ofType.substring(1));
 
     case T_REFERENCE:
-      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), getTypeName(type));
+      ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(getTypeName(type));
       return ci.isInstanceOf(getTypeName(ofType));
 
     default:

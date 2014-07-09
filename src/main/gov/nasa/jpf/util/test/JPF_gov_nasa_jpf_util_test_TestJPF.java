@@ -52,7 +52,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
 
     DirectCallStackFrame frame = mi.createDirectCallStackFrame(ti, 0);
     frame.setReferenceArgument( 0, objRef, null);
-    ti.pushFrame(NativeMethodInfo.CTX, frame, false);
+    ti.pushFrame(frame);
   }
 
   private boolean initializeTestMethods(MJIEnv env, String[] selectedTests) {

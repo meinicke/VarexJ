@@ -49,14 +49,14 @@ public class ANEWARRAY extends NewArrayInstruction {
       try {
         ti.resolveReferencedClass(compType);
       } catch(LoadOnJPFRequired lre) {
-        return ti.getPC(ctx);
+        return ti.getPC();
       }
     }
 
     // there is no clinit for array classes, but we still have  to create a class object
     // since its a builtin class, we also don't have to bother with NoClassDefFoundErrors
     String clsName = "[" + type;
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(ctx, clsName);
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
 
     if (!ci.isRegistered()) {
       ci.registerClass(ti);

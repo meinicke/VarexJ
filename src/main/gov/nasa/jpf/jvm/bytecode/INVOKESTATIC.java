@@ -47,7 +47,7 @@ public class INVOKESTATIC extends InvokeInstruction {
 
   protected ClassInfo getClassInfo () {
     if (ci == null) {
-      ci = ClassLoaderInfo.getCurrentResolvedClassInfo(FeatureExprFactory.True(), cname);
+      ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cname);
     }
     return ci;
   }
@@ -70,7 +70,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     try {
       callee = getInvokedMethod(ctx, ti);
     } catch (LoadOnJPFRequired lre) {
-      return ti.getPC(ctx);
+      return ti.getPC();
     }
         
     if (callee == null) {
@@ -83,7 +83,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     if ( ciCallee.pushRequiredClinits(ti)) {
       // do class initialization before continuing
       // note - this returns the next insn in the topmost clinit that just got pushed
-      return ti.getPC(ctx);
+      return ti.getPC();
     }
 
     if (callee.isSynchronized()) {
@@ -94,9 +94,9 @@ public class INVOKESTATIC extends InvokeInstruction {
       }
     }
         
-    setupCallee(ctx, ti, callee, false); // this creates, initializes and pushes the callee StackFrame
+    setupCallee(ctx, ti, callee); // this creates, initializes and pushes the callee StackFrame
 
-    return ti.getPC(ctx); // we can't just return the first callee insn if a listener throws an exception
+    return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
   }
 
   public MethodInfo getInvokedMethod(){

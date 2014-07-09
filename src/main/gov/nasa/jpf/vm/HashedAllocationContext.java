@@ -55,7 +55,7 @@ public class HashedAllocationContext implements AllocationContext {
     // cause state leaks (different hash) if there are changed slot values that do not
     // relate to the allocation
     
-    for (StackFrame frame = ti.getTopFrame(FeatureExprFactory.True()); frame != null; frame = frame.getPrevious() ) {
+    for (StackFrame frame = ti.getTopFrame(); frame != null; frame = frame.getPrevious() ) {
       if (!(frame instanceof DirectCallStackFrame)) {
         Instruction insn = frame.getPC().simplify(fexpr).getValue();
         

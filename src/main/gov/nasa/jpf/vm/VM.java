@@ -509,7 +509,7 @@ public abstract class VM {
   protected void pushMainEntry (MethodInfo miMain, String[] args, ThreadInfo tiMain) {
     DirectCallStackFrame frame = miMain.createDirectCallStackFrame(tiMain, 0);
     pushMainEntryArgs( miMain, args, tiMain, frame);    
-    tiMain.pushFrame(FeatureExprFactory.True(), frame, false);
+    tiMain.pushFrame(frame);
   }
 
   protected MethodInfo getMainEntryMethodInfo (String mthName, ClassInfo ciMain) {
@@ -528,7 +528,7 @@ public abstract class VM {
       MethodInfo mi = ci.getMethod("<clinit>()V", false);
       if (mi != null) {
         DirectCallStackFrame frame = mi.createDirectCallStackFrame(tiMain, 0);
-        tiMain.pushFrame(FeatureExprFactory.True(), frame, false);
+        tiMain.pushFrame(frame);
       } else {
         ci.setInitialized();
       }      
@@ -716,7 +716,7 @@ public abstract class VM {
   protected void notifyChoiceGeneratorRegistered (ChoiceGenerator<?>cg, ThreadInfo ti) {
     try {
       for (int i = 0; i < listeners.length; i++) {
-        listeners[i].choiceGeneratorRegistered(this, cg, ti, ti.getPC(FeatureExprFactory.True()).getValue());
+        listeners[i].choiceGeneratorRegistered(this, cg, ti, ti.getPC().getValue());
       }
     } catch (UncaughtException x) {
       throw x;
@@ -1160,7 +1160,7 @@ public abstract class VM {
   // VMListener acquisition
   public Instruction getInstruction () {
     ThreadInfo ti = ThreadInfo.getCurrentThread();
-    return ti.getPC(FeatureExprFactory.True()).getValue();
+    return ti.getPC().getValue();
   }
 
   /**

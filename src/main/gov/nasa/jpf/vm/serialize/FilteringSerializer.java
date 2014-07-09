@@ -281,7 +281,7 @@ public class FilteringSerializer extends AbstractSerializer implements Reference
     // we need to add the thread object itself as a root
     processReference( ti.getThreadObjectRef());
     
-    for (StackFrame frame = ti.getTopFrame(FeatureExprFactory.True()); frame != null; frame = frame.getPrevious()){
+    for (StackFrame frame = ti.getTopFrame(); frame != null; frame = frame.getPrevious()){
       serializeFrame(frame);
     }
   }

@@ -48,12 +48,12 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
   }
   
   public int peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {
-    return ti.getTopFrame(ctx).peek(FeatureExprFactory.True(), 3).getValue();  // ..,ref,idx,long(value)
+    return ti.getTopFrame().peek(FeatureExprFactory.True(), 3).getValue();  // ..,ref,idx,long(value)
   }
 
   @Override
   public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame(ctx).peek(FeatureExprFactory.True(), 2).getValue();
+    return ti.getTopFrame().peek(FeatureExprFactory.True(), 2).getValue();
   }
   
   public void accept(InstructionVisitor insVisitor) {

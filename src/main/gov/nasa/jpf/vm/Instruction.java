@@ -314,7 +314,7 @@ public abstract class Instruction implements Cloneable {
 	 * implemented as ThreadInfo state (TERMINATED), rather than purged stacks
 	 */
 	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
-		return ti.getPC(ctx).mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+		return ti.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {

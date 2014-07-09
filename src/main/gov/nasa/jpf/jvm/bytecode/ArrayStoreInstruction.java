@@ -80,12 +80,12 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
    */
   @Override
   public int peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {
-    return ti.getTopFrame(ctx).peek(ctx, 2).getValue();
+    return ti.getTopFrame().peek(ctx, 2).getValue();
   }
 
   @Override
   public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame(ctx).peek(ctx, 1).getValue();
+    return ti.getTopFrame().peek(ctx, 1).getValue();
   }
 
   protected Instruction checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei){
