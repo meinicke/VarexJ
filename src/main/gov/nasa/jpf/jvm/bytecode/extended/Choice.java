@@ -54,26 +54,26 @@ public class Choice<T> extends Conditional<T> {
 		
 		
 		// TODO revise, causes huge formulas
-//		if (tb instanceof One)             {
-//			if (eb instanceof Choice) {
-//				if (((Choice<T>) eb).thenBranch.equals(tb)) {
-//					return new Choice<>(featureExpr.or(((Choice<T>) eb).featureExpr), tb, ((Choice<T>) eb).elseBranch);
-//				}
-//				if (((Choice<T>) eb).elseBranch.equals(tb)) {
-//					return new Choice<>(featureExpr.orNot(((Choice<T>) eb).featureExpr), tb, ((Choice<T>) eb).thenBranch);
-//				}
-//			}
-//		}
-//		if (eb instanceof One) {
-//			if (tb instanceof Choice) {
-//				if (((Choice<T>) tb).thenBranch.equals(eb)) {
-//					return new Choice<>(featureExpr.andNot(((Choice<T>) tb).featureExpr), ((Choice<T>) tb).elseBranch, eb);
-//				}
-//				if (((Choice<T>) tb).elseBranch.equals(eb)) {
-//					return new Choice<>(featureExpr.and(((Choice<T>) tb).featureExpr), ((Choice<T>) tb).thenBranch, eb);
-//				}
-//			}
-//		}
+		if (tb instanceof One)             {
+			if (eb instanceof Choice) {
+				if (((Choice<T>) eb).thenBranch.equals(tb)) {
+					return new Choice<>(featureExpr.or(((Choice<T>) eb).featureExpr), tb, ((Choice<T>) eb).elseBranch);
+				}
+				if (((Choice<T>) eb).elseBranch.equals(tb)) {
+					return new Choice<>(featureExpr.orNot(((Choice<T>) eb).featureExpr), tb, ((Choice<T>) eb).thenBranch);
+				}
+			}
+		}
+		if (eb instanceof One) {
+			if (tb instanceof Choice) {
+				if (((Choice<T>) tb).thenBranch.equals(eb)) {
+					return new Choice<>(featureExpr.andNot(((Choice<T>) tb).featureExpr), ((Choice<T>) tb).elseBranch, eb);
+				}
+				if (((Choice<T>) tb).elseBranch.equals(eb)) {
+					return new Choice<>(featureExpr.and(((Choice<T>) tb).featureExpr), ((Choice<T>) tb).thenBranch, eb);
+				}
+			}
+		}
 		
 		return new Choice<>((featureExpr), tb, eb);
 	}

@@ -1369,7 +1369,10 @@ public int nLocals;
     //      ^
     Object bAnn = null;
     int ts, td;
-    int t = top();
+    int t = 0;
+    if (attrs != null){
+    	t = top();
+    }
     stack.dup_x1(ctx);
     ts = t; td = t+1;    
     if (attrs != null){

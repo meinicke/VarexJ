@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.Stack;
+import gov.nasa.jpf.vm.StackHandler;
 import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.Map;
@@ -56,20 +57,17 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		Conditional<Integer> allRefs = ti.getCalleeThis(ctx, getArgSize());
-		// final boolean split = allRefs.toList().size() > 1;
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
+		boolean splitRef = false;
+		if (map.size() > 1) {
+			splitRef = true;
+		}
 		for (Integer objRef : map.keySet()) {
-			ctx = ctx.and(map.get(objRef));
-			// }
-
-			// final VirtualInvocation finalThis = this;
-			// return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer,
-			// Conditional<Instruction>>() {
-			//
-			// @Override
-			// public Conditional<Instruction> apply(FeatureExpr ctx, Integer
-			// objRef) {
-
+			// get the first ref
+			if (splitRef) {
+				ctx = ctx.and(map.get(objRef));
+			}
+		
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
 				return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
@@ -95,17 +93,33 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 
 			// set ctx for native method calls
 			 if (callee.isMJI()) {
-				 Map<Stack, FeatureExpr> stacks = ti.getTopFrame().stack.stack.simplify(ctx).toMap();
-				 for (FeatureExpr c : stacks.values()) {
-					 ctx = ctx.and(c);
-					 break;
+				 StackHandler stack = ti.getTopFrame().stack;
+				 if (stack.getStackWidth() > 1) {
+					 boolean split = false;
+					 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
+						 if (stack.peek(ctx, i) instanceof Choice) {
+							 split = true;
+							 break;
+						 }
+					 }
+					 
+					 if (split) {
+						 Map<Stack, FeatureExpr> stacks = stack.stack.simplify(ctx).toMap();
+						 for (FeatureExpr c : stacks.values()) {
+							 ctx = ctx.and(c);
+							 break;
+						 }
+					 }
 				 }
 			 }
 			
 			setupCallee(ctx, ti, callee); // this creates, initializes and
 											// pushes the callee StackFrame
 
-			return new Choice<>(ctx, ti.getPC(), new One<Instruction>(this)).simplify(); // we can't just return the first callee insn
+			if (!splitRef) {
+				return ti.getPC();
+			}
+			return new Choice<>(ctx, ti.getPC(), new One<Instruction>(this)); // we can't just return the first callee insn
 								// if a listener throws an exception
 
 		}

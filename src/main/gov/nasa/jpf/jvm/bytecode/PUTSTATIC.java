@@ -47,7 +47,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 
   @Override
   protected void popOperands1 (FeatureExpr ctx, StackFrame frame) {
-    frame.pop(FeatureExprFactory.True()); // .. val => ..
+    frame.pop(ctx); // .. val => ..
   }
   
   @Override
