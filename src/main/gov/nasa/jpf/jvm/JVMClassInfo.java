@@ -577,9 +577,9 @@ public class JVMClassInfo extends ClassInfo {
       return calleeFrame; 
       
     } else {
-      JVMStackFrame calleeFrame = new JVMStackFrame( callee);
+      JVMStackFrame calleeFrame = new JVMStackFrame(ctx, callee);
       calleeFrame.setCallArguments(ctx, ti);
-      return calleeFrame;      
+      return calleeFrame;
     }
   }
   

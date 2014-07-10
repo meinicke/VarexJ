@@ -28,6 +28,8 @@ public class StackHandler {
 
 	public Integer nLocals = 0;
 
+	private FeatureExpr stackCTX = FeatureExprFactory.True();
+
 	public int getStackWidth() {
 		return stack.toList().size();
 	}
@@ -62,6 +64,10 @@ public class StackHandler {
 	public StackHandler() {
 		stack = new One<>(new Stack(0));
 		locals = new Conditional[0];
+	}
+	
+	public void setCtx(FeatureExpr ctx) {
+		this.stackCTX  = ctx;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -383,9 +389,14 @@ public class StackHandler {
 				if (f.and(ctx).isTautology()) {
 					return new One<>(clone);
 				}
+				if (stackCTX.equivalentTo(f.and(ctx))) {
+					return new One<>(clone);
+				}
 				if (f.equivalentTo(f.and(ctx))) {
 					return new One<>(clone);
 				}
+				
+				
 				if (f.equivalentTo(f.andNot(ctx))) {
 					return new One<>(stack);
 				}
@@ -446,7 +457,11 @@ public class StackHandler {
 				default:
 					return null;
 				}
-				stack = new Choice<>(f, new One<>(clone), stack);
+				if (stackCTX.equivalentTo(f)) {
+					stack = new One<>(clone);
+				} else {
+					stack = new Choice<>(f, new One<>(clone), stack);
+				}
 				return (Conditional<T>) new One<>(res);
 				
 			}
@@ -520,7 +535,7 @@ public class StackHandler {
 		}).simplify();
 	}
 	
-	public boolean isRef(FeatureExpr ctx, final int offset) {// cahange to Conditional<Boolean> 
+	public boolean isRef(FeatureExpr ctx, final int offset) {// cahange to Conditional<Boolean>
 		return stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Boolean>>() {
 
 			@Override
@@ -531,7 +546,7 @@ public class StackHandler {
 				return new One<>(false);
 			}
 
-		}).simplify(ctx).getValue();
+		}).simplify().getValue();
 	}
 
 	// TODO remove
@@ -773,12 +788,12 @@ public class StackHandler {
 				if (f.equivalentTo(f.and(ctx))) {
 					return new One<>(clone);
 				}
+				if (stackCTX.equivalentTo(f.and(ctx))) {
+					return new One<>(clone);
+				}
 				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
 	}
-
-
-
 
 }

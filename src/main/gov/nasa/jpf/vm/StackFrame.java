@@ -117,6 +117,8 @@ public int nLocals;
 
   static final int[] EMPTY_ARRAY = new int[0];
   static final FixedBitSet EMPTY_BITSET = new BitSet64();
+  
+  
 
   protected StackFrame (MethodInfo callee, int nLocals, int nOperands){
     mi = callee;
@@ -142,6 +144,11 @@ public int nLocals;
   public StackFrame (MethodInfo callee){
     this( callee, callee.getMaxLocals(), callee.getMaxStack());
   }
+  
+  public StackFrame(FeatureExpr ctx, MethodInfo callee) {
+	  this( callee, callee.getMaxLocals(), callee.getMaxStack());
+	  stack.setCtx(ctx);
+  }
 
 
 
@@ -161,7 +168,9 @@ public int nLocals;
     stack = new StackHandler(nLocals, nOperands);
   }
   
-  /**
+  
+
+/**
    * re-execute method from the beginning - use with care
    */
   public void reset() {

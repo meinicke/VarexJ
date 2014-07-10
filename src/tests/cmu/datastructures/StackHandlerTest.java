@@ -719,5 +719,37 @@ public class StackHandlerTest {
 		Double res = stack.popDouble(FeatureExprFactory.True()).getValue();
 		assertEquals(fd, res);
 	}
+	
+	@Test
+	public void ctxTest() throws Exception {
+		StackHandler stack = new StackHandler(0, 4);
+		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
+		FeatureExpr f2 = FeatureExprFactory.createDefinedExternal("f2");
+		stack.setCtx(f1);
+		stack.push(f1, new One<>(42), false);
+		assertEquals(1, stack.getStackWidth());
+		System.out.println(stack);
+		stack.push(f2, new One<>(43), false);
+		
+		assertEquals(2, stack.getStackWidth());
+		System.out.println(stack);
+	}
+	
+	@Test
+	public void ctxTest2() throws Exception {
+		StackHandler stack = new StackHandler(0, 4);
+		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
+		FeatureExpr f2 = FeatureExprFactory.createDefinedExternal("f2");
+		stack.setCtx(f1);
+		stack.push(f1, new One<>(42), false);
+		stack.push(f1, new One<>(43), true);
+		assertEquals(1, stack.getStackWidth());
+		
+		System.out.println(stack);
+		
+		stack.pop(f1);
+		System.out.println(stack);
+		assertEquals(1, stack.getStackWidth());
+	}
 
 }

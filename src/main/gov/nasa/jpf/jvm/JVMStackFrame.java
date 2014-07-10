@@ -36,6 +36,10 @@ public class JVMStackFrame extends StackFrame {
 		super(callee);
 	}
 
+	public JVMStackFrame(FeatureExpr ctx, MethodInfo callee) {
+		super(ctx, callee);
+	}
+	
 	/**
 	 * creates callerSlots dummy Stackframe for testing of operand/local
 	 * operations NOTE - TESTING ONLY! this does not have callerSlots MethodInfo
