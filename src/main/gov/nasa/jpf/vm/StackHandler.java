@@ -26,6 +26,8 @@ public class StackHandler {
 
 	public int length = 0;
 
+	public Integer nLocals = 0;
+
 	public int getStackWidth() {
 		return stack.toList().size();
 	}
@@ -50,6 +52,7 @@ public class StackHandler {
 
 	@SuppressWarnings("unchecked")
 	public StackHandler(int nLocals, int nOperands) {
+		this.nLocals = nLocals;
 		length = nLocals + nOperands;
 		locals = new Conditional[nLocals];
 		stack = new One<>(new Stack(nOperands));

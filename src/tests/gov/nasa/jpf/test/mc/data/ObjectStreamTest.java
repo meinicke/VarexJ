@@ -125,7 +125,7 @@ public class ObjectStreamTest extends TestJPF {
   @Test
   public void testWriteReadArrayList() {
     if (!isJPFRun()) {
-      ArrayList<Integer> al = new ArrayList<Integer>();
+      ArrayList<Integer> al = new ArrayList<>();
       al.add(1);
       al.add(2);
       al.add(3);

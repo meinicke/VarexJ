@@ -38,7 +38,6 @@ import sun.misc.Unsafe;
  * stored as object attributes, but that would only partly solve the problem
  * because we still would have to backtrack the internal state of such objects
  */
-@SuppressWarnings("sunapi")
 public class JPF_java_util_Random extends NativePeer {
 
   static class Delegatee extends Random {

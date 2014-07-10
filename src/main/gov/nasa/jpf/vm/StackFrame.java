@@ -157,11 +157,8 @@ public int nLocals;
    */
   protected StackFrame (int nLocals, int nOperands){
     stackBase = nLocals;
-    
-//    slots = new int[nLocals + nOperands];
+    this.nLocals = nLocals;
     stack = new StackHandler(nLocals, nOperands);
-//    isRef = createReferenceMap(stack.length);
-//    top() = nLocals-1;  // index, not size!
   }
   
   /**
@@ -171,21 +168,6 @@ public int nLocals;
     pc = new One<>(mi.getInstruction(0)); // TODO ???
   }  
   
-
-
-//  protected FixedBitSet createReferenceMap (int nSlots){
-//    if (nSlots <= 64){
-//      return new BitSet64();
-//    } else if (nSlots <= 256){
-//      return new BitSet256();  
-//    } else if (nSlots <= 1024) {
-//    	return new BitSet1024();
-//    }
-//    else {
-//      throw new JPFException("too many slots in " + mi.getFullName() + " : " + nSlots);
-//    }
-//  }
-
   public boolean isNative() {
     return false;
   }
@@ -255,11 +237,11 @@ public int nLocals;
         case 'I':
           return new Integer((int) v);
         case 'J':
-          return new Long(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)); // Java is big endian, Types expects low,high TODO remove +1
+          return new Long(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)); // Java is big endian, Types expects low,high
         case 'F':
           return new Float(Float.intBitsToFloat(v));
         case 'D':
-          return new Double(Double.longBitsToDouble(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)));//TODO rempve +1
+          return new Double(Double.longBitsToDouble(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)));
         default:  // reference
           if (v >= 0) {
             return VM.getVM().getHeap().get(v);

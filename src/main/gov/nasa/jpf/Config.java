@@ -827,7 +827,7 @@ public class Config extends Properties {
       String k = expandString(null, key);
 
       if (!(value == null)) { // add or overwrite entry
-        String v = (String) value;
+        String v = value;
 
         if (k.charAt(k.length() - 1) == '+') { // the append hack
           k = k.substring(0, k.length() - 1);

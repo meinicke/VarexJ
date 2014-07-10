@@ -47,7 +47,7 @@ public class ObjectListTest extends TestJPF {
   public void testListIteration() {
     Object[] v = { new Integer(2), "one" };
     
-    for (Object a: ObjectList.iterator(attr)){
+    for (@SuppressWarnings("unused") Object a: ObjectList.iterator(attr)){
       fail("list should be empty");
     }
     

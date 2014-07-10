@@ -667,7 +667,7 @@ public class ClassLoaderInfo
    * enumeration of the URL objects.
    */
   public String[] findResources (String resourceName){
-    ArrayList<String> resources = new ArrayList(0);
+    ArrayList<String> resources = new ArrayList<>(0);
     for (String cpe : getClassPathElements()) {
       String URL = getResourceURL(cpe, resourceName);
       if(URL != null) {

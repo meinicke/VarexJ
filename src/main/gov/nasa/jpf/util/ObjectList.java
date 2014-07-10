@@ -220,7 +220,7 @@ public abstract class ObjectList {
     if (head == null){
       return (TypedIterator<A>) emptyTypedIterator;
     } else {
-      return new TypedIterator<A>(head, type);
+      return new TypedIterator<>(head, type);
     }
   }
   

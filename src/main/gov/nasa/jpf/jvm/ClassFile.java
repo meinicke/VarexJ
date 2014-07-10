@@ -1462,7 +1462,7 @@ public class ClassFile extends BinaryClassSource {
    */
    public void parseSignatureAttr(ClassFileReader reader, Object tag){
      int cpIdx = readU2();
-     setSignature(reader, tag, (String)utf8At(cpIdx));
+     setSignature(reader, tag, utf8At(cpIdx));
    }
 
 

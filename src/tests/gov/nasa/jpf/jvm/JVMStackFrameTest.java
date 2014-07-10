@@ -160,7 +160,7 @@ public class JVMStackFrameTest extends TestJPF {
 
     frame.pushDouble(value);
 
-    Object obj_Double = frame.getLocalValueObject(new LocalVarInfo("testDouble", "D", "D", 0, 0, frame.getTopPos() -1));
+    Object obj_Double = frame.getLocalValueObject(new LocalVarInfo("testDouble", "D", "D", 0, 0, frame.getTopPos() - 1));
     assertTrue(obj_Double != null);
     assertTrue(obj_Double instanceof Double);
 

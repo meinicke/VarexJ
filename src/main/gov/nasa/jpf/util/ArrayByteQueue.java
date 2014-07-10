@@ -50,7 +50,7 @@ public class ArrayByteQueue  implements ObjectQueue<Byte>, Cloneable {
       if (remaining == 0){
         throw new NoSuchElementException();
       } else {
-        Byte e = (Byte) buffer[next];
+        Byte e = buffer[next];
         next = (next+1) % buffer.length;
         remaining--;
         return e;
@@ -75,7 +75,7 @@ public class ArrayByteQueue  implements ObjectQueue<Byte>, Cloneable {
         throw new NoSuchElementException();
       }
       
-      Byte e = (Byte) buffer[next];
+      Byte e = buffer[next];
       next++;
       return e;      
     }

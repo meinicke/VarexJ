@@ -18,14 +18,14 @@ public class GPLTest extends TestJPF {
 		}
 	}
 	
-	@Test
+	@Test//(8.024s)
 	public void simpleTest() {
 		if (verifyNoPropertyViolation(RANDOM_SEARCH, GPL_JAR)) {
-			run("Simple.txt");
+				run("Simple.txt");
 		}
 	}
 	
-	@Test
+	@Test//(88.229)
 	public void network4Test() {
 		if (verifyNoPropertyViolation(RANDOM_SEARCH, GPL_JAR)) {
 			run("gpl-4-network-benchmark.txt");
