@@ -17,7 +17,7 @@ public class ExampleRunner extends TestJPF {
 //	 		jpf.run();
 //	 	}
 	
-	 @Test
+//	 @Test
 	public void runGPL() {
 		 
 		// TODO revise (call example directly?)

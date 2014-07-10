@@ -63,11 +63,10 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			splitRef = true;
 		}
 		for (Integer objRef : map.keySet()) {
-			// get the first ref
 			if (splitRef) {
 				ctx = ctx.and(map.get(objRef));
 			}
-		
+
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
 				return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
@@ -92,13 +91,14 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			}
 
 			// set ctx for native method calls
-			 if (callee.isMJI()) {
+			if (callee.isMJI()) {
 				 StackHandler stack = ti.getTopFrame().stack;
 				 if (stack.getStackWidth() > 1) {
 					 boolean split = false;
 					 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
 						 if (stack.peek(ctx, i) instanceof Choice) {
 							 split = true;
+							 splitRef = true;
 							 break;
 						 }
 					 }
@@ -111,7 +111,16 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 						 }
 					 }
 				 }
-			 }
+			}
+			
+			
+//			 if (callee.isMJI()) {
+//				 Map<Stack, FeatureExpr> stacks = ti.getTopFrame().stack.stack.simplify(ctx).toMap();
+//				 for (FeatureExpr c : stacks.values()) {
+//					 ctx = ctx.and(c);
+//					 break;
+//				 }
+//			 }
 			
 			setupCallee(ctx, ti, callee); // this creates, initializes and
 											// pushes the callee StackFrame
@@ -119,7 +128,8 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			if (!splitRef) {
 				return ti.getPC();
 			}
-			return new Choice<>(ctx, ti.getPC(), new One<Instruction>(this)); // we can't just return the first callee insn
+			
+			return new Choice<>(ctx, ti.getPC(), new One<Instruction>(this)).simplify(); // we can't just return the first callee insn
 								// if a listener throws an exception
 
 		}

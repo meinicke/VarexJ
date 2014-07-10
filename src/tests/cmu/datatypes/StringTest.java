@@ -1,8 +1,9 @@
-package cmu;
+package cmu.datatypes;
 
 import gov.nasa.jpf.annotation.MyAnnotation;
 import gov.nasa.jpf.util.test.TestJPF;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class StringTest extends TestJPF {
@@ -29,7 +30,6 @@ public class StringTest extends TestJPF {
 		}
 	}
 	
-	// TODO implement
 	@Test
 	public void printConditionalTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -37,8 +37,41 @@ public class StringTest extends TestJPF {
 			if (x) {
 				i++;
 			}
-			System.out.println(i);
+			System.out.println(i);		
+		}
+	}
+	
+	@Test
+	public void concatenationTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s = "A";
+			if (x) {
+				s = s + "X";
+			}
 			
+			if (x) {
+				assertEquals("AX", s);
+				System.out.println(s);
+			} else {
+				assertEquals("A", s);
+				System.out.println(s);
+			}
+			System.out.println("----------------------");
+			
+			System.out.println(y);
+			System.out.println(s);
+		}
+	}
+	
+	@Ignore @Test// TODO implement
+	public void concatenationTest2() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s = "A";
+			if (x) {
+				s = s + "X";
+			}
+			
+			System.out.println(y + s);
 		}
 	}
 
