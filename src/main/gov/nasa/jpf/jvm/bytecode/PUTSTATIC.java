@@ -60,7 +60,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 	  AnnotationInfo[] annotations = getFieldInfo().getAnnotations();
 		boolean annotated = false;
 		for (AnnotationInfo ai : annotations) {
-			if (ai.getName().equals("gov.nasa.jpf.annotation.MyAnnotation")) {
+			if (ai.getName().equals(gov.nasa.jpf.annotation.Conditional.class.getName())) {
 //				System.out.println("Found Feature: " + fname);
 				annotated = true;
 			}

@@ -1,6 +1,6 @@
 package cmu;
 
-import gov.nasa.jpf.annotation.MyAnnotation;
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
@@ -11,30 +11,30 @@ public class VariabilityAwareTest extends TestJPF {
 
 	static boolean RUN_WITH_JPF = true;
 
-	@MyAnnotation
+	@Conditional
 	static boolean a = true;
-	@MyAnnotation
+	@Conditional
 	static boolean b = true;
-	@MyAnnotation
+	@Conditional
 	static boolean c = true;
-	@MyAnnotation
+	@Conditional
 	static boolean d = true;
-	@MyAnnotation
+	@Conditional
 	static boolean e = true;
-	@MyAnnotation
+	@Conditional
 	static boolean f = true;
-	@MyAnnotation
+	@Conditional
 	static boolean g = true;
-	@MyAnnotation
+	@Conditional
 	static boolean h = true;
-	@MyAnnotation
+	@Conditional
 	static boolean j = true;
 
-	@MyAnnotation
+	@Conditional
 	static boolean x = true;
-	@MyAnnotation
+	@Conditional
 	static boolean y = true;
-	@MyAnnotation
+	@Conditional
 	static boolean z = true;
 
 	@Test
