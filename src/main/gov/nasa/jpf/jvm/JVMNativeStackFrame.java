@@ -78,7 +78,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
         break;
 
       case Types.T_INT:
-        ival = callerFrame.peek(ctx, stackOffset).simplify(ctx);
+        ival = callerFrame.peek(ctx, stackOffset);
         a[j] = new Integer(ival.getValue().intValue());
 
         break;

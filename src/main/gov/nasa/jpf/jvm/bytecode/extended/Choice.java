@@ -21,6 +21,12 @@ public class Choice<T> extends Conditional<T> {
 	@Override
 	public <U> Conditional<U> mapfr(FeatureExpr inFeature,
 			BiFunction<FeatureExpr, T, Conditional<U>> f) {
+		if (inFeature == null) {
+			Conditional<U> newResultA = thenBranch.mapfr(null, f);
+			Conditional<U> newResultB = elseBranch.mapfr(null, f);
+			return new Choice<>((featureExpr), newResultA, newResultB);
+		}
+		
 		Conditional<U> newResultA = thenBranch.mapfr(inFeature.and(featureExpr), f);
 		Conditional<U> newResultB = elseBranch.mapfr(inFeature.and(featureExpr.not()), f);
 		return new Choice<>((featureExpr), newResultA, newResultB);
@@ -29,14 +35,20 @@ public class Choice<T> extends Conditional<T> {
 
 	@Override
 	public Conditional<T> simplify(FeatureExpr ctx) {
-		if ((ctx.and(featureExpr)).isContradiction()) {
+//		if (thenBranch instanceof One && elseBranch instanceof One && thenBranch.getValue().equals(elseBranch.getValue())) {
+//			return thenBranch;
+//		}
+		
+		FeatureExpr and = ctx.and(featureExpr);
+		if (and.isContradiction()) {
 			return elseBranch.simplify(ctx.andNot(featureExpr));
 		}
-		if ((ctx.andNot(featureExpr)).isContradiction()) {
-			return thenBranch.simplify(ctx.and(featureExpr));
+		FeatureExpr andNot = ctx.andNot(featureExpr);
+		if (andNot.isContradiction()) {
+			return thenBranch.simplify(and);
 		}
-		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplify(ctx.and(featureExpr));
-		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplify(ctx.andNot(featureExpr));
+		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplify(and);
+		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplify(andNot);
 		
 		if (tb == null) {
 			return eb;
@@ -44,8 +56,6 @@ public class Choice<T> extends Conditional<T> {
 		if (eb == null) {
 			return tb;
 		}
-		
-		
 		
 		if (tb.equals(eb)) {
 			return tb;

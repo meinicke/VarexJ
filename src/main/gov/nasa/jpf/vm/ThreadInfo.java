@@ -1924,6 +1924,8 @@ public class ThreadInfo extends InfoObject
         		int min = Integer.MAX_VALUE;
         		Instruction ins = null;
         		boolean retInstr = false;
+        		currentMethod = top.mi;
+        		
 	        	for (Instruction i : pc.toList()) {
 	        		if (i != null) {
 	        			if (!(i instanceof ReturnInstruction)) {
@@ -1952,16 +1954,17 @@ public class ThreadInfo extends InfoObject
           				if (debug) {
           					System.out.println("exe: " + e + " " + ctx);
 						}
-          				next = e.execute(ctx, ti).simplify(ctx);
+          				next = e.execute(ctx, ti);
           				// the executed instruction defines the next method 
-          				
+          				break;
           			} else if (e != null && ins == null && retInstr && oldMethod == e.getMethodInfo()) {
           				FeatureExpr ctx = map.get(e);
           				if (debug) {
           					System.out.println("exe: " + e + " " + ctx);
           				}
           				
-          				next = e.execute(ctx, ti).simplify(ctx);
+          				next = e.execute(ctx, ti);
+          				break;
           				// the executed instruction defines the next method 
 //          				for (Instruction i : next.toList()) {
 //          					if (i != null) {
@@ -1975,14 +1978,14 @@ public class ThreadInfo extends InfoObject
           			}
 	        	}
 	        	
-	        	for (Instruction i : next.toList()) {
-  					if (i != null) {
-      					currentMethod = i.getMethodInfo();
-      					break;
-  					} else {
-  						currentMethod = null;
-  					}
-  				}
+//	        	for (Instruction i : next.toList()) {
+//  					if (i != null) {
+//      					currentMethod = i.getMethodInfo();
+//      					break;
+//  					} else {
+//  						currentMethod = null;
+//  					}
+//  				}
 	        	
 	        	final Conditional<Instruction> finalNext = next; 
 	        	final Instruction finalins = ins;
@@ -1993,25 +1996,9 @@ public class ThreadInfo extends InfoObject
 	          		@Override
 	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction x) {
 	          			if (x != null && x.getPosition() == finalMin && x.equals(finalins)) {
-	          				return finalNext.simplify(ctx);
-	          				
-//	          				if (main) {
-//	          					System.out.println("exe: " + x + " if " + ctx);
-//	          				}
-//	          				Conditional<Instruction> next = x.execute(ctx, ti).simplify(ctx);
-//	          				
-//	          				// the executed instruction defines the next method 
-//	          				for (Instruction i : next.toList()) {
-//	          					if (i != null) {
-//		          					currentMethod = i.getMethodInfo();
-//		          					break;
-//	          					} else {
-//	          						currentMethod = null;
-//	          					}
-//	          				}
-//	          				return next;
+	          				return finalNext;
 	          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {
-	          				return finalNext.simplify(ctx);
+	          				return finalNext;
 	          			}
 	          			return new One<>(x);
 	          		} 

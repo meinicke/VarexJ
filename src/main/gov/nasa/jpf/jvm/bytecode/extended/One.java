@@ -12,19 +12,9 @@ public class One<T> extends Conditional<T> {
 	
 	public One(T value) {
 		this.value = value;
-		if (value instanceof Conditional) {
-			System.out.println("One with conditional value: " + toString());
-			for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
-				System.out.println(e);
-			}
-		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public T getValue() {
-		if (value instanceof Conditional) {
-			return ((Conditional<T>) value).getValue();
-		}
 		return value;
 	}
 	

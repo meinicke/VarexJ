@@ -11,14 +11,14 @@ public class GPLTest extends TestJPF {
 	private static final String RANDOM_SEARCH = "+search.class=.search.RandomSearch";
 	private static final String SEP = System.getProperty("file.separator");
 	
-	@Ignore @Test
+	@Ignore @Test//(340.205s)
 	public void random1Test() {
 		if (verifyNoPropertyViolation(RANDOM_SEARCH, GPL_JAR)) {
 			run("random1-gpl-benchmark.txt");
 		}
 	}
 	
-	@Test//(8.024s)
+	@Test//(5.397s)
 	public void simpleTest() {
 		if (verifyNoPropertyViolation(RANDOM_SEARCH, GPL_JAR)) {
 				run("Simple.txt");

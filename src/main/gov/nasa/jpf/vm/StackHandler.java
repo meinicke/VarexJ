@@ -165,7 +165,7 @@ public class StackHandler {
 	 *            The index of the local variable
 	 */
 	public <T> void storeOperand(final FeatureExpr ctx, final int index) {
-		locals[index] = stack.simplify(ctx).mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
+		locals[index] = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
 
 			@Override
 			public Conditional<Entry> apply(FeatureExpr f, Stack stack) {
@@ -173,23 +173,25 @@ public class StackHandler {
 				if (oldValue == null) {
 					oldValue = new One<>(new Entry(MJIEnv.NULL, false));
 				}
-				if (f.and(ctx).isContradiction()) {
+//				FeatureExpr and = f.and(ctx);
+				if (f.isContradiction()) {
 					return oldValue;
 				}
-				if (f.and(ctx).isTautology()) {
+//				if (f.equivalentTo(f.andNot(ctx))) {
+//					return oldValue;
+//				}
+				if (f.isTautology()) {
 					boolean isRef = stack.isRef(0);
 					return new One<>(new Entry(stack.pop(), isRef));
 				}
-				if (f.equivalentTo(f.and(ctx))) {
-					boolean isRef = stack.isRef(0);
-					return new One<>(new Entry(stack.pop(), isRef));
-				}
-				if (f.equivalentTo(f.andNot(ctx))) {
-					return oldValue;
-				}
-				;
+//				if (f.equivalentTo(and)) {
+//					boolean isRef = stack.isRef(0);
+//					return new One<>(new Entry(stack.pop(), isRef));
+//				}
+				
+				
 				boolean isRef = stack.isRef(0);
-				return new Choice<>(ctx, new One<>(new Entry(stack.pop(), isRef)), oldValue);
+				return new Choice<>(f, new One<>(new Entry(stack.pop(), isRef)), oldValue);
 			}
 		}).simplify();
 		stack = stack.simplify();
@@ -308,13 +310,13 @@ public class StackHandler {
 			if (locals[index] == null) {
 				return false;
 			}
-			return locals[index].simplify(ctx).mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Entry, Conditional<Boolean>>() {
+			return locals[index].simplify(ctx).map(new Function<Entry, Boolean>() {
 	
 				@Override
-				public Conditional<Boolean> apply(FeatureExpr x, Entry y) {
-					return new One<>(y.isRef);
+				public Boolean apply(Entry y) {
+					return y.isRef;
 				}
-			}).simplify().getValue();
+			}).simplify().getValue();// TODO bad simplify
 		} else {
 			final int i = index - locals.length;
 			return stack.simplify(ctx).map(new Function<Stack, Boolean>() {
@@ -349,7 +351,7 @@ public class StackHandler {
 	@SuppressWarnings("unchecked")
 	public <T,U> void push(final FeatureExpr ctx, final T value, final boolean isRef) {
 		if (value instanceof Conditional) {
-			((Conditional<U>) value).simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, U, Conditional<U>>() {
+			((Conditional<U>) value).mapf(ctx, new BiFunction<FeatureExpr, U, Conditional<U>>() {
 
 				@Override
 				public Conditional<U> apply(FeatureExpr ctx, U value) {
@@ -362,13 +364,17 @@ public class StackHandler {
 			return;
 		}
 		
-		stack = stack.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
+		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
 			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
-				if (f.and(ctx).isContradiction()) {
+//				FeatureExpr and = f.and(ctx);
+				if (f.isContradiction()) {
 					return new One<>(stack);
 				}
+//				if (f.equivalentTo(f.andNot(ctx))) {
+//					return new One<>(stack);
+//				}
 				Stack clone = stack.copy();
 				if (value instanceof Integer) {
 					clone.push((Integer) value, isRef);
@@ -386,20 +392,17 @@ public class StackHandler {
 				} else {
 					throw new RuntimeException(value + " cannot be pushed to the stack.");					
 				}
-				if (f.and(ctx).isTautology()) {
-					return new One<>(clone);
-				}
-				if (stackCTX.equivalentTo(f.and(ctx))) {
-					return new One<>(clone);
-				}
-				if (f.equivalentTo(f.and(ctx))) {
+//				if (and.isTautology()) {
+//					return new One<>(clone);
+//				}
+//				
+//				if (f.equivalentTo(and)) {
+//					return new One<>(clone);
+//				}
+				if (stackCTX.equivalentTo(f)) {
 					return new One<>(clone);
 				}
 				
-				
-				if (f.equivalentTo(f.andNot(ctx))) {
-					return new One<>(stack);
-				}
 				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
@@ -427,12 +430,13 @@ public class StackHandler {
 			@SuppressWarnings("unchecked")
 			@Override
 			public Conditional<T> apply(FeatureExpr f, Stack s) {
-				if (f.and(ctx).isContradiction()) {
-					return null;
-				}
-				if (f.equivalentTo(f.andNot(ctx))) {
-					return null;
-				}
+//				FeatureExpr and = f.and(ctx);
+//				if (and.isContradiction()) {
+//					return null;
+//				}
+//				if (f.equivalentTo(f.andNot(ctx))) {
+//					return null;
+//				}
 				
 				Stack clone = s.copy();
 				Number res = null;
@@ -471,25 +475,30 @@ public class StackHandler {
 	}
 
 	public void pop(final FeatureExpr ctx, final int n) {
-		stack = stack.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
+		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
 			public Conditional<Stack> apply(FeatureExpr f, Stack s) {
-				if (f.and(ctx).isContradiction()) {
+//				FeatureExpr and = f.and(ctx);
+				if (f.isContradiction()) {
 					return new One<>(s);
 				}
-				if (f.and(ctx).equivalentTo(f.andNot(ctx))) {
-					return new One<>(s);
-				}
+//				if (and.equivalentTo(f.andNot(ctx))) {
+//					return new One<>(s);
+//				}
 				Stack clone = s.copy();
 				int i = n;
 				while (i > 0) {
 					clone.pop();
 					i--;
 				}
-				return new Choice<>(ctx.and(f), new One<>(clone), new One<>(s));
+				if (f.isTautology()) {
+					return new One<>(clone);
+				}
+				
+				return new Choice<>(f, new One<>(clone), new One<>(s));
 			}
-		}).simplify();
+		}).simplify();// TODO bad simplify
 	}
 
 	public Conditional<Integer> peek(FeatureExpr ctx) {
@@ -513,40 +522,40 @@ public class StackHandler {
 	}
 	
 	private <T> Conditional<T> peek(FeatureExpr ctx, final int offset, final Type t) {
-		return stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<T>>() {
+		return stack.simplify(ctx).map(new Function<Stack, T>() {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public Conditional<T> apply(FeatureExpr ctx, Stack stack) {
+			public T apply(Stack stack) {
 				switch (t) {
 				case DOUBLE:
-					return (Conditional<T>) new One<>(Types.intsToDouble(stack.peek(offset), stack.peek(offset + 1)));
+					return (T) (Double) Types.intsToDouble(stack.peek(offset), stack.peek(offset + 1));
 				case FLOAT:
-					return (Conditional<T>) new One<>(Types.intToFloat(stack.peek(offset)));
+					return (T) (Float) Types.intToFloat(stack.peek(offset));
 				case INT:
-					return (Conditional<T>) new One<>(stack.peek(offset));
+					return (T) stack.peek(offset);
 				case LONG:
-					return (Conditional<T>) new One<>(Types.intsToLong(stack.peek(offset), stack.peek(offset + 1)));
+					return (T) (Long) Types.intsToLong(stack.peek(offset), stack.peek(offset + 1));
 				default:
 					return null;
 				}
 			}
 
-		}).simplify();
+		}).simplify();// TODO bad simplify
 	}
 	
-	public boolean isRef(FeatureExpr ctx, final int offset) {// cahange to Conditional<Boolean>
-		return stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Boolean>>() {
+	public boolean isRef(FeatureExpr ctx, final int offset) {// change to Conditional<Boolean>
+		return stack.simplify(ctx).map(new Function<Stack, Boolean>() {
 
 			@Override
-			public Conditional<Boolean> apply(FeatureExpr ctx, Stack y) {
-				if (ctx.isSatisfiable()) {
-					return new One<>(y.isRef(offset));
-				}
-				return new One<>(false);
+			public Boolean apply(Stack y) {
+//				if (ctx.isSatisfiable()) {
+					return y.isRef(offset);
+//				}
+//				return new One<>(false);
 			}
 
-		}).simplify().getValue();
+		}).simplify().getValue();// TODO bad simplify
 	}
 
 	// TODO remove
@@ -568,7 +577,7 @@ public class StackHandler {
 			public Conditional<Integer> apply(FeatureExpr ctx, Stack y) {
 				return new One<>(y.top);
 			}
-		}).simplify();
+		}).simplify();// TODO bad simplify
 	}
 
 	public void setTop(final FeatureExpr ctx, final int i) {
@@ -576,15 +585,16 @@ public class StackHandler {
 
 			@Override
 			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
-				if (f.and(ctx).isContradiction()) {
+				FeatureExpr and = f.and(ctx);
+				if (and.isContradiction()) {
 					return new One<>(stack);
 				}
 				Stack clone = stack.copy();
 				clone.top = i;
-				if (f.and(ctx).isTautology()) {
+				if (and.isTautology()) {
 					return new One<>(clone);
 				}
-				if (f.equivalentTo(f.and(ctx))) {
+				if (f.equivalentTo(and)) {
 					return new One<>(clone);
 				}
 				if (f.equivalentTo(f.andNot(ctx))) {
@@ -601,15 +611,16 @@ public class StackHandler {
 
 			@Override
 			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
-				if (f.and(ctx).isContradiction()) {
+				FeatureExpr and = f.and(ctx);
+				if (and.isContradiction()) {
 					return new One<>(stack);
 				}
 				Stack clone = stack.copy();
 				clone.clear();
-				if (f.and(ctx).isTautology()) {
+				if (and.isTautology()) {
 					return new One<>(clone);
 				}
-				if (f.equivalentTo(f.and(ctx))) {
+				if (f.equivalentTo(and)) {
 					return new One<>(clone);
 				}
 				if (f.equivalentTo(f.andNot(ctx))) {
@@ -744,16 +755,16 @@ public class StackHandler {
 	}
 	
 	void function(final FeatureExpr ctx, final StackInstruction instruction) {
-		stack = stack.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
+		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
 			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
-				if (f.and(ctx).isContradiction()) {
+				if (f.isContradiction()) {
 					return new One<>(stack);
 				}
-				if (f.equivalentTo(f.andNot(ctx))) {
-					return new One<>(stack);
-				}
+//				if (f.equivalentTo(f.andNot(ctx))) {
+//					return new One<>(stack);
+//				}
 				
 				Stack clone = stack.copy();
 				switch (instruction) {
@@ -782,13 +793,13 @@ public class StackHandler {
 					throw new RuntimeException(instruction + "not supported");
 				}
 				
-				if (f.and(ctx).isTautology()) {
+				if (f.isTautology()) {
 					return new One<>(clone);
 				}
-				if (f.equivalentTo(f.and(ctx))) {
-					return new One<>(clone);
-				}
-				if (stackCTX.equivalentTo(f.and(ctx))) {
+//				if (f.equivalentTo(f)) {
+//					return new One<>(clone);
+//				}
+				if (stackCTX.equivalentTo(f)) {
 					return new One<>(clone);
 				}
 				return new Choice<>(ctx, new One<>(clone), new One<>(stack));

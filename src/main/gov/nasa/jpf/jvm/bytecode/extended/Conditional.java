@@ -15,18 +15,18 @@ public abstract class Conditional<T> {
 	
 //  def map[U](f: T => U): Conditional[U] = mapr(x => One(f(x)))
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public <U> Conditional<U> map(final Function<T,U>f) {
-		return mapr(new Function<T,Conditional<U>>() {
+	public <U> Conditional<U> map(final Function<T,U> f) {
+		return mapfr(null, new BiFunction<FeatureExpr, T, Conditional<U>>() {
 
-			public Conditional<U> apply(T x) {
+			public Conditional<U> apply(FeatureExpr c, T x) {
 				return new One(f.apply(x));
 			}
 			
-		});		
+		});
 	}
 	
 //  def mapr[U](f: T => Conditional[U]): Conditional[U] = mapfr(True, (c, x) => f(x))
-	public<U, C> Conditional<U> mapr(final Function<T, Conditional<U>>f) {
+	public<U, C> Conditional<U> mapr(final Function<T, Conditional<U>> f) {
 		return mapfr(True, new BiFunction<FeatureExpr, T, Conditional<U>>() {
 
 			public Conditional<U> apply(FeatureExpr c, T x) {
@@ -61,7 +61,7 @@ public abstract class Conditional<T> {
 	
 	public Map<T, FeatureExpr> toMap() {
 		Map<T,FeatureExpr> map = new HashMap<>();
-		toMap(FeatureExprFactory.True(), map);
+		toMap(True, map);
 		return map;
 	}
     

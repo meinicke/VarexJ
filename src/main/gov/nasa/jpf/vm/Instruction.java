@@ -314,23 +314,23 @@ public abstract class Instruction implements Cloneable {
 	 * implemented as ThreadInfo state (TERMINATED), rather than purged stacks
 	 */
 	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
-		return ti.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+		return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
-				if (f.and(ctx).isContradiction()) {
+				if (f.isContradiction()) {
 					return new One<>(y);
 				}
-				if (f.and(ctx).isTautology()) {
+				if (f.isTautology()) {
 					return new One<>(y.getNext());
 				}
-				if (f.equivalentTo(f.and(ctx))) {
-					return new One<>(y.getNext());
-				}
-				if (f.equivalentTo(f.andNot(ctx))) {
-					return new One<>(y);
-				}
-				return new Choice<>(ctx.and(f), new One<>(y.getNext()), new One<>(y));
+//				if (f.equivalentTo(f.and(ctx))) {
+//					return new One<>(y.getNext());
+//				}
+//				if (f.equivalentTo(f.andNot(ctx))) {
+//					return new One<>(y);
+//				}
+				return new Choice<>(f, new One<>(y.getNext()), new One<>(y));
 			}
 
 		}).simplify();

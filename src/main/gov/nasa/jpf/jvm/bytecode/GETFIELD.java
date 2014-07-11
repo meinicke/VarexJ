@@ -54,7 +54,7 @@ public class GETFIELD extends InstanceFieldInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    int objRef = frame.peek(ctx).simplify(ctx).getValue(); // don't pop yet, we might re-enter
+    int objRef = frame.peek(ctx).getValue(); // don't pop yet, we might re-enter
     lastThis = objRef;
     if (objRef == MJIEnv.NULL) {
       return new One<>(ti.createAndThrowException(ctx,

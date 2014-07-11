@@ -54,7 +54,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
-    int objRef = frame.peek(ctx, size).simplify(ctx).getValue();
+    int objRef = frame.peek(ctx, size).getValue();
     lastThis = objRef;
     
     if (!ti.isFirstStepInsn()) { // top half

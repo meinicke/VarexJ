@@ -314,7 +314,7 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 
-	// @Test
+	 @Test
 	public void classMethodTest3() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			boolean z = VariabilityAwareTest.z;

@@ -40,7 +40,7 @@ public class ARETURN extends ReturnInstruction {
   }
   
   protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
-    ret = frame.pop(ctx).simplify(ctx).getValue();
+    ret = frame.pop(ctx).getValue();
   }
   
   protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {

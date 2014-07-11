@@ -41,7 +41,7 @@ public class IRETURN extends ReturnInstruction {
   }
   
   protected void getAndSaveReturnValue (StackFrame ti, FeatureExpr ctx) {
-    ret = ti.pop(ctx).simplify(ctx);
+    ret = ti.pop(ctx);
   }
   
   protected void pushReturnValue (FeatureExpr ctx, StackFrame ti) {
