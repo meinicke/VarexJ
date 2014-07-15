@@ -106,14 +106,14 @@ public class Choice<T> extends Conditional<T> {
 
 	@Override
 	public T getValue() {
-		 System.out.println("___________________________________________________");
-		 System.out.println("Get value of choice called: " + toList());
-		 for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
-		 System.out.println(e);
-		 }
-		 System.out.println("---------------------------------------------------");
-		 return thenBranch.getValue(true);
-//		throw new RuntimeException("Get value of choice called: " + toString());
+//		 System.out.println("___________________________________________________");
+//		 System.out.println("Get value of choice called: " + toList());
+//		 for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
+//		 System.out.println(e);
+//		 }
+//		 System.out.println("---------------------------------------------------");
+//		 return thenBranch.getValue(true);
+		throw new RuntimeException("Get value of choice called: " + toString());
 	}
 
 	@Override
