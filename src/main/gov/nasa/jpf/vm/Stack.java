@@ -84,9 +84,9 @@ public class Stack {
 	}
 
 	public boolean isRef(int offset) {
-		if (slots[top - offset] == null) {
-			return false;
-		}
+//		if (slots[top - offset] == null) {
+//			return false;
+//		}
 		return slots[top - offset].isRef;
 	}
 
@@ -111,6 +111,8 @@ public class Stack {
 		for (int i = 0; i < slots.length; i++) {
 			if (slots[i] != null) {
 				clone.slots[i] = slots[i].copy();
+			} else {
+				break;
 			}
 		}
 		return clone;
@@ -142,6 +144,9 @@ public class Stack {
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Stack) {
+			if (((Stack) o).top != top) {
+				return false;
+			}
 			for (int i = 0; i < slots.length; i++) {
 				if (((Stack) o).slots[i] == null) {
 					if (slots[i] == null) {
@@ -259,14 +264,24 @@ public class Stack {
 		slots[top] = A;
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		for (Entry e : slots) {
+			if (e != null) {
+				hash = hash * 31 + e.value;
+			}
+		}
+		return hash;
+	}
 
 
 }
 
 class Entry {
 	boolean isRef = false;
-	Integer value;
-	Integer attr;
+	final Integer value;
+//	final Integer attr;
 
 	Entry copy() {
 		return new Entry(value, isRef);
@@ -287,9 +302,11 @@ class Entry {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Entry) {
-			return ((Entry) o).value.equals(value) && ((Entry) o).isRef == isRef;
-		}
-		return false;
+		return ((Entry) o).value.equals(value) && ((Entry) o).isRef == isRef;
+	}
+	
+	@Override
+	public int hashCode() {
+		return value;
 	}
 }

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
@@ -37,13 +38,13 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public abstract class ArrayStoreInstruction extends ArrayElementInstruction implements StoreInstruction {
 
   @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
+  public Conditional<Instruction> execute (FeatureExpr ctx, final ThreadInfo ti) {
     int aref = peekArrayRef(ctx, ti); // need to be poly, could be LongArrayStore
     if (aref == MJIEnv.NULL) {
       return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
     }
 
-    ElementInfo e = ti.getModifiableElementInfoWithUpdatedSharedness(aref);
+    final ElementInfo e = ti.getModifiableElementInfoWithUpdatedSharedness(aref);
     if (isNewPorBoundary(e, ti)) {
       if (createAndSetArrayCG(e,ti, aref, peekIndex(ctx, ti), false)) {
         return new One<Instruction>(this);
@@ -53,10 +54,10 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
     int esize = getElementSize();
     StackFrame frame = ti.getModifiableTopFrame();
 
-    Object attr = esize == 1 ? frame.getOperandAttr(ctx) : frame.getLongOperandAttr();
+    final Object attr = esize == 1 ? frame.getOperandAttr(ctx) : frame.getLongOperandAttr();
     
     popValue(ctx, frame);
-    index = frame.pop(ctx).getValue();
+    index = frame.pop(ctx);
     // don't set 'arrayRef' before we do the CG check (would kill loop optimization)
     arrayRef = frame.pop(ctx).getValue();
 
@@ -65,14 +66,21 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
       return new One<>(xInsn);
     }
 
-    try {
-      setField(ctx, e, index);
-      e.setElementAttrNoClone(index,attr); // <2do> what if the value is the same but not the attr?
-      return getNext(ctx, ti);
+    return index.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    } catch (ArrayIndexOutOfBoundsExecutiveException ex) { // at this point, the AIOBX is already processed
-      return new One<>(ex.getInstruction());
-    }
+		@Override
+		public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
+			try {
+			      setField(ctx, e, index);
+			      e.setElementAttrNoClone(index,attr); // <2do> what if the value is the same but not the attr?
+			      return getNext(ctx, ti);
+
+			    } catch (ArrayIndexOutOfBoundsExecutiveException ex) { // at this point, the AIOBX is already processed
+			      return new One<>(ex.getInstruction());
+			}
+		}
+    	
+	});
   }
 
   /**

@@ -28,7 +28,7 @@ public class StackHandler {
 
 	public Integer nLocals = 0;
 
-	private FeatureExpr stackCTX = FeatureExprFactory.True();
+	public FeatureExpr stackCTX = FeatureExprFactory.True();
 
 	public int getStackWidth() {
 		return stack.toList().size();
@@ -549,10 +549,7 @@ public class StackHandler {
 
 			@Override
 			public Boolean apply(Stack y) {
-//				if (ctx.isSatisfiable()) {
-					return y.isRef(offset);
-//				}
-//				return new One<>(false);
+				return y.isRef(offset);
 			}
 
 		}).simplify().getValue();// TODO bad simplify

@@ -74,5 +74,35 @@ public class StringTest extends TestJPF {
 			System.out.println(y + s);
 		}
 	}
+	
+	@Ignore @Test// TODO implement
+	public void concatenationTest3() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s1 = "A";
+			if (x) {
+				s1 = "X";
+			}
+			
+			String s2 = "1";
+			if (y) {
+				s2 = "2";
+			}
+			
+			String s = s1 + s2;
+			
+			System.out.println(s);
+		}
+	}
 
+	@Ignore @Test// TODO implement
+	public void doubleTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			double d = 1;
+			if (x) {
+				d += 100;
+			}
+					
+			System.out.println(d);
+		}
+	}
 }

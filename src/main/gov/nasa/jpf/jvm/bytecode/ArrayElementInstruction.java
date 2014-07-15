@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -30,7 +31,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public abstract class ArrayElementInstruction extends ArrayInstruction {
   
-  protected int index; // the accessed element
+  protected Conditional<Integer> index; // the accessed element
 
   // we need this to be abstract because of the LongArrayStore insns
   abstract public int peekIndex (FeatureExpr ctx, ThreadInfo ti);
@@ -41,7 +42,7 @@ public abstract class ArrayElementInstruction extends ArrayInstruction {
     if (!isCompleted(ti)){
       return peekIndex(ctx, ti);
     } else {
-      return index;
+      return index.getValue();
     }
   }
   

@@ -1878,6 +1878,8 @@ public class ThreadInfo extends InfoObject
   
   private static boolean debug = false;
   
+  static int count = 0;
+  
   private MethodInfo currentMethod = null;
 
   /**
@@ -1910,7 +1912,10 @@ public class ThreadInfo extends InfoObject
         	if (pc instanceof One) {// avoid overhead for calculating the next instruction
         		
         		if (debug) {
-  					System.out.println("exe: " + pc.getValue() + " if True");
+        			for (int i = 0; i < top.getDepth();i++) {
+  						System.out.print('>');
+  					}
+  					System.out.println(" exe: " + pc.getValue() + " if True");
   				}
         		nextPc = pc.getValue().execute(FeatureExprFactory.True(), this);
         		
@@ -1920,17 +1925,20 @@ public class ThreadInfo extends InfoObject
         			currentMethod = nextPc.getValue(true).getMethodInfo();
         		}
         	} else {
+        		count++;
+       		
         		// TODO revise multiple returns
         		int min = Integer.MAX_VALUE;
         		Instruction ins = null;
         		boolean retInstr = false;
         		currentMethod = top.mi;
+        		final FeatureExpr c = top.stack.stackCTX;
         		
-	        	for (Instruction i : pc.toList()) {
+	        	for (Instruction i : pc.simplify(c).toList()) {
 	        		if (i != null) {
 	        			if (!(i instanceof ReturnInstruction)) {
 		        			if (i.getPosition() < min) {
-			        			if (currentMethod == null || i.getMethodInfo() == currentMethod) {
+			        			if ((currentMethod == null || i.getMethodInfo() == currentMethod)) {
 			        				min = i.getPosition();
 			        				ins = i;
 			        			}
@@ -1949,21 +1957,27 @@ public class ThreadInfo extends InfoObject
 	        	Conditional<Instruction> next = null;
 	        	final MethodInfo oldMethod = currentMethod;
 	        	for (Instruction e : map.keySet()) {
-          			if (e != null && e.getPosition() == finalMin && e.equals(ins)) {
-          				FeatureExpr ctx = map.get(e);
+          			if (e != null && e.getPosition() == finalMin && e.equals(ins) && oldMethod == e.getMethodInfo()) {
+          				FeatureExpr ctx = map.get(e).and(c);
           				if (debug) {
-          					System.out.println("exe: " + e + " " + ctx);
+          					for (int i = 0; i < top.getDepth();i++) {
+          						System.out.print('>');
+          					}
+          					System.out.println(" " + e + " " + ctx);
 						}
-          				next = e.execute(ctx, ti);
+          				next = e.execute(ctx, ti).simplify(ctx);
           				// the executed instruction defines the next method 
           				break;
           			} else if (e != null && ins == null && retInstr && oldMethod == e.getMethodInfo()) {
-          				FeatureExpr ctx = map.get(e);
+          				FeatureExpr ctx = map.get(e).and(c);
           				if (debug) {
-          					System.out.println("exe: " + e + " " + ctx);
+          					for (int i = 0; i < top.getDepth();i++) {
+          						System.out.print('>');
+          					}
+          					System.out.println(" " + e + " " + ctx);
           				}
           				
-          				next = e.execute(ctx, ti);
+          				next = e.execute(ctx, ti).simplify(ctx);
           				break;
           				// the executed instruction defines the next method 
 //          				for (Instruction i : next.toList()) {
@@ -1987,7 +2001,12 @@ public class ThreadInfo extends InfoObject
 //  					}
 //  				}
 	        	
+//	        	if (debug) {
+//	        		System.out.println("Next " + next);
+//	        	}
+	        	
 	        	final Conditional<Instruction> finalNext = next; 
+	        	
 	        	final Instruction finalins = ins;
 	        	final boolean fret = retInstr;
 	        	
@@ -1995,11 +2014,11 @@ public class ThreadInfo extends InfoObject
 	
 	          		@Override
 	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction x) {
-	          			if (x != null && x.getPosition() == finalMin && x.equals(finalins)) {
-	          				return finalNext;
-	          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {
-	          				return finalNext;
-	          			}
+		          			if (x != null && x.getPosition() == finalMin && x.equals(finalins) && oldMethod == x.getMethodInfo()) {
+		          				return finalNext;
+		          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {
+		          				return finalNext;
+		          			}
 	          			return new One<>(x);
 	          		} 
 	          	  }).simplify();

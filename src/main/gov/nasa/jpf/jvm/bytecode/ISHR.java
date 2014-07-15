@@ -36,13 +36,18 @@ public class ISHR extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v1 = frame.pop(ctx).getValue();
-    int v2 = frame.pop(ctx).getValue();
+    Conditional<Integer> v1 = frame.pop(ctx);
+    Conditional<Integer> v2 = frame.pop(ctx);
 
-    frame.push(ctx, new One<>(v2 >> v1));
+    frame.push(ctx, mapr(v1, v2));
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+	  return v2.intValue() >> v1.intValue();
+	}
 
   public int getByteCode () {
     return 0x7A;

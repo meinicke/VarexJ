@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.jvm.JVMInstruction;
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ChoiceGenerator;
@@ -125,7 +126,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
 
   protected Conditional<Instruction> put1 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
     Object attr = frame.getOperandAttr(ctx);
-    Conditional<Integer> val = frame.peek(ctx);
+	Conditional<Integer> val = new Choice(ctx, frame.peek(ctx), eiFieldOwner.get1SlotField(fi)).simplify();
     lastValue = val;
 
     // we only have to modify the field owner if the values have changed, and only

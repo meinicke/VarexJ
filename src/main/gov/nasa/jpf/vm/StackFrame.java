@@ -1846,6 +1846,7 @@ pw.print(stack);
   public Conditional<Integer> pop (FeatureExpr ctx) {
     //assert (top() >= stackBase) : "stack empty";
 	  boolean isRef = stack.isRef(ctx, 0);
+	  
     Conditional<Integer> v = stack.pop(ctx);
 
     // <2do> get rid of this

@@ -54,16 +54,16 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
       }
     }
     
-    index = frame.pop(ctx).getValue();
+    index = frame.pop(ctx);
 
     // we should not set 'arrayRef' before the CG check
     // (this would kill the CG loop optimization)
     arrayRef = frame.pop(ctx).getValue();
     
     try {
-      push(ctx, frame, e, index);
+      push(ctx, frame, e, index.getValue());
 
-      Object attr = e.getElementAttr(index);
+      Object attr = e.getElementAttr(index.getValue());
       if (attr != null) {
         if (getElementSize() == 1) {
           frame.setOperandAttr(attr);
