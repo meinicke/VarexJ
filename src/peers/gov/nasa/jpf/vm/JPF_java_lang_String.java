@@ -161,8 +161,8 @@ public class JPF_java_lang_String extends NativePeer {
 
     if (!env.isInstanceOf(argRef, "java.lang.String")) { return false; }
 
-    Fields f1 = heap.get(s1.getReferenceField("value")).getFields();
-    Fields f2 = heap.get(s2.getReferenceField("value")).getFields();
+    Fields f1 = heap.get(s1.getReferenceField("value").simplify(NativeMethodInfo.CTX).getValue()).getFields();
+    Fields f2 = heap.get(s2.getReferenceField("value").simplify(NativeMethodInfo.CTX).getValue()).getFields();
 
     char[] c1 = ((CharArrayFields) f1).asCharArray();
     char[] c2 = ((CharArrayFields) f2).asCharArray();
@@ -250,7 +250,7 @@ public class JPF_java_lang_String extends NativePeer {
   @MJI
   public int hashCode____I (MJIEnv env, int objref) {
     ElementInfo ei = env.getElementInfo(objref);
-    int h = ei.getIntField("hash");
+    int h = ei.getIntField("hash").simplify(NativeMethodInfo.CTX).getValue();
 
     if (h == 0) {
       int vref = env.getReferenceField(objref, "value");
@@ -365,12 +365,12 @@ public class JPF_java_lang_String extends NativePeer {
     Heap heap = env.getHeap();
 
     ElementInfo thisStr = heap.get(objRef);
-    CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value")).getFields();
+    CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value").getValue()).getFields();
     char[] thisChars = thisFields.asCharArray();
     int thisLength = thisChars.length;
 
     ElementInfo otherStr = heap.get(strRef);
-    CharArrayFields otherFields = (CharArrayFields) heap.get(otherStr.getReferenceField("value")).getFields();
+    CharArrayFields otherFields = (CharArrayFields) heap.get(otherStr.getReferenceField("value").getValue()).getFields();
     char[] otherChars = otherFields.asCharArray();
     int otherLength = otherChars.length;
 
@@ -514,7 +514,7 @@ public class JPF_java_lang_String extends NativePeer {
     Heap heap = env.getHeap();
     ElementInfo thisStr = heap.get(objRef);
 
-    CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value")).getFields();
+    CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value").simplify(NativeMethodInfo.CTX).getValue()).getFields();
     char[] thisChars = thisFields.asCharArray();
     int thisLength = thisChars.length;
 

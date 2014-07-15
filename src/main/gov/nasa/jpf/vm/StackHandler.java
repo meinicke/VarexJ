@@ -351,6 +351,7 @@ public class StackHandler {
 	@SuppressWarnings("unchecked")
 	public <T,U> void push(final FeatureExpr ctx, final T value, final boolean isRef) {
 		if (value instanceof Conditional) {
+			if (ThreadInfo.debug) System.out.println("Push " + ((Conditional)value).toList());
 			((Conditional<U>) value).mapf(ctx, new BiFunction<FeatureExpr, U, Conditional<U>>() {
 
 				@Override
@@ -360,7 +361,6 @@ public class StackHandler {
 				}
 
 			});
-
 			return;
 		}
 		
@@ -368,13 +368,10 @@ public class StackHandler {
 
 			@Override
 			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
-//				FeatureExpr and = f.and(ctx);
 				if (f.isContradiction()) {
 					return new One<>(stack);
 				}
-//				if (f.equivalentTo(f.andNot(ctx))) {
-//					return new One<>(stack);
-//				}
+
 				Stack clone = stack.copy();
 				if (value instanceof Integer) {
 					clone.push((Integer) value, isRef);
@@ -392,13 +389,7 @@ public class StackHandler {
 				} else {
 					throw new RuntimeException(value + " cannot be pushed to the stack.");					
 				}
-//				if (and.isTautology()) {
-//					return new One<>(clone);
-//				}
-//				
-//				if (f.equivalentTo(and)) {
-//					return new One<>(clone);
-//				}
+
 				if (stackCTX.equivalentTo(f)) {
 					return new One<>(clone);
 				}
@@ -492,6 +483,7 @@ public class StackHandler {
 					clone.pop();
 					i--;
 				}
+								
 				if (f.isTautology()) {
 					return new One<>(clone);
 				}

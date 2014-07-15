@@ -56,7 +56,9 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 	}
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		
 		Conditional<Integer> allRefs = ti.getCalleeThis(ctx, getArgSize());
+		if (ThreadInfo.debug) System.out.println(allRefs.toList());
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
 		boolean splitRef = false;
 		if (map.size() > 1) {
@@ -113,23 +115,13 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 				 }
 			}
 			
-			
-//			 if (callee.isMJI()) {
-//				 Map<Stack, FeatureExpr> stacks = ti.getTopFrame().stack.stack.simplify(ctx).toMap();
-//				 for (FeatureExpr c : stacks.values()) {
-//					 ctx = ctx.and(c);
-//					 break;
-//				 }
-//			 }
-			
 			setupCallee(ctx, ti, callee); // this creates, initializes and
 											// pushes the callee StackFrame
 
 			if (!splitRef) {
 				return ti.getPC();
 			}
-			
-			return new Choice<>(ctx, ti.getPC(), new One<Instruction>(this)).simplify(); // we can't just return the first callee insn
+			return new Choice<>(ctx, ti.getPC(), new One<Instruction>(typeSafeClone(mi))).simplify(); // we can't just return the first callee insn
 								// if a listener throws an exception
 
 		}
@@ -226,4 +218,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 
 		return clone;
 	}
+	
+
 }

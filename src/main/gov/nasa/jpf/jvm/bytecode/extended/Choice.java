@@ -60,7 +60,7 @@ public class Choice<T> extends Conditional<T> {
 			return tb;
 		}
 
-		// TODO revise, causes huge formulas foe SAT// somehow causes errors (see BankAccount test)
+		// TODO somehow causes errors (see BankAccount test)
 		if (tb instanceof One) {
 			if (eb instanceof Choice) {
 				if (((Choice<T>) eb).elseBranch instanceof One && ((Choice<T>) eb).thenBranch instanceof One) {// TODO remove

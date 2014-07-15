@@ -100,7 +100,7 @@ public class JPFOutputStream extends OutputStream {
 
       case Types.T_REFERENCE:
       case Types.T_ARRAY:
-        PrintUtils.printReference(ps, ei.getReferenceField(fi));
+        PrintUtils.printReference(ps, ei.getReferenceField(fi).getValue());
         break;
       }
     }

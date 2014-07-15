@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -29,105 +30,113 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
-
 /**
  * Fetch field from object
  * ..., objectref => ..., value
  */
 public class GETFIELD extends InstanceFieldInstruction {
 
-  public GETFIELD (String fieldName, String classType, String fieldDescriptor){
-    super(fieldName, classType, fieldDescriptor);
-  }
+	public GETFIELD(String fieldName, String classType, String fieldDescriptor) {
+		super(fieldName, classType, fieldDescriptor);
+	}
 
-  @Override
-  protected void popOperands1 (FeatureExpr ctx, StackFrame frame) {
-    frame.pop(ctx); // .. val => ..
-  }
-  
-  @Override
-  protected void popOperands2 (FeatureExpr ctx, StackFrame frame) {
-    frame.pop(ctx, 2);  // .. highVal, lowVal => ..
-  }
-  
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
-    
-    int objRef = frame.peek(ctx).getValue(); // don't pop yet, we might re-enter
-    lastThis = objRef;
-    if (objRef == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
-    }
+	@Override
+	protected void popOperands1(FeatureExpr ctx, StackFrame frame) {
+		frame.pop(ctx); // .. val => ..
+	}
 
-    ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
+	@Override
+	protected void popOperands2(FeatureExpr ctx, StackFrame frame) {
+		frame.pop(ctx, 2); // .. highVal, lowVal => ..
+	}
 
-    FieldInfo fi = getFieldInfo();
-    if (fi == null) {
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
-    }
-    
-    // check if this breaks the current transition
-    if (isNewPorFieldBoundary(ti, fi, objRef)) {
-      if (createAndSetSharedFieldAccessCG( ei, ti)) {
-        return new One<Instruction>(this);
-      }
-    }
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		final StackFrame frame = ti.getModifiableTopFrame();
 
-    frame.pop(ctx); // Ok, now we can remove the object ref from the stack
-    Object attr = ei.getFieldAttr(fi);
+		Conditional<Integer> objRef = frame.peek(ctx); // don't pop yet, we might re-enter
 
-    // We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
-    if (fi.getStorageSize() == 1) { // 1 slotter
-    	Conditional<Integer> ival = ei.get1SlotField(fi);
-        lastValue = ival;
-      
-      if (fi.isReference()){
-        frame.pushRef(ival.getValue(), ctx);
-        
-      } else {
-        frame.push(ctx, ival);
-      }
-      
-      if (attr != null) {
-        frame.setOperandAttr(attr);
-      }
+		lastThis = objRef;
+		final GETFIELD thisInstruction = this;
 
-    } else {  // 2 slotter
-      long lval = ei.get2SlotField(fi);
-      lastValue = new One<>(lval);
+		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-      frame.pushLong( lval);
-      if (attr != null) {
-        frame.setLongOperandAttr(attr);
-      }
-    }
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objRef) {
 
-    return getNext(ctx, ti);
-  }
+				if (objRef == MJIEnv.NULL) {
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
+				}
 
-  public ElementInfo peekElementInfo (ThreadInfo ti) {
-    StackFrame frame = ti.getTopFrame();
-    int objRef = frame.peek(FeatureExprFactory.True()).getValue();
-    ElementInfo ei = ti.getElementInfo(objRef);
-    return ei;
-  }
+				ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 
-  public int getLength() {
-    return 3; // opcode, index1, index2
-  }
+				FieldInfo fi = getFieldInfo();
+				if (fi == null) {
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
+				}
 
-  public int getByteCode () {
-    return 0xB4;
-  }
+				// check if this breaks the current transition
+				if (isNewPorFieldBoundary(ti, fi, objRef)) {
+					if (createAndSetSharedFieldAccessCG(ei, ti)) {
+						return new One<Instruction>(thisInstruction);
+					}
+				}
 
-  public boolean isRead() {
-    return true;
-  }
+				frame.pop(ctx); // Ok, now we can remove the object ref from the stack
+				Object attr = ei.getFieldAttr(fi);
 
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+				// We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
+				if (fi.getStorageSize() == 1) { // 1 slotter
+					Conditional<Integer> ival = ei.get1SlotField(fi);
+					lastValue = ival;
+
+					if (fi.isReference()) {
+						frame.pushRef(ctx, ival);
+
+					} else {
+						frame.push(ctx, ival);
+					}
+
+					if (attr != null) {
+						frame.setOperandAttr(attr);
+					}
+
+				} else { // 2 slotter
+					long lval = ei.get2SlotField(fi);
+					lastValue = new One<>(lval);
+
+					frame.pushLong(lval);
+					if (attr != null) {
+						frame.setLongOperandAttr(attr);
+					}
+				}
+
+				return getNext(ctx, ti);
+
+			}
+		});
+	}
+
+	public ElementInfo peekElementInfo(ThreadInfo ti) {
+		StackFrame frame = ti.getTopFrame();
+		int objRef = frame.peek(FeatureExprFactory.True()).getValue();
+		ElementInfo ei = ti.getElementInfo(objRef);
+		return ei;
+	}
+
+	public int getLength() {
+		return 3; // opcode, index1, index2
+	}
+
+	public int getByteCode() {
+		return 0xB4;
+	}
+
+	public boolean isRead() {
+		return true;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

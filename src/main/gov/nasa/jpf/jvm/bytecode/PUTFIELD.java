@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -35,87 +36,90 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  */
 public class PUTFIELD extends InstanceFieldInstruction implements StoreInstruction {
 
-  public PUTFIELD() {}
+	public PUTFIELD() {}
 
-  public PUTFIELD(String fieldName, String clsDescriptor, String fieldDescriptor){
-    super(fieldName, clsDescriptor, fieldDescriptor);
-  }
-  
-  @Override
-  protected void popOperands1 (FeatureExpr ctx, StackFrame frame) {
-    frame.pop(ctx, 2); // .. objref, val => ..
-  }
-  
-  @Override
-  protected void popOperands2 (FeatureExpr ctx, StackFrame frame) {
-    frame.pop(ctx, 3); // .. objref, highVal,lowVal => ..
-  }
-    
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getTopFrame();
-    int objRef = frame.peek(ctx, size).getValue();
-    lastThis = objRef;
-    
-    if (!ti.isFirstStepInsn()) { // top half
+	public PUTFIELD(String fieldName, String clsDescriptor, String fieldDescriptor) {
+		super(fieldName, clsDescriptor, fieldDescriptor);
+	}
 
-      // if this produces an NPE, force the error w/o further ado
-      if (objRef == MJIEnv.NULL) {
-        return new One<>(ti.createAndThrowException(ctx,
-                                   "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
-      }
-      
-      ElementInfo ei = ti.getModifiableElementInfoWithUpdatedSharedness(objRef);
-      FieldInfo fi = getFieldInfo();
-      if (fi == null) {
-        return new One<>(ti.createAndThrowException(ctx, 
-            "java.lang.NoSuchFieldError", "no field " + fname + " in " + ei));
-      }
+	@Override
+	protected void popOperands1(FeatureExpr ctx, StackFrame frame) {
+		frame.pop(ctx, 2); // .. objref, val => ..
+	}
 
-      // check if this breaks the current transition
-      // note this will also set the shared attribute of the field owner
-      if (isNewPorFieldBoundary(ti, fi, objRef)) {
-        if (createAndSetSharedFieldAccessCG(ei, ti)) {
-          return new One<Instruction>(this);
-        }
-      }
-      
-      return put(ctx, ti, frame, ei);
-      
-    } else { // re-execution
-      // no need to redo the exception checks, we already had them in the top half
-      ElementInfo ei = ti.getElementInfo(objRef);
+	@Override
+	protected void popOperands2(FeatureExpr ctx, StackFrame frame) {
+		frame.pop(ctx, 3); // .. objref, highVal,lowVal => ..
+	}
 
-      return put(ctx, ti, frame, ei);      // this might create an exposure CG and cause another re-execution
-    }
-  }
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		final StackFrame frame = ti.getTopFrame();
+		Conditional<Integer> objRef = frame.peek(ctx, size);
+		lastThis = objRef;
+		
+		final PUTFIELD instruction = this;
 
-  public ElementInfo peekElementInfo (ThreadInfo ti) {
-    FieldInfo fi = getFieldInfo();
-    int storageSize = fi.getStorageSize();
-    int objRef = ti.getTopFrame().peek(FeatureExprFactory.True(), (storageSize == 1) ? 1 : 2).getValue();
-    ElementInfo ei = ti.getElementInfo( objRef);
+		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    return ei;
-  }
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objRef) {
+				if (!ti.isFirstStepInsn()) { // top half
+					// if this produces an NPE, force the error w/o further ado
+					if (objRef == MJIEnv.NULL) {
+						return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
+					}
 
+					ElementInfo ei = ti.getModifiableElementInfoWithUpdatedSharedness(objRef);
+					FieldInfo fi = getFieldInfo();
+					if (fi == null) {
+						return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", "no field " + fname + " in " + ei));
+					}
 
-  public int getLength() {
-    return 3; // opcode, index1, index2
-  }
+					// check if this breaks the current transition
+					// note this will also set the shared attribute of the field owner
+					if (isNewPorFieldBoundary(ti, fi, objRef)) {
+						if (createAndSetSharedFieldAccessCG(ei, ti)) {
+							return new One<Instruction>(instruction);
+						}
+					}
 
-  public int getByteCode () {
-    return 0xB5;
-  }
+					return put(ctx, ti, frame, ei, false);
 
-  public boolean isRead() {
-    return false;
-  }
+				} else { // re-execution
+					// no need to redo the exception checks, we already had them in the top half
+					ElementInfo ei = ti.getElementInfo(objRef);
 
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+					return put(ctx, ti, frame, ei, false); // this might create an exposure CG and cause another re-execution
+				}
+
+			}
+
+		});
+	}
+
+	public ElementInfo peekElementInfo(ThreadInfo ti) {
+		FieldInfo fi = getFieldInfo();
+		int storageSize = fi.getStorageSize();
+		int objRef = ti.getTopFrame().peek(FeatureExprFactory.True(), (storageSize == 1) ? 1 : 2).getValue();
+		ElementInfo ei = ti.getElementInfo(objRef);
+
+		return ei;
+	}
+
+	public int getLength() {
+		return 3; // opcode, index1, index2
+	}
+
+	public int getByteCode() {
+		return 0xB5;
+	}
+
+	public boolean isRead() {
+		return false;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }
-
-
-

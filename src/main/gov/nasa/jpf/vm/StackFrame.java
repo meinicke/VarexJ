@@ -1851,7 +1851,7 @@ pw.print(stack);
 
     // <2do> get rid of this
     if (isRef) {
-      if (v.getValue() != MJIEnv.NULL) {
+      if (v instanceof One && v.getValue() != MJIEnv.NULL) {
         VM.getVM().getSystemState().activateGC();
       }
     }
@@ -1870,7 +1870,9 @@ pw.print(stack);
   }
   
   public void pushLocal (FeatureExpr ctx, int index) {
+	  
 	  stack.pushLocal(ctx, index);
+	  
 //	  stack.incrTop(ctx, 1);
 //	  stack.duplicateIndex(ctx, index, 0, true);
 	  
@@ -1966,16 +1968,12 @@ pw.print(stack);
   }
 
   public void pushRef (int ref, FeatureExpr ctx){
+	  pushRef(ctx, new One<>(ref));
+  }
+  
+  public void pushRef(FeatureExpr ctx, Conditional<Integer> ref) {
 	  stack.push(ctx, ref, true);
-//    top++;
-//    slots[top()] = ref;
-//    isRef.set(top);
-
-    //if (attrs != null){ // done on pop
-    //  attrs[top()] = null;
-    //}
-
-    if (ref != MJIEnv.NULL) {
+    if (ref instanceof One && ref.getValue() != MJIEnv.NULL) {
       VM.getVM().getSystemState().activateGC();
     }
   }
@@ -2093,4 +2091,6 @@ pw.print(stack);
   public void setDoubleArgumentLocal (int idx, double value, Object attr){
     setLongArgumentLocal( idx, Double.doubleToLongBits(value), attr);
   }
+
+
 }

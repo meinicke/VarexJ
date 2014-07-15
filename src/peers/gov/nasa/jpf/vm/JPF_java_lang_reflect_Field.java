@@ -156,7 +156,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     FieldInfo fi = getFieldInfo(env, objRef);
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, IntegerFieldInfo.class, "int", false);
     if (ei != null){
-      return ei.getIntField(fi);
+      return ei.getIntField(fi).simplify(NativeMethodInfo.CTX).getValue();
     }
     return 0;
   }
@@ -348,7 +348,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         return env.newLong(l);
       } else if (fi instanceof IntegerFieldInfo){
         // this might actually represent a plethora of types
-        int i = ei.getIntField(fi);
+        int i = ei.getIntField(fi).simplify(NativeMethodInfo.CTX).getValue();
         return env.newInteger(i);
       } else if (fi instanceof BooleanFieldInfo){
         boolean b = ei.getBooleanField(fi);
@@ -365,7 +365,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       }
       
     } else { // it's a reference
-      int ref = ei.getReferenceField(fi); // we internally store it as int
+      int ref = ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue(); // we internally store it as int
       return ref;
     }
     

@@ -26,6 +26,7 @@ import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
@@ -1876,11 +1877,13 @@ public class ThreadInfo extends InfoObject
     }
   }
   
-  private static boolean debug = false;
-  
+  public static boolean debug = false;
   static int count = 0;
+  static int count2 = 0;
+  static long time = 0;
   
   private MethodInfo currentMethod = null;
+
 
   /**
    * Execute next instruction.
@@ -1909,12 +1912,27 @@ public class ThreadInfo extends InfoObject
     if (!skipInstruction) {
         // enter the next bytecode
         try {
+        	if (time == 0) {
+        		time = System.currentTimeMillis();
+        	}
+//        	count++;
+//    		if (count > 17000) {
+//    			debug = false;
+//    			if (debug) System.out.print(count + ": ");
+//    		}
+//        	if (System.currentTimeMillis() - time > 1000) {
+//        		System.out.println((count - count2)+ " instructions / s");
+//        		count2 = count;
+//        		time = System.currentTimeMillis();
+//        	}
+        	
         	if (pc instanceof One) {// avoid overhead for calculating the next instruction
         		
         		if (debug) {
-        			for (int i = 0; i < top.getDepth();i++) {
-  						System.out.print('>');
-  					}
+        			System.out.print(top.getDepth());
+        			if (top.getDepth() < 10) {
+        				System.out.print(" ");
+        			}
   					System.out.println(" exe: " + pc.getValue() + " if True");
   				}
         		nextPc = pc.getValue().execute(FeatureExprFactory.True(), this);
@@ -1925,15 +1943,11 @@ public class ThreadInfo extends InfoObject
         			currentMethod = nextPc.getValue(true).getMethodInfo();
         		}
         	} else {
-        		count++;
-       		
-        		// TODO revise multiple returns
         		int min = Integer.MAX_VALUE;
         		Instruction ins = null;
         		boolean retInstr = false;
         		currentMethod = top.mi;
-        		final FeatureExpr c = top.stack.stackCTX;
-        		
+        		FeatureExpr c = top.stack.stackCTX;
 	        	for (Instruction i : pc.simplify(c).toList()) {
 	        		if (i != null) {
 	        			if (!(i instanceof ReturnInstruction)) {
@@ -1953,60 +1967,40 @@ public class ThreadInfo extends InfoObject
 	        	
 	        	final int finalMin = min;
 	        	final ThreadInfo ti = this;
-	        	Map<Instruction, FeatureExpr> map = pc.toMap();
+	        	Map<Instruction, FeatureExpr> map = pc.simplify(c).toMap();
 	        	Conditional<Instruction> next = null;
 	        	final MethodInfo oldMethod = currentMethod;
+	        	
 	        	for (Instruction e : map.keySet()) {
           			if (e != null && e.getPosition() == finalMin && e.equals(ins) && oldMethod == e.getMethodInfo()) {
-          				FeatureExpr ctx = map.get(e).and(c);
+          				c = map.get(e).and(c);
           				if (debug) {
-          					for (int i = 0; i < top.getDepth();i++) {
-          						System.out.print('>');
-          					}
-          					System.out.println(" " + e + " " + ctx);
+          					System.out.print(top.getDepth());
+          					if (top.getDepth() < 10) {
+                				System.out.print(" ");
+                			}
+          					System.out.println(" " + e + " " + c);
 						}
-          				next = e.execute(ctx, ti).simplify(ctx);
+          				next = e.execute(c, ti).simplify(c);
           				// the executed instruction defines the next method 
           				break;
           			} else if (e != null && ins == null && retInstr && oldMethod == e.getMethodInfo()) {
-          				FeatureExpr ctx = map.get(e).and(c);
+          				c = map.get(e).and(c);
           				if (debug) {
-          					for (int i = 0; i < top.getDepth();i++) {
-          						System.out.print('>');
-          					}
-          					System.out.println(" " + e + " " + ctx);
+          					System.out.print(top.getDepth());
+          					if (top.getDepth() < 10) {
+                				System.out.print(" ");
+                			}
+          					System.out.println(" " + e + " " + c);
           				}
           				
-          				next = e.execute(ctx, ti).simplify(ctx);
+          				next = e.execute(c, ti).simplify(c);
           				break;
-          				// the executed instruction defines the next method 
-//          				for (Instruction i : next.toList()) {
-//          					if (i != null) {
-//	          					currentMethod = i.getMethodInfo();
-//	          					break;
-//          					} else {
-//          						currentMethod = null;
-//          					}
-//          				}
-          				
           			}
 	        	}
 	        	
-//	        	for (Instruction i : next.toList()) {
-//  					if (i != null) {
-//      					currentMethod = i.getMethodInfo();
-//      					break;
-//  					} else {
-//  						currentMethod = null;
-//  					}
-//  				}
-	        	
-//	        	if (debug) {
-//	        		System.out.println("Next " + next);
-//	        	}
-	        	
 	        	final Conditional<Instruction> finalNext = next; 
-	        	
+	        	final FeatureExpr finalCtx = c;
 	        	final Instruction finalins = ins;
 	        	final boolean fret = retInstr;
 	        	
@@ -2014,11 +2008,11 @@ public class ThreadInfo extends InfoObject
 	
 	          		@Override
 	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction x) {
-		          			if (x != null && x.getPosition() == finalMin && x.equals(finalins) && oldMethod == x.getMethodInfo()) {
-		          				return finalNext;
-		          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {
-		          				return finalNext;
-		          			}
+	          			if (x != null && x.getPosition() == finalMin && x.equals(finalins) && oldMethod == x.getMethodInfo()) {
+	          				return new Choice<>(finalCtx, finalNext, new One<>(x));
+	          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {
+	          				return new Choice<>(finalCtx, finalNext, new One<>(x));
+	          			}
 	          			return new One<>(x);
 	          		} 
 	          	  }).simplify();
@@ -2452,7 +2446,7 @@ public class ThreadInfo extends InfoObject
     // does a ThreadGroup.remove(), which does a lot of sync stuff on the shared
     // ThreadGroup object, which might create lots of states. So we just nullify
     // the Thread fields and remove it from the ThreadGroup from here
-    int grpRef = ei.getReferenceField("group");
+    int grpRef = ei.getReferenceField("group").getValue();
     cleanupThreadGroup(grpRef, ei.getObjectRef());
 
     ei.setReferenceField("group", MJIEnv.NULL);
@@ -2472,11 +2466,11 @@ public class ThreadInfo extends InfoObject
   void cleanupThreadGroup (int grpRef, int threadRef) {
     if (grpRef != MJIEnv.NULL) {
       ElementInfo eiGrp = getModifiableElementInfo(grpRef);
-      int threadsRef = eiGrp.getReferenceField("threads");
+      int threadsRef = eiGrp.getReferenceField("threads").getValue();
       if (threadsRef != MJIEnv.NULL) {
         ElementInfo eiThreads = getModifiableElementInfo(threadsRef);
         if (eiThreads.isArray()) {
-          int nthreads = eiGrp.getIntField("nthreads");
+          int nthreads = eiGrp.getIntField("nthreads").getValue();
 
           for (int i=0; i<nthreads; i++) {
             int tref = eiThreads.getReferenceElement(i);
@@ -2567,14 +2561,14 @@ public class ThreadInfo extends InfoObject
    */
   protected void addToThreadGroup (ElementInfo eiGroup){
     FieldInfo finThreads = eiGroup.getFieldInfo("nthreads");
-    int nThreads = eiGroup.getIntField(finThreads);
+    int nThreads = eiGroup.getIntField(finThreads).getValue();
     
     if (eiGroup.getBooleanField("destroyed")){
       env.throwException("java.lang.IllegalThreadStateException");
       
     } else {
       FieldInfo fiThreads = eiGroup.getFieldInfo("threads");
-      int threadsRef = eiGroup.getReferenceField(fiThreads);
+      int threadsRef = eiGroup.getReferenceField(fiThreads).getValue();
       
       if (threadsRef == MJIEnv.NULL){
         threadsRef = env.newObjectArray("Ljava/lang/Thread;", 1);
@@ -2835,7 +2829,7 @@ public class ThreadInfo extends InfoObject
     // <2do> maybe we should do a little sanity check first
     ElementInfo ei = getModifiableThreadObject();
 
-    int xRef = ei.getReferenceField("stopException");
+    int xRef = ei.getReferenceField("stopException").getValue();
     ei.setReferenceField("stopException", MJIEnv.NULL);
 
     Instruction insn = getPC().getValue();
@@ -3074,13 +3068,13 @@ public class ThreadInfo extends InfoObject
   
   protected int getInstanceUncaughtHandler (){
     ElementInfo ei = getElementInfo(objRef);
-    int handlerRef = ei.getReferenceField("uncaughtExceptionHandler");
+    int handlerRef = ei.getReferenceField("uncaughtExceptionHandler").getValue();
     return handlerRef;
   }
   
   protected int getThreadGroupRef() {
     ElementInfo ei = getElementInfo(objRef);
-    int groupRef = ei.getReferenceField("group");
+    int groupRef = ei.getReferenceField("group").getValue();
     return groupRef;
   }
   
@@ -3096,7 +3090,7 @@ public class ThreadInfo extends InfoObject
         return eiGrp.getObjectRef();
       }
 
-      grpRef = eiGrp.getReferenceField("parent");
+      grpRef = eiGrp.getReferenceField("parent").getValue();
     }
     
     // no overridden uncaughtHandler found
@@ -3110,7 +3104,7 @@ public class ThreadInfo extends InfoObject
     
     // the field is in our java.lang.Thread, but the concrete thread object class might differ
     ClassInfo fci = fi.getClassInfo();
-    return fci.getStaticElementInfo().getReferenceField(fi);
+    return fci.getStaticElementInfo().getReferenceField(fi).getValue();
   }
   
   /**

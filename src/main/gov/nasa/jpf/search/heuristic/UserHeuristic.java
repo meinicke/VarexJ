@@ -48,8 +48,8 @@ public class UserHeuristic extends SimplePriorityHeuristic {
       ElementInfo b = ei.getObjectField("buffer");
 
       if (b != null) {
-        int current = b.getIntField("current");
-        int capacity = b.getIntField("capacity");
+        int current = b.getIntField("current").getValue();
+        int capacity = b.getIntField("capacity").getValue();
 
         return (capacity - current);
       }

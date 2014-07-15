@@ -23,178 +23,209 @@ import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 
 import java.io.PrintStream;
 
-
-
 /**
- *a Field (data value) store for array objects
+ * a Field (data value) store for array objects
  */
 public abstract class ArrayFields extends Fields {
 
-  int getNumberOfFieldsOrElements () {
-    return arrayLength(); // we have no fields
-  }
+	int getNumberOfFieldsOrElements() {
+		return arrayLength(); // we have no fields
+	}
 
-  public abstract int arrayLength ();
+	public abstract int arrayLength();
 
-  public abstract int getHeapSize ();
+	public abstract int getHeapSize();
 
-  public boolean isReferenceArray(){
-    return false;
-  }
+	public boolean isReferenceArray() {
+		return false;
+	}
 
-  public int getNumberOfFields() {
-    // has none
-    return 0;
-  } 
-  
-  public void printElements( PrintStream ps, int max){
-    int len = arrayLength();
-    if (max < 0) max = len;
-    int i;
-    for (i=0; i<max; i++){
-      if (i>0){
-        ps.print(',');
-      }
-      printValue(ps, i);
-    }
-    if (i < len){
-      ps.print("...");
-    }
-  }  
-  
-  protected abstract void printValue (PrintStream ps, int idx);
-  
-  public abstract Object getValues();
+	public int getNumberOfFields() {
+		// has none
+		return 0;
+	}
 
-  public boolean getBooleanValue (int pos) {
-  // overridden by subclass
-      throw new JPFException( "not a boolean[]");
-  }
-  public byte getByteValue (int pos) {
-    // overridden by subclass
-    throw new JPFException( "not a byte[]");
-  }
-  public char getCharValue (int pos) {
-    // overridden by subclass
-    throw new JPFException( "not a char[]");
-  }
-  public short getShortValue (int pos) {
-    // overridden by subclass
-    throw new JPFException( "not a short[]");
-  }
-  public int getIntValue (int pos) {
-    // overridden by subclass
-    throw new JPFException( "not an int[]");
-  }
-  
-  public Conditional<Integer> getIntValue2 (int pos) {
-	    // overridden by subclass
-	    throw new JPFException( "not an int[]");
-	  }
-  public long getLongValue (int pos) {
-    // overridden by subclass
-    throw new JPFException( "not a long[]");
-  }
-  public float getFloatValue (int pos) {
-    // overridden by subclass
-    throw new JPFException( "not a float[]");
-  }
-  public double getDoubleValue (int pos) {
-    // overridden by subclass
-    throw new JPFException( "not a double[]");
-  }
-  public int getReferenceValue (int pos) {
-    // overridden by subclass
-    throw new JPFException( "not a reference array");
-  }
+	public void printElements(PrintStream ps, int max) {
+		int len = arrayLength();
+		if (max < 0)
+			max = len;
+		int i;
+		for (i = 0; i < max; i++) {
+			if (i > 0) {
+				ps.print(',');
+			}
+			printValue(ps, i);
+		}
+		if (i < len) {
+			ps.print("...");
+		}
+	}
 
-  public void setBooleanValue (int pos, boolean newValue) {
-    // overridden by subclass
-    throw new JPFException( "not a boolean[]");
-  }
-  public void setByteValue (int pos, byte newValue) {
-    // overridden by subclass
-    throw new JPFException( "not a byte[]");
-  }
-  public void setCharValue (int pos, char newValue) {
-    // overridden by subclass
-    throw new JPFException( "not a char[]");
-  }
-  public void setShortValue (int pos, short newValue) {
-    // overridden by subclass
-    throw new JPFException( "not a short[]");
-  }
-  
-  public void setIntValue (int pos, Conditional<Integer> newValue) {
-	    // overridden by subclass
-	    throw new JPFException( "not an int[]");
-  }
-  
-  public void setIntValue (int pos, int newValue) {
-    // overridden by subclass
-    throw new JPFException( "not an int[]");
-  }
-  public void setFloatValue (int pos, float newValue){
-    // overridden by subclass
-    throw new JPFException( "not a float[]");
-  }
-  public void setLongValue (int pos, long newValue) {
-    // overridden by subclass
-    throw new JPFException( "not a long[]");
-  }
-  public void setDoubleValue (int pos, double newValue){
-    // overridden by subclass
-    throw new JPFException( "not a double[]");
-  }
-  public void setReferenceValue (int pos, int newValue){
-    // overridden by subclass
-    throw new JPFException( "not a reference array");
-  }
+	protected abstract void printValue(PrintStream ps, int idx);
 
+	public abstract Object getValues();
 
-  public boolean[] asBooleanArray () {
-    // overridden by subclass
-    throw new JPFException("not a boolean[]");
-  }
-  public byte[] asByteArray () {
-    // overridden by subclass
-    throw new JPFException("not a byte[]");
-  }
-  public char[] asCharArray () {
-    // overridden by subclass
-    throw new JPFException("not a char[]");
-  }
-  public char[] asCharArray (int offset, int length) {
-    // overridden by subclass
-    throw new JPFException("not a char[]");
-  }
-  public short[] asShortArray () {
-    // overridden by subclass
-    throw new JPFException("not a short[]");
-  }
-  public int[] asIntArray () {
-    // overridden by subclass
-    throw new JPFException("not a int[]");
-  }
-  public int[] asReferenceArray () {
-    // overridden by subclass
-    throw new JPFException("not a reference array");
-  }
-  public long[] asLongArray () {
-    // overridden by subclass
-    throw new JPFException("not a long[]");
-  }
-  public float[] asFloatArray () {
-    // overridden by subclass
-    throw new JPFException("not a float[]");
-  }
-  public double[] asDoubleArray () {
-    // overridden by subclass
-    throw new JPFException("not a double[]");
-  }
+	public boolean getBooleanValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not a boolean[]");
+	}
 
-  public int[] asFieldSlots() {
-    throw new JPFException("array has no field slots");
-  }
+	public byte getByteValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not a byte[]");
+	}
+
+	public char getCharValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not a char[]");
+	}
+
+	public short getShortValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not a short[]");
+	}
+
+	public int getIntValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not an int[]");
+	}
+
+	public Conditional<Integer> getIntValue2(int pos) {
+		// overridden by subclass
+		throw new JPFException("not an int[]");
+	}
+
+	public long getLongValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not a long[]");
+	}
+
+	public float getFloatValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not a float[]");
+	}
+
+	public double getDoubleValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not a double[]");
+	}
+
+	public int getReferenceValue(int pos) {
+		// overridden by subclass
+		throw new JPFException("not a reference array");
+	}
+	
+	public Conditional<Integer> getReferenceValue2 (int index) {
+		throw new JPFException("not implemented");
+	}
+
+	public void setBooleanValue(int pos, boolean newValue) {
+		// overridden by subclass
+		throw new JPFException("not a boolean[]");
+	}
+
+	public void setByteValue(int pos, byte newValue) {
+		// overridden by subclass
+		throw new JPFException("not a byte[]");
+	}
+
+	public void setCharValue(int pos, char newValue) {
+		// overridden by subclass
+		throw new JPFException("not a char[]");
+	}
+
+	public void setShortValue(int pos, short newValue) {
+		// overridden by subclass
+		throw new JPFException("not a short[]");
+	}
+
+	public void setIntValue(int pos, Conditional<Integer> newValue) {
+		// overridden by subclass
+		throw new JPFException("not an int[]");
+	}
+
+	public void setIntValue(int pos, int newValue) {
+		// overridden by subclass
+		throw new JPFException("not an int[]");
+	}
+
+	public void setFloatValue(int pos, float newValue) {
+		// overridden by subclass
+		throw new JPFException("not a float[]");
+	}
+
+	public void setLongValue(int pos, long newValue) {
+		// overridden by subclass
+		throw new JPFException("not a long[]");
+	}
+
+	public void setDoubleValue(int pos, double newValue) {
+		// overridden by subclass
+		throw new JPFException("not a double[]");
+	}
+
+	public void setReferenceValue(int pos, int newValue) {
+		// overridden by subclass
+		throw new JPFException("not a reference array");
+	}
+
+	public void setReferenceValue(int pos, Conditional<Integer> newValue) {
+		// overridden by subclass
+		throw new JPFException("not a reference array");
+	}
+
+	public boolean[] asBooleanArray() {
+		// overridden by subclass
+		throw new JPFException("not a boolean[]");
+	}
+
+	public byte[] asByteArray() {
+		// overridden by subclass
+		throw new JPFException("not a byte[]");
+	}
+
+	public char[] asCharArray() {
+		// overridden by subclass
+		throw new JPFException("not a char[]");
+	}
+
+	public char[] asCharArray(int offset, int length) {
+		// overridden by subclass
+		throw new JPFException("not a char[]");
+	}
+
+	public short[] asShortArray() {
+		// overridden by subclass
+		throw new JPFException("not a short[]");
+	}
+
+	public int[] asIntArray() {
+		// overridden by subclass
+		throw new JPFException("not a int[]");
+	}
+
+	public int[] asReferenceArray() {
+		// overridden by subclass
+		throw new JPFException("not a reference array");
+	}
+
+	public long[] asLongArray() {
+		// overridden by subclass
+		throw new JPFException("not a long[]");
+	}
+
+	public float[] asFloatArray() {
+		// overridden by subclass
+		throw new JPFException("not a float[]");
+	}
+
+	public double[] asDoubleArray() {
+		// overridden by subclass
+		throw new JPFException("not a double[]");
+	}
+
+	public int[] asFieldSlots() {
+		throw new JPFException("array has no field slots");
+	}
 
 }

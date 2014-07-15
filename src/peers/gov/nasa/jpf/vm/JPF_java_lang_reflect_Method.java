@@ -327,7 +327,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_INT:
     { 
-      int v = eiArg.getIntField("value");
+      int v = eiArg.getIntField("value").simplify(NativeMethodInfo.CTX).getValue();
       switch (destType){
       case Types.T_INT:
         return frame.setArgument( argIdx, v, attr);

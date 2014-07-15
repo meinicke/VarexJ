@@ -49,9 +49,9 @@ public class BoxObjectCacheManager {
 
     int boolObj;
     if (b) {
-      boolObj = cls.getStaticElementInfo().getReferenceField("TRUE");
+      boolObj = cls.getStaticElementInfo().getReferenceField("TRUE").getValue();
     } else {
-      boolObj = cls.getStaticElementInfo().getReferenceField("FALSE");
+      boolObj = cls.getStaticElementInfo().getReferenceField("FALSE").getValue();
     }
 
     return boolObj;
@@ -85,7 +85,7 @@ public class BoxObjectCacheManager {
 
   public static int valueOfByte (ThreadInfo ti, byte b) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    int byteCache = cacheClass.getStaticElementInfo().getReferenceField("byteCache");
+    int byteCache = cacheClass.getStaticElementInfo().getReferenceField("byteCache").getValue();
 
     if (byteCache == MJIEnv.NULL) { // initializing the cache on demand
       byteCache = initByteCache(ti);
@@ -124,7 +124,7 @@ public class BoxObjectCacheManager {
 
   public static int valueOfCharacter (ThreadInfo ti, char c) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    int charCache = cacheClass.getStaticElementInfo().getReferenceField("charCache");
+    int charCache = cacheClass.getStaticElementInfo().getReferenceField("charCache").getValue();
 
     if (charCache == MJIEnv.NULL) { // initializing the cache on demand
       charCache = initCharCache(ti);
@@ -167,7 +167,7 @@ public class BoxObjectCacheManager {
 
   public static int valueOfShort (ThreadInfo ti, short s) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    int shortCache = cacheClass.getStaticElementInfo().getReferenceField("shortCache");
+    int shortCache = cacheClass.getStaticElementInfo().getReferenceField("shortCache").getValue();
 
     if (shortCache == MJIEnv.NULL) { // initializing the cache on demand
       shortCache = initShortCache(ti);
@@ -208,7 +208,7 @@ public class BoxObjectCacheManager {
 
   public static int valueOfInteger (ThreadInfo ti, int i) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    int intCache = cacheClass.getStaticElementInfo().getReferenceField("intCache");
+    int intCache = cacheClass.getStaticElementInfo().getReferenceField("intCache").getValue();
 
     if (intCache == MJIEnv.NULL) { // initializing the cache on demand
       intCache = initIntCache(ti);
@@ -249,7 +249,7 @@ public class BoxObjectCacheManager {
 
   public static int valueOfLong (ThreadInfo ti, long l) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    int longCache = cacheClass.getStaticElementInfo().getReferenceField("longCache");
+    int longCache = cacheClass.getStaticElementInfo().getReferenceField("longCache").getValue();
 
     if (longCache == MJIEnv.NULL) { // initializing the cache on demand
       longCache = initLongCache(ti);

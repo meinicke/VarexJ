@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -31,84 +32,88 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
  * Check whether object is of given type
  * ..., objectref => ..., objectref
  */
 public class CHECKCAST extends JVMInstruction {
-  String type;
+	String type;
 
-  public CHECKCAST() {} // this is going away
+	public CHECKCAST() {} // this is going away
 
-  public CHECKCAST(String typeName){
-    type = Types.getClassNameFromTypeName(typeName);
-  }
+	public CHECKCAST(String typeName) {
+		type = Types.getClassNameFromTypeName(typeName);
+	}
 
-  public String getTypeName() {
-    return type;
-  }
+	public String getTypeName() {
+		return type;
+	}
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getTopFrame();
-    int objref = frame.peek(ctx).getValue();
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		StackFrame frame = ti.getTopFrame();
+		Conditional<Integer> objref = frame.peek(ctx);
 
-    if (objref == MJIEnv.NULL) {
-       // we can cast 'null' to anything
+		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    } else {
-      boolean isValid = false;
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objref) {
+				if (objref == MJIEnv.NULL) {
+					// we can cast 'null' to anything
 
-      if(Types.isReferenceSignature(type)) {
-        String t;
-        if(Types.isArray(type)) {
-          // retrieve the component terminal
-          t = Types.getComponentTerminal(type);
-        } else {
-          t = type;
-        }
+				} else {
+					boolean isValid = false;
 
-        // resolve the referenced class
-        try {
-          ti.resolveReferencedClass(t);
-        } catch(LoadOnJPFRequired lre) {
-          return ti.getPC();
-        }
-      }
+					if (Types.isReferenceSignature(type)) {
+						String t;
+						if (Types.isArray(type)) {
+							// retrieve the component terminal
+							t = Types.getComponentTerminal(type);
+						} else {
+							t = type;
+						}
 
-      ElementInfo e = ti.getElementInfo(objref);
-      ClassInfo eci = e.getClassInfo();
+						// resolve the referenced class
+						try {
+							ti.resolveReferencedClass(t);
+						} catch (LoadOnJPFRequired lre) {
+							return ti.getPC();
+						}
+					}
 
-      if (type.charAt(0) == '['){  // cast between array types
-        if (eci.isArray()) {
-          // check if the element types are compatible
-          ClassInfo cci = eci.getComponentClassInfo();
-          isValid = cci.isInstanceOf(type.substring(1));
-        }
+					ElementInfo e = ti.getElementInfo(objref);
+					ClassInfo eci = e.getClassInfo();
 
-      } else { // non-array types
-        isValid = e.getClassInfo().isInstanceOf(type);
-      }
+					if (type.charAt(0) == '[') { // cast between array types
+						if (eci.isArray()) {
+							// check if the element types are compatible
+							ClassInfo cci = eci.getComponentClassInfo();
+							isValid = cci.isInstanceOf(type.substring(1));
+						}
 
-      if (!isValid) {
-        return new One<>(ti.createAndThrowException(ctx,
-                "java.lang.ClassCastException", e.getClassInfo().getName() + " cannot be cast to " + type));
-      }
-    }
+					} else { // non-array types
+						isValid = e.getClassInfo().isInstanceOf(type);
+					}
 
-    return getNext(ctx, ti);
-  }
+					if (!isValid) {
+						return new One<>(ti.createAndThrowException(ctx, "java.lang.ClassCastException", e.getClassInfo().getName() + " cannot be cast to " + type));
+					}
+				}
 
+				return getNext(ctx, ti);
+			}
 
-  public int getLength() {
-    return 3; // opcode, index1, index2
-  }
-  
-  public int getByteCode () {
-    return 0xC0;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+		});
+	}
+
+	public int getLength() {
+		return 3; // opcode, index1, index2
+	}
+
+	public int getByteCode() {
+		return 0xC0;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

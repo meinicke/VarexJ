@@ -457,7 +457,7 @@ public class MJIEnv {
     if (ei == null) {
     	System.out.println();
     }
-    return ei.getIntField(fname);
+    return ei.getIntField(fname).simplify(NativeMethodInfo.CTX).getValue();
   }
 
   public int getDeclaredIntField (int objref, String refType, String fname) {
@@ -478,13 +478,13 @@ public class MJIEnv {
 
   public int getReferenceField (int objref, String fname) {
     ElementInfo ei = heap.get(objref);
-    return ei.getReferenceField(fname);
+    return ei.getReferenceField(fname).simplify(NativeMethodInfo.CTX).getValue();
   }
 
   // we need this in case of a masked field
   public int getReferenceField (int objref, FieldInfo fi) {
     ElementInfo ei = heap.get(objref);
-    return ei.getReferenceField(fi);
+    return ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();
   }
 
   public String getStringField (int objref, String fname){
@@ -661,17 +661,17 @@ public class MJIEnv {
 
   public int getStaticIntField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    return ci.getStaticElementInfo().getIntField(fname);
+    return ci.getStaticElementInfo().getIntField(fname).simplify(NativeMethodInfo.CTX).getValue();
   }
   
   public int getStaticIntField (int clsObjRef, String fname) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
-    return cei.getIntField(fname);
+    return cei.getIntField(fname).simplify(NativeMethodInfo.CTX).getValue();
   }
 
   public int getStaticIntField (ClassInfo ci, String fname) {
     ElementInfo ei = ci.getStaticElementInfo();
-    return ei.getIntField(fname);
+    return ei.getIntField(fname).simplify(NativeMethodInfo.CTX).getValue();
   }
 
   public void setStaticLongField (String clsName, String fname, long value) {
@@ -715,16 +715,16 @@ public class MJIEnv {
 
   public int getStaticReferenceField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    return ci.getStaticElementInfo().getReferenceField(fname);
+    return ci.getStaticElementInfo().getReferenceField(fname).getValue();
   }
 
   public int getStaticReferenceField (int clsObjRef, String fname) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
-    return cei.getReferenceField(fname);
+    return cei.getReferenceField(fname).getValue();
   }
 
   public int getStaticReferenceField (ClassInfo ci, String fname){
-    return ci.getStaticElementInfo().getReferenceField(fname);
+    return ci.getStaticElementInfo().getReferenceField(fname).getValue();
   }
 
   public short getStaticShortField (String clsName, String fname) {
@@ -1417,11 +1417,11 @@ public class MJIEnv {
   public ClassInfo getReferredClassInfo (int clsObjRef) {
     ElementInfo ei = getElementInfo(clsObjRef);
     if (ei.getClassInfo().getName().equals("java.lang.Class")) {
-      int ciId = ei.getIntField( ClassInfo.ID_FIELD);
-      int clref = ei.getReferenceField("classLoader");
+      int ciId = ei.getIntField( ClassInfo.ID_FIELD).simplify(NativeMethodInfo.CTX).getValue();
+      int clref = ei.getReferenceField("classLoader").getValue();
       
       ElementInfo eiCl = getElementInfo(clref);
-      int cliId = eiCl.getIntField(ClassLoaderInfo.ID_FIELD);
+      int cliId = eiCl.getIntField(ClassLoaderInfo.ID_FIELD).simplify(NativeMethodInfo.CTX).getValue();
       
       ClassLoaderInfo cli = getVM().getClassLoader(cliId);
       ClassInfo referredCi = cli.getClassInfo(ciId);
@@ -1516,7 +1516,7 @@ public class MJIEnv {
       return null;
     }
 
-    int cliId = heap.get(clObjRef).getIntField(ClassLoaderInfo.ID_FIELD);
+    int cliId = heap.get(clObjRef).getIntField(ClassLoaderInfo.ID_FIELD).simplify(NativeMethodInfo.CTX).getValue();
     return getVM().getClassLoader(cliId);
   }
 
@@ -1614,7 +1614,7 @@ public class MJIEnv {
       }
 
       StaticElementInfo sei = eci.getStaticElementInfo();
-      int eref = sei.getReferenceField(eConst);
+      int eref = sei.getReferenceField(eConst).getValue();
       setReferenceField(proxyRef, fname, eref);
 
     } else if (v instanceof AnnotationInfo.ClassValue){ // a class

@@ -233,6 +233,7 @@ public abstract class Fields implements Cloneable {
 
   // same as getIntValue(), just here to make intentions clear
   public abstract int getReferenceValue (int index);
+  public abstract Conditional<Integer> getReferenceValue2 (int index);
 
   public abstract long getLongValue (int index);
 
@@ -251,6 +252,7 @@ public abstract class Fields implements Cloneable {
   //--- the field modifier methods (both instance and static)
 
   public abstract void setReferenceValue (int index, int newValue);
+  public abstract void setReferenceValue (int index, Conditional<Integer> newValue);
 
   public abstract void setBooleanValue (int index, boolean newValue);
 

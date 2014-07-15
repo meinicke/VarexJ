@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Processor;
@@ -820,7 +821,7 @@ public abstract class ElementInfo implements Cloneable {
     setDoubleField( getFieldInfo(fname), value);
   }
   public void setReferenceField (String fname, int value) {
-    setReferenceField( getFieldInfo(fname), value);
+    setReferenceField( getFieldInfo(fname), new One<>(value));
   }
 
 
@@ -941,6 +942,10 @@ public abstract class ElementInfo implements Cloneable {
   }
 
   public void setReferenceField(FieldInfo fi, int newValue) {
+	  setReferenceField(fi, new One<>(newValue));
+  }
+  
+  public void setReferenceField(FieldInfo fi, Conditional<Integer> newValue) {
     checkIsModifiable();
 
     if (fi.isReference()) {
@@ -975,15 +980,15 @@ public abstract class ElementInfo implements Cloneable {
 
 
   public void setDeclaredReferenceField(String fname, String clsBase, int value) {
-    setReferenceField(getDeclaredFieldInfo(clsBase, fname), value);
+    setReferenceField(getDeclaredFieldInfo(clsBase, fname), new One<>(value));
   }
 
-  public int getDeclaredReferenceField(String fname, String clsBase) {
+  public Conditional<Integer> getDeclaredReferenceField(String fname, String clsBase) {
     FieldInfo fi = getDeclaredFieldInfo(clsBase, fname);
     return getReferenceField( fi);
   }
 
-  public int getReferenceField(String fname) {
+  public Conditional<Integer> getReferenceField(String fname) {
     FieldInfo fi = getFieldInfo(fname);
     return getReferenceField( fi);
   }
@@ -993,10 +998,10 @@ public abstract class ElementInfo implements Cloneable {
     // be aware of that static fields are not flattened (they are unique), i.e.
     // the FieldInfo might actually refer to another ClassInfo/StaticElementInfo
     FieldInfo fi = getDeclaredFieldInfo(clsBase, fname);
-    return getIntField( fi);
+    return getIntField( fi).getValue();
   }
 
-  public int getIntField(String fname) {
+  public Conditional<Integer> getIntField(String fname) {
     // be aware of that static fields are not flattened (they are unique), i.e.
     // the FieldInfo might actually refer to another ClassInfo/StaticElementInfo
     FieldInfo fi = getFieldInfo(fname);
@@ -1122,9 +1127,9 @@ public abstract class ElementInfo implements Cloneable {
       throw new JPFException("not a short field: " + fi.getName());
     }
   }
-  public int getIntField(FieldInfo fi) {
+  public Conditional<Integer> getIntField(FieldInfo fi) {
     if (fi.isIntField()){
-      return fields.getIntValue(fi.getStorageOffset());
+      return fields.getIntValue2(fi.getStorageOffset());
     } else {
       throw new JPFException("not a int field: " + fi.getName());
     }
@@ -1150,9 +1155,9 @@ public abstract class ElementInfo implements Cloneable {
       throw new JPFException("not a double field: " + fi.getName());
     }
   }
-  public int getReferenceField (FieldInfo fi) {
+  public Conditional<Integer> getReferenceField (FieldInfo fi) {
     if (fi.isReference()){
-      return fields.getReferenceValue(fi.getStorageOffset());
+      return fields.getReferenceValue2(fi.getStorageOffset());
     } else {
       throw new JPFException("not a reference field: " + fi.getName());
     }
@@ -1486,11 +1491,11 @@ public abstract class ElementInfo implements Cloneable {
   }
 
   public ElementInfo getDeclaredObjectField(String fname, String referenceType) {
-    return VM.getVM().getHeap().get(getDeclaredReferenceField(fname, referenceType));
+    return VM.getVM().getHeap().get(getDeclaredReferenceField(fname, referenceType).getValue());
   }
 
   public ElementInfo getObjectField(String fname) {
-    return VM.getVM().getHeap().get(getReferenceField(fname));
+    return VM.getVM().getHeap().get(getReferenceField(fname).getValue());
   }
 
 
@@ -1504,7 +1509,7 @@ public abstract class ElementInfo implements Cloneable {
   }
 
   public String getStringField(String fname) {
-    int ref = getReferenceField(fname);
+    int ref = getReferenceField(fname).getValue();
 
     if (ref != MJIEnv.NULL) {
       ElementInfo ei = VM.getVM().getHeap().get(ref);

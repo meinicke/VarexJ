@@ -96,7 +96,7 @@ public class GETSTATIC extends StaticFieldInstruction {
       lastValue = ival;
 
       if (fieldInfo.isReference()) {
-        frame.pushRef(ival.getValue(), ctx);
+        frame.pushRef(ctx,ival);
       } else {
         frame.push(ctx, ival);
       }

@@ -284,7 +284,7 @@ public class ObjectConverter {
       javaField.setShort(javaObject, ei.getShortField(fi));
     }
     else if (primitiveType.equals("int")) {
-      javaField.setInt(javaObject, ei.getIntField(fi));
+      javaField.setInt(javaObject, ei.getIntField(fi).getValue());
     }
     else if (primitiveType.equals("long")) {
       javaField.setLong(javaObject, ei.getLongField(fi));

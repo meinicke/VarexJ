@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -37,7 +39,7 @@ public abstract class InstanceFieldInstruction extends FieldInstruction
    *
    * USE WITH CARE, AND ONLY FROM DERIVED CLASSES
    */
-  protected int lastThis = MJIEnv.NULL;
+  protected Conditional<Integer> lastThis = new One<>(MJIEnv.NULL);
 
   protected InstanceFieldInstruction() {}
 
@@ -140,15 +142,15 @@ public abstract class InstanceFieldInstruction extends FieldInstruction
    * the same instruction can be executed from different threads
    */
   public int getLastThis() {
-    return lastThis;
+    return lastThis.getValue();
   }
 
   /**
    * since this is based on getLastThis(), the same context restrictions apply
    */
   public ElementInfo getLastElementInfo () {
-    if (lastThis != MJIEnv.NULL) {
-      return VM.getVM().getHeap().get(lastThis); // <2do> remove - should be in clients
+    if (lastThis.getValue() != MJIEnv.NULL) {
+      return VM.getVM().getHeap().get(lastThis.getValue()); // <2do> remove - should be in clients
     }
 
     return null;

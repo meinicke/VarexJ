@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -29,7 +30,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  * ..., objectref  => [empty]
  */
 public class ARETURN extends ReturnInstruction {
-  int ret;
+  Conditional<Integer> ret;
   
   public int getReturnTypeSize() {
     return 1;
@@ -40,27 +41,27 @@ public class ARETURN extends ReturnInstruction {
   }
   
   protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
-    ret = frame.pop(ctx).getValue();
+    ret = frame.pop(ctx);
   }
   
   protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
-    frame.pushRef(ret, ctx);
+    frame.pushRef(ctx, ret);
   }
 
   public int getReturnValue () {
-    return ret;
+    return ret.getValue();
   }
   
   public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
     if (!isCompleted(ti)) { // we have to pull it from the operand stack
       StackFrame frame = ti.getTopFrame();
-      ret = frame.peek(ctx).getValue();
+      ret = frame.peek(ctx);
     }
     
-    if (ret == MJIEnv.NULL) {
+    if (ret.getValue() == MJIEnv.NULL) {
       return null;
     } else {
-      return ti.getElementInfo(ret);
+      return ti.getElementInfo(ret.getValue());
     }
   }
   

@@ -675,7 +675,7 @@ public class JPF_java_lang_Class extends NativePeer {
       StaticElementInfo sei = ci.getStaticElementInfo();
       int i=0;
       for (FieldInfo fi : list){
-        env.setReferenceArrayElement( aRef, i++, sei.getReferenceField(fi));
+        env.setReferenceArrayElement( aRef, i++, sei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue());
       }
       return aRef;
     }

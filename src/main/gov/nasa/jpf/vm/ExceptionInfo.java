@@ -56,7 +56,7 @@ public class ExceptionInfo {
     StringBuilder sb = new StringBuilder();
     sb.append(getExceptionClassname());
     
-    int msgRef = ei.getReferenceField("detailMessage");
+    int msgRef = ei.getReferenceField("detailMessage").getValue();
     if (msgRef != MJIEnv.NULL){
       ElementInfo eiMsg = ti.getElementInfo(msgRef);
       sb.append(" : ");
@@ -67,7 +67,7 @@ public class ExceptionInfo {
   }
   
   public String getCauseClassname() {
-    int causeRef = ei.getReferenceField("cause");
+    int causeRef = ei.getReferenceField("cause").getValue();
     if (causeRef != MJIEnv.NULL){
       ElementInfo eiCause = ti.getElementInfo(causeRef);
       return eiCause.getClassInfo().getName();
@@ -76,10 +76,10 @@ public class ExceptionInfo {
     return null;
   }
   public String getCauseDetails() {
-    int causeRef = ei.getReferenceField("cause");
+    int causeRef = ei.getReferenceField("cause").getValue();
     if (causeRef != MJIEnv.NULL){
       ElementInfo eiCause = ti.getElementInfo(causeRef);
-      int msgRef = eiCause.getReferenceField("detailMessage");
+      int msgRef = eiCause.getReferenceField("detailMessage").getValue();
       if (msgRef != MJIEnv.NULL){
         ElementInfo eiMsg = ti.getElementInfo(msgRef);
         return eiMsg.asString();

@@ -61,7 +61,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
-    int v = ei.getReferenceField(fi);
+    int v = ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();
     if (v == fExpect) {
       ei.setReferenceField(fi, fUpdate);
       return true;
@@ -109,7 +109,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
     ElementInfo ei = env.getElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
-    return ei.getReferenceField(fi);
+    return ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();
   }
 
   @MJI
@@ -123,7 +123,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
     int fidx = env.getIntField(objRef, "fieldId");
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
-    int result = ei.getReferenceField(fi);
+    int result = ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();
 
     ei.setReferenceField(fi, fNewValue);
 

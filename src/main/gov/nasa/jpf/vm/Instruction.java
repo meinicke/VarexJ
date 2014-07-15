@@ -453,13 +453,13 @@ public abstract class Instruction implements Cloneable {
 			return true;
 		}
 		
-		if (o.getClass().equals(getClass()) && o instanceof Instruction) {
-			if (insnIndex == ((Instruction)o).insnIndex &&
-					position == ((Instruction)o).position  &&
-					mi == ((Instruction)o).mi) {
-				return true;
-			}
-		}
+//		if (o.getClass().equals(getClass()) && o instanceof Instruction) {
+//			if (insnIndex == ((Instruction)o).insnIndex &&
+//					position == ((Instruction)o).position  &&
+//					mi == ((Instruction)o).mi) {
+//				return true;
+//			}
+//		}
 		
 		return false;
 	}

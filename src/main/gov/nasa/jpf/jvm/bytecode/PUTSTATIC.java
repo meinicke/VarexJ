@@ -32,36 +32,34 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
-
 /**
  * Set static field in class
  * ..., value => ...
  */
 public class PUTSTATIC extends StaticFieldInstruction implements StoreInstruction {
 
-  public PUTSTATIC() {}
+	public PUTSTATIC() {}
 
-  public PUTSTATIC(String fieldName, String clsDescriptor, String fieldDescriptor){
-    super(fieldName, clsDescriptor, fieldDescriptor);
-  }
+	public PUTSTATIC(String fieldName, String clsDescriptor, String fieldDescriptor) {
+		super(fieldName, clsDescriptor, fieldDescriptor);
+	}
 
-  @Override
-  protected void popOperands1 (FeatureExpr ctx, StackFrame frame) {
-    frame.pop(ctx); // .. val => ..
-  }
-  
-  @Override
-  protected void popOperands2 (FeatureExpr ctx, StackFrame frame) {
-    frame.pop(ctx, 2);  // .. highVal, lowVal => ..
-  }
-  
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-	  AnnotationInfo[] annotations = getFieldInfo().getAnnotations();
+	@Override
+	protected void popOperands1(FeatureExpr ctx, StackFrame frame) {
+		frame.pop(ctx); // .. val => ..
+	}
+
+	@Override
+	protected void popOperands2(FeatureExpr ctx, StackFrame frame) {
+		frame.pop(ctx, 2); // .. highVal, lowVal => ..
+	}
+
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		AnnotationInfo[] annotations = getFieldInfo().getAnnotations();
 		boolean annotated = false;
 		for (AnnotationInfo ai : annotations) {
 			if (ai.getName().equals(gov.nasa.jpf.annotation.Conditional.class.getName())) {
-//				System.out.println("Found Feature: " + fname);
 				annotated = true;
 			}
 		}
@@ -71,61 +69,60 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			frame.pop(ctx);
 			frame.push(ctx, new Choice<>(feature, new One<>(1), new One<>(0)));
 		}
-	  
-	  
-    if (!ti.isFirstStepInsn()) { // top half
-      FieldInfo fieldInfo;
-    
-      try {
-        fieldInfo = getFieldInfo();
-      } catch(LoadOnJPFRequired lre) {
-        return ti.getPC();
-      }
-      
-      if (fieldInfo == null) {
-        return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", (className + '.' + fname)));
-      }
-      
-      ClassInfo ciField = fi.getClassInfo();
-      if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ti)) {
-        // note - this returns the next insn in the topmost clinit that just got pushed
-        return ti.getPC();
-      }
-      
-      ElementInfo ei = ciField.getStaticElementInfo();
-      ei = ei.getInstanceWithUpdatedSharedness(ti);
-      if (isNewPorFieldBoundary(ti)) {
-        if (createAndSetSharedFieldAccessCG( ei, ti)) {
-          return new One<Instruction>(this);
-        }
-      }
-      
-      ei = ei.getModifiableInstance();
-      return put(ctx, ti, ti.getTopFrame(), ei);
-      
-    } else { // re-execution
-      // no need to redo the exception checks, we already had them in the top half
-      ClassInfo ciField = fi.getClassInfo();
-      ElementInfo ei = ciField.getStaticElementInfo();
-      
-      ei = ei.getModifiableInstance();
-      return put(ctx, ti, ti.getTopFrame(), ei);      
-    }
-  }
-  
-  public int getLength() {
-    return 3; // opcode, index1, index2
-  }
 
-  public int getByteCode () {
-    return 0xB3;
-  }
+		if (!ti.isFirstStepInsn()) { // top half
+			FieldInfo fieldInfo;
 
-  public boolean isRead() {
-    return false;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+			try {
+				fieldInfo = getFieldInfo();
+			} catch (LoadOnJPFRequired lre) {
+				return ti.getPC();
+			}
+
+			if (fieldInfo == null) {
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", (className + '.' + fname)));
+			}
+
+			ClassInfo ciField = fi.getClassInfo();
+			if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ti)) {
+				// note - this returns the next insn in the topmost clinit that just got pushed
+				return ti.getPC();
+			}
+
+			ElementInfo ei = ciField.getStaticElementInfo();
+			ei = ei.getInstanceWithUpdatedSharedness(ti);
+			if (isNewPorFieldBoundary(ti)) {
+				if (createAndSetSharedFieldAccessCG(ei, ti)) {
+					return new One<Instruction>(this);
+				}
+			}
+
+			ei = ei.getModifiableInstance();
+			return put(ctx, ti, ti.getTopFrame(), ei, true);
+
+		} else { // re-execution
+			// no need to redo the exception checks, we already had them in the top half
+			ClassInfo ciField = fi.getClassInfo();
+			ElementInfo ei = ciField.getStaticElementInfo();
+
+			ei = ei.getModifiableInstance();
+			return put(ctx, ti, ti.getTopFrame(), ei, false);
+		}
+	}
+
+	public int getLength() {
+		return 3; // opcode, index1, index2
+	}
+
+	public int getByteCode() {
+		return 0xB3;
+	}
+
+	public boolean isRead() {
+		return false;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

@@ -124,9 +124,18 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     return isReferenceField;
   }
 
-  protected Conditional<Instruction> put1 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
+  protected Conditional<Instruction> put1 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner, boolean initStatic) {
     Object attr = frame.getOperandAttr(ctx);
-	Conditional<Integer> val = new Choice(ctx, frame.peek(ctx), eiFieldOwner.get1SlotField(fi)).simplify();
+    Conditional<Integer> val;
+    if (initStatic) {
+    	/*
+    	 * static fields need to be initialized for all contexts
+    	 * because the static class objects are only initialized once 
+    	 */
+    	val = frame.peek(ctx);
+    } else {
+    	val = new Choice<>(ctx, frame.peek(ctx), eiFieldOwner.get1SlotField(fi)).simplify();
+    }
     lastValue = val;
 
     // we only have to modify the field owner if the values have changed, and only
@@ -135,7 +144,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       
       if (fi.isReference()) {
-        eiFieldOwner.setReferenceField(fi, val.simplify(ctx).getValue());
+        eiFieldOwner.setReferenceField(fi, val);
         
         // this is kind of policy, but it seems more natural to overwrite instead of accumulate
         // (if we want to accumulate, this has to happen in ElementInfo/Fields)
@@ -193,9 +202,9 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     return getNext(ctx, ti);
   }
   
-  protected Conditional<Instruction> put (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
+  protected Conditional<Instruction> put (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner, boolean initStatic) {
     if (size == 1) {
-      return put1(ctx, ti, frame, eiFieldOwner);
+      return put1(ctx, ti, frame, eiFieldOwner, initStatic);
     } else {
       return put2(ctx, ti, frame, eiFieldOwner);
     }

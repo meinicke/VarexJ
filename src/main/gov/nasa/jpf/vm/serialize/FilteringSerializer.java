@@ -427,7 +427,7 @@ public class FilteringSerializer extends AbstractSerializer implements Reference
       if (!filtered.get(i)) {
         Conditional<Integer> v = fields.getIntValue2(i);
         if (refs.get(i)) {
-          processReference(v.getValue());
+          processReference(v.getValue(true));
         } else {
           buf.add(v);
         }

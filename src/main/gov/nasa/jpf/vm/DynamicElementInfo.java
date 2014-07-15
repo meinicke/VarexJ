@@ -92,7 +92,7 @@ public class DynamicElementInfo extends ElementInfo {
   public ElementInfo getEnclosingElementInfo(){
     for (FieldInfo fi : getClassInfo().getDeclaredInstanceFields()){
       if (fi.getName().startsWith("this$")){
-        int objref = getReferenceField(fi);
+        int objref = getReferenceField(fi).getValue();
         return VM.getVM().getElementInfo(objref);
       }
     }
@@ -114,7 +114,7 @@ public class DynamicElementInfo extends ElementInfo {
       throw new JPFException("object is not of type java.lang.String");
     }
 
-    int vref = getDeclaredReferenceField("value", "java.lang.String");    
+    int vref = getDeclaredReferenceField("value", "java.lang.String").simplify(NativeMethodInfo.CTX).getValue();    
     if (vref != MJIEnv.NULL){
       ElementInfo eVal = VM.getVM().getHeap().get(vref);
       char[] value = eVal.asCharArray();
@@ -133,7 +133,7 @@ public class DynamicElementInfo extends ElementInfo {
       return false;
     }
 
-    int vref = getDeclaredReferenceField("value", "java.lang.String");
+    int vref = getDeclaredReferenceField("value", "java.lang.String").getValue();
     ElementInfo e = VM.getVM().getHeap().get(vref);
     CharArrayFields cf = (CharArrayFields)e.getFields();
     char[] v = cf.asCharArray();
@@ -172,7 +172,7 @@ public class DynamicElementInfo extends ElementInfo {
       } else if ("Short".equals(cname)){
         return Short.valueOf( getShortField("value"));
       } else if ("Integer".equals(cname)){
-        return Integer.valueOf( getIntField("value"));
+        return Integer.valueOf( getIntField("value").getValue());
       } else if ("Float".equals(cname)){
         return Float.valueOf( getFloatField("value"));
       } else if ("Long".equals(cname)){

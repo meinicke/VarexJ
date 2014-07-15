@@ -53,7 +53,7 @@ public class ClassLoaderInfoTest extends TestJPF {
     int cl0ObjRef = cl0.objRef;
     assertTrue( cl0ObjRef != MJIEnv.NULL);
     ElementInfo ei0 = heap.get(cl0ObjRef);
-    assertTrue( ei0.getIntField( ClassLoaderInfo.ID_FIELD) == cl0.getId());
+    assertTrue( ei0.getIntField( ClassLoaderInfo.ID_FIELD).getValue() == cl0.getId());
     
     //--- app 1
     SystemClassLoaderInfo cl1 = threads[1].getSystemClassLoaderInfo();
@@ -63,7 +63,7 @@ public class ClassLoaderInfoTest extends TestJPF {
     int cl1ObjRef = cl1.objRef;
     assertTrue( cl1ObjRef != MJIEnv.NULL);
     ElementInfo ei1 = heap.get(cl1ObjRef);
-    assertTrue( ei1.getIntField( ClassLoaderInfo.ID_FIELD) == cl1.getId());
+    assertTrue( ei1.getIntField( ClassLoaderInfo.ID_FIELD).getValue() == cl1.getId());
     
     //--- compare them
     assertTrue( cl0 != cl1);

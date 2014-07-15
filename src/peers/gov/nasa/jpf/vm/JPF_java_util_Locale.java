@@ -30,12 +30,12 @@ public class JPF_java_util_Locale extends NativePeer {
     ClassInfo ci = env.getClassInfo(locref);  // Locale is final, so we can do this
     ElementInfo sei = ci.getStaticElementInfo();
 
-    if (locref == sei.getReferenceField("US")) return Locale.US;
-    if (locref == sei.getReferenceField("GERMAN")) return Locale.GERMAN;
-    if (locref == sei.getReferenceField("ENGLISH")) return Locale.ENGLISH;
-    if (locref == sei.getReferenceField("FRENCH")) return Locale.FRENCH;
-    if (locref == sei.getReferenceField("JAPANESE")) return Locale.JAPANESE;
-    if (locref == sei.getReferenceField("CHINESE")) return Locale.CHINESE;
+    if (locref == sei.getReferenceField("US").getValue()) return Locale.US;
+    if (locref == sei.getReferenceField("GERMAN").getValue()) return Locale.GERMAN;
+    if (locref == sei.getReferenceField("ENGLISH").getValue()) return Locale.ENGLISH;
+    if (locref == sei.getReferenceField("FRENCH").getValue()) return Locale.FRENCH;
+    if (locref == sei.getReferenceField("JAPANESE").getValue()) return Locale.JAPANESE;
+    if (locref == sei.getReferenceField("CHINESE").getValue()) return Locale.CHINESE;
     //... we should have a bunch more
 
 

@@ -139,7 +139,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     ElementInfo queue = null;
     
     if(ei!=null) {
-      int queueRef = ei.getReferenceField("finalizeQueue");
+      int queueRef = ei.getReferenceField("finalizeQueue").getValue();
       queue = vm.getModifiableElementInfo(queueRef);
       return queue;
     }
@@ -217,14 +217,14 @@ public class FinalizerThreadInfo extends ThreadInfo {
   }
   
   protected void waitOnSemaphore() {
-    int lockRef = vm.getElementInfo(objRef).getReferenceField("semaphore");
+    int lockRef = vm.getElementInfo(objRef).getReferenceField("semaphore").getValue();
     ElementInfo lock = vm.getModifiableElementInfo(lockRef);
     
     lock.wait(this, 0, false);
   }
   
   protected void notifyOnSemaphore() {
-    int lockRef = vm.getElementInfo(objRef).getReferenceField("semaphore");
+    int lockRef = vm.getElementInfo(objRef).getReferenceField("semaphore").getValue();
     ElementInfo lock = vm.getModifiableElementInfo(lockRef);
     
     lock.notifies(vm.getSystemState(), this, false);

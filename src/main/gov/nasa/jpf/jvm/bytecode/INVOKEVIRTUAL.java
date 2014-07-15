@@ -44,4 +44,5 @@ public class INVOKEVIRTUAL extends VirtualInvocation {
   public void accept(InstructionVisitor insVisitor) {
 	  insVisitor.visit(this);
   }
+  
 }
