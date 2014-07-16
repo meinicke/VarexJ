@@ -1915,10 +1915,10 @@ public class ThreadInfo extends InfoObject
         	if (time == 0) {
         		time = System.currentTimeMillis();
         	}
-//        	count++;
+        	count++;
 //    		if (count > 17000) {
 //    			debug = false;
-//    			if (debug) System.out.print(count + ": ");
+    			if (debug) System.out.print(count + ": ");
 //    		}
 //        	if (System.currentTimeMillis() - time > 1000) {
 //        		System.out.println((count - count2)+ " instructions / s");
@@ -1933,7 +1933,7 @@ public class ThreadInfo extends InfoObject
         			if (top.getDepth() < 10) {
         				System.out.print(" ");
         			}
-  					System.out.println(" exe: " + pc.getValue() + " if True");
+  					System.out.println(" " + pc.getValue() + " if True");
   				}
         		nextPc = pc.getValue().execute(FeatureExprFactory.True(), this);
         		

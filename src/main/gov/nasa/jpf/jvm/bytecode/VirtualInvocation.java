@@ -58,7 +58,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		
 		Conditional<Integer> allRefs = ti.getCalleeThis(ctx, getArgSize());
-		if (ThreadInfo.debug) System.out.println(allRefs.toList());
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
 		boolean splitRef = false;
 		if (map.size() > 1) {

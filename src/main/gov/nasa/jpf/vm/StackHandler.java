@@ -351,7 +351,6 @@ public class StackHandler {
 	@SuppressWarnings("unchecked")
 	public <T,U> void push(final FeatureExpr ctx, final T value, final boolean isRef) {
 		if (value instanceof Conditional) {
-			if (ThreadInfo.debug) System.out.println("Push " + ((Conditional)value).toList());
 			((Conditional<U>) value).mapf(ctx, new BiFunction<FeatureExpr, U, Conditional<U>>() {
 
 				@Override

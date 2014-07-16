@@ -63,15 +63,10 @@ public class StringTest extends TestJPF {
 		}
 	}
 	
-	@Ignore @Test// TODO implement
+	@Test// TODO implement
 	public void concatenationTest2() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			String s = "A";
-			if (x) {
-				s = s + "X";
-			}
-			
-			System.out.println(y + s);
+			System.out.println(y + "");
 		}
 	}
 	
