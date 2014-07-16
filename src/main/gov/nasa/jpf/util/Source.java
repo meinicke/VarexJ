@@ -184,8 +184,7 @@ public class Source {
   static String findSrcRoot (String cpEntry){
     if (cpEntry.endsWith(".jar")){
       // check if there is a 'src' dir in the jar
-      try {
-        JarFile jf = new JarFile(cpEntry);
+      try (JarFile jf = new JarFile(cpEntry)) {
         JarEntry srcEntry = jf.getJarEntry("src");
         if (srcEntry != null && srcEntry.isDirectory()) {
           return jf.getName() + "/src"; // jar internal paths use '/' separators

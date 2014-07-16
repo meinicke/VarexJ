@@ -121,7 +121,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			if (!splitRef) {
 				return ti.getPC();
 			}
-			return new Choice<>(ctx, ti.getPC(), new One<Instruction>(typeSafeClone(mi))).simplify(); // we can't just return the first callee insn
+			return new Choice<>(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify(); // we can't just return the first callee insn
 								// if a listener throws an exception
 
 		}

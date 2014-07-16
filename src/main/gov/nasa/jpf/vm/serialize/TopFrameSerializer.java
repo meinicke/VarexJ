@@ -19,7 +19,6 @@
 
 package gov.nasa.jpf.vm.serialize;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 

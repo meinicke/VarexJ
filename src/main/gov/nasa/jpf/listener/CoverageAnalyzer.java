@@ -56,8 +56,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * a listener to report coverage statistics
  *
@@ -658,8 +656,7 @@ public class CoverageAnalyzer extends ListenerAdapter implements PublisherExtens
   }
 
   void traverseJar(File jar) {
-    try {
-      JarFile jf = new JarFile(jar);
+    try (JarFile jf = new JarFile(jar)) {
       for (Enumeration<JarEntry> entries = jf.entries(); entries.hasMoreElements();) {
         JarEntry e = entries.nextElement();
         if (!e.isDirectory()) {

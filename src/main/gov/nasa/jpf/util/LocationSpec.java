@@ -106,8 +106,6 @@ public class LocationSpec {
     } else if (idx == 0){
       pspec = "/";
       fspec = fspec.substring(1);
-    } else {
-      pspec = null;
     }
 
     return new LocationSpec(pspec, fspec, line1, line2);

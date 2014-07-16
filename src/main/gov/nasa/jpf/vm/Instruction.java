@@ -26,7 +26,6 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Source;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * common root of all JPF bytecode instruction classes

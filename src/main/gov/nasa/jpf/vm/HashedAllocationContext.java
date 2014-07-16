@@ -25,7 +25,6 @@ import gov.nasa.jpf.Config;
 import sun.misc.JavaLangAccess;
 import sun.misc.SharedSecrets;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * an AllocationContext that uses a hash value for comparison. This is

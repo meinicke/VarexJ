@@ -24,8 +24,6 @@ import gov.nasa.jpf.util.OATHash;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * class that captures execution context consisting of executing thread and 
  * pc's of ti's current StackFrames

@@ -45,7 +45,6 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**

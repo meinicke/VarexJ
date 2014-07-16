@@ -658,7 +658,7 @@ public class SparseClusterArray <E> implements Iterable<E> {
    * the elements contain a lot of transient data we don't want to store
    */
   public <T> Snapshot<E,T> getSnapshot (Transformer<E,T> transformer){
-    Snapshot<E,T> snap = new Snapshot<E,T>(nSet);
+    Snapshot<E,T> snap = new Snapshot<>(nSet);
     populateSnapshot(snap, transformer);
 
     return snap;

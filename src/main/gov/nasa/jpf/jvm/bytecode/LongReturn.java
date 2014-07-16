@@ -24,7 +24,6 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import java.util.Iterator;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * common base for DRETURN and LRETURN
@@ -97,7 +96,7 @@ public abstract class LongReturn extends ReturnInstruction {
     StackFrame frame = ti.getTopFrame();
     return frame.getNextLongOperandAttr(type, prev);
   }
-  public Iterator returnAttrIterator (ThreadInfo ti){
+  public Iterator<?> returnAttrIterator (ThreadInfo ti){
     StackFrame frame = ti.getTopFrame();
     return frame.longOperandAttrIterator();
   }

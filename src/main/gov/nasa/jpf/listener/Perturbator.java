@@ -45,8 +45,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * listener that perturbs GETFIELD/GETSTATIC and InvokeInstruction results
  *

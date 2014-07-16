@@ -31,7 +31,8 @@ public class HarnessTest extends TestJPF {
     }
   }
 
-  @Test
+  @SuppressWarnings("null")
+@Test
   public void verifyNullPointerException() {
     if (verifyUnhandledException("java.lang.NullPointerException")) {
       System.out.println("** this is verifyNullPointerException() - JPF should find an NPE");

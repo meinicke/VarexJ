@@ -268,7 +268,6 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           int r = fis.read();
           env.setLongField(objref, "off", fc.position());
           return r;
-          
         } else {
           env.throwException("java.io.IOException", "read attempt on file opened for write access");
           return -1;                  

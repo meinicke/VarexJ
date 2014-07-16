@@ -60,7 +60,7 @@ public class NativePeer implements Cloneable {
 
   public static boolean init (Config conf) {
     loader = conf.getClassLoader();
-    peers = new HashMap<ClassInfo, NativePeer>();
+    peers = new HashMap<>();
 
     peerPackages = getPeerPackages(conf);
 

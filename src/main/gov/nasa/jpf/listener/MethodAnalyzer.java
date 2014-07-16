@@ -239,7 +239,7 @@ public class MethodAnalyzer extends ListenerAdapter {
     MethodOp last = null;
     MethodOp prevTransition = start.prevTransition;
 
-    for (MethodOp op = start; op != null;) {
+    for (MethodOp op = start;;) {
       MethodOp opp = op.p;
       op.p = last;
       
@@ -256,8 +256,6 @@ public class MethodAnalyzer extends ListenerAdapter {
         op = opp;
       }
     }
-
-    return null;
   }
   
   //--- SearchListener interface

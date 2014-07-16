@@ -190,7 +190,7 @@ public final class IntTable<E> implements Iterable<IntTable.Entry<E>>, Cloneable
     
     for (int i=0; i<nEntries; i++){
       int idx = indices[i];
-      tbl[idx] = new Entry<E>( keys[i], vals[i], tbl[idx]);
+      tbl[idx] = new Entry<>( keys[i], vals[i], tbl[idx]);
     }
     
     table = tbl;

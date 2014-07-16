@@ -19,7 +19,6 @@
 
 package gov.nasa.jpf.util;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 

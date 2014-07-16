@@ -25,8 +25,6 @@ import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.Random;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * abstract root class for configurable choice generators
  */

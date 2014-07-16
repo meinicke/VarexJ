@@ -739,7 +739,6 @@ public class StackHandlerTest {
 	public void ctxTest2() throws Exception {
 		StackHandler stack = new StackHandler(0, 4);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
-		FeatureExpr f2 = FeatureExprFactory.createDefinedExternal("f2");
 		stack.setCtx(f1);
 		stack.push(f1, new One<>(42), false);
 		stack.push(f1, new One<>(43), true);

@@ -49,8 +49,6 @@ import gov.nasa.jpf.vm.VM;
 import java.util.HashMap;
 import java.util.List;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 
 /**
  * serializer that can ignore marked fields and stackframes for state matching
@@ -60,14 +58,14 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 public class FilteringSerializer extends AbstractSerializer implements ReferenceProcessor, Processor<ElementInfo> {
 
   // indexed by method globalId
-  final ObjVector<FramePolicy> methodCache = new ObjVector<FramePolicy>();
+  final ObjVector<FramePolicy> methodCache = new ObjVector<>();
 
   //--- search global bitmask caches
-  final HashMap<ClassInfo,FinalBitSet> instanceRefMasks = new HashMap<ClassInfo,FinalBitSet>();
-  final HashMap<ClassInfo,FinalBitSet> staticRefMasks   = new HashMap<ClassInfo,FinalBitSet>();
+  final HashMap<ClassInfo,FinalBitSet> instanceRefMasks = new HashMap<>();
+  final HashMap<ClassInfo,FinalBitSet> staticRefMasks   = new HashMap<>();
 
-  final HashMap<ClassInfo,FinalBitSet> instanceFilterMasks = new HashMap<ClassInfo,FinalBitSet>();
-  final HashMap<ClassInfo,FinalBitSet> staticFilterMasks   = new HashMap<ClassInfo,FinalBitSet>();
+  final HashMap<ClassInfo,FinalBitSet> instanceFilterMasks = new HashMap<>();
+  final HashMap<ClassInfo,FinalBitSet> staticFilterMasks   = new HashMap<>();
 
   protected FilterConfiguration filter;
 

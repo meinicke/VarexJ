@@ -2918,7 +2918,7 @@ public class ThreadInfo extends InfoObject
 
     // check if we find a matching handler, and if we do store it. Leave the
     // stack untouched so that listeners can still inspect it
-    for (StackFrame frame = top; (frame != null) && (handlerFrame == null); frame = frame.getPrevious()) {
+    for (StackFrame frame = top; (frame != null); frame = frame.getPrevious()) {
       // that means we have to turn the exception into an InvocationTargetException
       if (frame.isReflection()) {
         ciException = ClassInfo.getInitializedSystemClassInfo("java.lang.reflect.InvocationTargetException", this);
@@ -2934,7 +2934,7 @@ public class ThreadInfo extends InfoObject
         break;
       }
 
-      if ((handlerFrame == null) && frame.isFirewall()) {
+      if (frame.isFirewall()) {
         // this method should not let exceptionHandlers pass into lower level stack frames
         // (e.g. for <clinit>, or hidden direct calls)
         // <2do> if this is a <clinit>, we should probably turn into an

@@ -23,8 +23,6 @@ import gov.nasa.jpf.JPFException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 
 /**
  * various type mangling/demangling routines

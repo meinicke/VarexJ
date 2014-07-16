@@ -5,6 +5,7 @@ import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
 
+@SuppressWarnings("unused")
 public class DoubleTest extends TestJPF {
 
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";

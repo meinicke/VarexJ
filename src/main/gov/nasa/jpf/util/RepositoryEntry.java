@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  */
 public class RepositoryEntry {
   
-  static HashMap<String,RepositoryEntry> dict = new HashMap<String,RepositoryEntry>();
+  static HashMap<String,RepositoryEntry> dict = new HashMap<>();
   
   String fileName;
   String repositoryType;
@@ -109,8 +109,7 @@ class SvnRepositoryEntryFactory implements RepositoryEntryFactory {
       Pattern pName = Pattern.compile(" *name=\"([a-zA-Z0-9.]+)\"");
       Pattern pRep = Pattern.compile(" *url=\"([a-zA-Z0-9.:/\\-]+)\"");
       Pattern pRev = Pattern.compile(" *committed-rev=\"([0-9]+)\"");
-      try {
-        BufferedReader r = new BufferedReader(new FileReader(fEntries));
+      try (BufferedReader r = new BufferedReader(new FileReader(fEntries))) {
         for (String line=r.readLine(); line != null; line = r.readLine()) {
           Matcher mRep = pRep.matcher(line);
           if (mRep.matches()) {
@@ -137,102 +136,100 @@ class SvnRepositoryEntryFactory implements RepositoryEntryFactory {
 
 class HgRepositoryEntryFactory implements RepositoryEntryFactory {
 
-  public RepositoryEntry getRepositoryEntry(String fullFileName) {
-    File file = new File(fullFileName);
+	public RepositoryEntry getRepositoryEntry(String fullFileName) {
+		File file = new File(fullFileName);
 
-    if (!file.exists())
-      return null;
+		if (!file.exists())
+			return null;
 
-    File currentDir = file.getParentFile();
+		File currentDir = file.getParentFile();
 
-    searchForHg:
-    while (currentDir != null) {
-      for (String childName : currentDir.list())
-        if (childName.equals(".hg"))
-          break searchForHg;
+		searchForHg: while (currentDir != null) {
+			for (String childName : currentDir.list())
+				if (childName.equals(".hg"))
+					break searchForHg;
 
-      currentDir = currentDir.getParentFile();
-    }
+			currentDir = currentDir.getParentFile();
+		}
 
-    if (currentDir != null) {
-      try {
-        File hgrcFile = new File(currentDir, ".hg/hgrc");
-        
-        String repoURL = "";
-        BufferedReader r = new BufferedReader(new FileReader(hgrcFile));
-        for (String line=r.readLine(); line != null; line = r.readLine()) {
-          String keyVal[] = line.split("=");
-          if (keyVal[0].trim().equals("default")) {
-            repoURL = keyVal[1].trim();
-            break;
-          }
+		if (currentDir != null) {
+			try {
+				File hgrcFile = new File(currentDir, ".hg/hgrc");
 
-        }
+				String repoURL = "";
+				try (BufferedReader r = new BufferedReader(new FileReader(hgrcFile))) {
+					for (String line = r.readLine(); line != null; line = r.readLine()) {
+						String keyVal[] = line.split("=");
+						if (keyVal[0].trim().equals("default")) {
+							repoURL = keyVal[1].trim();
+							break;
+						}
 
-        File branchHeads = new File(currentDir, ".hg/branchheads.cache");
-        r = new BufferedReader(new FileReader(branchHeads));
-        String revision = r.readLine().split(" ")[1];
+					}
+				}
+				File branchHeads = new File(currentDir, ".hg/branchheads.cache");
+				try (BufferedReader r2 = new BufferedReader(new FileReader(branchHeads))) {
+					String revision = r2.readLine().split(" ")[1];
 
-        return new RepositoryEntry(fullFileName, "hg", repoURL, revision);
-      }
-      catch (Exception ex) {
-        return null;
-      }
-    }
+					return new RepositoryEntry(fullFileName, "hg", repoURL, revision);
+				}
+			} catch (Exception ex) {
+				return null;
+			}
+		}
 
-    return null;
-  }
+		return null;
+	}
 
 }
 
 class GitRepositoryEntryFactory implements RepositoryEntryFactory {
 
-  public RepositoryEntry getRepositoryEntry(String fullFileName) {
-    File file = new File(fullFileName);
+	public RepositoryEntry getRepositoryEntry(String fullFileName) {
+		File file = new File(fullFileName);
 
-    if (!file.exists())
-      return null;
+		if (!file.exists())
+			return null;
 
-    File currentDir = file.getParentFile();
+		File currentDir = file.getParentFile();
 
-    searchForHg:
-    while (currentDir != null) {
-      for (String childName : currentDir.list()) {
-        if (childName.equals(".git")) {
-          break searchForHg;
-        }
-      }
+		searchForHg: while (currentDir != null) {
+			for (String childName : currentDir.list()) {
+				if (childName.equals(".git")) {
+					break searchForHg;
+				}
+			}
 
-      currentDir = currentDir.getParentFile();
-    }
+			currentDir = currentDir.getParentFile();
+		}
 
-    if (currentDir != null) {
-      try {
-        File hgrcFile = new File(currentDir, ".git/config");
+		if (currentDir != null) {
+			try {
+				File hgrcFile = new File(currentDir, ".git/config");
 
-        String repoURL = "";
-        BufferedReader r = new BufferedReader(new FileReader(hgrcFile));
-        for (String line = r.readLine(); line != null; line = r.readLine()) {
-          String keyVal[] = line.split("=");
-          if (keyVal[0].trim().equals("url")) {
-            repoURL = keyVal[1].trim();
-            break;
-          }
+				String repoURL = "";
+				try (BufferedReader r = new BufferedReader(new FileReader(hgrcFile))) {
+					for (String line = r.readLine(); line != null; line = r.readLine()) {
+						String keyVal[] = line.split("=");
+						if (keyVal[0].trim().equals("url")) {
+							repoURL = keyVal[1].trim();
+							break;
+						}
 
-        }
+					}
+				}
+				// git doesn't has revision numbers so we will read last revision's hash instead
+				File gitHeadHash = new File(currentDir, ".git/refs/heads/master");
+				try (BufferedReader r2 = new BufferedReader(new FileReader(gitHeadHash))) {
+					String revision = r2.readLine();
 
-        // git doesn't has revision numbers so we will read last revision's hash instead
-        File gitHeadHash = new File(currentDir, ".git/refs/heads/master");
-        r = new BufferedReader(new FileReader(gitHeadHash));
-        String revision = r.readLine();
+					return new RepositoryEntry(fullFileName, "git", repoURL, revision);
+				}
+			} catch (Exception ex) {
+				return null;
+			}
+		}
 
-        return new RepositoryEntry(fullFileName, "git", repoURL, revision);
-
-      } catch (Exception ex) {
-        return null;
-      }
-    }
-
-    return null;
-  }
+		return null;
+	}
 }

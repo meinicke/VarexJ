@@ -20,7 +20,6 @@
 
 package gov.nasa.jpf.vm.choice;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;

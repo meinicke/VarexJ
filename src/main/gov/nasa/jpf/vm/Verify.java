@@ -548,23 +548,19 @@ public class Verify {
 
   }
 
-  public static <T> T readObjectFromFile(Class<T> clazz, String fileName) {
-    try
-    {
-      FileInputStream fis = new FileInputStream(fileName);
-      ObjectInputStream ois = new ObjectInputStream(fis);
+	@SuppressWarnings("unchecked")
+	public static <T> T readObjectFromFile(Class<T> clazz, String fileName) {
+		try {
+			FileInputStream fis = new FileInputStream(fileName);
+			try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+				Object read = ois.readObject();
+				return (T) read;
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 
-      Object read = ois.readObject();
-      
-      return (T) read;
-      
-    }
-    catch (Exception ex) {
-      throw new RuntimeException(ex);
-    }
-
-  }
-  
+	}  
   
   //--- model logging support
   

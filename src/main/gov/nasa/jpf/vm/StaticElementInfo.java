@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.HashData;
 

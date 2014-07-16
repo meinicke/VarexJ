@@ -20,8 +20,6 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.Modifier;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 
 /**
  * type, name and attribute information of a field.

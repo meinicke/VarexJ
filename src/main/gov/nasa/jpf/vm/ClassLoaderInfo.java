@@ -683,11 +683,12 @@ public class ClassLoaderInfo
     if(resource != null) {
       try {
         if (path.endsWith(".jar")){
-          JarFile jar = new JarFile(path);
-          JarEntry e = jar.getJarEntry(resource);
-          if (e != null){
-            File f = new File(path);
-            return "jar:" + f.toURI().toURL().toString() + "!/" + resource;
+          try(JarFile jar = new JarFile(path)) {
+	          JarEntry e = jar.getJarEntry(resource);
+	          if (e != null){
+	            File f = new File(path);
+	            return "jar:" + f.toURI().toURL().toString() + "!/" + resource;
+	          }
           }
         } else {
           File f = new File(path, resource);

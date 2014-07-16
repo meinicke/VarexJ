@@ -1,10 +1,11 @@
 package cmu;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
-import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
+@SuppressWarnings("unused")
 public class ConditionalTest {
 	private static final FeatureExpr fa = FeatureExprFactory.createDefinedExternal("A");
 	private static final FeatureExpr fb = FeatureExprFactory.createDefinedExternal("B");
@@ -19,6 +21,7 @@ public class ConditionalTest {
 	private static final FeatureExpr fd = FeatureExprFactory.createDefinedExternal("D");
 	private static final FeatureExpr fe = FeatureExprFactory.createDefinedExternal("E");
 	private static final FeatureExpr ff = FeatureExprFactory.createDefinedExternal("F");
+	
 	private static final FeatureExpr fg = FeatureExprFactory.createDefinedExternal("G");
 
 	@Test

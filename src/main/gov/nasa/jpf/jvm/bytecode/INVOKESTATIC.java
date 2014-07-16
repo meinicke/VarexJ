@@ -19,8 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 
-import java.util.Map;
-
 import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -35,6 +33,9 @@ import gov.nasa.jpf.vm.StackHandler;
 import gov.nasa.jpf.vm.StaticElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+
+import java.util.Map;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 

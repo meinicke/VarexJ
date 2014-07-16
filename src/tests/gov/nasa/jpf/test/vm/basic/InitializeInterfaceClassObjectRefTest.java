@@ -24,8 +24,6 @@ import gov.nasa.jpf.vm.ClassLoaderInfo;
 
 import org.junit.Test;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /*
  * VM.registerStartupClass must be kept in sync with ClassInfo.registerClass.
  * This test ensures that the interfaces of the main class are registered 

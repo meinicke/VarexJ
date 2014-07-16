@@ -32,8 +32,6 @@ import gov.nasa.jpf.vm.Verify;
 
 import org.junit.Test;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 
 /**
  * simple test application to break transitions from listeners
