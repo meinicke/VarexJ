@@ -119,12 +119,30 @@ public class StringTest extends TestJPF {
 		}
 	}
 
-	@Ignore @Test// TODO implement
+	@Test
 	public void longStringConcatentationTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			String s1 = "A";
 			if (x) {
 				s1 = "XXXXXXXXXXXXXXXXX";
+			}
+			String s = "BBBBBBBBBBBBBBB" + s1;
+			System.out.println(s);
+		}
+	}
+	
+	@Test
+	public void longStringConcatentationTest2() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s1 = "A";
+			if (x) {
+				s1 = s1 + "XXXXXXXXXXXXXXXXX";
+			}
+			if (y) {
+				s1 = s1 + "YYYYYYYYYYYYYYYYYYYYYYYYYY";
+			}
+			if (z) {
+				s1 = s1 + "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
 			}
 			String s = "BBBBBBBBBBBBBBB" + s1;
 			System.out.println(s);

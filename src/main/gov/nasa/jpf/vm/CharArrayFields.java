@@ -70,7 +70,13 @@ public class CharArrayFields extends ArrayFields {
   }
 
   public int arrayLength() {
-    return values.getValue(true).length;
+	  return values.map(new Function<char[], Integer>() {
+
+		@Override
+		public Integer apply(char[] values) {
+			return values.length;
+		}}).simplify().getValue(); 
+	  
   }
 
   public int getHeapSize() {  // in bytes

@@ -202,7 +202,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 
 			@Override
 			public Conditional<String> apply(FeatureExpr ctx, Integer aref) {
-				Conditional<char[]> buf = env.getCharArrayObject(aref);
+				Conditional<char[]> buf = env.getCharArrayObject(aref).simplify(ctx);
 				return buf.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<String>>() {
 
 					@Override
@@ -220,7 +220,8 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 					}
 				});
 			}
-		});
+		}).simplify();
+		
 		return env.newString(ctx, s);
 	}
 }
