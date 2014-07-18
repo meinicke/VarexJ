@@ -119,9 +119,7 @@ public class StringTest extends TestJPF {
 		}
 	}
 
-	@Ignore
-	@Test
-	// TODO implement
+	@Ignore @Test// TODO implement
 	public void longStringConcatentationTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			String s1 = "A";

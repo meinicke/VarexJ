@@ -1580,12 +1580,12 @@ public class ThreadInfo extends InfoObject
   }
 
   public void printStackTrace (int objRef) {
-    printStackTrace(null, objRef);
+    printStackTrace(null, null, objRef);
   }
 
   public void printPendingExceptionOn (PrintWriter pw) {
     if (pendingException != null) {
-      printStackTrace( pw, pendingException.getExceptionReference());
+      printStackTrace( null, pw, pendingException.getExceptionReference());
     }
   }
 
@@ -1594,14 +1594,14 @@ public class ThreadInfo extends InfoObject
    * is that this might be working off a StackTraceElement[] that is created when the exception
    * is created. At the time printStackTrace() is called, the StackFrames in question
    * are most likely already be unwinded
+ * @param ctx TODO
    */
-  public void printStackTrace (PrintWriter pw, int objRef) {
+  public void printStackTrace (FeatureExpr ctx, PrintWriter pw, int objRef) {
     // 'env' usage is not ideal, since we don't know from what context we are called, and
     // hence the MJIEnv calling context might not be set (no Method or ClassInfo)
     // on the other hand, we don't want to re-implement all the MJIEnv accessor methods
 
     print(pw, env.getClassInfo(objRef).getName());
-    FeatureExpr ctx = NativeMethodInfo.CTX;
     int msgRef = env.getReferenceField(ctx,objRef, "detailMessage").getValue();
     if (msgRef != MJIEnv.NULL) {
       print(pw, ": ");
@@ -1637,7 +1637,7 @@ public class ThreadInfo extends InfoObject
     int causeRef = env.getReferenceField(ctx, objRef, "cause").getValue();
     if ((causeRef != objRef) && (causeRef != MJIEnv.NULL)){
       print(pw, "Caused by: ");
-      printStackTrace(pw, causeRef);
+      printStackTrace(ctx, pw, causeRef);
     }
   }
 
@@ -1885,8 +1885,7 @@ public class ThreadInfo extends InfoObject
   static int count2 = 0;
   static long time = 0;
   
-  private MethodInfo currentMethod = null;
-
+  private MethodInfo currentMethod = null; 
 
   /**
    * Execute next instruction.
@@ -1996,7 +1995,6 @@ public class ThreadInfo extends InfoObject
                 			}
           					System.out.println(" " + e + " " + c);
           				}
-          				
           				next = e.execute(c, ti).simplify(c);
           				break;
           			}

@@ -96,6 +96,6 @@ public class ExceptionInfo {
   }
   
   public void printOn (PrintWriter pw){
-    ti.printStackTrace(pw, ei.getObjectRef());
+    ti.printStackTrace(ctx, pw, ei.getObjectRef());
   }
 }

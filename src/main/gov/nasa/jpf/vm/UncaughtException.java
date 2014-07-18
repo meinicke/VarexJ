@@ -75,7 +75,7 @@ public class UncaughtException extends RuntimeException implements Printable {
     pw.print(thread.getId());
     pw.print(" : ");
 
-    thread.printStackTrace(pw, xObjRef);
+    thread.printStackTrace(null, pw, xObjRef);
     pw.flush();
   }
 }

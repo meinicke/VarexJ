@@ -66,7 +66,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     
-    ti.printStackTrace(pw, objRef);
+    ti.printStackTrace(NativeMethodInfo.CTX, pw, objRef);
     String stackTrace = sw.toString();
     pw.close();
     

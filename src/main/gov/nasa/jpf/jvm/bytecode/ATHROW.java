@@ -37,7 +37,7 @@ public class ATHROW extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int objref = frame.pop(ctx).simplify(ctx).getValue();
+    int objref = frame.pop(ctx).getValue();
 
     if (objref == MJIEnv.NULL) {
       return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));

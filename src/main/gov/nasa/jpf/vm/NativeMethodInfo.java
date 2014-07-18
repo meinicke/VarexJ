@@ -108,115 +108,114 @@ public class NativeMethodInfo extends MethodInfo {
   
   public static FeatureExpr CTX = FeatureExprFactory.True();
 
-  public Conditional<Instruction> executeNative (final FeatureExpr ctx, ThreadInfo ti) {
-	  this.CTX = ctx;
-    Object   ret = null;
-    Object[] args = null;
-    MJIEnv   env = ti.getMJIEnv();
-        
-    NativeStackFrame nativeFrame = (NativeStackFrame)ti.getTopFrame();
+	public Conditional<Instruction> executeNative(final FeatureExpr ctx, ThreadInfo ti) {
+		try {
+			NativeMethodInfo.CTX = ctx;
+			Object ret = null;
+			Object[] args = null;
+			MJIEnv env = ti.getMJIEnv();
 
-    env.setCallEnvironment(this);
+			NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
 
-    if (isUnsatisfiedLinkError(env)) {
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.UnsatisfiedLinkError", "cannot find native " + ci.getName() + '.' + getName()));
-    }
+			env.setCallEnvironment(this);
 
-    try {
-      args = nativeFrame.getArguments();
-      
-//      System.out.print("RUN " + name + " " + mth.toString());
-//      for (Object a : args) {
-//    	  System.out.print(" " + a.toString());
-//      }
-//      System.out.println();
-      
+			if (isUnsatisfiedLinkError(env)) {
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.UnsatisfiedLinkError", "cannot find native " + ci.getName() + '.' + getName()));
+			}
 
-      // this is the reflection call into the native peer
-      ret = mth.invoke(peer, args);
+			try {
+				args = nativeFrame.getArguments();
 
-      if (env.hasException()) {
-        // even though we should prefer throwing normal exceptionHandlers,
-        // sometimes it might be better/required to explicitly throw
-        // something that's not wrapped into a InvocationTargetException
-        // (e.g. InterruptedException), which is why there still is a
-        // MJIEnv.throwException()
-        return new One<>(ti.throwException( ctx, env.popException()));
-      }
+				// System.out.print("RUN " + name + " " + mth.toString());
+				// for (Object a : args) {
+				// System.out.print(" " + a.toString());
+				// }
+				// System.out.println();
 
-      StackFrame top = ti.getTopFrame();
-      if (top == nativeFrame){ // no roundtrips, straight return
+				// this is the reflection call into the native peer
+				ret = mth.invoke(peer, args);
 
-        if (env.isInvocationRepeated()){
-          // don't advance
-          return new One<>(nativeFrame.getPC().getValue());
-
-        } else {
-          // we don't have to do a ti.topClone() because the last insn left
-          // is NATIVERETURN. Even if a listener creates a CG on it, it won't
-          // modify its StackFrame, which is then popped anyways
-
-          nativeFrame.setReturnValue(ret);
-          nativeFrame.setReturnAttr(env.getReturnAttribute());
-
-     	 return nativeFrame.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
-
-     		@Override
-     		public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
-     			if (f.and(ctx).isContradiction()) {
-					return new One<>(y);
+				if (env.hasException()) {
+					// even though we should prefer throwing normal exceptionHandlers,
+					// sometimes it might be better/required to explicitly throw
+					// something that's not wrapped into a InvocationTargetException
+					// (e.g. InterruptedException), which is why there still is a
+					// MJIEnv.throwException()
+					return new One<>(ti.throwException(ctx, env.popException()));
 				}
-				if (f.and(ctx).isTautology()) {
-					return new One<>(y.getNext());
+
+				StackFrame top = ti.getTopFrame();
+				if (top == nativeFrame) { // no roundtrips, straight return
+
+					if (env.isInvocationRepeated()) {
+						// don't advance
+						return new One<>(nativeFrame.getPC().getValue());
+
+					} else {
+						// we don't have to do a ti.topClone() because the last insn left
+						// is NATIVERETURN. Even if a listener creates a CG on it, it won't
+						// modify its StackFrame, which is then popped anyways
+
+						nativeFrame.setReturnValue(ret);
+						nativeFrame.setReturnAttr(env.getReturnAttribute());
+
+						return nativeFrame.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+
+							@Override
+							public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
+								if (f.and(ctx).isContradiction()) {
+									return new One<>(y);
+								}
+								if (f.and(ctx).isTautology()) {
+									return new One<>(y.getNext());
+								}
+								if (f.equivalentTo(f.and(ctx))) {
+									return new One<>(y.getNext());
+								}
+								if (f.equivalentTo(f.andNot(ctx))) {
+									return new One<>(y);
+								}
+								return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
+							}
+
+						}).simplify();
+
+						// return nativeFrame.getPC().getValue().getNext(); // that should be the NATIVERETURN
+					}
+
+				} else {
+					// direct calls from within the native method, i.e. nativeFrame is not
+					// on top anymore, but its current instruction (invoke) will be reexecuted
+					// because DirectCallStackFrames don't advance the pc of the new top top upon return
+					return top.getPC();
 				}
-				if (f.equivalentTo(f.and(ctx))) {
-					return new One<>(y.getNext());
+
+			} catch (IllegalArgumentException iax) {
+				logger.warning(iax.toString());
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.IllegalArgumentException", "calling " + ci.getName() + '.' + getName()));
+			} catch (IllegalAccessException ilax) {
+				logger.warning(ilax.toString());
+				return new One<>(ti.createAndThrowException(ctx, "java.lang.IllegalAccessException", "calling " + ci.getName() + '.' + getName()));
+			} catch (InvocationTargetException itx) {
+
+				// if loading a class throws an exception
+				if (itx.getTargetException() instanceof ClassInfoException) {
+					ClassInfoException cie = (ClassInfoException) itx.getTargetException();
+					return new One<>(ti.createAndThrowException(ctx, cie.getExceptionClass(), cie.getMessage()));
 				}
-				if (f.equivalentTo(f.andNot(ctx))) {
-					return new One<>(y);
+
+				if (itx.getTargetException() instanceof UncaughtException) { // Native methods could
+					throw (UncaughtException) itx.getTargetException();
 				}
-     			return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
-     		}
-     		  
-     	}).simplify();
-          
-//          return nativeFrame.getPC().getValue().getNext(); // that should be the NATIVERETURN
-        }
 
-      } else {
-        // direct calls from within the native method, i.e. nativeFrame is not
-        // on top anymore, but its current instruction (invoke) will be reexecuted
-        // because DirectCallStackFrames don't advance the pc of the new top top upon return
-        return top.getPC();
-      }
-
-    } catch (IllegalArgumentException iax) {
-      logger.warning(iax.toString());
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.IllegalArgumentException", "calling " + ci.getName() + '.' + getName()));
-    } catch (IllegalAccessException ilax) {
-      logger.warning(ilax.toString());
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.IllegalAccessException", "calling " + ci.getName() + '.' + getName()));
-    } catch (InvocationTargetException itx) {
-
-      // if loading a class throws an exception
-      if(itx.getTargetException() instanceof ClassInfoException) {
-        ClassInfoException cie = (ClassInfoException) itx.getTargetException();
-        return new One<>(ti.createAndThrowException(ctx, cie.getExceptionClass(), cie.getMessage()));
-      }
-
-      if (itx.getTargetException() instanceof UncaughtException) {  // Native methods could 
-        throw (UncaughtException) itx.getTargetException();
-      } 
-       
-      // this will catch all exceptionHandlers thrown by the native method execution
-      // we don't try to hand them back to the application
-      throw new JPFNativePeerException("exception in native method "
-          + ci.getName() + '.' + getName(), itx.getTargetException());
-    }
-  }
+				// this will catch all exceptionHandlers thrown by the native method execution
+				// we don't try to hand them back to the application
+				throw new JPFNativePeerException("exception in native method " + ci.getName() + '.' + getName(), itx.getTargetException());
+			}
+		} finally {
+			NativeMethodInfo.CTX = FeatureExprFactory.True();
+		}
+	}
 
   protected boolean isUnsatisfiedLinkError(MJIEnv env){
     return(mth == null);
