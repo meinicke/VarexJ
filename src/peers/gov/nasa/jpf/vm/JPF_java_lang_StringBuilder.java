@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 
 import java.util.Map;
@@ -104,14 +105,22 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 		});
 	}  
   
-  @MJI
-  public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2 (MJIEnv env, int objref, int sref) {
-    String s = env.getStringObject(sref);
-    
-    if (s == null) s = "null";
-    
-    return appendString(NativeMethodInfo.CTX, env, objref, s);
-  }
+	@MJI
+	public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int sref) {
+		Conditional<String> s = env.getConditionalStringObject(sref);
+		s = s.simplify(NativeMethodInfo.CTX).map(new Function<String, String>() {
+
+			@Override
+			public String apply(String s) {
+				if (s == null) {
+					return "null";
+				}
+				return s;
+			}
+		}).simplify();
+
+		return appendString(NativeMethodInfo.CTX, env, objref, s.getValue());
+	}
   
   @MJI
   public int append__I__Ljava_lang_StringBuilder_2 (MJIEnv env, int objref, int i) {
