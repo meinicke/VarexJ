@@ -29,7 +29,7 @@ public class StringTest extends TestJPF {
 			}
 		}
 	}
-	
+
 	@Test
 	public void printConditionalTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -37,10 +37,10 @@ public class StringTest extends TestJPF {
 			if (x) {
 				i++;
 			}
-			System.out.println(i);		
+			System.out.println(i);
 		}
 	}
-	
+
 	@Test
 	public void concatenationTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -48,7 +48,7 @@ public class StringTest extends TestJPF {
 			if (x) {
 				s = s + "X";
 			}
-			
+
 			if (x) {
 				assertEquals("AX", s);
 				System.out.println(s);
@@ -57,19 +57,19 @@ public class StringTest extends TestJPF {
 				System.out.println(s);
 			}
 			System.out.println("----------------------");
-			
+
 			System.out.println(y);
 			System.out.println(s);
 		}
 	}
-	
+
 	@Test
 	public void concatenationTest2() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			System.out.println(y + "");
 		}
 	}
-	
+
 	@Test
 	public void concatenationTest3() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -77,18 +77,18 @@ public class StringTest extends TestJPF {
 			if (x) {
 				s1 = "X";
 			}
-			
+
 			String s2 = "1";
 			if (y) {
 				s2 = "2";
 			}
-			
+
 			String s = s1 + s2;
-			
+
 			System.out.println(s);
 		}
 	}
-	
+
 	@Test
 	public void concatenationTest4() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -96,12 +96,12 @@ public class StringTest extends TestJPF {
 			if (x) {
 				s1 = "X";
 			}
-			
+
 			String s2 = "1";
 			if (y) {
 				s2 = "2";
 			}
-			
+
 			String s = s1 + s2;
 			if (z) {
 				s = s + "Z";
@@ -111,8 +111,17 @@ public class StringTest extends TestJPF {
 			System.out.println(s);
 		}
 	}
-	
-	@Ignore @Test// TODO implement
+
+	@Test
+	public void concatenationTest5() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			System.out.println(x + "|" + y + "|" + z);
+		}
+	}
+
+	@Ignore
+	@Test
+	// TODO implement
 	public void longStringConcatentationTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			String s1 = "A";
@@ -124,14 +133,16 @@ public class StringTest extends TestJPF {
 		}
 	}
 
-	@Ignore @Test// TODO implement
+	@Ignore
+	@Test
+	// TODO implement
 	public void doubleTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			double d = 1;
 			if (x) {
 				d += 100;
 			}
-					
+
 			System.out.println(d);
 		}
 	}
