@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 
@@ -61,7 +63,7 @@ public class BoxObjectCacheManager {
   private static byte byteLow;
   private static byte byteHigh;
 
-  public static int initByteCache (ThreadInfo ti) {
+  public static int initByteCache (FeatureExpr ctx, ThreadInfo ti) {
     byteLow = (byte) ti.getVM().getConfig().getInt("vm.cache.low_byte", defLow);
     byteHigh = (byte) ti.getVM().getConfig().getInt("vm.cache.high_byte", defHigh);
     int n = (byteHigh - byteLow) + 1;
@@ -79,16 +81,16 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField("byteCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "byteCache", arrayRef);
     return arrayRef;
   }
 
-  public static int valueOfByte (ThreadInfo ti, byte b) {
+  public static int valueOfByte (FeatureExpr ctx, ThreadInfo ti, byte b) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
     int byteCache = cacheClass.getStaticElementInfo().getReferenceField("byteCache").getValue();
 
     if (byteCache == MJIEnv.NULL) { // initializing the cache on demand
-      byteCache = initByteCache(ti);
+      byteCache = initByteCache(ctx, ti);
     }
 
     if (b >= byteLow && b <= byteHigh) { return ti.getElementInfo(byteCache).getReferenceElement(b - byteLow); }
@@ -102,7 +104,7 @@ public class BoxObjectCacheManager {
   // Character cache bound
   private static int charHigh;
 
-  public static int initCharCache (ThreadInfo ti) {
+  public static int initCharCache (FeatureExpr ctx, ThreadInfo ti) {
     charHigh = ti.getVM().getConfig().getInt("vm.cache.high_char", defHigh);
     int n = charHigh + 1;
     
@@ -118,16 +120,16 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField("charCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "charCache", arrayRef);
     return arrayRef;
   }
 
-  public static int valueOfCharacter (ThreadInfo ti, char c) {
+  public static int valueOfCharacter (FeatureExpr ctx, ThreadInfo ti, char c) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
     int charCache = cacheClass.getStaticElementInfo().getReferenceField("charCache").getValue();
 
     if (charCache == MJIEnv.NULL) { // initializing the cache on demand
-      charCache = initCharCache(ti);
+      charCache = initCharCache(ctx, ti);
     }
 
     if (c >= 0 && c <= charHigh) { return ti.getElementInfo(charCache).getReferenceElement(c); }
@@ -143,7 +145,7 @@ public class BoxObjectCacheManager {
 
   private static short shortHigh;
 
-  public static int initShortCache (ThreadInfo ti) {
+  public static int initShortCache (FeatureExpr ctx, ThreadInfo ti) {
     shortLow = (short) ti.getVM().getConfig().getInt("vm.cache.low_short", defLow);
     shortHigh = (short) ti.getVM().getConfig().getInt("vm.cache.high_short", defHigh);
     int n = (shortHigh - shortLow) + 1;
@@ -161,16 +163,16 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField("shortCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "shortCache", arrayRef);
     return arrayRef;
   }
 
-  public static int valueOfShort (ThreadInfo ti, short s) {
+  public static int valueOfShort (FeatureExpr ctx, ThreadInfo ti, short s) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
     int shortCache = cacheClass.getStaticElementInfo().getReferenceField("shortCache").getValue();
 
     if (shortCache == MJIEnv.NULL) { // initializing the cache on demand
-      shortCache = initShortCache(ti);
+      shortCache = initShortCache(ctx, ti);
     }
 
     if (s >= shortLow && s <= shortHigh) { return ti.getElementInfo(shortCache).getReferenceElement(s - shortLow); }
@@ -185,7 +187,7 @@ public class BoxObjectCacheManager {
   private static int intLow;
   private static int intHigh;
 
-  public static int initIntCache (ThreadInfo ti) {
+  public static int initIntCache (FeatureExpr ctx, ThreadInfo ti) {
     intLow = ti.getVM().getConfig().getInt("vm.cache.low_int", defLow);
     intHigh = ti.getVM().getConfig().getInt("vm.cache.high_int", defHigh);
     int n = (intHigh - intLow) + 1;
@@ -197,28 +199,28 @@ public class BoxObjectCacheManager {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
     for (int i = 0; i < n; i++) {
       ElementInfo eiInteger = heap.newSystemObject(ci, ti, ANCHOR);
-      eiInteger.setIntField("value", i + intLow);
+      eiInteger.setIntField(ctx, "value", i + intLow);
       eiArray.setReferenceElement(i, eiInteger.getObjectRef());
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField("intCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "intCache", arrayRef);
     return arrayRef;
   }
 
-  public static int valueOfInteger (ThreadInfo ti, int i) {
+  public static int valueOfInteger (FeatureExpr ctx, ThreadInfo ti, int i) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
     int intCache = cacheClass.getStaticElementInfo().getReferenceField("intCache").getValue();
 
     if (intCache == MJIEnv.NULL) { // initializing the cache on demand
-      intCache = initIntCache(ti);
+      intCache = initIntCache(ctx, ti);
     }
 
     if (i >= intLow && i <= intHigh) { return ti.getElementInfo(intCache).getReferenceElement(i - intLow); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
-    ElementInfo eiInteger = ti.getHeap().newObject(null, ci, ti);
-    eiInteger.setIntField("value", i);
+    ElementInfo eiInteger = ti.getHeap().newObject(ctx, ci, ti);
+    eiInteger.setIntField(ctx, "value", i);
     return eiInteger.getObjectRef();
   }
 
@@ -226,7 +228,7 @@ public class BoxObjectCacheManager {
   private static int longLow;
   private static int longHigh;
 
-  public static int initLongCache (ThreadInfo ti) {
+  public static int initLongCache (FeatureExpr ctx, ThreadInfo ti) {
     longLow = ti.getVM().getConfig().getInt("vm.cache.low_long", defLow);
     longHigh = ti.getVM().getConfig().getInt("vm.cache.high_long", defHigh);
     int n = (longHigh - longLow) + 1;
@@ -243,16 +245,16 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField("longCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "longCache", arrayRef);
     return arrayRef;
   }
 
-  public static int valueOfLong (ThreadInfo ti, long l) {
+  public static int valueOfLong (FeatureExpr ctx, ThreadInfo ti, long l) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
     int longCache = cacheClass.getStaticElementInfo().getReferenceField("longCache").getValue();
 
     if (longCache == MJIEnv.NULL) { // initializing the cache on demand
-      longCache = initLongCache(ti);
+      longCache = initLongCache(ctx, ti);
     }
 
     if (l >= longLow && l <= longHigh) { return ti.getElementInfo(longCache).getReferenceElement((int) l - longLow); }

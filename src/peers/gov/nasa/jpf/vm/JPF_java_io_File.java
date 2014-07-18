@@ -26,6 +26,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * intercept and forward some of the filesystem access methods. This is very
  * slow, if a program uses this heavily we should keep the forwarding File
@@ -34,7 +36,8 @@ import java.net.URL;
 public class JPF_java_io_File extends NativePeer {
 
   static File getFile(MJIEnv env, int objref) {
-    int fnref = env.getReferenceField(objref, "filename");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int fnref = env.getReferenceField(ctx, objref, "filename").getValue();
     String fname = env.getStringObject(fnref);
     return new File(fname);
   }

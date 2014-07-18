@@ -23,6 +23,8 @@ import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 
 import java.io.PrintStream;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * a Field (data value) store for array objects
  */
@@ -75,7 +77,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a byte[]");
 	}
 
-	public char getCharValue(int pos) {
+	public Conditional<Character> getCharValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a char[]");
 	}
@@ -129,7 +131,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a byte[]");
 	}
 
-	public void setCharValue(int pos, char newValue) {
+	public void setCharValue(FeatureExpr ctx, int pos, char newValue) {
 		// overridden by subclass
 		throw new JPFException("not a char[]");
 	}
@@ -139,14 +141,15 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a short[]");
 	}
 
-	public void setIntValue(int pos, Conditional<Integer> newValue) {
+	public void setIntValue(FeatureExpr ctx, int pos, int newValue) {
 		// overridden by subclass
 		throw new JPFException("not an int[]");
 	}
-
-	public void setIntValue(int pos, int newValue) {
+	
+	@Override
+	public void setIntValue(int index, Conditional<Integer> newValue) {
 		// overridden by subclass
-		throw new JPFException("not an int[]");
+		throw new JPFException(getClass() + " not an int[]");		
 	}
 
 	public void setFloatValue(int pos, float newValue) {
@@ -169,7 +172,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a reference array");
 	}
 
-	public void setReferenceValue(int pos, Conditional<Integer> newValue) {
+	public void setReferenceValue(FeatureExpr ctx, int pos, Conditional<Integer> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a reference array");
 	}
@@ -184,7 +187,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a byte[]");
 	}
 
-	public char[] asCharArray() {
+	public Conditional<char[]> asCharArray() {
 		// overridden by subclass
 		throw new JPFException("not a char[]");
 	}

@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -1893,14 +1894,14 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     int clsObjRef = ei.getObjectRef();
     
     ElementInfo eiClsName = heap.newSystemString(name, ti, clsObjRef);
-    ei.setReferenceField("name", eiClsName.getObjectRef());
+    ei.setReferenceField(FeatureExprFactory.True(), "name", eiClsName.getObjectRef());
 
     ei.setBooleanField("isPrimitive", isPrimitive());
     
     // setting the ID_FIELD is done in registerClass once we have a StaticElementInfo
 
     // link the SUT class object to the classloader 
-    ei.setReferenceField("classLoader", classLoader.getClassLoaderObjectRef());
+    ei.setReferenceField(FeatureExprFactory.True(), "classLoader", classLoader.getClassLoaderObjectRef());
     
     return ei;
   }
@@ -1912,7 +1913,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     id = sei.getObjectRef();  // kind of a misnomer, it's really an id    
     uniqueId = ((long)classLoader.getId() << 32) | id;
     
-    eiClsObj.setIntField( ID_FIELD, id);      
+    eiClsObj.setIntField(FeatureExprFactory.True(), ID_FIELD, id);      
     
     return sei;
   }
@@ -1961,7 +1962,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     ElementInfo ei = createClassObject(ti);
     
     sei.setClassObjectRef(ei.getObjectRef());
-    ei.setIntField( ID_FIELD, id);      
+    ei.setIntField(FeatureExprFactory.True(), ID_FIELD, id);      
     
     return ei;
   }

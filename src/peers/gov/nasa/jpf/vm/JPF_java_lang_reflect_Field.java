@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.lang.reflect.Modifier;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 public class JPF_java_lang_reflect_Field extends NativePeer {
 
   // the registry is rather braindead, let's hope we don't have many lookups - 
@@ -193,6 +195,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
 
   @MJI
   public int getAnnotation__Ljava_lang_Class_2__Ljava_lang_annotation_Annotation_2 (MJIEnv env, int objRef, int annotationClsRef) {
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
     FieldInfo fi = getFieldInfo(env,objRef);
     ClassInfo aci = env.getReferredClassInfo(annotationClsRef);
     
@@ -200,7 +203,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     if (ai != null){
       ClassInfo aciProxy = aci.getAnnotationProxy();
       try {
-        return env.newAnnotationProxy(aciProxy, ai);
+        return env.newAnnotationProxy(ctx, aciProxy, ai);
       } catch (ClinitRequired x){
         env.handleClinitRequest(x.getRequiredClassInfo());
         return MJIEnv.NULL;
@@ -216,7 +219,8 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     AnnotationInfo[] ai = fi.getAnnotations();
     
     try {
-      return env.newAnnotationProxies(ai);
+    	FeatureExpr ctx = NativeMethodInfo.CTX;
+      return env.newAnnotationProxies(ctx, ai);
     } catch (ClinitRequired x){
       env.handleClinitRequest(x.getRequiredClassInfo());
       return MJIEnv.NULL;
@@ -285,7 +289,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, IntegerFieldInfo.class, "int", true);
     if (ei != null){
-      ei.setIntField(fi,val);
+      ei.setIntField(NativeMethodInfo.CTX,fi, val);
     }
   }
 
@@ -390,18 +394,18 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public int getName____Ljava_lang_String_2 (MJIEnv env, int objRef) {
     FieldInfo fi = getFieldInfo(env, objRef);
-    
-    int nameRef = env.getReferenceField( objRef, "name");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int nameRef = env.getReferenceField( ctx, objRef, "name").getValue();
     if (nameRef == MJIEnv.NULL) {
       nameRef = env.newString(NativeMethodInfo.CTX, fi.getName());
-      env.setReferenceField(objRef, "name", nameRef);
+      env.setReferenceField(NativeMethodInfo.CTX, objRef, "name", nameRef);
     }
    
     return nameRef;
   }
 
   static FieldInfo getFieldInfo (MJIEnv env, int objRef) {
-    int fidx = env.getIntField( objRef, "regIdx");
+    int fidx = env.getIntField( NativeMethodInfo.CTX, objRef, "regIdx").getValue().intValue();
     assert ((fidx >= 0) || (fidx < nRegistered)) : "illegal FieldInfo request: " + fidx + ", " + nRegistered;
     
     return registered[fidx];
@@ -459,13 +463,13 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     Object[] attrs = env.getArgAttributes();
     Object attr = (attrs==null)? null: attrs[2];
     
-    if (!setValue(env, fi, fobjRef, val, attr)) {
+    if (!setValue(NativeMethodInfo.CTX, env, fi, fobjRef, val, attr)) {
       env.throwException("java.lang.IllegalArgumentException",  
                          "Can not set " + fi.getType() + " field " + fi.getFullName() + " to " + ((MJIEnv.NULL != val) ? env.getClassInfo(val).getName() + " object " : "null"));
     }
   }
 
-  private static boolean setValue(MJIEnv env, FieldInfo fi, int obj, int value, Object attr) {
+  private static boolean setValue(FeatureExpr ctx, MJIEnv env, FieldInfo fi, int obj, int value, Object attr) {
     ClassInfo fieldClassInfo = fi.getClassInfo();
     String className = fieldClassInfo.getName();
     String fieldType = fi.getType();
@@ -509,8 +513,8 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         ei.setShortField(fi, val);
         return true;
       } else if ("int".equals(fieldType)){
-        int val = env.getIntField(value, fieldName);
-        ei.setIntField(fi, val);
+        int val = env.getIntField(NativeMethodInfo.CTX, value, fieldName).getValue().intValue();
+        ei.setIntField(NativeMethodInfo.CTX, fi, val);
         return true;
       } else if ("long".equals(fieldType)){
         long val = env.getLongField(value, fieldName);
@@ -539,9 +543,9 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       ei.setFieldAttr(fi, attr);
 
       if (fi.isStatic()) {
-        env.setStaticReferenceField(className, fi.getName(), value);
+        env.setStaticReferenceField(ctx, className, fi.getName(), value);
       } else {
-        env.setReferenceField(obj, fi.getName(), value);
+        env.setReferenceField(NativeMethodInfo.CTX, obj, fi.getName(), value);
       }
       return true;
     }
@@ -549,7 +553,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
 
   @MJI
   public boolean equals__Ljava_lang_Object_2__Z (MJIEnv env, int objRef, int fobjRef){
-    int fidx = env.getIntField(fobjRef, "regIdx");
+    int fidx = env.getIntField(NativeMethodInfo.CTX, fobjRef, "regIdx").getValue().intValue();
     if (fidx >= 0 && fidx < nRegistered){
       FieldInfo fi1 = getFieldInfo(env, objRef);
       FieldInfo fi2 = getFieldInfo(env, fobjRef);

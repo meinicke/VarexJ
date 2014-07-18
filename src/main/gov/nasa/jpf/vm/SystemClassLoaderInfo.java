@@ -24,6 +24,8 @@ import gov.nasa.jpf.util.JPFLogger;
 
 import java.io.File;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 
@@ -155,7 +157,7 @@ public abstract class SystemClassLoaderInfo extends ClassLoaderInfo {
     //id = computeId(objRef);
     
     // cross link
-    ei.setIntField(ID_FIELD, id);
+    ei.setIntField(FeatureExprFactory.True(), ID_FIELD, id);
   }
   
 

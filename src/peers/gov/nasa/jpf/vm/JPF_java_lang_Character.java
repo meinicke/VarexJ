@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -143,6 +145,7 @@ public class JPF_java_lang_Character extends NativePeer {
   // important methods into native ones, i.e. delegate to the real thing.
   @MJI
   public void $clinit____V (MJIEnv env, int clsObjRef) {
+	  FeatureExpr ctx = FeatureExprFactory.True();
     env.setStaticByteField("java.lang.Character", "UNASSIGNED", (byte) 0);
     env.setStaticByteField("java.lang.Character", "UPPERCASE_LETTER", (byte) 1);
     env.setStaticByteField("java.lang.Character", "LOWERCASE_LETTER", (byte) 2);
@@ -171,14 +174,14 @@ public class JPF_java_lang_Character extends NativePeer {
     env.setStaticByteField("java.lang.Character", "CURRENCY_SYMBOL", (byte) 26);
     env.setStaticByteField("java.lang.Character", "MODIFIER_SYMBOL", (byte) 27);
     env.setStaticByteField("java.lang.Character", "OTHER_SYMBOL", (byte) 28);
-    env.setStaticIntField("java.lang.Character", "MIN_RADIX", 2);
-    env.setStaticIntField("java.lang.Character", "MAX_RADIX", 36);
+    env.setStaticIntField(ctx, "java.lang.Character", "MIN_RADIX", 2);
+    env.setStaticIntField(ctx, "java.lang.Character", "MAX_RADIX", 36);
     env.setStaticCharField("java.lang.Character", "MIN_VALUE", '\u0000');
     env.setStaticCharField("java.lang.Character", "MAX_VALUE", '\uffff');
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("char");
-    env.setStaticReferenceField("java.lang.Character", "TYPE", 
-                             ci.getClassObjectRef());
+    env.setStaticReferenceField(ctx, "java.lang.Character", 
+                             "TYPE", ci.getClassObjectRef());
   }
 
   @MJI
@@ -209,6 +212,6 @@ public class JPF_java_lang_Character extends NativePeer {
 
   @MJI
   public int valueOf__C__Ljava_lang_Character_2 (MJIEnv env, int clsRef, char val) {
-    return env.valueOfCharacter(val);
+    return env.valueOfCharacter(NativeMethodInfo.CTX, val);
   }
 }

@@ -21,6 +21,8 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.ArrayObjectQueue;
 import gov.nasa.jpf.util.IntTable;
 import gov.nasa.jpf.util.IntVector;
@@ -29,8 +31,10 @@ import gov.nasa.jpf.util.Processor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * this is an abstract root for Heap implementations, providing a standard
@@ -338,18 +342,18 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 
   
   
-  protected ElementInfo initializeStringObject( String str, int index, int vref) {
+  protected ElementInfo initializeStringObject( FeatureExpr ctx, String str, int index, int vref) {
     ElementInfo ei = getModifiable(index);
     ei.setReferenceField("value", vref);
 
     ElementInfo eVal = getModifiable(vref);
     CharArrayFields cf = (CharArrayFields)eVal.getFields();
-    cf.setCharValues(str.toCharArray());
+    cf.setCharValues(ctx, str.toCharArray());
     
     return ei;
   }
   
-  protected ElementInfo newString (ClassInfo ciString, ClassInfo ciChars, String str, ThreadInfo ti, AllocationContext ctx) {
+  protected ElementInfo newString (FeatureExpr fexpr, ClassInfo ciString, ClassInfo ciChars, String str, ThreadInfo ti, AllocationContext ctx) {
     SystemClassLoaderInfo sysCl = ti.getSystemClassLoaderInfo();
     
     //--- the string object itself
@@ -361,7 +365,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     int vRef = getNewElementInfoIndex( ctx);
     createArray( "C", str.length(), ciChars, ti, vRef);
     
-    ElementInfo ei = initializeStringObject(str, sRef, vRef);      
+    ElementInfo ei = initializeStringObject(fexpr, str, sRef, vRef);      
     return ei;
   }
 
@@ -373,12 +377,64 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
       ClassInfo ciChars = sysCl.getCharArrayClassInfo();
       
       AllocationContext ctx = getSUTAllocationContext(fexpr, ciString, ti);
-      return newString( ciString, ciChars, str, ti, ctx);
+      return newString( fexpr, ciString, ciChars, str, ti, ctx);
       
     } else {
       return null;
     }
   }
+  
+  @Override
+	public ElementInfo newString(FeatureExpr fexpr, Conditional<String> str, ThreadInfo ti) {
+	  if (str != null) {
+	      SystemClassLoaderInfo sysCl = ti.getSystemClassLoaderInfo();
+	      ClassInfo ciString = sysCl.getStringClassInfo();
+	      ClassInfo ciChars = sysCl.getCharArrayClassInfo();
+	      
+	      AllocationContext ctx = getSUTAllocationContext(fexpr, ciString, ti);
+	      return newString( fexpr, ciString, ciChars, str, ti, ctx);
+	      
+	    } else {
+	      return null;
+	    }
+	}
+  
+	protected ElementInfo newString(FeatureExpr fexpr, ClassInfo ciString, ClassInfo ciChars, Conditional<String> str, ThreadInfo ti, AllocationContext ctx) {
+		if (str instanceof One){
+			return newString(fexpr, str.getValue(), ti);
+		}
+		int length = 0;
+		for (String s : str.toList()) {
+			if (s != null && s.length() > length) {
+				length = s.length();
+			}
+		}
+
+//		SystemClassLoaderInfo sysCl = ti.getSystemClassLoaderInfo();
+
+		// --- the string object itself
+		int sRef = getNewElementInfoIndex(ctx);
+		createObject(ciString, ti, sRef);
+
+		// --- its char[] array
+		ctx = ctx.extend(ciChars, sRef);
+		int vRef = getNewElementInfoIndex(ctx);
+		createArray("C", length, ciChars, ti, vRef);
+		ElementInfo ei = null;
+		Map<String, FeatureExpr> map = str.toMap();
+		for (String s : map.keySet()) {
+			if (ei == null) {
+				ei = initializeStringObject(map.get(s), s, sRef, vRef);
+			} else {
+				ElementInfo eVal = getModifiable(vRef);
+				CharArrayFields cf = (CharArrayFields)eVal.getFields();
+			    cf.setCharValues(map.get(s), s.toCharArray());
+			}
+		}
+
+		
+		return ei;
+	}
   
   @Override
   public ElementInfo newSystemString (String str, ThreadInfo ti, int anchor) {
@@ -388,7 +444,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
       ClassInfo ciChars = sysCl.getCharArrayClassInfo();
       
       AllocationContext ctx = getSystemAllocationContext( ciString, ti, anchor);
-      return newString( ciString, ciChars, str, ti, ctx);
+      return newString( FeatureExprFactory.True(), ciString, ciChars, str, ti, ctx);
       
     } else {
       return null;
@@ -442,7 +498,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     //--- the detailMsg field
     if (details != null) {
       AllocationContext ctxString = ctx.extend( ciString, xRef);
-      ElementInfo eiMsg = newString( ciString, ciChars, details, ti, ctxString);
+      ElementInfo eiMsg = newString( FeatureExprFactory.True(), ciString, ciChars, details, ti, ctxString);
       eiThrowable.setReferenceField("detailMessage", eiMsg.getObjectRef());
     }
 

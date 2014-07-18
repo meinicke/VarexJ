@@ -13,10 +13,10 @@ public class JPF_java_util_Calendar extends NativePeer {
     Calendar c = Calendar.getInstance(locale);
     
     int n = c.getFirstDayOfWeek();
-    env.setIntField(objref, "firstDayOfWeek", n);
+    env.setIntField(NativeMethodInfo.CTX, objref, "firstDayOfWeek", n);
     
     n = c.getMinimalDaysInFirstWeek();
-    env.setIntField(objref, "minimalDaysInFirstWeek", n);
+    env.setIntField(NativeMethodInfo.CTX, objref, "minimalDaysInFirstWeek", n);
   }
   
 }

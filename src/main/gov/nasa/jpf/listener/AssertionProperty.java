@@ -91,7 +91,7 @@ public class AssertionProperty extends PropertyListenerAdapter {
       if (ci.getName().equals("java.lang.AssertionError")) {
         int msgref = ei.getReferenceField("detailMessage").getValue();
         ElementInfo eiMsg = heap.get(msgref);
-        String details = eiMsg != null ? eiMsg.asString() : null;
+        String details = eiMsg != null ? eiMsg.asString().getValue() : null;
 
         // Ok, arm ourselves
         msg = getMessage( details, insn.getNext());

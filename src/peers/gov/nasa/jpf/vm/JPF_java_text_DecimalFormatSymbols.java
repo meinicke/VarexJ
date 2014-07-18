@@ -38,9 +38,9 @@ public class JPF_java_text_DecimalFormatSymbols extends NativePeer {
     env.setCharField(objRef,"digit", dfs.getDigit());
     env.setCharField(objRef,"minusSign", dfs.getMinusSign());
     env.setCharField(objRef,"perMill", dfs.getPerMill());
-    env.setReferenceField(objRef,"infinity", env.newString(NativeMethodInfo.CTX, dfs.getInfinity()));
-    env.setReferenceField(objRef,"NaN", env.newString(NativeMethodInfo.CTX, dfs.getNaN()));
-    env.setReferenceField(objRef,"currencySymbol", env.newString(NativeMethodInfo.CTX, dfs.getCurrencySymbol()));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef,"infinity", env.newString(NativeMethodInfo.CTX, dfs.getInfinity()));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef,"NaN", env.newString(NativeMethodInfo.CTX, dfs.getNaN()));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef,"currencySymbol", env.newString(NativeMethodInfo.CTX, dfs.getCurrencySymbol()));
     env.setCharField(objRef,"monetarySeparator", dfs.getMonetaryDecimalSeparator());
 
     env.setCharField(objRef,"decimalSeparator", dfs.getDecimalSeparator());

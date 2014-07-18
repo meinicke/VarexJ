@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 
 /**
  * MJI NativePeer class for java.lang.Throwable library abstraction
@@ -33,10 +35,11 @@ public class JPF_java_lang_Throwable extends NativePeer {
    */
   @MJI
   public int createStackTrace_____3Ljava_lang_StackTraceElement_2 (MJIEnv env, int objref) {
-    int aref = env.getReferenceField(objref, "snapshot");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int aref = env.getReferenceField(ctx, objref, "snapshot").getValue();
     int[] snap = env.getIntArrayObject(aref);
     
-    return env.getThreadInfo().createStackTraceElements(snap);
+    return env.getThreadInfo().createStackTraceElements(ctx, snap);
   }
   
   @MJI
@@ -45,7 +48,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
     int[] snap = ti.getSnapshot(NativeMethodInfo.CTX, objref);
     
     int aref = env.newIntArray(snap);
-    env.setReferenceField(objref, "snapshot", aref);
+    env.setReferenceField(NativeMethodInfo.CTX, objref, "snapshot", aref);
     
     return objref;
   }
@@ -73,7 +76,8 @@ public class JPF_java_lang_Throwable extends NativePeer {
   @MJI
   public int toString____Ljava_lang_String_2 (MJIEnv env, int objRef){
     ClassInfo ci = env.getClassInfo(objRef);
-    int msgRef = env.getReferenceField(objRef, "detailMessage");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int msgRef = env.getReferenceField(ctx, objRef, "detailMessage").getValue();
     
     String s = ci.getName();
     if (msgRef != MJIEnv.NULL){

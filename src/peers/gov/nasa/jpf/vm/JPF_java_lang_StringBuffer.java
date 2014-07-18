@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 
@@ -46,35 +47,36 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
   
   int appendString (MJIEnv env, int objref, String s) {
     int slen = s.length();
-    int aref = env.getReferenceField(objref, "value");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int aref = env.getReferenceField(ctx, objref, "value").getValue();
     int alen = env.getArrayLength(aref);
-    int count = env.getIntField(objref, "count");
+    int count = env.getIntField(ctx, objref, "count").getValue().intValue();
     int i, j;
     int n = count + slen;
     
     if (n < alen) {
       for (i=count, j=0; i<n; i++, j++) {
-        env.setCharArrayElement(aref, i, s.charAt(j));
+        env.setCharArrayElement(ctx, aref, i, s.charAt(j));
       }
     } else {
       int m = 3 * alen / 2;
       if (m < n) {
         m = n;
       }
-      int arefNew = env.newCharArray(NativeMethodInfo.CTX, m);
+      int arefNew = env.newCharArray(ctx, m);
       for (i=0; i<count; i++) {
-        env.setCharArrayElement(arefNew, i, env.getCharArrayElement(aref, i));
+        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i).getValue());
       }
       for (j=0; i<n; i++, j++) {
-        env.setCharArrayElement(arefNew, i, s.charAt(j));
+        env.setCharArrayElement(ctx, arefNew, i, s.charAt(j));
       }
-      env.setReferenceField(objref, "value", arefNew);
+      env.setReferenceField(ctx, objref, "value", arefNew);
     }
     
     if (hasSharedField) {
       env.setBooleanField(objref, "shared", false);
     }
-    env.setIntField(objref, "count", n);
+    env.setIntField(ctx, objref, "count", n);
     
     return objref;
   }
@@ -143,27 +145,29 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
  
   @MJI
   public int append__C__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, char c) {
-    int aref = env.getReferenceField(objref, "value");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int aref = env.getReferenceField(ctx, objref, "value").getValue();
     int alen = env.getArrayLength(aref);
-    int count = env.getIntField(objref, "count");
+    
+	int count = env.getIntField(ctx, objref, "count").getValue().intValue();
     int n = count +1;
     
     if (n < alen) {
-      env.setCharArrayElement(aref, count, c);
+      env.setCharArrayElement(ctx, aref, count, c);
     } else {
       int m = 3 * alen / 2;
-      int arefNew = env.newCharArray(NativeMethodInfo.CTX, m);
+      int arefNew = env.newCharArray(ctx, m);
       for (int i=0; i<count; i++) {
-        env.setCharArrayElement(arefNew, i, env.getCharArrayElement(aref, i));
+        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i).getValue());
       }
-      env.setCharArrayElement(arefNew, count, c);
-      env.setReferenceField(objref, "value", arefNew);
+      env.setCharArrayElement(ctx, arefNew, count, c);
+      env.setReferenceField(ctx, objref, "value", arefNew);
     }
     
     if (hasSharedField) {
       env.setBooleanField(objref, "shared", false);
     }
-    env.setIntField(objref, "count", n);
+    env.setIntField(ctx, objref, "count", n);
     
     return objref;
     

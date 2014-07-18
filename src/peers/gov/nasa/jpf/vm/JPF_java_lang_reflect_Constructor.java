@@ -26,6 +26,8 @@ import gov.nasa.jpf.util.RunRegistry;
 
 import java.lang.reflect.Modifier;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * native peer for rudimentary constructor reflection.
  * 
@@ -61,7 +63,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     int eidx = env.newObject(ciCtor);
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
-    ei.setIntField("regIdx", regIdx);
+    ei.setIntField(NativeMethodInfo.CTX, "regIdx", regIdx);
     return eidx;
   }
 
@@ -72,11 +74,11 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
   @MJI
   public int getName____Ljava_lang_String_2 (MJIEnv env, int objRef) {
     MethodInfo mi = getMethodInfo(env, objRef);
-    
-    int nameRef = env.getReferenceField( objRef, "name");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int nameRef = env.getReferenceField( ctx, objRef, "name").getValue();
     if (nameRef == MJIEnv.NULL) {
       nameRef = env.newString(NativeMethodInfo.CTX, mi.getName());
-      env.setReferenceField(objRef, "name", nameRef);
+      env.setReferenceField(NativeMethodInfo.CTX, objRef, "name", nameRef);
     }
    
     return nameRef;

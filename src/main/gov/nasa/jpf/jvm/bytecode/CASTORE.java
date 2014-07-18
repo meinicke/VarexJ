@@ -38,7 +38,7 @@ public class CASTORE extends ArrayStoreInstruction {
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    ei.setCharElement(index, value);
+    ei.setCharElement(ctx, index, value);
   }
 
   public int getByteCode () {

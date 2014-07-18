@@ -22,6 +22,7 @@ import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.ClosedMemento;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;
@@ -72,6 +73,6 @@ public class JPF_gov_nasa_jpf_test_mc_basic_RestorerTest$X extends NativePeer {
     }
     
     a.count++;
-    env.setIntField(objref, "id", a.count);
+    env.setIntField(NativeMethodInfo.CTX, objref, "id", a.count);
   }
 }

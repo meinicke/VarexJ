@@ -37,8 +37,8 @@ public class JPF_sun_reflect_ReflectionFactory extends NativePeer {
     ClassInfo ci = ClassInfo.getInitializedClassInfo("gov.nasa.jpf.SerializationConstructor", env.getThreadInfo());
     int sCtorRef = env.newObject(ci);
     
-    env.setReferenceField(sCtorRef, "mdc", clsRef);
-    env.setReferenceField(sCtorRef, "firstNonSerializableCtor", ctorRef);
+    env.setReferenceField(NativeMethodInfo.CTX, sCtorRef, "mdc", clsRef);
+    env.setReferenceField(NativeMethodInfo.CTX, sCtorRef, "firstNonSerializableCtor", ctorRef);
     
     return sCtorRef;
   }

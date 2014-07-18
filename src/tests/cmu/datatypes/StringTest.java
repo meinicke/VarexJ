@@ -63,14 +63,14 @@ public class StringTest extends TestJPF {
 		}
 	}
 	
-	@Test// TODO implement
+	@Test
 	public void concatenationTest2() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			System.out.println(y + "");
 		}
 	}
 	
-	@Ignore @Test// TODO implement
+	@Test
 	public void concatenationTest3() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			String s1 = "A";
@@ -85,6 +85,41 @@ public class StringTest extends TestJPF {
 			
 			String s = s1 + s2;
 			
+			System.out.println(s);
+		}
+	}
+	
+	@Test
+	public void concatenationTest4() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s1 = "A";
+			if (x) {
+				s1 = "X";
+			}
+			
+			String s2 = "1";
+			if (y) {
+				s2 = "2";
+			}
+			
+			String s = s1 + s2;
+			if (z) {
+				s = s + "Z";
+			} else {
+				s = s + "!Z";
+			}
+			System.out.println(s);
+		}
+	}
+	
+	@Ignore @Test// TODO implement
+	public void longStringConcatentationTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s1 = "A";
+			if (x) {
+				s1 = "XXXXXXXXXXXXXXXXX";
+			}
+			String s = "BBBBBBBBBBBBBBB" + s1;
 			System.out.println(s);
 		}
 	}

@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -51,6 +52,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
     sb.append(cname.substring(0,idx));
     
     FieldInfo[] fields = ci.getDeclaredInstanceFields();
+    FeatureExpr ctx = NativeMethodInfo.CTX;
     if (fields.length > 0){
       sb.append('(');
       for (int i=0; i<fields.length; i++){
@@ -64,7 +66,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
         sb.append('=');
         
         if (ft.equals("int")){
-          sb.append(env.getIntField(objref,fn));
+          sb.append(env.getIntField(ctx,objref, fn));
 
         } else if (ft.equals("long")){
           sb.append(env.getLongField(objref,fn));
@@ -76,12 +78,12 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
           sb.append(env.getBooleanField(objref,fn));
           
         } else if (ft.equals("java.lang.String")){
-          sb.append(env.getStringObject(env.getReferenceField(objref, fn)));
+          sb.append(env.getStringObject(env.getReferenceField(ctx, objref, fn).getValue()));
           
         } else if (ft.equals("java.lang.Class")){
-          int cref = env.getReferenceField(objref, fn);
+          int cref = env.getReferenceField(ctx, objref, fn).getValue();
           if (cref != MJIEnv.NULL){
-            int nref = env.getReferenceField(cref, "name");
+            int nref = env.getReferenceField(ctx, cref, "name").getValue();
             String cn = env.getStringObject(nref);
           
             sb.append("class ");
@@ -91,7 +93,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
           }
             
         } else if (ft.endsWith("[]")){
-          int ar = env.getReferenceField(objref, fn);
+          int ar = env.getReferenceField(ctx, objref, fn).getValue();
           int n = env.getArrayLength((ar));
 
           sb.append('[');
@@ -131,7 +133,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
 
               int cref = env.getReferenceArrayElement(ar,j);
               if (cref != MJIEnv.NULL){
-                int nref = env.getReferenceField(cref, "name");
+                int nref = env.getReferenceField(ctx, cref, "name").getValue();
                 String cn = env.getStringObject(nref);
               
                 sb.append("class ");
@@ -146,11 +148,11 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
           sb.append(']');
           
         } else { // arbitrary type name, must be a reference
-          int eref = env.getReferenceField(objref, fn);
+          int eref = env.getReferenceField(ctx, objref, fn).getValue();
           if (eref != MJIEnv.NULL){
             ClassInfo eci = env.getClassInfo(eref);
             if (eci.isEnum()){
-              int nref = env.getReferenceField(eref, "name");
+              int nref = env.getReferenceField(ctx, eref, "name").getValue();
               String en = env.getStringObject(nref);
               
               sb.append(eci.getName());

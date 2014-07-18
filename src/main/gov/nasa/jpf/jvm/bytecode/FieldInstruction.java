@@ -144,7 +144,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       
       if (fi.isReference()) {
-        eiFieldOwner.setReferenceField(fi, val);
+        eiFieldOwner.setReferenceField(ctx, fi, val);
         
         // this is kind of policy, but it seems more natural to overwrite instead of accumulate
         // (if we want to accumulate, this has to happen in ElementInfo/Fields)

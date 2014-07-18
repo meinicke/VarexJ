@@ -1,5 +1,6 @@
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 
@@ -13,12 +14,12 @@ public class JPF_gov_nasa_jpf_SerializationConstructor extends NativePeer {
   public int newInstance___3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, int argsRef) {
     ThreadInfo ti = env.getThreadInfo();
     DirectCallStackFrame frame = ti.getReturnedDirectCall();
-    
-    int superCtorRef = env.getReferenceField(mthRef, "firstNonSerializableCtor"); 
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int superCtorRef = env.getReferenceField(ctx, mthRef, "firstNonSerializableCtor").getValue(); 
     MethodInfo miCtor = JPF_java_lang_reflect_Constructor.getMethodInfo(env,superCtorRef);
 
     if (frame == null){ // first time
-      int clsRef = env.getReferenceField(mthRef, "mdc");
+      int clsRef = env.getReferenceField(ctx, mthRef, "mdc").getValue();
       ClassInfo ci = env.getReferredClassInfo( clsRef);
 
       if (ci.isAbstract()){

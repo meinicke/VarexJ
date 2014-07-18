@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 
@@ -54,7 +55,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
   public int fieldOffset__Ljava_lang_reflect_Field_2__I (MJIEnv env, int unsafeRef, int fieldRef) {
     //FieldInfo fi = JPF_java_lang_reflect_Field.getFieldInfo(env, fieldRef);
     //return fi.getStorageOffset();
-    return env.getIntField(fieldRef, "regIdx");
+    return env.getIntField(NativeMethodInfo.CTX, fieldRef, "regIdx").getValue().intValue();
   }
 
   @MJI
@@ -100,7 +101,8 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
   public void park__ZJ__V (MJIEnv env, int unsafeRef, boolean isAbsoluteTime, long timeout) {
     ThreadInfo ti = env.getThreadInfo();
     int objRef = ti.getThreadObjectRef();
-    int permitRef = env.getReferenceField( objRef, "permit");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int permitRef = env.getReferenceField( ctx, objRef, "permit").getValue();
     ElementInfo ei = env.getModifiableElementInfo(permitRef);
 
     if (ti.isFirstStepInsn()){ // re-executed
@@ -160,7 +162,8 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
       }      
       
       SystemState ss = env.getSystemState();
-      int permitRef = env.getReferenceField( objRef, "permit");
+      FeatureExpr ctx = NativeMethodInfo.CTX;
+      int permitRef = env.getReferenceField( ctx, objRef, "permit").getValue();
       ElementInfo eiPermit = env.getModifiableElementInfo(permitRef);
 
       if (tiParked.getLockObject() == eiPermit){
@@ -306,19 +309,16 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     putByte__Ljava_lang_Object_2JB__V( env, unsafeRef, objRef, fieldOffset, val);
   }
 
-  @MJI
-  public char getChar__Ljava_lang_Object_2J__C(MJIEnv env,
-                                                      int unsafeRef,
-                                                      int objRef,
-                                                      long fieldOffset) {
-    ElementInfo ei = env.getElementInfo(objRef);
-    if (!ei.isArray()) {
-      FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      return ei.getCharField(fi);
-    } else {
-      return ei.getCharElement((int)fieldOffset);
-    }
-  }
+	@MJI
+	public char getChar__Ljava_lang_Object_2J__C(MJIEnv env, int unsafeRef, int objRef, long fieldOffset) {
+		ElementInfo ei = env.getElementInfo(objRef);
+		if (!ei.isArray()) {
+			FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
+			return ei.getCharField(fi);
+		} else {
+			return ei.getCharElement((int) fieldOffset).getValue();
+		}
+	}
 
   @MJI
   public char getCharVolatile__Ljava_lang_Object_2J__C(MJIEnv env,int unsafeRef,int objRef,long fieldOffset) {
@@ -333,7 +333,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
       ei.setCharField(fi, val);
     } else {
-      ei.setCharElement((int)fieldOffset, val);
+      ei.setCharElement(NativeMethodInfo.CTX, (int)fieldOffset, val);
     }
   }
 
@@ -401,7 +401,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getModifiableElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      ei.setIntField(fi, val);
+      ei.setIntField(NativeMethodInfo.CTX, fi, val);
     } else {
       ei.setIntElement((int)fieldOffset, val);
     }

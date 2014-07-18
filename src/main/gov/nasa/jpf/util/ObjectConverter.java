@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Fields;
 import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -107,7 +108,7 @@ public class ObjectConverter {
         newObjEI.setShortField(fi, javaField.getShort(javaObject));
       }
       else if (jpfTypeName.equals("int")) {
-        newObjEI.setIntField(fi, javaField.getInt(javaObject));
+        newObjEI.setIntField(NativeMethodInfo.CTX, fi, javaField.getInt(javaObject));
       }
       else if (jpfTypeName.equals("long")) {
         newObjEI.setLongField(fi, javaField.getLong(javaObject));
@@ -152,7 +153,7 @@ public class ObjectConverter {
     if (arrayElementClass == Character.TYPE) {
       arrRef = env.newCharArray(FeatureExprFactory.True(), javaArrLength);
       ElementInfo charArrRef = env.getModifiableElementInfo(arrRef);
-      char[] charArr = charArrRef.asCharArray();
+      char[] charArr = charArrRef.asCharArray().getValue();
 
       for (int i = 0; i < javaArrLength; i++) {
         charArr[i] = Array.getChar(javaArr, i);

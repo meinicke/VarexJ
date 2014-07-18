@@ -30,10 +30,13 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Fields;
 import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.HashMap;
 import java.util.Set;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * Object parsed from JSON document.
@@ -122,7 +125,7 @@ public class JSONObject{
   // NOTE - (pcm) before calling this method you have to make sure all required
   // types are initialized
   
-  public int fillObject (MJIEnv env, ClassInfo ci, ChoiceGenerator<?>[] cgs, String prefix) throws ClinitRequired {
+  public int fillObject (FeatureExpr ctx, MJIEnv env, ClassInfo ci, ChoiceGenerator<?>[] cgs, String prefix) throws ClinitRequired {
     int newObjRef = env.newObject(ci);
     ElementInfo ei = env.getHeap().getModifiable(newObjRef);
 
@@ -137,7 +140,7 @@ public class JSONObject{
 
         // If a value was defined in JSON document
         if (val != null) {
-          fillFromValue(fi, ei, val, env, cgs, prefix);
+          fillFromValue(ctx, fi, ei, val, env, cgs, prefix);
           
         } else if (cgCall != null) {
           // Value of this field should be taken from CG
@@ -164,7 +167,7 @@ public class JSONObject{
     return newObjRef;
   }
 
-  private void fillFromValue(FieldInfo fi, ElementInfo ei, Value val, MJIEnv env, ChoiceGenerator<?>[] cgs, String prefix) {
+  private void fillFromValue(FeatureExpr ctx, FieldInfo fi, ElementInfo ei, Value val, MJIEnv env, ChoiceGenerator<?>[] cgs, String prefix) {
     String fieldName = fi.getName();
     // Handle primitive types
     if (!fi.isReference()) {
@@ -172,13 +175,13 @@ public class JSONObject{
       
     } else {
       if (isArrayType(fi.getType())) {
-        int newArrRef = createArray(env, fi.getTypeClassInfo(), val, cgs, prefix + fieldName);
+        int newArrRef = createArray(ctx, env, fi.getTypeClassInfo(), val, cgs, prefix + fieldName);
         ei.setReferenceField(fi, newArrRef);
 
       } else {
         Creator creator = CreatorsFactory.getCreator(fi.getType());
         if (creator != null) {
-          int newSubObjRef = creator.create(env, fi.getType(), val);
+          int newSubObjRef = creator.create(ctx, env, fi.getType(), val);
           ei.setReferenceField(fi, newSubObjRef);
           
         } else {
@@ -191,7 +194,7 @@ public class JSONObject{
           JSONObject jsonObj = val.getObject();
           int fieldRef = MJIEnv.NULL;
           if (jsonObj != null) {
-            fieldRef = jsonObj.fillObject(env, ciField, cgs, prefix + fieldName);
+            fieldRef = jsonObj.fillObject(ctx, env, ciField, cgs, prefix + fieldName);
           }
           ei.setReferenceField(fi.getName(), fieldRef);
         }
@@ -213,7 +216,7 @@ public class JSONObject{
       ei.setShortField(fi, val.getDouble().shortValue());
 
     } else if (primitiveName.equals("int")) {
-      ei.setIntField(fi, val.getDouble().intValue());
+      ei.setIntField(NativeMethodInfo.CTX, fi, val.getDouble().intValue());
 
     } else if (primitiveName.equals("long")) {
       ei.setLongField(fi, val.getDouble().longValue());
@@ -226,7 +229,7 @@ public class JSONObject{
     }
   }
 
-  public int createArray(MJIEnv env, ClassInfo ciArray, Value value, ChoiceGenerator<?>[] cgs, String prefix) {
+  public int createArray(FeatureExpr ctx, MJIEnv env, ClassInfo ciArray, Value value, ChoiceGenerator<?>[] cgs, String prefix) {
     Value vals[] = value.getArray();
 
     ClassInfo ciElement = ciArray.getComponentClassInfo();
@@ -302,14 +305,14 @@ public class JSONObject{
 
         int newObjRef;
         if (creator != null) {
-          newObjRef = creator.create(env, arrayElementType, vals[i]);
+          newObjRef = creator.create(ctx, env, arrayElementType, vals[i]);
         } else{
           if (isArrayType(arrayElementType)) {
-            newObjRef = createArray(env, ciElement, vals[i], cgs, prefix + "[" + i);
+            newObjRef = createArray(ctx, env, ciElement, vals[i], cgs, prefix + "[" + i);
           } else {
             JSONObject jsonObj = vals[i].getObject();
             if (jsonObj != null) {
-              newObjRef = jsonObj.fillObject(env, ciElement, cgs, prefix + "[" + i);
+              newObjRef = jsonObj.fillObject(ctx, env, ciElement, cgs, prefix + "[" + i);
             } else {
               newObjRef = MJIEnv.NULL;
             }
@@ -350,7 +353,7 @@ public class JSONObject{
         ei.setShortField(fi, number.shortValue());
 
       } else if (primitiveName.equals("int")) {
-        ei.setIntField(fi, number.intValue());
+        ei.setIntField(NativeMethodInfo.CTX, fi, number.intValue());
 
       } else if (primitiveName.equals("long")) {
         ei.setLongField(fi, number.longValue());

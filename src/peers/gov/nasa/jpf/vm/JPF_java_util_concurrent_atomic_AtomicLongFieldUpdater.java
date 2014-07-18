@@ -45,7 +45,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     }
 
     int fidx = fi.getFieldIndex();
-    env.setIntField(objRef, "fieldId", fidx);
+    env.setIntField(NativeMethodInfo.CTX, objRef, "fieldId", fidx);
   }
 
   @MJI
@@ -56,7 +56,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return false;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(objRef, "fieldId");
+    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -83,7 +83,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(objRef, "fieldId");
+    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -104,7 +104,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return 0;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(objRef, "fieldId");
+    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -119,7 +119,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return 0;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(objRef, "fieldId");
+    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     long result = ei.getLongField(fi);
@@ -137,7 +137,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return 0;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(objRef, "fieldId");
+    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     long result = ei.getLongField(fi);

@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * native peer for a regex Matcher
  * this is just a delegatee peer
@@ -39,27 +41,28 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   }
 
   void putInstance (MJIEnv env, int objref, Matcher matcher) {
-    int id = env.getIntField(objref,  "id");
+    int id = env.getIntField(NativeMethodInfo.CTX,  objref, "id").getValue().intValue();
     matchers.put(id, matcher);
   }
 
   Matcher getInstance (MJIEnv env, int objref) {
     
-    int id = env.getIntField(objref,  "id");
+    int id = env.getIntField(NativeMethodInfo.CTX,  objref, "id").getValue().intValue();
     return matchers.get(id);
   }
   
   @MJI
   public void register____V (MJIEnv env, int objref) {
-    int patRef = env.getReferenceField(objref, "pattern");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int patRef = env.getReferenceField(ctx, objref, "pattern").getValue();
     
-    int regexRef = env.getReferenceField(patRef, "regex");
+    int regexRef = env.getReferenceField(ctx, patRef, "regex").getValue();
     String regex = env.getStringObject(regexRef);
-    int flags = env.getIntField(patRef, "flags");
+    int flags = env.getIntField(NativeMethodInfo.CTX, patRef, "flags").getValue().intValue();
     
     Pattern pat = Pattern.compile(regex, flags);
 
-    int inputRef = env.getReferenceField(objref, "input");
+    int inputRef = env.getReferenceField(ctx, objref, "input").getValue();
     String input = env.getStringObject(inputRef);
     
     Matcher matcher = pat.matcher(input);
@@ -120,8 +123,8 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   @MJI
   public int reset____Ljava_util_regex_Matcher_2 (MJIEnv env, int objref) {
     Matcher matcher = getInstance( env, objref);
-
-    int inputRef = env.getReferenceField(objref, "input");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int inputRef = env.getReferenceField(ctx, objref, "input").getValue();
     String input = env.getStringObject(inputRef);
     
     matcher = matcher.reset(input);

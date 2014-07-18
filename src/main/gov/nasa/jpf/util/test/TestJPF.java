@@ -878,7 +878,7 @@ public abstract class TestJPF implements JPFShell  {
       }
     } else { // no error
       fail("JPF failed to catch exception executing: ", args, ("expected " + xClassName));
-    }
+    } 
     
     return jpf;
   }

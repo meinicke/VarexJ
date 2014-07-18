@@ -37,7 +37,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
   @MJI
   public void $clinit (MJIEnv env, int rcls) {
     System.out.println("# entering native <clinit>");
-    env.setStaticIntField(rcls, "sdata", 42);
+    env.setStaticIntField(NativeMethodInfo.CTX, rcls, "sdata", 42);
   }
 
   // intercept MJITest(int i) ctor
@@ -48,7 +48,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     // better approach is to refactor this into a separate native method
     // (say init0(..))
     System.out.println("# entering native <init>(I)");
-    env.setIntField(robj, "idata", i);
+    env.setIntField(NativeMethodInfo.CTX, robj, "idata", i);
   }
 
   @MJI

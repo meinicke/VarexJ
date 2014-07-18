@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.Predicate;
 
@@ -32,7 +33,8 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
   
   @MJI
   public void runFinalizer__Ljava_lang_Object_2__V (MJIEnv env, int tiRef, int objRef) {
-    int queueRef = env.getReferenceField(tiRef, "finalizeQueue");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int queueRef = env.getReferenceField(ctx, tiRef, "finalizeQueue").getValue();
     int[] elements = env.getReferenceArrayObject(queueRef);
 
     if(elements.length>0 && elements[0]==objRef) {
@@ -51,7 +53,8 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
   
   // removes the very first element in the list, which is the last finalizable objects processed
   void removeElement(MJIEnv env, int tiRef, int objRef) {
-    int queueRef = env.getReferenceField(tiRef, "finalizeQueue");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int queueRef = env.getReferenceField(ctx, tiRef, "finalizeQueue").getValue();
     ThreadInfo ti = env.getThreadInfo();
     int[] oldValues = env.getReferenceArrayObject(queueRef);
     
@@ -60,7 +63,7 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
     assert (oldValues.length>0);
     
     int len = oldValues.length - 1;
-    ElementInfo newQueue = env.getHeap().newArray(NativeMethodInfo.CTX, "Ljava/lang/Object;", len, ti);
+    ElementInfo newQueue = env.getHeap().newArray(ctx, "Ljava/lang/Object;", len, ti);
     int[] newValues = newQueue.asReferenceArray();
     
     System.arraycopy(oldValues, 1, newValues, 0, len);

@@ -111,7 +111,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
     String at = env.getArrayType(aref);
     if (at.equals("int")){
       int vref = env.newObject("java.lang.Integer");
-      env.setIntField(vref, "value", env.getIntArrayElement(aref,index));
+      env.setIntField(NativeMethodInfo.CTX, vref, "value", env.getIntArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("long")){
@@ -131,7 +131,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       
     } else if (at.equals("char")){
       int vref = env.newObject("java.lang.Character");
-      env.setCharField(vref, "value", env.getCharArrayElement(aref,index));
+      env.setCharField(vref, "value", env.getCharArrayElement(aref,index).getValue());
       return vref;
       
     } else if (at.equals("byte")){
@@ -189,7 +189,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public char getChar__Ljava_lang_Object_2I__C (MJIEnv env, int clsRef, int aref, int index) {
     if (check(env, aref, index)) {
-      return env.getCharArrayElement(aref, index);
+      return env.getCharArrayElement(aref, index).getValue();
     }
     return 0;
   }
@@ -251,7 +251,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setChar__Ljava_lang_Object_2IC__V (MJIEnv env, int clsRef, int aref, int index, char val) {
     if (check(env, aref, index)) {
-      env.setCharArrayElement(aref, index, val);
+      env.setCharArrayElement(NativeMethodInfo.CTX, aref, index, val);
     }
   }
 

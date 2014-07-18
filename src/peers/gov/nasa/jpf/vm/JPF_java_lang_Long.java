@@ -77,6 +77,6 @@ public class JPF_java_lang_Long extends NativePeer {
 
   @MJI
   public int valueOf__J__Ljava_lang_Long_2 (MJIEnv env, int clsRef, long val) {
-    return env.valueOfLong(val);
+    return env.valueOfLong(NativeMethodInfo.CTX, val);
   }
 }

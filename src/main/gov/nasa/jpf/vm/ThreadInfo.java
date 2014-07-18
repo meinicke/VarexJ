@@ -436,7 +436,7 @@ public class ThreadInfo extends InfoObject
     this.objRef = objRef;
     this.targetRef = runnableRef;
    
-    threadData.name = vm.getElementInfo(nameRef).asString();
+    threadData.name = vm.getElementInfo(nameRef).asString().getValue();
     
     // note the thread is not yet in the ThreadList, we have to register from the caller
   }
@@ -1546,8 +1546,9 @@ public class ThreadInfo extends InfoObject
   /**
    * turn a snapshot into an JPF array of StackTraceElements, which means
    * a lot of objects. Do this only on demand
+ * @param ctx TODO
    */
-  public int createStackTraceElements (int[] snapshot) {
+  public int createStackTraceElements (FeatureExpr ctx, int[] snapshot) {
     int n = snapshot.length/2;
     int nVisible=0;
     StackTraceElement[] list = new StackTraceElement[n];
@@ -1561,9 +1562,9 @@ public class ThreadInfo extends InfoObject
     }
 
     Heap heap = vm.getHeap();
-    ElementInfo eiArray = heap.newArray(FeatureExprFactory.True(), "Ljava/lang/StackTraceElement;", nVisible, this);
+    ElementInfo eiArray = heap.newArray(ctx, "Ljava/lang/StackTraceElement;", nVisible, this);
     for (int i=0; i<nVisible; i++){
-      int eref = list[i].createJPFStackTraceElement();
+      int eref = list[i].createJPFStackTraceElement(ctx);
       eiArray.setReferenceElement( i, eref);
     }
 
@@ -1600,7 +1601,8 @@ public class ThreadInfo extends InfoObject
     // on the other hand, we don't want to re-implement all the MJIEnv accessor methods
 
     print(pw, env.getClassInfo(objRef).getName());
-    int msgRef = env.getReferenceField(objRef,"detailMessage");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int msgRef = env.getReferenceField(ctx,objRef, "detailMessage").getValue();
     if (msgRef != MJIEnv.NULL) {
       print(pw, ": ");
       print(pw, env.getStringObject(msgRef));
@@ -1608,7 +1610,7 @@ public class ThreadInfo extends InfoObject
     print(pw, "\n");
 
     // try the 'stackTrace' field first, it might have been set explicitly
-    int aRef = env.getReferenceField(objRef, "stackTrace"); // StackTrace[]
+    int aRef = env.getReferenceField(ctx, objRef, "stackTrace").getValue(); // StackTrace[]
     if (aRef != MJIEnv.NULL) {
       int len = env.getArrayLength(aRef);
       for (int i=0; i<len; i++) {
@@ -1620,7 +1622,7 @@ public class ThreadInfo extends InfoObject
       }
 
     } else { // fall back to use the snapshot stored in the exception object
-      aRef = env.getReferenceField(objRef, "snapshot");
+      aRef = env.getReferenceField(ctx, objRef, "snapshot").getValue();
       int[] snapshot = env.getIntArrayObject(aRef);
       int len = snapshot.length/2;
 
@@ -1632,7 +1634,7 @@ public class ThreadInfo extends InfoObject
       }
     }
 
-    int causeRef = env.getReferenceField(objRef, "cause");
+    int causeRef = env.getReferenceField(ctx, objRef, "cause").getValue();
     if ((causeRef != objRef) && (causeRef != MJIEnv.NULL)){
       print(pw, "Caused by: ");
       printStackTrace(pw, causeRef);
@@ -1673,13 +1675,14 @@ public class ThreadInfo extends InfoObject
     }
 
     StackTraceElement (int sRef){
-      clsName = env.getStringObject(env.getReferenceField(sRef, "clsName"));
-      mthName = env.getStringObject(env.getReferenceField(sRef, "mthName"));
-      fileName = env.getStringObject(env.getReferenceField(sRef, "fileName"));
-      line = env.getIntField(sRef, "line");
+    	FeatureExpr ctx = NativeMethodInfo.CTX;
+      clsName = env.getStringObject(env.getReferenceField(ctx, sRef, "clsName").getValue());
+      mthName = env.getStringObject(env.getReferenceField(ctx, sRef, "mthName").getValue());
+      fileName = env.getStringObject(env.getReferenceField(ctx, sRef, "fileName").getValue());
+      line = env.getIntField(null, sRef, "line").getValue().intValue();
     }
 
-    int createJPFStackTraceElement() {
+    int createJPFStackTraceElement(FeatureExpr ctx) {
       if (ignore) {
         return MJIEnv.NULL;
         
@@ -1688,10 +1691,10 @@ public class ThreadInfo extends InfoObject
         ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.StackTraceElement");
         ElementInfo ei = heap.newObject(null, ci, ThreadInfo.this);
 
-        ei.setReferenceField("clsName", heap.newString(FeatureExprFactory.True(), clsName, ThreadInfo.this).getObjectRef());
-        ei.setReferenceField("mthName", heap.newString(FeatureExprFactory.True(), mthName, ThreadInfo.this).getObjectRef());
-        ei.setReferenceField("fileName", heap.newString(FeatureExprFactory.True(), fileName, ThreadInfo.this).getObjectRef());
-        ei.setIntField("line", line);
+        ei.setReferenceField("clsName", heap.newString(ctx, clsName, ThreadInfo.this).getObjectRef());
+        ei.setReferenceField("mthName", heap.newString(ctx, mthName, ThreadInfo.this).getObjectRef());
+        ei.setReferenceField("fileName", heap.newString(ctx, fileName, ThreadInfo.this).getObjectRef());
+        ei.setIntField(ctx, "line", line);
 
         return ei.getObjectRef();
       }
@@ -2412,7 +2415,7 @@ public class ThreadInfo extends InfoObject
       // thread object is collected
 
       ss.clearAtomic();
-      cleanupThreadObject(ei);
+      cleanupThreadObject(ctx, ei);
       vm.activateGC();  // stack is gone, so reachability might change
       
       // give the thread tracking policy a chance to remove this thread from
@@ -2440,14 +2443,15 @@ public class ThreadInfo extends InfoObject
   
   /**
    * this is called upon ThreadInfo.exit() and corresponds to the private Thread.exit()
+ * @param ctx TODO
    */
-  void cleanupThreadObject (ElementInfo ei) {
+  void cleanupThreadObject (FeatureExpr ctx, ElementInfo ei) {
     // ideally, this should be done by calling Thread.exit(), but this
     // does a ThreadGroup.remove(), which does a lot of sync stuff on the shared
     // ThreadGroup object, which might create lots of states. So we just nullify
     // the Thread fields and remove it from the ThreadGroup from here
     int grpRef = ei.getReferenceField("group").getValue();
-    cleanupThreadGroup(grpRef, ei.getObjectRef());
+    cleanupThreadGroup(ctx, grpRef, ei.getObjectRef());
 
     ei.setReferenceField("group", MJIEnv.NULL);
     ei.setReferenceField("threadLocals", MJIEnv.NULL);
@@ -2462,15 +2466,16 @@ public class ThreadInfo extends InfoObject
    * lowest layer).
    * Since we already depend on ThreadGroup fields during VM initialization we just keep all Thread/ThreadGroup
    * related methods here
+ * @param ctx TODO
    */
-  void cleanupThreadGroup (int grpRef, int threadRef) {
+  void cleanupThreadGroup (FeatureExpr ctx, int grpRef, int threadRef) {
     if (grpRef != MJIEnv.NULL) {
       ElementInfo eiGrp = getModifiableElementInfo(grpRef);
       int threadsRef = eiGrp.getReferenceField("threads").getValue();
       if (threadsRef != MJIEnv.NULL) {
         ElementInfo eiThreads = getModifiableElementInfo(threadsRef);
         if (eiThreads.isArray()) {
-          int nthreads = eiGrp.getIntField("nthreads").getValue();
+          int nthreads = eiGrp.getIntField("nthreads").simplify(ctx).getValue(true);
 
           for (int i=0; i<nthreads; i++) {
             int tref = eiThreads.getReferenceElement(i);
@@ -2482,7 +2487,7 @@ public class ThreadInfo extends InfoObject
               }
               eiThreads.setReferenceElement(n1, MJIEnv.NULL);
 
-              eiGrp.setIntField("nthreads", n1);
+              eiGrp.setIntField(ctx, "nthreads", n1);
               if (n1 == 0) {
                 eiGrp.lock(this);
                 eiGrp.notifiesAll();
@@ -2520,7 +2525,7 @@ public class ThreadInfo extends InfoObject
     ElementInfo eiGroup = createMainThreadGroup(sysCl);
     eiThread.setReferenceField("group", eiGroup.getObjectRef());
     
-    eiThread.setIntField("priority", Thread.NORM_PRIORITY);
+    eiThread.setIntField(FeatureExprFactory.True(), "priority", Thread.NORM_PRIORITY);
 
     ClassInfo ciPermit = sysCl.getResolvedClassInfo("java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( null, ciPermit, this);
@@ -2549,7 +2554,7 @@ public class ThreadInfo extends InfoObject
     ElementInfo eiGrpName = heap.newString(FeatureExprFactory.True(), "main", this);
     eiThreadGrp.setReferenceField("name", eiGrpName.getObjectRef());
 
-    eiThreadGrp.setIntField("maxPriority", java.lang.Thread.MAX_PRIORITY);
+    eiThreadGrp.setIntField(FeatureExprFactory.True(), "maxPriority", java.lang.Thread.MAX_PRIORITY);
 
     // 'threads' and 'nthreads' will be set later from createMainThreadObject
 
@@ -2589,7 +2594,7 @@ public class ThreadInfo extends InfoObject
         eiGroup.setReferenceField(fiThreads, newThreadsRef);
       }
       
-      eiGroup.setIntField(finThreads, nThreads+1);
+      eiGroup.setIntField(NativeMethodInfo.CTX, finThreads, nThreads+1);
       
       /** <2do> we don't model this yet
       FieldInfo finUnstartedThreads = eiGroup.getFieldInfo("nUnstartedThreads");

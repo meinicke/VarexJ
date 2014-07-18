@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
@@ -241,7 +242,7 @@ public abstract class Fields implements Cloneable {
 
   public abstract byte getByteValue (int index);
 
-  public abstract char getCharValue (int index);
+  public abstract Conditional<Character> getCharValue (int index);
 
   public abstract short getShortValue (int index);
 
@@ -252,20 +253,19 @@ public abstract class Fields implements Cloneable {
   //--- the field modifier methods (both instance and static)
 
   public abstract void setReferenceValue (int index, int newValue);
-  public abstract void setReferenceValue (int index, Conditional<Integer> newValue);
+  public abstract void setReferenceValue (FeatureExpr ctx, int index, Conditional<Integer> newValue);
 
   public abstract void setBooleanValue (int index, boolean newValue);
 
   public abstract void setByteValue (int index, byte newValue);
 
-  public abstract void setCharValue (int index, char newValue);
+  public abstract void setCharValue (FeatureExpr ctx, int index, char newValue);
 
   public abstract void setShortValue (int index, short newValue);
 
   public abstract void setFloatValue (int index, float newValue);
 
-  public abstract void setIntValue (int index, int newValue);
-  
+  public abstract void setIntValue (FeatureExpr ctx, int index, int newValue);
   public abstract void setIntValue (int index, Conditional<Integer> newValue);
 
   public abstract void setLongValue (int index, long newValue);

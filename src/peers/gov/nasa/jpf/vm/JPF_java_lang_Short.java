@@ -64,6 +64,6 @@ public class JPF_java_lang_Short extends NativePeer {
 
   @MJI
   public int valueOf__S__Ljava_lang_Short_2 (MJIEnv env, int clsRef, short val) {
-    return env.valueOfShort(val);
+    return env.valueOfShort(NativeMethodInfo.CTX, val);
   }
 }

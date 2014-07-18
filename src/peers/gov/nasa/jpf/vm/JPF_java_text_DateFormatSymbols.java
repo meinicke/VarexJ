@@ -10,32 +10,32 @@ public class JPF_java_text_DateFormatSymbols extends NativePeer {
     DateFormatSymbols dfs = new DateFormatSymbols();
     
     String[] eras = dfs.getEras();
-    env.setReferenceField(objRef, "eras", env.newStringArray(eras));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "eras", env.newStringArray(eras));
     
     String[] months = dfs.getMonths();
-    env.setReferenceField(objRef, "months", env.newStringArray(months));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "months", env.newStringArray(months));
     
     String[] shortMonths = dfs.getShortMonths();
-    env.setReferenceField(objRef, "shortMonths", env.newStringArray(shortMonths));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "shortMonths", env.newStringArray(shortMonths));
     
     String[] weekdays = dfs.getWeekdays();
-    env.setReferenceField(objRef, "weekdays", env.newStringArray(weekdays));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "weekdays", env.newStringArray(weekdays));
     
     String[] shortWeekdays = dfs.getShortWeekdays();
-    env.setReferenceField(objRef, "shortWeekdays", env.newStringArray(shortWeekdays));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "shortWeekdays", env.newStringArray(shortWeekdays));
     
     String[] ampms = dfs.getAmPmStrings();
-    env.setReferenceField(objRef, "ampms", env.newStringArray(ampms));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "ampms", env.newStringArray(ampms));
     
     String[][] zoneStrings = dfs.getZoneStrings();
     int aaref = env.newObjectArray("[Ljava.lang.String;", zoneStrings.length);
-    env.setReferenceField(objRef, "zoneStrings", aaref);
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "zoneStrings", aaref);
     for (int i=0; i<zoneStrings.length; i++){
       env.setReferenceArrayElement(aaref, i, env.newStringArray(zoneStrings[i]));
     }
     
     String localPatternChars = dfs.getLocalPatternChars();
-    env.setReferenceField(objRef, "localPatternChars", env.newString(NativeMethodInfo.CTX, localPatternChars));
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "localPatternChars", env.newString(NativeMethodInfo.CTX, localPatternChars));
 
   }
 }

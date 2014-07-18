@@ -18,7 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.Map;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 
 /**
  * MJI NativePeer class to intercept all System.out and System.err
@@ -107,11 +111,15 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
     env.getVM().println();
   }
 
-  @MJI
-  public void println__Ljava_lang_String_2__V (MJIEnv env, int objRef,
-                                                   int strRef) {
-    env.getVM().println(env.getStringObject(strRef));
-  }
+	@MJI
+	public void println__Ljava_lang_String_2__V(MJIEnv env, int objRef, int strRef) {
+		Conditional<String> strings = env.getConditionalStringObject(strRef).simplify(NativeMethodInfo.CTX);
+		Map<String, FeatureExpr> map = strings.toMap();
+		for (String s : map.keySet()) {
+//			env.getVM().println(map.get(s) + ": " + s);
+			env.getVM().println(s);
+		}
+	}
 
   @MJI
   public void write__I__V (MJIEnv env, int objRef, int b){

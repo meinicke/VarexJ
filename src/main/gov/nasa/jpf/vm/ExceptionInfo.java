@@ -60,10 +60,11 @@ public class ExceptionInfo {
     if (msgRef != MJIEnv.NULL){
       ElementInfo eiMsg = ti.getElementInfo(msgRef);
       sb.append(" : ");
-      sb.append(eiMsg.asString());
+      sb.append(eiMsg.asString().getValue());
     }
       
-    return sb.toString();
+    String s = sb.toString();
+    return s;
   }
   
   public String getCauseClassname() {
@@ -82,7 +83,7 @@ public class ExceptionInfo {
       int msgRef = eiCause.getReferenceField("detailMessage").getValue();
       if (msgRef != MJIEnv.NULL){
         ElementInfo eiMsg = ti.getElementInfo(msgRef);
-        return eiMsg.asString();
+        return eiMsg.asString().getValue();
       }
     }
 

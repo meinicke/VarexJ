@@ -28,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * this is just the minimal support for DateFormat.parse(String)
  */
@@ -46,8 +48,9 @@ public class JPF_java_text_DateFormat extends NativePeer {
     TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
     DateFormat fmt = getInstance(env,objref);
     fmt.setTimeZone(timeZone);
-    int calendarRef = env.getReferenceField(objref, "calendar");
-    env.setReferenceField(calendarRef, "zone", timeZoneRef);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int calendarRef = env.getReferenceField(ctx, objref, "calendar").getValue();
+    env.setReferenceField(NativeMethodInfo.CTX, calendarRef, "zone", timeZoneRef);
   }
 
   @MJI

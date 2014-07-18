@@ -64,7 +64,7 @@ public class JPF_java_io_InputStreamReader extends NativePeer {
     
     int n = out.position();
     for (int i=0, j=off; i<n; i++,j++){
-      env.setCharArrayElement(cref,j, out.get(i));
+      env.setCharArrayElement(NativeMethodInfo.CTX, cref,j, out.get(i));
     }
     out.clear();
     if (n == len){

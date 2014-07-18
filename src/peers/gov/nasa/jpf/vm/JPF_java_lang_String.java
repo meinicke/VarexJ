@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * MJI NativePeer class for java.lang.String library abstraction
  */
@@ -31,7 +33,7 @@ public class JPF_java_lang_String extends NativePeer {
   
   @MJI
   public int init___3CII__Ljava_lang_String_2 (MJIEnv env, int objRef, int valueRef, int offset, int count) {
-    char[] value = env.getCharArrayObject(valueRef);
+    char[] value = env.getCharArrayObject(valueRef).getValue();
     String result = new String(value, offset, count);
     return env.newString(NativeMethodInfo.CTX, result);
   }
@@ -93,7 +95,7 @@ public class JPF_java_lang_String extends NativePeer {
   @MJI
   public void getChars__II_3CI__V (MJIEnv env, int objRef, int srcBegin, int srcEnd, int dstRef, int dstBegin) {
     String obj = env.getStringObject(objRef);
-    char[] dst = env.getCharArrayObject(dstRef);
+    char[] dst = env.getCharArrayObject(dstRef).getValue();
     obj.getChars(srcBegin, srcEnd, dst, dstBegin);
   }
 
@@ -129,7 +131,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public char charAt__I__C (MJIEnv env, int objRef, int index){
-    char[] data = env.getStringChars(objRef);
+    char[] data = env.getStringChars(objRef).getValue();
     return data[index];
   }
 
@@ -139,8 +141,8 @@ public class JPF_java_lang_String extends NativePeer {
 
     if ((charsRef1 == MJIEnv.NULL) || (charsRef2 == MJIEnv.NULL)) { return false; }
 
-    char[] a = env.getCharArrayObject(charsRef1);
-    char[] b = env.getCharArrayObject(charsRef2);
+    char[] a = env.getCharArrayObject(charsRef1).getValue();
+    char[] b = env.getCharArrayObject(charsRef2).getValue();
 
     if (a.length < len || b.length < len) { return false; }
 
@@ -160,12 +162,12 @@ public class JPF_java_lang_String extends NativePeer {
     ElementInfo s2 = heap.get(argRef);
 
     if (!env.isInstanceOf(argRef, "java.lang.String")) { return false; }
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    Fields f1 = heap.get(s1.getReferenceField("value").simplify(ctx).getValue()).getFields();
+    Fields f2 = heap.get(s2.getReferenceField("value").simplify(ctx).getValue()).getFields();
 
-    Fields f1 = heap.get(s1.getReferenceField("value").simplify(NativeMethodInfo.CTX).getValue()).getFields();
-    Fields f2 = heap.get(s2.getReferenceField("value").simplify(NativeMethodInfo.CTX).getValue()).getFields();
-
-    char[] c1 = ((CharArrayFields) f1).asCharArray();
-    char[] c2 = ((CharArrayFields) f2).asCharArray();
+    char[] c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx).getValue();
+    char[] c2 = ((CharArrayFields) f2).asCharArray().simplify(ctx).getValue();
 
     if (c1.length != c2.length) { return false; }
 
@@ -250,21 +252,22 @@ public class JPF_java_lang_String extends NativePeer {
   @MJI
   public int hashCode____I (MJIEnv env, int objref) {
     ElementInfo ei = env.getElementInfo(objref);
-    int h = ei.getIntField("hash").simplify(NativeMethodInfo.CTX).getValue();
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int h = ei.getIntField("hash").simplify(ctx).getValue();
 
     if (h == 0) {
-      int vref = env.getReferenceField(objref, "value");
+      int vref = env.getReferenceField(ctx, objref, "value").getValue();
 
       // now get the char array data, but be aware they are stored as ints
       ElementInfo eiVal = env.getElementInfo(vref);
-      char[] values = eiVal.asCharArray();
+      char[] values = eiVal.asCharArray().simplify(ctx).getValue();
 
       for (int i = 0; i < values.length; i++) {
         h = 31 * h + values[i];
       }
 
       ei = ei.getModifiableInstance();
-      ei.setIntField("hash", h);
+      ei.setIntField(ctx, "hash", h);
     }
 
     return h;
@@ -277,9 +280,10 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int indexOf__II__I (MJIEnv env, int objref, int c, int fromIndex) {
-    int vref = env.getReferenceField(objref, "value");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int vref = env.getReferenceField(ctx, objref, "value").getValue();
     ElementInfo ei = env.getElementInfo(vref);
-    char[] values = ((CharArrayFields) ei.getFields()).asCharArray();
+    char[] values = ((CharArrayFields) ei.getFields()).asCharArray().getValue();
 
     int len = values.length;
 
@@ -302,9 +306,10 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int lastIndexOf__II__I (MJIEnv env, int objref, int c, int fromIndex) {
-    int vref = env.getReferenceField(objref, "value");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int vref = env.getReferenceField(ctx, objref, "value").getValue();
     ElementInfo ei = env.getElementInfo(vref);
-    char[] values = ((CharArrayFields) ei.getFields()).asCharArray();
+    char[] values = ((CharArrayFields) ei.getFields()).asCharArray().getValue();
 
     int len = values.length;
 
@@ -366,12 +371,12 @@ public class JPF_java_lang_String extends NativePeer {
 
     ElementInfo thisStr = heap.get(objRef);
     CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value").getValue()).getFields();
-    char[] thisChars = thisFields.asCharArray();
+    char[] thisChars = thisFields.asCharArray().getValue();
     int thisLength = thisChars.length;
 
     ElementInfo otherStr = heap.get(strRef);
     CharArrayFields otherFields = (CharArrayFields) heap.get(otherStr.getReferenceField("value").getValue()).getFields();
-    char[] otherChars = otherFields.asCharArray();
+    char[] otherChars = otherFields.asCharArray().getValue();
     int otherLength = otherChars.length;
 
     if (otherLength == 0) { return objRef; }
@@ -391,10 +396,10 @@ public class JPF_java_lang_String extends NativePeer {
     if (oldChar == newChar) { // nothing to replace
       return objRef;
     }
-
-    int vref = env.getReferenceField(objRef, "value");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int vref = env.getReferenceField(ctx, objRef, "value").getValue();
     ElementInfo ei = env.getModifiableElementInfo(vref);
-    char[] values = ((CharArrayFields) ei.getFields()).asCharArray();
+    char[] values = ((CharArrayFields) ei.getFields()).asCharArray().getValue();
     int len = values.length;
 
     char[] newValues = null;
@@ -515,7 +520,7 @@ public class JPF_java_lang_String extends NativePeer {
     ElementInfo thisStr = heap.get(objRef);
 
     CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value").simplify(NativeMethodInfo.CTX).getValue()).getFields();
-    char[] thisChars = thisFields.asCharArray();
+    char[] thisChars = thisFields.asCharArray().simplify(NativeMethodInfo.CTX).getValue();
     int thisLength = thisChars.length;
 
     int start = 0;
@@ -540,10 +545,11 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int toCharArray_____3C (MJIEnv env, int objref) {
-    int vref = env.getReferenceField(objref, "value");
-    char[] v = env.getCharArrayObject(vref);
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int vref = env.getReferenceField(ctx, objref, "value").getValue();
+    char[] v = env.getCharArrayObject(vref).getValue();
 
-    int cref = env.newCharArray(v);
+    int cref = env.newCharArray(NativeMethodInfo.CTX, v);
 
     return cref;
   }

@@ -34,6 +34,10 @@ public class Choice<T> extends Conditional<T> {
 
 	@Override
 	public Conditional<T> simplify(FeatureExpr ctx) {
+		if (ctx == null) {
+			throw new RuntimeException("ctx == null");
+		}
+		
 		// if (thenBranch instanceof One && elseBranch instanceof One && thenBranch.getValue().equals(elseBranch.getValue())) {
 		// return thenBranch;
 		// }

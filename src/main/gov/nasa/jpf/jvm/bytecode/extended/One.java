@@ -38,6 +38,8 @@ public class One<T> extends Conditional<T> {
 			for (int x : (int[])value) {
 				s+= x + ", ";
 			}
+		} else if (value instanceof char[]) {
+			s += new String((char[])value);
 		} else {
 			s+=value;
 		}

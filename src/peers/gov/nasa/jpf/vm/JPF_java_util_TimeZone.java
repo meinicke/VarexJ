@@ -46,7 +46,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
   }
   
   private static TimeZone getTimeZone (MJIEnv env, int objRef){
-    int rawOffset = env.getIntField(objRef, "rawOffset");
+    int rawOffset = env.getIntField(NativeMethodInfo.CTX, objRef, "rawOffset").getValue().intValue();
     tz.setRawOffset(rawOffset);
     return tz;
   }
@@ -66,8 +66,8 @@ public class JPF_java_util_TimeZone extends NativePeer {
     }
 
     int tzRef = env.newObject("java.util.TimeZone");
-    env.setReferenceField(tzRef, "ID", idRef);
-    env.setIntField(tzRef, "rawOffset", rawOffset);
+    env.setReferenceField(NativeMethodInfo.CTX, tzRef, "ID", idRef);
+    env.setIntField(NativeMethodInfo.CTX, tzRef, "rawOffset", rawOffset);
     
     return tzRef;
   }
@@ -83,8 +83,8 @@ public class JPF_java_util_TimeZone extends NativePeer {
     int idRef = env.newString(NativeMethodInfo.CTX, defaultID);
 
     int tzRef = env.newObject("java.util.TimeZone");
-    env.setReferenceField(tzRef, "ID", idRef);
-    env.setIntField(tzRef, "rawOffset", defaultRawOffset);
+    env.setReferenceField(NativeMethodInfo.CTX, tzRef, "ID", idRef);
+    env.setIntField(NativeMethodInfo.CTX, tzRef, "rawOffset", defaultRawOffset);
     
     return tzRef;
   }
@@ -92,7 +92,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
   @MJI
   public void setDefaultValues__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int tzRef){
     defaultID = env.getStringField(tzRef, "ID");
-    defaultRawOffset = env.getIntField( tzRef, "rawOffset");
+    defaultRawOffset = env.getIntField( NativeMethodInfo.CTX, tzRef, "rawOffset").getValue().intValue();
   }
   
   //--- the ID queries
@@ -119,8 +119,8 @@ public class JPF_java_util_TimeZone extends NativePeer {
       idRef = env.newString(NativeMethodInfo.CTX, realId);
     }
     
-    env.setReferenceField(objRef, "ID", idRef);
-    env.setIntField(objRef, "rawOffset", rawOffset);
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "ID", idRef);
+    env.setIntField(NativeMethodInfo.CTX, objRef, "rawOffset", rawOffset);
   }
   
   @MJI

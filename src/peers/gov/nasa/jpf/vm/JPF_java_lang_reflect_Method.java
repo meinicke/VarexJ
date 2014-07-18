@@ -27,6 +27,8 @@ import gov.nasa.jpf.util.RunRegistry;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 public class JPF_java_lang_reflect_Method extends NativePeer {
 
   static MethodInfoRegistry registry;
@@ -56,7 +58,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     int eidx = env.newObject( ciMth);
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
-    ei.setIntField("regIdx", regIdx);
+    ei.setIntField(NativeMethodInfo.CTX, "regIdx", regIdx);
     ei.setBooleanField("isAccessible", mi.isPublic());
     
     return eidx;
@@ -71,11 +73,12 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   @MJI
   public int getName____Ljava_lang_String_2 (MJIEnv env, int objRef) {
     MethodInfo mi = getMethodInfo(env, objRef);
-    
-    int nameRef = env.getReferenceField( objRef, "name");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int nameRef = env.getReferenceField( ctx, objRef, "name").getValue();
     if (nameRef == MJIEnv.NULL) {
-      nameRef = env.newString(NativeMethodInfo.CTX, mi.getName());
-      env.setReferenceField(objRef, "name", nameRef);
+      
+	nameRef = env.newString(ctx, mi.getName());
+      env.setReferenceField(ctx, objRef, "name", nameRef);
     }
    
     return nameRef;
@@ -172,7 +175,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     int ret = MJIEnv.NULL;
     ElementInfo rei;
     Object attr = null;
-
+    FeatureExpr ctx = NativeMethodInfo.CTX;
     if (rt == Types.T_DOUBLE) {
       attr = frame.getLongResultAttr();
       double v = frame.getDoubleResult();
@@ -188,23 +191,23 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     } else if (rt == Types.T_LONG) {
       attr = frame.getLongResultAttr();
       long v = frame.getLongResult();
-      ret = env.valueOfLong(v);
+      ret = env.valueOfLong(ctx, v);
     } else if (rt == Types.T_BYTE) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfByte((byte)v);
+      ret = env.valueOfByte(ctx, (byte)v);
     } else if (rt == Types.T_CHAR) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfCharacter((char)v);
+      ret = env.valueOfCharacter(ctx, (char)v);
     } else if (rt == Types.T_SHORT) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfShort((short)v);
+      ret = env.valueOfShort(ctx, (short)v);
     } else if (rt == Types.T_INT) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfInteger(v);
+      ret = env.valueOfInteger(ctx, v);
     } else if (rt == Types.T_BOOLEAN) {
       attr = frame.getResultAttr();
       int v = frame.getResult();
@@ -510,7 +513,8 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
 
     try {
-      return env.newAnnotationProxies(aiList.toArray(new AnnotationInfo[aiList.size()]));
+    	FeatureExpr ctx = NativeMethodInfo.CTX;
+      return env.newAnnotationProxies(ctx, aiList.toArray(new AnnotationInfo[aiList.size()]));
     } catch (ClinitRequired x){
       env.handleClinitRequest(x.getRequiredClassInfo());
       return MJIEnv.NULL;
@@ -525,13 +529,14 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   // the following ones consist of a package default implementation that is shared with
   // the constructor peer, and a public model method
   static int getAnnotation (MJIEnv env, MethodInfo mi, int annotationClsRef){
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
     ClassInfo aci = env.getReferredClassInfo(annotationClsRef);
     
     AnnotationInfo ai = mi.getAnnotation(aci.getName());
     if (ai != null){
       ClassInfo aciProxy = aci.getAnnotationProxy();
       try {
-        return env.newAnnotationProxy(aciProxy, ai);
+        return env.newAnnotationProxy(ctx, aciProxy, ai);
       } catch (ClinitRequired x){
         env.handleClinitRequest(x.getRequiredClassInfo());
         return MJIEnv.NULL;
@@ -550,7 +555,8 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     AnnotationInfo[] ai = mi.getAnnotations();
 
     try {
-      return env.newAnnotationProxies(ai);
+    	FeatureExpr ctx = NativeMethodInfo.CTX;
+      return env.newAnnotationProxies(ctx, ai);
     } catch (ClinitRequired x){
       env.handleClinitRequest(x.getRequiredClassInfo());
       return MJIEnv.NULL;
@@ -568,9 +574,9 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     
     try {
       int paRef = env.newObjectArray("[Ljava/lang/annotation/Annotation;", pa.length);
-      
+      FeatureExpr ctx = NativeMethodInfo.CTX;
       for (int i=0; i<pa.length; i++){
-        int eRef = env.newAnnotationProxies(pa[i]);
+        int eRef = env.newAnnotationProxies(ctx, pa[i]);
         env.setReferenceArrayElement(paRef, i, eRef);
       }
 

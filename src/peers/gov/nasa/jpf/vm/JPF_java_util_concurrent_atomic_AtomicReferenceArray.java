@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -27,13 +28,15 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceArray extends Native
 
   @MJI
   public int getNative__I__Ljava_lang_Object_2 (MJIEnv env, int objRef, int index) {
-    int arrayRef = env.getReferenceField(objRef, "array");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     return env.getReferenceArrayElement(arrayRef, index);
   }
 
   @MJI
   public boolean compareAndSetNative__ILjava_lang_Object_2Ljava_lang_Object_2__Z (MJIEnv env, int objRef, int index, int fExpect, int fUpdate){
-    int arrayRef = env.getReferenceField(objRef, "array");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     int value = env.getReferenceArrayElement(arrayRef, index);
     if (value == fExpect) {
       env.setReferenceArrayElement(arrayRef, index, fUpdate);

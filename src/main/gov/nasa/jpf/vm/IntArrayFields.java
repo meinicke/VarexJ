@@ -24,6 +24,8 @@ import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * element values for int[] objects
  */
@@ -88,7 +90,8 @@ public class IntArrayFields extends ArrayFields {
     }
   }
 
-  public void setIntValue (int pos, int newValue) {
+  @Override
+  public void setIntValue (FeatureExpr ctx, int pos, int newValue) {
     values[pos] = newValue;
   }
 

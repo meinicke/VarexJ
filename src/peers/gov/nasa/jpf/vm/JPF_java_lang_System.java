@@ -166,7 +166,7 @@ public class JPF_java_lang_System extends NativePeer {
     
     int ref = frame.peek(NativeMethodInfo.CTX).getValue();
     ElementInfo metaResult = heap.get(ref);
-    String result = metaResult.asString();
+    String result = metaResult.asString().getValue();
     
     return result;
   }

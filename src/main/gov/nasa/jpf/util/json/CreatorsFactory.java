@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class CreatorsFactory {
@@ -49,7 +50,7 @@ public class CreatorsFactory {
 
 
 class BoxedBoolCreator implements Creator {
-  public int create(MJIEnv env, String typeName, Value value) {
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value) {
     Boolean read = value.getBoolean();
     int boolRef = MJIEnv.NULL;
 
@@ -64,7 +65,7 @@ class BoxedBoolCreator implements Creator {
 }
 
 class BoxedByteCreator implements Creator {
-  public int create(MJIEnv env, String typeName, Value value) {
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value) {
     Double read = value.getDouble();
     int byteRef = MJIEnv.NULL;
 
@@ -79,7 +80,7 @@ class BoxedByteCreator implements Creator {
 }
 
 class BoxedShortCreator implements Creator {
-  public int create(MJIEnv env, String typeName, Value value) {
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value) {
     Double read = value.getDouble();
     int shortRef = MJIEnv.NULL;
 
@@ -94,14 +95,14 @@ class BoxedShortCreator implements Creator {
 }
 
 class BoxedIntCreator implements Creator {
-  public int create(MJIEnv env, String typeName, Value value) {
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value) {
     Double read = value.getDouble();
     int intRef = MJIEnv.NULL;
 
     if (read != null) {
       intRef = env.newObject("java.lang.Integer");
       ElementInfo ei = env.getModifiableElementInfo(intRef);
-      ei.setIntField("value", read.intValue());
+      ei.setIntField(ctx, "value", read.intValue());
     }
 
     return intRef;
@@ -109,7 +110,7 @@ class BoxedIntCreator implements Creator {
 }
 
 class BoxedLongCreator implements Creator {
-  public int create(MJIEnv env, String typeName, Value value) {
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value) {
     Double read = value.getDouble();
     int longRef = MJIEnv.NULL;
 
@@ -124,7 +125,7 @@ class BoxedLongCreator implements Creator {
 }
 
 class BoxedFloatCreator implements Creator {
-  public int create(MJIEnv env, String typeName, Value value) {
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value) {
     Double read = value.getDouble();
     int floatRef = MJIEnv.NULL;
 
@@ -139,7 +140,7 @@ class BoxedFloatCreator implements Creator {
 }
 
 class BoxedDoubleCreator implements Creator {
-  public int create(MJIEnv env, String typeName, Value value) {
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value) {
     Double read = value.getDouble();
     int doubleRef = MJIEnv.NULL;
 
@@ -155,7 +156,7 @@ class BoxedDoubleCreator implements Creator {
 
 class StringCreator implements Creator {
 
-  public int create(MJIEnv env, String typeName, Value value) {
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value) {
     String strVal = value.getString();
     int stringRef = MJIEnv.NULL;
 

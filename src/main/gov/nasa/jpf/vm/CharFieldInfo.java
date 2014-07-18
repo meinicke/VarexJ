@@ -44,7 +44,7 @@ public class CharFieldInfo extends SingleSlotFieldInfo {
 
 
   public void initialize (ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setCharValue(storageOffset, init);
+    ei.getFields().setCharValue(null, storageOffset, init);
   }
 
   public boolean isCharField() {
@@ -53,7 +53,7 @@ public class CharFieldInfo extends SingleSlotFieldInfo {
 
   public String valueToString (Fields f) {
     char[] buf = new char[1];
-    buf[0] = f.getCharValue(storageOffset);
+    buf[0] = f.getCharValue(storageOffset).getValue();
     return new String(buf);
   }
 

@@ -22,6 +22,8 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.Map;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 
@@ -38,16 +40,16 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   @MJI
   public void $init__Ljava_lang_ClassLoader_2__V (MJIEnv env, int objRef, int parentRef) {
     Heap heap = env.getHeap();
-
+    FeatureExpr ctx = NativeMethodInfo.CTX;
     //--- Retrieve the parent ClassLoaderInfo
     ClassLoaderInfo parent = env.getClassLoaderInfo(parentRef);
 
     //--- create the internal representation of the classloader
-    ClassLoaderInfo cl = new ClassLoaderInfo(env.getVM(), objRef, new ClassPath(), parent);
+    ClassLoaderInfo cl = new ClassLoaderInfo(ctx, env.getVM(), objRef, new ClassPath(), parent);
 
     //--- initialize the java.lang.ClassLoader object
     ElementInfo ei = heap.getModifiable(objRef);
-    ei.setIntField( ClassLoaderInfo.ID_FIELD, cl.getId());
+    ei.setIntField(ctx, ClassLoaderInfo.ID_FIELD, cl.getId());
 
     // we should use the following block if we ever decide to make systemClassLoader 
     // unavailable if(parent.isSystemClassLoader) {

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 
 
@@ -33,7 +34,7 @@ public class IntegerFieldInfo extends SingleSlotFieldInfo {
   }
 
   public void initialize (ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setIntValue( storageOffset, init);
+    ei.getFields().setIntValue(FeatureExprFactory.True(), storageOffset, init);
   }
 
   public void setConstantValue(Object constValue){

@@ -44,6 +44,7 @@ import java.io.ObjectInputStream;
 import java.util.BitSet;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -1090,7 +1091,8 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
         // Top half - get and register CGs we need to set to fill object from JSON
         List<ChoiceGenerator<?>> cgList = CGCall.createCGList(jsonObject);
         if (cgList.isEmpty()){
-          return jsonObject.fillObject(env, ci, null, "");
+        	
+          return jsonObject.fillObject(NativeMethodInfo.CTX, env, ci, null, "");
           
         } else {
           for (ChoiceGenerator<?> cg : cgList) {
@@ -1105,7 +1107,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
         // Bottom half - fill object with JSON and current values of CGs
         ChoiceGenerator<?>[] cgs = ss.getChoiceGenerators();
 
-        return jsonObject.fillObject(env, ci, cgs, "");
+        return jsonObject.fillObject(NativeMethodInfo.CTX, env, ci, cgs, "");
       }
 
     } else {
@@ -1116,7 +1118,8 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static int readObjectFromFile__Ljava_lang_Class_2Ljava_lang_String_2__Ljava_lang_Object_2(
           MJIEnv env, int clsObjRef, int newObjClsRef, int fileNameRef) {
-    int typeNameRef = env.getReferenceField(newObjClsRef, "name");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int typeNameRef = env.getReferenceField(ctx, newObjClsRef, "name").getValue();
     String typeName = env.getStringObject(typeNameRef);
     String fileName = env.getStringObject(fileNameRef);
 

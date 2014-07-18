@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -27,13 +28,15 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerArray extends NativePe
 
   @MJI
   public int getNative__I__I (MJIEnv env, int objRef, int index) {
-    int arrayRef = env.getReferenceField(objRef, "array");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     return env.getIntArrayElement(arrayRef, index);
   }
 
   @MJI
   public boolean compareAndSetNative__III__Z (MJIEnv env, int objRef, int index, int expect, int update){
-    int arrayRef = env.getReferenceField(objRef, "array");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     int value = env.getIntArrayElement(arrayRef, index);
     if (value == expect) {
       env.setIntArrayElement(arrayRef, index, update);

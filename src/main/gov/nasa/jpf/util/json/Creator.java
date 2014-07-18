@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.util.json;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MJIEnv;
 
 /**
@@ -28,10 +29,11 @@ import gov.nasa.jpf.vm.MJIEnv;
 interface Creator {
   /**
    * Create new object, according to read value.
-   * @param env - MJI environment
-   * @param typeName - name of the new object's type
-   * @param value - value read from JSON document
+ * @param ctx TODO
+ * @param env - MJI environment
+ * @param typeName - name of the new object's type
+ * @param value - value read from JSON document
    * @return reference to the new object
    */
-  public int create(MJIEnv env, String typeName, Value value);
+  public int create(FeatureExpr ctx, MJIEnv env, String typeName, Value value);
 }

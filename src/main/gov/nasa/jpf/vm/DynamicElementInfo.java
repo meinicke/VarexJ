@@ -19,6 +19,8 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 
 /**
  * A specialized version of ElementInfo that represents heap objects
@@ -99,17 +101,25 @@ public class DynamicElementInfo extends ElementInfo {
     return null;
   }
 
-  public String asString() {
-    char[] data = getStringChars();
-    if (data != null){
-      return new String(data);
-      
-    } else {
-      return "";
-    }
-  }
+	public Conditional<String> asString() {
+		Conditional<char[]> data = getStringChars();
+		return data.map(new Function<char[], String>() {
 
-  public char[] getStringChars(){
+			@Override
+			public String apply(char[] data) {
+				if (data != null) {
+					return new String(data);
+
+				} else {
+					return "";
+				}
+			}
+
+		});
+
+	}
+
+  public Conditional<char[]> getStringChars(){
     if (!ClassInfo.isStringClassInfo(ci)) {
       throw new JPFException("object is not of type java.lang.String");
     }
@@ -117,8 +127,7 @@ public class DynamicElementInfo extends ElementInfo {
     int vref = getDeclaredReferenceField("value", "java.lang.String").simplify(NativeMethodInfo.CTX).getValue();    
     if (vref != MJIEnv.NULL){
       ElementInfo eVal = VM.getVM().getHeap().get(vref);
-      char[] value = eVal.asCharArray();
-      return value;
+      return eVal.asCharArray();
       
     } else {
       return null;
@@ -136,7 +145,7 @@ public class DynamicElementInfo extends ElementInfo {
     int vref = getDeclaredReferenceField("value", "java.lang.String").getValue();
     ElementInfo e = VM.getVM().getHeap().get(vref);
     CharArrayFields cf = (CharArrayFields)e.getFields();
-    char[] v = cf.asCharArray();
+    char[] v = cf.asCharArray().getValue();
     
     return new String(v).equals(s);
   }

@@ -30,6 +30,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * native peer for file descriptors, which are our basic interface to
  * access file contents. The implementation used here just forwards
@@ -120,7 +122,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
 
   @MJI
   public void close0 (MJIEnv env, int objref) {
-    int fd = env.getIntField(objref, "fd");
+    int fd = env.getIntField(NativeMethodInfo.CTX, objref, "fd").getValue().intValue();
     
     try {
       Object fs = content.get(fd);
@@ -149,12 +151,13 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   // a state where the file was still open, and hence don't want to
   // change the FileDescriptor identify
   void reopen (MJIEnv env, int objref) throws IOException {
-    int fd = env.getIntField(objref, "fd");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int fd = env.getIntField(ctx, objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off");
     
     if (content.get(fd) == null){
-      int mode = env.getIntField(objref, "mode");
-      int fnRef = env.getReferenceField(objref, "fileName");
+      int mode = env.getIntField(ctx, objref, "mode").getValue().intValue();
+      int fnRef = env.getReferenceField(ctx, objref, "fileName").getValue();
       String fname = env.getStringObject(fnRef);
       
       if (mode == FD_READ){
@@ -177,7 +180,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public void write__I__ (MJIEnv env, int objref, int b){
-    int fd = env.getIntField(objref, "fd");
+    int fd = env.getIntField(NativeMethodInfo.CTX, objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off");
     
     try {
@@ -196,7 +199,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         }
         
       } else {
-        if (env.getIntField(objref, "state") == FD_OPENED){ // backtracked
+        if (env.getIntField(NativeMethodInfo.CTX, objref, "state").getValue().intValue() == FD_OPENED){ // backtracked
           reopen(env,objref);
           write__I__(env,objref,b); // try again
         } else {
@@ -213,7 +216,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   @MJI
   public void write___3BII__ (MJIEnv env, int objref,
                                      int bref, int offset, int len){
-    int fd = env.getIntField(objref, "fd");
+    int fd = env.getIntField(NativeMethodInfo.CTX, objref, "fd").getValue();
     long off = env.getLongField(objref,"off");
     
     try {
@@ -238,7 +241,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         }
         
       } else {
-        if (env.getIntField(objref, "state") == FD_OPENED){ // backtracked
+        if (env.getIntField(NativeMethodInfo.CTX, objref, "state").getValue().intValue() == FD_OPENED){ // backtracked
           reopen(env,objref);
           write___3BII__(env,objref,bref,offset,len); // try again
         } else {
@@ -254,7 +257,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public int read____I (MJIEnv env, int objref) {
-    int fd = env.getIntField(objref, "fd");
+    int fd = env.getIntField(NativeMethodInfo.CTX, objref, "fd").getValue();
     long off = env.getLongField(objref,"off");
         
     try {
@@ -274,7 +277,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         }
         
       } else {
-        if (env.getIntField(objref, "state") == FD_OPENED){ // backtracked
+        if (env.getIntField(NativeMethodInfo.CTX, objref, "state").getValue().intValue() == FD_OPENED){ // backtracked
           reopen(env,objref);
           return read____I(env,objref); // try again
         } else {
@@ -293,7 +296,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public int read___3BII__I (MJIEnv env, int objref, int bufref, int offset, int len) {
-    int fd = env.getIntField(objref, "fd");
+    int fd = env.getIntField(NativeMethodInfo.CTX, objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off");
         
     try {
@@ -319,7 +322,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         }
         
       } else {
-        if (env.getIntField(objref, "state") == FD_OPENED){ // backtracked
+        if (env.getIntField(NativeMethodInfo.CTX, objref, "state").getValue().intValue() == FD_OPENED){ // backtracked
           reopen(env,objref);
           return read___3BII__I(env,objref,bufref,offset,len); // try again
         } else {
@@ -338,7 +341,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public long skip__J__J (MJIEnv env, int objref, long nBytes) {
-    int fd = env.getIntField(objref, "fd");
+    int fd = env.getIntField(NativeMethodInfo.CTX, objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off");
         
     try {
@@ -374,7 +377,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public void sync____ (MJIEnv env, int objref){
-    int fd = env.getIntField(objref, "fd");
+    int fd = env.getIntField(NativeMethodInfo.CTX, objref, "fd").getValue().intValue();
 
     try {
       Object fs = content.get(fd);
@@ -398,7 +401,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public int available____I (MJIEnv env, int objref) {
-    int fd = env.getIntField(objref, "fd");
+    int fd = env.getIntField(NativeMethodInfo.CTX, objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off");
     
     try {

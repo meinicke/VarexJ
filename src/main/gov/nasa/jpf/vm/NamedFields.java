@@ -19,10 +19,14 @@
 
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * value container for non-array classes
@@ -111,8 +115,15 @@ public class NamedFields extends Fields {
 		return (byte) values[index].getValue().intValue();
 	}
 
-	public char getCharValue(int index) {
-		return (char) values[index].getValue().intValue();
+	public Conditional<Character> getCharValue(int index) {
+		return values[index].map(new Function<Integer, Character>() {
+
+			@Override
+			public Character apply(Integer x) {
+				return (char) x.intValue();
+			}
+			
+		});
 	}
 
 	public short getShortValue(int index) {
@@ -127,11 +138,18 @@ public class NamedFields extends Fields {
 	// --- the field modifier methods (both instance and static)
 
 	public void setReferenceValue(int index, int newValue) {
-		setReferenceValue(index, new One<>(newValue));
+		setReferenceValue(FeatureExprFactory.True(), index, new One<>(newValue));// TODO jens add ctx
 	}
 
-	public void setReferenceValue(int index, Conditional<Integer> newValue) {
-		values[index] = newValue;
+	public void setReferenceValue(FeatureExpr ctx, int index, Conditional<Integer> newValue) {
+//		if (values[index] == null) {
+//			values[index] = new One<>(null);
+//		}
+		if (ctx.isTautology()) {
+			values[index] = newValue;
+		} else {
+			values[index] = new Choice<>(ctx, newValue, values[index]).simplify();
+		}
 	}
 
 	public void setBooleanValue(int index, boolean newValue) {
@@ -142,7 +160,7 @@ public class NamedFields extends Fields {
 		values[index] = new One<>((int) newValue);
 	}
 
-	public void setCharValue(int index, char newValue) {
+	public void setCharValue(FeatureExpr ctx, int index, char newValue) {
 		values[index] = new One<>((int) newValue);
 	}
 
@@ -154,8 +172,11 @@ public class NamedFields extends Fields {
 		values[index] = new One<>(Types.floatToInt(newValue));
 	}
 
-	public void setIntValue(int index, int newValue) {
-		values[index] = new One<>(newValue);
+	public void setIntValue(FeatureExpr ctx, int index, int newValue) {
+		if (ctx == null) {
+			throw new RuntimeException("NamedFields.setIntValue() ctx = null");
+		}
+		values[index] = new Choice<>(ctx, new One<>(newValue), values[index]).simplify();
 	}
 
 	public void setIntValue(int index, Conditional<Integer> newValue) {

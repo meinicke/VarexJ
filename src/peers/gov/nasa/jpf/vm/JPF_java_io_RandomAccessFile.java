@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * MJI NativePeer class for java.io.RandomAccessFile library abstraction
  *
@@ -43,7 +45,8 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
 
 	// get the mapped object if one exists
 	private static int getMapping(MJIEnv env, int this_ptr) {
-		int fn_ptr = env.getReferenceField(this_ptr,"filename");
+		FeatureExpr ctx = NativeMethodInfo.CTX;
+		int fn_ptr = env.getReferenceField(ctx,this_ptr, "filename").getValue();
 		Object o = File2DataMap.get(new Integer(fn_ptr));
 		if (o == null)
 			return this_ptr;
@@ -53,7 +56,8 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
 	// set the mapping during the constructor call
   @MJI
 	public void setDataMap____V (MJIEnv env, int this_ptr) {
-		int fn_ptr = env.getReferenceField(this_ptr,"filename");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+		int fn_ptr = env.getReferenceField(ctx,this_ptr, "filename").getValue();
 		if (!File2DataMap.containsKey(new Integer(fn_ptr))) 
 			File2DataMap.put(new Integer(fn_ptr),new Integer(this_ptr));
 	}
@@ -171,12 +175,13 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
   	//check if the file data is mapped, use mapped this_ptr if it exists
   	this_ptr = getMapping(env,this_ptr);  	
     int prev_obj = MJIEnv.NULL;
-    int cur_obj = env.getReferenceField(this_ptr, data_root);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int cur_obj = env.getReferenceField(ctx, this_ptr, data_root).getValue();
     long chunk_idx = position/chunk_size;
     while (cur_obj != MJIEnv.NULL &&
            env.getLongField(cur_obj, chunk_index) < chunk_idx) {
       prev_obj = cur_obj;
-      cur_obj = env.getReferenceField(cur_obj, next);
+      cur_obj = env.getReferenceField(ctx, cur_obj, next).getValue();
     }
     if (cur_obj != MJIEnv.NULL &&
         env.getLongField(cur_obj, chunk_index) == chunk_idx) {
@@ -184,13 +189,13 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     }
     int result = env.newObject(dataRep);
     int int_array = env.newIntArray(chunk_size/INT_SIZE);
-    env.setReferenceField(result, data, int_array);
+    env.setReferenceField(NativeMethodInfo.CTX, result, data, int_array);
     env.setLongField(result, chunk_index, chunk_idx);
-    env.setReferenceField(result, next, cur_obj);
+    env.setReferenceField(NativeMethodInfo.CTX, result, next, cur_obj);
     if (prev_obj == MJIEnv.NULL) {
-      env.setReferenceField(this_ptr, data_root, result);
+      env.setReferenceField(NativeMethodInfo.CTX, this_ptr, data_root, result);
     } else {
-      env.setReferenceField(prev_obj, next, result);
+      env.setReferenceField(NativeMethodInfo.CTX, prev_obj, next, result);
     }
     return result;
   }
@@ -200,7 +205,8 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int offset = (int) (position % chunk_size);
     int index = offset / INT_SIZE;
     int bit_shift = 8 * (offset % INT_SIZE);
-    int int_array = env.getReferenceField(chunk_obj, data);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int int_array = env.getReferenceField(ctx, chunk_obj, data).getValue();
     int old_value = env.getIntArrayElement(int_array, index);
     env.setIntArrayElement(int_array, index,
                              (old_value & ~(0xff << bit_shift)) |
@@ -212,7 +218,8 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int offset = (int) (position % chunk_size);
     int index = offset / INT_SIZE;
     int bit_shift = 8 * (offset % INT_SIZE);
-    int int_array = env.getReferenceField(chunk_obj, data);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    int int_array = env.getReferenceField(ctx, chunk_obj, data).getValue();
     return (byte) (env.getIntArrayElement(int_array, index) >> bit_shift);
 
   }

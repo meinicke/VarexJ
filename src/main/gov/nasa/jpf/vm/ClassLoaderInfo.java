@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -175,8 +176,9 @@ public class ClassLoaderInfo
   
   /**
    * for all other classloaders, which require an already instantiated ClassLoader object 
+ * @param ctx TODO
    */
-  protected ClassLoaderInfo (VM vm, int objRef, ClassPath cp, ClassLoaderInfo parent) {
+  protected ClassLoaderInfo (FeatureExpr ctx, VM vm, int objRef, ClassPath cp, ClassLoaderInfo parent) {
     resolvedClasses = new HashMap<String,ClassInfo>();
     resolvedAnnotations = new HashMap<String,AnnotationInfo>();
 
@@ -188,7 +190,7 @@ public class ClassLoaderInfo
     this.id = computeId(objRef);
     ElementInfo ei = vm.getModifiableElementInfo(objRef);
 
-    ei.setIntField(ID_FIELD, id);
+    ei.setIntField(ctx, ID_FIELD, id);
     if (parent != null) {
       ei.setReferenceField("parent", parent.objRef);
     }

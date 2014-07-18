@@ -47,7 +47,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
   }
   
   MessageDigest getDigest (MJIEnv env, int objRef){
-    int id = env.getIntField(objRef, "id");
+    int id = env.getIntField(NativeMethodInfo.CTX, objRef, "id").getValue().intValue();
     return digests[id];
   }
   
@@ -86,7 +86,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
   
   @MJI
   public void finalize____ (MJIEnv env, int objRef){
-    int id = env.getIntField(objRef, "id");
+    int id = env.getIntField(NativeMethodInfo.CTX, objRef, "id").getValue().intValue();
     digests[id] = null;
   }
 

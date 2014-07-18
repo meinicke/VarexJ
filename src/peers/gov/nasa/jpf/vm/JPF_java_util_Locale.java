@@ -22,6 +22,8 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.Locale;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 public class JPF_java_util_Locale extends NativePeer {
 
   static Locale getLocale (MJIEnv env, int locref) {
@@ -43,16 +45,17 @@ public class JPF_java_util_Locale extends NativePeer {
 
     String country, language, variant;
     FieldInfo fiBase = ci.getInstanceField("baseLocale");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
     if (fiBase != null){ // Java >= 1.7
       int baseLocref = env.getReferenceField(locref, fiBase);
-      country = env.getStringObject(env.getReferenceField(baseLocref,"region"));
-      language = env.getStringObject(env.getReferenceField(baseLocref, "language"));
-      variant = env.getStringObject(env.getReferenceField(baseLocref, "variant"));
+      country = env.getStringObject(env.getReferenceField(ctx,baseLocref, "region").getValue());
+      language = env.getStringObject(env.getReferenceField(ctx, baseLocref, "language").getValue());
+      variant = env.getStringObject(env.getReferenceField(ctx, baseLocref, "variant").getValue());
             
     } else {  // Java < 1.7
-      country = env.getStringObject(env.getReferenceField(locref,"country"));
-      language = env.getStringObject(env.getReferenceField(locref, "language"));
-      variant = env.getStringObject(env.getReferenceField(locref, "variant"));
+      country = env.getStringObject(env.getReferenceField(ctx,locref, "country").getValue());
+      language = env.getStringObject(env.getReferenceField(ctx, locref, "language").getValue());
+      variant = env.getStringObject(env.getReferenceField(ctx, locref, "variant").getValue());
     }
     
     Locale locale = new Locale(language,country,variant); 

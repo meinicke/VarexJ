@@ -25,6 +25,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * native peer for OutputStreamWriter, to avoid that we have the
  * char-to-byte conversion in JPF
@@ -56,7 +58,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     in.clear();
     
     for (int i=off; i<imax; i++){
-      in.put(env.getCharArrayElement(cref, i));
+      in.put(env.getCharArrayElement(cref, i).getValue());
     }
 
     in.flip();
@@ -74,7 +76,8 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
   public int encode__Ljava_lang_String_2II_3B__I (MJIEnv env, int objref,
                                          int sref, int off, int len,
                                          int bref){
-    int cref = env.getReferenceField(sref, "value");
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    int cref = env.getReferenceField(ctx, sref, "value").getValue();
     
     return encode___3CII_3B__I(env,objref,cref,off,len,bref);
   }

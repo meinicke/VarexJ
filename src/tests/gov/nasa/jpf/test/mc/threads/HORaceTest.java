@@ -95,7 +95,7 @@ public class HORaceTest extends TestJPF {
       System.out.print(',');
       System.out.println(d2.b);
 
-      assert d2.isConsistent() : "inconsistent d2";
+      assertTrue("inconsistent d2", d2.isConsistent() );
     }
   }
 

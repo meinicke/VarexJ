@@ -29,6 +29,7 @@ import gov.nasa.jpf.util.Processor;
 import java.io.PrintWriter;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Describes an element of memory containing the field values of a class or an
@@ -793,7 +794,7 @@ public abstract class ElementInfo implements Cloneable {
   
   
   public void setDeclaredIntField(String fname, String clsBase, int value) {
-    setIntField(getDeclaredFieldInfo(clsBase, fname), value);
+    setIntField(null, getDeclaredFieldInfo(clsBase, fname), value);
   }
 
   public void setBooleanField (String fname, boolean value) {
@@ -808,8 +809,8 @@ public abstract class ElementInfo implements Cloneable {
   public void setShortField (String fname, short value) {
     setShortField( getFieldInfo(fname), value);
   }
-  public void setIntField(String fname, int value) {
-    setIntField(getFieldInfo(fname), value);
+  public void setIntField(FeatureExpr ctx, String fname, int value) {
+    setIntField(ctx, getFieldInfo(fname), value);
   }
   public void setLongField (String fname, long value) {
     setLongField( getFieldInfo(fname), value);
@@ -820,8 +821,13 @@ public abstract class ElementInfo implements Cloneable {
   public void setDoubleField (String fname, double value) {
     setDoubleField( getFieldInfo(fname), value);
   }
+  
   public void setReferenceField (String fname, int value) {
-    setReferenceField( getFieldInfo(fname), new One<>(value));
+	    setReferenceField(FeatureExprFactory.True(), fname, value);// TODO jens remove
+	  }
+  
+  public void setReferenceField (FeatureExpr ctx, String fname, int value) {
+    setReferenceField( ctx, getFieldInfo(fname), new One<>(value));
   }
 
 
@@ -880,7 +886,7 @@ public abstract class ElementInfo implements Cloneable {
     
     if (fi.isCharField()) {
       int offset = fi.getStorageOffset();
-      fields.setCharValue( offset, newValue);
+      fields.setCharValue(null, offset, newValue);
     } else {
       throw new JPFException("not a char field: " + fi.getName());
     }
@@ -897,12 +903,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setIntField(FieldInfo fi, int newValue) {
+  public void setIntField(FeatureExpr ctx, FieldInfo fi, int newValue) {
     checkIsModifiable();
 
     if (fi.isIntField()) {
       int offset = fi.getStorageOffset();
-      fields.setIntValue( offset, (newValue));
+      fields.setIntValue( ctx, offset, (newValue));
     } else {
       throw new JPFException("not an int field: " + fi.getName());
     }
@@ -942,15 +948,15 @@ public abstract class ElementInfo implements Cloneable {
   }
 
   public void setReferenceField(FieldInfo fi, int newValue) {
-	  setReferenceField(fi, new One<>(newValue));
+	  setReferenceField(FeatureExprFactory.True(), fi, new One<>(newValue));// TODO jens add ctx
   }
   
-  public void setReferenceField(FieldInfo fi, Conditional<Integer> newValue) {
+  public void setReferenceField(FeatureExpr ctx, FieldInfo fi, Conditional<Integer> newValue) {
     checkIsModifiable();
 
     if (fi.isReference()) {
       int offset = fi.getStorageOffset();
-      fields.setReferenceValue( offset, newValue);
+      fields.setReferenceValue( ctx, offset, newValue);
     } else {
       throw new JPFException("not a reference field: " + fi.getName());
     }
@@ -980,7 +986,7 @@ public abstract class ElementInfo implements Cloneable {
 
 
   public void setDeclaredReferenceField(String fname, String clsBase, int value) {
-    setReferenceField(getDeclaredFieldInfo(clsBase, fname), new One<>(value));
+    setReferenceField(FeatureExprFactory.True(), getDeclaredFieldInfo(clsBase, fname), new One<>(value));
   }
 
   public Conditional<Integer> getDeclaredReferenceField(String fname, String clsBase) {
@@ -1115,7 +1121,7 @@ public abstract class ElementInfo implements Cloneable {
   }
   public char getCharField(FieldInfo fi) {
     if (fi.isCharField()){
-      return fields.getCharValue(fi.getStorageOffset());
+      return fields.getCharValue(fi.getStorageOffset()).getValue();
     } else {
       throw new JPFException("not a char field: " + fi.getName());
     }
@@ -1248,7 +1254,6 @@ public abstract class ElementInfo implements Cloneable {
 
     Object srcVals = ((ArrayFields)eiSrc.getFields()).getValues();
     Object dstVals = ((ArrayFields)fields).getValues();
-
     // this might throw ArrayIndexOutOfBoundsExceptions and ArrayStoreExceptions
     System.arraycopy(srcVals, srcIdx, dstVals, dstIdx, length);
 
@@ -1279,10 +1284,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setByteValue(idx, value);
   }
-  public void setCharElement(int idx, char value){
+  public void setCharElement(FeatureExpr ctx, int idx, char value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setCharValue(idx, value);
+    fields.setCharValue(ctx, idx, value);
   }
   public void setShortElement(int idx, short value){
     checkArray(idx);
@@ -1292,7 +1297,7 @@ public abstract class ElementInfo implements Cloneable {
   public void setIntElement(int idx, int value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setIntValue(idx, (value));
+    fields.setIntValue(null, idx, (value));
   }
   public void setLongElement(int idx, long value) {
     checkArray(idx);
@@ -1324,7 +1329,7 @@ public abstract class ElementInfo implements Cloneable {
     checkArray(idx);
     return fields.getByteValue(idx);
   }
-  public char getCharElement(int idx) {
+  public Conditional<Character> getCharElement(int idx) {
     checkArray(idx);
     return fields.getCharValue(idx);
   }
@@ -1438,7 +1443,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public char[] asCharArray() {
+  public Conditional<char[]> asCharArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asCharArray();
     } else {
@@ -1513,7 +1518,7 @@ public abstract class ElementInfo implements Cloneable {
 
     if (ref != MJIEnv.NULL) {
       ElementInfo ei = VM.getVM().getHeap().get(ref);
-      return ei.asString();
+      return ei.asString().getValue();
     } else {
       return "null";
     }
@@ -1554,11 +1559,11 @@ public abstract class ElementInfo implements Cloneable {
     return ClassInfo.isStringClassInfo(ci);
   }
 
-  public String asString() {
+  public Conditional<String> asString() {
     throw new JPFException("not a String object: " + this);
   }
 
-  public char[] getStringChars(){
+  public Conditional<char[]> getStringChars(){
     throw new JPFException("not a String object: " + this);    
   }
   

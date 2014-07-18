@@ -125,6 +125,13 @@ public class NativeMethodInfo extends MethodInfo {
 
     try {
       args = nativeFrame.getArguments();
+      
+//      System.out.print("RUN " + name + " " + mth.toString());
+//      for (Object a : args) {
+//    	  System.out.print(" " + a.toString());
+//      }
+//      System.out.println();
+      
 
       // this is the reflection call into the native peer
       ret = mth.invoke(peer, args);

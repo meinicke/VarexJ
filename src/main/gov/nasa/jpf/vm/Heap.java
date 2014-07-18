@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -47,7 +48,10 @@ public interface Heap extends Iterable<ElementInfo> {
   //--- convenience allocators that avoid constructor calls
   // (those are mostly used for their reference values since they already have initialized fields,
   // but to keep it consistent we use ElementInfo return types)
-  ElementInfo newString (FeatureExpr ctx, String str, ThreadInfo ti);
+  ElementInfo newString (FeatureExpr ctx, Conditional<String> s, ThreadInfo ti);
+  ElementInfo newString (FeatureExpr ctx, String s, ThreadInfo ti);// TODO jens remove
+  
+  
   ElementInfo newSystemString (String str, ThreadInfo ti, int anchor);
   
   ElementInfo newInternString (FeatureExpr ctx, String str, ThreadInfo ti);

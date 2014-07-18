@@ -32,7 +32,7 @@ public class CALOAD extends ArrayLoadInstruction {
 
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     e.checkArrayBounds(ctx, index);
-    frame.push( ctx, e.getCharElement(index), isReference());
+    frame.push( ctx, e.getCharElement(index).getValue(), isReference());
   }
 
   public int getByteCode () {

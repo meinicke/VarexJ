@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 
 /**
  * MJI NativePeer class for java.lang.Class library abstraction
@@ -102,7 +104,8 @@ public class JPF_java_lang_Class extends NativePeer {
     AnnotationInfo[] ai = ci.getAnnotations();
 
     try {
-      return env.newAnnotationProxies(ai);
+    	FeatureExpr ctx = NativeMethodInfo.CTX;
+      return env.newAnnotationProxies(ctx, ai);
     } catch (ClinitRequired x){
       env.handleClinitRequest(x.getRequiredClassInfo());
       return MJIEnv.NULL;
@@ -112,6 +115,7 @@ public class JPF_java_lang_Class extends NativePeer {
   @MJI
   public int getAnnotation__Ljava_lang_Class_2__Ljava_lang_annotation_Annotation_2 (MJIEnv env, int robj,
                                                                                 int annoClsRef){
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
     ClassInfo ci = env.getReferredClassInfo( robj);
     ClassInfo aci = env.getReferredClassInfo(annoClsRef);
     
@@ -120,7 +124,7 @@ public class JPF_java_lang_Class extends NativePeer {
       ClassInfo aciProxy = aci.getAnnotationProxy();
       
       try {
-        return env.newAnnotationProxy(aciProxy, ai);
+        return env.newAnnotationProxy(ctx, aciProxy, ai);
       } catch (ClinitRequired x){
         env.handleClinitRequest(x.getRequiredClassInfo());
         return MJIEnv.NULL;
@@ -525,7 +529,7 @@ public class JPF_java_lang_Class extends NativePeer {
     
     int eidx = env.newObject(fci);
     ElementInfo ei = env.getModifiableElementInfo(eidx);    
-    ei.setIntField("regIdx", regIdx);
+    ei.setIntField(NativeMethodInfo.CTX, "regIdx", regIdx);
     
     return eidx;
   }
@@ -837,7 +841,8 @@ public class JPF_java_lang_Class extends NativePeer {
     ClassInfo ci = env.getReferredClassInfo(robj);
 
     try{
-      return env.newAnnotationProxies(ci.getDeclaredAnnotations());
+    	FeatureExpr ctx = NativeMethodInfo.CTX;
+      return env.newAnnotationProxies(ctx, ci.getDeclaredAnnotations());
     } catch (ClinitRequired x){
       env.handleClinitRequest(x.getRequiredClassInfo());
       return MJIEnv.NULL;

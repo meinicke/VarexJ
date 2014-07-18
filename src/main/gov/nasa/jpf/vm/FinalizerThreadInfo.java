@@ -18,9 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.One;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -78,7 +81,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     ElementInfo eiThread = heap.newObject( null, ci, this);
     objRef = eiThread.getObjectRef();
     
-    ElementInfo eiName = heap.newString(FeatureExprFactory.True(), FINALIZER_NAME, this);
+    ElementInfo eiName = heap.newString(FeatureExprFactory.True(), new One<>(FINALIZER_NAME), this);
     int nameRef = eiName.getObjectRef();
     eiThread.setReferenceField("name", nameRef);
     
@@ -87,7 +90,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     int grpRef = ThreadInfo.getCurrentThread().getThreadGroupRef();
     eiThread.setReferenceField("group", grpRef);
     
-    eiThread.setIntField("priority", Thread.MAX_PRIORITY-2);
+    eiThread.setIntField(FeatureExprFactory.True(), "priority", Thread.MAX_PRIORITY-2);
 
     ClassInfo ciPermit = sysCl.getResolvedClassInfo("java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( null, ciPermit, this);

@@ -33,7 +33,7 @@ public class JPF_gov_nasa_jpf_DelegatingTimeZone extends NativePeer {
   TimeZone tz; // only used within (atomic) peer methods
   
   private TimeZone getTimeZone (MJIEnv env, int objRef){
-    int rawOffset = env.getIntField(objRef, "rawOffset");
+    int rawOffset = env.getIntField(NativeMethodInfo.CTX, objRef, "rawOffset").getValue().intValue();
     tz.setRawOffset(rawOffset);
     return tz;
   }
@@ -45,8 +45,8 @@ public class JPF_gov_nasa_jpf_DelegatingTimeZone extends NativePeer {
     TimeZone tz = TimeZone.getTimeZone(id);
     int rawOffset = tz.getRawOffset();
     
-    env.setReferenceField(objRef, "ID", idRef);
-    env.setIntField(objRef, "rawOffset", rawOffset);
+    env.setReferenceField(NativeMethodInfo.CTX, objRef, "ID", idRef);
+    env.setIntField(NativeMethodInfo.CTX, objRef, "rawOffset", rawOffset);
   }
   
   @MJI

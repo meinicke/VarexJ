@@ -22,6 +22,8 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.JPFListener;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 
 import java.util.Date;
 import java.util.Locale;
@@ -402,8 +404,8 @@ public class MJIEnv {
     return heap.get(objref).getByteElement(index);
   }
 
-  public void setCharArrayElement (int objref, int index, char value) {
-    heap.getModifiable(objref).setCharElement(index, value);
+  public void setCharArrayElement (FeatureExpr ctx, int objref, int index, char value) {
+    heap.getModifiable(objref).setCharElement(ctx, index, value);
   }
 
   public void setIntArrayElement (int objref, int index, int value) {
@@ -437,13 +439,13 @@ public class MJIEnv {
     return heap.get(objref).getIntElement(index);
   }
 
-  public char getCharArrayElement (int objref, int index) {
+  public Conditional<Character> getCharArrayElement (int objref, int index) {
     return heap.get(objref).getCharElement(index);
   }
 
-  public void setIntField (int objref, String fname, int val) {
+  public void setIntField (FeatureExpr ctx, int objref, String fname, int val) {
     ElementInfo ei = heap.getModifiable(objref);
-    ei.setIntField(fname, val);
+    ei.setIntField(ctx, fname, val);
   }
 
   // these two are the workhorses
@@ -452,12 +454,12 @@ public class MJIEnv {
     ei.setDeclaredIntField(fname, refType, val);
   }
 
-  public int getIntField (int objref, String fname) {
+  public Conditional<Integer> getIntField (FeatureExpr ctx, int objref, String fname) {
     ElementInfo ei = heap.get(objref);
     if (ei == null) {
     	System.out.println();
     }
-    return ei.getIntField(fname).simplify(NativeMethodInfo.CTX).getValue();
+    return ei.getIntField(fname).simplify(ctx);
   }
 
   public int getDeclaredIntField (int objref, String refType, String fname) {
@@ -471,14 +473,14 @@ public class MJIEnv {
     ei.setDeclaredReferenceField(fname, refType, val);
   }
 
-  public void setReferenceField (int objref, String fname, int ref) {
+  public void setReferenceField (FeatureExpr ctx, int objref, String fname, int ref) {
      ElementInfo ei = heap.getModifiable(objref);
-     ei.setReferenceField(fname, ref);
+     ei.setReferenceField(ctx, fname, ref);
   }
 
-  public int getReferenceField (int objref, String fname) {
+  public Conditional<Integer> getReferenceField (FeatureExpr ctx, int objref, String fname) {
     ElementInfo ei = heap.get(objref);
-    return ei.getReferenceField(fname).simplify(NativeMethodInfo.CTX).getValue();
+    return ei.getReferenceField(fname).simplify(ctx);
   }
 
   // we need this in case of a masked field
@@ -488,7 +490,7 @@ public class MJIEnv {
   }
 
   public String getStringField (int objref, String fname){
-    int ref = getReferenceField(objref, fname);
+    int ref = getReferenceField(null, objref, fname).getValue();
     return getStringObject(ref);
   }
 
@@ -510,7 +512,7 @@ public class MJIEnv {
   }
 
   public int getIntValue (int objref) {
-    return getIntField(objref, "value");
+    return getIntField(null, objref, "value").getValue();
   }
 
   public long getLongValue (int objref) {
@@ -563,11 +565,11 @@ public class MJIEnv {
   }
 
   public void setShortField (int objref, String fname, short val) {
-    setIntField(objref, fname, /*(int)*/ val);
+    setIntField(null, objref, fname, /*(int)*/ val);
   }
 
   public short getShortField (int objref, String fname) {
-    return (short) getIntField(objref, fname);
+    return (short) (int) getIntField(null, objref, fname).getValue();
   }
 
   public String getTypeName (int objref) {
@@ -649,14 +651,14 @@ public class MJIEnv {
     return ci.getStaticElementInfo().getFloatField(fname);
   }
 
-  public void setStaticIntField (String clsName, String fname, int val) {
+  public void setStaticIntField (FeatureExpr ctx, String clsName, String fname, int val) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setIntField(fname, val);
+    ci.getStaticElementInfo().setIntField(ctx, fname, val);
   }
 
-  public void setStaticIntField (int clsObjRef, String fname, int val) {
+  public void setStaticIntField (FeatureExpr ctx, int clsObjRef, String fname, int val) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
-    cei.setIntField(fname, val);
+    cei.setIntField(ctx, fname, val);
   }
 
   public int getStaticIntField (String clsName, String fname) {
@@ -699,18 +701,18 @@ public class MJIEnv {
     return ei.getLongField(fname);
   }
 
-  public void setStaticReferenceField (String clsName, String fname, int objref) {
+  public void setStaticReferenceField (FeatureExpr ctx, String clsName, String fname, int objref) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
 
     // <2do> - we should REALLY check for type compatibility here
-    ci.getModifiableStaticElementInfo().setReferenceField(fname, objref);
+    ci.getModifiableStaticElementInfo().setReferenceField(ctx, fname, objref);
   }
 
   public void setStaticReferenceField (int clsObjRef, String fname, int objref) {
     ElementInfo cei = getModifiableStaticElementInfo(clsObjRef);
 
     // <2do> - we should REALLY check for type compatibility here
-    cei.setReferenceField(fname, objref);
+    cei.setReferenceField(null, fname, objref);
   }
 
   public int getStaticReferenceField (String clsName, String fname) {
@@ -732,7 +734,7 @@ public class MJIEnv {
     return ci.getStaticElementInfo().getShortField(fname);
   }
 
-  public char[] getStringChars (int objRef){
+  public Conditional<char[]> getStringChars (int objRef){
     if (objRef != MJIEnv.NULL) {
       ElementInfo ei = getElementInfo(objRef);
       return ei.getStringChars();
@@ -750,11 +752,21 @@ public class MJIEnv {
   public String getStringObject (int objRef) {
     if (objRef != MJIEnv.NULL) {
       ElementInfo ei = getElementInfo(objRef);
-      return ei.asString();
+      return ei.asString().simplify(NativeMethodInfo.CTX).getValue();// TODO jens
       
     } else {
       return null;
     }
+  }
+  
+  public Conditional<String> getConditionalStringObject (int objRef) {
+	  if (objRef != MJIEnv.NULL) {
+	      ElementInfo ei = getElementInfo(objRef);
+	      return ei.asString();
+	      
+	    } else {
+	      return new One<>(null);
+	    }  
   }
 
   public String[] getStringArrayObject (int aRef){
@@ -815,7 +827,7 @@ public class MJIEnv {
       if (clsName.equals("java.lang.Boolean")){
         args[i] = Boolean.valueOf(getBooleanField(aref,"value"));
       } else if (clsName.equals("java.lang.Integer")){
-        args[i] = Integer.valueOf(getIntField(aref,"value"));
+        args[i] = Integer.valueOf(getIntField(null,aref, "value").getValue());
       } else if (clsName.equals("java.lang.Double")){
         args[i] = Double.valueOf(getDoubleField(aref,"value"));
       } else if (clsName.equals("java.lang.String")){
@@ -843,7 +855,7 @@ public class MJIEnv {
   }
 
   public Integer getIntegerObject (int objref){
-    return new Integer(getIntField(objref, "value"));
+    return new Integer(getIntField(null, objref, "value").getValue());
   }
 
   public Long getLongObject (int objref){
@@ -867,11 +879,10 @@ public class MJIEnv {
     return a;
   }
 
-  public char[] getCharArrayObject (int objref) {
+  public Conditional<char[]> getCharArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
-    char[] a = ei.asCharArray();
+    return ei.asCharArray();
 
-    return a;
   }
 
   public short[] getShortArrayObject (int objref) {
@@ -966,10 +977,10 @@ public class MJIEnv {
     return heap.newArray(ctx, "C", size, ti).getObjectRef();
   }
 
-  public int newCharArray (char[] buf){
-    ElementInfo eiArray = heap.newArray(FeatureExprFactory.True(), "C", buf.length, ti);
+  public int newCharArray (FeatureExpr ctx, char[] buf){
+    ElementInfo eiArray = heap.newArray(ctx, "C", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setCharElement( i, buf[i]);
+      eiArray.setCharElement(ctx, i, buf[i]);
     }
     return eiArray.getObjectRef();
   }
@@ -1076,7 +1087,11 @@ public class MJIEnv {
   }
   
   public int newString (FeatureExpr ctx, String s) {
-    if (s == null){
+	  return newString(ctx, new One<>(s));
+  }
+  
+  public int newString (FeatureExpr ctx, Conditional<String> s) {
+    if (s instanceof One && s.getValue() == null){
       return NULL;
     } else {
       return heap.newString(ctx, s, ti).getObjectRef();
@@ -1087,7 +1102,7 @@ public class MJIEnv {
     int aref = newObjectArray("Ljava/lang/String;", a.length);
 
     for (int i=0; i<a.length; i++){
-      setReferenceArrayElement(aref, i, newString(FeatureExprFactory.True(), a[i]));
+      setReferenceArrayElement(aref, i, newString(FeatureExprFactory.True(), new One<>(a[i])));
     }
 
     return aref;
@@ -1098,7 +1113,7 @@ public class MJIEnv {
     String s = null;
 
     if ("C".equals(t)) {          // character array
-      char[] ca = getCharArrayObject(arrayRef);
+      char[] ca = getCharArrayObject(arrayRef).getValue();
       s = new String(ca);
     } else if ("B".equals(t)) {   // byte array
       byte[] ba = getByteArrayObject(arrayRef);
@@ -1109,7 +1124,7 @@ public class MJIEnv {
       return NULL;
     }
 
-    return newString(FeatureExprFactory.True(), s);
+    return newString(FeatureExprFactory.True(), new One<>(s));
   }
 
   public String format (int fmtRef, int argRef){
@@ -1189,7 +1204,7 @@ public class MJIEnv {
 
   public int newInteger (int n){
     ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer"), ti);
-    ei.setIntField("value",n);
+    ei.setIntField(null, "value",n);
     return ei.getObjectRef();
   }
 
@@ -1580,16 +1595,16 @@ public class MJIEnv {
     ei.lockNotified(ti);
   }
 
-  void initAnnotationProxyField (int proxyRef, FieldInfo fi, Object v) throws ClinitRequired {
+  void initAnnotationProxyField (FeatureExpr ctx, int proxyRef, FieldInfo fi, Object v) throws ClinitRequired {
     String fname = fi.getName();
     String ftype = fi.getType();
 
     if (v instanceof String){
-      setReferenceField(proxyRef, fname, newString(FeatureExprFactory.True(), (String)v));
+      setReferenceField(ctx, proxyRef, fname, newString(FeatureExprFactory.True(), new One<>((String)v)));
     } else if (v instanceof Boolean){
       setBooleanField(proxyRef, fname, ((Boolean)v).booleanValue());
     } else if (v instanceof Integer){
-      setIntField(proxyRef, fname, ((Integer)v).intValue());
+      setIntField(null, proxyRef, fname, ((Integer)v).intValue());
     } else if (v instanceof Long){
       setLongField(proxyRef, fname, ((Long)v).longValue());
     } else if (v instanceof Float){
@@ -1615,7 +1630,7 @@ public class MJIEnv {
 
       StaticElementInfo sei = eci.getStaticElementInfo();
       int eref = sei.getReferenceField(eConst).getValue();
-      setReferenceField(proxyRef, fname, eref);
+      setReferenceField(ctx, proxyRef, fname, eref);
 
     } else if (v instanceof AnnotationInfo.ClassValue){ // a class
       String clsName = v.toString();
@@ -1627,7 +1642,7 @@ public class MJIEnv {
       }
 
       int cref = cci.getClassObjectRef();
-      setReferenceField(proxyRef, fname, cref);
+      setReferenceField(ctx, proxyRef, fname, cref);
 
     } else if (v.getClass().isArray()){ // ..or arrays thereof
       Object[] a = (Object[])v;
@@ -1636,7 +1651,7 @@ public class MJIEnv {
       if (ftype.equals("java.lang.String[]")){
         aref = newObjectArray("Ljava/lang/String;", a.length);
         for (int i=0; i<a.length; i++){
-          setReferenceArrayElement(aref,i,newString(FeatureExprFactory.True(), a[i].toString()));
+          setReferenceArrayElement(aref,i,newString(FeatureExprFactory.True(), new One<>(a[i].toString())));
         }
       } else if (ftype.equals("int[]")){
         aref = newIntArray(a.length);
@@ -1672,7 +1687,7 @@ public class MJIEnv {
       }
 
       if (aref != NULL){
-        setReferenceField(proxyRef, fname, aref);
+        setReferenceField(ctx, proxyRef, fname, aref);
       } else {
         throwException("AnnotationElement type not supported: " + ftype);
       }
@@ -1682,7 +1697,7 @@ public class MJIEnv {
     }
   }
 
-  int newAnnotationProxy (ClassInfo aciProxy, AnnotationInfo ai) throws ClinitRequired {
+  int newAnnotationProxy (FeatureExpr ctx, ClassInfo aciProxy, AnnotationInfo ai) throws ClinitRequired {
 
     int proxyRef = newObject(aciProxy);
 
@@ -1692,13 +1707,13 @@ public class MJIEnv {
       String fname = e.getKey();
       FieldInfo fi = aciProxy.getInstanceField(fname);
 
-      initAnnotationProxyField(proxyRef, fi, v);
+      initAnnotationProxyField(ctx, proxyRef, fi, v);
     }
 
     return proxyRef;
   }
 
-  int newAnnotationProxies (AnnotationInfo[] ai) throws ClinitRequired {
+  int newAnnotationProxies (FeatureExpr ctx, AnnotationInfo[] ai) throws ClinitRequired {
 
     if ((ai != null) && (ai.length > 0)){
       int aref = newObjectArray("Ljava/lang/annotation/Annotation;", ai.length);
@@ -1706,7 +1721,7 @@ public class MJIEnv {
         ClassInfo aci = ClassLoaderInfo.getCurrentResolvedClassInfo(ai[i].getName());
         ClassInfo aciProxy = aci.getAnnotationProxy();
 
-        int ar = newAnnotationProxy(aciProxy, ai[i]);
+        int ar = newAnnotationProxy(ctx, aciProxy, ai[i]);
         setReferenceArrayElement(aref, i, ar);
       }
       return aref;
@@ -1716,7 +1731,7 @@ public class MJIEnv {
       int aref = getStaticReferenceField("java.lang.Class", "emptyAnnotations");
       if (aref == NULL) {
         aref = newObjectArray("Ljava/lang/annotation/Annotation;", 0);
-        setStaticReferenceField("java.lang.Class", "emptyAnnotations", aref);
+        setStaticReferenceField(ctx, "java.lang.Class", "emptyAnnotations", aref);
       }
       return aref;
     }
@@ -1749,23 +1764,23 @@ public class MJIEnv {
     return BoxObjectCacheManager.valueOfBoolean(ti, b);
   }
 
-  public int valueOfByte(byte b) {
-    return BoxObjectCacheManager.valueOfByte(ti, b);
+  public int valueOfByte(FeatureExpr ctx, byte b) {
+    return BoxObjectCacheManager.valueOfByte(ctx, ti, b);
   }
 
-  public int valueOfCharacter(char c) {
-    return BoxObjectCacheManager.valueOfCharacter(ti, c);
+  public int valueOfCharacter(FeatureExpr ctx, char c) {
+    return BoxObjectCacheManager.valueOfCharacter(ctx, ti, c);
   }
 
-  public int valueOfShort(short s) {
-    return BoxObjectCacheManager.valueOfShort(ti, s);
+  public int valueOfShort(FeatureExpr ctx, short s) {
+    return BoxObjectCacheManager.valueOfShort(ctx, ti, s);
   }
 
-  public int valueOfInteger(int i) {
-    return BoxObjectCacheManager.valueOfInteger(ti, i);
+  public int valueOfInteger(FeatureExpr ctx, int i) {
+    return BoxObjectCacheManager.valueOfInteger(ctx, ti, i);
   }
 
-  public int valueOfLong(long l) {
-    return BoxObjectCacheManager.valueOfLong(ti, l);
+  public int valueOfLong(FeatureExpr ctx, long l) {
+    return BoxObjectCacheManager.valueOfLong(ctx, ti, l);
   }
 }

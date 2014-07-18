@@ -77,6 +77,6 @@ public class JPF_java_lang_Integer extends NativePeer {
 
   @MJI
   public int valueOf__I__Ljava_lang_Integer_2 (MJIEnv env, int clsRef, int val) {
-    return env.valueOfInteger(val);
+    return env.valueOfInteger(NativeMethodInfo.CTX, val);
   }
 }

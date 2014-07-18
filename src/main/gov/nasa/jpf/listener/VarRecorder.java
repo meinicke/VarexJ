@@ -413,7 +413,7 @@ public class VarRecorder extends ListenerAdapter {
           return(null);
 
         if (ci.getName().equals("java.lang.String"))
-          return('"' + ei.asString() + '"');
+          return('"' + ei.asString().getValue() + '"');
 
         return(ei.toString());
 
