@@ -31,43 +31,51 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_java_lang_StringBuilder extends NativePeer {
   
   int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
-    final int slen = s.length();
-    Conditional<Integer> condAref = env.getReferenceField(ctx, objref, "value");
-    Map<Integer, FeatureExpr> arefMap = condAref.toMap();
-    for (Integer aref : arefMap.keySet()) {
-    	FeatureExpr arefCtx = ctx.and(arefMap.get(aref));
-	    final int alen = env.getArrayLength(aref);
-	    Conditional<Integer> condCount = env.getIntField(ctx, objref, "count").simplify(arefCtx);
-	    Map<Integer, FeatureExpr> map = condCount.toMap();
-	    for (Integer count : map.keySet()) {
-	    	FeatureExpr currentCtx = arefCtx.and(map.get(count));
-		    int i, j;
-		    int n = count + slen;
-		    
-		    if (n < alen) {
-		      for (i=count, j=0; i<n; i++, j++) {
-		        env.setCharArrayElement(currentCtx, aref, i, s.charAt(j));
-		      }
-		    } else {
-		      int m = 3 * alen / 2;
-		      if (m < n) {
-		        m = n;
-		      }
-		      int arefNew = env.newCharArray(currentCtx, m);
-		      for (i=0; i<count; i++) {
-		        env.setCharArrayElement(currentCtx, arefNew, i, env.getCharArrayElement(aref, i).simplify(currentCtx).getValue());
-		      }
-		      for (j=0; i<n; i++, j++) {
-		        env.setCharArrayElement(currentCtx, arefNew, i, s.charAt(j));
-		      }
-		      env.setReferenceField(NativeMethodInfo.CTX, objref, "value", arefNew);
-		    }
-		    
-		    env.setIntField(currentCtx, objref, "count", n);
-	    }
-    }
-    return objref;
+	  return appendString(ctx, env, objref, new One<>(s));
   }
+	  
+	int appendString(FeatureExpr ctx, MJIEnv env, int objref, Conditional<String> conditionalS) {
+		Conditional<Integer> condAref = env.getReferenceField(ctx, objref, "value");
+		Map<Integer, FeatureExpr> arefMap = condAref.toMap();
+		for (Integer aref : arefMap.keySet()) {
+			FeatureExpr arefCtx = ctx.and(arefMap.get(aref));
+			Map<String, FeatureExpr> sMap = conditionalS.simplify(arefCtx).toMap();
+			for (String s : sMap.keySet()) {
+				FeatureExpr stringCtx = arefCtx.and(sMap.get(s));
+				final int slen = s.length();
+				final int alen = env.getArrayLength(aref);
+				Conditional<Integer> condCount = env.getIntField(ctx, objref, "count").simplify(stringCtx);
+				Map<Integer, FeatureExpr> map = condCount.toMap();
+				for (Integer count : map.keySet()) {
+					FeatureExpr currentCtx = stringCtx.and(map.get(count));
+					int i, j;
+					int n = count + slen;
+	
+					if (n < alen) {
+						for (i = count, j = 0; i < n; i++, j++) {
+							env.setCharArrayElement(currentCtx, aref, i, s.charAt(j));
+						}
+					} else {
+						int m = 3 * alen / 2;
+						if (m < n) {
+							m = n;
+						}
+						int arefNew = env.newCharArray(currentCtx, m);
+						for (i = 0; i < count; i++) {
+							env.setCharArrayElement(currentCtx, arefNew, i, env.getCharArrayElement(aref, i).simplify(currentCtx).getValue());
+						}
+						for (j = 0; i < n; i++, j++) {
+							env.setCharArrayElement(currentCtx, arefNew, i, s.charAt(j));
+						}
+						env.setReferenceField(currentCtx, objref, "value", arefNew);
+					}
+	
+					env.setIntField(currentCtx, objref, "count", n);
+				}
+			}
+		}
+		return objref;
+	}
 
   // we skip the AbstractStringBuilder ctor here, which is a bit dangerous
   // This is only justified because StringBuilders are used everywhere (implicitly)
@@ -119,7 +127,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 			}
 		}).simplify();
 
-		return appendString(NativeMethodInfo.CTX, env, objref, s.getValue());
+		return appendString(NativeMethodInfo.CTX, env, objref, s);
 	}
   
   @MJI
