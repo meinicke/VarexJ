@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.PrintUtils;
@@ -53,8 +55,8 @@ public class ReferenceArrayFields extends ArrayFields {
   }
   
   @Override
-  public Object getValues(){
-    return values;
+  public Conditional<?> getValues(){
+    return new One<>(values);
   }
 
   @Override

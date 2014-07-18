@@ -38,7 +38,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class CharArrayFields extends ArrayFields {
 
-  Conditional<char[]> values;
+  private Conditional<char[]> values;
 
   public CharArrayFields (int length) {
     values = new One<>(new char[length]);
@@ -65,8 +65,8 @@ public class CharArrayFields extends ArrayFields {
     return result;
   }
 
-  public Object getValues(){
-    return values.getValue();
+  public Conditional<?> getValues(){
+    return values;
   }
 
   public int arrayLength() {
@@ -128,32 +128,37 @@ public class CharArrayFields extends ArrayFields {
     });
   }
 
-  @Override
-  public void setCharValue(final FeatureExpr ctx, final int pos, final char newValue) {
-	  values = values.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<char[]>>() {
+	@Override
+	public void setCharValue(final FeatureExpr ctx, final int pos, final Conditional<Character> newValue) {
+		values = values.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<char[]>>() {
 
-		@Override
-		public Conditional<char[]> apply(FeatureExpr f, char[] values) {
-			if (f.isContradiction()) {
-				return new One<>(values);
-			}
-			if (f.isTautology()) {
-				values[pos] = newValue;
-				return new One<>(values);
-			}
-			char[] clone = new char[values.length];
-			System.arraycopy(values, 0, clone, 0, clone.length);
-			clone[pos] = newValue;
-			return new Choice<>(ctx, new One<>(clone), new One<>(values));
-		}
-		  
-		  
-	  }).simplify();
-	  
-   
-  }
+			@Override
+			public Conditional<char[]> apply(FeatureExpr ctx, final char[] values) {
+				return newValue.mapf(ctx, new BiFunction<FeatureExpr, Character, Conditional<char[]>>() {
 
-  public void setCharValues(FeatureExpr ctx, char[] v){
+					@Override
+					public Conditional<char[]> apply(FeatureExpr ctx, Character newValue) {
+						if (ctx.isContradiction()) {
+							return new One<>(values);
+						}
+						if (ctx.isTautology()) {
+							values[pos] = newValue;
+							return new One<>(values);
+						}
+						char[] clone = new char[values.length];
+						System.arraycopy(values, 0, clone, 0, clone.length);
+						clone[pos] = newValue;
+						return new Choice<>(ctx, new One<>(clone), new One<>(values));
+					}
+
+				}).simplify();
+
+			}
+		}).simplify();
+
+	}
+
+  public void setCharValues(FeatureExpr ctx, char[] v){  
 	char[] newValues = new char[v.length]; 
 	System.arraycopy(v,0,newValues,0,v.length);
 	if (ctx == null) {

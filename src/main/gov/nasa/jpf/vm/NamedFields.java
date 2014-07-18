@@ -64,7 +64,7 @@ public class NamedFields extends Fields {
 
 	// our low level getters and setters
 	public int getIntValue(int index) {		
-		return getIntValue2(index).getValue(true);
+		return getIntValue2(index).getValue();
 	}
 
 	public Conditional<Integer> getIntValue2(int index) {
@@ -160,8 +160,13 @@ public class NamedFields extends Fields {
 		values[index] = new One<>((int) newValue);
 	}
 
-	public void setCharValue(FeatureExpr ctx, int index, char newValue) {
-		values[index] = new One<>((int) newValue);
+	public void setCharValue(FeatureExpr ctx, int index, Conditional<Character> newValue) {
+		values[index] = newValue.map(new Function<Character, Integer>() {
+
+			@Override
+			public Integer apply(Character newValue) {
+				return (int)newValue.charValue();
+			}});
 	}
 
 	public void setShortValue(int index, short newValue) {

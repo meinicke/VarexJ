@@ -27,6 +27,7 @@ import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Processor;
 
 import java.io.PrintWriter;
+import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -886,7 +887,7 @@ public abstract class ElementInfo implements Cloneable {
     
     if (fi.isCharField()) {
       int offset = fi.getStorageOffset();
-      fields.setCharValue(null, offset, newValue);
+      fields.setCharValue(null, offset, new One<>(newValue));
     } else {
       throw new JPFException("not a char field: " + fi.getName());
     }
@@ -1233,7 +1234,6 @@ public abstract class ElementInfo implements Cloneable {
       ClassInfo dstElementCi = ci.getComponentClassInfo();
       int[] srcRefs = ((ArrayFields)eiSrc.fields).asReferenceArray();
       int max = srcIdx + length;
-
       for (int i=srcIdx; i<max; i++){
         int eref = srcRefs[i];
         if (eref != MJIEnv.NULL){
@@ -1252,10 +1252,21 @@ public abstract class ElementInfo implements Cloneable {
     // note also this preserves values in case of a self copy
     checkIsModifiable();
 
-    Object srcVals = ((ArrayFields)eiSrc.getFields()).getValues();
-    Object dstVals = ((ArrayFields)fields).getValues();
+    Conditional<?> srcVals = ((ArrayFields)eiSrc.getFields()).getValues();
+    Conditional<?> dstVals = ((ArrayFields)fields).getValues();
     // this might throw ArrayIndexOutOfBoundsExceptions and ArrayStoreExceptions
-    System.arraycopy(srcVals, srcIdx, dstVals, dstIdx, length);
+    if (srcVals instanceof One && dstVals instanceof One) {
+    	System.arraycopy(srcVals.getValue(), srcIdx, dstVals.getValue(), dstIdx, length);
+    } else {
+    	FeatureExpr ctx = NativeMethodInfo.CTX;
+    	if (fields instanceof CharArrayFields) {
+    		for (int i = 0; i < length; i++) {
+    			fields.setCharValue(ctx, dstIdx + i, eiSrc.getFields().getCharValue(i + srcIdx));
+    		}
+    	} else {
+    		throw new RuntimeException("TODO implement");
+    	}
+    }
 
     // now take care of the attributes
     // <2do> what in case arraycopy did throw - we should only copy the changed element attrs
@@ -1287,7 +1298,7 @@ public abstract class ElementInfo implements Cloneable {
   public void setCharElement(FeatureExpr ctx, int idx, char value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setCharValue(ctx, idx, value);
+    fields.setCharValue(ctx, idx, new One<>(value));
   }
   public void setShortElement(int idx, short value){
     checkArray(idx);

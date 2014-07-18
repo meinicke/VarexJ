@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
@@ -42,8 +44,8 @@ public class FloatArrayFields extends ArrayFields {
     ps.print(values[idx]);
   }
   
-  public Object getValues(){
-    return values;
+  public Conditional<?> getValues(){
+    return new One<>(values);
   }
 
   public int arrayLength() {

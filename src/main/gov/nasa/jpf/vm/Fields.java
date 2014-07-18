@@ -259,7 +259,7 @@ public abstract class Fields implements Cloneable {
 
   public abstract void setByteValue (int index, byte newValue);
 
-  public abstract void setCharValue (FeatureExpr ctx, int index, char newValue);
+  public abstract void setCharValue (FeatureExpr ctx, int index, Conditional<Character> newValue);
 
   public abstract void setShortValue (int index, short newValue);
 

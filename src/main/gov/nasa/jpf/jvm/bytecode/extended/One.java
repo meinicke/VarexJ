@@ -25,9 +25,6 @@ public class One<T> extends Conditional<T> {
 	@Override
 	public <U> Conditional<U> mapfr(FeatureExpr inFeature,
 			BiFunction<FeatureExpr, T, Conditional<U>> f) {
-		if (value == null) {// TODO might be no good idea
-			return new One<>(null);
-		}
 		return f.apply(inFeature, value);
 	}
 	

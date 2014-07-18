@@ -100,14 +100,21 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 			return;
 		}
 		FeatureExpr ctx = NativeMethodInfo.CTX;
-		Conditional<char[]> src = env.getStringChars(sRef).simplify(ctx);
+		Conditional<char[]> src = env.getStringChars(sRef);
+		
 		src.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Object>>() {
 
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, char[] src) {
+				if (ctx.isContradiction()) {
+					return null;
+				}
 				int aref = env.newCharArray(ctx, src.length + 16);
-				char[] dst = env.getCharArrayObject(aref).getValue();
-				System.arraycopy(src, 0, dst, 0, src.length);
+//				char[] dst = env.getCharArrayObject(aref).getValue();
+				for (int i = 0; i < src.length; i++) {
+					env.setCharArrayElement(ctx, aref, i, src[i]);
+				}
+//				System.arraycopy(src, 0, dst, 0, src.length);
 				env.setReferenceField(ctx, objref, "value", aref);
 				env.setIntField(ctx, objref, "count", src.length);
 				return null;
@@ -119,7 +126,8 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	@MJI
 	public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int sref) {
 		Conditional<String> s = env.getConditionalStringObject(sref);
-		s = s.simplify(NativeMethodInfo.CTX).map(new Function<String, String>() {
+		FeatureExpr ctx = NativeMethodInfo.CTX;
+		s = s.simplify(ctx).map(new Function<String, String>() {
 
 			@Override
 			public String apply(String s) {
@@ -129,8 +137,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 				return s;
 			}
 		}).simplify();
-
-		return appendString(NativeMethodInfo.CTX, env, objref, s);
+		return appendString(ctx, env, objref, s);
 	}
   
   @MJI
@@ -169,30 +176,30 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
   
   @MJI
   public int append__C__Ljava_lang_StringBuilder_2 (MJIEnv env, int objref, char c) {
-//	  return appendString(NativeMethodInfo.CTX, env, objref, c + "");
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
-	  int aref = env.getReferenceField(ctx, objref, "value").getValue();
-    int alen = env.getArrayLength(aref);
-    
-	int count = env.getIntField(ctx, objref, "count").getValue().intValue();
-    int i;
-    int n = count +1;
-    
-    if (n < alen) {
-      env.setCharArrayElement(ctx, aref, count, c);
-    } else {
-      int m = 3 * alen / 2;
-      int arefNew = env.newCharArray(ctx, m);
-      for (i=0; i<count; i++) {
-        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i).getValue());
-      }
-      env.setCharArrayElement(ctx, arefNew, count, c);
-      env.setReferenceField(ctx, objref, "value", arefNew);
-    }
-    
-    env.setIntField(ctx, objref, "count", n);
-    
-    return objref;
+	  return appendString(NativeMethodInfo.CTX, env, objref, c + "");
+//	  FeatureExpr ctx = NativeMethodInfo.CTX;
+//	  int aref = env.getReferenceField(ctx, objref, "value").getValue();
+//    int alen = env.getArrayLength(aref);
+//    
+//	int count = env.getIntField(ctx, objref, "count").getValue().intValue();
+//    int i;
+//    int n = count +1;
+//    
+//    if (n < alen) {
+//      env.setCharArrayElement(ctx, aref, count, c);
+//    } else {
+//      int m = 3 * alen / 2;
+//      int arefNew = env.newCharArray(ctx, m);
+//      for (i=0; i<count; i++) {
+//        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i).getValue());
+//      }
+//      env.setCharArrayElement(ctx, arefNew, count, c);
+//      env.setReferenceField(ctx, objref, "value", arefNew);
+//    }
+//    
+//    env.setIntField(ctx, objref, "count", n);
+//    
+//    return objref;
     
   }
 

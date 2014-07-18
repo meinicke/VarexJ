@@ -18,11 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+
 import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 
 /**
  * MJI NativePeer class to intercept all System.out and System.err
@@ -116,8 +117,11 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		Conditional<String> strings = env.getConditionalStringObject(strRef).simplify(NativeMethodInfo.CTX);
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (String s : map.keySet()) {
-//			env.getVM().println(map.get(s) + ": " + s);
-			env.getVM().println(s);
+			if (ThreadInfo.ctxOutput) {
+				env.getVM().println("<" + s + "> : " + map.get(s).and(NativeMethodInfo.CTX));
+			} else {
+				env.getVM().println(s);
+			}
 		}
 	}
 

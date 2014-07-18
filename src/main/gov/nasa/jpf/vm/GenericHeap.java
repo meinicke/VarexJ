@@ -377,7 +377,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
       ClassInfo ciChars = sysCl.getCharArrayClassInfo();
       
       AllocationContext ctx = getSUTAllocationContext(fexpr, ciString, ti);
-      return newString( fexpr, ciString, ciChars, str, ti, ctx);
+      return newString( FeatureExprFactory.True(), ciString, ciChars, str, ti, ctx);// TODO jens ???
       
     } else {
       return null;
@@ -428,7 +428,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 			} else {
 				ElementInfo eVal = getModifiable(vRef);
 				CharArrayFields cf = (CharArrayFields)eVal.getFields();
-			    cf.setCharValues(map.get(s), s.toCharArray());
+			    cf.setCharValues(map.get(s).and(fexpr), s.toCharArray());
 			}
 		}
 

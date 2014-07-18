@@ -11,7 +11,7 @@ public class GPLTest extends TestJPF {
 	private static final String RANDOM_SEARCH = "+search.class=.search.RandomSearch";
 	private static final String SEP = System.getProperty("file.separator");
 	
-	@Ignore @Test//(340.205s)
+	@Ignore @Test//(340.205s) // TODO throws error
 	public void random1Test() {
 		if (verifyNoPropertyViolation(RANDOM_SEARCH, GPL_JAR)) {
 			run("random1-gpl-benchmark.txt");

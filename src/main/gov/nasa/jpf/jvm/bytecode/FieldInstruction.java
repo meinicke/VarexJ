@@ -34,6 +34,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.VM;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * parent class for PUT/GET FIELD/STATIC insns
@@ -144,7 +145,11 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       
       if (fi.isReference()) {
-        eiFieldOwner.setReferenceField(ctx, fi, val);
+    	  if (initStatic) {
+    		  eiFieldOwner.setReferenceField(FeatureExprFactory.True(), fi, val);
+    	  } else {
+    		  eiFieldOwner.setReferenceField(ctx, fi, val);
+    	  }
         
         // this is kind of policy, but it seems more natural to overwrite instead of accumulate
         // (if we want to accumulate, this has to happen in ElementInfo/Fields)

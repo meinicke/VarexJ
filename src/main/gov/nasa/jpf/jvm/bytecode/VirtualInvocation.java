@@ -67,7 +67,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			if (splitRef) {
 				ctx = ctx.and(map.get(objRef));
 			}
-
+			
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
 				return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
@@ -90,6 +90,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return new One<Instruction>(this);
 				}
 			}
+			
 
 			// set ctx for native method calls
 			if (callee.isMJI()) {
@@ -161,11 +162,9 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			lastObj = objRef;
 
 			ClassInfo cci = ti.getClassInfo(objRef);
-
 			if (lastCalleeCi != cci) { // callee ClassInfo has changed
 				lastCalleeCi = cci;
 				invokedMethod = cci.getMethod(mname, true);
-
 				// here we could catch the NoSuchMethodError
 				if (invokedMethod == null) {
 					lastObj = MJIEnv.NULL;

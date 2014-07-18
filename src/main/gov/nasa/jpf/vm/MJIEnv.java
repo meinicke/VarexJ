@@ -456,9 +456,6 @@ public class MJIEnv {
 
   public Conditional<Integer> getIntField (FeatureExpr ctx, int objref, String fname) {
     ElementInfo ei = heap.get(objref);
-    if (ei == null) {
-    	System.out.println();
-    }
     return ei.getIntField(fname).simplify(ctx);
   }
 
@@ -882,7 +879,11 @@ public class MJIEnv {
   public Conditional<char[]> getCharArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
     return ei.asCharArray();
-
+  }
+  
+  protected void method(FeatureExpr ctx, int objref, int idx, char value) {
+	  ElementInfo ei = getElementInfo(objref);
+	  ei.setCharElement(ctx, idx, value);
   }
 
   public short[] getShortArrayObject (int objref) {

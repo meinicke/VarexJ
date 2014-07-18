@@ -65,7 +65,7 @@ public abstract class ArrayFields extends Fields {
 
 	protected abstract void printValue(PrintStream ps, int idx);
 
-	public abstract Object getValues();
+	public abstract Conditional<?> getValues();
 
 	public boolean getBooleanValue(int pos) {
 		// overridden by subclass
@@ -131,7 +131,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a byte[]");
 	}
 
-	public void setCharValue(FeatureExpr ctx, int pos, char newValue) {
+	public void setCharValue(FeatureExpr ctx, int pos, Conditional<Character> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a char[]");
 	}

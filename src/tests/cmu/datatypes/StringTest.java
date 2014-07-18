@@ -42,6 +42,36 @@ public class StringTest extends TestJPF {
 	}
 
 	@Test
+	public void printlnTest_2() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			if (y) {
+				int strongComponentNumber = 1;
+				if (x) {
+					strongComponentNumber = 0;
+				}
+				System.out.println("SCCNo: " + strongComponentNumber);
+				System.out.println("---------------");
+				print("SCCNo: " + strongComponentNumber);
+				System.out.println("---------------");
+				Main.print("SCCNo: " + strongComponentNumber);
+			}
+		}
+	}
+
+	private void print(String s) {
+		System.out.println(s);
+	}
+
+	@Test
+	public void printlnTest_3() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			System.out.println("Start");
+			System.out.println("\n");
+			System.out.println("End");
+		}
+	}
+	
+	@Test
 	public void concatenationTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			String s = "A";
@@ -130,7 +160,7 @@ public class StringTest extends TestJPF {
 			System.out.println(s);
 		}
 	}
-	
+
 	@Test
 	public void longStringConcatentationTest2() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -161,5 +191,11 @@ public class StringTest extends TestJPF {
 
 			System.out.println(d);
 		}
+	}
+}
+
+class Main {
+	public static void print(String s) {
+		System.out.println(s);
 	}
 }

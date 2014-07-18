@@ -20,6 +20,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 
 /**
  * fieldinfo for slots holding chars
@@ -44,7 +45,7 @@ public class CharFieldInfo extends SingleSlotFieldInfo {
 
 
   public void initialize (ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setCharValue(null, storageOffset, init);
+    ei.getFields().setCharValue(null, storageOffset, new One<>(init));
   }
 
   public boolean isCharField() {
