@@ -62,7 +62,10 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 						}
 						int arefNew = env.newCharArray(currentCtx, m);
 						for (i = 0; i < count; i++) {
-							env.setCharArrayElement(currentCtx, arefNew, i, env.getCharArrayElement(aref, i).simplify(currentCtx).getValue());
+							Map<Character, FeatureExpr> charMap = env.getCharArrayElement(aref, i).simplify(currentCtx).toMap();
+							for (char c : charMap.keySet()) {// XXX also setCharArrayElement(..., Cond(c)) possible
+								env.setCharArrayElement(currentCtx.and(charMap.get(c)), arefNew, i, c);
+							}
 						}
 						for (j = 0; i < n; i++, j++) {
 							env.setCharArrayElement(currentCtx, arefNew, i, s.charAt(j));
