@@ -1923,11 +1923,11 @@ public class ThreadInfo extends InfoObject
 //    			debug = true;
 //    			if (debug) System.out.print(count + ": ");
 //    		}
-        	if (System.currentTimeMillis() - time > 1000) {
-        		System.out.println((count - count2)+ " instructions / s");
-        		count2 = count;
-        		time = System.currentTimeMillis();
-        	}
+//        	if (System.currentTimeMillis() - time > 1000) {
+//        		System.out.println((count - count2)+ " instructions / s");
+//        		count2 = count;
+//        		time = System.currentTimeMillis();
+//        	}
         	
         	if (pc instanceof One) {// avoid overhead for calculating the next instruction
         		
