@@ -13,6 +13,9 @@ public class Choice<T> extends Conditional<T> {
 	private FeatureExpr featureExpr;
 
 	public Choice(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
+		if (featureExpr == null) {
+			throw new RuntimeException("ctx = null");
+		}
 		this.featureExpr = featureExpr;
 		this.thenBranch = thenBranch;
 		this.elseBranch = elseBranch;

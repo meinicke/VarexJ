@@ -20,6 +20,8 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.Modifier;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 
 /**
  * type, name and attribute information of a field.
@@ -249,8 +251,9 @@ public abstract class FieldInfo extends InfoObject implements GenericSignatureHo
 
   /**
    * pushClinit the corresponding data in the provided Fields instance
+ * @param ctx TODO
    */
-  public abstract void initialize (ElementInfo ei, ThreadInfo ti);
+  public abstract void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti);
 
 
   /**

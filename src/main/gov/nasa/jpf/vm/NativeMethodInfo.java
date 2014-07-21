@@ -278,7 +278,7 @@ public class NativeMethodInfo extends MethodInfo {
         break;
 
       case Types.T_LONG:
-        lval = caller.peekLong(FeatureExprFactory.True(), stackOffset);
+        lval = caller.peekLong(FeatureExprFactory.True(), stackOffset).getValue();
         stackOffset++; // 2 stack words
         a[j] = new Long(lval);
 
@@ -291,7 +291,7 @@ public class NativeMethodInfo extends MethodInfo {
         break;
 
       case Types.T_DOUBLE:
-        lval = caller.peekLong(FeatureExprFactory.True(), stackOffset);
+        lval = caller.peekLong(FeatureExprFactory.True(), stackOffset).getValue();
         stackOffset++; // 2 stack words
         a[j] = new Double(Types.longToDouble(lval));
 

@@ -84,7 +84,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
         break;
 
       case Types.T_LONG:
-        lval = callerFrame.peekLong(ctx, stackOffset);
+        lval = callerFrame.peekLong(ctx, stackOffset).getValue();
         stackOffset++; // 2 stack words
         a[j] = new Long(lval);
 
@@ -97,7 +97,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
         break;
 
       case Types.T_DOUBLE:
-        lval = callerFrame.peekLong(ctx, stackOffset);
+        lval = callerFrame.peekLong(ctx, stackOffset).getValue();
         stackOffset++; // 2 stack words
         a[j] = new Double(Types.longToDouble(lval));
 
@@ -106,7 +106,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
       default:
         // NOTE - we have to store T_REFERENCE as an Integer, because
         // it shows up in our native method as an 'int'
-        ival = callerFrame.peek(ctx, stackOffset).simplify(ctx);
+        ival = callerFrame.peek(ctx, stackOffset);
         a[j] = new Integer(ival.getValue());
       }
 

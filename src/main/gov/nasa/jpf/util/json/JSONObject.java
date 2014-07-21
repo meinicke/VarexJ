@@ -126,7 +126,7 @@ public class JSONObject{
   // types are initialized
   
   public int fillObject (FeatureExpr ctx, MJIEnv env, ClassInfo ci, ChoiceGenerator<?>[] cgs, String prefix) throws ClinitRequired {
-    int newObjRef = env.newObject(ci);
+    int newObjRef = env.newObject(ctx, ci);
     ElementInfo ei = env.getHeap().getModifiable(newObjRef);
 
     // Fill all fields for this class until it has a super class
@@ -153,7 +153,7 @@ public class JSONObject{
           if (!fi.isReference()) {
             convertPrimititve(ei, fi, cgResult);
           } else {
-            int newFieldRef = ObjectConverter.JPFObjectFromJavaObject(env, cgResult);
+            int newFieldRef = ObjectConverter.JPFObjectFromJavaObject(ctx, env, cgResult);
             ei.setReferenceField(fi, newFieldRef);
           }
         } else {
@@ -215,18 +215,21 @@ public class JSONObject{
     } else if (primitiveName.equals("short")) {
       ei.setShortField(fi, val.getDouble().shortValue());
 
-    } else if (primitiveName.equals("int")) {
-      ei.setIntField(NativeMethodInfo.CTX, fi, val.getDouble().intValue());
+    } else {
+		FeatureExpr ctx = NativeMethodInfo.CTX;
+		if (primitiveName.equals("int")) {
+		  ei.setIntField(ctx, fi, val.getDouble().intValue());
 
-    } else if (primitiveName.equals("long")) {
-      ei.setLongField(fi, val.getDouble().longValue());
+		} else if (primitiveName.equals("long")) {
+		  ei.setLongField(ctx, fi, val.getDouble().longValue());
 
-    } else if (primitiveName.equals("float")) {
-      ei.setFloatField(fi, val.getDouble().floatValue());
+		} else if (primitiveName.equals("float")) {
+		  ei.setFloatField(fi, val.getDouble().floatValue());
 
-    } else if (primitiveName.equals("double")) {
-      ei.setDoubleField(fi, val.getDouble());
-    }
+		} else if (primitiveName.equals("double")) {
+		  ei.setDoubleField(fi, val.getDouble());
+		}
+	}
   }
 
   public int createArray(FeatureExpr ctx, MJIEnv env, ClassInfo ciArray, Value value, ChoiceGenerator<?>[] cgs, String prefix) {
@@ -272,10 +275,11 @@ public class JSONObject{
     } else if (arrayElementType.equals("long")) {
       arrayRef = env.newLongArray(vals.length);
       ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
-      long[] longs = arrayEI.asLongArray();
-
+//      long[] longs = arrayEI.asLongArray();
+      
       for (int i = 0; i < vals.length; i++) {
-        longs[i] = vals[i].getDouble().longValue();
+    	  arrayEI.setLongElement(ctx, i, vals[i].getDouble().longValue());
+//        longs[i] = vals[i].getDouble().longValue();
       }
     } else if (arrayElementType.equals("float")) {
       arrayRef = env.newFloatArray(vals.length);
@@ -288,11 +292,14 @@ public class JSONObject{
     } else if (arrayElementType.equals("double")) {
       arrayRef = env.newDoubleArray(vals.length);
       ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
-      double[] doubles = arrayEI.asDoubleArray();
-
       for (int i = 0; i < vals.length; i++) {
-        doubles[i] = vals[i].getDouble();
+    	  arrayEI.setDoubleElement(i, vals[i].getDouble());
       }
+      
+//      double[] doubles = arrayEI.asDoubleArray();
+//      for (int i = 0; i < vals.length; i++) {
+//        doubles[i] = vals[i].getDouble();
+//      }
     } else {
       // Not an array of primitive types
       arrayRef = env.newObjectArray(arrayElementType, vals.length);
@@ -352,18 +359,21 @@ public class JSONObject{
       } else if (primitiveName.equals("short")) {
         ei.setShortField(fi, number.shortValue());
 
-      } else if (primitiveName.equals("int")) {
-        ei.setIntField(NativeMethodInfo.CTX, fi, number.intValue());
+      } else {
+		FeatureExpr ctx = NativeMethodInfo.CTX;
+		if (primitiveName.equals("int")) {
+		    ei.setIntField(ctx, fi, number.intValue());
 
-      } else if (primitiveName.equals("long")) {
-        ei.setLongField(fi, number.longValue());
+		  } else if (primitiveName.equals("long")) {
+		    ei.setLongField(ctx, fi, number.longValue());
 
-      } else if (primitiveName.equals("float")) {
-        ei.setFloatField(fi, number.floatValue());
+		  } else if (primitiveName.equals("float")) {
+		    ei.setFloatField(fi, number.floatValue());
 
-      } else if (primitiveName.equals("double")) {
-        ei.setDoubleField(fi, number.doubleValue());
-      }
+		  } else if (primitiveName.equals("double")) {
+		    ei.setDoubleField(fi, number.doubleValue());
+		  }
+	}
     } else if (cgResult instanceof Character) {
       Character c = (Character) cgResult;
       ei.setCharField(fi, c);

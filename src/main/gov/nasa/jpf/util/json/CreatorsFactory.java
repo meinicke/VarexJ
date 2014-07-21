@@ -55,7 +55,7 @@ class BoxedBoolCreator implements Creator {
     int boolRef = MJIEnv.NULL;
 
     if (read != null) {
-      boolRef = env.newObject("java.lang.Boolean");
+      boolRef = env.newObject(ctx, "java.lang.Boolean");
       ElementInfo ei = env.getModifiableElementInfo(boolRef);
       ei.setBooleanField("value", (read == true));
     }
@@ -70,7 +70,7 @@ class BoxedByteCreator implements Creator {
     int byteRef = MJIEnv.NULL;
 
     if (read != null) {
-      byteRef = env.newObject("java.lang.Byte");
+      byteRef = env.newObject(ctx, "java.lang.Byte");
       ElementInfo ei = env.getModifiableElementInfo(byteRef);
       ei.setByteField("value", read.byteValue());
     }
@@ -85,7 +85,7 @@ class BoxedShortCreator implements Creator {
     int shortRef = MJIEnv.NULL;
 
     if (read != null) {
-      shortRef = env.newObject("java.lang.Short");
+      shortRef = env.newObject(ctx, "java.lang.Short");
       ElementInfo ei = env.getModifiableElementInfo(shortRef);
       ei.setShortField("value", read.shortValue());
     }
@@ -100,7 +100,7 @@ class BoxedIntCreator implements Creator {
     int intRef = MJIEnv.NULL;
 
     if (read != null) {
-      intRef = env.newObject("java.lang.Integer");
+      intRef = env.newObject(ctx, "java.lang.Integer");
       ElementInfo ei = env.getModifiableElementInfo(intRef);
       ei.setIntField(ctx, "value", read.intValue());
     }
@@ -115,9 +115,9 @@ class BoxedLongCreator implements Creator {
     int longRef = MJIEnv.NULL;
 
     if (read != null) {
-      longRef = env.newObject("java.lang.Long");
+      longRef = env.newObject(ctx, "java.lang.Long");
       ElementInfo ei = env.getModifiableElementInfo(longRef);
-      ei.setLongField("value", read.longValue());
+      ei.setLongField(ctx, "value", read.longValue());
     }
 
     return longRef;
@@ -130,7 +130,7 @@ class BoxedFloatCreator implements Creator {
     int floatRef = MJIEnv.NULL;
 
     if (read != null) {
-      floatRef = env.newObject("java.lang.Float");
+      floatRef = env.newObject(ctx, "java.lang.Float");
       ElementInfo ei = env.getModifiableElementInfo(floatRef);
       ei.setFloatField("value", read.floatValue());
     }
@@ -145,7 +145,7 @@ class BoxedDoubleCreator implements Creator {
     int doubleRef = MJIEnv.NULL;
 
     if (read != null) {
-      doubleRef = env.newObject("java.lang.Double");
+      doubleRef = env.newObject(ctx, "java.lang.Double");
       ElementInfo ei = env.getModifiableElementInfo(doubleRef);
       ei.setDoubleField("value", read.doubleValue());
     }

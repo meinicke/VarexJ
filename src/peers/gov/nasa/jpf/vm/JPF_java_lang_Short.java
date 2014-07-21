@@ -36,7 +36,7 @@ public class JPF_java_lang_Short extends NativePeer {
                                                           int clsObjRef, 
                                                           int strRef) {
     try {
-      return Short.parseShort(env.getStringObject(strRef));
+      return Short.parseShort(env.getStringObject(null, strRef));
     } catch (NumberFormatException e) {
       env.throwException("java.lang.NumberFormatException");
 
@@ -49,7 +49,7 @@ public class JPF_java_lang_Short extends NativePeer {
                                                             int clsObjRef, 
                                                             int strRef, int radix) {
     try {
-      return Short.parseShort(env.getStringObject(strRef), radix);
+      return Short.parseShort(env.getStringObject(null, strRef), radix);
     } catch (NumberFormatException e) {
       env.throwException("java.lang.NumberFormatException");
 

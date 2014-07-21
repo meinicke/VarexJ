@@ -26,6 +26,8 @@ import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 // NOTE - this only works because DecimalFormat is a Format subclass, i.e.
 // the java.text.Format native peer will be initialized first
 // (otherwise we shouldn't depend on static data of other native peers)
@@ -55,7 +57,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
   
   @MJI
   public void init0__Ljava_lang_String_2__V (MJIEnv env, int objref, int patternref) {
-    String pattern = env.getStringObject(patternref);
+    String pattern = env.getStringObject(null, patternref);
     
     DecimalFormat fmt = new DecimalFormat(pattern);
     JPF_java_text_Format.putInstance(env,objref,fmt);    
@@ -168,7 +170,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public int parse__Ljava_lang_String_2Ljava_text_ParsePosition_2__Ljava_lang_Number_2(MJIEnv env, int objref,int sourceRef,int parsePositionRef) {
-    String source = env.getStringObject(sourceRef);
+    String source = env.getStringObject(null, sourceRef);
     ParsePosition parsePosition = createParsePositionFromRef(env,parsePositionRef);
     NumberFormat fmt = getInstance(env,objref);
     Number number = null;
@@ -194,12 +196,13 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   private static int createNumberRefFromNumber(MJIEnv env,Number number) {
     int numberRef = MJIEnv.NULL;
-    if(number instanceof Double) {
-      numberRef = env.newObject("java.lang.Double");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	if(number instanceof Double) {
+      numberRef = env.newObject(ctx, "java.lang.Double");
       env.setDoubleField(numberRef, "value", number.doubleValue());
     } else if(number instanceof Long) {
-      numberRef = env.newObject("java.lang.Long");
-      env.setLongField(numberRef, "value", number.longValue());
+      numberRef = env.newObject(ctx, "java.lang.Long");
+      env.setLongField(ctx, numberRef, "value", number.longValue());
     }
     return numberRef;
   }

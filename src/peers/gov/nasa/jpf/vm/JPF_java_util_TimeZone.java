@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * native peer for java.util.TimeZone
  * 
@@ -56,18 +58,19 @@ public class JPF_java_util_TimeZone extends NativePeer {
   //--- the factory methods
   @MJI
   public int getTimeZone__Ljava_lang_String_2__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int idRef){
-    String id = env.getStringObject(idRef);
+    String id = env.getStringObject(null, idRef);
     TimeZone tz = TimeZone.getTimeZone(id);
     
     int rawOffset = tz.getRawOffset();
     String realId = tz.getID(); // could have been changed if id was unknown
-    if (!realId.equals(id)){
-      idRef = env.newString(NativeMethodInfo.CTX, realId);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	if (!realId.equals(id)){
+      idRef = env.newString(ctx, realId);
     }
 
-    int tzRef = env.newObject("java.util.TimeZone");
-    env.setReferenceField(NativeMethodInfo.CTX, tzRef, "ID", idRef);
-    env.setIntField(NativeMethodInfo.CTX, tzRef, "rawOffset", rawOffset);
+    int tzRef = env.newObject(ctx, "java.util.TimeZone");
+    env.setReferenceField(ctx, tzRef, "ID", idRef);
+    env.setIntField(ctx, tzRef, "rawOffset", rawOffset);
     
     return tzRef;
   }
@@ -80,11 +83,12 @@ public class JPF_java_util_TimeZone extends NativePeer {
   
   @MJI
   public int createDefaultZone____Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef){
-    int idRef = env.newString(NativeMethodInfo.CTX, defaultID);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int idRef = env.newString(ctx, defaultID);
 
-    int tzRef = env.newObject("java.util.TimeZone");
-    env.setReferenceField(NativeMethodInfo.CTX, tzRef, "ID", idRef);
-    env.setIntField(NativeMethodInfo.CTX, tzRef, "rawOffset", defaultRawOffset);
+    int tzRef = env.newObject(ctx, "java.util.TimeZone");
+    env.setReferenceField(ctx, tzRef, "ID", idRef);
+    env.setIntField(ctx, tzRef, "rawOffset", defaultRawOffset);
     
     return tzRef;
   }
@@ -110,7 +114,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
 
   @MJI
   public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef){
-    String id = env.getStringObject(idRef);
+    String id = env.getStringObject(null, idRef);
     TimeZone tz = TimeZone.getTimeZone(id);
     
     int rawOffset = tz.getRawOffset();

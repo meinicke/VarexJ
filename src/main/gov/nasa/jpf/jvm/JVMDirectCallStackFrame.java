@@ -38,12 +38,12 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int getResult(){
-    return pop(FeatureExprFactory.True()).getValue();
+    return pop(TRUE).getValue();
   }
   
   @Override
   public int getReferenceResult(){
-    return pop(FeatureExprFactory.True()).getValue();
+    return pop(TRUE).getValue();
   }
   
   @Override
@@ -53,12 +53,12 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
 
   @Override
   public Object getResultAttr(){
-    return getOperandAttr(FeatureExprFactory.True());
+    return getOperandAttr(TRUE);
   }
   
   @Override
   public Object getLongResultAttr(){
-    return getLongOperandAttr();
+    return getLongOperandAttr(TRUE);
   }
 
   @Override
@@ -69,7 +69,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int getExceptionReference(){
-    return pop(FeatureExprFactory.True()).getValue();
+    return pop(TRUE).getValue();
   }
 
   @Override
@@ -79,7 +79,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public Object getExceptionReferenceAttribute (){
-    return getOperandAttr(FeatureExprFactory.True());
+    return getOperandAttr(TRUE);
   }
   
   //--- direct call argument initialization
@@ -98,7 +98,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int setReferenceArgument (int slotIdx, int ref, Object attr){
-    pushRef(ref, FeatureExprFactory.True());
+    pushRef(ref, TRUE);
     if (attr != null){
       setOperandAttr(attr);
     }

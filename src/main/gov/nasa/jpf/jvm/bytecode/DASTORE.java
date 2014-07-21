@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -30,15 +32,22 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class DASTORE extends LongArrayStoreInstruction {
 
-  double value;
+  Conditional<Double> value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = Double.longBitsToDouble(frame.popLong(ctx).getValue());
+    value = frame.popLong(ctx).map(new Function<Long, Double>() {
+
+		@Override
+		public Double apply(Long x) {
+			return Double.longBitsToDouble(x); 
+		}
+    	
+    });
   }
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    ei.setDoubleElement(index, value);
+    ei.setDoubleElement(index, value.getValue());
   }
 
 

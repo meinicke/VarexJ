@@ -38,7 +38,7 @@ public class LASTORE extends LongArrayStoreInstruction {
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    ei.setLongElement(index, value);
+    ei.setLongElement(ctx, index, value);
   }
 
 

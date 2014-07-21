@@ -56,7 +56,7 @@ public class JPF_java_lang_System extends NativePeer {
   @MJI
   public int getenv__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef,
                                                                          int keyRef){
-    String k = env.getStringObject(keyRef);
+    String k = env.getStringObject(null, keyRef);
     String v = System.getenv(k);
     
     if (v == null){
@@ -86,7 +86,7 @@ public class JPF_java_lang_System extends NativePeer {
       }
     }
 
-    return env.newObject(ci);
+    return env.newObject(NativeMethodInfo.CTX, ci);
   }
   
   @MJI

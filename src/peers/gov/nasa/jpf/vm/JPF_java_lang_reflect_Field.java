@@ -168,7 +168,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     FieldInfo fi = getFieldInfo(env, objRef);
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, LongFieldInfo.class, "long", false);
     if (ei != null){
-      return ei.getLongField(fi);
+      return ei.getLongField(fi).getValue();
     }
     return 0;
   }
@@ -302,7 +302,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, LongFieldInfo.class, "long", true);
     if (ei != null){
-      ei.setLongField(fi,val);
+      ei.setLongField(NativeMethodInfo.CTX,fi, val);
     }
   }
 
@@ -340,7 +340,8 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return 0;
     }
         
-    if (!(fi instanceof ReferenceFieldInfo)) { // primitive type, we need to box it
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	if (!(fi instanceof ReferenceFieldInfo)) { // primitive type, we need to box it
       if (fi instanceof DoubleFieldInfo){
         double d = ei.getDoubleField(fi);
         return env.newDouble(d);
@@ -348,11 +349,11 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         float f = ei.getFloatField(fi);
         return env.newFloat(f);
       } else if (fi instanceof LongFieldInfo){
-        long l = ei.getLongField(fi);
-        return env.newLong(l);
+        long l = ei.getLongField(fi).getValue();
+        return env.newLong(ctx, l);
       } else if (fi instanceof IntegerFieldInfo){
         // this might actually represent a plethora of types
-        int i = ei.getIntField(fi).simplify(NativeMethodInfo.CTX).getValue();
+        int i = ei.getIntField(fi).simplify(ctx).getValue();
         return env.newInteger(i);
       } else if (fi instanceof BooleanFieldInfo){
         boolean b = ei.getBooleanField(fi);
@@ -369,7 +370,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       }
       
     } else { // it's a reference
-      int ref = ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue(); // we internally store it as int
+      int ref = ei.getReferenceField(fi).simplify(ctx).getValue(); // we internally store it as int
       return ref;
     }
     
@@ -517,8 +518,8 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         ei.setIntField(NativeMethodInfo.CTX, fi, val);
         return true;
       } else if ("long".equals(fieldType)){
-        long val = env.getLongField(value, fieldName);
-        ei.setLongField(fi, val);
+        long val = env.getLongField(value, fieldName).getValue();
+        ei.setLongField(ctx, fi, val);
         return true;
       } else if ("float".equals(fieldType)){
         float val = env.getFloatField(value, fieldName);

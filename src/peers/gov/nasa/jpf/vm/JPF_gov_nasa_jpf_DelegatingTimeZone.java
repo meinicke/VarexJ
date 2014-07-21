@@ -41,7 +41,7 @@ public class JPF_gov_nasa_jpf_DelegatingTimeZone extends NativePeer {
   //--- native methods
   @MJI
   public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef){
-    String id = env.getStringObject(idRef);
+    String id = env.getStringObject(null, idRef);
     TimeZone tz = TimeZone.getTimeZone(id);
     int rawOffset = tz.getRawOffset();
     

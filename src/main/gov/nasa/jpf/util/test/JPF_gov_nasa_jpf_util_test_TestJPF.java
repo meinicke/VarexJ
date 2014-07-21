@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -117,7 +118,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
 
       } else { // this is re-executed
         if (testObjRef == MJIEnv.NULL) { // create a new test object
-          testObjRef = env.newObject(testClass);
+          testObjRef = env.newObject(NativeMethodInfo.CTX, testClass);
 
           if (testClassCtor != null) {
             pushDirectCallFrame(env, testClassCtor, testObjRef);
@@ -150,7 +151,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
 
   @MJI
   public int getProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int keyRef){
-    String key = env.getStringObject(keyRef);
+    String key = env.getStringObject(null, keyRef);
     String val = env.getConfig().getString(key);
     
     if (val != null){

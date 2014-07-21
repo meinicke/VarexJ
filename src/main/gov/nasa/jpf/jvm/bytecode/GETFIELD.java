@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -27,6 +28,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.Types;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -102,10 +104,9 @@ public class GETFIELD extends InstanceFieldInstruction {
 					}
 
 				} else { // 2 slotter
-					long lval = ei.get2SlotField(fi);
-					lastValue = new One<>(lval);
-
-					frame.pushLong(lval);
+					Conditional<Long> lval = ei.get2SlotField(fi).simplify(ctx);
+					lastValue = lval;
+					frame.push(ctx, lval);
 					if (attr != null) {
 						frame.setLongOperandAttr(attr);
 					}

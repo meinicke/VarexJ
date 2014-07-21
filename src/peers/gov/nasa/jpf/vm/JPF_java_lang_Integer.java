@@ -30,7 +30,7 @@ public class JPF_java_lang_Integer extends NativePeer {
   public int parseInt__Ljava_lang_String_2__I (MJIEnv env, int clsObjRef, 
                                                    int strRef) {
     try {
-      return Integer.parseInt(env.getStringObject(strRef));
+      return Integer.parseInt(env.getStringObject(null, strRef));
     } catch (NumberFormatException e) {
       env.throwException("java.lang.NumberFormatException");
 
@@ -42,7 +42,7 @@ public class JPF_java_lang_Integer extends NativePeer {
   public int parseInt__Ljava_lang_String_2I__I (MJIEnv env, int clsObjRef, 
                                                     int strRef, int radix) {
     try {
-      return Integer.parseInt(env.getStringObject(strRef), radix);
+      return Integer.parseInt(env.getStringObject(null, strRef), radix);
     } catch (NumberFormatException e) {
       env.throwException("java.lang.NumberFormatException");
 

@@ -43,12 +43,12 @@ public class StackHandler {
 			if (locals[i] == null) {
 				string.append("null");
 			} else {
-				string.append(locals[i].toString());
+				string.append(locals[i].toMap().keySet());
 			}
 			string.append(" ");
 		}
-		string.append("] Stack: ");
-		string.append(stack.toString());
+		string.append("] \nStack: ");
+		string.append(stack.toMap().keySet());
 		return string.toString();
 	}
 
@@ -198,15 +198,20 @@ public class StackHandler {
 	}
 	
 	public void storeLongOperand(final FeatureExpr ctx, final int index) {
-		stack.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
+		stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
 
 			@Override
 			public Conditional<Entry> apply(FeatureExpr f, Stack stack) {
-				locals[index + 1] = new Choice<>(ctx, new One<>(new Entry(stack.pop(), false)), locals[index + 1]).simplify();
-				locals[index] = new Choice<>(ctx, new One<>(new Entry(stack.pop(), false)), locals[index]).simplify();
+				if (f.isContradiction()) {
+					return null;
+				}
+				locals[index + 1] = new Choice<>(f, new One<>(new Entry(stack.pop(), false)), locals[index + 1]);
+				locals[index] = new Choice<>(f, new One<>(new Entry(stack.pop(), false)), locals[index]);
 				return null;
 			}
 		});
+		locals[index] = locals[index].simplify();
+		locals[index + 1] = locals[index + 1].simplify();
 		stack = stack.simplify();
 	}
 

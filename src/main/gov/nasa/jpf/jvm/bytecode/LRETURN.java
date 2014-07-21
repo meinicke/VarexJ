@@ -30,7 +30,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class LRETURN extends LongReturn {
 
   public long getReturnValue () {
-    return ret;
+    return ret.getValue();
   }
 
   public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
@@ -39,7 +39,7 @@ public class LRETURN extends LongReturn {
       ret = frame.peekLong(ctx);
     }
 
-    return new Long(ret);
+    return new Long(ret.getValue());
   }
 
   public int getByteCode () {

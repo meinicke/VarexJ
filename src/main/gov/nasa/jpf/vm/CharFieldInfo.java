@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 
@@ -44,7 +45,7 @@ public class CharFieldInfo extends SingleSlotFieldInfo {
   }
 
 
-  public void initialize (ElementInfo ei, ThreadInfo ti) {
+  public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
     ei.getFields().setCharValue(null, storageOffset, new One<>(init));
   }
 

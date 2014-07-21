@@ -135,7 +135,7 @@ public class JPF_gov_nasa_jpf_CachedROHttpConnection extends NativePeer {
 
   @MJI
   public int getContents__Ljava_lang_String_2___3B (MJIEnv env, int objRef, int surlRef){
-    String url = env.getStringObject(surlRef);
+    String url = env.getStringObject(null, surlRef);
 
     // first we check if it's already cached in memory
     byte[] data = dataCache.get(url);

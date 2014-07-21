@@ -37,10 +37,15 @@ public class I2D extends JVMInstruction {
 
     Conditional<Integer> ival = frame.pop(ctx);
     
-    frame.pushDouble((double) ival.getValue());
+    frame.push(ctx, mapr2(ival, 0));
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return (double)v1.intValue();
+	}
 
   public int getByteCode () {
     return 0x87;

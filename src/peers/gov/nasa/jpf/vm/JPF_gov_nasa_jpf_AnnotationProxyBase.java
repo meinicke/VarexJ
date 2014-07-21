@@ -78,13 +78,13 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
           sb.append(env.getBooleanField(objref,fn));
           
         } else if (ft.equals("java.lang.String")){
-          sb.append(env.getStringObject(env.getReferenceField(ctx, objref, fn).getValue()));
+          sb.append(env.getStringObject(null, env.getReferenceField(ctx, objref, fn).getValue()));
           
         } else if (ft.equals("java.lang.Class")){
           int cref = env.getReferenceField(ctx, objref, fn).getValue();
           if (cref != MJIEnv.NULL){
             int nref = env.getReferenceField(ctx, cref, "name").getValue();
-            String cn = env.getStringObject(nref);
+            String cn = env.getStringObject(null, nref);
           
             sb.append("class ");
             sb.append(cn);
@@ -101,7 +101,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
           if (ft.equals("java.lang.String[]")){
             for (int j=0; j<n; j++){
               if (j>0) sb.append(',');
-              sb.append(env.getStringObject(env.getReferenceArrayElement(ar,j)));
+              sb.append(env.getStringObject(null, env.getReferenceArrayElement(ar,j)));
             }
             
           } else if (ft.equals("int[]")){
@@ -134,7 +134,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
               int cref = env.getReferenceArrayElement(ar,j);
               if (cref != MJIEnv.NULL){
                 int nref = env.getReferenceField(ctx, cref, "name").getValue();
-                String cn = env.getStringObject(nref);
+                String cn = env.getStringObject(null, nref);
               
                 sb.append("class ");
                 sb.append(cn);
@@ -153,7 +153,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
             ClassInfo eci = env.getClassInfo(eref);
             if (eci.isEnum()){
               int nref = env.getReferenceField(ctx, eref, "name").getValue();
-              String en = env.getStringObject(nref);
+              String en = env.getStringObject(null, nref);
               
               sb.append(eci.getName());
               sb.append('.');

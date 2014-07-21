@@ -35,7 +35,7 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
   protected void setField (FeatureExpr ctx, ElementInfo e, int index, long value)
                     throws ArrayIndexOutOfBoundsExecutiveException {
     e.checkArrayBounds(ctx, index);
-    e.setLongElement(index, value);
+    e.setLongElement(ctx, index, value);
   }
 
   protected int getElementSize () {
@@ -48,12 +48,12 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
   }
   
   public int peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {
-    return ti.getTopFrame().peek(FeatureExprFactory.True(), 3).getValue();  // ..,ref,idx,long(value)
+    return ti.getTopFrame().peek(ctx, 3).getValue();  // ..,ref,idx,long(value)
   }
 
   @Override
   public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame().peek(FeatureExprFactory.True(), 2).getValue();
+    return ti.getTopFrame().peek(ctx, 2).getValue();
   }
   
   public void accept(InstructionVisitor insVisitor) {

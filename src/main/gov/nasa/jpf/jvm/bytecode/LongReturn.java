@@ -18,34 +18,36 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.Iterator;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * common base for DRETURN and LRETURN
  */
 public abstract class LongReturn extends ReturnInstruction {
 
-  protected long ret;
+  protected Conditional<Long> ret;
   
   public int getReturnTypeSize() {
     return 2;
   }
   
   protected Object getReturnedOperandAttr (FeatureExpr ctx, StackFrame frame) {
-    return frame.getLongOperandAttr();
+    return frame.getLongOperandAttr(ctx);
   }
   
   protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
-    ret = frame.popLong(ctx).getValue();
+    ret = frame.popLong(ctx);
   }
 
   protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
-    frame.pushLong(ret);
+    frame.push(ctx, ret);
   }
 
   //--- attribute accessors 
@@ -68,7 +70,7 @@ public abstract class LongReturn extends ReturnInstruction {
    */
   public Object getReturnAttr (ThreadInfo ti){
     StackFrame frame = ti.getTopFrame();
-    return frame.getLongOperandAttr();
+    return frame.getLongOperandAttr(FeatureExprFactory.True());
   }
   
   /**

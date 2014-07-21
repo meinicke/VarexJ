@@ -236,7 +236,7 @@ public abstract class Fields implements Cloneable {
   public abstract int getReferenceValue (int index);
   public abstract Conditional<Integer> getReferenceValue2 (int index);
 
-  public abstract long getLongValue (int index);
+  public abstract Conditional<Long> getLongValue (int index);
 
   public abstract boolean getBooleanValue (int index);
 
@@ -248,7 +248,7 @@ public abstract class Fields implements Cloneable {
 
   public abstract float getFloatValue (int index);
 
-  public abstract double getDoubleValue (int index);
+  public abstract Conditional<Double> getDoubleValue (int index);
 
   //--- the field modifier methods (both instance and static)
 
@@ -265,12 +265,12 @@ public abstract class Fields implements Cloneable {
 
   public abstract void setFloatValue (int index, float newValue);
 
-  public abstract void setIntValue (FeatureExpr ctx, int index, int newValue);
+  public abstract void setIntValue (FeatureExpr ctx, int index, int newValue);// TODO remove
   public abstract void setIntValue (int index, Conditional<Integer> newValue);
 
-  public abstract void setLongValue (int index, long newValue);
+  public abstract void setLongValue (FeatureExpr ctx, int index, Conditional<Long> newValue);
 
-  public abstract void setDoubleValue (int index, double newValue);
+  protected abstract void setDoubleValue (int index, Conditional<Double> newValue);
 
   public abstract Fields clone ();
 

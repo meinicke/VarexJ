@@ -27,7 +27,7 @@ public class JPF_java_util_regex_Pattern extends NativePeer {
 
   @MJI
   public int split0__Ljava_lang_String_2I___3Ljava_lang_String_2(MJIEnv env,int patRef,int strRef,int limit){
-    String s = env.getStringObject(strRef);
+    String s = env.getStringObject(null, strRef);
     String patSpec = env.getStringField(patRef,"regex");
     int patFlags = env.getIntField(NativeMethodInfo.CTX, patRef, "flags").getValue().intValue();
 

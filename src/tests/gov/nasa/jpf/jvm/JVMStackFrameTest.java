@@ -70,11 +70,11 @@ public class JVMStackFrameTest extends TestJPF {
     frame.printOperands(System.out);
 
     assertTrue(frame.getTopPos() == 4);
-    assertTrue(frame.peek(FeatureExprFactory.True(), 4).getValue() == 2 && frame.getOperandAttr(4) == "2"); // same const pool string
-    assertTrue(frame.peek(FeatureExprFactory.True(), 3).getValue() == 3 && frame.getOperandAttr(3) == "3");
-    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 1 && frame.getOperandAttr(2) == "1");
-    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 2 && frame.getOperandAttr(1) == "2");
-    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 3 && frame.getOperandAttr(0) == "3");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 4).getValue() == 2 && frame.getOperandAttr(FeatureExprFactory.True(), 4) == "2"); // same const pool string
+    assertTrue(frame.peek(FeatureExprFactory.True(), 3).getValue() == 3 && frame.getOperandAttr(FeatureExprFactory.True(), 3) == "3");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 1 && frame.getOperandAttr(FeatureExprFactory.True(), 2) == "1");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 2 && frame.getOperandAttr(FeatureExprFactory.True(), 1) == "2");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 3 && frame.getOperandAttr(FeatureExprFactory.True(), 0) == "3");
   }
 
 
@@ -118,12 +118,12 @@ public class JVMStackFrameTest extends TestJPF {
     frame.printOperands(System.out);
 
     assertTrue(frame.getTopPos() == 5);
-    assertTrue(frame.peek(FeatureExprFactory.True(), 5).getValue() == 3 && frame.getOperandAttr(5) == "3");  // same const pool string
-    assertTrue(frame.peek(FeatureExprFactory.True(), 4).getValue() == 4 && frame.getOperandAttr(4) == "4");
-    assertTrue(frame.peek(FeatureExprFactory.True(), 3).getValue() == 1 && frame.getOperandAttr(3) == "1");
-    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 2 && frame.getOperandAttr(2) == "2");
-    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 3 && frame.getOperandAttr(1) == "3");
-    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 4 && frame.getOperandAttr(0) == "4");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 5).getValue() == 3 && frame.getOperandAttr(FeatureExprFactory.True(), 5) == "3");  // same const pool string
+    assertTrue(frame.peek(FeatureExprFactory.True(), 4).getValue() == 4 && frame.getOperandAttr(FeatureExprFactory.True(), 4) == "4");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 3).getValue() == 1 && frame.getOperandAttr(FeatureExprFactory.True(), 3) == "1");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 2).getValue() == 2 && frame.getOperandAttr(FeatureExprFactory.True(), 2) == "2");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 1).getValue() == 3 && frame.getOperandAttr(FeatureExprFactory.True(), 1) == "3");
+    assertTrue(frame.peek(FeatureExprFactory.True(), 0).getValue() == 4 && frame.getOperandAttr(FeatureExprFactory.True(), 0) == "4");
   }
 
   @Test

@@ -97,7 +97,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not an int[]");
 	}
 
-	public long getLongValue(int pos) {
+	public Conditional<Long> getLongValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a long[]");
 	}
@@ -107,7 +107,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a float[]");
 	}
 
-	public double getDoubleValue(int pos) {
+	public Conditional<Double> getDoubleValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a double[]");
 	}
@@ -157,12 +157,13 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a float[]");
 	}
 
-	public void setLongValue(int pos, long newValue) {
+	@Override
+	public void setLongValue(FeatureExpr ctx, int pos, Conditional<Long> newValue) {
 		// overridden by subclass
-		throw new JPFException("not a long[]");
+		throw new JPFException(getClass() + " not a long[]");
 	}
 
-	public void setDoubleValue(int pos, double newValue) {
+	protected void setDoubleValue(int pos, Conditional<Double> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a double[]");
 	}

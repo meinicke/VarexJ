@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -32,9 +33,10 @@ public class JPF_java_util_concurrent_atomic_AtomicLong extends NativePeer {
 
   @MJI
   public boolean compareAndSet__JJ__Z (MJIEnv env, int objRef, long expect, long update){
-    long value = env.getLongField(objRef, "value");
+    long value = env.getLongField(objRef, "value").getValue();
+    FeatureExpr ctx = NativeMethodInfo.CTX;
     if (value == expect){
-      env.setLongField(objRef, "value", update);
+      env.setLongField(ctx, objRef, "value", update);
       return true;
     } else {
       return false;

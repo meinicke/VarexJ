@@ -39,7 +39,7 @@ public class LLOAD extends LocalVariableInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    frame.pushLongLocal(index);
+    frame.pushLongLocal(ctx, index);
 
     return getNext(ctx, ti);
   }

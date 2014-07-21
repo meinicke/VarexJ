@@ -18,7 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 
 
 
@@ -42,8 +44,8 @@ public class LongFieldInfo extends DoubleSlotFieldInfo {
     }
   }
 
-  public void initialize (ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setLongValue( storageOffset, init);
+  public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
+    ei.getFields().setLongValue( ctx, storageOffset, new One<>(init));
   }
 
   public int getStorageSize() {
@@ -55,12 +57,12 @@ public class LongFieldInfo extends DoubleSlotFieldInfo {
   }
 
   public String valueToString (Fields f) {
-    long v = f.getLongValue(storageOffset);
+    long v = f.getLongValue(storageOffset).getValue();
     return Long.toString(v);
   }
 
   public Object getValueObject (Fields f){
-    long v = f.getLongValue(storageOffset);
+    long v = f.getLongValue(storageOffset).getValue();
     return new Long(v);
   }
 

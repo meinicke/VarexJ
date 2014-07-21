@@ -32,16 +32,20 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class I2L extends JVMInstruction {
 
-  @SuppressWarnings("cast")
 public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    int v = frame.pop(ctx).getValue();
+     Conditional<Integer> v = frame.pop(ctx);
     
-    frame.pushLong((long)v);
+    frame.push(ctx, mapr2(v, 0));
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return (long) v1.intValue();
+	}
 
   public int getByteCode () {
     return 0x85;

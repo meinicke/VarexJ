@@ -27,6 +27,7 @@ import java.lang.reflect.Field;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import sun.misc.Unsafe;
 
 /**
@@ -138,11 +139,12 @@ public class JPF_java_util_Random extends NativePeer {
   }
 
   static void storeSeed (MJIEnv env, int objRef, long seed){
-    env.setLongField(objRef, "seed", seed);
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    env.setLongField(ctx, objRef, "seed", seed);
   }
 
   static long getSeed (MJIEnv env, int objRef){
-    return env.getLongField(objRef, "seed");
+    return env.getLongField(objRef, "seed").getValue();
   }
   
   static void restoreRandomState (MJIEnv env, int objRef, Random rand){

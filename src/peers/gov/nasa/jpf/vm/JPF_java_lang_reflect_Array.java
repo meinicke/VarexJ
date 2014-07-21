@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -109,43 +110,44 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   public int get__Ljava_lang_Object_2I__Ljava_lang_Object_2 (MJIEnv env, int clsRef,
                                                                     int aref, int index){
     String at = env.getArrayType(aref);
-    if (at.equals("int")){
-      int vref = env.newObject("java.lang.Integer");
-      env.setIntField(NativeMethodInfo.CTX, vref, "value", env.getIntArrayElement(aref,index));
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	if (at.equals("int")){
+      int vref = env.newObject(ctx, "java.lang.Integer");
+      env.setIntField(ctx, vref, "value", env.getIntArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("long")){
-      int vref = env.newObject("java.lang.Long");
-      env.setLongField(vref, "value", env.getLongArrayElement(aref,index));
+      int vref = env.newObject(ctx, "java.lang.Long");
+      env.setLongField(ctx, vref, "value", env.getLongArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("double")){
-      int vref = env.newObject("java.lang.Double");
+      int vref = env.newObject(ctx, "java.lang.Double");
       env.setDoubleField(vref, "value", env.getDoubleArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("boolean")){
-      int vref = env.newObject("java.lang.Boolean");
+      int vref = env.newObject(ctx, "java.lang.Boolean");
       env.setBooleanField(vref, "value", env.getBooleanArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("char")){
-      int vref = env.newObject("java.lang.Character");
+      int vref = env.newObject(ctx, "java.lang.Character");
       env.setCharField(vref, "value", env.getCharArrayElement(aref,index).getValue());
       return vref;
       
     } else if (at.equals("byte")){
-      int vref = env.newObject("java.lang.Byte");
+      int vref = env.newObject(ctx, "java.lang.Byte");
       env.setByteField(vref, "value", env.getByteArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("short")){
-      int vref = env.newObject("java.lang.Short");
+      int vref = env.newObject(ctx, "java.lang.Short");
       env.setShortField(vref, "value", env.getShortArrayElement(aref,index));
       return vref;
 
     } else if (at.equals("float")){
-      int vref = env.newObject("java.lang.Float");
+      int vref = env.newObject(ctx, "java.lang.Float");
       env.setFloatField(vref, "value", env.getFloatArrayElement(aref,index));
       return vref;
 
@@ -272,7 +274,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setLong__Ljava_lang_Object_2IJ__V (MJIEnv env, int clsRef, int aref, int index, long val) {
     if (check(env, aref, index)) {
-      env.setLongArrayElement(aref, index, val);
+      env.setLongArrayElement(NativeMethodInfo.CTX, aref, index, val);
     }
   }
 

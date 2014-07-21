@@ -30,7 +30,7 @@ public class JPF_java_lang_Long extends NativePeer {
   public long parseLong__Ljava_lang_String_2I__J (MJIEnv env, int clsObjRef, 
                                                      int strRef, int radix) {
     try {
-      return Long.parseLong(env.getStringObject(strRef), radix);
+      return Long.parseLong(env.getStringObject(null, strRef), radix);
     } catch (NumberFormatException e) {
       env.throwException("java.lang.NumberFormatException");
 
@@ -42,7 +42,7 @@ public class JPF_java_lang_Long extends NativePeer {
   public long parseLong__Ljava_lang_String_2__J (MJIEnv env, int clsObjRef, 
                                                      int strRef) {
     try {
-      return Long.parseLong(env.getStringObject(strRef));
+      return Long.parseLong(env.getStringObject(null, strRef));
     } catch (NumberFormatException e) {
       env.throwException("java.lang.NumberFormatException");
 

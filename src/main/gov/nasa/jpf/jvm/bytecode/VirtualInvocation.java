@@ -97,7 +97,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 				 StackHandler stack = ti.getTopFrame().stack;
 				 if (stack.getStackWidth() > 1) {
 					 boolean split = false;
-					 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
+					 for (int i = 0; i < callee.getArgumentsSize(); i++) {
 						 if (stack.peek(ctx, i) instanceof Choice) {
 							 split = true;
 							 splitRef = true;
@@ -106,6 +106,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					 }
 					 
 					 if (split) {
+						 
 						 Map<Stack, FeatureExpr> stacks = stack.stack.simplify(ctx).toMap();
 						 for (FeatureExpr c : stacks.values()) {
 							 ctx = ctx.and(c);

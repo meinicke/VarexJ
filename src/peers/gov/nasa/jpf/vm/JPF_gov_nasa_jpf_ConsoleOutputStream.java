@@ -69,7 +69,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
   @MJI
   public void print__Ljava_lang_String_2__V (MJIEnv env, int objRef,
                                                  int strRef) {
-    env.getVM().print(env.getStringObject(strRef));
+    env.getVM().print(env.getStringObject(null, strRef));
   }
 
   @MJI
@@ -79,7 +79,11 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
   @MJI
   public void println____V (MJIEnv env, int objRef) {
-    env.getVM().println();
+	  if (ThreadInfo.ctxOutput) {
+		  env.getVM().println("<> : " + NativeMethodInfo.CTX);
+	  } else {
+		  env.getVM().println();
+	  }
   }
 
   @MJI
@@ -90,8 +94,15 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
   @MJI
   public void println__D__V (MJIEnv env, int objref, double d) {
-    env.getVM().print(d);
-    env.getVM().println();
+	  if (ThreadInfo.ctxOutput) {
+			env.getVM().println("<" + d + "> : " + NativeMethodInfo.CTX);
+		} else {
+			env.getVM().print(d);
+			env.getVM().println();
+		}
+	  
+    
+    
   }
 
   @MJI
@@ -102,8 +113,12 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
   @MJI
   public void println__I__V (MJIEnv env, int objref, int i) {
-    env.getVM().print(i);
-    env.getVM().println();
+	  if (ThreadInfo.ctxOutput) {
+			env.getVM().println("<" + i + "> : " + NativeMethodInfo.CTX);
+		} else {
+			env.getVM().print(i);
+			env.getVM().println();
+		}
   }
 
   @MJI

@@ -39,7 +39,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongArray extends NativePeer 
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     long value = env.getLongArrayElement(arrayRef, index);
     if (value == expect) {
-      env.setLongArrayElement(arrayRef, index, update);
+      env.setLongArrayElement(ctx, arrayRef, index, update);
       return true;
     } else {
       return false;

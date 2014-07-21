@@ -67,7 +67,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int getResource0__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef){
-    String rname = env.getStringObject(resRef);
+    String rname = env.getStringObject(null, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
@@ -78,7 +78,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int getResources0__Ljava_lang_String_2___3Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef) {
-    String rname = env.getStringObject(resRef);
+    String rname = env.getStringObject(null, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
@@ -89,7 +89,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int findLoadedClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef) {
-    String cname = env.getStringObject(nameRef);
+    String cname = env.getStringObject(null, nameRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
@@ -103,7 +103,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int findSystemClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef) {
-    String cname = env.getStringObject(nameRef);
+    String cname = env.getStringObject(null, nameRef);
 
     checkForIllegalName(env, cname);
     if(env.hasException()) {
@@ -124,7 +124,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   @MJI
   public int defineClass0__Ljava_lang_String_2_3BII__Ljava_lang_Class_2 
                                       (MJIEnv env, int objRef, int nameRef, int bufferRef, int offset, int length) {
-    String cname = env.getStringObject(nameRef);
+    String cname = env.getStringObject(null, nameRef);
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
     // determine whether that the corresponding class is already defined by this 
@@ -235,7 +235,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     }
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
-    String pkgName = env.getStringObject(nameRef);
+    String pkgName = env.getStringObject(null, nameRef);
     if(cl.getPackages().get(pkgName)!=null) {
       return createPackageObject(env, pkgClass, pkgName, cl);
     } else {
@@ -244,17 +244,18 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   }
 
   public static int createPackageObject(MJIEnv env, ClassInfo pkgClass, String pkgName, ClassLoaderInfo cl) {
-    int pkgRef = env.newObject(pkgClass);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int pkgRef = env.newObject(ctx, pkgClass);
     ElementInfo ei = env.getModifiableElementInfo(pkgRef);
 
-    ei.setReferenceField("pkgName", env.newString(NativeMethodInfo.CTX, pkgName));
+    ei.setReferenceField("pkgName", env.newString(ctx, pkgName));
     ei.setReferenceField("loader", cl.getClassLoaderObjectRef());
     // the rest of the fields set to some dummy value
-    ei.setReferenceField("specTitle", env.newString(NativeMethodInfo.CTX, "spectitle"));
-    ei.setReferenceField("specVersion", env.newString(NativeMethodInfo.CTX, "specversion"));
-    ei.setReferenceField("specVendor", env.newString(NativeMethodInfo.CTX, "specvendor"));
-    ei.setReferenceField("implTitle", env.newString(NativeMethodInfo.CTX, "impltitle"));
-    ei.setReferenceField("implVersion", env.newString(NativeMethodInfo.CTX, "implversion"));
+    ei.setReferenceField("specTitle", env.newString(ctx, "spectitle"));
+    ei.setReferenceField("specVersion", env.newString(ctx, "specversion"));
+    ei.setReferenceField("specVendor", env.newString(ctx, "specvendor"));
+    ei.setReferenceField("implTitle", env.newString(ctx, "impltitle"));
+    ei.setReferenceField("implVersion", env.newString(ctx, "implversion"));
     ei.setReferenceField("sealBase", MJIEnv.NULL);
 
     return pkgRef;
@@ -269,14 +270,14 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   @MJI
   public void setPackageAssertionStatus__Ljava_lang_String_2Z__V (MJIEnv env, int objRef, int strRef, boolean enabled) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
-    String pkgName = env.getStringObject(strRef);
+    String pkgName = env.getStringObject(null, strRef);
     cl.setPackageAssertionStatus(pkgName, enabled);
   }
 
   @MJI
   public void setClassAssertionStatus__Ljava_lang_String_2Z__V (MJIEnv env, int objRef, int strRef, boolean enabled) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
-    String clsName = env.getStringObject(strRef);
+    String clsName = env.getStringObject(null, strRef);
     cl.setClassAssertionStatus(clsName, enabled);
   }
 

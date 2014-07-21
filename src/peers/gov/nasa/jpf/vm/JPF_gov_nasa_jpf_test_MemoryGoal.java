@@ -96,7 +96,7 @@ public class JPF_gov_nasa_jpf_test_MemoryGoal extends NativePeer {
   public boolean postCheck__Lgov_nasa_jpf_test_TestContext_2Ljava_lang_reflect_Method_2Ljava_lang_Object_2Ljava_lang_Throwable_2__Z 
            (MJIEnv env, int objRef, int testContextRef, int methdRef, int resultRef, int exRef){
 
-    long nMax = env.getLongField(objRef, "maxGrowth");
+    long nMax = env.getLongField(objRef, "maxGrowth").getValue();
 
     Listener l = listener;
     env.removeListener(l);

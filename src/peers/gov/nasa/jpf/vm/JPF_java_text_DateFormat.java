@@ -56,13 +56,13 @@ public class JPF_java_text_DateFormat extends NativePeer {
   @MJI
   public int parse__Ljava_lang_String_2__Ljava_util_Date_2 (MJIEnv env, int objref, int strRef) {
     DateFormat f = getInstance(env,objref);
-    String s = env.getStringObject(strRef);
+    String s = env.getStringObject(null, strRef);
     try {
       Date d = f.parse(s);
       long t = d.getTime();
-
-      int dref = env.newObject("java.util.Date");
-      env.setLongField(dref, "fastTime", t);
+      FeatureExpr ctx = NativeMethodInfo.CTX;
+      int dref = env.newObject(NativeMethodInfo.CTX, "java.util.Date");
+      env.setLongField(ctx, dref, "fastTime", t);
       return dref;
 
     } catch (ParseException px) {

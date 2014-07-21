@@ -56,7 +56,7 @@ public class JPF_java_lang_String extends NativePeer {
   @MJI
   public int init___3BIILjava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int bytesRef, int offset, int length, int charsetNameRef) throws UnsupportedEncodingException {
     byte[] bytes = env.getByteArrayObject(bytesRef);
-    String charsetName = env.getStringObject(charsetNameRef);
+    String charsetName = env.getStringObject(null, charsetNameRef);
     String result = new String(bytes, offset, length, charsetName);
     return env.newString(NativeMethodInfo.CTX, result);
   }
@@ -70,31 +70,31 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int codePointAt__I__I (MJIEnv env, int objRef, int index) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(null, objRef);
     return obj.codePointAt(index);
   }
 
   @MJI
   public int codePointBefore__I__I (MJIEnv env, int objRef, int index) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(null, objRef);
     return obj.codePointBefore(index);
   }
 
   @MJI
   public int codePointCount__II__I (MJIEnv env, int objRef, int beginIndex, int endIndex) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(null, objRef);
     return obj.codePointCount(beginIndex, endIndex);
   }
 
   @MJI
   public int offsetByCodePoints__II__I (MJIEnv env, int objRef, int index, int codePointOffset) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(null, objRef);
     return obj.offsetByCodePoints(index, codePointOffset);
   }
 
   @MJI
   public void getChars__II_3CI__V (MJIEnv env, int objRef, int srcBegin, int srcEnd, int dstRef, int dstBegin) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(null, objRef);
     char[] dst = env.getCharArrayObject(dstRef).getValue();
     obj.getChars(srcBegin, srcEnd, dst, dstBegin);
   }
@@ -102,15 +102,15 @@ public class JPF_java_lang_String extends NativePeer {
   @SuppressWarnings("deprecation")
   @MJI
   public void getBytes__II_3BI__V (MJIEnv env, int objRef, int srcBegin, int srcEnd, int dstRef, int dstBegin) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(null, objRef);
     byte[] dst = env.getByteArrayObject(dstRef);
     obj.getBytes(srcBegin, srcEnd, dst, dstBegin);
   }
 
   @MJI
   public int getBytes__Ljava_lang_String_2___3B (MJIEnv env, int objRef, int charSetRef) {
-    String string = env.getStringObject(objRef);
-    String charset = env.getStringObject(charSetRef);
+    String string = env.getStringObject(null, objRef);
+    String charset = env.getStringObject(null, charSetRef);
 
     try {
       byte[] b = string.getBytes(charset);
@@ -124,7 +124,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int getBytes_____3B (MJIEnv env, int objRef) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(null, objRef);
     byte[] bytes = obj.getBytes();
     return env.newByteArray(bytes);
   }
@@ -180,9 +180,9 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public boolean equalsIgnoreCase__Ljava_lang_String_2__Z (MJIEnv env, int objref, int anotherString) {
-    String thisString = env.getStringObject(objref);
+    String thisString = env.getStringObject(null, objref);
     if (anotherString != MJIEnv.NULL) {
-      return thisString.equalsIgnoreCase(env.getStringObject(anotherString));
+      return thisString.equalsIgnoreCase(env.getStringObject(null, anotherString));
     } else {
       return false;
     }
@@ -190,16 +190,16 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int compareTo__Ljava_lang_String_2__I (MJIEnv env, int objRef, int anotherStringRef) {
-    String obj = env.getStringObject(objRef);
-    String anotherString = env.getStringObject(anotherStringRef);
+    String obj = env.getStringObject(null, objRef);
+    String anotherString = env.getStringObject(null, anotherStringRef);
     return obj.compareTo(anotherString);
   }
 
   @MJI
   public int MJIcompare__Ljava_lang_String_2Ljava_lang_String_2__I (MJIEnv env, int clsRef, int s1Ref, int s2Ref) {
     // Is there a way to reflect?
-    String a = env.getStringObject(s1Ref);
-    String s2 = env.getStringObject(s2Ref);
+    String a = env.getStringObject(null, s1Ref);
+    String s2 = env.getStringObject(null, s2Ref);
     int n1 = a.length();
     int n2 = s2.length();
     int min = Math.min(n1, n2);
@@ -221,31 +221,31 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public boolean regionMatches__ILjava_lang_String_2II__Z (MJIEnv env, int objRef, int toffset, int otherRef, int ooffset, int len) {
-    String obj = env.getStringObject(objRef);
-    String other = env.getStringObject(otherRef);
+    String obj = env.getStringObject(null, objRef);
+    String other = env.getStringObject(null, otherRef);
     return obj.regionMatches(toffset, other, ooffset, len);
 
   }
 
   @MJI
   public boolean regionMatches__ZILjava_lang_String_2II__Z (MJIEnv env, int objRef, boolean ignoreCase, int toffset, int otherRef, int ooffset, int len) {
-    String obj = env.getStringObject(objRef);
-    String other = env.getStringObject(otherRef);
+    String obj = env.getStringObject(null, objRef);
+    String other = env.getStringObject(null, otherRef);
     return obj.regionMatches(ignoreCase, toffset, other, ooffset, len);
 
   }
 
   @MJI
   public boolean startsWith__Ljava_lang_String_2I__Z (MJIEnv env, int objRef, int prefixRef, int toffset) {
-    String thisStr = env.getStringObject(objRef);
-    String prefix = env.getStringObject(prefixRef);
+    String thisStr = env.getStringObject(null, objRef);
+    String prefix = env.getStringObject(null, prefixRef);
     return thisStr.startsWith(prefix, toffset);
   }
 
   @MJI
   public boolean startsWith__Ljava_lang_String_2__Z (MJIEnv env, int objRef, int prefixRef) {
-    String thisStr = env.getStringObject(objRef);
-    String prefix = env.getStringObject(prefixRef);
+    String thisStr = env.getStringObject(null, objRef);
+    String prefix = env.getStringObject(null, prefixRef);
     return thisStr.startsWith(prefix);
   }
 
@@ -327,31 +327,31 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int indexOf__Ljava_lang_String_2__I (MJIEnv env, int objref, int str) {
-    String thisStr = env.getStringObject(objref);
-    String indexStr = env.getStringObject(str);
+    String thisStr = env.getStringObject(null, objref);
+    String indexStr = env.getStringObject(null, str);
 
     return thisStr.indexOf(indexStr);
   }
 
   @MJI
   public int indexOf__Ljava_lang_String_2I__I (MJIEnv env, int objref, int str, int fromIndex) {
-    String thisStr = env.getStringObject(objref);
-    String indexStr = env.getStringObject(str);
+    String thisStr = env.getStringObject(null, objref);
+    String indexStr = env.getStringObject(null, str);
 
     return thisStr.indexOf(indexStr, fromIndex);
   }
 
   @MJI
   public int lastIndexOf__Ljava_lang_String_2I__I (MJIEnv env, int objref, int str, int fromIndex) {
-    String thisStr = env.getStringObject(objref);
-    String indexStr = env.getStringObject(str);
+    String thisStr = env.getStringObject(null, objref);
+    String indexStr = env.getStringObject(null, str);
 
     return thisStr.lastIndexOf(indexStr, fromIndex);
   }
 
   @MJI
   public int substring__I__Ljava_lang_String_2 (MJIEnv env, int objRef, int beginIndex) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(null, objRef);
     String result = obj.substring(beginIndex);
     return env.newString(NativeMethodInfo.CTX, result);
 
@@ -359,7 +359,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int substring__II__Ljava_lang_String_2 (MJIEnv env, int objRef, int beginIndex, int endIndex) {
-    String obj = env.getStringObject(objRef);
+    String obj = env.getStringObject(NativeMethodInfo.CTX, objRef);
     String result = obj.substring(beginIndex, endIndex);
     return env.newString(NativeMethodInfo.CTX, result);
 
@@ -432,17 +432,17 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public boolean matches__Ljava_lang_String_2__Z (MJIEnv env, int objRef, int regexRef) {
-    String s = env.getStringObject(objRef);
-    String r = env.getStringObject(regexRef);
+    String s = env.getStringObject(null, objRef);
+    String r = env.getStringObject(null, regexRef);
 
     return s.matches(r);
   }
 
   @MJI
   public int replaceFirst__Ljava_lang_String_2Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int regexRef, int replacementRef) {
-    String thisStr = env.getStringObject(objRef);
-    String regexStr = env.getStringObject(regexRef);
-    String replacementStr = env.getStringObject(replacementRef);
+    String thisStr = env.getStringObject(null, objRef);
+    String regexStr = env.getStringObject(null, regexRef);
+    String replacementStr = env.getStringObject(null, replacementRef);
 
     String result = thisStr.replaceFirst(regexStr, replacementStr);
     return (result != thisStr) ? env.newString(NativeMethodInfo.CTX, result) : objRef;
@@ -450,9 +450,9 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int replaceAll__Ljava_lang_String_2Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int regexRef, int replacementRef) {
-    String thisStr = env.getStringObject(objRef);
-    String regexStr = env.getStringObject(regexRef);
-    String replacementStr = env.getStringObject(replacementRef);
+    String thisStr = env.getStringObject(null, objRef);
+    String regexStr = env.getStringObject(null, regexRef);
+    String replacementStr = env.getStringObject(null, replacementRef);
 
     String result = thisStr.replaceAll(regexStr, replacementStr);
     return (result != thisStr) ? env.newString(NativeMethodInfo.CTX, result) : objRef;
@@ -460,8 +460,8 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int split__Ljava_lang_String_2I___3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int strRef, int limit) {
-    String s = env.getStringObject(strRef);
-    String obj = env.getStringObject(clsObjRef);
+    String s = env.getStringObject(null, strRef);
+    String obj = env.getStringObject(null, clsObjRef);
 
     String[] result = obj.split(s, limit);
 
@@ -470,8 +470,8 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int split__Ljava_lang_String_2___3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int strRef) {
-    String s = env.getStringObject(strRef);
-    String obj = env.getStringObject(clsObjRef);
+    String s = env.getStringObject(null, strRef);
+    String obj = env.getStringObject(null, clsObjRef);
 
     String[] result = obj.split(s);
 
@@ -480,7 +480,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int toLowerCase__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int locRef) {
-    String s = env.getStringObject(objRef);
+    String s = env.getStringObject(null, objRef);
     Locale loc = JPF_java_util_Locale.getLocale(env, locRef);
 
     String lower = s.toLowerCase(loc);
@@ -490,7 +490,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int toLowerCase____Ljava_lang_String_2 (MJIEnv env, int objRef) {
-    String s = env.getStringObject(objRef);
+    String s = env.getStringObject(null, objRef);
     String lower = s.toLowerCase();
 
     return (s == lower) ? objRef : env.newString(NativeMethodInfo.CTX, lower);
@@ -498,7 +498,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int toUpperCase__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int locRef) {
-    String s = env.getStringObject(objRef);
+    String s = env.getStringObject(null, objRef);
     Locale loc = JPF_java_util_Locale.getLocale(env, locRef);
 
     String upper = s.toUpperCase(loc);
@@ -508,7 +508,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int toUpperCase____Ljava_lang_String_2 (MJIEnv env, int objRef) {
-    String s = env.getStringObject(objRef);
+    String s = env.getStringObject(null, objRef);
     String upper = s.toUpperCase();
 
     return (s == upper) ? objRef : env.newString(NativeMethodInfo.CTX, upper);
@@ -570,7 +570,7 @@ public class JPF_java_lang_String extends NativePeer {
     // <2do> Replace this with a JPF space HashSet once we have a String model
     Heap heap = env.getHeap();
 
-    String s = env.getStringObject(robj);
+    String s = env.getStringObject(null, robj);
     ElementInfo ei = heap.newInternString(NativeMethodInfo.CTX, s, env.getThreadInfo());
 
     return ei.getObjectRef();

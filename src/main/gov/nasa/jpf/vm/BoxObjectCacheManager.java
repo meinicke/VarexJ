@@ -75,7 +75,7 @@ public class BoxObjectCacheManager {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Byte");
     byte val = byteLow;
     for (int i = 0; i < n; i++) {
-      ElementInfo eiByte = heap.newSystemObject(ci, ti, ANCHOR);
+      ElementInfo eiByte = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiByte.setByteField("value", val++);
       eiArray.setReferenceElement(i, eiByte.getObjectRef());
     }
@@ -114,7 +114,7 @@ public class BoxObjectCacheManager {
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Character");
     for (int i = 0; i < n; i++) {
-      ElementInfo eiChar = heap.newSystemObject(ci, ti, ANCHOR);
+      ElementInfo eiChar = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiChar.setCharField("value", (char) i);
       eiArray.setReferenceElement(i, eiChar.getObjectRef());
     }
@@ -157,7 +157,7 @@ public class BoxObjectCacheManager {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Short");
     short val = shortLow;
     for (int i = 0; i < n; i++) {
-      ElementInfo eiShort = heap.newSystemObject(ci, ti, ANCHOR);
+      ElementInfo eiShort = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiShort.setShortField("value", val++);
       eiArray.setReferenceElement(i, eiShort.getObjectRef());
     }
@@ -198,7 +198,7 @@ public class BoxObjectCacheManager {
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
     for (int i = 0; i < n; i++) {
-      ElementInfo eiInteger = heap.newSystemObject(ci, ti, ANCHOR);
+      ElementInfo eiInteger = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiInteger.setIntField(ctx, "value", i + intLow);
       eiArray.setReferenceElement(i, eiInteger.getObjectRef());
     }
@@ -239,8 +239,8 @@ public class BoxObjectCacheManager {
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long");
     for (int i = 0; i < n; i++) {
-      ElementInfo eiLong = heap.newSystemObject(ci, ti, ANCHOR);
-      eiLong.setLongField("value", i + longLow);
+      ElementInfo eiLong = heap.newSystemObject(ctx, ci, ti, ANCHOR);
+      eiLong.setLongField(ctx, "value", i + longLow);
       eiArray.setReferenceElement(i, eiLong.getObjectRef());
     }
 
@@ -260,8 +260,8 @@ public class BoxObjectCacheManager {
     if (l >= longLow && l <= longHigh) { return ti.getElementInfo(longCache).getReferenceElement((int) l - longLow); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long");
-    ElementInfo eiLong = ti.getHeap().newObject(null, ci, ti);
-    eiLong.setLongField("value", l);
+    ElementInfo eiLong = ti.getHeap().newObject(ctx, ci, ti);
+    eiLong.setLongField(ctx, "value", l);
     return eiLong.getObjectRef();
   }
 }

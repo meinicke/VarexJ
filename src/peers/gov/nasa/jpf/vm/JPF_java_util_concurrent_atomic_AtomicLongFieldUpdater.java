@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 
@@ -34,7 +35,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     // direct Object subclass, so we don't have to call a super ctor
 
     ClassInfo ci = env.getReferredClassInfo(tClsObjRef);
-    String fname = env.getStringObject(fNameRef);
+    String fname = env.getStringObject(null, fNameRef);
     FieldInfo fi = ci.getInstanceField(fname);
 
     ClassInfo fci = fi.getTypeClassInfo();
@@ -56,13 +57,14 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return false;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int fidx = env.getIntField(ctx, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
-    long v = ei.getLongField(fi);
+    long v = ei.getLongField(fi).getValue();
     if (v == fExpect) {
-      ei.setLongField(fi, fUpdate);
+      ei.setLongField(ctx, fi, fUpdate);
       return true;
     } else {
       return false;
@@ -83,11 +85,12 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int fidx = env.getIntField(ctx, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
-    ei.setLongField(fi, fNewValue);
+    ei.setLongField(ctx, fi, fNewValue);
   }
 
   @MJI
@@ -108,7 +111,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     ElementInfo ei = env.getElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
-    return ei.getLongField(fi);
+    return ei.getLongField(fi).getValue();
   }
 
   @MJI
@@ -119,12 +122,13 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return 0;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int fidx = env.getIntField(ctx, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
-    long result = ei.getLongField(fi);
+    long result = ei.getLongField(fi).getValue();
 
-    ei.setLongField(fi, fNewValue);
+    ei.setLongField(ctx, fi, fNewValue);
 
     return result;
   }
@@ -137,12 +141,13 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return 0;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int fidx = env.getIntField(ctx, objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
-    long result = ei.getLongField(fi);
+    long result = ei.getLongField(fi).getValue();
 
-    ei.setLongField(fi, result + fDelta);
+    ei.setLongField(ctx, fi, result + fDelta);
 
     return result;
   }

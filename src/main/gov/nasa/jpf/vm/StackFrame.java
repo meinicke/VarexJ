@@ -558,9 +558,10 @@ public int nLocals;
   /**
    * this returns all of them - use either if you know there will be only
    * one attribute at callerSlots time, or check/process result with ObjectList
+ * @param ctx TODO
    */
-  public Object getOperandAttr (int offset) {
-    int i = top()-offset;
+  public Object getOperandAttr (FeatureExpr ctx, int offset) {
+    int i = getTopPos(ctx)-offset;
     assert (i >= stackBase);
     
     if (attrs != null) {
@@ -663,9 +664,10 @@ public int nLocals;
   /**
    * this returns all of them - use either if you know there will be only
    * one attribute at callerSlots time, or check/process result with ObjectList
+ * @param ctx TODO
    */
-  public Object getLongOperandAttr () {
-    return getOperandAttr(1);
+  public Object getLongOperandAttr (FeatureExpr ctx) {
+    return getOperandAttr(ctx, 1);
   }
 
   /**
@@ -858,7 +860,7 @@ public int nLocals;
 
       if (!miCallee.isStatic()) {
         a = new Object[nArgs+1];
-        a[0] = getOperandAttr(miCallee.getArgumentsSize()-1);
+        a[0] = getOperandAttr(TRUE, miCallee.getArgumentsSize()-1);
       } else {
         a = new Object[nArgs];
       }
@@ -866,10 +868,10 @@ public int nLocals;
       for (int i=nArgs-1, off=0, j=a.length-1; i>=0; i--, j--) {
         byte argType = at[i];
         if (argType == Types.T_LONG || argType == Types.T_DOUBLE) {
-          a[j] = getOperandAttr(off+1);
+          a[j] = getOperandAttr(TRUE, off+1);
           off +=2;
         } else {
-          a[j] = getOperandAttr(off);
+          a[j] = getOperandAttr(TRUE, off);
           off++;
         }
       }
@@ -891,7 +893,7 @@ public int nLocals;
       int nArgSlots = miCallee.getArgumentsSize();
 
       for (int i=0; i<nArgSlots; i++){
-        Object a = getOperandAttr(i);
+        Object a = getOperandAttr(TRUE, i);
         if (ObjectList.containsType(a, attrType)){
           return true;
         }
@@ -1565,7 +1567,7 @@ public int nLocals;
         pw.print('^');
       }
       pw.print(stack.getLocal(TRUE, i).getValue());
-      Object a = getOperandAttr(top()-i);
+      Object a = getOperandAttr(TRUE, top()-i);
       if (a != null){
         pw.print(" {");
         pw.print(a);
@@ -1732,23 +1734,32 @@ pw.print(stack);
 //	  return Types.intsToDouble( stack.peek(ctx, offset).getValue(), stack.peek(ctx, offset + 1).getValue());
   }
   
-  public long peekLong (FeatureExpr ctx) {
+  public Conditional<Long> peekLong (FeatureExpr ctx) {
     return peekLong(ctx, 0);
   }
 
-  public long peekLong (FeatureExpr ctx, int offset) {
-	  return stack.peekLong(ctx, offset).getValue();
+  public Conditional<Long> peekLong (FeatureExpr ctx, int offset) {
+	  return stack.peekLong(ctx, offset);
 //    return Types.intsToLong( stack.peek(ctx, offset).getValue(), stack.peek(ctx, offset + 1).getValue());
   }
-
-  // TODO remove
+  
+  /**
+   * Use: {@link StackFrame#push(FeatureExpr, Conditional)}.
+   * @param v
+   */
+  @Deprecated
   public void pushLong (long v) {
 	  stack.push(TRUE, v);
 //    push(TRUE, new One<>((int) (v>>32)));
 //    push(TRUE, new One<>((int) v));	  
   }
 
-  // TODO remove
+
+  /**
+   * Use: {@link StackFrame#push(FeatureExpr, Conditional)}.
+   * @param v
+   */
+  @Deprecated
   public void pushDouble (double v) {
     stack.push(TRUE, v);
 //    push(TRUE, new One<>((int) (l>>32)));
@@ -1761,12 +1772,12 @@ pw.print(stack);
 //  }
   
   public Conditional<Double> popDouble (FeatureExpr ctx) {// TODO
-      int i = top();
+      
 //    int lo = stack.pop(ctx).getValue();//slots[i--];
 //    int hi = stack.pop(ctx).getValue();//slots[i--];
 
     if (attrs != null){
-
+    	int i = top();
       attrs[i--] = null; // not really required
       attrs[i--] = null; // that's where the attribute should be
     }
@@ -1776,12 +1787,13 @@ pw.print(stack);
   }
 
   public Conditional<Long> popLong (FeatureExpr ctx) {
-    int i = top();
+    
 
 //    int lo = stack.pop(TRUE).getValue();//get(i--);//slots[i--];
 //    int hi = stack.pop(TRUE).getValue();////slots[i--];
 
     if (attrs != null){
+    	int i = top();
 //      i = top();
       attrs[i--] = null; // not really required
       attrs[i--] = null; // that's where the attribute should be
@@ -1885,9 +1897,7 @@ pw.print(stack);
     }
   }
 
-  public void pushLongLocal (int index){
-	  FeatureExpr ctx = TRUE;
-	  
+  public void pushLongLocal (FeatureExpr ctx, int index){
 	  stack.pushLongLocal(ctx, index);
 	  
 //	  stack.pushLocal(ctx, index);
@@ -1897,7 +1907,7 @@ pw.print(stack);
 //	  stack.duplicateIndex(ctx, index+1, 2, true);
 //	  stack.incrTop(ctx, 2);  
 	  
-    int t = top();
+    
 //
 //    slots[++t] = stack.get(index);
 //    isRef.clear(t);
@@ -1905,6 +1915,7 @@ pw.print(stack);
 //    isRef.clear(t);
 
     if (attrs != null){
+    	int t = top();
       attrs[t-1] = attrs[index];
       attrs[t] = null;
     }
@@ -1929,7 +1940,7 @@ pw.print(stack);
   }
 
   public void storeLongOperand (FeatureExpr ctx, int index){
-    int t = top()-1;
+    
 //    int i = index;
 //    stack.storeOperand(ctx, index + 1);
 //    stack.storeOperand(ctx, index);
@@ -1946,6 +1957,7 @@ pw.print(stack);
 //    isRef.clear(i);
 
     if (attrs != null){
+    	int t = top()+1;
       attrs[index] = attrs[t]; // its in the lower word
       attrs[index + 1] = null;
 

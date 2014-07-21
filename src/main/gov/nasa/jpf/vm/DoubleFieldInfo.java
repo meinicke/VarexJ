@@ -18,7 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 
 
 
@@ -43,8 +45,8 @@ public class DoubleFieldInfo extends DoubleSlotFieldInfo {
   }
 
 
-  public void initialize (ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setDoubleValue(storageOffset, init);
+  public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
+    ei.getFields().setDoubleValue(storageOffset, new One<>(init));
   }
 
   public Class<? extends ChoiceGenerator<?>> getChoiceGeneratorType() {
@@ -56,12 +58,12 @@ public class DoubleFieldInfo extends DoubleSlotFieldInfo {
   }
 
   public String valueToString (Fields f) {
-    double d = f.getDoubleValue(storageOffset);
+    double d = f.getDoubleValue(storageOffset).getValue();
     return Double.toString(d);
   }
 
   public Object getValueObject (Fields f){
-    double d = f.getDoubleValue(storageOffset);
+    double d = f.getDoubleValue(storageOffset).getValue();
     return new Double(d);
   }
 

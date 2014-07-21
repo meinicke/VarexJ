@@ -145,7 +145,7 @@ public class JPF_java_lang_Class extends NativePeer {
     // is rather a strange beast (not even Object derived)
     
     ClassLoaderInfo scli = env.getSystemClassLoaderInfo(); // this is the one responsible for builtin classes
-    String primClsName = env.getStringObject(stringRef); // always initialized
+    String primClsName = env.getStringObject(null, stringRef); // always initialized
     
     ClassInfo ci = scli.getResolvedClassInfo(primClsName);
     return ci.getClassObjectRef();
@@ -181,7 +181,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
     }
     
-    String clsName = env.getStringObject(clsNameRef);
+    String clsName = env.getStringObject(null, clsNameRef);
     
     if (clsName.isEmpty()){
       env.throwException("java.lang.ClassNotFoundException", "empty class name");
@@ -231,7 +231,8 @@ public class JPF_java_lang_Class extends NativePeer {
     ClassInfo ci = env.getReferredClassInfo(robj);   // what are we
     MethodInfo miCtor = ci.getMethod("<init>()V", true); // note there always is one since something needs to call Object()
 
-    if (frame == null){ // first time around
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	if (frame == null){ // first time around
       if(ci.isAbstract()){ // not allowed to instantiate
         env.throwException("java.lang.InstantiationException");
         return MJIEnv.NULL;
@@ -243,12 +244,12 @@ public class JPF_java_lang_Class extends NativePeer {
         return MJIEnv.NULL;
       }
 
-      int objRef = env.newObjectOfUncheckedClass(ci);  // create the thing
+      int objRef = env.newObjectOfUncheckedClass(ctx, ci);  // create the thing
 
       frame = miCtor.createDirectCallStackFrame(ti, 1);
       // note that we don't set this as a reflection call since it is supposed to propagate exceptions
       frame.setReferenceArgument(0, objRef, null);
-      frame.setLocalReferenceVariable(NativeMethodInfo.CTX, 0, objRef);        // (1) store ref for retrieval during re-exec
+      frame.setLocalReferenceVariable(ctx, 0, objRef);        // (1) store ref for retrieval during re-exec
       ti.pushFrame(frame);
       
       // check if we have to push clinits
@@ -258,7 +259,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // re-execution
-      int objRef = frame.getLocalVariable(NativeMethodInfo.CTX, 0).getValue(); // that's the object ref we set in (1)
+      int objRef = frame.getLocalVariable(ctx, 0).getValue(); // that's the object ref we set in (1)
       return objRef;
     }      
   }
@@ -321,7 +322,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
     }
     
-    String mname = env.getStringObject(nameRef);
+    String mname = env.getStringObject(null, nameRef);
     return getMethod(env, clsRef, mci, mname, argTypesRef, false, false);
   }
 
@@ -348,7 +349,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
     }
     
-    String mname = env.getStringObject(nameRef);
+    String mname = env.getStringObject(null, nameRef);
     return getMethod( env, clsRef, mci, mname, argTypesRef, true, true);
   }
 
@@ -527,7 +528,7 @@ public class JPF_java_lang_Class extends NativePeer {
   static int createFieldObject (MJIEnv env, FieldInfo fi, ClassInfo fci){
     int regIdx = JPF_java_lang_reflect_Field.registerFieldInfo(fi);
     
-    int eidx = env.newObject(fci);
+    int eidx = env.newObject(NativeMethodInfo.CTX, fci);
     ElementInfo ei = env.getModifiableElementInfo(eidx);    
     ei.setIntField(NativeMethodInfo.CTX, "regIdx", regIdx);
     
@@ -609,7 +610,7 @@ public class JPF_java_lang_Class extends NativePeer {
     
   int getField (MJIEnv env, int clsRef, int nameRef, boolean isRecursiveLookup) {    
     ClassInfo ci = env.getReferredClassInfo( clsRef);
-    String fname = env.getStringObject(nameRef);
+    String fname = env.getStringObject(null, nameRef);
     FieldInfo fi = null;
     
     if (isRecursiveLookup) {
@@ -716,7 +717,7 @@ public class JPF_java_lang_Class extends NativePeer {
    */
   @MJI
   public int getByteArrayFromResourceStream__Ljava_lang_String_2___3B(MJIEnv env, int clsRef, int nameRef) {
-    String name = env.getStringObject(nameRef);
+    String name = env.getStringObject(null, nameRef);
 
     // <2do> this is not loading from the classfile location! fix it
     InputStream is = env.getClass().getResourceAsStream(name);
@@ -931,7 +932,7 @@ public class JPF_java_lang_Class extends NativePeer {
    */
   @MJI
   public int getResolvedName__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int robj, int resRef){
-    String rname = env.getStringObject(resRef);
+    String rname = env.getStringObject(null, resRef);
     ClassInfo ci = env.getReferredClassInfo(robj);
     if (rname == null) {
       return MJIEnv.NULL;

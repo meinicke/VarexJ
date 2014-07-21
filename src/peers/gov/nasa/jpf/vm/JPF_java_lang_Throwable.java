@@ -45,10 +45,11 @@ public class JPF_java_lang_Throwable extends NativePeer {
   @MJI
   public int fillInStackTrace____Ljava_lang_Throwable_2 (MJIEnv env, int objref) {
     ThreadInfo ti = env.getThreadInfo();
-    int[] snap = ti.getSnapshot(NativeMethodInfo.CTX, objref);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int[] snap = ti.getSnapshot(ctx, objref);
     
-    int aref = env.newIntArray(snap);
-    env.setReferenceField(NativeMethodInfo.CTX, objref, "snapshot", aref);
+    int aref = env.newIntArray(ctx, snap);
+    env.setReferenceField(ctx, objref, "snapshot", aref);
     
     return objref;
   }
@@ -81,7 +82,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
     
     String s = ci.getName();
     if (msgRef != MJIEnv.NULL){
-      s += ": " + env.getStringObject(msgRef);
+      s += ": " + env.getStringObject(null, msgRef);
     }
     
     return env.newString(NativeMethodInfo.CTX, s);

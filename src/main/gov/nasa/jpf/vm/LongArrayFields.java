@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
@@ -25,19 +26,33 @@ import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * element values for long[] objects
  */
 public class LongArrayFields extends ArrayFields {
 
-  long[] values;
+  Conditional<Long>[] values;
 
   public LongArrayFields (int length) {
-    values = new long[length];
+    values = new Conditional[length];
+    for (int i = 0; i < values.length; i++) {
+		values[i] = new One<>(0l);
+	}
   }
 
   public long[] asLongArray() {
-    return values;
+	  long[] array = new long[values.length];
+		int i = 0;
+		for (Conditional<Long> v : values) {
+			if (v == null) {
+				continue;
+			}
+			array[i++] = v.getValue();
+		}
+
+		return array;
   }
 
   protected void printValue(PrintStream ps, int idx){
@@ -57,7 +72,7 @@ public class LongArrayFields extends ArrayFields {
   }
 
   public void appendTo (IntVector v) {
-    v.appendBits(values);
+    v.appendBits(asLongArray());
   }
 
   public LongArrayFields clone(){
@@ -71,8 +86,8 @@ public class LongArrayFields extends ArrayFields {
     if (o instanceof LongArrayFields) {
       LongArrayFields other = (LongArrayFields)o;
 
-      long[] v = values;
-      long[] vOther = other.values;
+      long[] v = asLongArray();
+      long[] vOther = other.asLongArray();
       if (v.length != vOther.length) {
         return false;
       }
@@ -90,17 +105,23 @@ public class LongArrayFields extends ArrayFields {
     }
   }
 
-  public void setLongValue (int pos, long newValue) {
-    values[pos] = newValue;
-  }
+	@Override
+	public void setLongValue(FeatureExpr ctx, int pos, Conditional<Long> newValue) {
+		if (ctx.isTautology()) {
+			values[pos] = newValue;
+		} else {
+			values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+		}
 
-  public long getLongValue (int pos) {
+	}
+
+  public Conditional<Long> getLongValue (int pos) {
     return values[pos];
   }
 
 
   public void hash(HashData hd) {
-    long[] v = values;
+    long[] v = asLongArray();
     for (int i=0; i < v.length; i++) {
       hd.add(v[i]);
     }

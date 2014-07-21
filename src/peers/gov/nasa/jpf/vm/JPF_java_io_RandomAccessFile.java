@@ -79,18 +79,19 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
   public void writeByte__I__V (MJIEnv env, int this_ptr, int data) {
     
     
-    long current_posn = env.getLongField(this_ptr, current_position);
-    long current_len = env.getLongField(this_ptr, current_length);
+    long current_posn = env.getLongField(this_ptr, current_position).getValue();
+    long current_len = env.getLongField(this_ptr, current_length).getValue();
     int chunk_size = env.getStaticIntField(RandomAccessFile, CHUNK_SIZE);
     int chunk = findDataChunk(env, this_ptr, current_posn,
                               chunk_size);
     setDataValue(env, chunk, current_posn, (byte) data, chunk_size);
     current_posn += 1;
-    env.setLongField(this_ptr, current_position, current_posn);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	env.setLongField(ctx, this_ptr, current_position, current_posn);
     if (current_posn >= current_len) {
-      env.setLongField(this_ptr, current_length, current_posn + 1);
+      env.setLongField(ctx, this_ptr, current_length, current_posn + 1);
       // update length in the mapped object if it exists
-      env.setLongField(getMapping(env,this_ptr), current_length, current_posn + 1);
+      env.setLongField(ctx, getMapping(env,this_ptr), current_length, current_posn + 1);
     }
   }
 
@@ -108,22 +109,24 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
 
   @MJI
   public void setLength__J__V(MJIEnv env, int this_ptr, long len) {
-    long current_posn = env.getLongField(this_ptr, current_position);
-    long current_len = env.getLongField(this_ptr, current_length);
+    long current_posn = env.getLongField(this_ptr, current_position).getValue();
+    long current_len = env.getLongField(this_ptr, current_length).getValue();
+    FeatureExpr ctx = NativeMethodInfo.CTX;
     if (current_posn >= len && len < current_len) {
-      env.setLongField(this_ptr, current_position, len);
+      
+	env.setLongField(ctx, this_ptr, current_position, len);
     }
-    env.setLongField(this_ptr, current_length, len);
+    env.setLongField(ctx, this_ptr, current_length, len);
     // update length in the mapped object if it exists
-    env.setLongField(getMapping(env,this_ptr), current_length, current_posn + 1);
+    env.setLongField(ctx, getMapping(env,this_ptr), current_length, current_posn + 1);
   }
 
   @MJI
   public int read___3BII__I (MJIEnv env, int this_ptr, int data_array,
                          int start, int len) {
     int i = 0;
-    long current_posn = env.getLongField(this_ptr, current_position);
-    long current_len = env.getLongField(this_ptr, current_length);
+    long current_posn = env.getLongField(this_ptr, current_position).getValue();
+    long current_len = env.getLongField(this_ptr, current_length).getValue();
     while (i < len && current_posn < current_len) {
       env.setByteArrayElement(data_array, start + i, readByte____B(env, this_ptr));
       i += 1;
@@ -137,8 +140,9 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
 
   @MJI
   public byte readByte____B (MJIEnv env, int this_ptr) {
-    long current_posn = env.getLongField(this_ptr, current_position);
-    long current_len = env.getLongField(this_ptr, current_length);
+	  FeatureExpr ctx = NativeMethodInfo.CTX;
+    long current_posn = env.getLongField(this_ptr, current_position).getValue();
+    long current_len = env.getLongField(this_ptr, current_length).getValue();
     int chunk_size = env.getStaticIntField(RandomAccessFile, CHUNK_SIZE);
     if (current_posn >= current_len) {
       env.throwException(EOFException);
@@ -146,7 +150,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int chunk = findDataChunk(env, this_ptr, current_posn,
                               chunk_size);
     byte result = getDataValue(env, chunk, current_posn, chunk_size);
-    env.setLongField(this_ptr, current_position, current_posn + 1);
+    env.setLongField(ctx, this_ptr, current_position, current_posn + 1);
     return result;
   }
 
@@ -179,18 +183,18 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int cur_obj = env.getReferenceField(ctx, this_ptr, data_root).getValue();
     long chunk_idx = position/chunk_size;
     while (cur_obj != MJIEnv.NULL &&
-           env.getLongField(cur_obj, chunk_index) < chunk_idx) {
+           env.getLongField(cur_obj, chunk_index).getValue() < chunk_idx) {
       prev_obj = cur_obj;
       cur_obj = env.getReferenceField(ctx, cur_obj, next).getValue();
     }
     if (cur_obj != MJIEnv.NULL &&
-        env.getLongField(cur_obj, chunk_index) == chunk_idx) {
+        env.getLongField(cur_obj, chunk_index).getValue() == chunk_idx) {
       return cur_obj;
     }
-    int result = env.newObject(dataRep);
+    int result = env.newObject(ctx, dataRep);
     int int_array = env.newIntArray(chunk_size/INT_SIZE);
     env.setReferenceField(NativeMethodInfo.CTX, result, data, int_array);
-    env.setLongField(result, chunk_index, chunk_idx);
+    env.setLongField(ctx, result, chunk_index, chunk_idx);
     env.setReferenceField(NativeMethodInfo.CTX, result, next, cur_obj);
     if (prev_obj == MJIEnv.NULL) {
       env.setReferenceField(NativeMethodInfo.CTX, this_ptr, data_root, result);

@@ -41,8 +41,8 @@ public class JPF_java_io_ObjectStreamClass extends NativePeer {
     FieldInfo fi = ci.getDeclaredStaticField("serialVersionUID");
     if (fi != null){
       ElementInfo ei = ci.getStaticElementInfo();
-      long l = ei.getLongField(fi);
-      return env.newLong(l);
+      long l = ei.getLongField(fi).getValue();
+      return env.newLong(NativeMethodInfo.CTX, l);
     } else {
       return MJIEnv.NULL;
     }

@@ -12,4 +12,25 @@ public class BankAccountTest extends TestJPF {
 			BankAccount.Main.main(null);
 		}
 	}
+	
+	@Test
+	public void runBankAccountDouble() {
+		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar")) {
+			BankAccountDouble.Main.main(null);
+		}
+	}
+	
+	@Test
+	public void runBankAccountLong() {
+		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar")) {
+			BankAccountLong.Main.main(null);
+		}
+	}
+	
+	@Test
+	public void runBankAccountFloat() {
+		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar")) {
+			BankAccountFloat.Main.main(null);
+		}
+	}
 }

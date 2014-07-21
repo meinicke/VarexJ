@@ -55,10 +55,11 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   static int createMethodObject (MJIEnv env, ClassInfo ciMth, MethodInfo mi){
     // note - it is the callers responsibility to ensure Method is properly initialized    
     int regIdx = registry.registerMethodInfo(mi);
-    int eidx = env.newObject( ciMth);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int eidx = env.newObject( ctx, ciMth);
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
-    ei.setIntField(NativeMethodInfo.CTX, "regIdx", regIdx);
+    ei.setIntField(ctx, "regIdx", regIdx);
     ei.setBooleanField("isAccessible", mi.isPublic());
     
     return eidx;
@@ -179,13 +180,13 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     if (rt == Types.T_DOUBLE) {
       attr = frame.getLongResultAttr();
       double v = frame.getDoubleResult();
-      ret = env.newObject(ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Double"));
+      ret = env.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Double"));
       rei = env.getModifiableElementInfo(ret);
       rei.setDoubleField("value", v);
     } else if (rt == Types.T_FLOAT) {
       attr = frame.getResultAttr();
       float v = frame.getFloatResult();
-      ret = env.newObject(ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Float"));
+      ret = env.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Float"));
       rei = env.getModifiableElementInfo(ret);
       rei.setFloatField("value", v);
     } else if (rt == Types.T_LONG) {
@@ -317,7 +318,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_LONG:
     {
-      long v = eiArg.getLongField("value");
+      long v = eiArg.getLongField("value").simplify(NativeMethodInfo.CTX).getValue();
       switch (destType){
       case Types.T_LONG:
         return frame.setLongArgument(argIdx, v, attr);

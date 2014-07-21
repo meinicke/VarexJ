@@ -32,7 +32,7 @@ public class DRETURN extends LongReturn {
   
 
   public double getReturnValue() {
-    return Types.longToDouble(ret);
+    return Types.longToDouble(ret.getValue());
   }
 
   public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
@@ -41,7 +41,7 @@ public class DRETURN extends LongReturn {
       ret = frame.peekLong(ctx);
     }
 
-    return new Double(Types.longToDouble(ret));
+    return new Double(Types.longToDouble(ret.getValue()));
   }
 
   public int getByteCode () {

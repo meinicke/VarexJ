@@ -30,14 +30,26 @@ import java.io.PrintStream;
  */
 public class DoubleArrayFields extends ArrayFields {
 
-  double[] values;
+  Conditional<Double>[] values;
 
   public DoubleArrayFields (int length) {
-    values = new double[length];
+    values = new Conditional[length];
+    for (int i = 0; i < values.length; i++) {
+		values[i] = new One<>(0.0);
+	}
   }
 
   public double[] asDoubleArray() {
-    return values;
+		double[] array = new double[values.length];
+		int i = 0;
+		for (Conditional<Double> v : values) {
+			if (v == null) {
+				continue;
+			}
+			array[i++] = v.getValue();
+		}
+
+		return array;
   }
 
   protected void printValue(PrintStream ps, int idx){
@@ -57,7 +69,7 @@ public class DoubleArrayFields extends ArrayFields {
   }
 
   public void appendTo (IntVector v) {
-    v.appendRawBits(values);
+    v.appendRawBits(asDoubleArray());
   }
 
   public DoubleArrayFields clone(){
@@ -70,8 +82,8 @@ public class DoubleArrayFields extends ArrayFields {
     if (o instanceof DoubleArrayFields) {
       DoubleArrayFields other = (DoubleArrayFields)o;
 
-      double[] v = values;
-      double[] vOther = other.values;
+      double[] v = asDoubleArray();
+      double[] vOther = asDoubleArray();
       if (v.length != vOther.length) {
         return false;
       }
@@ -89,17 +101,17 @@ public class DoubleArrayFields extends ArrayFields {
     }
   }
 
-  public void setDoubleValue (int pos, double newValue) {
+  protected void setDoubleValue (int pos, Conditional<Double> newValue) {
     values[pos] = newValue;
   }
 
-  public double getDoubleValue (int pos) {
+  public Conditional<Double> getDoubleValue (int pos) {
     return values[pos];
   }
 
 
   public void hash(HashData hd) {
-    double[] v = values;
+    double[] v = asDoubleArray();
     for (int i=0; i < v.length; i++) {
       hd.add(v[i]);
     }

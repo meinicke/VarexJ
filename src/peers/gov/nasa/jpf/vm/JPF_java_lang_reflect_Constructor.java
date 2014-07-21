@@ -60,7 +60,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     // note - it is the callers responsibility to ensure Constructor is properly initialized    
     
     int regIdx = registry.registerMethodInfo(mi);
-    int eidx = env.newObject(ciCtor);
+    int eidx = env.newObject(NativeMethodInfo.CTX, ciCtor);
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
     ei.setIntField(NativeMethodInfo.CTX, "regIdx", regIdx);
@@ -92,7 +92,8 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     DirectCallStackFrame frame = ti.getReturnedDirectCall();
     MethodInfo miCallee = getMethodInfo(env,mthRef);
 
-    if (frame == null) { // first time
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	if (frame == null) { // first time
       ClassInfo ci = miCallee.getClassInfo();
 
        if (ci.isAbstract()){
@@ -100,11 +101,11 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
         return MJIEnv.NULL;
       }
 
-      int objRef = env.newObjectOfUncheckedClass( ci);
+      int objRef = env.newObjectOfUncheckedClass( ctx, ci);
       frame = miCallee.createDirectCallStackFrame( ti, 1);
       frame.setReflection();
       
-      frame.setLocalReferenceVariable(NativeMethodInfo.CTX, 0, objRef);  // (1) store the objRef for retrieval during re-exec
+      frame.setLocalReferenceVariable(ctx, 0, objRef);  // (1) store the objRef for retrieval during re-exec
       
       int argOffset = frame.setReferenceArgument(0, objRef, null);
       if (!JPF_java_lang_reflect_Method.pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef)) {
@@ -119,7 +120,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       return MJIEnv.NULL;
       
     } else { // reflection call returned
-      int objRef = frame.getLocalVariable(NativeMethodInfo.CTX, 0).getValue(); // that's the object ref we stored in (1)
+      int objRef = frame.getLocalVariable(ctx, 0).getValue(); // that's the object ref we stored in (1)
       return objRef;
     }
   }

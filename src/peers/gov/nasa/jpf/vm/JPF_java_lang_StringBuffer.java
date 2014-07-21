@@ -96,7 +96,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 
   @MJI
   public int append__Ljava_lang_String_2__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int sref) {
-    String s = env.getStringObject(sref);    
+    String s = env.getStringObject(null, sref);    
     if (s == null) s = "null";
     
     return appendString(env, objref, s);

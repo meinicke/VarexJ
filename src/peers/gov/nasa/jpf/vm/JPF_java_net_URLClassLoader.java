@@ -37,7 +37,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
   @MJI
   public void addURL0__Ljava_lang_String_2__V (MJIEnv env, int objRef, int urlRef) throws MalformedURLException {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
-    String url = env.getStringObject(urlRef);
+    String url = env.getStringObject(null, urlRef);
 
     String path = null;
     URL u = new URL(url);
@@ -57,7 +57,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
   @MJI
   public int findClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef) {
-    String typeName = env.getStringObject(nameRef);
+    String typeName = env.getStringObject(null, nameRef);
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
     ThreadInfo ti = env.getThreadInfo();
 
@@ -85,7 +85,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
   @MJI
   public int findResource0__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef){
-    String rname = env.getStringObject(resRef);
+    String rname = env.getStringObject(null, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
@@ -96,7 +96,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
   @MJI
   public int findResources0__Ljava_lang_String_2___3Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef) {
-    String rname = env.getStringObject(resRef);
+    String rname = env.getStringObject(null, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 

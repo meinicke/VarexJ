@@ -35,6 +35,18 @@ public class One<T> extends Conditional<T> {
 			for (int x : (int[])value) {
 				s+= x + ", ";
 			}
+		} else if (value instanceof long[]) {
+			for (long x : (long[])value) {
+				s+= x + "l, ";
+			}
+		} else if (value instanceof double[]) {
+			for (double x : (double[])value) {
+				s+= x + "d, ";
+			}
+		} else if (value instanceof float[]) {
+			for (float x : (float[])value) {
+				s+= x + "f, ";
+			}
 		} else if (value instanceof char[]) {
 			s += new String((char[])value);
 		} else {

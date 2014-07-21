@@ -124,7 +124,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
                                                                   int stringRef) {
     System.out.println("# entering nativeStaticMethod()");
 
-    String s = env.getStringObject(stringRef);
+    String s = env.getStringObject(null, stringRef);
 
     if ("Blah".equals(s)) {
       return l + 2;

@@ -27,7 +27,6 @@ import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Processor;
 
 import java.io.PrintWriter;
-import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -730,7 +729,7 @@ public abstract class ElementInfo implements Cloneable {
    *  - you constructed a multi value list with ObjectList.createList()
    */
   public void setElementAttr (int idx, Object attr){
-    int nElements = getNumberOfFieldsOrElements();
+	int nElements = getNumberOfFieldsOrElements();
     checkIsModifiable();
     fields.setFieldAttr( nElements, idx, attr);
   }
@@ -813,8 +812,8 @@ public abstract class ElementInfo implements Cloneable {
   public void setIntField(FeatureExpr ctx, String fname, int value) {
     setIntField(ctx, getFieldInfo(fname), value);
   }
-  public void setLongField (String fname, long value) {
-    setLongField( getFieldInfo(fname), value);
+  public void setLongField (FeatureExpr ctx, String fname, long value) {
+    setLongField( ctx, getFieldInfo(fname), value);
   }
   public void setFloatField (String fname, float value) {
     setFloatField( getFieldInfo(fname), value);
@@ -915,12 +914,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setLongField(FieldInfo fi, long newValue) {
+  public void setLongField(FeatureExpr ctx, FieldInfo fi, long newValue) {
     checkIsModifiable();
 
     if (fi.isLongField()) {
       int offset = fi.getStorageOffset();
-      fields.setLongValue( offset, newValue);
+      fields.setLongValue( ctx, offset, new One<>(newValue));
     } else {
       throw new JPFException("not a long field: " + fi.getName());
     }
@@ -942,7 +941,7 @@ public abstract class ElementInfo implements Cloneable {
 
     if (fi.isDoubleField()) {
       int offset = fi.getStorageOffset();
-      fields.setDoubleValue( offset, newValue);
+      fields.setDoubleValue( offset, new One<>(newValue));
     } else {
       throw new JPFException("not a double field: " + fi.getName());
     }
@@ -974,12 +973,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void set2SlotField(FieldInfo fi, long newValue) {
+  public void set2SlotField(FeatureExpr ctx, FieldInfo fi, Conditional<Long> newValue) {
     checkIsModifiable();
 
     if (fi.is2SlotField()) {
       int offset = fi.getStorageOffset();
-      fields.setLongValue( offset, newValue);
+      fields.setLongValue( ctx, offset, newValue);
     } else {
       throw new JPFException("not a 2 slot field: " + fi.getName());
     }
@@ -1019,15 +1018,15 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     
     FieldInfo fi = getDeclaredFieldInfo(clsBase, fname);
-    fields.setLongValue( fi.getStorageOffset(), value);
+    fields.setLongValue( null, fi.getStorageOffset(), new One<>(value));
   }
 
   public long getDeclaredLongField(String fname, String clsBase) {
     FieldInfo fi = getDeclaredFieldInfo(clsBase, fname);
-    return getLongField( fi);
+    return getLongField( fi).getValue();
   }
 
-  public long getLongField(String fname) {
+  public Conditional<Long> getLongField(String fname) {
     FieldInfo fi = getFieldInfo(fname);
     return getLongField( fi);
   }
@@ -1141,7 +1140,7 @@ public abstract class ElementInfo implements Cloneable {
       throw new JPFException("not a int field: " + fi.getName());
     }
   }
-  public long getLongField(FieldInfo fi) {
+  public Conditional<Long> getLongField(FieldInfo fi) {
     if (fi.isLongField()){
       return fields.getLongValue(fi.getStorageOffset());
     } else {
@@ -1157,7 +1156,7 @@ public abstract class ElementInfo implements Cloneable {
   }
   public double getDoubleField (FieldInfo fi){
     if (fi.isDoubleField()){
-      return fields.getDoubleValue(fi.getStorageOffset());
+      return fields.getDoubleValue(fi.getStorageOffset()).getValue();
     } else {
       throw new JPFException("not a double field: " + fi.getName());
     }
@@ -1177,7 +1176,7 @@ public abstract class ElementInfo implements Cloneable {
       throw new JPFException("not a 1 slot field: " + fi.getName());
     }
   }
-  public long get2SlotField(FieldInfo fi) {
+  public Conditional<Long> get2SlotField(FieldInfo fi) {
     if (fi.is2SlotField()){
       return fields.getLongValue(fi.getStorageOffset());
     } else {
@@ -1255,10 +1254,33 @@ public abstract class ElementInfo implements Cloneable {
     Conditional<?> srcVals = ((ArrayFields)eiSrc.getFields()).getValues();
     Conditional<?> dstVals = ((ArrayFields)fields).getValues();
     // this might throw ArrayIndexOutOfBoundsExceptions and ArrayStoreExceptions
-    if (srcVals instanceof One && dstVals instanceof One) {
-    	System.arraycopy(srcVals.getValue(), srcIdx, dstVals.getValue(), dstIdx, length);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+    if (srcVals instanceof One && dstVals instanceof One) {// TODO jens revise array copy
+    	if (srcVals.getValue() instanceof Conditional[]) {
+    		try {
+    			Fields src = eiSrc.getFields();
+    			if (src == fields) {
+    				src = src.clone();
+    			}
+	    		if (src instanceof DoubleArrayFields) {
+		    		for (int i = 0; i < length; i++) {
+		    			fields.setDoubleValue(dstIdx + i, src.getDoubleValue(i + srcIdx));
+		    		}
+	    		} else if (eiSrc.getFields() instanceof LongArrayFields) {
+		    		for (int i = 0; i < length; i++) {
+		    			fields.setLongValue(ctx, dstIdx + i, src.getLongValue(i + srcIdx));
+		    		}
+	    		} else {
+	    			throw new RuntimeException("TODO implement array copy for " + src.getClass());
+	    		}
+    		} catch (JPFException e) {
+    			throw new ArrayStoreException(e.getMessage());
+    		}
+    	} else {
+	    	System.arraycopy(srcVals.getValue(), srcIdx, dstVals.getValue(), dstIdx, length);
+    	}
     } else {
-    	FeatureExpr ctx = NativeMethodInfo.CTX;
+    	
     	if (fields instanceof CharArrayFields) {
     		for (int i = 0; i < length; i++) {
     			fields.setCharValue(ctx, dstIdx + i, eiSrc.getFields().getCharValue(i + srcIdx));
@@ -1310,10 +1332,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setIntValue(null, idx, (value));
   }
-  public void setLongElement(int idx, long value) {
+  public void setLongElement(FeatureExpr ctx, int idx, long value) {
     checkArray(idx);
     checkIsModifiable();
-    fields.setLongValue(idx, value);
+    fields.setLongValue(ctx, idx, new One<>(value));
   }
   public void setFloatElement(int idx, float value){
     checkArray(idx);
@@ -1323,7 +1345,7 @@ public abstract class ElementInfo implements Cloneable {
   public void setDoubleElement(int idx, double value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setDoubleValue(idx, value);
+    fields.setDoubleValue(idx, new One<>(value));
   }
   public void setReferenceElement(int idx, int value){
     checkArray(idx);
@@ -1358,7 +1380,7 @@ public abstract class ElementInfo implements Cloneable {
   }
   public long getLongElement(int idx) {
     checkArray(idx);
-    return fields.getLongValue(idx);
+    return fields.getLongValue(idx).getValue();
   }
   public float getFloatElement(int idx) {
     checkArray(idx);
@@ -1366,7 +1388,7 @@ public abstract class ElementInfo implements Cloneable {
   }
   public double getDoubleElement(int idx) {
     checkArray(idx);
-    return fields.getDoubleValue(idx);
+    return fields.getDoubleValue(idx).getValue();
   }
   public int getReferenceElement(int idx) {
     checkArray(idx);

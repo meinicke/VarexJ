@@ -483,12 +483,12 @@ public class MJIEnv {
   // we need this in case of a masked field
   public int getReferenceField (int objref, FieldInfo fi) {
     ElementInfo ei = heap.get(objref);
-    return ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();
+    return ei.getReferenceField(fi).simplify(null).getValue();
   }
 
   public String getStringField (int objref, String fname){
     int ref = getReferenceField(null, objref, fname).getValue();
-    return getStringObject(ref);
+    return getStringObject(null, ref);
   }
 
   // the box object accessors (should probably test for the appropriate class)
@@ -513,7 +513,7 @@ public class MJIEnv {
   }
 
   public long getLongValue (int objref) {
-    return getLongField(objref, "value");
+    return getLongField(objref, "value").getValue();
   }
 
   public float getFloatValue (int objref) {
@@ -525,17 +525,17 @@ public class MJIEnv {
   }
 
 
-  public void setLongArrayElement (int objref, int index, long value) {
-    heap.getModifiable(objref).setLongElement(index, value);
+  public void setLongArrayElement (FeatureExpr ctx, int objref, int index, long value) {
+    heap.getModifiable(objref).setLongElement(ctx, index, value);
   }
 
   public long getLongArrayElement (int objref, int index) {
     return heap.get(objref).getLongElement(index);
   }
 
-  public void setLongField (int objref, String fname, long val) {
+  public void setLongField (FeatureExpr ctx, int objref, String fname, long val) {
     ElementInfo ei = heap.getModifiable(objref);
-    ei.setLongField(fname, val);
+    ei.setLongField(ctx, fname, val);
   }
 
 //  public void setLongField (int objref, String refType, String fname, long val) {
@@ -543,7 +543,7 @@ public class MJIEnv {
 //    ei.setLongField(fname, refType, val);
 //  }
 
-  public long getLongField (int objref, String fname) {
+  public Conditional<Long> getLongField (int objref, String fname) {
     ElementInfo ei = heap.get(objref);
     return ei.getLongField(fname);
   }
@@ -660,27 +660,27 @@ public class MJIEnv {
 
   public int getStaticIntField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    return ci.getStaticElementInfo().getIntField(fname).simplify(NativeMethodInfo.CTX).getValue();
+    return ci.getStaticElementInfo().getIntField(fname).simplify(null).getValue();
   }
   
   public int getStaticIntField (int clsObjRef, String fname) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
-    return cei.getIntField(fname).simplify(NativeMethodInfo.CTX).getValue();
+    return cei.getIntField(fname).simplify(null).getValue();
   }
 
   public int getStaticIntField (ClassInfo ci, String fname) {
     ElementInfo ei = ci.getStaticElementInfo();
-    return ei.getIntField(fname).simplify(NativeMethodInfo.CTX).getValue();
+    return ei.getIntField(fname).simplify(null).getValue();
   }
 
   public void setStaticLongField (String clsName, String fname, long value) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setLongField(fname, value);
+    ci.getStaticElementInfo().setLongField(null, fname, value);
   }
 
   public void setStaticLongField (int clsObjRef, String fname, long val) {
     ElementInfo cei = getModifiableStaticElementInfo(clsObjRef);
-    cei.setLongField(fname, val);
+    cei.setLongField(null, fname, val);
   }
 
   public long getStaticLongField (int clsRef, String fname) {
@@ -695,7 +695,7 @@ public class MJIEnv {
 
   public long getStaticLongField (ClassInfo ci, String fname){
     ElementInfo ei = ci.getStaticElementInfo();
-    return ei.getLongField(fname);
+    return ei.getLongField(fname).getValue();
   }
 
   public void setStaticReferenceField (FeatureExpr ctx, String clsName, String fname, int objref) {
@@ -745,11 +745,17 @@ public class MJIEnv {
   /**
    * turn JPF String object into a VM String object
    * (this is a method available for non gov..jvm NativePeer classes)
+ * @param ctx TODO
    */
-  public String getStringObject (int objRef) {
+  public String getStringObject (FeatureExpr ctx, int objRef) {
     if (objRef != MJIEnv.NULL) {
       ElementInfo ei = getElementInfo(objRef);
-      return ei.asString().simplify(NativeMethodInfo.CTX).getValue();// TODO jens
+      
+      Conditional<String> str = ei.asString();
+      if (str instanceof One) {// TODO jens remove this
+    	  return str.getValue();
+      }
+      return str.simplify(ctx).getValue();
       
     } else {
       return null;
@@ -780,7 +786,7 @@ public class MJIEnv {
 
         for (int i=0; i<len; i++){
           int sRef = getReferenceArrayElement(aRef,i);
-          sa[i] = getStringObject(sRef);
+          sa[i] = getStringObject(null, sRef);
         }
 
         return sa;
@@ -798,7 +804,7 @@ public class MJIEnv {
       ElementInfo ei = getElementInfo(objref);
       if (ei.getClassInfo().getName().equals("java.util.Date")) {
         // <2do> this is not complete yet
-        long fastTime = ei.getLongField("fastTime");
+        long fastTime = ei.getLongField("fastTime").getValue();
         Date d = new Date(fastTime);
         return d;
       } else {
@@ -828,7 +834,7 @@ public class MJIEnv {
       } else if (clsName.equals("java.lang.Double")){
         args[i] = Double.valueOf(getDoubleField(aref,"value"));
       } else if (clsName.equals("java.lang.String")){
-        args[i] = getStringObject(aref);
+        args[i] = getStringObject(null, aref);
       }
     }
 
@@ -856,7 +862,7 @@ public class MJIEnv {
   }
 
   public Long getLongObject (int objref){
-    return new Long(getLongField(objref, "value"));
+    return new Long(getLongField(objref, "value").getValue());
   }
 
   public Float getFloatObject (int objref){
@@ -1026,8 +1032,8 @@ public class MJIEnv {
     return heap.newArray(FeatureExprFactory.True(), "I", size, ti).getObjectRef();
   }
 
-  public int newIntArray (int[] buf){
-    ElementInfo eiArray = heap.newArray(NativeMethodInfo.CTX, "I", buf.length, ti);
+  public int newIntArray (FeatureExpr ctx, int[] buf){
+    ElementInfo eiArray = heap.newArray(ctx, "I", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setIntElement( i, buf[i]);
     }
@@ -1039,9 +1045,9 @@ public class MJIEnv {
   }
 
   public int newLongArray (long[] buf){
-    ElementInfo eiArray = heap.newArray(FeatureExprFactory.True(), "J", buf.length, ti);
+    ElementInfo eiArray = heap.newArray(null, "J", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setLongElement( i, buf[i]);
+      eiArray.setLongElement( null, i, buf[i]);
     }
     return eiArray.getObjectRef();
   }
@@ -1058,13 +1064,14 @@ public class MJIEnv {
    * check if the ClassInfo is properly initialized
    * if yes, create a new instance of it but don't call any ctor
    * if no, throw a ClinitRequired exception
+ * @param ctx TODO
    */
-  public int newObject (ClassInfo ci) {
+  public int newObject (FeatureExpr ctx, ClassInfo ci) {
     if (ci.pushRequiredClinits(ti)){
       throw new ClinitRequired(ci);
     }
     
-    ElementInfo ei = heap.newObject(null, ci, ti);
+    ElementInfo ei = heap.newObject(ctx, ci, ti);
     return ei.getObjectRef();
   }
 
@@ -1072,16 +1079,17 @@ public class MJIEnv {
    * this creates a new object without checking if the ClassInfo needs
    * initialization. This is useful in a context that already
    * is aware and handles re-execution
+ * @param ctx TODO
    */
-  public int newObjectOfUncheckedClass (ClassInfo ci){
-    ElementInfo ei = heap.newObject(null, ci, ti);
+  public int newObjectOfUncheckedClass (FeatureExpr ctx, ClassInfo ci){
+    ElementInfo ei = heap.newObject(ctx, ci, ti);
     return ei.getObjectRef();    
   }
   
-  public int newObject (String clsName) {
+  public int newObject (FeatureExpr ctx, String clsName) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
     if (ci != null){
-      return newObject(ci);
+      return newObject(ctx, ci);
     } else {
       return NULL;
     }
@@ -1129,7 +1137,7 @@ public class MJIEnv {
   }
 
   public String format (int fmtRef, int argRef){
-    String format = getStringObject(fmtRef);
+    String format = getStringObject(null, fmtRef);
     int len = getArrayLength(argRef);
     Object[] arg = new Object[len];
 
@@ -1138,7 +1146,7 @@ public class MJIEnv {
       if (ref != NULL) {
         String clsName = getClassName(ref);
         if (clsName.equals("java.lang.String")) {
-          arg[i] = getStringObject(ref);
+          arg[i] = getStringObject(null, ref);
         } else if (clsName.equals("java.lang.Byte")) {
           arg[i] = getByteObject(ref);
         } else if (clsName.equals("java.lang.Char")) {
@@ -1164,7 +1172,7 @@ public class MJIEnv {
   }
 
   public String format (Locale l,int fmtRef, int argRef){
-	    String format = getStringObject(fmtRef);
+	    String format = getStringObject(null, fmtRef);
 	    int len = getArrayLength(argRef);
 	    Object[] arg = new Object[len];
 
@@ -1173,7 +1181,7 @@ public class MJIEnv {
 	      if (ref != NULL) {
 	        String clsName = getClassName(ref);
 	        if (clsName.equals("java.lang.String")) {
-	          arg[i] = getStringObject(ref);
+	          arg[i] = getStringObject(null, ref);
 	        } else if (clsName.equals("java.lang.Byte")) {
 	          arg[i] = getByteObject(ref);
 	        } else if (clsName.equals("java.lang.Char")) {
@@ -1209,9 +1217,9 @@ public class MJIEnv {
     return ei.getObjectRef();
   }
 
-  public int newLong (long l){
-    ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long"), ti);
-    ei.setLongField("value",l);
+  public int newLong (FeatureExpr ctx, long l){
+    ElementInfo ei = heap.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long"), ti);
+    ei.setLongField(ctx, "value", l);
     return ei.getObjectRef();
   }
 
@@ -1358,13 +1366,13 @@ public class MJIEnv {
   public void throwException (String clsName) {
     ClassInfo ciX = ClassInfo.getInitializedClassInfo(clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
-    exceptionRef = ti.createException(NativeMethodInfo.CTX, ciX, null, NULL);
+    exceptionRef = ti.createException(null, ciX, null, NULL);
   }
 
   public void throwException (String clsName, String details) {
     ClassInfo ciX = ClassInfo.getInitializedClassInfo(clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
-    exceptionRef = ti.createException(NativeMethodInfo.CTX, ciX, details, NULL);
+    exceptionRef = ti.createException(null, ciX, details, NULL);
   }
 
   public void throwAssertion (String details) {
@@ -1433,11 +1441,11 @@ public class MJIEnv {
   public ClassInfo getReferredClassInfo (int clsObjRef) {
     ElementInfo ei = getElementInfo(clsObjRef);
     if (ei.getClassInfo().getName().equals("java.lang.Class")) {
-      int ciId = ei.getIntField( ClassInfo.ID_FIELD).simplify(NativeMethodInfo.CTX).getValue();
+      int ciId = ei.getIntField( ClassInfo.ID_FIELD).simplify(null).getValue();
       int clref = ei.getReferenceField("classLoader").getValue();
       
       ElementInfo eiCl = getElementInfo(clref);
-      int cliId = eiCl.getIntField(ClassLoaderInfo.ID_FIELD).simplify(NativeMethodInfo.CTX).getValue();
+      int cliId = eiCl.getIntField(ClassLoaderInfo.ID_FIELD).simplify(null).getValue();
       
       ClassLoaderInfo cli = getVM().getClassLoader(cliId);
       ClassInfo referredCi = cli.getClassInfo(ciId);
@@ -1532,7 +1540,7 @@ public class MJIEnv {
       return null;
     }
 
-    int cliId = heap.get(clObjRef).getIntField(ClassLoaderInfo.ID_FIELD).simplify(NativeMethodInfo.CTX).getValue();
+    int cliId = heap.get(clObjRef).getIntField(ClassLoaderInfo.ID_FIELD).simplify(null).getValue();
     return getVM().getClassLoader(cliId);
   }
 
@@ -1607,7 +1615,7 @@ public class MJIEnv {
     } else if (v instanceof Integer){
       setIntField(null, proxyRef, fname, ((Integer)v).intValue());
     } else if (v instanceof Long){
-      setLongField(proxyRef, fname, ((Long)v).longValue());
+      setLongField(ctx, proxyRef, fname, ((Long)v).longValue());
     } else if (v instanceof Float){
       setFloatField(proxyRef, fname, ((Float)v).floatValue());
     } else if (v instanceof Short){
@@ -1667,7 +1675,7 @@ public class MJIEnv {
       } else if (ftype.equals("long[]")){
         aref = newLongArray(a.length);
         for (int i=0; i<a.length; i++){
-          setLongArrayElement(aref,i,((Number)a[i]).longValue());
+          setLongArrayElement(ctx,aref,i, ((Number)a[i]).longValue());
         }
       } else if (ftype.equals("double[]")){
         aref = newDoubleArray(a.length);
@@ -1700,7 +1708,7 @@ public class MJIEnv {
 
   int newAnnotationProxy (FeatureExpr ctx, ClassInfo aciProxy, AnnotationInfo ai) throws ClinitRequired {
 
-    int proxyRef = newObject(aciProxy);
+    int proxyRef = newObject(ctx, aciProxy);
 
     // init fields of the new object from the AnnotationInfo
     for (AnnotationInfo.Entry e : ai.getEntries()){

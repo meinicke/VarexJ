@@ -43,7 +43,7 @@ public interface Heap extends Iterable<ElementInfo> {
   ElementInfo newObject (FeatureExpr ctx, ClassInfo ci, ThreadInfo ti);
   
   ElementInfo newSystemArray (String elementType, int nElements, ThreadInfo ti, int anchor);
-  ElementInfo newSystemObject (ClassInfo ci, ThreadInfo ti, int anchor);
+  ElementInfo newSystemObject (FeatureExpr ctx, ClassInfo ci, ThreadInfo ti, int anchor);
 
   //--- convenience allocators that avoid constructor calls
   // (those are mostly used for their reference values since they already have initialized fields,

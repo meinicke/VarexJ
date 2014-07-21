@@ -190,13 +190,14 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
   }
   
   protected Conditional<Instruction> put2 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
-    Object attr = frame.getLongOperandAttr();
-    long val = frame.peekLong(ctx);
-    lastValue = new One<>(val);
+    Object attr = frame.getLongOperandAttr(ctx);
+    Conditional<Long> val = frame.peekLong(ctx);
+    lastValue = val;
 
-    if ((eiFieldOwner.get2SlotField(fi) != val) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
+    // TODO remove One
+    if ((!eiFieldOwner.get2SlotField(fi).simplify(ctx).equals(val)) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
-      eiFieldOwner.set2SlotField(fi, val);
+      eiFieldOwner.set2SlotField(ctx, fi, val);
       
       // see put1() reg. overwrite vs. accumulation
       eiFieldOwner.setFieldAttr(fi, attr);

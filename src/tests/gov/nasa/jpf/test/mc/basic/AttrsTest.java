@@ -323,6 +323,9 @@ public class AttrsTest extends TestJPF {
       double[] a2 = new double[10];
 
       Verify.setElementAttribute(a1, 3, 42);
+      attr = Verify.getElementAttribute(a1, 3);
+      System.out.println("@ a1 : " + attr);
+
 
       //attr = Verify.getElementAttribute(a1,3);
       //System.out.println(attr);
@@ -443,7 +446,7 @@ public class AttrsTest extends TestJPF {
           // we are still in the caller stackframe
           frame.addLongOperandAttr("foo-arg");
           
-          Long v = Long.valueOf( frame.peekLong(FeatureExprFactory.True()));
+          Long v = Long.valueOf( frame.peekLong(FeatureExprFactory.True()).getValue());
           frame.addLongOperandAttr( v);
           
           System.out.println("   operand attrs:");

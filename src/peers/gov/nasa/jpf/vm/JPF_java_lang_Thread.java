@@ -85,7 +85,7 @@ public class JPF_java_lang_Thread extends NativePeer {
     // if this method is called (just works because the 'name' field is only
     // directly accessed from within the Thread ctors)
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
-    ti.setName(env.getStringObject(nameRef));
+    ti.setName(env.getStringObject(null, nameRef));
   }
 
   @MJI

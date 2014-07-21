@@ -38,15 +38,16 @@ public class JPF_java_io_File extends NativePeer {
   static File getFile(MJIEnv env, int objref) {
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
     int fnref = env.getReferenceField(ctx, objref, "filename").getValue();
-    String fname = env.getStringObject(fnref);
+    String fname = env.getStringObject(null, fnref);
     return new File(fname);
   }
 
   static int createJPFFile(MJIEnv env, File file) {
-    int newFileRef = env.newObject("java.io.File");
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int newFileRef = env.newObject(ctx, "java.io.File");
     ElementInfo fileEI = env.getModifiableElementInfo(newFileRef);
 
-    int fileNameRef = env.newString(NativeMethodInfo.CTX, file.getPath());
+    int fileNameRef = env.newString(ctx, file.getPath());
     fileEI.setReferenceField("filename", fileNameRef);
 
     return newFileRef;

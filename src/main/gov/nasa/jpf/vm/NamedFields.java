@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.Function;
@@ -41,6 +42,10 @@ public class NamedFields extends Fields {
 
 	public NamedFields(int dataSize) {
 		values = new Conditional[dataSize];
+		
+		for (int i = 0; i < values.length; i++) {
+			values[i] = new One<>(0);
+		}
 	}
 
 	public int[] asFieldSlots() {
@@ -103,8 +108,24 @@ public class NamedFields extends Fields {
 		return values[index];
 	}
 
-	public long getLongValue(int index) {
-		return Types.intsToLong(values[index + 1].getValue(), values[index].getValue());
+	public Conditional<Long> getLongValue(final int index) {
+		
+		Conditional<Long> returnV = values[index + 1].mapr(new Function<Integer, Conditional<Long>>() {
+
+			@Override
+			public Conditional<Long> apply(final Integer l) {
+				return values[index].mapr(new Function<Integer, Conditional<Long>>() {
+				
+					@Override
+					public Conditional<Long> apply(Integer h) {
+						return new One<>(Types.intsToLong(l, h));
+					}
+					
+				});
+			}
+			
+		});
+		return returnV;
 	}
 
 	public boolean getBooleanValue(int index) {
@@ -142,9 +163,6 @@ public class NamedFields extends Fields {
 	}
 
 	public void setReferenceValue(FeatureExpr ctx, int index, Conditional<Integer> newValue) {
-//		if (values[index] == null) {
-//			values[index] = new One<>(null);
-//		}
 		if (ctx.isTautology()) {
 			values[index] = newValue;
 		} else {
@@ -178,9 +196,6 @@ public class NamedFields extends Fields {
 	}
 
 	public void setIntValue(FeatureExpr ctx, int index, int newValue) {
-		if (ctx == null) {
-			throw new RuntimeException("NamedFields.setIntValue() ctx = null");
-		}
 		values[index] = new Choice<>(ctx, new One<>(newValue), values[index]).simplify();
 	}
 
@@ -188,22 +203,35 @@ public class NamedFields extends Fields {
 		values[index] = newValue;
 	}
 
-	public void setLongValue(int index, long newValue) {
-		values[index++] = new One<>(Types.hiLong(newValue));
-		values[index] = new One<>(Types.loLong(newValue));
+	@Override
+	public void setLongValue(FeatureExpr ctx, final int index, Conditional<Long> newValue) {
+		newValue.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Long newValue) {
+				if (ctx.isSatisfiable()) {
+					values[index] = new Choice<>(ctx, new One<>(Types.hiLong(newValue)), values[index]);
+					values[index + 1] = new Choice<>(ctx, new One<>(Types.loLong(newValue)), values[index + 1]);
+				}
+				return null;
+			}
+			
+		});
+		values[index] = values[index].simplify();
+		values[index + 1] = values[index + 1].simplify();		
 	}
 
-	public void setDoubleValue(int index, double newValue) {
-		values[index++] = new One<>(Types.hiDouble(newValue));
-		values[index] = new One<>(Types.loDouble(newValue));
+	protected void setDoubleValue(int index, Conditional<Double> newValue) {
+		values[index++] = new One<>(Types.hiDouble(newValue.getValue()));
+		values[index] = new One<>(Types.loDouble(newValue.getValue()));
 	}
 
 	public float getFloatValue(int index) {
 		return Types.intToFloat(values[index].getValue());
 	}
 
-	public double getDoubleValue(int index) {
-		return Types.intsToDouble(values[index + 1].getValue(), values[index].getValue());
+	public Conditional<Double> getDoubleValue(int index) {
+		return new One<>(Types.intsToDouble(values[index + 1].getValue(), values[index].getValue()));
 	}
 
 	/**

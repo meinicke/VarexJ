@@ -19,6 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
@@ -76,7 +77,7 @@ public class ReferenceFieldInfo extends SingleSlotFieldInfo {
     }
   }
 
-  public void initialize (ElementInfo ei, ThreadInfo ti) {
+  public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
     int ref = init;
     if (sInit != null) {
       VM vm = ti.getVM();

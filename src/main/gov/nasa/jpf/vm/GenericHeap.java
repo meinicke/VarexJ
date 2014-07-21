@@ -247,7 +247,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   
   //--- allocators
     
-  protected ElementInfo createObject (ClassInfo ci, ThreadInfo ti, int objref) {
+  protected ElementInfo createObject (FeatureExpr ctx, ClassInfo ci, ThreadInfo ti, int objref) {
     // create the thing itself
     Fields f = ci.createInstanceFields();
     Monitor m = new Monitor();
@@ -258,7 +258,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     attributes |= ATTR_ELEMENTS_CHANGED;
 
     // and do the default (const) field initialization
-    ci.initializeInstanceData(ei, ti);
+    ci.initializeInstanceData(ctx, ei, ti);
 
     vm.notifyObjectCreated(ti, ei);
     
@@ -274,16 +274,16 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   public ElementInfo newObject(FeatureExpr fexpr, ClassInfo ci, ThreadInfo ti) {
     AllocationContext ctx = getSUTAllocationContext(fexpr, ci, ti);
     int index = getNewElementInfoIndex( ctx);
-    ElementInfo ei = createObject( ci, ti, index);
+    ElementInfo ei = createObject( fexpr, ci, ti, index);
 
     return ei;
   }
 
   @Override
-  public ElementInfo newSystemObject (ClassInfo ci, ThreadInfo ti, int anchor) {
+  public ElementInfo newSystemObject (FeatureExpr fexpr, ClassInfo ci, ThreadInfo ti, int anchor) {
     AllocationContext ctx = getSystemAllocationContext( ci, ti, anchor);
     int index = getNewElementInfoIndex( ctx);
-    ElementInfo ei = createObject( ci, ti, index);
+    ElementInfo ei = createObject( fexpr, ci, ti, index);
     return ei;
   }
   
@@ -358,7 +358,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     
     //--- the string object itself
     int sRef = getNewElementInfoIndex( ctx);
-    createObject( ciString, ti, sRef);
+    createObject( fexpr, ciString, ti, sRef);
     
     //--- its char[] array
     ctx = ctx.extend(ciChars, sRef);
@@ -414,7 +414,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 
 		// --- the string object itself
 		int sRef = getNewElementInfoIndex(ctx);
-		createObject(ciString, ti, sRef);
+		createObject(fexpr, ciString, ti, sRef);
 
 		// --- its char[] array
 		ctx = ctx.extend(ciChars, sRef);
@@ -493,7 +493,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     //--- the Throwable object itself
     AllocationContext ctx = getSystemAllocationContext( ciThrowable, ti, anchor);
     int xRef = getNewElementInfoIndex( ctx);
-    ElementInfo eiThrowable = createObject( ciThrowable, ti, xRef);
+    ElementInfo eiThrowable = createObject( null, ciThrowable, ti, xRef);
     
     //--- the detailMsg field
     if (details != null) {

@@ -1605,7 +1605,7 @@ public class ThreadInfo extends InfoObject
     int msgRef = env.getReferenceField(ctx,objRef, "detailMessage").getValue();
     if (msgRef != MJIEnv.NULL) {
       print(pw, ": ");
-      print(pw, env.getStringObject(msgRef));
+      print(pw, env.getStringObject(null, msgRef));
     }
     print(pw, "\n");
 
@@ -1676,9 +1676,9 @@ public class ThreadInfo extends InfoObject
 
     StackTraceElement (int sRef){
     	FeatureExpr ctx = NativeMethodInfo.CTX;
-      clsName = env.getStringObject(env.getReferenceField(ctx, sRef, "clsName").getValue());
-      mthName = env.getStringObject(env.getReferenceField(ctx, sRef, "mthName").getValue());
-      fileName = env.getStringObject(env.getReferenceField(ctx, sRef, "fileName").getValue());
+      clsName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "clsName").getValue());
+      mthName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "mthName").getValue());
+      fileName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "fileName").getValue());
       line = env.getIntField(null, sRef, "line").getValue().intValue();
     }
 

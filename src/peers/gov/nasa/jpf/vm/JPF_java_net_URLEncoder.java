@@ -33,8 +33,8 @@ public class JPF_java_net_URLEncoder extends NativePeer {
   @MJI
   public int encode__Ljava_lang_String_2Ljava_lang_String_2__Ljava_lang_String_2(MJIEnv env, int clsObjRef,
           int sRef, int encRef){
-    String s = env.getStringObject(sRef);
-    String enc = env.getStringObject(encRef);
+    String s = env.getStringObject(null, sRef);
+    String enc = env.getStringObject(null, encRef);
 
     try {
       String e = URLEncoder.encode(s, enc);

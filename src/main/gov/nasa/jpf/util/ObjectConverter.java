@@ -26,11 +26,11 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Fields;
 import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativeMethodInfo;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -40,14 +40,15 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 public class ObjectConverter {
   /**
    * Create JPF object from Java object
-   * @param env - MJI environment
-   * @param javaObject - java object that is used to created JPF object from
+ * @param ctx TODO
+ * @param env - MJI environment
+ * @param javaObject - java object that is used to created JPF object from
    * @return reference to new JPF object
    */
-  public static int JPFObjectFromJavaObject(MJIEnv env, Object javaObject) throws ClinitRequired {
+  public static int JPFObjectFromJavaObject(FeatureExpr ctx, MJIEnv env, Object javaObject) throws ClinitRequired {
       Class<?> javaClass = javaObject.getClass();
       String typeName = javaClass.getName();
-      int newObjRef = env.newObject(typeName);
+      int newObjRef = env.newObject(ctx, typeName);
       ElementInfo newObjEI = env.getModifiableElementInfo(newObjRef);
 
       ClassInfo ci = env.getClassInfo(newObjRef);
@@ -55,7 +56,7 @@ public class ObjectConverter {
       while (ci != null) {
         for (FieldInfo fi : ci.getDeclaredInstanceFields()) {
           if (!fi.isReference()) {
-            setJPFPrimitive(newObjEI, fi, javaObject);
+            setJPFPrimitive(ctx, newObjEI, fi, javaObject);
           }
           else {
             try {
@@ -65,9 +66,9 @@ public class ObjectConverter {
 
               int fieldJPFObjRef;
               if (isArrayField(fi)) {
-                fieldJPFObjRef = getJPFArrayRef(env, fieldJavaObj);
+                fieldJPFObjRef = getJPFArrayRef(ctx, env, fieldJavaObj);
               } else {
-                fieldJPFObjRef = JPFObjectFromJavaObject(env, fieldJavaObj);
+                fieldJPFObjRef = JPFObjectFromJavaObject(ctx, env, fieldJavaObj);
               }
 
               newObjEI.setReferenceField(fi, fieldJPFObjRef);
@@ -90,7 +91,7 @@ public class ObjectConverter {
     return null;
   }
 
-  private static void setJPFPrimitive(ElementInfo newObjEI, FieldInfo fi, Object javaObject) {
+  private static void setJPFPrimitive(FeatureExpr ctx, ElementInfo newObjEI, FieldInfo fi, Object javaObject) {
     try {
 
       String jpfTypeName = fi.getType();
@@ -108,10 +109,10 @@ public class ObjectConverter {
         newObjEI.setShortField(fi, javaField.getShort(javaObject));
       }
       else if (jpfTypeName.equals("int")) {
-        newObjEI.setIntField(NativeMethodInfo.CTX, fi, javaField.getInt(javaObject));
+        newObjEI.setIntField(ctx, fi, javaField.getInt(javaObject));
       }
       else if (jpfTypeName.equals("long")) {
-        newObjEI.setLongField(fi, javaField.getLong(javaObject));
+        newObjEI.setLongField(ctx, fi, javaField.getLong(javaObject));
       }
       else if (jpfTypeName.equals("float")) {
         newObjEI.setFloatField(fi, javaField.getFloat(javaObject));
@@ -143,7 +144,7 @@ public class ObjectConverter {
 
   }
 
-  private static int getJPFArrayRef(MJIEnv env, Object javaArr) throws NoSuchFieldException, IllegalAccessException {
+  private static int getJPFArrayRef(FeatureExpr ctx, MJIEnv env, Object javaArr) throws NoSuchFieldException, IllegalAccessException {
         
     Class arrayElementClass = javaArr.getClass().getComponentType();
 
@@ -225,10 +226,10 @@ public class ObjectConverter {
         
         if (javaArrEl != null) {
           if (javaArrEl.getClass().isArray()) {
-            newArrElRef = getJPFArrayRef(env, javaArrEl);
+            newArrElRef = getJPFArrayRef(ctx, env, javaArrEl);
           }
           else {
-            newArrElRef = JPFObjectFromJavaObject(env, javaArrEl);
+            newArrElRef = JPFObjectFromJavaObject(ctx, env, javaArrEl);
           }
         }
         else {
@@ -288,7 +289,7 @@ public class ObjectConverter {
       javaField.setInt(javaObject, ei.getIntField(fi).getValue());
     }
     else if (primitiveType.equals("long")) {
-      javaField.setLong(javaObject, ei.getLongField(fi));
+      javaField.setLong(javaObject, ei.getLongField(fi).getValue());
     }
     else if (primitiveType.equals("float")) {
       javaField.setFloat(javaObject, ei.getFloatField(fi));

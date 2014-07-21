@@ -191,9 +191,9 @@ public class DynamicAbstractionSerializer extends FilteringSerializer {
           }
         } else { // double or long
           if (fi.isLongField()) {
-            buf.add(a.getAbstractValue(fields.getLongValue(off)));
+            buf.add(a.getAbstractValue(fields.getLongValue(off).getValue()));
           } else { // got to be double
-            buf.add(a.getAbstractValue(fields.getDoubleValue(off)));
+            buf.add(a.getAbstractValue(fields.getDoubleValue(off).getValue()));
           }
         }
 

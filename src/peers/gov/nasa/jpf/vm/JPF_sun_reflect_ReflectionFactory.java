@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -35,10 +36,11 @@ public class JPF_sun_reflect_ReflectionFactory extends NativePeer {
 
     // <2do> we really have to model ObjectStreamClass and ObjectStreamField
     ClassInfo ci = ClassInfo.getInitializedClassInfo("gov.nasa.jpf.SerializationConstructor", env.getThreadInfo());
-    int sCtorRef = env.newObject(ci);
+    FeatureExpr ctx = NativeMethodInfo.CTX;
+	int sCtorRef = env.newObject(ctx, ci);
     
-    env.setReferenceField(NativeMethodInfo.CTX, sCtorRef, "mdc", clsRef);
-    env.setReferenceField(NativeMethodInfo.CTX, sCtorRef, "firstNonSerializableCtor", ctorRef);
+    env.setReferenceField(ctx, sCtorRef, "mdc", clsRef);
+    env.setReferenceField(ctx, sCtorRef, "firstNonSerializableCtor", ctorRef);
     
     return sCtorRef;
   }

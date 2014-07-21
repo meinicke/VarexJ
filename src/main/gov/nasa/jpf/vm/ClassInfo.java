@@ -1872,7 +1872,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
       
       ClassInfo.logger.finer("registering class: ", name);
       
-      ElementInfo ei = createClassObject( ti);
+      ElementInfo ei = createClassObject( null, ti);
       sei = createAndLinkStaticElementInfo( ti, ei);
       
       // SUT class is fully resolved and registered (but not necessarily initialized), notify listeners
@@ -1882,7 +1882,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return sei;
   }
 
-  ElementInfo createClassObject (ThreadInfo ti){
+  ElementInfo createClassObject (FeatureExpr ctx, ThreadInfo ti){
     Heap heap = VM.getVM().getHeap(); // ti can be null (during main thread initialization)
 
     int anchor = name.hashCode(); // 2do - this should also take the ClassLoader ref into account
@@ -1890,7 +1890,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     SystemClassLoaderInfo systemClassLoader = ti.getSystemClassLoaderInfo();
 
     ClassInfo classClassInfo = systemClassLoader.getClassClassInfo();    
-    ElementInfo ei = heap.newSystemObject(classClassInfo, ti, anchor);
+    ElementInfo ei = heap.newSystemObject(ctx, classClassInfo, ti, anchor);
     int clsObjRef = ei.getObjectRef();
     
     ElementInfo eiClsName = heap.newSystemString(name, ti, clsObjRef);
@@ -1959,7 +1959,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   
   ElementInfo createAndLinkStartupClassObject (ThreadInfo ti) {
     StaticElementInfo sei = getStaticElementInfo();
-    ElementInfo ei = createClassObject(ti);
+    ElementInfo ei = createClassObject(null, ti);
     
     sei.setClassObjectRef(ei.getObjectRef());
     ei.setIntField(FeatureExprFactory.True(), ID_FIELD, id);      
@@ -2126,7 +2126,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   void initializeStaticData (ElementInfo ei, ThreadInfo ti) {
     for (int i=0; i<sFields.length; i++) {
       FieldInfo fi = sFields[i];
-      fi.initialize(ei, ti);
+      fi.initialize(FeatureExprFactory.True(), ei, ti);
     }
   }
 
@@ -2137,7 +2137,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return fieldsFactory.createInstanceFields(this);
   }
 
-  void initializeInstanceData (ElementInfo ei, ThreadInfo ti) {
+  void initializeInstanceData (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
     // Note this is only used for field inits, and array elements are not fields!
     // Since Java has only limited element init requirements (either 0 or null),
     // we do this ad hoc in the ArrayFields ctor
@@ -2148,12 +2148,12 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     // safely we init top down
 
     if (superClass != null) { // do superclasses first
-      superClass.initializeInstanceData(ei, ti);
+      superClass.initializeInstanceData(ctx, ei, ti);
     }
 
     for (int i=0; i<iFields.length; i++) {
       FieldInfo fi = iFields[i];
-      fi.initialize(ei, ti);
+      fi.initialize(ctx, ei, ti);
     }
   }
 

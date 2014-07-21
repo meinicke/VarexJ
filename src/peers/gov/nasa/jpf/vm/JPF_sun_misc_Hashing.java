@@ -47,7 +47,7 @@ public class JPF_sun_misc_Hashing extends NativePeer {
 
   @MJI
   public int stringHash32__Ljava_lang_String_2__I (MJIEnv env, int clsRef, int sRef){
-    String s = env.getStringObject(sRef);
+    String s = env.getStringObject(null, sRef);
     return Hashing.stringHash32(s);
   }
   
