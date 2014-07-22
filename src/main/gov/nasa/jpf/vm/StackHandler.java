@@ -43,12 +43,12 @@ public class StackHandler {
 			if (locals[i] == null) {
 				string.append("null");
 			} else {
-				string.append(locals[i].toMap().keySet());
+				string.append(locals[i]);
 			}
 			string.append(" ");
 		}
 		string.append("] \nStack: ");
-		string.append(stack.toMap().keySet());
+		string.append(stack);
 		return string.toString();
 	}
 
@@ -165,38 +165,35 @@ public class StackHandler {
 	 *            The index of the local variable
 	 */
 	public <T> void storeOperand(final FeatureExpr ctx, final int index) {
-		locals[index] = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
+		if (locals[index] == null) {
+			locals[index] = new One<>(new Entry(MJIEnv.NULL, false));
+		}
+		locals[index] = new Choice<>(ctx, popEntry(ctx), locals[index]).simplify();
+	}
+	
+
+
+	private Conditional<Entry> popEntry(FeatureExpr ctx) {
+		Conditional<Entry> result = stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
 
 			@Override
-			public Conditional<Entry> apply(FeatureExpr f, Stack stack) {
-				Conditional<Entry> oldValue = locals[index];
-				if (oldValue == null) {
-					oldValue = new One<>(new Entry(MJIEnv.NULL, false));
+			public Conditional<Entry> apply(FeatureExpr f, Stack s) {
+				Stack clone = s.copy();
+				boolean ref = clone.isRef(0);
+				int res = clone.pop();
+				if (stackCTX.equivalentTo(f)) {
+					stack = new One<>(clone);
+				} else {
+					stack = new Choice<>(f, new One<>(clone), stack);
 				}
-//				FeatureExpr and = f.and(ctx);
-				if (f.isContradiction()) {
-					return oldValue;
-				}
-//				if (f.equivalentTo(f.andNot(ctx))) {
-//					return oldValue;
-//				}
-				if (f.isTautology()) {
-					boolean isRef = stack.isRef(0);
-					return new One<>(new Entry(stack.pop(), isRef));
-				}
-//				if (f.equivalentTo(and)) {
-//					boolean isRef = stack.isRef(0);
-//					return new One<>(new Entry(stack.pop(), isRef));
-//				}
+				return new One<>(new Entry(res, ref));
 				
-				
-				boolean isRef = stack.isRef(0);
-				return new Choice<>(f, new One<>(new Entry(stack.pop(), isRef)), oldValue);
 			}
 		}).simplify();
 		stack = stack.simplify();
+		return result;
 	}
-	
+
 	public void storeLongOperand(final FeatureExpr ctx, final int index) {
 		stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
 

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -35,21 +36,29 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  */
 public class ARRAYLENGTH extends ArrayInstruction {
     
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		final StackFrame frame = ti.getModifiableTopFrame();
 
-    arrayRef = frame.pop(ctx).getValue();
+		arrayRef = frame.pop(ctx);
 
-    if (arrayRef == MJIEnv.NULL){
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.NullPointerException", "array length of null object"));
-    }
+		return arrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    ElementInfo ei = ti.getElementInfo(arrayRef);
-    frame.push(ctx, ei.arrayLength(), false);
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayRef) {
 
-    return getNext(ctx, ti);
-  }
+				if (arrayRef == MJIEnv.NULL) {
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "array length of null object"));
+				}
+
+				ElementInfo ei = ti.getElementInfo(arrayRef);
+				frame.push(ctx, ei.arrayLength(), false);
+
+				return getNext(ctx, ti);
+
+			}
+
+		});
+	}
   
   @Override
   public int getByteCode () {
@@ -62,7 +71,7 @@ public class ARRAYLENGTH extends ArrayInstruction {
   }
 
   @Override
-  protected int peekArrayRef (FeatureExpr ctx, ThreadInfo ti) {
-    return ti.getTopFrame().peek(FeatureExprFactory.True()).getValue();
+  protected Conditional<Integer> peekArrayRef (FeatureExpr ctx, ThreadInfo ti) {
+    return ti.getTopFrame().peek(FeatureExprFactory.True());
   }
 }

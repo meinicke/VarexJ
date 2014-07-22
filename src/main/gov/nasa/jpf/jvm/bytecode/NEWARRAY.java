@@ -44,10 +44,10 @@ public class NEWARRAY extends NewArrayInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    arrayLength = frame.pop(ctx).getValue();
+    arrayLength = frame.pop(ctx);
     Heap heap = ti.getHeap();
 
-    if (arrayLength < 0){
+    if (arrayLength.getValue() < 0){
       return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
     }
 
@@ -68,7 +68,7 @@ public class NEWARRAY extends NewArrayInstruction {
                                         "[" + arrayLength + "]"));
     }
     
-    ElementInfo eiArray = heap.newArray(ctx, type, arrayLength, ti);
+    ElementInfo eiArray = heap.newArray(ctx, type, arrayLength.getValue(), ti);
     int arrayRef = eiArray.getObjectRef();
     
     frame.pushRef(arrayRef, ctx);
@@ -93,7 +93,7 @@ public class NEWARRAY extends NewArrayInstruction {
     sb.append("newarray ");
     sb.append(getTypeName());
     sb.append('[');
-    if (arrayLength >=0){
+    if (arrayLength.getValue() >=0){
       sb.append(arrayLength);
     }
     sb.append(']');

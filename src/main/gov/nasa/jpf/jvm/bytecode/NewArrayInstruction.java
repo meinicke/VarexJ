@@ -20,6 +20,8 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.AllocInstruction;
 import gov.nasa.jpf.vm.Types;
 
@@ -28,7 +30,7 @@ public abstract class NewArrayInstruction extends JVMInstruction implements Allo
   protected String type;
   protected String typeName; // deferred initialization
   
-  protected int arrayLength = -1;
+  protected Conditional<Integer> arrayLength = new One<>(-1);
 
   /**
    * this only makes sense post-execution since the array dimension
@@ -37,7 +39,7 @@ public abstract class NewArrayInstruction extends JVMInstruction implements Allo
    * @return length of allocated array
    */
   public int getArrayLength(){
-    return arrayLength;
+    return arrayLength.getValue();
   }
   
   public String getType(){
@@ -53,6 +55,6 @@ public abstract class NewArrayInstruction extends JVMInstruction implements Allo
   
   @Override
   public void cleanupTransients(){
-    arrayLength = -1;
+    arrayLength = new One<>(-1);
   }
 }

@@ -19,6 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.HashData;
 
 /**
@@ -191,8 +192,10 @@ public final class StaticElementInfo extends ElementInfo {
     for (int i=0; i<n; i++) {
       FieldInfo fi = ci.getStaticField(i);
       if (fi.isReference()) {
-        int objref = fields.getIntValue(fi.getStorageOffset());
-        heap.markStaticRoot(objref);
+        Conditional<Integer> objref = fields.getIntValue2(fi.getStorageOffset());
+        for (Integer ref : objref.toMap().keySet()) {// TODO jens might be no good idea???
+        	heap.markStaticRoot(ref);
+        }
       }
     }
     

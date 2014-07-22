@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -47,8 +48,8 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
     return frame.popLong(FeatureExprFactory.True()).getValue();
   }
   
-  public int peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {
-    return ti.getTopFrame().peek(ctx, 3).getValue();  // ..,ref,idx,long(value)
+  public Conditional<Integer> peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {
+    return ti.getTopFrame().peek(ctx, 3);  // ..,ref,idx,long(value)
   }
 
   @Override

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -31,71 +32,75 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
  * Create new array of reference
  * ..., count => ..., arrayref
  */
 public class ANEWARRAY extends NewArrayInstruction {
 
-  public ANEWARRAY (String typeDescriptor){
-    type = Types.getTypeSignature(typeDescriptor, true);
-  }
+	public ANEWARRAY(String typeDescriptor) {
+		type = Types.getTypeSignature(typeDescriptor, true);
+	}
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    // resolve the component class first
-    String compType = Types.getTypeName(type);
-    if(Types.isReferenceSignature(type)) {
-      try {
-        ti.resolveReferencedClass(compType);
-      } catch(LoadOnJPFRequired lre) {
-        return ti.getPC();
-      }
-    }
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		// resolve the component class first
+		String compType = Types.getTypeName(type);
+		if (Types.isReferenceSignature(type)) {
+			try {
+				ti.resolveReferencedClass(compType);
+			} catch (LoadOnJPFRequired lre) {
+				return ti.getPC();
+			}
+		}
 
-    // there is no clinit for array classes, but we still have  to create a class object
-    // since its a builtin class, we also don't have to bother with NoClassDefFoundErrors
-    String clsName = "[" + type;
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+		// there is no clinit for array classes, but we still have to create a class object
+		// since its a builtin class, we also don't have to bother with NoClassDefFoundErrors
+		String clsName = "[" + type;
+		ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
 
-    if (!ci.isRegistered()) {
-      ci.registerClass(ti);
-      ci.setInitialized();
-    }
+		if (!ci.isRegistered()) {
+			ci.registerClass(ti);
+			ci.setInitialized();
+		}
 
-    StackFrame frame = ti.getModifiableTopFrame();
+		final StackFrame frame = ti.getModifiableTopFrame();
 
-    arrayLength = frame.pop(ctx).getValue();
-    if (arrayLength < 0){
-      return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
-    }
+		arrayLength = frame.pop(ctx);
+		return arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    Heap heap = ti.getHeap();
-    if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.OutOfMemoryError", "trying to allocate new " +
-                                          Types.getTypeName(type) +
-                                        "[" + arrayLength + "]"));
-    }
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayLength) {
 
-    ElementInfo eiArray = heap.newArray(ctx, type, arrayLength, ti);
-    int aRef = eiArray.getObjectRef();
-    
-    // pushes the object reference on the top stack frame
-    frame.push(ctx, aRef, true);
-    
-    return getNext(ctx, ti);
-  }
+				if (arrayLength < 0) {
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
+				}
 
-  public int getLength () {
-    return 3; // opcode, index1, index2
-  }
-  
-  public int getByteCode () {
-    return 0xBD;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+				Heap heap = ti.getHeap();
+				if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.OutOfMemoryError", "trying to allocate new " + Types.getTypeName(type) + "[" + arrayLength + "]"));
+				}
+
+				ElementInfo eiArray = heap.newArray(ctx, type, arrayLength, ti);
+				int aRef = eiArray.getObjectRef();
+
+				// pushes the object reference on the top stack frame
+				frame.push(ctx, aRef, true);
+
+				return getNext(ctx, ti);
+			}
+
+		});
+	}
+
+	public int getLength() {
+		return 3; // opcode, index1, index2
+	}
+
+	public int getByteCode() {
+		return 0xBD;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

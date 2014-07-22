@@ -210,7 +210,7 @@ public class BoxObjectCacheManager {
 
   public static int valueOfInteger (FeatureExpr ctx, ThreadInfo ti, int i) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    int intCache = cacheClass.getStaticElementInfo().getReferenceField("intCache").getValue();
+    int intCache = cacheClass.getStaticElementInfo().getReferenceField("intCache").simplify(ctx).getValue();
 
     if (intCache == MJIEnv.NULL) { // initializing the cache on demand
       intCache = initIntCache(ctx, ti);

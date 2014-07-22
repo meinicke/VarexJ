@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -29,7 +30,7 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  */
 public abstract class ArrayInstruction extends JVMInstruction {
 
-  protected int arrayRef;
+  protected Conditional<Integer> arrayRef;
 
   /**
    * only makes sense from an executeInstruction() or instructionExecuted() listener,
@@ -37,13 +38,13 @@ public abstract class ArrayInstruction extends JVMInstruction {
    */
   public int getArrayRef (ThreadInfo ti){
     if (ti.isPreExec()){
-      return peekArrayRef(FeatureExprFactory.True(), ti);
+      return peekArrayRef(FeatureExprFactory.True(), ti).getValue();
     } else {
-      return arrayRef;
+      return arrayRef.getValue();
     }
   }
 
-  abstract protected int peekArrayRef (FeatureExpr ctx, ThreadInfo ti);
+  abstract protected Conditional<Integer> peekArrayRef (FeatureExpr ctx, ThreadInfo ti);
 
   @Override
   public void accept(InstructionVisitor insVisitor) {

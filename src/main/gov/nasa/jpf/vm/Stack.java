@@ -14,13 +14,13 @@ public class Stack {
 		top = -1;
 		slots = new Entry[nOperands];
 	}
-	
+
 	public void clear() {
 		top = -1;
-		for (int i  = 0; i < slots.length; i++) {
+		for (int i = 0; i < slots.length; i++) {
 			slots[i] = null;
 		}
-//		slots = new Entry[slots.length]; // alternative
+		// slots = new Entry[slots.length]; // alternative
 	}
 
 	public void setRef(int index, boolean ref) {
@@ -74,7 +74,7 @@ public class Stack {
 		top--;
 		return res;
 	}
-	
+
 	public Entry popEntry() {
 		return slots[top--];
 	}
@@ -84,9 +84,9 @@ public class Stack {
 	}
 
 	public boolean isRef(int offset) {
-//		if (slots[top - offset] == null) {
-//			return false;
-//		}
+		// if (slots[top - offset] == null) {
+		// return false;
+		// }
 		return slots[top - offset].isRef;
 	}
 
@@ -147,7 +147,7 @@ public class Stack {
 			if (((Stack) o).top != top) {
 				return false;
 			}
-			for (int i = 0; i < slots.length; i++) {
+			for (int i = top; i >= 0; i--) {
 				if (((Stack) o).slots[i] == null) {
 					if (slots[i] == null) {
 						continue;
@@ -185,14 +185,14 @@ public class Stack {
 		Entry B = slots[top - 2];
 		Entry C = slots[top - 1];
 		Entry D = slots[top];
-		
+
 		slots[top - 3] = C;
 		slots[top - 2] = D;
 		slots[top - 1] = A;
 		slots[top] = B;
 		slots[top + 1] = C;
 		slots[top + 2] = D;
-		
+
 		top += 2;
 	}
 
@@ -203,63 +203,63 @@ public class Stack {
 		Entry A = slots[top - 2];
 		Entry B = slots[top - 1];
 		Entry C = slots[top];
-		
+
 		slots[top - 2] = B;
 		slots[top - 1] = C;
 		slots[top] = A;
 		slots[top + 1] = B;
 		slots[top + 2] = C;
-		
+
 		top += 2;
-		
+
 	}
 
-    /**
+	/**
 	 * .. A B => .. A B A B
-     */
+	 */
 	public void dup2() {
 		Entry A = slots[top - 1];
 		Entry B = slots[top];
-		
+
 		slots[top - 1] = A;
 		slots[top] = B;
 		slots[top + 1] = A;
 		slots[top + 2] = B;
-		
+
 		top += 2;
 	}
-	
-    /**
+
+	/**
 	 * .. A => .. A A
-     */
+	 */
 	public void dup() {
 		slots[top + 1] = slots[top];
 		top++;
 	}
-	
-    /**
+
+	/**
 	 * .. A B C => .. C A B C
-     */
+	 */
 	public void dup_x2() {
 		Entry A = slots[top - 2];
 		Entry B = slots[top - 1];
 		Entry C = slots[top];
-		
+
 		slots[top - 2] = C;
 		slots[top - 1] = A;
 		slots[top] = B;
 		slots[top + 1] = C;
-		
+
 		top++;
 	}
 
-    /**
+	/**
 	 * .. A B => .. B A
-     */
+	 */
 	public void swap() {
 		Entry A = slots[top - 1];
 		Entry B = slots[top];
-		
+
 		slots[top - 1] = B;
 		slots[top] = A;
 	}
@@ -275,13 +275,13 @@ public class Stack {
 		return hash;
 	}
 
-
 }
 
 class Entry {
 	boolean isRef = false;
 	final Integer value;
-//	final Integer attr;
+
+	// final Integer attr;
 
 	Entry copy() {
 		return new Entry(value, isRef);
@@ -304,7 +304,7 @@ class Entry {
 	public boolean equals(Object o) {
 		return ((Entry) o).value.equals(value) && ((Entry) o).isRef == isRef;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return value;

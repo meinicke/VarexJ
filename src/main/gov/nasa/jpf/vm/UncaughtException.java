@@ -22,6 +22,8 @@ import gov.nasa.jpf.util.Printable;
 
 import java.io.PrintWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 
 /**
  * represents the case of an unhandled exception detected by JPF
@@ -43,13 +45,13 @@ public class UncaughtException extends RuntimeException implements Printable {
 
   //ArrayList  stackTrace; // unused -pcd
 
-  public UncaughtException (ThreadInfo ti, int objRef) {
+  public UncaughtException (FeatureExpr ctx, ThreadInfo ti, int objRef) {
     thread = ti;
     xObjRef = objRef;
     
     ElementInfo ei = ti.getElementInfo(xObjRef);
     xClsName = ei.getClassInfo().getName();
-    details = ei.getStringField("detailMessage");
+    details = ei.getStringField(ctx, "detailMessage");
   }
   
   public String getRawMessage () {

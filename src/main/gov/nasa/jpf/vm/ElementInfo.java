@@ -1546,8 +1546,8 @@ public abstract class ElementInfo implements Cloneable {
     return fields.getHeapSize();
   }
 
-  public String getStringField(String fname) {
-    int ref = getReferenceField(fname).getValue();
+  public String getStringField(FeatureExpr ctx, String fname) {
+    int ref = getReferenceField(fname).simplify(ctx).getValue();
 
     if (ref != MJIEnv.NULL) {
       ElementInfo ei = VM.getVM().getHeap().get(ref);

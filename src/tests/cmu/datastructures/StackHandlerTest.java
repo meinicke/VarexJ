@@ -107,20 +107,17 @@ public class StackHandlerTest {
 
 		assertEquals(n2, stack.getLocal(FeatureExprFactory.True(), 1));
 		assertEquals(1, stack.getStackWidth());
-
+		
 		stack.storeOperand(f1, 0);
-
 		Conditional<Integer> res1 = stack.getLocal(f1, 0);
 		Conditional<Integer> res2 = stack.getLocal(f1.not(), 0);
-
 		assertEquals(n1, res1);
 		assertEquals(new One<>(MJIEnv.NULL), res2);
 
 		stack.pushLocal(f1, 1);
-
 		Conditional<Integer> peek = stack.peek(FeatureExprFactory.True());
 		assertEquals(n2, peek.simplify(f1));
-		assertEquals(new One<>(-1), peek.simplify(f1.not()));
+		assertEquals(n1, peek.simplify(f1.not()));
 	}
 
 	@Test
@@ -749,6 +746,17 @@ public class StackHandlerTest {
 		stack.pop(f1);
 		System.out.println(stack);
 		assertEquals(1, stack.getStackWidth());
+	}
+	
+	@Test
+	public void storeOperandTest() throws Exception {
+		StackHandler stack = new StackHandler(2, 2);
+		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
+		stack.push(FeatureExprFactory.True(), new One<>(42), true);
+		stack.storeOperand(f1, 0);
+		assertEquals(new One<>(42), stack.pop(f1.not()));
+		
+
 	}
 
 }

@@ -1919,12 +1919,12 @@ public class ThreadInfo extends InfoObject
         		time = System.currentTimeMillis();
         	}
         	count++;
-//    		if (count > 10000000) {
+//    		if (count > 850000) {
 //    			debug = true;
 //    			if (debug) System.out.print(count + ": ");
 //    		}
-//        	if (System.currentTimeMillis() - time > 1000) {
-//        		System.out.println((count - count2)+ " instructions / s");
+//        	if (System.currentTimeMillis() - time > 10000) {
+//        		System.out.println((count - count2)/10 + " instructions / s");
 //        		count2 = count;
 //        		time = System.currentTimeMillis();
 //        	}
@@ -2918,7 +2918,7 @@ public class ThreadInfo extends InfoObject
     if (haltOnThrow(exceptionName)) {
       // shortcut - we don't try to find a handler for this one but bail immediately
       //NoUncaughtExceptionsProperty.setExceptionInfo(pendingException);
-      throw new UncaughtException(this, exceptionObjRef);
+      throw new UncaughtException(ctx, this, exceptionObjRef);
     }
 
     // check if we find a matching handler, and if we do store it. Leave the
@@ -2946,7 +2946,7 @@ public class ThreadInfo extends InfoObject
         // ExceptionInInitializerError first
         unwindTo(frame, ctx);
         //NoUncaughtExceptionsProperty.setExceptionInfo(pendingException);
-        throw new UncaughtException(this, exceptionObjRef);
+        throw new UncaughtException(ctx, this, exceptionObjRef);
       }
     }
 
@@ -2975,7 +2975,7 @@ public class ThreadInfo extends InfoObject
 
       } else { // we have a NoUncaughtPropertyViolation
         //NoUncaughtExceptionsProperty.setExceptionInfo(pendingException);
-        throw new UncaughtException(this, exceptionObjRef);
+        throw new UncaughtException(ctx, this, exceptionObjRef);
       }
 
     } else { // we found a matching handler
@@ -3173,7 +3173,7 @@ public class ThreadInfo extends InfoObject
       UncaughtHandlerAttr ctx = returnedDirectCall.getFrameAttr(UncaughtHandlerAttr.class);
       pendingException = ctx.getExceptionInfo();
       //NoUncaughtExceptionsProperty.setExceptionInfo(pendingException);
-      throw new UncaughtException(this, pendingException.getExceptionReference());
+      throw new UncaughtException(fexpr, this, pendingException.getExceptionReference());
     }
   }
 
