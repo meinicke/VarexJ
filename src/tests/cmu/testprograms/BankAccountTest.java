@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class BankAccountTest extends TestJPF {
 //	private static String file = "C:\\Users\\Loaner\\workspace\\BankAccount-FH-JML_new\\BAmodel.dimacs";
-	private static String file = "lib\\BAmodel.dimacs";
+	private static String file = "BAmodel.dimacs";
 	
 	@Test
 	public void runBankAccount() {
