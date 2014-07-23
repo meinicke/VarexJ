@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class GPLTest extends TestJPF {
 	
-	public static String file = "lib\\GPL\\model.dimacs";
+	public static String file = "GPLmodel.dimacs";
 
 	private static final String GPL_JAR = "+classpath=lib\\GPL.jar";
 	private static final String RANDOM_SEARCH = "+search.class=.search.RandomSearch";

@@ -11,9 +11,6 @@ import de.fosd.typechef.featureexpr.FeatureModel;
 
 public class FMTest {
 	
-	
-	
-	
 	@Test
 	public void testSimple() throws Exception {
 		FeatureExprFactory.setDefault(FeatureExprFactory.sat());
@@ -22,7 +19,7 @@ public class FMTest {
 		FeatureExpr b = FeatureExprFactory.createDefinedExternal("CONFIG_B");
 		FeatureExpr c = FeatureExprFactory.createDefinedExternal("CONFIG_C");
 		
-		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile("lib\\model.dimacs");
+		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile("model.dimacs");
 		assertFalse(a.and(b.not()).isContradiction());
 		assertTrue(a.and(b.not()).isContradiction(model));
 		
@@ -34,7 +31,7 @@ public class FMTest {
 	public void testBankAccount() throws Exception {
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 		FeatureExpr bankaccount = FeatureExprFactory.createDefinedExternal("CONFIG_bankaccount");
-		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile("lib\\BAmodel.dimacs");
+		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile("BAmodel.dimacs");
 		assertFalse(bankaccount.not().isContradiction());
 		assertTrue(bankaccount.not().isContradiction(model));
 		
