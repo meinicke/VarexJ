@@ -37,9 +37,9 @@ public class IFLE extends IfInstruction {
   public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
 	  return frame.pop(ctx).map(new Function<Integer, Boolean>() {
 			public Boolean apply(Integer x) {
-				return x.intValue() <= 0;
+				return Boolean.valueOf(x.intValue() <= 0);
 			}
-		}).simplify();
+		}).simplifyValues();
   }
 
   public int getByteCode () {

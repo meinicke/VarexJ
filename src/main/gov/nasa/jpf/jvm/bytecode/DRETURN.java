@@ -41,7 +41,7 @@ public class DRETURN extends LongReturn {
       ret = frame.peekLong(ctx);
     }
 
-    return new Double(Types.longToDouble(ret.getValue()));
+    return Double.valueOf(Types.longToDouble(ret.getValue()));
   }
 
   public int getByteCode () {

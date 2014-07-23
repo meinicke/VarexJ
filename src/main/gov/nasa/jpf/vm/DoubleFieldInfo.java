@@ -63,8 +63,7 @@ public class DoubleFieldInfo extends DoubleSlotFieldInfo {
   }
 
   public Object getValueObject (Fields f){
-    double d = f.getDoubleValue(storageOffset).getValue();
-    return new Double(d);
+    return f.getDoubleValue(storageOffset).getValue();
   }
 
   public boolean isDoubleField(){

@@ -238,36 +238,36 @@ public abstract class InvokeInstruction extends JVMInstruction {
         break;
 
       case Types.T_LONG:
-        args[i] = new Long(frame.peekLong(FeatureExprFactory.True(), off).getValue());
+        args[i] = frame.peekLong(FeatureExprFactory.True(), off).getValue();
         off+=2;
         break;
       case Types.T_DOUBLE:
-        args[i] = new Double(Types.longToDouble(frame.peekLong(FeatureExprFactory.True(), off).getValue()));
+        args[i] = Double.valueOf(Types.longToDouble(frame.peekLong(FeatureExprFactory.True(), off).getValue()));
         off+=2;
         break;
 
       case Types.T_BOOLEAN:
-        args[i] = new Boolean(frame.peek(FeatureExprFactory.True(), off).getValue().intValue() != 0);
+        args[i] = Boolean.valueOf(frame.peek(FeatureExprFactory.True(), off).getValue().intValue() != 0);
         off++;
         break;
       case Types.T_BYTE:
-        args[i] = new Byte((byte)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
+        args[i] = Byte.valueOf((byte)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_CHAR:
-        args[i] = new Character((char)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
+        args[i] = Character.valueOf((char)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_SHORT:
-        args[i] = new Short((short)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
+        args[i] = Short.valueOf((short)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_INT:
-        args[i] = new Integer((int)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
+        args[i] = frame.peek(FeatureExprFactory.True(), off).getValue();
         off++;
         break;
       case Types.T_FLOAT:
-        args[i] = new Float(Types.intToFloat(frame.peek(FeatureExprFactory.True(), off).getValue().intValue()));
+        args[i] = Float.valueOf(Types.intToFloat(frame.peek(FeatureExprFactory.True(), off).getValue().intValue()));
         off++;
         break;
       default:

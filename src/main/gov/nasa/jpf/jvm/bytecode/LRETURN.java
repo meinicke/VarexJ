@@ -39,7 +39,7 @@ public class LRETURN extends LongReturn {
       ret = frame.peekLong(ctx);
     }
 
-    return new Long(ret.getValue());
+    return ret.getValue();
   }
 
   public int getByteCode () {

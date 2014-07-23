@@ -23,34 +23,33 @@ import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.vm.StackFrame;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
  * Branch if int comparison with zero succeeds
  * ..., value => ...
  */
 public class IFEQ extends IfInstruction {
 
-  public IFEQ(int targetPc) {
-    super(targetPc);
-  }
+	private static final class IFEQ_ implements Function<Integer, Boolean> {
+		public Boolean apply(final Integer x) {
+			return Boolean.valueOf(x.intValue() == 0);
+		}
+	}
 
+	public IFEQ(int targetPc) {
+		super(targetPc);
+	}
 
-  public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
-	  Conditional<Integer> pop = frame.pop(ctx);
-	  Conditional<Boolean> res = pop.map(new Function<Integer, Boolean>() {
-			public Boolean apply(Integer x) {
-				return x.intValue() == 0;
-			}
-		}).simplify();
-	  return res;
-  }
-  
+	public Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame) {
+		Conditional<Integer> pop = frame.pop(ctx);
+		Conditional<Boolean> res = pop.map(new IFEQ_()).simplifyValues();
+		return res;
+	}
 
-  public int getByteCode () {
-    return 0x99;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	public int getByteCode() {
+		return 0x99;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

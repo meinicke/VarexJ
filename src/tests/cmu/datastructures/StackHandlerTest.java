@@ -18,7 +18,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void test() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr feature = FeatureExprFactory.createDefinedExternal("Feature");
 
 		Conditional<Integer> n1 = new One<>(20);
@@ -41,7 +41,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void test2() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 
 		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
@@ -56,7 +56,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void test3() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 
 		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
@@ -71,7 +71,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void isRefLocalTest() throws Exception {
-		StackHandler stack = new StackHandler(2, 0);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 2, 0);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
 		stack.setLocal(f1, 0, n1, true);
@@ -82,20 +82,20 @@ public class StackHandlerTest {
 
 	@Test
 	public void getNullTestValue() throws Exception {
-		StackHandler stack = new StackHandler(2, 0);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 2, 0);
 		assertEquals(-1, stack.getLocal(FeatureExprFactory.True(), -1).getValue().intValue());
 		assertEquals(MJIEnv.NULL, stack.getLocal(FeatureExprFactory.True(), 0).getValue().intValue());
 	}
 
 	@Test
 	public void getNullTestRef() throws Exception {
-		StackHandler stack = new StackHandler(2, 0);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 2, 0);
 		assertEquals(false, stack.isRefLocal(FeatureExprFactory.True(), 0));
 	}
 
 	@Test
 	public void test4() throws Exception {
-		StackHandler stack = new StackHandler(2, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10));
 		stack.push(FeatureExprFactory.True(), n1, true);
@@ -122,7 +122,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void hasAnyRefTest() throws Exception {
-		StackHandler stack = new StackHandler(1, 1);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 1, 1);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10));
 		stack.push(f1, n1, true);
@@ -148,7 +148,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void popTest() throws Exception {
-		StackHandler stack = new StackHandler(2, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
 		stack.push(FeatureExprFactory.True(), n1, true);
@@ -160,7 +160,7 @@ public class StackHandlerTest {
 	public void popNTest() throws Exception {
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		int n = (int) (Math.random() * 10 + 1);
-		StackHandler stack = new StackHandler(0, n);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, n);
 		for (int i = 0; i < n; i++) {
 			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
 			stack.push(f1, n1, Math.random() < 0.5);
@@ -173,7 +173,7 @@ public class StackHandlerTest {
 	public void popNTest2() throws Exception {
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		int n = (int) (Math.random() * 10 + 1);
-		StackHandler stack = new StackHandler(0, n);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, n);
 		for (int i = 0; i < n; i++) {
 			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
 			stack.push(f1, n1, Math.random() < 0.5);
@@ -193,7 +193,7 @@ public class StackHandlerTest {
 			FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 			int n = (int) (Math.random() * 10 + 2);
 			int m = (int) (Math.random() * 10 + 1);
-			StackHandler stack = new StackHandler(m, n);
+			StackHandler stack = new StackHandler(FeatureExprFactory.True(), m, n);
 			assertEquals(stack, stack.clone());
 			for (int i = 0; i < m; i++) {
 				Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
@@ -223,7 +223,7 @@ public class StackHandlerTest {
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		int n = 4;
 		int m = 4;
-		StackHandler stack = new StackHandler(m, n);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), m, n);
 		assertEquals(stack, stack.clone());
 		for (int i = 0; i < m; i++) {
 			if (i == 2) {
@@ -254,7 +254,7 @@ public class StackHandlerTest {
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		int m = 2;
 		int n = 1;
-		StackHandler stack = new StackHandler(m, n);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), m, n);
 		assertEquals(stack, stack.clone());
 		for (int i = 0; i < m; i++) {
 			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
@@ -285,7 +285,7 @@ public class StackHandlerTest {
 		int nLocals = 2;
 		int nOperands = 3;
 		int length = nLocals + nOperands;
-		StackHandler stack = new StackHandler(nLocals, nOperands);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), nLocals, nOperands);
 		assertEquals(length, stack.length);
 		assertEquals(-1, stack.getTop().getValue().intValue());
 		assertEquals(stack.getStackWidth(), 1);
@@ -304,7 +304,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void dup_x1_test() throws Exception {
-		StackHandler stack = new StackHandler(0, 3);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 3);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -321,7 +321,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void dup_x1_test_conditional() throws Exception {
-		StackHandler stack = new StackHandler(0, 3);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 3);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -342,7 +342,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void dup2_x2_test() throws Exception {
-		StackHandler stack = new StackHandler(0, 6);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 6);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -367,7 +367,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void dup2_x2_test_conditional() throws Exception {
-		StackHandler stack = new StackHandler(0, 6);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 6);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -401,7 +401,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void dup2_x1_test() throws Exception {
-		StackHandler stack = new StackHandler(0, 5);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -427,7 +427,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void dup2_x1_test_conditional() throws Exception {
-		StackHandler stack = new StackHandler(0, 5);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -457,7 +457,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void dup2_test() throws Exception {
-		StackHandler stack = new StackHandler(0, 5);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -480,7 +480,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void dup2_test_conditional() throws Exception {
-		StackHandler stack = new StackHandler(0, 5);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -506,7 +506,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void dup_test() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		Conditional<Integer> A = new One<>(1);
 
@@ -525,7 +525,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void dup_test_conditional() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> A = new One<>(1);
 
@@ -547,7 +547,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void dup_x2_test() throws Exception {
-		StackHandler stack = new StackHandler(0, 5);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -573,7 +573,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void dup_x2_test_conditional() throws Exception {
-		StackHandler stack = new StackHandler(0, 4);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 4);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -602,7 +602,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void swap_test() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -623,7 +623,7 @@ public class StackHandlerTest {
 	 */
 	@Test
 	public void swap_test_conditional() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1");
 		Conditional<Integer> A = new One<>(1);
 		Conditional<Integer> B = new One<>(2);
@@ -644,7 +644,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void pushLongTest() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		long l = 12345678910L;
 		Conditional<Long> n1 = new One<>(l);
@@ -659,7 +659,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void pushDoubleTest() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		double d = 10.12345;
 		Conditional<Double> n1 = new One<>(d);
@@ -675,7 +675,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void pushFloatTest() throws Exception {
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.True();
 		float f = 123.4f;
 		Conditional<Float> n1 = new One<>(f);
@@ -691,7 +691,7 @@ public class StackHandlerTest {
 	@Test
 	public void doubleTest() throws Exception {
 		Double d = 42.0;
-		StackHandler stack = new StackHandler(0, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 2);
 		stack.push(FeatureExprFactory.True(), new One<>(42.0), false);
 		Double res = stack.popDouble(FeatureExprFactory.True()).getValue();
 		assertEquals(d, res);
@@ -699,7 +699,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void doubleTest_2() throws Exception {
-		StackHandler stack = new StackHandler(0, 4);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 4);
 		stack.push(FeatureExprFactory.True(), new One<>(42.0), false);
 		stack.push(FeatureExprFactory.True(), new One<>(42.0), false);
 		Double res = stack.popDouble(FeatureExprFactory.True()).getValue();
@@ -711,7 +711,7 @@ public class StackHandlerTest {
 
 	@Test
 	public void doubleTest_3() throws Exception {
-		StackHandler stack = new StackHandler(0, 4);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, 4);
 		stack.push(FeatureExprFactory.True(), new One<>(42.0), false);
 		Double res = stack.popDouble(FeatureExprFactory.True()).getValue();
 		assertEquals(fd, res);
@@ -719,10 +719,11 @@ public class StackHandlerTest {
 	
 	@Test
 	public void ctxTest() throws Exception {
-		StackHandler stack = new StackHandler(0, 4);
+		
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		FeatureExpr f2 = FeatureExprFactory.createDefinedExternal("f2");
-		stack.setCtx(f1);
+		
+		StackHandler stack = new StackHandler(f1, 0, 4);
 		stack.push(f1, new One<>(42), false);
 		assertEquals(1, stack.getStackWidth());
 		System.out.println(stack);
@@ -734,9 +735,8 @@ public class StackHandlerTest {
 	
 	@Test
 	public void ctxTest2() throws Exception {
-		StackHandler stack = new StackHandler(0, 4);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
-		stack.setCtx(f1);
+		StackHandler stack = new StackHandler(f1, 0, 4);
 		stack.push(f1, new One<>(42), false);
 		stack.push(f1, new One<>(43), true);
 		assertEquals(1, stack.getStackWidth());
@@ -750,7 +750,7 @@ public class StackHandlerTest {
 	
 	@Test
 	public void storeOperandTest() throws Exception {
-		StackHandler stack = new StackHandler(2, 2);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 		stack.push(FeatureExprFactory.True(), new One<>(42), true);
 		stack.storeOperand(f1, 0);

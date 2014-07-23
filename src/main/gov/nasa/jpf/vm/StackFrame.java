@@ -120,14 +120,14 @@ public int nLocals;
   
   
 
-  protected StackFrame (MethodInfo callee, int nLocals, int nOperands){
+  protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){
     mi = callee;
     pc = new One<>(mi.getInstruction(0)); // ???
     this.nLocals = nLocals;
     stackBase = nLocals;
 //    int top() = nLocals-1;
 
-    stack = new StackHandler(nLocals, nOperands);
+    stack = new StackHandler(ctx, nLocals, nOperands);
     
 //    int nSlots = nLocals + nOperands;
 //    if (nSlots > 0){
@@ -142,12 +142,11 @@ public int nLocals;
   }
   
   public StackFrame (MethodInfo callee){
-    this( callee, callee.getMaxLocals(), callee.getMaxStack());
+    this( FeatureExprFactory.True(), callee, callee.getMaxLocals(), callee.getMaxStack());
   }
   
   public StackFrame(FeatureExpr ctx, MethodInfo callee) {
-	  this( callee, callee.getMaxLocals(), callee.getMaxStack());
-	  stack.setCtx(ctx);
+	  this( ctx, callee, callee.getMaxLocals(), callee.getMaxStack());
   }
 
 
@@ -165,7 +164,7 @@ public int nLocals;
   protected StackFrame (int nLocals, int nOperands){
     stackBase = nLocals;
     this.nLocals = nLocals;
-    stack = new StackHandler(nLocals, nOperands);
+    stack = new StackHandler(FeatureExprFactory.True(), nLocals, nOperands);
   }
   
   
@@ -238,19 +237,19 @@ public int nLocals;
         case 'Z':
           return Boolean.valueOf(v != 0);
         case 'B':
-          return new Byte((byte) v);
+          return Byte.valueOf((byte) v);
         case 'C':
-          return new Character((char) v);
+          return Character.valueOf((char) v);
         case 'S':
-          return new Short((short) v);
+          return Short.valueOf((short) v);
         case 'I':
-          return new Integer((int) v);
+          return Integer.valueOf(v);
         case 'J':
-          return new Long(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)); // Java is big endian, Types expects low,high
+          return Long.valueOf(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)); // Java is big endian, Types expects low,high
         case 'F':
-          return new Float(Float.intBitsToFloat(v));
+          return Float.valueOf(Float.intBitsToFloat(v));
         case 'D':
-          return new Double(Double.longBitsToDouble(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)));
+          return Double.valueOf(Double.longBitsToDouble(Types.intsToLong(stack.getLocal(TRUE, slotIdx + 1).getValue(), v)));
         default:  // reference
           if (v >= 0) {
             return VM.getVM().getHeap().get(v);

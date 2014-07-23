@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.SystemAttribute;
 
 /**
@@ -38,12 +39,12 @@ public abstract class DirectCallStackFrame extends StackFrame implements SystemA
   MethodInfo callee;
 
   protected DirectCallStackFrame (MethodInfo miDirectCall, MethodInfo callee, int maxLocals, int maxStack){
-    super( miDirectCall, maxLocals, maxStack);    
+    super( FeatureExprFactory.True(), miDirectCall, maxLocals, maxStack);    
     this.callee = callee;
   }
   
   protected DirectCallStackFrame (MethodInfo miDirectCall, MethodInfo callee){
-    super( miDirectCall, miDirectCall.getMaxLocals(), miDirectCall.getMaxStack());
+    super( FeatureExprFactory.True(), miDirectCall, miDirectCall.getMaxLocals(), miDirectCall.getMaxStack());
     this.callee = callee;
   }
   

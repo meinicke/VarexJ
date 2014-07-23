@@ -32,6 +32,7 @@ import gov.nasa.jpf.util.Processor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -422,13 +423,14 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 		createArray("C", length, ciChars, ti, vRef);
 		ElementInfo ei = null;
 		Map<String, FeatureExpr> map = str.toMap();
-		for (String s : map.keySet()) {
+		for (Entry<String, FeatureExpr> sEntry : map.entrySet()) {
+			String s = sEntry.getKey();
 			if (ei == null) {
-				ei = initializeStringObject(map.get(s), s, sRef, vRef);
+				ei = initializeStringObject(sEntry.getValue(), s, sRef, vRef);
 			} else {
 				ElementInfo eVal = getModifiable(vRef);
 				CharArrayFields cf = (CharArrayFields)eVal.getFields();
-			    cf.setCharValues(map.get(s).and(fexpr), s.toCharArray());
+			    cf.setCharValues(sEntry.getValue().and(fexpr), s.toCharArray());
 			}
 		}
 

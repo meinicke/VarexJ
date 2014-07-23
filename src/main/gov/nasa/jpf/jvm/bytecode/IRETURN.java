@@ -58,7 +58,7 @@ public class IRETURN extends ReturnInstruction {
       ret = frame.peek(ctx);
     }
 
-    return new Integer(ret.getValue());
+    return ret.getValue();
   }
   
   public int getByteCode () {

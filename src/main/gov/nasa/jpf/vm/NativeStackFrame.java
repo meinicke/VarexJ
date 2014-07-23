@@ -55,8 +55,8 @@ public abstract class NativeStackFrame extends StackFrame {
   // our argument registers
   protected Object[] args;
 
-  public NativeStackFrame (NativeMethodInfo mi){
-    super( mi, 0, 0);
+  public NativeStackFrame (FeatureExpr ctx, NativeMethodInfo mi){
+    super( ctx, mi, 0, 0);
   }
   
   public void setArgs (Object[] args){

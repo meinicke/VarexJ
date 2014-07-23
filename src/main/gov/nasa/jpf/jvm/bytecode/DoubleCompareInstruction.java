@@ -44,7 +44,7 @@ public abstract class DoubleCompareInstruction extends JVMInstruction {
   }
   
 	@Override
-	protected Number instruction(Number v1, Number v2) {
+	protected Number instruction(final Number v1, final Number v2) {
 		return conditionValue(v1.doubleValue(), v2.doubleValue());
 	}
 

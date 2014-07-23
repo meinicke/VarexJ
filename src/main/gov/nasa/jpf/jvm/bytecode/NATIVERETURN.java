@@ -158,7 +158,7 @@ public class NATIVERETURN extends ReturnInstruction {
         break;
 
       case Types.T_INT:
-        fr.push(ctx, new One<>(((Integer) ret).intValue()));
+        fr.push(ctx, new One<>((Integer) ret));
         break;
 
       case Types.T_LONG:

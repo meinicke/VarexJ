@@ -570,7 +570,7 @@ public class JVMClassInfo extends ClassInfo {
     
     if (callee.isMJI()){
       NativeMethodInfo nativeCallee = (NativeMethodInfo) callee;
-      JVMNativeStackFrame calleeFrame = new JVMNativeStackFrame( nativeCallee);
+      JVMNativeStackFrame calleeFrame = new JVMNativeStackFrame( ctx, nativeCallee);
       calleeFrame.setArguments(ctx, ti);
       return calleeFrame; 
       

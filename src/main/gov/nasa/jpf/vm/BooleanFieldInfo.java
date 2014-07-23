@@ -53,7 +53,7 @@ public class BooleanFieldInfo extends SingleSlotFieldInfo {
 
   public Object getValueObject (Fields f){
     int i = f.getIntValue(storageOffset);
-    return new Boolean(i != 0);
+    return Boolean.valueOf(i != 0);
   }
 
   public String valueToString (Fields f) {

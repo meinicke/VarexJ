@@ -830,7 +830,7 @@ public class MJIEnv {
       if (clsName.equals("java.lang.Boolean")){
         args[i] = Boolean.valueOf(getBooleanField(aref,"value"));
       } else if (clsName.equals("java.lang.Integer")){
-        args[i] = Integer.valueOf(getIntField(null,aref, "value").getValue());
+        args[i] = getIntField(null,aref, "value").getValue();
       } else if (clsName.equals("java.lang.Double")){
         args[i] = Double.valueOf(getDoubleField(aref,"value"));
       } else if (clsName.equals("java.lang.String")){
@@ -858,11 +858,11 @@ public class MJIEnv {
   }
 
   public Integer getIntegerObject (int objref){
-    return new Integer(getIntField(null, objref, "value").getValue());
+    return getIntField(null, objref, "value").getValue();
   }
 
   public Long getLongObject (int objref){
-    return new Long(getLongField(objref, "value").getValue());
+    return getLongField(objref, "value").getValue();
   }
 
   public Float getFloatObject (int objref){

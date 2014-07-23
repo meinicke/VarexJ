@@ -6,7 +6,7 @@ import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-public class Choice<T> extends Conditional<T> {
+public class Choice<T> extends Conditional<T> implements Cloneable {
 
 	private Conditional<T> thenBranch;
 	private Conditional<T> elseBranch;
@@ -26,12 +26,12 @@ public class Choice<T> extends Conditional<T> {
 		if (inFeature == null) {
 			Conditional<U> newResultA = thenBranch.mapfr(null, f);
 			Conditional<U> newResultB = elseBranch.mapfr(null, f);
-			return new Choice<>((featureExpr), newResultA, newResultB);
+			return new Choice<>(featureExpr, newResultA, newResultB);
 		}
 
 		Conditional<U> newResultA = thenBranch.mapfr(inFeature.and(featureExpr), f);
 		Conditional<U> newResultB = elseBranch.mapfr(inFeature.and(featureExpr.not()), f);
-		return new Choice<>((featureExpr), newResultA, newResultB);
+		return new Choice<>(featureExpr, newResultA, newResultB);
 
 	}
 
@@ -40,61 +40,17 @@ public class Choice<T> extends Conditional<T> {
 		if (ctx == null) {
 			throw new RuntimeException("ctx == null");
 		}
-		
+
 		FeatureExpr and = ctx.and(featureExpr);
-		Boolean fmcontr = map.get(and);
-		if (fmcontr == null) {
-			if (and.isContradiction()) {
-				fmcontr = true;
-				map.put(and, true);
-			} else if (and.isTautology()) {
-				fmcontr = false;
-				map.put(and, false);
-			} else {
-				fmcontr = false;
-			}
-		}
-		if (fmcontr) {
+		if (isContradiction(and)) {
 			return elseBranch.simplify(ctx.andNot(featureExpr));
 		}
-		
+
 		FeatureExpr andNot = ctx.andNot(featureExpr);
-		fmcontr = map.get(andNot);
-		if (fmcontr == null) {
-			if (andNot.isContradiction()) {
-				fmcontr = true;
-				map.put(andNot, true);
-			} else if (and.isTautology()) {
-				fmcontr = false;
-				map.put(andNot, false);
-			} else {
-				fmcontr = false;
-			}
-		}
-		
-		if (fmcontr) {
+		if (isContradiction(andNot)) {
 			return thenBranch.simplify(and);
 		}
-		
-		fmcontr = map.get(and);
-		if (fmcontr == null) {
-			fmcontr = and.isContradiction(fm);
-			map.put(and, fmcontr);
-		}
-		if (fmcontr) {
-			return elseBranch.simplify(andNot);
-		}
-		
-		fmcontr = map.get(andNot);
-		if (fmcontr == null) {
-			fmcontr = andNot.isContradiction(fm);
-			map.put(andNot, fmcontr);
-		}
-		
-		if (fmcontr) {
-			return thenBranch.simplify(and);
-		}
-		
+
 		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplify(and);
 		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplify(andNot);
 
@@ -148,20 +104,24 @@ public class Choice<T> extends Conditional<T> {
 	public boolean equals(Object obj) {
 		if (obj instanceof Choice) {
 			Choice<T> c = (Choice<T>) obj;
-			return c.featureExpr.equivalentTo(featureExpr) && c.thenBranch.equals(thenBranch) && c.elseBranch.equals(elseBranch);
+			return c.thenBranch.equals(thenBranch) && c.elseBranch.equals(elseBranch) && c.featureExpr.equivalentTo(featureExpr);
 		}
 		return false;
 	}
 
+	public int hashCode() {
+		throw new RuntimeException("hashCode not designed");
+	}
+
 	@Override
 	public T getValue() {
-//		 System.out.println("___________________________________________________");
-//		 System.out.println("Get value of choice called: " + toList());
-//		 for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
-//		 System.out.println(e);
-//		 }
-//		 System.out.println("---------------------------------------------------");
-//		 return thenBranch.getValue(true);
+		// System.out.println("___________________________________________________");
+		// System.out.println("Get value of choice called: " + toList());
+		// for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
+		// System.out.println(e);
+		// }
+		// System.out.println("---------------------------------------------------");
+		// return thenBranch.getValue(true);
 		throw new RuntimeException("Get value of choice called: " + toString());
 	}
 
@@ -187,10 +147,54 @@ public class Choice<T> extends Conditional<T> {
 		elseBranch.toMap(ctx.andNot(featureExpr), map);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return new Choice<>(featureExpr, (Conditional<T>) thenBranch.clone(), (Conditional<T>) elseBranch.clone());
+	public Conditional<T> clone() throws CloneNotSupportedException {
+		return new Choice<>(featureExpr, thenBranch.clone(), elseBranch.clone());
+	}
+
+	@Override
+	public Conditional<T> simplifyValues() {
+		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplifyValues();
+		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplifyValues();
+
+		if (tb == null) {
+			return eb;
+		}
+		if (eb == null) {
+			return tb;
+		}
+
+		if (tb.equals(eb)) {
+			return tb;
+		}
+
+		// TODO somehow causes errors (see BankAccount test)
+		if (tb instanceof One) {
+			if (eb instanceof Choice) {
+				if (((Choice<T>) eb).elseBranch instanceof One && ((Choice<T>) eb).thenBranch instanceof One) {// TODO remove
+					if (((Choice<T>) eb).thenBranch.equals(tb)) {
+						return new Choice<>(featureExpr.or(featureExpr.not().and(((Choice<T>) eb).featureExpr)), tb, ((Choice<T>) eb).elseBranch);
+					}
+					if (((Choice<T>) eb).elseBranch.equals(tb)) {
+						return new Choice<>(featureExpr.or(featureExpr.not().and(((Choice<T>) eb).featureExpr.not())), tb, ((Choice<T>) eb).thenBranch);
+					}
+				}
+			}
+		}
+		if (eb instanceof One) {
+			if (tb instanceof Choice) {
+				if (((Choice<T>) tb).elseBranch instanceof One && ((Choice<T>) tb).thenBranch instanceof One) {// TODO remove
+					if (((Choice<T>) tb).thenBranch.equals(eb)) {
+						return new Choice<>(featureExpr.not().or(featureExpr.and(((Choice<T>) tb).featureExpr)), eb, ((Choice<T>) tb).elseBranch);
+					}
+					if (((Choice<T>) tb).elseBranch.equals(eb)) {
+						return new Choice<>(featureExpr.not().or(featureExpr.and(((Choice<T>) tb).featureExpr.not())), eb, ((Choice<T>) tb).thenBranch);
+					}
+				}
+			}
+		}
+
+		return new Choice<>((featureExpr), tb, eb);
 	}
 
 }

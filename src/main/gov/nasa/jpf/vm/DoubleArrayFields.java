@@ -83,7 +83,7 @@ public class DoubleArrayFields extends ArrayFields {
       DoubleArrayFields other = (DoubleArrayFields)o;
 
       double[] v = asDoubleArray();
-      double[] vOther = asDoubleArray();
+      double[] vOther = ((DoubleArrayFields) o).asDoubleArray();
       if (v.length != vOther.length) {
         return false;
       }

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-public class One<T> extends Conditional<T> {
+public class One<T> extends Conditional<T> implements Cloneable {
 
 	private T value;
 	
@@ -69,14 +69,18 @@ public class One<T> extends Conditional<T> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		 if (obj != null && obj instanceof One) {
-			 if (((One<?>)obj).value == null && value == null) {
+		 if (obj instanceof One) {
+			 if (value == ((One<?>)obj).value) {
 				 return true;
 			 }
 			 if (((One<?>)obj).value != null && value != null && ((One<?>)obj).value.equals(value))
 				 return true;
 		 }
 		 return false;
+	}
+	
+	public int hashCode() {
+		throw new RuntimeException("hashCode not designed");
 	}
 
 	@Override
@@ -97,8 +101,13 @@ public class One<T> extends Conditional<T> {
 	}
 
 	@Override
-	public Object clone() throws CloneNotSupportedException {
+	public Conditional<T> clone() throws CloneNotSupportedException {
 		return new One<>(value);
+	}
+
+	@Override
+	public Conditional<T> simplifyValues() {
+		return this;
 	}
 
 }

@@ -42,7 +42,7 @@ public class NamedFields extends Fields {
 
 	public NamedFields(int dataSize) {
 		values = new Conditional[dataSize];
-		
+
 		for (int i = 0; i < values.length; i++) {
 			values[i] = new One<>(0);
 		}
@@ -68,7 +68,7 @@ public class NamedFields extends Fields {
 	}
 
 	// our low level getters and setters
-	public int getIntValue(int index) {		
+	public int getIntValue(int index) {
 		return getIntValue2(index).getValue();
 	}
 
@@ -102,30 +102,28 @@ public class NamedFields extends Fields {
 	public int getReferenceValue(int index) {
 		return values[index].getValue();
 	}
-	
+
 	// same as above, just here to make intentions clear
 	public Conditional<Integer> getReferenceValue2(int index) {
 		return values[index];
 	}
 
 	public Conditional<Long> getLongValue(final int index) {
-		
-		Conditional<Long> returnV = values[index + 1].mapr(new Function<Integer, Conditional<Long>>() {
+		return values[index + 1].mapr(new Function<Integer, Conditional<Long>>() {
 
 			@Override
 			public Conditional<Long> apply(final Integer l) {
 				return values[index].mapr(new Function<Integer, Conditional<Long>>() {
-				
+
 					@Override
-					public Conditional<Long> apply(Integer h) {
+					public Conditional<Long> apply(final Integer h) {
 						return new One<>(Types.intsToLong(l, h));
 					}
-					
+
 				});
 			}
-			
+
 		});
-		return returnV;
 	}
 
 	public boolean getBooleanValue(int index) {
@@ -137,14 +135,14 @@ public class NamedFields extends Fields {
 	}
 
 	public Conditional<Character> getCharValue(int index) {
-		return values[index].map(new Function<Integer, Character>() {
+		return values[index].map(new GetCharValue());
+	}
 
-			@Override
-			public Character apply(Integer x) {
-				return (char) x.intValue();
-			}
-			
-		});
+	private static final class GetCharValue implements Function<Integer, Character> {
+		@Override
+		public Character apply(final Integer x) {
+			return (char) x.intValue();
+		}
 	}
 
 	public short getShortValue(int index) {
@@ -179,12 +177,14 @@ public class NamedFields extends Fields {
 	}
 
 	public void setCharValue(FeatureExpr ctx, int index, Conditional<Character> newValue) {
-		values[index] = newValue.map(new Function<Character, Integer>() {
-
-			@Override
-			public Integer apply(Character newValue) {
-				return (int)newValue.charValue();
-			}});
+		values[index] = newValue.map(new SetCharValue());
+	}
+	
+	private static final class SetCharValue implements Function<Character, Integer> {
+		@Override
+		public Integer apply(final Character newValue) {
+			return (int) newValue.charValue();
+		}
 	}
 
 	public void setShortValue(int index, short newValue) {
@@ -216,21 +216,23 @@ public class NamedFields extends Fields {
 				if (ctx.isTautology()) {
 					values[index] = new One<>(Types.hiLong(newValue));
 					values[index + 1] = new One<>(Types.loLong(newValue));
-				} else if (ctx.isSatisfiable()) {
+				} else if (!Conditional.isContradiction(ctx)) {
 					values[index] = new Choice<>(ctx, new One<>(Types.hiLong(newValue)), values[index]);
 					values[index + 1] = new Choice<>(ctx, new One<>(Types.loLong(newValue)), values[index + 1]);
 				}
 				return null;
 			}
-			
+
 		});
 		values[index] = values[index].simplify();
-		values[index + 1] = values[index + 1].simplify();		
+		values[index + 1] = values[index + 1].simplify();
 	}
 
+	@Override
 	protected void setDoubleValue(int index, Conditional<Double> newValue) {
-		values[index++] = new One<>(Types.hiDouble(newValue.getValue()));
-		values[index] = new One<>(Types.loDouble(newValue.getValue()));
+		final Double value = newValue.getValue();
+		values[index++] = new One<>(Types.hiDouble(value));
+		values[index] = new One<>(Types.loDouble(value));
 	}
 
 	public float getFloatValue(int index) {
@@ -275,6 +277,10 @@ public class NamedFields extends Fields {
 		} else {
 			return false;
 		}
+	}
+	
+	public int hashCode() {
+		throw new RuntimeException("hashCode not designed");
 	}
 
 	// serialization interface

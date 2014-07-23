@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.StackHandler;
 import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -63,11 +64,11 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		if (map.size() > 1) {
 			splitRef = true;
 		}
-		for (Integer objRef : map.keySet()) {
+		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
 			if (splitRef) {
-				ctx = ctx.and(map.get(objRef));
+				ctx = ctx.and(objRefEntry.getValue());
 			}
-			
+			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
 				return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));

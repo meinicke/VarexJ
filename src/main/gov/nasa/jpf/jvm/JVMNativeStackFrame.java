@@ -32,8 +32,8 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JVMNativeStackFrame extends NativeStackFrame {
 
-  public JVMNativeStackFrame (NativeMethodInfo callee){
-    super(callee);
+  public JVMNativeStackFrame (FeatureExpr ctx, NativeMethodInfo callee){
+    super(ctx, callee);
   }
   
   public void setArguments (final FeatureExpr ctx, ThreadInfo ti){
@@ -79,7 +79,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
 
       case Types.T_INT:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = new Integer(ival.getValue().intValue());
+        a[j] = ival.getValue();
 
         break;
 
@@ -99,7 +99,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
       case Types.T_DOUBLE:
         lval = callerFrame.peekLong(ctx, stackOffset).getValue();
         stackOffset++; // 2 stack words
-        a[j] = new Double(Types.longToDouble(lval));
+        a[j] = Double.valueOf(Types.longToDouble(lval));
 
         break;
 
@@ -107,7 +107,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
         // NOTE - we have to store T_REFERENCE as an Integer, because
         // it shows up in our native method as an 'int'
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = new Integer(ival.getValue());
+        a[j] = ival.getValue();
       }
 
       stackOffset++;

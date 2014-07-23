@@ -9,7 +9,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 // TODO replace by interface
-public class StackHandler {
+public class StackHandler implements Cloneable {
 
 	enum Type {
 		INT, FLOAT, LONG, DOUBLE
@@ -26,9 +26,7 @@ public class StackHandler {
 
 	public int length = 0;
 
-	public Integer nLocals = 0;
-
-	public FeatureExpr stackCTX = FeatureExprFactory.True();
+	public final FeatureExpr stackCTX;
 
 	public int getStackWidth() {
 		return stack.toList().size();
@@ -53,21 +51,18 @@ public class StackHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	public StackHandler(int nLocals, int nOperands) {
-		this.nLocals = nLocals;
+	public StackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
 		length = nLocals + nOperands;
 		locals = new Conditional[nLocals];
 		stack = new One<>(new Stack(nOperands));
+		stackCTX = ctx;
 	}
 
 	@SuppressWarnings("unchecked")
 	public StackHandler() {
 		stack = new One<>(new Stack(0));
 		locals = new Conditional[0];
-	}
-
-	public void setCtx(FeatureExpr ctx) {
-		this.stackCTX = ctx;
+		stackCTX = FeatureExprFactory.True();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,26 +73,26 @@ public class StackHandler {
 		for (int i = 0; i < locals.length; i++) {
 			Conditional<Entry> local = locals[i];
 			if (local != null) {
-				clone.locals[i] = local.map(new Function<Entry, Entry>() {
-
-					@Override
-					public Entry apply(Entry entry) {
-						return entry.copy();
-					}
-
-				});
+				clone.locals[i] = local.map(new CopyEntry());
 			}
 		}
 
-		clone.stack = stack.map(new Function<Stack, Stack>() {
-
-			@Override
-			public Stack apply(Stack stack) {
-				return stack.copy();
-			}
-
-		});
+		clone.stack = stack.map(new CopyStack());
 		return clone;
+	}
+	
+	private static final class CopyEntry implements Function<Entry, Entry> {
+		@Override
+		public Entry apply(final Entry entry) {
+			return entry.copy();
+		}
+	}
+	
+	private static final class CopyStack implements Function<Stack, Stack> {
+		@Override
+		public Stack apply(final Stack stack) {
+			return stack.copy();
+		}
 	}
 
 	/*
@@ -112,30 +107,30 @@ public class StackHandler {
 	 * @param index
 	 *            The index of the local variable
 	 */
-	public <T> void pushLocal(FeatureExpr ctx, int index) {
+	public void pushLocal(final FeatureExpr ctx, final int index) {
 		Conditional<Entry> value = locals[index];
 		if (value == null) {
 			value = new One<>(new Entry(MJIEnv.NULL, false));
 		}
-		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<T>>() {
+		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Object>>() {
 
 			@Override
-			public Conditional<T> apply(FeatureExpr ctx, Entry entry) {
+			public Conditional<Object> apply(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, entry.isRef);
 				return null;
 			}
 		});
 	}
 
-	public <T> void pushLongLocal(FeatureExpr ctx, int index) {
+	public void pushLongLocal(FeatureExpr ctx, int index) {
 		Conditional<Entry> value = locals[index];
 		if (value == null) {
 			value = new One<>(new Entry(0, false));
 		}
-		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<T>>() {
+		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Object>>() {
 
 			@Override
-			public Conditional<T> apply(FeatureExpr ctx, Entry entry) {
+			public Conditional<Object> apply(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, false);
 				return null;
 			}
@@ -144,10 +139,10 @@ public class StackHandler {
 		if (value == null) {
 			value = new One<>(new Entry(0, false));
 		}
-		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<T>>() {
+		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Object>>() {
 
 			@Override
-			public Conditional<T> apply(FeatureExpr ctx, Entry entry) {
+			public Conditional<Object> apply(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, false);
 				return null;
 			}
@@ -161,7 +156,7 @@ public class StackHandler {
 	 * @param index
 	 *            The index of the local variable
 	 */
-	public <T> void storeOperand(final FeatureExpr ctx, final int index) {
+	public void storeOperand(final FeatureExpr ctx, final int index) {
 		if (ctx.isTautology()) {
 			locals[index] = popEntry(ctx);
 		} else {
@@ -176,7 +171,7 @@ public class StackHandler {
 		Conditional<Entry> result = stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
 
 			@Override
-			public Conditional<Entry> apply(FeatureExpr f, Stack s) {
+			public Conditional<Entry> apply(final FeatureExpr f, final Stack s) {
 				Stack clone = s.copy();
 				boolean ref = clone.isRef(0);
 				int res = clone.pop();
@@ -186,8 +181,8 @@ public class StackHandler {
 					stack = new Choice<>(f, new One<>(clone), stack);
 				}
 				return new One<>(new Entry(res, ref));
-
 			}
+			
 		}).simplify();
 		stack = stack.simplify();
 		return result;
@@ -197,7 +192,7 @@ public class StackHandler {
 		stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
 
 			@Override
-			public Conditional<Entry> apply(FeatureExpr f, Stack stack) {
+			public Conditional<Entry> apply(final FeatureExpr f, final Stack stack) {
 				if (Conditional.isContradiction(f)) {
 					return null;
 				}
@@ -220,7 +215,7 @@ public class StackHandler {
 		value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
 			@Override
-			public Conditional<Integer> apply(FeatureExpr x, Integer value) {
+			public Conditional<Integer> apply(final FeatureExpr x, final Integer value) {
 				setLocal(x, index, value, isRef);
 				return null;
 			}
@@ -247,27 +242,27 @@ public class StackHandler {
 			if (locals[index] == null) {
 				return new One<>(MJIEnv.NULL);
 			}
-			return locals[index].simplify(ctx).map(new Function<Entry, Integer>() {
-
-				@Override
-				public Integer apply(Entry x) {
-					if (x == null) {
-						return MJIEnv.NULL;
-					}
-					return x.value;
-				}
-
-			}).simplify();
+			return locals[index].simplify(ctx).map(new GetLocal()).simplifyValues();
 		} else {
 			final int i = index - locals.length;
 			return stack.map(new Function<Stack, Integer>() {
 
 				@Override
-				public Integer apply(Stack stack) {
+				public Integer apply(final Stack stack) {
 					return stack.get(i);
 				}
 
 			});
+		}
+	}
+	
+	private static final class GetLocal implements Function<Entry, Integer> {
+		@Override
+		public Integer apply(final Entry x) {
+			if (x == null) {
+				return MJIEnv.NULL;
+			}
+			return x.value;
 		}
 	}
 
@@ -281,23 +276,24 @@ public class StackHandler {
 			if (locals[index] == null) {
 				return false;
 			}
-			return locals[index].mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Entry, Conditional<Boolean>>() {
-
-				@Override
-				public Conditional<Boolean> apply(FeatureExpr x, Entry y) {
-					return new One<>(y.isRef);
-				}
-			}).simplify().getValue();
+			return locals[index].mapf(FeatureExprFactory.True(), new IsRefLocal()).simplify().getValue();
 		} else {
 			final int i = index - locals.length;
 			return stack.map(new Function<Stack, Boolean>() {
 
 				@Override
-				public Boolean apply(Stack stack) {
+				public Boolean apply(final Stack stack) {
 					return stack.isRefIndex(i);
 				}
 
 			}).simplify().getValue();
+		}
+	}
+	
+	private static final class IsRefLocal implements BiFunction<FeatureExpr, Entry, Conditional<Boolean>> {
+		@Override
+		public Conditional<Boolean> apply(final FeatureExpr x, final Entry y) {
+			return new One<>(y.isRef);
 		}
 	}
 
@@ -312,23 +308,24 @@ public class StackHandler {
 			if (locals[index] == null) {
 				return false;
 			}
-			return locals[index].simplify(ctx).map(new Function<Entry, Boolean>() {
-
-				@Override
-				public Boolean apply(Entry y) {
-					return y.isRef;
-				}
-			}).simplify().getValue(true);// TODO bad simplify
+			return locals[index].simplify(ctx).map(new IsRefLocal2()).simplifyValues().getValue(true);// TODO bad simplify
 		} else {
 			final int i = index - locals.length;
 			return stack.simplify(ctx).map(new Function<Stack, Boolean>() {
 
 				@Override
-				public Boolean apply(Stack stack) {
+				public Boolean apply(final Stack stack) {
 					return stack.isRefIndex(i);
 				}
 
-			}).simplify(ctx).getValue();
+			}).simplifyValues().getValue();
+		}
+	}
+	
+	private static final class IsRefLocal2 implements Function<Entry, Boolean> {
+		@Override
+		public Boolean apply(final Entry y) {
+			return y.isRef;
 		}
 	}
 
@@ -349,12 +346,12 @@ public class StackHandler {
 	 * @param isRef Sets the new value to be a reference or not.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T, U> void push(final FeatureExpr ctx, final T value, final boolean isRef) {
+	public void push(final FeatureExpr ctx, final Object value, final boolean isRef) {
 		if (value instanceof Conditional) {
-			((Conditional<U>) value).mapf(ctx, new BiFunction<FeatureExpr, U, Conditional<U>>() {
+			((Conditional<Object>) value).mapf(ctx, new BiFunction<FeatureExpr, Object, Conditional<Object>>() {
 
 				@Override
-				public Conditional<U> apply(FeatureExpr ctx, U value) {
+				public Conditional<Object> apply(final FeatureExpr ctx, final Object value) {
 					push(ctx, value, isRef);
 					return null;
 				}
@@ -366,7 +363,7 @@ public class StackHandler {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
-			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
+			public Conditional<Stack> apply(final FeatureExpr f, final Stack stack) {
 				if (Conditional.isContradiction(f)) {
 					return new One<>(stack);
 				}
@@ -388,7 +385,7 @@ public class StackHandler {
 				} else {
 					throw new RuntimeException(value + " cannot be pushed to the stack.");
 				}
-
+				
 				if (stackCTX.equivalentTo(f)) {
 					return new One<>(clone);
 				}
@@ -418,7 +415,7 @@ public class StackHandler {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public Conditional<T> apply(FeatureExpr f, Stack s) {
+			public Conditional<T> apply(final FeatureExpr f, final Stack s) {
 				Stack clone = s.copy();
 				Number res = null;
 				switch (t) {
@@ -450,7 +447,7 @@ public class StackHandler {
 				return (Conditional<T>) new One<>(res);
 
 			}
-		}).simplify();
+		}).simplifyValues();
 		stack = stack.simplify();// TODO can be avoided
 		return result;
 	}
@@ -459,14 +456,11 @@ public class StackHandler {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
-			public Conditional<Stack> apply(FeatureExpr f, Stack s) {
-				// FeatureExpr and = f.and(ctx);
+			public Conditional<Stack> apply(final FeatureExpr f, final Stack s) {
 				if (Conditional.isContradiction(f)) {
 					return new One<>(s);
 				}
-				// if (and.equivalentTo(f.andNot(ctx))) {
-				// return new One<>(s);
-				// }
+
 				Stack clone = s.copy();
 				int i = n;
 				while (i > 0) {
@@ -477,10 +471,12 @@ public class StackHandler {
 				if (f.isTautology()) {
 					return new One<>(clone);
 				}
-
-				return new Choice<>(f, new One<>(clone), new One<>(s));
+				if (ctx.equals(f)) {
+					return new One<>(clone); 
+				}
+				return new Choice<>(ctx, new One<>(clone), new One<>(s));
 			}
-		}).simplify();// TODO bad simplify
+		}).simplifyValues();
 	}
 
 	public Conditional<Integer> peek(FeatureExpr ctx) {
@@ -508,7 +504,7 @@ public class StackHandler {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public T apply(Stack stack) {
+			public T apply(final Stack stack) {
 				switch (t) {
 				case DOUBLE:
 					return (T) (Double) Types.intsToDouble(stack.peek(offset), stack.peek(offset + 1));
@@ -523,89 +519,83 @@ public class StackHandler {
 				}
 			}
 
-		}).simplify();// TODO bad simplify
+		}).simplifyValues();
 	}
 
-	public boolean isRef(FeatureExpr ctx, final int offset) {// change to Conditional<Boolean>
+	public boolean isRef(final FeatureExpr ctx, final int offset) {// change to Conditional<Boolean>
 		return stack.simplify(ctx).map(new Function<Stack, Boolean>() {
 
 			@Override
-			public Boolean apply(Stack y) {
+			public Boolean apply(final Stack y) {
 				return y.isRef(offset);
 			}
 
-		}).simplify().getValue();// TODO bad simplify
+		}).simplifyValues().getValue();
 	}
 
 	// TODO remove
 	public void set(final int offset, final int value, final boolean isRef) {
-		stack = stack.map(new Function<Stack, Stack>() {
+		stack.map(new Function<Stack, Object>() {
 
 			@Override
-			public Stack apply(Stack y) {
+			public Object apply(final Stack y) {
 				y.set(offset, value, isRef);
-				return y;
+				return null;
 			}
-		}).simplify();
+		});
 	}
 
 	public Conditional<Integer> getTop() {
-		return stack.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Stack, Conditional<Integer>>() {
-
-			@Override
-			public Conditional<Integer> apply(FeatureExpr ctx, Stack y) {
-				return new One<>(y.top);
-			}
-		}).simplify();// TODO bad simplify
+		return stack.map(new GetTop());
+	}
+	
+	private static final class GetTop implements Function<Stack, Integer> {
+		@Override
+		public Integer apply(final Stack y) {
+			return y.top;
+		}
 	}
 
 	public void setTop(final FeatureExpr ctx, final int i) {
-		stack = stack.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
+		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
-			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
-				FeatureExpr and = f.and(ctx);
-				if (Conditional.isContradiction(and)) {
+			public Conditional<Stack> apply(final FeatureExpr f, final Stack stack) {
+				if (Conditional.isContradiction(f)) {
 					return new One<>(stack);
 				}
 				Stack clone = stack.copy();
 				clone.top = i;
-				if (and.isTautology()) {
+				
+				if (ctx.equals(f)) {
+					return new One<>(clone); 
+				}
+				if (f.isTautology()) {
 					return new One<>(clone);
 				}
-				if (f.equivalentTo(and)) {
-					return new One<>(clone);
-				}
-				if (f.equivalentTo(f.andNot(ctx))) {
-					return new One<>(stack);
-				}
-
+				
 				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
 	}
 
 	public void clear(final FeatureExpr ctx) {
-		stack = stack.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
+		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
-			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
-				FeatureExpr and = f.and(ctx);
-				if (Conditional.isContradiction(and)) {
+			public Conditional<Stack> apply(final FeatureExpr f, final Stack stack) {
+				if (Conditional.isContradiction(f)) {
 					return new One<>(stack);
 				}
 				Stack clone = stack.copy();
 				clone.clear();
-				if (and.isTautology()) {
+				
+				if (ctx.equals(f)) {
+					return new One<>(clone); 
+				}
+				if (f.isTautology()) {
 					return new One<>(clone);
 				}
-				if (f.equivalentTo(and)) {
-					return new One<>(clone);
-				}
-				if (f.equivalentTo(f.andNot(ctx))) {
-					return new One<>(stack);
-				}
-
 				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
@@ -658,6 +648,10 @@ public class StackHandler {
 			return false;
 		}
 		return true;
+	}
+	
+	public int hashCode() {
+		throw new RuntimeException("hashCode not designed");
 	}
 
 	public boolean hasAnyRef(FeatureExpr ctx) {
@@ -737,14 +731,10 @@ public class StackHandler {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
-			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
+			public Conditional<Stack> apply(final FeatureExpr f, final Stack stack) {
 				if (Conditional.isContradiction(f)) {
 					return new One<>(stack);
 				}
-				// if (f.equivalentTo(f.andNot(ctx))) {
-				// return new One<>(stack);
-				// }
-
 				Stack clone = stack.copy();
 				switch (instruction) {
 				case DUP_X1:
@@ -775,9 +765,7 @@ public class StackHandler {
 				if (f.isTautology()) {
 					return new One<>(clone);
 				}
-				// if (f.equivalentTo(f)) {
-				// return new One<>(clone);
-				// }
+				
 				if (stackCTX.equivalentTo(f)) {
 					return new One<>(clone);
 				}

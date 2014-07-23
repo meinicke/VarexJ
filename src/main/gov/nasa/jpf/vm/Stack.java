@@ -84,9 +84,9 @@ public class Stack {
 	}
 
 	public boolean isRef(int offset) {
-		// if (slots[top - offset] == null) {
-		// return false;
-		// }
+//		 if (top - offset < 0) {
+//			 return false;
+//		 }
 		return slots[top - offset].isRef;
 	}
 
@@ -108,12 +108,16 @@ public class Stack {
 	Stack copy() {
 		Stack clone = new Stack(slots.length);
 		clone.top = top;
-		for (int i = 0; i < slots.length; i++) {
-			if (slots[i] != null) {
-				clone.slots[i] = slots[i].copy();
-			} else {
-				break;
-			}
+//		if (top > -1) {
+//			System.arraycopy(slots, 0, clone.slots, 0, top + 1);
+//		}
+		
+		for (int i = 0; i <= top; i++) {
+//			if (slots[i] != null) {
+				clone.slots[i] = slots[i];
+//			} else {
+//				break;
+//			}
 		}
 		return clone;
 	}
@@ -279,7 +283,7 @@ public class Stack {
 
 class Entry {
 	boolean isRef = false;
-	final Integer value;
+	final int value;
 
 	// final Integer attr;
 
@@ -287,7 +291,7 @@ class Entry {
 		return new Entry(value, isRef);
 	}
 
-	public Entry(Integer value, boolean isRef) {
+	public Entry(int value, boolean isRef) {
 		this.value = value;
 		this.isRef = isRef;
 	}
@@ -302,7 +306,7 @@ class Entry {
 
 	@Override
 	public boolean equals(Object o) {
-		return ((Entry) o).value.equals(value) && ((Entry) o).isRef == isRef;
+		return ((Entry) o).value == value && ((Entry) o).isRef == isRef;
 	}
 
 	@Override

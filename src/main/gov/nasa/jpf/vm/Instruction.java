@@ -316,20 +316,14 @@ public abstract class Instruction implements Cloneable {
 		return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
 			@Override
-			public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
+			public Conditional<Instruction> apply(final FeatureExpr f, final Instruction y) {
 				if (Conditional.isContradiction(f)) {
 					return new One<>(y);
 				}
 				if (f.isTautology()) {
 					return new One<>(y.getNext());
 				}
-//				if (f.equivalentTo(f.and(ctx))) {
-//					return new One<>(y.getNext());
-//				}
-//				if (f.equivalentTo(f.andNot(ctx))) {
-//					return new One<>(y);
-//				}
-				return new Choice<>(f, new One<>(y.getNext()), new One<>(y));
+				return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
 			}
 
 		}).simplify();

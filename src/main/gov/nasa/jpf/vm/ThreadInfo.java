@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
@@ -1975,9 +1976,10 @@ public class ThreadInfo extends InfoObject
 	        	Conditional<Instruction> next = null;
 	        	final MethodInfo oldMethod = currentMethod;
 	        	
-	        	for (Instruction e : map.keySet()) {
+	        	for (final Entry<Instruction, FeatureExpr> entry : map.entrySet()) {
+	        		final Instruction e = entry.getKey();
           			if (e != null && e.getPosition() == finalMin && e.equals(ins) && oldMethod == e.getMethodInfo()) {
-          				c = map.get(e).and(c);
+          				c = entry.getValue().and(c);
           				if (debug) {
           					System.out.print(top.getDepth());
           					if (top.getDepth() < 10) {
@@ -1989,7 +1991,7 @@ public class ThreadInfo extends InfoObject
           				// the executed instruction defines the next method 
           				break;
           			} else if (e != null && ins == null && retInstr && oldMethod == e.getMethodInfo()) {
-          				c = map.get(e).and(c);
+          				c = entry.getValue().and(c);
           				if (debug) {
           					System.out.print(top.getDepth());
           					if (top.getDepth() < 10) {
@@ -2010,7 +2012,7 @@ public class ThreadInfo extends InfoObject
 	        	nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 	
 	          		@Override
-	          		public Conditional<Instruction> apply(FeatureExpr ctx, Instruction x) {
+	          		public Conditional<Instruction> apply(final FeatureExpr ctx, final Instruction x) {
 	          			if (x != null && x.getPosition() == finalMin && x.equals(finalins) && oldMethod == x.getMethodInfo()) {
 	          				return new Choice<>(finalCtx, finalNext, new One<>(x));
 	          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {

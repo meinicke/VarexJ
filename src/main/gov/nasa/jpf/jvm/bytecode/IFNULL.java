@@ -37,9 +37,9 @@ public class IFNULL extends IfInstruction {
   public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
 	  return frame.pop(ctx).map(new Function<Integer, Boolean>() {
 			public Boolean apply(Integer x) {
-				return x.intValue() == MJIEnv.NULL;
+				return Boolean.valueOf(x.intValue() == MJIEnv.NULL);
 			}
-		}).simplify();
+		}).simplifyValues();
   }
 
   public int getByteCode () {

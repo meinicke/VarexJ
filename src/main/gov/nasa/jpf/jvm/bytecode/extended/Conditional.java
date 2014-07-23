@@ -11,20 +11,22 @@ import de.fosd.typechef.featureexpr.FeatureModel;
 
 public abstract class Conditional<T> {
 	
-	public static FeatureModel fm = JPF.fmfile.equals("") ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);
+	public static FeatureModel fm = JPF.fmfile.isEmpty() ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);
 	
 	public static void setFM() {
-		fm = JPF.fmfile.equals("") ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);
+		fm = JPF.fmfile.isEmpty() ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);
+		map.clear();
 	}
  	
 	protected static Map<FeatureExpr, Boolean> map = new HashMap<>();
 	
+	
 	public static boolean isContradiction(FeatureExpr f) {
 		if (!map.containsKey(f)) {
 			if (f.isContradiction()) {
-				map.put(f, true);
+				map.put(f, Boolean.TRUE);
 			} else if (f.isTautology()) {
-				map.put(f, false);
+				map.put(f, Boolean.FALSE);
 			} else {
 				map.put(f, f.isContradiction(fm));
 			}
@@ -76,6 +78,8 @@ public abstract class Conditional<T> {
 //	def mapfr[U](inFeature: FeatureExpr, f: (FeatureExpr, T) => Conditional[U]): Conditional[U]
 	public abstract <U> Conditional<U> mapfr(FeatureExpr inFeature, BiFunction<FeatureExpr, T, Conditional<U>> f);
 	
+	public abstract Conditional<T> simplifyValues();
+	
 	public Conditional<T> simplify(){
 		return simplify(True);
 	}
@@ -93,6 +97,6 @@ public abstract class Conditional<T> {
     protected abstract void toMap(FeatureExpr f, Map<T, FeatureExpr> map);
 	
     @Override
-    protected abstract Object clone() throws CloneNotSupportedException;
+	public abstract Conditional<T> clone() throws CloneNotSupportedException;
     
 }

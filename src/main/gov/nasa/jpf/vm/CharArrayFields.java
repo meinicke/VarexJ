@@ -17,7 +17,6 @@
 // DOCUMENTATION, IF PROVIDED, WILL CONFORM TO THE SUBJECT SOFTWARE.
 //
 
-
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
@@ -38,110 +37,113 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class CharArrayFields extends ArrayFields {
 
-  private Conditional<char[]> values;
+	private Conditional<char[]> values;
 
-  public CharArrayFields (int length) {
-    values = new One<>(new char[length]);
-  }
+	public CharArrayFields(int length) {
+		values = new One<>(new char[length]);
+	}
 
-  public Conditional<char[]> asCharArray(){
-    return values;
-  }
+	public Conditional<char[]> asCharArray() {
+		return values;
+	}
 
-  @Override
-  protected void printValue(PrintStream ps, int idx){
-    PrintUtils.printCharLiteral(ps, values.getValue()[idx]);
-  }
-  
-  @Override
-  public void printElements( PrintStream ps, int max){
-    PrintUtils.printStringLiteral(ps, values.getValue(), max);
-  }  
-  
-  public char[] asCharArray (int offset, int length) {
-    char[] result = new char[length];
-    System.arraycopy(values.getValue(), offset, result, 0, length);
+	@Override
+	protected void printValue(PrintStream ps, int idx) {
+		PrintUtils.printCharLiteral(ps, values.getValue()[idx]);
+	}
 
-    return result;
-  }
+	@Override
+	public void printElements(PrintStream ps, int max) {
+		PrintUtils.printStringLiteral(ps, values.getValue(), max);
+	}
 
-  public Conditional<?> getValues(){
-    return values;
-  }
+	public char[] asCharArray(int offset, int length) {
+		char[] result = new char[length];
+		System.arraycopy(values.getValue(), offset, result, 0, length);
 
-  public int arrayLength() {
-	  return values.map(new Function<char[], Integer>() {
+		return result;
+	}
 
+	public Conditional<?> getValues() {
+		return values;
+	}
+
+	public int arrayLength() {
+		return values.map(new ArrayLength()).simplifyValues().getValue();
+	}
+	
+	private static final class ArrayLength implements Function<char[], Integer> {
 		@Override
 		public Integer apply(char[] values) {
 			return values.length;
-		}}).simplify().getValue(); 
-	  
-  }
-
-  public int getHeapSize() {  // in bytes
-    return values.getValue().length * 2;
-  }
-
-  public void appendTo (IntVector v) {
-    v.appendPacked(values.getValue());
-  }
-
-  public CharArrayFields clone(){
-    CharArrayFields f = (CharArrayFields)cloneFields();
-    f.values = new One<>(values.getValue().clone());
-    return f;
-  }
-
-
-  public boolean equals (Object o) {
-    if (o instanceof CharArrayFields) {
-      CharArrayFields other = (CharArrayFields)o;
-
-      char[] v = values.getValue();
-      char[] vOther = other.values.getValue();
-      if (v.length != vOther.length) {
-        return false;
-      }
-
-      for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
-          return false;
-        }
-      }
-
-      return compareAttrs(other);
-
-    } else {
-      return false;
-    }
-  }
-
-  public Conditional<Character> getCharValue(final int pos) {
-    return values.map(new Function<char[], Character>() {
-
-		@Override
-		public Character apply(char[] values) {
-			return values[pos];
 		}
-    	
-    });
-  }
+	}
+
+	public int getHeapSize() { // in bytes
+		return values.getValue().length * 2;
+	}
+
+	public void appendTo(IntVector v) {
+		v.appendPacked(values.getValue());
+	}
+
+	public CharArrayFields clone() {
+		CharArrayFields f = (CharArrayFields) cloneFields();
+		f.values = new One<>(values.getValue().clone());
+		return f;
+	}
+
+	public boolean equals(Object o) {
+		if (o instanceof CharArrayFields) {
+			CharArrayFields other = (CharArrayFields) o;
+
+			char[] v = values.getValue();
+			char[] vOther = other.values.getValue();
+			if (v.length != vOther.length) {
+				return false;
+			}
+
+			for (int i = 0; i < v.length; i++) {
+				if (v[i] != vOther[i]) {
+					return false;
+				}
+			}
+
+			return compareAttrs(other);
+
+		} else {
+			return false;
+		}
+	}
+
+	public Conditional<Character> getCharValue(final int pos) {
+		return values.map(new Function<char[], Character>() {
+
+			@Override
+			public Character apply(char[] values) {
+				return values[pos];
+			}
+
+		});
+	}
 
 	@Override
 	public void setCharValue(final FeatureExpr ctx, final int pos, final Conditional<Character> newValue) {
 		values = values.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<char[]>>() {
 
 			@Override
-			public Conditional<char[]> apply(FeatureExpr ctx, final char[] values) {
-				return newValue.mapf(ctx, new BiFunction<FeatureExpr, Character, Conditional<char[]>>() {
+			public Conditional<char[]> apply(final FeatureExpr ctx2, final char[] values) {
+				if (Conditional.isContradiction(ctx2)) {
+					return new One<>(values);
+				}
+				return newValue.mapf(ctx2, new BiFunction<FeatureExpr, Character, Conditional<char[]>>() {
 
 					@Override
-					public Conditional<char[]> apply(FeatureExpr ctx, Character newValue) {
-						if (Conditional.isContradiction(ctx)) {
+					public Conditional<char[]> apply(FeatureExpr f, Character newValue) {
+						if (Conditional.isContradiction(f)) {
 							return new One<>(values);
 						}
-						if (ctx.isTautology()) {
+						if (f.isTautology()) {
 							values[pos] = newValue;
 							return new One<>(values);
 						}
@@ -151,54 +153,54 @@ public class CharArrayFields extends ArrayFields {
 						return new Choice<>(ctx, new One<>(clone), new One<>(values));
 					}
 
-				}).simplify();
+				});
 
 			}
 		}).simplify();
 
 	}
 
-  public void setCharValues(FeatureExpr ctx, char[] v){  
-	char[] newValues = new char[v.length]; 
-	System.arraycopy(v,0,newValues,0,v.length);
-	if (ctx == null) {
-		throw new RuntimeException("ctx == null");
+	public void setCharValues(FeatureExpr ctx, char[] v) {
+		char[] newValues = new char[v.length];
+		System.arraycopy(v, 0, newValues, 0, v.length);
+		if (ctx == null) {
+			throw new RuntimeException("ctx == null");
+		}
+		if (ctx.isTautology()) {
+			values = new One<>(newValues);
+		} else {
+			values = new Choice<>(ctx, new One<>(newValues), values).simplify();
+		}
 	}
-	if (ctx.isTautology()) {
-		values = new One<>(newValues);
-	} else {
-		values = new Choice<>(ctx, new One<>(newValues), values).simplify();
+
+	// --- some methods to ease native String operations
+
+	public String asString(int offset, int length) {
+		return new String(values.getValue(), offset, length);
 	}
-  }
 
-  //--- some methods to ease native String operations
+	// a special string compare utility
+	public boolean equals(int offset, int length, String s) {
+		char[] v = values.getValue();
 
-  public String asString(int offset, int length) {
-    return new String(values.getValue(), offset, length);
-  }
+		if (offset + length > v.length) {
+			return false;
+		}
 
-  // a special string compare utility
-  public boolean equals (int offset, int length, String s) {
-    char[] v = values.getValue();
+		for (int i = offset, j = 0; j < length; i++, j++) {
+			if (v[i] != s.charAt(j)) {
+				return false;
+			}
+		}
 
-    if (offset+length > v.length) {
-      return false;
-    }
+		return true;
+	}
 
-    for (int i=offset, j=0; j<length; i++, j++) {
-      if (v[i] != s.charAt(j)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  public void hash(HashData hd) {
-    char[] v = values.getValue();
-    for (int i=0; i < v.length; i++) {
-      hd.add(v[i]);
-    }
-  }
+	public void hash(HashData hd) {
+		char[] v = values.getValue();
+		for (int i = 0; i < v.length; i++) {
+			hd.add(v[i]);
+		}
+	}
 
 }

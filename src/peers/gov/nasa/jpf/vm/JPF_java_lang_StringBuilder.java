@@ -25,29 +25,34 @@ import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_lang_StringBuilder extends NativePeer {
   
-  int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
+
+int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 	  return appendString(ctx, env, objref, new One<>(s));
   }
 	  
 	int appendString(FeatureExpr ctx, MJIEnv env, int objref, Conditional<String> conditionalS) {
 		Conditional<Integer> condAref = env.getReferenceField(ctx, objref, "value");
 		Map<Integer, FeatureExpr> arefMap = condAref.toMap();
-		for (Integer aref : arefMap.keySet()) {
-			FeatureExpr arefCtx = ctx.and(arefMap.get(aref));
+		for (Entry<Integer, FeatureExpr> entry : arefMap.entrySet()) {
+			Integer aref = entry.getKey();
+			FeatureExpr arefCtx = ctx.and(entry.getValue());
 			Map<String, FeatureExpr> sMap = conditionalS.simplify(arefCtx).toMap();
-			for (String s : sMap.keySet()) {
-				FeatureExpr stringCtx = arefCtx.and(sMap.get(s));
+			for (Entry<String, FeatureExpr> sEntry : sMap.entrySet()) {
+				final String s = sEntry.getKey();
+				FeatureExpr stringCtx = arefCtx.and(sEntry.getValue());
 				final int slen = s.length();
 				final int alen = env.getArrayLength(aref);
 				Conditional<Integer> condCount = env.getIntField(ctx, objref, "count").simplify(stringCtx);
 				Map<Integer, FeatureExpr> map = condCount.toMap();
-				for (Integer count : map.keySet()) {
-					FeatureExpr currentCtx = stringCtx.and(map.get(count));
+				for (Entry<Integer, FeatureExpr> countEntry : map.entrySet()) {
+					Integer count = countEntry.getKey();
+					FeatureExpr currentCtx = stringCtx.and(countEntry.getValue());
 					int i, j;
 					int n = count + slen;
 	
@@ -105,7 +110,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 		src.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Object>>() {
 
 			@Override
-			public Conditional<Object> apply(FeatureExpr ctx, char[] src) {
+			public Conditional<Object> apply(final FeatureExpr ctx, final char[] src) {
 				if (Conditional.isContradiction(ctx)) {
 					return null;
 				}
@@ -127,18 +132,20 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int sref) {
 		Conditional<String> s = env.getConditionalStringObject(sref);
 		FeatureExpr ctx = NativeMethodInfo.CTX;
-		s = s.simplify(ctx).map(new Function<String, String>() {
-
+		s = s.simplify(ctx).map(new Append()).simplifyValues();
+		return appendString(ctx, env, objref, s);
+	}
+	
+	  private static final class Append implements Function<String, String> {
 			@Override
-			public String apply(String s) {
+			public String apply(final String s) {
 				if (s == null) {
 					return "null";
 				}
 				return s;
 			}
-		}).simplify();
-		return appendString(ctx, env, objref, s);
-	}
+		}
+
   
   @MJI
   public int append__I__Ljava_lang_StringBuilder_2 (MJIEnv env, int objref, int i) {

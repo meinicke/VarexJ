@@ -43,7 +43,7 @@ public class Object {
     return null;
   }
 
-  protected native Object clone() throws java.lang.CloneNotSupportedException;
+  public native Object clone() throws java.lang.CloneNotSupportedException;
   
   public final native void notify();
   public final native void notifyAll();
