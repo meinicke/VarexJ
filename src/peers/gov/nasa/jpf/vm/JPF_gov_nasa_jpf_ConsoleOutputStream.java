@@ -107,8 +107,12 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
   @MJI
   public void println__F__V (MJIEnv env, int objref, float f) {
-    env.getVM().print(f);
-    env.getVM().println();
+	  if (ThreadInfo.ctxOutput) {
+			env.getVM().println("<" + f + "> : " + NativeMethodInfo.CTX);
+		} else {
+			env.getVM().print(f);
+			env.getVM().println();
+		}
   }
 
   @MJI
@@ -123,8 +127,12 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
   @MJI
   public void println__J__V (MJIEnv env, int objref, long j) {
-    env.getVM().print(j);
-    env.getVM().println();
+	  if (ThreadInfo.ctxOutput) {
+			env.getVM().println("<" + j + "> : " + NativeMethodInfo.CTX);
+		} else {
+			env.getVM().print(j);
+			env.getVM().println();
+		}
   }
 
 	@MJI

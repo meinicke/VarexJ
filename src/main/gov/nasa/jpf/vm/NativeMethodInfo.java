@@ -165,7 +165,7 @@ public class NativeMethodInfo extends MethodInfo {
 
 							@Override
 							public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
-								if (f.and(ctx).isContradiction()) {
+								if (Conditional.isContradiction(f.and(ctx))) {
 									return new One<>(y);
 								}
 								if (f.and(ctx).isTautology()) {

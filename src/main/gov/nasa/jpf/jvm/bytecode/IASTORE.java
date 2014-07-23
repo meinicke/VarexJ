@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -29,15 +31,24 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class IASTORE extends ArrayStoreInstruction {
 
-  int value;
+  Conditional<Integer> value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = frame.pop(ctx).getValue();
+	    value = frame.pop(ctx);
   }
 
-  protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected void setField (FeatureExpr ctx, final ElementInfo ei, final int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    ei.setIntElement(index, value);
+    value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+
+		@Override
+		public Conditional<Object> apply(FeatureExpr ctx, Integer value) {
+			 ei.setIntElement(ctx, index, value);
+			return null;
+		}
+    	
+    });
+    
   }
 
 

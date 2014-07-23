@@ -317,7 +317,7 @@ public abstract class Instruction implements Cloneable {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
-				if (f.isContradiction()) {
+				if (Conditional.isContradiction(f)) {
 					return new One<>(y);
 				}
 				if (f.isTautology()) {

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.report.Publisher;
 import gov.nasa.jpf.report.PublisherExtension;
 import gov.nasa.jpf.report.Reporter;
@@ -45,6 +46,9 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  * instantiates the Search and VM objects, and kicks off the Search
  */
 public class JPF implements Runnable {
+	
+
+  public static String fmfile = "";
   
   public static String VERSION = "7.0"; // the major version number
 
@@ -294,6 +298,8 @@ public class JPF implements Runnable {
     	  FeatureExprFactory.setDefault(FeatureExprFactory.sat());
       }
       
+      fmfile = config.getString("featuremodel", "");
+      Conditional.setFM();
       
       addListeners();
       

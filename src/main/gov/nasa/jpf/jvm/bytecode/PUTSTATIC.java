@@ -65,7 +65,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 		}
 		if (annotated) {
 			StackFrame frame = ti.getModifiableTopFrame();
-			FeatureExpr feature = FeatureExprFactory.createDefinedExternal(fname);
+			FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
 			frame.pop(ctx);
 			frame.push(ctx, new Choice<>(feature, new One<>(1), new One<>(0)));
 		}

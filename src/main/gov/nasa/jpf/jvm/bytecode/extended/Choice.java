@@ -41,18 +41,60 @@ public class Choice<T> extends Conditional<T> {
 			throw new RuntimeException("ctx == null");
 		}
 		
-		// if (thenBranch instanceof One && elseBranch instanceof One && thenBranch.getValue().equals(elseBranch.getValue())) {
-		// return thenBranch;
-		// }
-
 		FeatureExpr and = ctx.and(featureExpr);
-		if (and.isContradiction()) {
+		Boolean fmcontr = map.get(and);
+		if (fmcontr == null) {
+			if (and.isContradiction()) {
+				fmcontr = true;
+				map.put(and, true);
+			} else if (and.isTautology()) {
+				fmcontr = false;
+				map.put(and, false);
+			} else {
+				fmcontr = false;
+			}
+		}
+		if (fmcontr) {
 			return elseBranch.simplify(ctx.andNot(featureExpr));
 		}
+		
 		FeatureExpr andNot = ctx.andNot(featureExpr);
-		if (andNot.isContradiction()) {
+		fmcontr = map.get(andNot);
+		if (fmcontr == null) {
+			if (andNot.isContradiction()) {
+				fmcontr = true;
+				map.put(andNot, true);
+			} else if (and.isTautology()) {
+				fmcontr = false;
+				map.put(andNot, false);
+			} else {
+				fmcontr = false;
+			}
+		}
+		
+		if (fmcontr) {
 			return thenBranch.simplify(and);
 		}
+		
+		fmcontr = map.get(and);
+		if (fmcontr == null) {
+			fmcontr = and.isContradiction(fm);
+			map.put(and, fmcontr);
+		}
+		if (fmcontr) {
+			return elseBranch.simplify(andNot);
+		}
+		
+		fmcontr = map.get(andNot);
+		if (fmcontr == null) {
+			fmcontr = andNot.isContradiction(fm);
+			map.put(andNot, fmcontr);
+		}
+		
+		if (fmcontr) {
+			return thenBranch.simplify(and);
+		}
+		
 		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplify(and);
 		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplify(andNot);
 

@@ -8,13 +8,13 @@ import org.junit.Test;
 
 public class ExampleRunner extends TestJPF {
 
-	@Test
-	 	public void runBankAccount() {
-	 		// TODO revise (call example directly?)
-	 		Config config = JPF.createConfig(new String[] { "C:\\Users\\Loaner\\git\\Variability-Aware-Interpreter\\src\\tests\\cmu\\BankAccount.jpf" });
-	 		JPF jpf = new JPF(config);
-	 		jpf.run();
-	 	}
+//	@Test
+//	 	public void runBankAccount() {
+//	 		// TODO revise (call example directly?)
+//	 		Config config = JPF.createConfig(new String[] { "C:\\Users\\Loaner\\git\\Variability-Aware-Interpreter\\src\\tests\\cmu\\BankAccount.jpf" });
+//	 		JPF jpf = new JPF(config);
+//	 		jpf.run();
+//	 	}
 	
 //	 @Test
 //	public void runGPL() {

@@ -196,7 +196,11 @@ public class NamedFields extends Fields {
 	}
 
 	public void setIntValue(FeatureExpr ctx, int index, int newValue) {
-		values[index] = new Choice<>(ctx, new One<>(newValue), values[index]).simplify();
+		if (ctx.isTautology()) {
+			values[index] = new One<>(newValue);
+		} else {
+			values[index] = new Choice<>(ctx, new One<>(newValue), values[index]).simplify();
+		}
 	}
 
 	public void setIntValue(int index, Conditional<Integer> newValue) {
@@ -209,7 +213,10 @@ public class NamedFields extends Fields {
 
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, Long newValue) {
-				if (ctx.isSatisfiable()) {
+				if (ctx.isTautology()) {
+					values[index] = new One<>(Types.hiLong(newValue));
+					values[index + 1] = new One<>(Types.loLong(newValue));
+				} else if (ctx.isSatisfiable()) {
 					values[index] = new Choice<>(ctx, new One<>(Types.hiLong(newValue)), values[index]);
 					values[index + 1] = new Choice<>(ctx, new One<>(Types.loLong(newValue)), values[index + 1]);
 				}

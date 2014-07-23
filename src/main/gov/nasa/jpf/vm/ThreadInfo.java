@@ -1881,7 +1881,7 @@ public class ThreadInfo extends InfoObject
   }
   
   public static boolean debug = false;
-  public static boolean ctxOutput = false;
+  public static boolean ctxOutput = true;
   static int count = 0;
   static int count2 = 0;
   static long time = 0;
@@ -1919,15 +1919,15 @@ public class ThreadInfo extends InfoObject
         		time = System.currentTimeMillis();
         	}
         	count++;
-//    		if (count > 850000) {
+//    		if (count > 8095332) {
 //    			debug = true;
 //    			if (debug) System.out.print(count + ": ");
 //    		}
-//        	if (System.currentTimeMillis() - time > 10000) {
-//        		System.out.println((count - count2)/10 + " instructions / s");
-//        		count2 = count;
-//        		time = System.currentTimeMillis();
-//        	}
+        	if (System.currentTimeMillis() - time > 1000) {
+        		System.out.println((count - count2) + " instructions / s");
+        		count2 = count;
+        		time = System.currentTimeMillis();
+        	}
         	
         	if (pc instanceof One) {// avoid overhead for calculating the next instruction
         		

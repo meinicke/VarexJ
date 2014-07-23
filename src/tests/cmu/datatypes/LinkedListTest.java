@@ -1,13 +1,12 @@
 package cmu.datatypes;
 
-import java.util.ArrayList;
+import gov.nasa.jpf.annotation.Conditional;
+import gov.nasa.jpf.util.test.TestJPF;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-
-import gov.nasa.jpf.annotation.Conditional;
-import gov.nasa.jpf.util.test.TestJPF;
 
 public class LinkedListTest extends TestJPF {
 
@@ -46,7 +45,6 @@ public class LinkedListTest extends TestJPF {
 				list.add(1);
 			}
 			assertEquals(new Integer(1), list.getFirst());
-			System.out.println(list.getFirst());
 		}
 	}
 	

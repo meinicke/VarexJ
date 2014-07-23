@@ -1,12 +1,37 @@
 package gov.nasa.jpf.jvm.bytecode.extended;
+import gov.nasa.jpf.JPF;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import de.fosd.typechef.featureexpr.FeatureModel;
 
 public abstract class Conditional<T> {
+	
+	public static FeatureModel fm = JPF.fmfile.equals("") ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);
+	
+	public static void setFM() {
+		fm = JPF.fmfile.equals("") ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);
+	}
+ 	
+	protected static Map<FeatureExpr, Boolean> map = new HashMap<>();
+	
+	public static boolean isContradiction(FeatureExpr f) {
+		if (!map.containsKey(f)) {
+			if (f.isContradiction()) {
+				map.put(f, true);
+			} else if (f.isTautology()) {
+				map.put(f, false);
+			} else {
+				map.put(f, f.isContradiction(fm));
+			}
+		}
+		return map.get(f);
+	}
+	
 	
 	public abstract T getValue();
 	public abstract T getValue(boolean ignore);
@@ -54,7 +79,7 @@ public abstract class Conditional<T> {
 	public Conditional<T> simplify(){
 		return simplify(True);
 	}
-	
+		
 	public abstract Conditional<T> simplify(FeatureExpr ctx);
 	
 	public abstract List<T> toList();

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -30,74 +31,79 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
  * Create new array
  * ..., count => ..., arrayref
  */
 public class NEWARRAY extends NewArrayInstruction {
 
-  public NEWARRAY(int typeCode) {
-    type = Types.getElementDescriptorOfType(typeCode);
-  }
+	public NEWARRAY(int typeCode) {
+		type = Types.getElementDescriptorOfType(typeCode);
+	}
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		final StackFrame frame = ti.getModifiableTopFrame();
 
-    arrayLength = frame.pop(ctx);
-    Heap heap = ti.getHeap();
+		arrayLength = frame.pop(ctx);
+		final Heap heap = ti.getHeap();
 
-    if (arrayLength.getValue() < 0){
-      return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
-    }
+		return arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    // there is no clinit for array classes, but we still have  to create a class object
-    // since its a builtin class, we also don't have to bother with NoClassDefFoundErrors
-    String clsName = "[" + type;
-    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayLength) {
 
-    if (!ci.isRegistered()) {
-      ci.registerClass(ti);
-      ci.setInitialized();
-    }
-   
-    if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
-      return new One<>(ti.createAndThrowException(ctx,
-                                        "java.lang.OutOfMemoryError", "trying to allocate new " +
-                                          getTypeName() +
-                                        "[" + arrayLength + "]"));
-    }
-    
-    ElementInfo eiArray = heap.newArray(ctx, type, arrayLength.getValue(), ti);
-    int arrayRef = eiArray.getObjectRef();
-    
-    frame.pushRef(arrayRef, ctx);
+				if (arrayLength < 0) {
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
+				}
 
-    return getNext(ctx, ti);
-  }
+				// there is no clinit for array classes, but we still have to create a class object
+				// since its a builtin class, we also don't have to bother with NoClassDefFoundErrors
+				String clsName = "[" + type;
+				ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
 
-  public int getLength() {
-    return 2; // opcode, atype
-  }
-  
-  public int getByteCode () {
-    return 0xBC;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+				if (!ci.isRegistered()) {
+					ci.registerClass(ti);
+					ci.setInitialized();
+				}
 
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("newarray ");
-    sb.append(getTypeName());
-    sb.append('[');
-    if (arrayLength.getValue() >=0){
-      sb.append(arrayLength);
-    }
-    sb.append(']');
+				if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.OutOfMemoryError", "trying to allocate new " + getTypeName() + "[" + arrayLength + "]"));
+				}
 
-    return sb.toString();
-  }
+				ElementInfo eiArray = heap.newArray(ctx, type, arrayLength, ti);
+				int arrayRef = eiArray.getObjectRef();
+
+				frame.pushRef(arrayRef, ctx);
+
+				return getNext(ctx, ti);
+
+			}
+
+		});
+	}
+
+	public int getLength() {
+		return 2; // opcode, atype
+	}
+
+	public int getByteCode() {
+		return 0xBC;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("newarray ");
+		sb.append(getTypeName());
+		sb.append('[');
+		if (arrayLength.getValue() >= 0) {
+			sb.append(arrayLength);
+		}
+		sb.append(']');
+
+		return sb.toString();
+	}
 }

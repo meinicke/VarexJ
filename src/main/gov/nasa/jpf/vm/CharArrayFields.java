@@ -138,7 +138,7 @@ public class CharArrayFields extends ArrayFields {
 
 					@Override
 					public Conditional<char[]> apply(FeatureExpr ctx, Character newValue) {
-						if (ctx.isContradiction()) {
+						if (Conditional.isContradiction(ctx)) {
 							return new One<>(values);
 						}
 						if (ctx.isTautology()) {
@@ -164,7 +164,11 @@ public class CharArrayFields extends ArrayFields {
 	if (ctx == null) {
 		throw new RuntimeException("ctx == null");
 	}
-	values = new Choice<>(ctx, new One<>(newValues), values).simplify();
+	if (ctx.isTautology()) {
+		values = new One<>(newValues);
+	} else {
+		values = new Choice<>(ctx, new One<>(newValues), values).simplify();
+	}
   }
 
   //--- some methods to ease native String operations

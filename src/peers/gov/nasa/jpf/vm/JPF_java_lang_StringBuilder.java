@@ -106,7 +106,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, char[] src) {
-				if (ctx.isContradiction()) {
+				if (Conditional.isContradiction(ctx)) {
 					return null;
 				}
 				int aref = env.newCharArray(ctx, src.length + 16);

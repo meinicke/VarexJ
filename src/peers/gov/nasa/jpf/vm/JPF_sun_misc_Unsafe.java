@@ -403,7 +403,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
       ei.setIntField(NativeMethodInfo.CTX, fi, val);
     } else {
-      ei.setIntElement((int)fieldOffset, val);
+      ei.setIntElement(null, (int)fieldOffset, val);
     }
   }
 

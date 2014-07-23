@@ -409,7 +409,7 @@ public class MJIEnv {
   }
 
   public void setIntArrayElement (int objref, int index, int value) {
-    heap.getModifiable(objref).setIntElement(index, value);
+    heap.getModifiable(objref).setIntElement(null, index, value);
   }
 
   public void setShortArrayElement (int objref, int index, short value) {
@@ -1035,7 +1035,7 @@ public class MJIEnv {
   public int newIntArray (FeatureExpr ctx, int[] buf){
     ElementInfo eiArray = heap.newArray(ctx, "I", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setIntElement( i, buf[i]);
+      eiArray.setIntElement( null, i, buf[i]);
     }
     return eiArray.getObjectRef();
   }

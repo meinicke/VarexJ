@@ -4,7 +4,8 @@ apphome=C:\\Users\\Loaner\\workspace\\GPL-SE
 ########## JPF configuration options
 target = Main
 #target.args = ${apphome}\\gpl-4-network-benchmark.txt, v0
-target.args = ${jpf-core}\\lib\\GPL\\Simple.txt, v0
+#target.args = ${jpf-core}\\lib\\GPL\\Simple.txt, v0
+target.args = ${jpf-core}\\lib\\GPL\\random1-gpl-benchmark.txt, v0
 
 classpath=${apphome}\\bin;${jpf-core}\\build\\jpf.jar;${jpf-core}\\build\\jpf-annotations.jar;${jpf-core}\\build\\RunJPF.jar;${jpf-core}\\build\\RunTest.jar;
 
