@@ -125,8 +125,15 @@ public class NamedFields extends Fields {
 		return Types.intToBoolean(values[index].getValue());
 	}
 
-	public byte getByteValue(int index) {
-		return (byte) values[index].getValue().intValue();
+	public Conditional<Byte> getByteValue(int index) {
+		return values[index].map(new Function<Integer, Byte>() {
+
+			@Override
+			public Byte apply(Integer x) {
+				return x.byteValue();
+			}
+			
+		});
 	}
 
 	public Conditional<Character> getCharValue(int index) {
@@ -167,8 +174,19 @@ public class NamedFields extends Fields {
 		values[index] = new One<>(newValue ? 1 : 0);
 	}
 
-	public void setByteValue(int index, byte newValue) {
-		values[index] = new One<>((int) newValue);
+	public void setByteValue(FeatureExpr ctx, int index, Conditional<Byte> newValue) {
+		if (Conditional.isTautology(ctx)) {
+			values[index] = new One<>((int)newValue.getValue());	
+		} else {
+			values[index] = new Choice<>(ctx, newValue.map(new Function<Byte, Integer>() {
+	
+				@Override
+				public Integer apply(Byte x) {
+					return (int) x;
+				}
+				
+			}), values[index]).simplify();
+		}
 	}
 
 	public void setCharValue(FeatureExpr ctx, int index, Conditional<Character> newValue) {

@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
@@ -26,18 +27,25 @@ import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * element values for byte[] objects
  */
 public class ByteArrayFields extends ArrayFields {
 
-  byte[] values;
-
+  Conditional<Byte>[] values;
+  private static final One<Byte> init = new One<>((byte)0);
+  
+  @SuppressWarnings("unchecked")
   public ByteArrayFields (int length) {
-    values = new byte[length];
+    values = new Conditional[length];
+    for (int i = 0; i < length; i++) {
+    	values[i] = init;
+    }
   }
 
-  public byte[] asByteArray() {
+  public Conditional<Byte>[] asByteArray() {
     return values;
   }
   
@@ -61,14 +69,14 @@ public class ByteArrayFields extends ArrayFields {
     if (o instanceof ByteArrayFields) {
       ByteArrayFields other = (ByteArrayFields)o;
 
-      byte[] v = values;
-      byte[] vOther = other.values;
+      Conditional<Byte>[] v = values;
+      Conditional<Byte>[] vOther = other.values;
       if (v.length != vOther.length) {
         return false;
       }
 
       for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
+        if (!v[i].equals(vOther[i])) {
           return false;
         }
       }
@@ -86,22 +94,30 @@ public class ByteArrayFields extends ArrayFields {
     return f;
   }
 
-  public void setByteValue (int pos, byte b) {
-    values[pos] = b;
+  public void setByteValue (FeatureExpr ctx, int pos, Conditional<Byte> b) {
+    values[pos] = new Choice<>(ctx, b, values[pos]).simplify();
   }
 
-  public byte getByteValue (int pos) {
+  public Conditional<Byte> getByteValue (int pos) {
     return values[pos];
   }
 
   public void appendTo (IntVector v) {
-    v.appendPacked(values);
+	  byte [] a = new byte[values.length];
+		for (int i = 0; i < values.length; i++) {
+			for (Byte val : values[i].toList()) {
+				a[i] = val;
+			}
+		}
+    v.appendPacked(a);
   }
 
   public void hash(HashData hd) {
-    byte[] v = values;
+    Conditional<Byte>[] v = values;
     for (int i=0; i < v.length; i++) {
-      hd.add(v[i]);
+    	for (Byte b : v[i].toList()) {
+    		hd.add(b);
+    	}
     }
   }
 

@@ -66,7 +66,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     
     int n = out.position();
     for (int i=0; i<n; i++){
-      env.setByteArrayElement(bref,i,out.get(i));
+      env.setByteArrayElement(NativeMethodInfo.CTX,bref,i, out.get(i));
     }
     
     return n;
@@ -94,7 +94,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     
     int n = out.position();
     for (int i=0; i<n; i++){
-      env.setByteArrayElement(bufref,i,out.get(i));
+      env.setByteArrayElement(NativeMethodInfo.CTX,bufref,i, out.get(i));
     }
     
     return n;

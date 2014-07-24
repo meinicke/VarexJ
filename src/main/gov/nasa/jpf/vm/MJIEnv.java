@@ -364,7 +364,7 @@ public class MJIEnv {
 
 
   public void setByteField (int objref, String fname, byte val) {
-    heap.getModifiable(objref).setByteField(fname, val);
+    heap.getModifiable(objref).setByteField(null, fname, val);
   }
 
   public byte getByteField (int objref, String fname) {
@@ -396,12 +396,12 @@ public class MJIEnv {
   }
 
 
-  public void setByteArrayElement (int objref, int index, byte value) {
-    heap.getModifiable(objref).setByteElement(index, value);
+  public void setByteArrayElement (FeatureExpr ctx, int objref, int index, byte value) {
+    heap.getModifiable(objref).setByteElement(ctx, index, value);
   }
 
   public byte getByteArrayElement (int objref, int index) {
-    return heap.get(objref).getByteElement(index);
+    return heap.get(objref).getByteElement(index).getValue();
   }
 
   public void setCharArrayElement (FeatureExpr ctx, int objref, int index, char value) {
@@ -600,9 +600,9 @@ public class MJIEnv {
     return ci.getStaticElementInfo().getBooleanField(fname);
   }
 
-  public void setStaticByteField (String clsName, String fname, byte value) {
+  public void setStaticByteField (FeatureExpr ctx, String clsName, String fname, byte value) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setByteField(fname, value);  }
+    ci.getStaticElementInfo().setByteField(ctx, fname, value);  }
 
   public byte getStaticByteField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
@@ -875,10 +875,14 @@ public class MJIEnv {
 
   // danger - the returned arrays could be used to modify contents of stored objects
 
-  public byte[] getByteArrayObject (int objref) {
+  public byte[] getByteArrayObject (FeatureExpr ctx, int objref) {
     ElementInfo ei = getElementInfo(objref);
-    byte[] a = ei.asByteArray();
+    Conditional<Byte>[] ba = ei.asByteArray();
 
+    byte[] a = new byte[ba.length];
+    for (int i = 0; i < ba.length; i++) {
+    	a[i]= ba[i].simplify(ctx).getValue();
+    }
     return a;
   }
 
@@ -978,7 +982,7 @@ public class MJIEnv {
   public int newByteArray (FeatureExpr ctx, byte[] buf){
     ElementInfo eiArray = heap.newArray(ctx, "B", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setByteElement( i, buf[i]);
+      eiArray.setByteElement( ctx, i, buf[i]);
     }
     return eiArray.getObjectRef();
   }
@@ -1128,7 +1132,7 @@ public class MJIEnv {
       char[] ca = getCharArrayObject(arrayRef).getValue();
       s = new String(ca);
     } else if ("B".equals(t)) {   // byte array
-      byte[] ba = getByteArrayObject(arrayRef);
+      byte[] ba = getByteArrayObject(null, arrayRef);
       s = new String(ba);
     }
 
@@ -1240,7 +1244,7 @@ public class MJIEnv {
 
   public int newByte (byte b){
     ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Byte"), ti);
-    ei.setByteField("value",b);
+    ei.setByteField(null,"value", b);
     return ei.getObjectRef();
   }
 

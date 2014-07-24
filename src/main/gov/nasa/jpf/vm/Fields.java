@@ -238,7 +238,7 @@ public abstract class Fields implements Cloneable {
 
   public abstract boolean getBooleanValue (int index);
 
-  public abstract byte getByteValue (int index);
+  public abstract Conditional<Byte> getByteValue (int index);
 
   public abstract Conditional<Character> getCharValue (int index);
 
@@ -255,7 +255,7 @@ public abstract class Fields implements Cloneable {
 
   public abstract void setBooleanValue (int index, boolean newValue);
 
-  public abstract void setByteValue (int index, byte newValue);
+  public abstract void setByteValue (FeatureExpr ctx, int index, Conditional<Byte> newValue);
 
   public abstract void setCharValue (FeatureExpr ctx, int index, Conditional<Character> newValue);
 

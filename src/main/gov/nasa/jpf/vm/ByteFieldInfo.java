@@ -19,8 +19,9 @@
 
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * fieldinfo for slots holding bytes
@@ -45,7 +46,7 @@ public class ByteFieldInfo extends SingleSlotFieldInfo {
 
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setByteValue(storageOffset, init);
+    ei.getFields().setByteValue(ctx, storageOffset, new One<>(init));
   }
 
   public boolean isByteField() {
@@ -53,7 +54,7 @@ public class ByteFieldInfo extends SingleSlotFieldInfo {
   }
 
   public String valueToString (Fields f) {
-    byte i = f.getByteValue(storageOffset);
+    byte i = f.getByteValue(storageOffset).getValue();
     return Byte.toString(i);
   }
 

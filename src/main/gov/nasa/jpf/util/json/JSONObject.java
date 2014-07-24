@@ -21,7 +21,6 @@ package gov.nasa.jpf.util.json;
 
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.JPFLogger;
 import gov.nasa.jpf.util.ObjectConverter;
 import gov.nasa.jpf.vm.ChoiceGenerator;
@@ -211,7 +210,7 @@ public class JSONObject{
       ei.setBooleanField(fi, val.getBoolean());
 
     } else if (primitiveName.equals("byte")) {
-      ei.setByteField(fi, val.getDouble().byteValue());
+      ei.setByteField(NativeMethodInfo.CTX, fi, val.getDouble().byteValue());
 
     } else if (primitiveName.equals("short")) {
       ei.setShortField(fi, val.getDouble().shortValue());
@@ -252,11 +251,13 @@ public class JSONObject{
     } else if (arrayElementType.equals("byte")) {
        arrayRef = env.newByteArray(vals.length);
        ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
-       byte bytes[] = arrayEI.asByteArray();
-
+//       byte bytes[] = arrayEI.asByteArray();
+//       for (int i = 0; i < vals.length; i++) {
+//        bytes[i] = vals[i].getDouble().byteValue();
+//      }
        for (int i = 0; i < vals.length; i++) {
-        bytes[i] = vals[i].getDouble().byteValue();
-      }
+     	  arrayEI.setByteElement(ctx, i, vals[i].getDouble().byteValue());
+       }
     } else if (arrayElementType.equals("short")) {
        arrayRef = env.newShortArray(vals.length);
        ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
@@ -357,7 +358,7 @@ public class JSONObject{
       Number number = (Number) cgResult;
 
       if (primitiveName.equals("byte")) {
-        ei.setByteField(fi, number.byteValue());
+        ei.setByteField(NativeMethodInfo.CTX, fi, number.byteValue());
 
       } else if (primitiveName.equals("short")) {
         ei.setShortField(fi, number.shortValue());

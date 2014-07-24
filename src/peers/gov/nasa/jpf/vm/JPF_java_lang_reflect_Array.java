@@ -246,7 +246,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setByte__Ljava_lang_Object_2IB__V (MJIEnv env, int clsRef, int aref, int index, byte val) {
     if (check(env, aref, index)) {
-      env.setByteArrayElement(aref, index, val);
+      env.setByteArrayElement(NativeMethodInfo.CTX, aref, index, val);
     }
   }
 

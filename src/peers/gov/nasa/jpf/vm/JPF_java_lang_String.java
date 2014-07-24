@@ -48,14 +48,14 @@ public class JPF_java_lang_String extends NativePeer {
   @SuppressWarnings("deprecation")
   @MJI
   public int init___3BIII__Ljava_lang_String_2 (MJIEnv env, int objRef, int asciiRef, int hibyte, int offset, int count) {
-    byte[] ascii = env.getByteArrayObject(asciiRef);
+    byte[] ascii = env.getByteArrayObject(NativeMethodInfo.CTX, asciiRef);
     String result = new String(ascii, hibyte, offset, count);
     return env.newString(NativeMethodInfo.CTX, result);
   }
 
   @MJI
   public int init___3BIILjava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int bytesRef, int offset, int length, int charsetNameRef) throws UnsupportedEncodingException {
-    byte[] bytes = env.getByteArrayObject(bytesRef);
+    byte[] bytes = env.getByteArrayObject(NativeMethodInfo.CTX, bytesRef);
     String charsetName = env.getStringObject(null, charsetNameRef);
     String result = new String(bytes, offset, length, charsetName);
     return env.newString(NativeMethodInfo.CTX, result);
@@ -63,7 +63,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int init___3BII__Ljava_lang_String_2 (MJIEnv env, int objRef, int bytesRef, int offset, int length) {
-    byte[] bytes = env.getByteArrayObject(bytesRef);
+    byte[] bytes = env.getByteArrayObject(NativeMethodInfo.CTX, bytesRef);
     String result = new String(bytes, offset, length);
     return env.newString(NativeMethodInfo.CTX, result);
   }
@@ -102,9 +102,13 @@ public class JPF_java_lang_String extends NativePeer {
   @SuppressWarnings("deprecation")
   @MJI
   public void getBytes__II_3BI__V (MJIEnv env, int objRef, int srcBegin, int srcEnd, int dstRef, int dstBegin) {
-    String obj = env.getStringObject(null, objRef);
-    byte[] dst = env.getByteArrayObject(dstRef);
+    String obj = env.getStringObject(NativeMethodInfo.CTX, objRef);
+    byte[] dst = env.getByteArrayObject(NativeMethodInfo.CTX, dstRef);
     obj.getBytes(srcBegin, srcEnd, dst, dstBegin);
+    
+    for (int i = dstBegin; i < srcEnd - srcBegin + dstBegin; i++) {
+    	env.setByteArrayElement(NativeMethodInfo.CTX, dstRef, i, dst[i]);
+    }
   }
 
   @MJI

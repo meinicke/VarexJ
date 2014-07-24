@@ -70,6 +70,7 @@ public IntArrayFields (int length) {
   public void appendTo (IntVector v) {
 	  int [] a = new int[values.length];
 	for (int i = 0; i < values.length; i++) {
+		// TODO jens this does not work with conditional values
 		for (Integer val : values[i].toList()) {
 			a[i] = val;
 		}

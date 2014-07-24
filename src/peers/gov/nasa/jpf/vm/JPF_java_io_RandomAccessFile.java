@@ -101,7 +101,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
   @MJI
   public void write___3BII__V (MJIEnv env, int this_ptr, int data_array,
                            int start, int len) {
-    byte[] data_values = env.getByteArrayObject(data_array);
+    byte[] data_values = env.getByteArrayObject(NativeMethodInfo.CTX, data_array);
     for(int i=start; i < len; ++i) {
       writeByte__I__V(env, this_ptr, data_values[i]);
     }
@@ -128,7 +128,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     long current_posn = env.getLongField(this_ptr, current_position).getValue();
     long current_len = env.getLongField(this_ptr, current_length).getValue();
     while (i < len && current_posn < current_len) {
-      env.setByteArrayElement(data_array, start + i, readByte____B(env, this_ptr));
+      env.setByteArrayElement(NativeMethodInfo.CTX, data_array, start + i, readByte____B(env, this_ptr));
       i += 1;
       current_posn += 1;
     }

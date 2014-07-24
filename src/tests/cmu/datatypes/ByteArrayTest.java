@@ -19,7 +19,7 @@ public class ByteArrayTest extends TestJPF {
 	@Conditional
 	static boolean d = true;
 
-	@Ignore @Test
+	@Test
 	public void byteArrayTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			byte[] array = new byte[10];
@@ -56,15 +56,15 @@ public class ByteArrayTest extends TestJPF {
 		}
 	}
 	
-	@Ignore @Test
+	@Test
 	public void byteArrayCopyTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			byte[] array = new byte[10];
 			for (int i = 0; i < array.length; i++) {
 				if (a) {
-					array[i] = 0;
+					array[i] = (byte)i;
 				} else {
-					array[i] = 1;
+					array[i] = (byte) (i*i);
 				}
 			}
 			byte[] array2 = new byte[10];
@@ -73,9 +73,9 @@ public class ByteArrayTest extends TestJPF {
 			for (int i = 0; i < array.length; i++) {
 				System.out.println(array2[i]);
 				if (a) {
-					assertTrue(array2[i] == 0);
+					assertTrue(array2[i] == (byte)i);
 				} else {
-					assertTrue(array2[i] == 1);
+					assertTrue(array2[i] == (byte) (i*i));
 				}
 			}
 		}

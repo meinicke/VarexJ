@@ -72,7 +72,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a boolean[]");
 	}
 
-	public byte getByteValue(int pos) {
+	public Conditional<Byte> getByteValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a byte[]");
 	}
@@ -126,7 +126,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a boolean[]");
 	}
 
-	public void setByteValue(int pos, byte newValue) {
+	public void setByteValue(FeatureExpr ctx, int pos, Conditional<Byte> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a byte[]");
 	}
@@ -183,7 +183,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a boolean[]");
 	}
 
-	public byte[] asByteArray() {
+	public Conditional<Byte>[] asByteArray() {
 		// overridden by subclass
 		throw new JPFException("not a byte[]");
 	}

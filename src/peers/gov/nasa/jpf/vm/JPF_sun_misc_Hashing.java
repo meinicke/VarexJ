@@ -29,7 +29,7 @@ public class JPF_sun_misc_Hashing extends NativePeer {
     
   @MJI 
   public int murmur3_32__I_3BII__I (MJIEnv env, int clsRef, int seed, int dataRef, int offset, int len){
-    byte[] data = env.getByteArrayObject(dataRef);
+    byte[] data = env.getByteArrayObject(NativeMethodInfo.CTX, dataRef);
     return Hashing.murmur3_32(seed, data, offset, len);
   }
   

@@ -14,7 +14,7 @@ public class JPF_java_io_ObjectOutputStream extends NativePeer {
       double d = env.getDoubleArrayElement(daRef, i);
       long l = Double.doubleToLongBits(d);
       for (int k=0; k<8; k++){
-        env.setByteArrayElement(baRef, j++, (byte)l);
+        env.setByteArrayElement(NativeMethodInfo.CTX, baRef, j++, (byte)l);
         l >>= 8;
       }
     }

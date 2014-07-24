@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;
@@ -37,15 +38,15 @@ public class BALOAD extends ArrayLoadInstruction {
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
 
-    int value = 0;
+    Conditional<Byte> value = new One<>((byte)0);
     Fields f = ei.getFields();
     if (f instanceof ByteArrayFields){
       value = ei.getByteElement(index);
     } else if (f instanceof BooleanArrayFields){
-      value = ei.getBooleanElement(index) ? 1 : 0;
+      value = new One<>((byte)(ei.getBooleanElement(index) ? 1 : 0));
     }
 
-    frame.push(ctx, new One<>(value));
+    frame.push(ctx, value);
   }
 
 

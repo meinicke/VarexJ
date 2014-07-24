@@ -802,8 +802,8 @@ public abstract class ElementInfo implements Cloneable {
   public void setBooleanField (String fname, boolean value) {
     setBooleanField( getFieldInfo(fname), value);
   }
-  public void setByteField (String fname, byte value) {
-    setByteField( getFieldInfo(fname), value);
+  public void setByteField (FeatureExpr ctx, String fname, byte value) {
+    setByteField( ctx, getFieldInfo(fname), value);
   }
   public void setCharField (String fname, char value) {
     setCharField( getFieldInfo(fname), value);
@@ -872,12 +872,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setByteField(FieldInfo fi, byte newValue) {
+  public void setByteField(FeatureExpr ctx, FieldInfo fi, byte newValue) {
     checkIsModifiable();
     
     if (fi.isByteField()) {
       int offset = fi.getStorageOffset();
-      fields.setByteValue( offset, newValue);
+      fields.setByteValue(ctx, offset, new One<>(newValue));
     } else {
       throw new JPFException("not a byte field: " + fi.getName());
     }
@@ -1116,7 +1116,7 @@ public abstract class ElementInfo implements Cloneable {
   }
   public byte getByteField(FieldInfo fi) {
     if (fi.isByteField()){
-      return fields.getByteValue(fi.getStorageOffset());
+      return fields.getByteValue(fi.getStorageOffset()).getValue();
     } else {
       throw new JPFException("not a byte field: " + fi.getName());
     }
@@ -1276,6 +1276,10 @@ public abstract class ElementInfo implements Cloneable {
 		    		for (int i = 0; i < length; i++) {
 		    			fields.setIntValue(dstIdx + i, src.getIntValue(i + srcIdx));
 		    		}
+	    		} else if (eiSrc.getFields() instanceof ByteArrayFields) {
+		    		for (int i = 0; i < length; i++) {
+		    			fields.setByteValue(ctx, dstIdx + i, src.getByteValue(i + srcIdx));
+		    		}
 	    		} else {
 	    			throw new RuntimeException("TODO implement array copy for " + src.getClass());
 	    		}
@@ -1318,10 +1322,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setBooleanValue(idx, value);
   }
-  public void setByteElement(int idx, byte value){
+  public void setByteElement(FeatureExpr ctx, int idx, byte value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setByteValue(idx, value);
+    fields.setByteValue(ctx, idx, new One<>(value));
   }
   public void setCharElement(FeatureExpr ctx, int idx, char value){
     checkArray(idx);
@@ -1364,7 +1368,7 @@ public abstract class ElementInfo implements Cloneable {
     checkArray(idx);
     return fields.getBooleanValue(idx);
   }
-  public byte getByteElement(int idx) {
+  public Conditional<Byte> getByteElement(int idx) {
     checkArray(idx);
     return fields.getByteValue(idx);
   }
@@ -1466,7 +1470,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public byte[] asByteArray() {
+  public Conditional<Byte>[] asByteArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asByteArray();
     } else {

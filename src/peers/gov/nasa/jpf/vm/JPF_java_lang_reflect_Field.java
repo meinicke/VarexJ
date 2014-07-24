@@ -250,7 +250,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ByteFieldInfo.class, "byte", true);
     if (ei != null){
-      ei.setByteField(fi,val);
+      ei.setByteField(NativeMethodInfo.CTX,fi, val);
     }
   }
 
@@ -503,7 +503,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         return true;
       } else if ("byte".equals(fieldType)){
         byte val = env.getByteField(value, fieldName);
-        ei.setByteField(fi, val);
+        ei.setByteField(ctx, fi, val);
         return true;
       } else if ("char".equals(fieldType)){
         char val = env.getCharField(value, fieldName);

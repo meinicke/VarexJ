@@ -72,7 +72,7 @@ class BoxedByteCreator implements Creator {
     if (read != null) {
       byteRef = env.newObject(ctx, "java.lang.Byte");
       ElementInfo ei = env.getModifiableElementInfo(byteRef);
-      ei.setByteField("value", read.byteValue());
+      ei.setByteField(ctx, "value", read.byteValue());
     }
 
     return byteRef;

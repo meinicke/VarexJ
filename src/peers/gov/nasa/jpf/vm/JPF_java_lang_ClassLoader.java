@@ -134,7 +134,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
       return MJIEnv.NULL;
     }
         
-    byte[] buffer = env.getByteArrayObject(bufferRef);
+    byte[] buffer = env.getByteArrayObject(NativeMethodInfo.CTX, bufferRef);
     
     try {
       ClassInfo ci = cl.getResolvedClassInfo( cname, buffer, offset, length);

@@ -104,7 +104,7 @@ public class ObjectConverter {
         newObjEI.setCharField(fi, javaField.getChar(javaObject));
       }
       else if (jpfTypeName.equals("byte")) {
-        newObjEI.setByteField(fi, javaField.getByte(javaObject));
+        newObjEI.setByteField(ctx, fi, javaField.getByte(javaObject));
       }
       else if (jpfTypeName.equals("short")) {
         newObjEI.setShortField(fi, javaField.getShort(javaObject));
@@ -164,10 +164,14 @@ public class ObjectConverter {
     else if (arrayElementClass == Byte.TYPE) {
       arrRef = env.newByteArray(javaArrLength);
       ElementInfo byteArrRef = env.getModifiableElementInfo(arrRef);
-      byte[] byteArr = byteArrRef.asByteArray();
-
+//      byte[] byteArr = byteArrRef.asByteArray();
+//
+//      for (int i = 0; i < javaArrLength; i++) {
+//        byteArr[i] = Array.getByte(javaArr, i);
+//      }
+      
       for (int i = 0; i < javaArrLength; i++) {
-        byteArr[i] = Array.getByte(javaArr, i);
+    	  byteArrRef.setIntElement(ctx, i, Array.getByte(javaArr, i));
       }
     }
     else if (arrayElementClass == Short.TYPE) {

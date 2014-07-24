@@ -44,7 +44,7 @@ public class BASTORE extends ArrayStoreInstruction {
     Fields f = ei.getFields();
 
     if (f instanceof ByteArrayFields){
-      ei.setByteElement(index, value);
+      ei.setByteElement(ctx, index, value);
 
     } else if (f instanceof BooleanArrayFields){
       ei.setBooleanElement(index, value != 0 ? true : false);
