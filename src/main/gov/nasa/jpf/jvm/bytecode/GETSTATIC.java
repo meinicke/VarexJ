@@ -106,10 +106,10 @@ public class GETSTATIC extends StaticFieldInstruction {
       }
 
     } else {
-      long lval = ei.get2SlotField(fieldInfo).getValue();
-      lastValue = new One<>(lval);
+      Conditional<Long> lval = ei.get2SlotField(fieldInfo);
+      lastValue = lval;
       
-      frame.pushLong(lval);
+      frame.push(ctx, lval);
       
       if (attr != null) {
         frame.setLongOperandAttr(attr);

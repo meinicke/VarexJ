@@ -74,7 +74,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
 
     ClassInfo ci = fi.getTypeClassInfo();
     if (!ci.isRegistered()) {
-      ci.registerClass(ti);
+      ci.registerClass(NativeMethodInfo.CTX, ti);
     }
 
     return ci.getClassObjectRef();
@@ -197,7 +197,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   public int getAnnotation__Ljava_lang_Class_2__Ljava_lang_annotation_Annotation_2 (MJIEnv env, int objRef, int annotationClsRef) {
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
     FieldInfo fi = getFieldInfo(env,objRef);
-    ClassInfo aci = env.getReferredClassInfo(annotationClsRef);
+    ClassInfo aci = env.getReferredClassInfo(ctx, annotationClsRef);
     
     AnnotationInfo ai = fi.getAnnotation(aci.getName());
     if (ai != null){

@@ -841,7 +841,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   protected void checkNoClinitInitialization(){
     if (!isInitialized()){
       ThreadInfo ti = ThreadInfo.getCurrentThread();
-      registerClass(ti);
+      registerClass(FeatureExprFactory.True(), ti);
       setInitialized(); // we might want to check if there is a clinit
     }
   }
@@ -1825,7 +1825,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     ClassLoaderInfo systemLoader = ClassLoaderInfo.getCurrentSystemClassLoader();
     ClassInfo ci = systemLoader.getResolvedClassInfo(clsName);
 
-    ci.registerClass(ti); // this is safe to call on already loaded classes
+    ci.registerClass(FeatureExprFactory.True(), ti); // this is safe to call on already loaded classes
 
     if (!ci.isInitialized()) {
       if (ci.initializeClass(ti)) {
@@ -1854,8 +1854,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   /**
    * this registers a ClassInfo in the corresponding ClassLoader statics so that we can cross-link from
    * SUT code and access static fields.
+ * @param ctx TODO
    */
-  public StaticElementInfo registerClass (ThreadInfo ti){
+  public StaticElementInfo registerClass (FeatureExpr ctx, ThreadInfo ti){
     StaticElementInfo sei = getStaticElementInfo();
     
     if (sei == null) {
@@ -1863,17 +1864,17 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
       // respective classes might be defined by another classloader, so we have to call their ClassInfo.registerClass()
       
       if (superClass != null) {
-        superClass.registerClass(ti);
+        superClass.registerClass(ctx, ti);
       }
 
       for (ClassInfo ifc : interfaces) {
-        ifc.registerClass(ti);
+        ifc.registerClass(ctx, ti);
       }
       
       ClassInfo.logger.finer("registering class: ", name);
       
       ElementInfo ei = createClassObject( null, ti);
-      sei = createAndLinkStaticElementInfo( ti, ei);
+      sei = createAndLinkStaticElementInfo(ctx , ti, ei);
       
       // SUT class is fully resolved and registered (but not necessarily initialized), notify listeners
       ti.getVM().notifyClassLoaded(this);
@@ -1906,14 +1907,14 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return ei;
   }
   
-  StaticElementInfo createAndLinkStaticElementInfo (ThreadInfo ti, ElementInfo eiClsObj) {
+  StaticElementInfo createAndLinkStaticElementInfo (FeatureExpr ctx, ThreadInfo ti, ElementInfo eiClsObj) {
     Statics statics = classLoader.getStatics();
-    StaticElementInfo sei = statics.newClass(this, ti, eiClsObj);
+    StaticElementInfo sei = statics.newClass(ctx, this, ti, eiClsObj);
     
     id = sei.getObjectRef();  // kind of a misnomer, it's really an id    
     uniqueId = ((long)classLoader.getId() << 32) | id;
     
-    eiClsObj.setIntField(FeatureExprFactory.True(), ID_FIELD, id);      
+    eiClsObj.setIntField(ctx, ID_FIELD, id);      
     
     return sei;
   }
@@ -2005,7 +2006,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   public boolean pushRequiredClinits (ThreadInfo ti){
     StaticElementInfo sei = getStaticElementInfo();    
     if (sei == null) {
-      sei = registerClass(ti);
+      sei = registerClass(FeatureExprFactory.True(), ti);
     }
     
     if (sei.getStatus() == UNINITIALIZED){
@@ -2123,10 +2124,10 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return fieldsFactory.createStaticFields(this);
   }
 
-  void initializeStaticData (ElementInfo ei, ThreadInfo ti) {
+  void initializeStaticData (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
     for (int i=0; i<sFields.length; i++) {
       FieldInfo fi = sFields[i];
-      fi.initialize(FeatureExprFactory.True(), ei, ti);
+      fi.initialize(ctx, ei, ti);
     }
   }
 

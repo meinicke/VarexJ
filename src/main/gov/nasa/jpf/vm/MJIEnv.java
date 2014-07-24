@@ -684,7 +684,7 @@ public class MJIEnv {
   }
 
   public long getStaticLongField (int clsRef, String fname) {
-    ClassInfo ci = getReferredClassInfo(clsRef);
+    ClassInfo ci = getReferredClassInfo(FeatureExprFactory.True(), clsRef);
     return getStaticLongField(ci,fname);
   }
 
@@ -972,8 +972,8 @@ public class MJIEnv {
     return heap.newArray(FeatureExprFactory.True(), "B", size, ti).getObjectRef();
   }
 
-  public int newByteArray (byte[] buf){
-    ElementInfo eiArray = heap.newArray(FeatureExprFactory.True(), "B", buf.length, ti);
+  public int newByteArray (FeatureExpr ctx, byte[] buf){
+    ElementInfo eiArray = heap.newArray(ctx, "B", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setByteElement( i, buf[i]);
     }
@@ -1416,7 +1416,7 @@ public class MJIEnv {
   }
 
   ElementInfo getStaticElementInfo (int clsObjRef) {
-    ClassInfo ci = getReferredClassInfo( clsObjRef);
+    ClassInfo ci = getReferredClassInfo( FeatureExprFactory.True(), clsObjRef);
     if (ci != null) {
       return ci.getStaticElementInfo();
     }
@@ -1425,7 +1425,7 @@ public class MJIEnv {
   }
   
   ElementInfo getModifiableStaticElementInfo (int clsObjRef) {
-    ClassInfo ci = getReferredClassInfo( clsObjRef);
+    ClassInfo ci = getReferredClassInfo( FeatureExprFactory.True(), clsObjRef);
     if (ci != null) {
       return ci.getModifiableStaticElementInfo();
     }
@@ -1438,14 +1438,14 @@ public class MJIEnv {
     return ciMth;
   }
 
-  public ClassInfo getReferredClassInfo (int clsObjRef) {
+  public ClassInfo getReferredClassInfo (FeatureExpr ctx, int clsObjRef) {
     ElementInfo ei = getElementInfo(clsObjRef);
     if (ei.getClassInfo().getName().equals("java.lang.Class")) {
-      int ciId = ei.getIntField( ClassInfo.ID_FIELD).simplify(null).getValue();
+      int ciId = ei.getIntField( ClassInfo.ID_FIELD).simplify(ctx).getValue();
       int clref = ei.getReferenceField("classLoader").getValue();
       
       ElementInfo eiCl = getElementInfo(clref);
-      int cliId = eiCl.getIntField(ClassLoaderInfo.ID_FIELD).simplify(null).getValue();
+      int cliId = eiCl.getIntField(ClassLoaderInfo.ID_FIELD).simplify(ctx).getValue();
       
       ClassLoaderInfo cli = getVM().getClassLoader(cliId);
       ClassInfo referredCi = cli.getClassInfo(ciId);

@@ -310,7 +310,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 
     if (!ciArray.isInitialized()) {
       // we do this explicitly here since there are no clinits for array classes
-      ciArray.registerClass(ti);
+      ciArray.registerClass(FeatureExprFactory.True(), ti);
       ciArray.setInitialized();
     }
 

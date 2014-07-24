@@ -29,7 +29,7 @@ public class JPF_java_io_ObjectStreamClass extends NativePeer {
   // why is this here??
   @MJI
   public boolean hasStaticInitializer__Ljava_lang_Class_2__Z (MJIEnv env, int objRef, int clsRef){
-    ClassInfo ci = env.getReferredClassInfo(clsRef);
+    ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, clsRef);
     MethodInfo mi = ci.getMethod("<clinit>()V", false);          
     return (mi != null);
   }
@@ -37,7 +37,7 @@ public class JPF_java_io_ObjectStreamClass extends NativePeer {
   // just a little accelerator
   @MJI
   public int getDeclaredSUID__Ljava_lang_Class_2__Ljava_lang_Long_2 (MJIEnv env, int objRef, int clsRef){
-    ClassInfo ci = env.getReferredClassInfo(clsRef);
+    ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, clsRef);
     FieldInfo fi = ci.getDeclaredStaticField("serialVersionUID");
     if (fi != null){
       ElementInfo ei = ci.getStaticElementInfo();

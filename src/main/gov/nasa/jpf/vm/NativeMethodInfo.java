@@ -168,7 +168,7 @@ public class NativeMethodInfo extends MethodInfo {
 								if (Conditional.isContradiction(f)) {
 									return new One<>(y);
 								}
-								if (f.isTautology()) {
+								if (Conditional.isTautology(f)) {
 									return new One<>(y.getNext());
 								}
 //								if (f.equivalentTo(f.and(ctx))) {

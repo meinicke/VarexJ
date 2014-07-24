@@ -135,7 +135,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     	 */
     	val = frame.peek(ctx);
     } else {
-    	if (ctx.isTautology()) {
+    	if (Conditional.isTautology(ctx)) {
     		val = frame.peek(ctx);
     	} else {
     		val = new Choice<>(ctx, frame.peek(ctx), eiFieldOwner.get1SlotField(fi)).simplify();

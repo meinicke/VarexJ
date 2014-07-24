@@ -320,9 +320,11 @@ public abstract class ElementInfo implements Cloneable {
               // (this is why we have our own implementation)
               heap.registerWeakReference(this);
             } else {
-              int objref = fields.getReferenceValue(fi.getStorageOffset());
-              if (objref != MJIEnv.NULL){
-                heap.queueMark( objref);
+              Conditional<Integer> objref = fields.getReferenceValue2(fi.getStorageOffset());
+              for (Integer ref : objref.toList()) {
+	              if (ref != MJIEnv.NULL){
+	                heap.queueMark(ref);
+	              }
               }
             }
           }

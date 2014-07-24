@@ -1792,7 +1792,7 @@ public class ThreadInfo extends InfoObject
    */
   public Instruction createAndThrowException (FeatureExpr ctx, ClassInfo ci, String details) {
     if (!ci.isRegistered()) {
-      ci.registerClass(this);
+      ci.registerClass(ctx, this);
     }
 
     if (!ci.isInitialized()){

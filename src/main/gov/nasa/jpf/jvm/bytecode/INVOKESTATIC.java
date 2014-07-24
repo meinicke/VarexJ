@@ -156,7 +156,7 @@ public class INVOKESTATIC extends InvokeInstruction {
         
         if (!ciCallee.isRegistered()){
           // if it wasn't registered yet, classLoaded listeners didn't have a chance yet to modify it..
-          ciCallee.registerClass(ti);
+          ciCallee.registerClass(ctx, ti);
           // .. and might replace/remove MethodInfos
           callee = clsInfo.getMethod(mname, true);
         }

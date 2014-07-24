@@ -74,14 +74,14 @@ public class JPF_java_security_MessageDigest extends NativePeer {
     byte[] input = env.getByteArrayObject(inputRef);
     
     byte[] res = md.digest(input);
-    return env.newByteArray(res);
+    return env.newByteArray(NativeMethodInfo.CTX, res);
   }
 
   @MJI
   public int digest_____3B (MJIEnv env, int objRef){
     MessageDigest md = getDigest(env, objRef);    
     byte[] res = md.digest();
-    return env.newByteArray(res);
+    return env.newByteArray(NativeMethodInfo.CTX, res);
   }
   
   @MJI

@@ -99,7 +99,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     for (int i = 0; i < argTypeNames.length; i++) {
       ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(argTypeNames[i]);
       if (!ci.isRegistered()) {
-        ci.registerClass(ti);
+        ci.registerClass(NativeMethodInfo.CTX, ti);
       }
 
       ar[i] = ci.getClassObjectRef();
@@ -131,7 +131,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     for (int i = 0; i < exceptionNames.length; i++) {
       ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(exceptionNames[i]);
       if (!ci.isRegistered()) {
-        ci.registerClass(ti);
+        ci.registerClass(NativeMethodInfo.CTX, ti);
       }
        
       ar[i] = ci.getClassObjectRef();
@@ -157,7 +157,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(mi.getReturnTypeName());
     if (!ci.isRegistered()) {
-      ci.registerClass(ti);
+      ci.registerClass(NativeMethodInfo.CTX, ti);
     }
 
     return ci.getClassObjectRef();
@@ -531,7 +531,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   // the constructor peer, and a public model method
   static int getAnnotation (MJIEnv env, MethodInfo mi, int annotationClsRef){
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
-    ClassInfo aci = env.getReferredClassInfo(annotationClsRef);
+    ClassInfo aci = env.getReferredClassInfo(ctx, annotationClsRef);
     
     AnnotationInfo ai = mi.getAnnotation(aci.getName());
     if (ai != null){

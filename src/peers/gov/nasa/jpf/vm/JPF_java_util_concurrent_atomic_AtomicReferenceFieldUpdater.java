@@ -33,13 +33,13 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
 
     // direct Object subclass, so we don't have to call a super ctor
 
-    ClassInfo ci = env.getReferredClassInfo(tClsObjRef);
+    ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, tClsObjRef);
     String fname = env.getStringObject(null, fNameRef);
     FieldInfo fi = ci.getInstanceField(fname);
 
     ClassInfo fci = fi.getTypeClassInfo();
 
-    ClassInfo fciCheck = env.getReferredClassInfo( fClsObjRef);
+    ClassInfo fciCheck = env.getReferredClassInfo( NativeMethodInfo.CTX, fClsObjRef);
     if (!fci.isInstanceOf(fciCheck)) {
       // that's also just an approximation, but we need to check
       env.throwException("java.lang.RuntimeException", "wrong field type");

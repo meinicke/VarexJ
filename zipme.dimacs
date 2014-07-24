@@ -1,0 +1,55 @@
+c 1 __SELECTED_FEATURE_CRC
+c 2 __SELECTED_FEATURE_GZIP
+c 3 __SELECTED_FEATURE_Extract
+c 4 __SELECTED_FEATURE_DerivativeCompressGZIPCRC
+c 5 __SELECTED_FEATURE_ArchiveCheck
+c 6 __SELECTED_FEATURE_Compress
+c 7 __SELECTED_FEATURE_ZipMeTest
+c 8 __SELECTED_FEATURE_Adler32Checksum
+c 9 Root
+c 10 __SELECTED_FEATURE_DerivativeGZIPCRC
+c 11 __SELECTED_FEATURE_DerivativeCompressGZIP
+c 12 __GUIDSL_ROOT_PRODUCTION
+c 13 __SELECTED_FEATURE_DerivativeCompressCRC
+c 14 __SELECTED_FEATURE_DerivativeExtractCRC
+c 15 __SELECTED_FEATURE_Base
+c 16 __SELECTED_FEATURE_DerivativeCompressAdler32Checksum
+p cnf 16 38
+9 0
+-9 15 0
+-9 7 0
+-9 6 0
+-9 3 0
+-15 9 0
+-1 9 0
+-5 9 0
+-7 9 0
+-2 9 0
+-8 9 0
+-6 9 0
+-3 9 0
+-10 9 0
+-13 9 0
+-14 9 0
+-11 9 0
+-16 9 0
+-4 9 0
+-12 9 0
+-2 1 0
+1 8 0
+-6 -8 16 0
+-16 6 0
+-16 8 0
+-6 -2 11 0
+-11 6 0
+-11 2 0
+-6 -2 -1 4 0
+-4 6 0
+-4 2 0
+-4 1 0
+-3 -1 13 0
+-13 3 0
+-13 1 0
+-2 -1 10 0
+-10 2 0
+-10 1 0

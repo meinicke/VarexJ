@@ -83,8 +83,10 @@ public class CharArrayFields extends ArrayFields {
 		return values.getValue().length * 2;
 	}
 
-	public void appendTo(IntVector v) {
-		v.appendPacked(values.getValue());
+	public void appendTo(IntVector v) {// TODO Jens seems to be no good idea 
+		for (char[] value : values.toList()) {
+			v.appendPacked(value);
+		}
 	}
 
 	public CharArrayFields clone() {
@@ -143,7 +145,7 @@ public class CharArrayFields extends ArrayFields {
 						if (Conditional.isContradiction(f)) {
 							return new One<>(values);
 						}
-						if (f.isTautology()) {
+						if (Conditional.isTautology(f)) {
 							values[pos] = newValue;
 							return new One<>(values);
 						}
@@ -166,7 +168,7 @@ public class CharArrayFields extends ArrayFields {
 		if (ctx == null) {
 			throw new RuntimeException("ctx == null");
 		}
-		if (ctx.isTautology()) {
+		if (Conditional.isTautology(ctx)) {
 			values = new One<>(newValues);
 		} else {
 			values = new Choice<>(ctx, new One<>(newValues), values).simplify();

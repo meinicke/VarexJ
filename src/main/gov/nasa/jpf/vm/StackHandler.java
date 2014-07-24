@@ -49,11 +49,16 @@ public class StackHandler implements Cloneable {
 		string.append(stack);
 		return string.toString();
 	}
+	
+	private static final One<Entry> nullValue = new One<>(new Entry(MJIEnv.NULL, false)); 
 
 	@SuppressWarnings("unchecked")
 	public StackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
 		length = nLocals + nOperands;
 		locals = new Conditional[nLocals];
+		for (int i = 0; i < locals.length; i++) {
+			locals[i] = nullValue;
+		}
 		stack = new One<>(new Stack(nOperands));
 		stackCTX = ctx;
 	}
@@ -157,7 +162,7 @@ public class StackHandler implements Cloneable {
 	 *            The index of the local variable
 	 */
 	public void storeOperand(final FeatureExpr ctx, final int index) {
-		if (ctx.isTautology()) {
+		if (Conditional.isTautology(ctx)) {
 			locals[index] = popEntry(ctx);
 		} else {
 			if (locals[index] == null) {
@@ -224,7 +229,7 @@ public class StackHandler implements Cloneable {
 	}
 
 	public void setLocal(final FeatureExpr ctx, final int index, final int value, final boolean isRef) {
-		if (ctx.isTautology()) {
+		if (Conditional.isTautology(ctx)) {
 			locals[index] = new One<>(new Entry(value, isRef));
 		} else {
 			if (locals[index] == null) {
@@ -468,7 +473,7 @@ public class StackHandler implements Cloneable {
 					i--;
 				}
 
-				if (f.isTautology()) {
+				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
 				if (ctx.equals(f)) {
@@ -570,7 +575,7 @@ public class StackHandler implements Cloneable {
 				if (ctx.equals(f)) {
 					return new One<>(clone); 
 				}
-				if (f.isTautology()) {
+				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
 				
@@ -593,7 +598,7 @@ public class StackHandler implements Cloneable {
 				if (ctx.equals(f)) {
 					return new One<>(clone); 
 				}
-				if (f.isTautology()) {
+				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
 				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
@@ -762,7 +767,7 @@ public class StackHandler implements Cloneable {
 					throw new RuntimeException(instruction + "not supported");
 				}
 
-				if (f.isTautology()) {
+				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
 				

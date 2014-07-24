@@ -320,7 +320,7 @@ public abstract class Instruction implements Cloneable {
 				if (Conditional.isContradiction(f)) {
 					return new One<>(y);
 				}
-				if (f.isTautology()) {
+				if (Conditional.isTautology(f)) {
 					return new One<>(y.getNext());
 				}
 				return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));

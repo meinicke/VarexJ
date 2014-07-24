@@ -64,7 +64,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
     try {
       ClassInfo ci = cl.getResolvedClassInfo( typeName);
       if(!ci.isRegistered()) {
-        ci.registerClass(env.getThreadInfo());
+        ci.registerClass(NativeMethodInfo.CTX, env.getThreadInfo());
       }
       // note that we don't initialize yet
       return ci.getClassObjectRef();

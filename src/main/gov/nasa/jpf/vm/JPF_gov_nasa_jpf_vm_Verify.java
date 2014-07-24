@@ -1079,7 +1079,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     JSONObject jsonObject = parser.parse();
         
     if (jsonObject != null) {
-      ClassInfo ci = env.getReferredClassInfo( newObjClsRef);
+      ClassInfo ci = env.getReferredClassInfo( NativeMethodInfo.CTX, newObjClsRef);
       
       // check if we need any class init (and hence reexecution) before creating any CGs
       if (jsonObject.requiresClinitExecution(ci,ti)){

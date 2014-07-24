@@ -84,7 +84,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
     // since its a builtin class, we also don't have to bother with NoClassDefFoundErrors
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(type);
     if (!ci.isRegistered()) {
-      ci.registerClass(ti);
+      ci.registerClass(ctx, ti);
       ci.setInitialized();
     }
     

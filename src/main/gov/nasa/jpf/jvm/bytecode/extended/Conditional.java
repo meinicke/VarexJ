@@ -34,6 +34,10 @@ public abstract class Conditional<T> {
 		return map.get(f);
 	}
 	
+	public static boolean isTautology(FeatureExpr f) {
+		return isContradiction(f.not());
+	}
+	
 	
 	public abstract T getValue();
 	public abstract T getValue(boolean ignore);

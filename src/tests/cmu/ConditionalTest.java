@@ -122,13 +122,13 @@ public class ConditionalTest {
 		assertEquals(Choice(fa, Choice((fa.and(fb)), One(3), One(2)), Choice(fb.andNot(fa), One(3), One(1))), v1);
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Test
-	public void simplify1() {
-		Conditional<Integer> v1 = new One(One(1));
-		assertEquals(One(1), v1.simplify());
-	}
-	
+//	@SuppressWarnings({ "unchecked", "rawtypes" })
+//	@Test
+//	public void simplify1() {
+//		Conditional<Integer> v1 = new One(One(1));
+//		assertEquals(One(1), v1.simplify());
+//	}
+//	
 	@Test
 	public void simplify2() {
 		Conditional<Integer> v1 = Choice(fa, One(1), One(1));

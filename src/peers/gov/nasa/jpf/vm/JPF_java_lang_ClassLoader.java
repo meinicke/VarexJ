@@ -115,7 +115,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     ClassInfo ci = cl.getResolvedClassInfo(cname);
 
     if(!ci.isRegistered()) {
-      ci.registerClass(env.getThreadInfo());
+      ci.registerClass(NativeMethodInfo.CTX, env.getThreadInfo());
     }
 
     return ci.getClassObjectRef();
@@ -144,7 +144,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
       // since we don't do much with minor and major versions
 
       ThreadInfo ti = env.getThreadInfo();
-      ci.registerClass(ti);
+      ci.registerClass(NativeMethodInfo.CTX, ti);
 
       return ci.getClassObjectRef();
       

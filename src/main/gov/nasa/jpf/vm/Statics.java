@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * abstraction for the container of StaticElementInfos, which manages static fields.
  * Note that there is a Statics instance per ClassLoaderInfo, i.e. ids are only unique within each
@@ -43,8 +45,9 @@ public interface Statics extends Iterable<ElementInfo> {
   /**
    * this returns the search global id which is unique within this ClassLoader namespace.
    * This id is also stored in the respective java.lang.Class object
+ * @param ctx TODO
    */
-  StaticElementInfo newClass (ClassInfo ci, ThreadInfo ti, ElementInfo eiClsObj);
+  StaticElementInfo newClass (FeatureExpr ctx, ClassInfo ci, ThreadInfo ti, ElementInfo eiClsObj);
   
   
   //--- accessors 

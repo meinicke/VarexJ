@@ -20,7 +20,7 @@ public class JPF_gov_nasa_jpf_SerializationConstructor extends NativePeer {
 
     if (frame == null){ // first time
       int clsRef = env.getReferenceField(ctx, mthRef, "mdc").getValue();
-      ClassInfo ci = env.getReferredClassInfo( clsRef);
+      ClassInfo ci = env.getReferredClassInfo( ctx, clsRef);
 
       if (ci.isAbstract()){
         env.throwException("java.lang.InstantiationException");

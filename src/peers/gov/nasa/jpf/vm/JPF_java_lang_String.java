@@ -114,7 +114,7 @@ public class JPF_java_lang_String extends NativePeer {
 
     try {
       byte[] b = string.getBytes(charset);
-      return env.newByteArray(b);
+      return env.newByteArray(NativeMethodInfo.CTX, b);
 
     } catch (UnsupportedEncodingException uex) {
       env.throwException(uex.getClass().getName(), uex.getMessage());
@@ -126,7 +126,7 @@ public class JPF_java_lang_String extends NativePeer {
   public int getBytes_____3B (MJIEnv env, int objRef) {
     String obj = env.getStringObject(null, objRef);
     byte[] bytes = obj.getBytes();
-    return env.newByteArray(bytes);
+    return env.newByteArray(NativeMethodInfo.CTX, bytes);
   }
 
   @MJI

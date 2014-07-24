@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -50,7 +51,7 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
     ClassInfo ciField = f.getClassInfo();
     if (!ciField.isRegistered()){
       // classLoaded listeners might change/remove this field
-      ciField.registerClass(ThreadInfo.getCurrentThread());
+      ciField.registerClass(FeatureExprFactory.True(), ThreadInfo.getCurrentThread());
       f = ciField.getStaticField(fname);
     }
     

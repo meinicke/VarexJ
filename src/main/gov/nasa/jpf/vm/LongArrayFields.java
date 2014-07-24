@@ -107,7 +107,7 @@ public class LongArrayFields extends ArrayFields {
 
 	@Override
 	public void setLongValue(FeatureExpr ctx, int pos, Conditional<Long> newValue) {
-		if (ctx.isTautology()) {
+		if (Conditional.isTautology(ctx)) {
 			values[pos] = newValue;
 		} else {
 			values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();

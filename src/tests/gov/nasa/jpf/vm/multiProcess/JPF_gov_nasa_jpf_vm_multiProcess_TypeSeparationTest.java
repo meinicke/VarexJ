@@ -23,6 +23,7 @@ import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class JPF_gov_nasa_jpf_vm_multiProcess_TypeSeparationTest extends NativeP
 
   @MJI
   public void keepAnnotationClass__Ljava_lang_Class_2I__V(MJIEnv env, int objRef, int annoClsRef, int prcId) {
-    ClassInfo aci = env.getReferredClassInfo(annoClsRef);
+    ClassInfo aci = env.getReferredClassInfo(NativeMethodInfo.CTX, annoClsRef);
     if(!prcIds.contains(prcId)) {
       prcIds.add(prcId);
       annClasses.add(aci);

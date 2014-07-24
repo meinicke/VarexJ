@@ -461,7 +461,7 @@ public class ClassLoaderInfo
   public ClassInfo getInitializedClassInfo (String clsName, ThreadInfo ti){
     ClassInfo ci = getResolvedClassInfo(clsName);
 
-    ci.registerClass(ti); // this is safe to call on already loaded classes
+    ci.registerClass(FeatureExprFactory.True(), ti); // this is safe to call on already loaded classes
 
     if (!ci.isInitialized()) {
       if (ci.initializeClass(ti)) {
@@ -569,7 +569,7 @@ public class ClassLoaderInfo
           if (clsObjRef == MJIEnv.NULL) {
             throw new ClassInfoException("class not found: " + typeName, this, "java.lang.NoClassDefFoundError", typeName);
           } else {
-            return ti.getEnv().getReferredClassInfo(clsObjRef);
+            return ti.getEnv().getReferredClassInfo(null, clsObjRef);
           }          
         }
       }

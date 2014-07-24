@@ -24,6 +24,9 @@ import gov.nasa.jpf.util.ObjVector;
 
 import java.util.Iterator;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * Statics implementation that uses a simple ObjVector as the underlying container.
  * 
@@ -81,24 +84,24 @@ public class OVStatics implements Statics {
     }
   }
   
-  protected StaticElementInfo createStaticElementInfo (int id, ClassInfo ci, ThreadInfo ti, ElementInfo eiClsObj) {
+  protected StaticElementInfo createStaticElementInfo (FeatureExpr ctx, int id, ClassInfo ci, ThreadInfo ti, ElementInfo eiClsObj) {
     Fields   f = ci.createStaticFields();
     Monitor  m = new Monitor();
 
     StaticElementInfo ei = new StaticElementInfo( id, ci, f, m, ti, eiClsObj);
 
-    ci.initializeStaticData(ei, ti);
+    ci.initializeStaticData(ctx, ei, ti);
 
     return ei;
   }
   
   @Override
-  public StaticElementInfo newClass (ClassInfo ci, ThreadInfo ti, ElementInfo eiClsObj) {
+  public StaticElementInfo newClass (FeatureExpr ctx, ClassInfo ci, ThreadInfo ti, ElementInfo eiClsObj) {
     assert (eiClsObj != null);
     
     int id = computeId( ci);
     
-    StaticElementInfo ei = createStaticElementInfo( id, ci, ti, eiClsObj);
+    StaticElementInfo ei = createStaticElementInfo(ctx , id, ci, ti, eiClsObj);
     elementInfos.set(id, ei);
     
     return ei;
@@ -108,7 +111,7 @@ public class OVStatics implements Statics {
   public StaticElementInfo newStartupClass (ClassInfo ci, ThreadInfo ti) {
     int id = computeId( ci);
     
-    StaticElementInfo ei = createStaticElementInfo( id, ci, ti, null);
+    StaticElementInfo ei = createStaticElementInfo( FeatureExprFactory.True(), id, ci, ti, null);
     elementInfos.set(id, ei);
     
     return ei;

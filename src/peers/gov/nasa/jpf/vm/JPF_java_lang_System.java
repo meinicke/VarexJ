@@ -76,7 +76,7 @@ public class JPF_java_lang_System extends NativePeer {
     // it's not really used, but it would be hack'ish to use a class whose
     // super class hasn't been initialized yet
     if (!ci.isRegistered()) {
-      ci.registerClass(ti);
+      ci.registerClass(NativeMethodInfo.CTX, ti);
     }
 
     if (!ci.isInitialized()) {

@@ -156,7 +156,7 @@ public class JPF_gov_nasa_jpf_CachedROHttpConnection extends NativePeer {
     }
 
     if (data != null){
-      return env.newByteArray(data);
+      return env.newByteArray(NativeMethodInfo.CTX, data);
     } else {
       return MJIEnv.NULL;
     }

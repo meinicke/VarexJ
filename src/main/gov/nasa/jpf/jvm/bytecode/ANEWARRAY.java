@@ -59,7 +59,7 @@ public class ANEWARRAY extends NewArrayInstruction {
 		ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
 
 		if (!ci.isRegistered()) {
-			ci.registerClass(ti);
+			ci.registerClass(ctx, ti);
 			ci.setInitialized();
 		}
 

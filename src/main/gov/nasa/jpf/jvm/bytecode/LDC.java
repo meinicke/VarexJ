@@ -97,7 +97,7 @@ public class LDC extends JVMInstruction {
         // to make sure we have class objects. <clinit>s are called prior to
         // GET/PUT or INVOKE
         if (!ci.isRegistered()) {
-          ci.registerClass(ti);
+          ci.registerClass(ctx, ti);
         }
 
         frame.pushRef( ci.getClassObjectRef(), ctx);

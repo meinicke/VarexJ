@@ -51,21 +51,15 @@ public class Choice<T> extends Conditional<T> implements Cloneable {
 			return thenBranch.simplify(and);
 		}
 
-		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplify(and);
-		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplify(andNot);
-
-		if (tb == null) {
-			return eb;
-		}
-		if (eb == null) {
-			return tb;
-		}
+		final Conditional<T> tb = thenBranch.simplify(and);
+		final Conditional<T> eb = elseBranch.simplify(andNot);
 
 		if (tb.equals(eb)) {
 			return tb;
 		}
 
 		// TODO somehow causes errors (see BankAccount test)
+		
 		if (tb instanceof One) {
 			if (eb instanceof Choice) {
 				if (((Choice<T>) eb).elseBranch instanceof One && ((Choice<T>) eb).thenBranch instanceof One) {// TODO remove
@@ -136,8 +130,17 @@ public class Choice<T> extends Conditional<T> implements Cloneable {
 	@Override
 	public List<T> toList() {
 		List<T> list = new LinkedList<>();
-		list.addAll(thenBranch.toList());
-		list.addAll(elseBranch.toList());
+		for (T e : thenBranch.toList()) {
+			if (!list.contains(e)) {
+				list.add(e);
+			}
+		}
+		
+		for (T e : elseBranch.toList()) {
+			if (!list.contains(e)) {
+				list.add(e);
+			}
+		}
 		return list;
 	}
 
@@ -154,20 +157,13 @@ public class Choice<T> extends Conditional<T> implements Cloneable {
 
 	@Override
 	public Conditional<T> simplifyValues() {
-		final Conditional<T> tb = thenBranch == null ? null : thenBranch.simplifyValues();
-		final Conditional<T> eb = elseBranch == null ? null : elseBranch.simplifyValues();
-
-		if (tb == null) {
-			return eb;
-		}
-		if (eb == null) {
-			return tb;
-		}
+		final Conditional<T> tb = thenBranch.simplifyValues();
+		final Conditional<T> eb = elseBranch.simplifyValues();
 
 		if (tb.equals(eb)) {
 			return tb;
 		}
-
+		
 		// TODO somehow causes errors (see BankAccount test)
 		if (tb instanceof One) {
 			if (eb instanceof Choice) {
@@ -194,7 +190,7 @@ public class Choice<T> extends Conditional<T> implements Cloneable {
 			}
 		}
 
-		return new Choice<>((featureExpr), tb, eb);
+		return new Choice<>(featureExpr, tb, eb);
 	}
 
 }

@@ -63,7 +63,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     }
 
     if (!ci.isRegistered()){
-      ci.registerClass(ti);
+      ci.registerClass(ctx, ti);
     }
 
     // since this is a NEW, we also have to pushClinit
