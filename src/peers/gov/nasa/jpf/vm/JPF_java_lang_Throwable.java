@@ -57,7 +57,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
   // native because we don't want to waste states
   @MJI
   public void printStackTrace____V (MJIEnv env, int objRef) {
-    env.getThreadInfo().printStackTrace(objRef);
+    env.getThreadInfo().printStackTrace(NativeMethodInfo.CTX, objRef);
   }
   
   // a helper method to get a string representation of the stacktrace

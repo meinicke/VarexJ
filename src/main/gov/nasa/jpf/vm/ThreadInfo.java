@@ -1580,8 +1580,8 @@ public class ThreadInfo extends InfoObject
     }
   }
 
-  public void printStackTrace (int objRef) {
-    printStackTrace(null, null, objRef);
+  public void printStackTrace (FeatureExpr ctx, int objRef) {
+    printStackTrace(ctx, null, objRef);
   }
 
   public void printPendingExceptionOn (PrintWriter pw) {

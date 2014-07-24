@@ -17,7 +17,7 @@ public class GPLTest extends TestJPF {
 	
 	private static final String SEP = System.getProperty("file.separator");
 	
-	@Ignore 
+//	@Ignore 
 	@Test//(340.205s) // TODO throws error
 	public void random1Test() {
 		if (verifyNoPropertyViolation(config)) {
