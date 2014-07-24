@@ -1589,6 +1589,10 @@ public class ThreadInfo extends InfoObject
       printStackTrace( null, pw, pendingException.getExceptionReference());
     }
   }
+  
+  private static String getCTXString(FeatureExpr ctx) {
+	  return ("" + ctx).replaceAll("CONFIG_", "");
+  }
 
   /**
    * the reason why this is kind of duplicated (there is also a StackFrame.getPositionInfo)
@@ -1601,7 +1605,7 @@ public class ThreadInfo extends InfoObject
     // 'env' usage is not ideal, since we don't know from what context we are called, and
     // hence the MJIEnv calling context might not be set (no Method or ClassInfo)
     // on the other hand, we don't want to re-implement all the MJIEnv accessor methods
-
+	  print(pw, "if " +  getCTXString(ctx) + ":\n");
     print(pw, env.getClassInfo(objRef).getName());
     int msgRef = env.getReferenceField(ctx,objRef, "detailMessage").getValue();
     if (msgRef != MJIEnv.NULL) {
@@ -1624,7 +1628,7 @@ public class ThreadInfo extends InfoObject
 
     } else { // fall back to use the snapshot stored in the exception object
       aRef = env.getReferenceField(ctx, objRef, "snapshot").getValue();
-      int[] snapshot = env.getIntArrayObject(aRef);
+      int[] snapshot = env.getIntArrayObject(ctx, aRef);
       int len = snapshot.length/2;
 
       for (int i=0, j=0; i<len; i++){

@@ -192,7 +192,7 @@ public final class StaticElementInfo extends ElementInfo {
     for (int i=0; i<n; i++) {
       FieldInfo fi = ci.getStaticField(i);
       if (fi.isReference()) {
-        Conditional<Integer> objref = fields.getIntValue2(fi.getStorageOffset());
+        Conditional<Integer> objref = fields.getIntValue(fi.getStorageOffset());
         for (Integer ref : objref.toMap().keySet()) {// TODO jens might be no good idea???
         	heap.markStaticRoot(ref);
         }

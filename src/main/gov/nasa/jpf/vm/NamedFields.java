@@ -67,12 +67,7 @@ public class NamedFields extends Fields {
 		return values.length * 4;
 	}
 
-	// our low level getters and setters
-	public int getIntValue(int index) {
-		return getIntValue2(index).getValue();
-	}
-
-	public Conditional<Integer> getIntValue2(int index) {
+	public Conditional<Integer> getIntValue(int index) {
 		return values[index];
 	}
 

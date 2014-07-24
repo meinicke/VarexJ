@@ -212,8 +212,8 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     FeatureExpr ctx = NativeMethodInfo.CTX;
     int int_array = env.getReferenceField(ctx, chunk_obj, data).getValue();
     int old_value = env.getIntArrayElement(int_array, index);
-    env.setIntArrayElement(int_array, index,
-                             (old_value & ~(0xff << bit_shift)) |
+    env.setIntArrayElement(ctx, int_array,
+                             index, (old_value & ~(0xff << bit_shift)) |
                              data_value << bit_shift);
   }
 

@@ -1416,7 +1416,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
       FieldInfo[] fia = c.iFields;
       for (int i=0; i<fia.length; i++) {
         FieldInfo fi = c.iFields[i];
-        if (fi.isReference() && (fv.getIntValue( fi.getStorageOffset()) == ref)) return true;
+        if (fi.isReference() && (fv.getIntValue( fi.getStorageOffset()).getValue() == ref)) return true;
       }
       c = c.superClass;
     } while (c != null);

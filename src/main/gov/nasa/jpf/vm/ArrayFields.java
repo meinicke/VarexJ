@@ -87,7 +87,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a short[]");
 	}
 
-	public int getIntValue(int pos) {
+	public Conditional<Integer> getIntValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not an int[]");
 	}
@@ -203,7 +203,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a short[]");
 	}
 
-	public int[] asIntArray() {
+	public Conditional<Integer>[] asIntArray() {
 		// overridden by subclass
 		throw new JPFException("not a int[]");
 	}

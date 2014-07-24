@@ -152,8 +152,8 @@ public class JPF_java_util_TimeZone extends NativePeer {
     }
     
     if (offsetsRef != MJIEnv.NULL) {
-      env.setIntArrayElement( offsetsRef, 0, rawOffset);
-      env.setIntArrayElement( offsetsRef, 1, dstOffset);
+      env.setIntArrayElement( NativeMethodInfo.CTX, offsetsRef, 0, rawOffset);
+      env.setIntArrayElement( NativeMethodInfo.CTX, offsetsRef, 1, dstOffset);
     }
     
     return (rawOffset + dstOffset);

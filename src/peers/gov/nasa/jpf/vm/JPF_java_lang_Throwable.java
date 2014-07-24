@@ -37,7 +37,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
   public int createStackTrace_____3Ljava_lang_StackTraceElement_2 (MJIEnv env, int objref) {
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
     int aref = env.getReferenceField(ctx, objref, "snapshot").getValue();
-    int[] snap = env.getIntArrayObject(aref);
+    int[] snap = env.getIntArrayObject(ctx, aref);
     
     return env.getThreadInfo().createStackTraceElements(ctx, snap);
   }

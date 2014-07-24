@@ -31,7 +31,12 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  * printing. We handle all of this native, since it's already slow enough
  */
 public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
-  
+
+	  private static String getCTXString(FeatureExpr ctx) {
+		  return ("" + ctx).replaceAll("CONFIG_", "");
+	  }
+
+	
   /****************************************************************************
    * these are the native methods we intercept
    */
@@ -96,20 +101,18 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
   @MJI
   public void println__D__V (MJIEnv env, int objref, double d) {
 	  if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<" + d + "> : " + NativeMethodInfo.CTX);
+			env.getVM().println("<" + d + "> : " + getCTXString(NativeMethodInfo.CTX));
 		} else {
 			env.getVM().print(d);
 			env.getVM().println();
 		}
-	  
-    
-    
   }
+  
 
   @MJI
   public void println__F__V (MJIEnv env, int objref, float f) {
 	  if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<" + f + "> : " + NativeMethodInfo.CTX);
+			env.getVM().println("<" + f + "> : " + getCTXString(NativeMethodInfo.CTX));
 		} else {
 			env.getVM().print(f);
 			env.getVM().println();
@@ -119,7 +122,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
   @MJI
   public void println__I__V (MJIEnv env, int objref, int i) {
 	  if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<" + i + "> : " + NativeMethodInfo.CTX);
+			env.getVM().println("<" + i + "> : " + getCTXString(NativeMethodInfo.CTX));
 		} else {
 			env.getVM().print(i);
 			env.getVM().println();
@@ -129,7 +132,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
   @MJI
   public void println__J__V (MJIEnv env, int objref, long j) {
 	  if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<" + j + "> : " + NativeMethodInfo.CTX);
+			env.getVM().println("<" + j + "> : " + getCTXString(NativeMethodInfo.CTX));
 		} else {
 			env.getVM().print(j);
 			env.getVM().println();
@@ -142,7 +145,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
 			if (ThreadInfo.ctxOutput) {
-				env.getVM().println('<' + s.getKey() + "> : " + s.getValue().and(NativeMethodInfo.CTX));
+				env.getVM().println('<' + s.getKey() + "> : " + getCTXString(s.getValue().and(NativeMethodInfo.CTX)));
 			} else {
 				env.getVM().println(s.getKey());
 			}

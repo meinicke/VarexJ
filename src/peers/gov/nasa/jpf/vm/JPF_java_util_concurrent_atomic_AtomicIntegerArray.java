@@ -39,7 +39,7 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerArray extends NativePe
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     int value = env.getIntArrayElement(arrayRef, index);
     if (value == expect) {
-      env.setIntArrayElement(arrayRef, index, update);
+      env.setIntArrayElement(ctx, arrayRef, index, update);
       return true;
     } else {
       return false;

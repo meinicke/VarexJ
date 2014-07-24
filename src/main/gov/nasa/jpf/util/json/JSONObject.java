@@ -21,6 +21,7 @@ package gov.nasa.jpf.util.json;
 
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.JPFLogger;
 import gov.nasa.jpf.util.ObjectConverter;
 import gov.nasa.jpf.vm.ChoiceGenerator;
@@ -267,10 +268,12 @@ public class JSONObject{
     } else if (arrayElementType.equals("int")) {
       arrayRef = env.newIntArray(vals.length);
       ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
-      int[] ints = arrayEI.asIntArray();
+//      Conditional<Integer>[] array = arrayEI.asIntArray();
+      
 
       for (int i = 0; i < vals.length; i++) {
-        ints[i] = vals[i].getDouble().intValue();
+    	  arrayEI.setIntElement(ctx, i, vals[i].getDouble().intValue());
+//        ints[i] = vals[i].getDouble().intValue();
       }
     } else if (arrayElementType.equals("long")) {
       arrayRef = env.newLongArray(vals.length);

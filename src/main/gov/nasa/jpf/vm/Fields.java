@@ -228,9 +228,7 @@ public abstract class Fields implements Cloneable {
   }
 
   // our low level getters and setters
-  public abstract int getIntValue (int index);
-  
-  public abstract Conditional<Integer> getIntValue2 (int index);
+  public abstract Conditional<Integer> getIntValue (int index);
 
   // same as getIntValue(), just here to make intentions clear
   public abstract int getReferenceValue (int index);

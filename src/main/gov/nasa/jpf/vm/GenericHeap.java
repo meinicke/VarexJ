@@ -219,7 +219,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     if (weakRefs != null) {
       for (ElementInfo ei : weakRefs) {
         Fields f = ei.getFields();
-        int    ref = f.getIntValue(0); // watch out, the 0 only works with our own WeakReference impl
+        int    ref = f.getIntValue(0).getValue(); // watch out, the 0 only works with our own WeakReference impl
         if (ref != MJIEnv.NULL) {
           ElementInfo refEi = get(ref);
           if ((refEi == null) || (refEi.isNull())) {
@@ -509,8 +509,15 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     AllocationContext ctxSnap = ctx.extend(ciSnap, xRef);
     int snapRef = getNewElementInfoIndex( ctxSnap);
     ElementInfo eiSnap = createArray( "I", stackSnapshot.length, ciSnap, ti, snapRef);
-    int[] snap = eiSnap.asIntArray();
-    System.arraycopy( stackSnapshot, 0, snap, 0, stackSnapshot.length);
+//    Conditional<Integer>[] array = eiSnap.asIntArray();
+//    int[] snap = new int[array.length];
+//    for (int i = 0; i < array.length; i++) {
+//    	snap[i] = array[i].getValue();
+//    }
+    for (int i = 0; i < stackSnapshot.length; i++) {
+    	eiSnap.setIntElement(FeatureExprFactory.True(), i, stackSnapshot[i]);
+    }
+//    System.arraycopy( stackSnapshot, 0, snap, 0, stackSnapshot.length);
     eiThrowable.setReferenceField("snapshot", snapRef);
 
     //--- the cause field

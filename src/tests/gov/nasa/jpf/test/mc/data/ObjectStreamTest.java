@@ -168,6 +168,7 @@ public class ObjectStreamTest extends TestJPF {
     if (verifyNoPropertyViolation("+jpf-core.native_classpath+=;${jpf-core}/build/tests")) {
       MultiDimArr mda = Verify.readObjectFromFile(MultiDimArr.class, osFileName);
 
+      System.out.println(mda.arr[0][0]);
       assert mda.arr[0][0] == 1;
       assert mda.arr[0][1] == 2;
       assert mda.arr[0][2] == 3;

@@ -20,7 +20,6 @@ public class ZipMeTest extends TestJPF {
 			try {
 				ZipTest.main(new String[]{"Jens"});
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -32,7 +31,6 @@ public class ZipMeTest extends TestJPF {
 			try {
 				ZipTest.main(new String[]{"Jens"});
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -47,7 +45,6 @@ public class ZipMeTest extends TestJPF {
 			try {
 				ZipTest.main(new String[]{arg});
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

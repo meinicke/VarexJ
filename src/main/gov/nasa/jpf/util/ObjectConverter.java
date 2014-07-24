@@ -20,6 +20,7 @@
 package gov.nasa.jpf.util;
 
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClinitRequired;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -181,10 +182,15 @@ public class ObjectConverter {
     else if (arrayElementClass == Integer.TYPE) {
       arrRef = env.newIntArray(javaArrLength);
       ElementInfo intArrRef = env.getModifiableElementInfo(arrRef);
-      int[] intArr = intArrRef.asIntArray();
+//      Conditional<Integer>[] array = intArrRef.asIntArray();
+//      int[] intArr = new int[array.length];
+//      for (int i = 0; i < array.length; i++) {
+//    	  intArr[i] = array[i].getValue();
+//      }
+//      
 
       for (int i = 0; i < javaArrLength; i++) {
-        intArr[i] = Array.getInt(javaArr, i);
+    	  intArrRef.setIntElement(ctx, i, Array.getInt(javaArr, i));
       }
     }
     else if (arrayElementClass == Long.TYPE) {

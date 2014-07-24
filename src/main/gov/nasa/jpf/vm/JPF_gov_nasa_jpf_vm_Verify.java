@@ -416,7 +416,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   
   @MJI
   public static int getIntFromList___3I__I (MJIEnv env, int clsObjRef, int valArrayRef){
-    int[] values = env.getIntArrayObject(valArrayRef);
+    int[] values = env.getIntArrayObject(NativeMethodInfo.CTX, valArrayRef);
     return getIntFromList( env, values);
   }
 

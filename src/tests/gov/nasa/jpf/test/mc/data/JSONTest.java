@@ -94,6 +94,7 @@ public class JSONTest extends TestJPF {
     if (verifyNoPropertyViolation()) {
       IntArr ia = Verify.createFromJSON( IntArr.class, "{'ints': [1, 2, 3]}");
 
+      System.out.println(ia.ints[0]);
       assert ia.ints[0] == 1;
       assert ia.ints[1] == 2;
       assert ia.ints[2] == 3;

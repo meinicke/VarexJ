@@ -40,7 +40,7 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int init___3III__Ljava_lang_String_2 (MJIEnv env, int objRef, int codePointsRef, int offset, int count) {
-    int[] codePoints = env.getIntArrayObject(codePointsRef);
+    int[] codePoints = env.getIntArrayObject(NativeMethodInfo.CTX, codePointsRef);
     String result = new String(codePoints, offset, count);
     return env.newString(NativeMethodInfo.CTX, result);
   }

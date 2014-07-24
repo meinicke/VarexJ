@@ -1137,7 +1137,7 @@ public abstract class ElementInfo implements Cloneable {
   }
   public Conditional<Integer> getIntField(FieldInfo fi) {
     if (fi.isIntField()){
-      return fields.getIntValue2(fi.getStorageOffset());
+      return fields.getIntValue(fi.getStorageOffset());
     } else {
       throw new JPFException("not a int field: " + fi.getName());
     }
@@ -1173,7 +1173,7 @@ public abstract class ElementInfo implements Cloneable {
 
   public Conditional<Integer> get1SlotField(FieldInfo fi) {
     if (fi.is1SlotField()){
-      return fields.getIntValue2(fi.getStorageOffset());
+      return fields.getIntValue(fi.getStorageOffset());
     } else {
       throw new JPFException("not a 1 slot field: " + fi.getName());
     }
@@ -1272,6 +1272,10 @@ public abstract class ElementInfo implements Cloneable {
 		    		for (int i = 0; i < length; i++) {
 		    			fields.setLongValue(ctx, dstIdx + i, src.getLongValue(i + srcIdx));
 		    		}
+	    		} else if (eiSrc.getFields() instanceof IntArrayFields) {
+		    		for (int i = 0; i < length; i++) {
+		    			fields.setIntValue(dstIdx + i, src.getIntValue(i + srcIdx));
+		    		}
 	    		} else {
 	    			throw new RuntimeException("TODO implement array copy for " + src.getClass());
 	    		}
@@ -1332,7 +1336,7 @@ public abstract class ElementInfo implements Cloneable {
   public void setIntElement(FeatureExpr ctx, int idx, int value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setIntValue(ctx, idx, (value));
+    fields.setIntValue(ctx, idx, value);
   }
   public void setLongElement(FeatureExpr ctx, int idx, long value) {
     checkArray(idx);
@@ -1372,7 +1376,7 @@ public abstract class ElementInfo implements Cloneable {
     checkArray(idx);
     return fields.getShortValue(idx);
   }
-  public int getIntElement(int idx) {
+  public Conditional<Integer> getIntElement(int idx) {
     checkArray(idx);
     return fields.getIntValue(idx);
 //    Conditional<Integer> res = 
@@ -1486,7 +1490,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public int[] asIntArray() {
+  public Conditional<Integer>[] asIntArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asIntArray();
     } else {

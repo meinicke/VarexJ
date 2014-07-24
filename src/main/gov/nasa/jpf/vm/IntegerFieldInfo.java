@@ -54,12 +54,12 @@ public class IntegerFieldInfo extends SingleSlotFieldInfo {
   }
 
   public String valueToString (Fields f) {
-    int i = f.getIntValue(storageOffset);
+    int i = f.getIntValue(storageOffset).getValue();
     return Integer.toString(i);
   }
 
   public Object getValueObject (Fields f){
-    int i = f.getIntValue(storageOffset);
+    int i = f.getIntValue(storageOffset).getValue();
     return new Integer(i);
   }
 

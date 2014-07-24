@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -32,8 +33,8 @@ public class IALOAD extends ArrayLoadInstruction {
 
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    int value = ei.getIntElement(index);
-    frame.push(ctx, new One<>( value));
+    Conditional<Integer> value = ei.getIntElement(index);
+    frame.push(ctx, value);
   }
 
   public int getByteCode () {

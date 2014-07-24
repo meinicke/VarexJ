@@ -61,7 +61,7 @@ public class CharFieldInfo extends SingleSlotFieldInfo {
 
 
   public Object getValueObject (Fields f){
-    int i = f.getIntValue(storageOffset);
+    int i = f.getIntValue(storageOffset).getValue();
     return new Character((char)i);
   }
 

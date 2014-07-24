@@ -61,7 +61,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       int ea = env.newIntArray(size2);
 
       if (i == 1) {
-        env.setIntArrayElement(ea, 1, 42);
+        env.setIntArrayElement(NativeMethodInfo.CTX, ea, 1, 42);
       }
 
       env.setReferenceArrayElement(ar, i, ea);
@@ -77,7 +77,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
 
     int ar = env.newIntArray(size);
 
-    env.setIntArrayElement(ar, 1, 1);
+    env.setIntArrayElement(NativeMethodInfo.CTX, ar, 1, 1);
 
     return ar;
   }

@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
@@ -33,13 +34,20 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class IntArrayFields extends ArrayFields {
 
-  int[] values;
+  Conditional<Integer>[] values;
 
-  public IntArrayFields (int length) {
-    values = new int[length];
+  private static final One<Integer> init = new One<>(0);
+  
+  @SuppressWarnings("unchecked")
+public IntArrayFields (int length) {
+    values = new Conditional[length];
+    for (int i = 0; i < length; i++) {
+    	values[i] = init;
+    }
+    
   }
 
-  public int[] asIntArray() {
+  public Conditional<Integer>[] asIntArray() {
     return values;
   }
 
@@ -60,7 +68,13 @@ public class IntArrayFields extends ArrayFields {
   }
 
   public void appendTo (IntVector v) {
-    v.append(values);
+	  int [] a = new int[values.length];
+	for (int i = 0; i < values.length; i++) {
+		for (Integer val : values[i].toList()) {
+			a[i] = val;
+		}
+	}
+    v.append(a);
   }
 
   public IntArrayFields clone(){
@@ -73,14 +87,14 @@ public class IntArrayFields extends ArrayFields {
     if (o instanceof IntArrayFields) {
       IntArrayFields other = (IntArrayFields)o;
 
-      int[] v = values;
-      int[] vOther = other.values;
+      Conditional<Integer>[] v = values;
+      Conditional<Integer>[] vOther = other.values;
       if (v.length != vOther.length) {
         return false;
       }
 
       for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
+        if (v[i].equals(vOther[i])) {
           return false;
         }
       }
@@ -91,21 +105,31 @@ public class IntArrayFields extends ArrayFields {
       return false;
     }
   }
+  
+  @Override
+	public void setIntValue(int index, Conditional<Integer> newValue) {
+	  values[index] = newValue;
+	}
 
   @Override
   public void setIntValue (FeatureExpr ctx, int pos, int newValue) {
-    values[pos] = newValue;
+	  if (Conditional.isTautology(ctx)) {
+		  values[pos] = new One<>(newValue);	  
+	  } else {
+		  values[pos] = new Choice<>(ctx, new One<>(newValue), values[pos]).simplify();
+	  }
+    
   }
 
-  public int getIntValue (int pos) {
+  public Conditional<Integer> getIntValue (int pos) {
     return values[pos];
   }
 
 
   public void hash(HashData hd) {
-    int[] v = values;
+    Conditional<Integer>[] v = values;
     for (int i=0; i < v.length; i++) {
-      hd.add(v[i]);
+      hd.add(v[i].getValue());
     }
   }
 

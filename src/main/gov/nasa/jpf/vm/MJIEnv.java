@@ -408,8 +408,8 @@ public class MJIEnv {
     heap.getModifiable(objref).setCharElement(ctx, index, value);
   }
 
-  public void setIntArrayElement (int objref, int index, int value) {
-    heap.getModifiable(objref).setIntElement(null, index, value);
+  public void setIntArrayElement (FeatureExpr ctx, int objref, int index, int value) {
+    heap.getModifiable(objref).setIntElement(ctx, index, value);
   }
 
   public void setShortArrayElement (int objref, int index, short value) {
@@ -436,7 +436,7 @@ public class MJIEnv {
   }
 
   public int getIntArrayElement (int objref, int index) {
-    return heap.get(objref).getIntElement(index);
+    return heap.get(objref).getIntElement(index).getValue();
   }
 
   public Conditional<Character> getCharArrayElement (int objref, int index) {
@@ -899,10 +899,13 @@ public class MJIEnv {
     return a;
   }
 
-  public int[] getIntArrayObject (int objref) {
+  public int[] getIntArrayObject (FeatureExpr ctx, int objref) {
     ElementInfo ei = getElementInfo(objref);
-    int[] a = ei.asIntArray();
-
+    Conditional<Integer>[] array = ei.asIntArray();
+    int[] a = new int[array.length];
+    for (int i = 0; i < array.length; i++) {
+    	a[i] = array[i].simplify(ctx).getValue();
+    }
     return a;
   }
 
@@ -1035,7 +1038,7 @@ public class MJIEnv {
   public int newIntArray (FeatureExpr ctx, int[] buf){
     ElementInfo eiArray = heap.newArray(ctx, "I", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setIntElement( null, i, buf[i]);
+      eiArray.setIntElement( ctx, i, buf[i]);
     }
     return eiArray.getObjectRef();
   }
@@ -1665,7 +1668,7 @@ public class MJIEnv {
       } else if (ftype.equals("int[]")){
         aref = newIntArray(a.length);
         for (int i=0; i<a.length; i++){
-          setIntArrayElement(aref,i,((Number)a[i]).intValue());
+          setIntArrayElement(ctx,aref,i, ((Number)a[i]).intValue());
         }
       } else if (ftype.equals("boolean[]")){
         aref = newBooleanArray(a.length);

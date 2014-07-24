@@ -59,7 +59,7 @@ public class ByteFieldInfo extends SingleSlotFieldInfo {
 
 
   public Object getValueObject (Fields f){
-    int i = f.getIntValue(storageOffset);
+    int i = f.getIntValue(storageOffset).getValue();
     return new Byte((byte)i);
   }
 

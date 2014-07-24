@@ -37,7 +37,7 @@ public class ReferenceFieldInfo extends SingleSlotFieldInfo {
   }
 
   public String valueToString (Fields f) {
-    int i = f.getIntValue(storageOffset);
+    int i = f.getIntValue(storageOffset).getValue();
     if (i == MJIEnv.NULL) {
       return "null";
     } else {
@@ -88,7 +88,7 @@ public class ReferenceFieldInfo extends SingleSlotFieldInfo {
   }
 
   public Object getValueObject (Fields f){
-    int i = f.getIntValue(storageOffset);
+    int i = f.getIntValue(storageOffset).getValue();
     if (i == MJIEnv.NULL) {
       return null;
     } else {
