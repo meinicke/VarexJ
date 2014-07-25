@@ -1922,7 +1922,7 @@ public class ThreadInfo extends InfoObject
         		time = System.currentTimeMillis();
         	}
         	count++;
-//    		if (count > 8095332) {
+//    		if (count > 1915000) {
 //    			debug = true;
 //    			if (debug) System.out.print(count + ": ");
 //    		}

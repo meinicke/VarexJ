@@ -8,37 +8,39 @@ public class BankAccountTest extends TestJPF {
 //	private static String file = "C:\\Users\\Loaner\\workspace\\BankAccount-FH-JML_new\\BAmodel.dimacs";
 	private static String file = "BAmodel.dimacs";
 	
+	private final static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file};
+	
 	@Test
 	public void runBankAccount() {
-		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file)) {
+		if (verifyNoPropertyViolation(config)) {
 			BankAccount.Main.main(null);
 		}
 	}
 
 	@Test
 	public void runBankAccountDouble() {
-		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file)) {
+		if (verifyNoPropertyViolation(config)) {
 			BankAccountDouble.Main.main(null);
 		}
 	}
 
 	@Test
 	public void runBankAccountLong() {
-		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file)) {
+		if (verifyNoPropertyViolation(config)) {
 			BankAccountLong.Main.main(null);
 		}
 	}
 
 	@Test
 	public void runBankAccountFloat() {
-		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file)) {
+		if (verifyNoPropertyViolation(config)) {
 			BankAccountFloat.Main.main(null);
 		}
 	}
 	
 	@Test
 	public void fmTest() {
-		if (verifyNoPropertyViolation("+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file)) {
+		if (verifyNoPropertyViolation(config)) {
 			new Account();
 		}
 	}

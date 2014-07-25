@@ -2,7 +2,6 @@ package cmu.testprograms;
 
 import gov.nasa.jpf.util.test.TestJPF;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class GPLTest extends TestJPF {
@@ -17,22 +16,21 @@ public class GPLTest extends TestJPF {
 	
 	private static final String SEP = System.getProperty("file.separator");
 	
-//	@Ignore 
-	@Test//(340.205s) // TODO throws error
+	@Test
 	public void random1Test() {
 		if (verifyNoPropertyViolation(config)) {
 			run("random1-gpl-benchmark.txt");
 		}
 	}
 	
-	@Test//(4.186s)
+	@Test
 	public void simpleTest() {
 		if (verifyNoPropertyViolation(config)) {
 				run("Simple.txt");
 		}
 	}
 	
-	@Test//(25.445)
+	@Test
 	public void network4Test() {
 		if (verifyNoPropertyViolation(config)) {
 			run("gpl-4-network-benchmark.txt");

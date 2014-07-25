@@ -1,5 +1,9 @@
 package cmu;
 
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
@@ -423,6 +427,39 @@ public class VariabilityAwareTest extends TestJPF {
 			}
 		}
 	}
+	
+	@Test
+	public void testCatchConditionalException() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Main m = new Main(true);
+			try {
+				m.conditionalException();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Test
+	public void testCatchException() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Main m = new Main(true);
+			try {
+				m.exception();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Test
+	public void testThrowException() throws Exception {
+		if (!RUN_WITH_JPF || verifyUnhandledException(Exception.class.getName(), JPF_CONFIGURATION)) {
+			Main m = new Main(true);
+			m.conditionalException();
+		}
+	}
+
 
 	private static boolean valid() {
 		return a;
@@ -451,6 +488,16 @@ class Main {
 		if (!z) {
 			VariabilityAwareTest.check(false);
 		}
+	}
+
+	public void conditionalException() throws Exception {
+		if (VariabilityAwareTest.a) {
+			throw new Exception("EXCEPTION");
+		}
+	}
+	
+	public void exception() throws Exception {
+		throw new Exception("EXCEPTION");
 	}
 
 	public Main(boolean z, boolean y) {

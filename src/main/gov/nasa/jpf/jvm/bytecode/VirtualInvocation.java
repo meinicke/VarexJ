@@ -33,6 +33,8 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.omg.CosNaming.NamingContextPackage.AlreadyBound;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -59,6 +61,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		
 		Conditional<Integer> allRefs = ti.getCalleeThis(ctx, getArgSize());
+		
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
 		boolean splitRef = false;
 		if (map.size() > 1) {

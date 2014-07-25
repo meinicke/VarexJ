@@ -1,4 +1,4 @@
-package cmu.testprograms;
+package cmu;
 
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
