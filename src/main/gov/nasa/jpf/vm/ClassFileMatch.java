@@ -19,6 +19,8 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * a lookup match for a given typename in a ClassFileContainer
  */
@@ -39,7 +41,7 @@ public abstract class ClassFileMatch {
 
   // those are here because VM specific subclasses know about the binary format, how to get the data from the
   // respective container, and what parser to use to transform it
-  public abstract ClassInfo createClassInfo (ClassLoaderInfo loader) throws ClassParseException;
+  public abstract ClassInfo createClassInfo (FeatureExpr ctx, ClassLoaderInfo loader) throws ClassParseException;
   public abstract AnnotationInfo createAnnotationInfo (ClassLoaderInfo loader) throws ClassParseException;
   
 }

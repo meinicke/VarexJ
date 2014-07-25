@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
@@ -114,10 +115,10 @@ public class SingleProcessVM extends VM {
   
 
   @Override
-  public boolean initialize(){
+  public boolean initialize(FeatureExpr ctx){
     try {
-      ThreadInfo tiMain = initializeMainThread(appCtx, 0);
-      initializeFinalizerThread(appCtx, 1);
+      ThreadInfo tiMain = initializeMainThread(ctx, appCtx, 0);
+      initializeFinalizerThread(ctx, appCtx, 1);
 
       if (tiMain == null) {
         return false; // bail out

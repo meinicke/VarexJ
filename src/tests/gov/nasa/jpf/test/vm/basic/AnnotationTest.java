@@ -308,7 +308,7 @@ public class AnnotationTest extends TestJPF {
     @Override
     public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute){
       if (insnToExecute instanceof GETFIELD){
-        FieldInfo fi = ((GETFIELD)insnToExecute).getFieldInfo();
+        FieldInfo fi = ((GETFIELD)insnToExecute).getFieldInfo(null);
         if (fi.getName().equals("data")){
           AnnotationInfo ai = fi.getAnnotation("gov.nasa.jpf.test.vm.basic.AnnotationTest$A1");
           System.out.println("annotation for " + fi.getFullName() + " = " + ai);

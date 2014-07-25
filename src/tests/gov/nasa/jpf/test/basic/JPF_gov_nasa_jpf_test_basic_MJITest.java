@@ -166,7 +166,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     DirectCallStackFrame frame = ti.getReturnedDirectCall();
 
     if (frame == null){ // first time
-      frame = mi.createDirectCallStackFrame(ti, 1);
+      frame = mi.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 1);
       frame.setLocalVariable(NativeMethodInfo.CTX, 0, 0);
       
       int argOffset = frame.setReferenceArgument(0, robj, null);
@@ -216,7 +216,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     System.out.println("# entering nativeHiddenRoundtrip: " + a);
     MethodInfo mi = env.getClassInfo(robj).getMethod("atomicStuff(I)I",false);
 
-    DirectCallStackFrame frame = mi.createDirectCallStackFrame(ti, 0);
+    DirectCallStackFrame frame = mi.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 0);
     
     int argOffset = frame.setReferenceArgument( 0, robj, null);
     frame.setArgument( argOffset, a, null);

@@ -50,7 +50,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
   private static void pushDirectCallFrame(MJIEnv env, MethodInfo mi, int objRef) {
     ThreadInfo ti = env.getThreadInfo();
 
-    DirectCallStackFrame frame = mi.createDirectCallStackFrame(ti, 0);
+    DirectCallStackFrame frame = mi.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 0);
     frame.setReferenceArgument( 0, objRef, null);
     ti.pushFrame(frame);
   }

@@ -69,13 +69,13 @@ public class FinalizerThreadInfo extends ThreadInfo {
   protected FinalizerThreadInfo (VM vm, ApplicationContext appCtx, int id) {
     super(vm, id, appCtx);
     
-    ci = appCtx.getSystemClassLoader().getResolvedClassInfo("gov.nasa.jpf.FinalizerThread");
+    ci = appCtx.getSystemClassLoader().getResolvedClassInfo(null, "gov.nasa.jpf.FinalizerThread");
     threadData.name = FINALIZER_NAME;
     
     tempFinalizeQueue = new ArrayList<ElementInfo>();
   }
   
-  protected void createFinalizerThreadObject (SystemClassLoaderInfo sysCl){
+  protected void createFinalizerThreadObject (FeatureExpr ctx, SystemClassLoaderInfo sysCl){
     Heap heap = getHeap();
 
     ElementInfo eiThread = heap.newObject( null, ci, this);
@@ -92,7 +92,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     
     eiThread.setIntField(FeatureExprFactory.True(), "priority", Thread.MAX_PRIORITY-2);
 
-    ClassInfo ciPermit = sysCl.getResolvedClassInfo("java.lang.Thread$Permit");
+    ClassInfo ciPermit = sysCl.getResolvedClassInfo(null, "java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( null, ciPermit, this);
     eiPermit.setBooleanField("blockPark", true);
     eiThread.setReferenceField("permit", eiPermit.getObjectRef());
@@ -104,7 +104,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     threadData.name = FINALIZER_NAME;
 
     // start the thread by pushing Thread.run()
-    startFinalizerThread();
+    startFinalizerThread(ctx);
     
     eiThread.setBooleanField("done", false);
     ElementInfo finalizeQueue = getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", 0, this);
@@ -124,10 +124,11 @@ public class FinalizerThreadInfo extends ThreadInfo {
   /**
    * Pushes a frame corresponding to Thread.run() into the finalizer thread stack to
    * start the thread.
+ * @param ctx TODO
    */
-  protected void startFinalizerThread() {
+  protected void startFinalizerThread(FeatureExpr ctx) {
     MethodInfo mi = ci.getMethod("run()V", false);
-    DirectCallStackFrame frame = mi.createDirectCallStackFrame(this, 0);
+    DirectCallStackFrame frame = mi.createDirectCallStackFrame(ctx, this, 0);
     frame.setReferenceArgument(0, objRef, frame);
     pushFrame(frame);
   }

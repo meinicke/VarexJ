@@ -117,7 +117,7 @@ public class NumericValueChecker extends PropertyListenerAdapter {
     
     void checkFieldInsn (FieldInstruction insn){
       if (fieldChecks != null){
-        FieldInfo fi = insn.getFieldInfo();
+        FieldInfo fi = insn.getFieldInfo(null);
 
         for (int i = 0; i < fieldChecks.length; i++) {
           FieldCheck fc = fieldChecks[i];

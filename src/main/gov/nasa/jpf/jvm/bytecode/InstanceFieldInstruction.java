@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -47,7 +48,7 @@ public abstract class InstanceFieldInstruction extends FieldInstruction
     super(fieldName, classType, fieldDescriptor);
   }
 
-  public FieldInfo getFieldInfo () {
+  public FieldInfo getFieldInfo (FeatureExpr ctx) {
     if (fi == null) {
       ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(className);
       if (ci != null) {
@@ -78,7 +79,7 @@ public abstract class InstanceFieldInstruction extends FieldInstruction
   protected boolean isSchedulingRelevant (ThreadInfo ti, int objRef) {
 
     //--- configured override
-    FieldInfo fi = getFieldInfo();
+    FieldInfo fi = getFieldInfo(null);
     if (fi.neverBreak()) {
       // this should filter out the bulk in most real apps (library code)
       return false;
@@ -165,7 +166,7 @@ public abstract class InstanceFieldInstruction extends FieldInstruction
 
   public String getFieldDescriptor () {
     ElementInfo ei = getLastElementInfo();
-    FieldInfo fi = getFieldInfo();
+    FieldInfo fi = getFieldInfo(null);
 
     return ei.toString() + '.' + fi.getName();
   }

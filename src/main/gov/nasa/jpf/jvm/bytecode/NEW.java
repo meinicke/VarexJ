@@ -68,7 +68,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
 
     // since this is a NEW, we also have to pushClinit
     if (!ci.isInitialized()) {
-      if (ci.initializeClass(ti)) {
+      if (ci.initializeClass(ctx, ti)) {
         return ti.getPC();  // reexecute this instruction once we return from the clinits
       }
     }

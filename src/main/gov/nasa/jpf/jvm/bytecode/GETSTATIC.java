@@ -57,7 +57,7 @@ public class GETSTATIC extends StaticFieldInstruction {
     FieldInfo fieldInfo;
     
     try {
-      fieldInfo = getFieldInfo();
+      fieldInfo = getFieldInfo(ctx);
     } catch(LoadOnJPFRequired lre) {
       return ti.getPC();
     }
@@ -70,7 +70,7 @@ public class GETSTATIC extends StaticFieldInstruction {
     // this can be actually different (can be a base)
     ciField = fieldInfo.getClassInfo();
     
-    if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ti)) {
+    if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ctx, ti)) {
       // note - this returns the next insn in the topmost clinit that just got pushed
       return ti.getPC();
     }

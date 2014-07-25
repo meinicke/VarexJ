@@ -102,7 +102,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       }
 
       int objRef = env.newObjectOfUncheckedClass( ctx, ci);
-      frame = miCallee.createDirectCallStackFrame( ti, 1);
+      frame = miCallee.createDirectCallStackFrame( ctx, ti, 1);
       frame.setReflection();
       
       frame.setLocalReferenceVariable(ctx, 0, objRef);  // (1) store the objRef for retrieval during re-exec
@@ -114,7 +114,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       }
       ti.pushFrame(frame);
        
-      ci.pushRequiredClinits(ti);
+      ci.pushRequiredClinits(ctx, ti);
       
       env.repeatInvocation();
       return MJIEnv.NULL;

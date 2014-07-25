@@ -30,8 +30,8 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  */
 public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
-  JVMDirectCallStackFrame (MethodInfo miDirectCall, MethodInfo callee){
-    super( miDirectCall, callee);
+  JVMDirectCallStackFrame (FeatureExpr ctx, MethodInfo miDirectCall, MethodInfo callee){
+    super( ctx, miDirectCall, callee);
   }
 
   //--- return value handling

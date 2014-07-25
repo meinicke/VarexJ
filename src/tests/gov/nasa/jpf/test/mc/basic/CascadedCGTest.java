@@ -127,7 +127,7 @@ public class CascadedCGTest extends TestJPF {
 
       if (executedInsn instanceof GETFIELD){
         GETFIELD getInsn = (GETFIELD) executedInsn;
-        FieldInfo fi = getInsn.getFieldInfo();
+        FieldInfo fi = getInsn.getFieldInfo(null);
         if (fi.getName().equals("mySharedField")){
 
           IntChoiceFromSet cg = ss.getCurrentChoiceGenerator("fieldReplace", IntChoiceFromSet.class);

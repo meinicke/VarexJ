@@ -295,9 +295,10 @@ public abstract class Instruction implements Cloneable {
 	 * this is a misnomer - we actually push the clinit calls here in case we
 	 * need some. 'causedClinitCalls' might be more appropriate, but it is used
 	 * in a number of external projects
+	 * @param ctx TODO
 	 */
-	public boolean requiresClinitExecution(ThreadInfo ti, ClassInfo ci) {
-		return ci.pushRequiredClinits(ti);
+	public boolean requiresClinitExecution(FeatureExpr ctx, ThreadInfo ti, ClassInfo ci) {
+		return ci.pushRequiredClinits(ctx, ti);
 	}
 
 	/**
@@ -317,12 +318,6 @@ public abstract class Instruction implements Cloneable {
 
 			@Override
 			public Conditional<Instruction> apply(final FeatureExpr f, final Instruction y) {
-				if (Conditional.isContradiction(f)) {
-					return new One<>(y);
-				}
-				if (Conditional.isTautology(f)) {
-					return new One<>(y.getNext());
-				}
 				return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
 			}
 

@@ -54,6 +54,9 @@ public class StackHandler implements Cloneable {
 
 	@SuppressWarnings("unchecked")
 	public StackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
+		if (ctx == null) {
+			throw new RuntimeException("CTX == NULL");
+		}
 		length = nLocals + nOperands;
 		locals = new Conditional[nLocals];
 		for (int i = 0; i < locals.length; i++) {

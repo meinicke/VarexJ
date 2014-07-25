@@ -27,6 +27,8 @@ import gov.nasa.jpf.util.LocationSpec;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 
 /**
  * information associated with a method. Each method in JPF
@@ -404,12 +406,12 @@ public class MethodInfo extends InfoObject implements GenericSignatureHolder  {
     return globalId;
   }
 
-  public DirectCallStackFrame createRunStartStackFrame (ThreadInfo ti){
-    return ci.createRunStartStackFrame( ti, this);
+  public DirectCallStackFrame createRunStartStackFrame (FeatureExpr ctx, ThreadInfo ti){
+    return ci.createRunStartStackFrame( ctx, ti, this);
   }
 
-  public DirectCallStackFrame createDirectCallStackFrame (ThreadInfo ti, int nLocals){
-    return ci.createDirectCallStackFrame(ti, this, nLocals);
+  public DirectCallStackFrame createDirectCallStackFrame (FeatureExpr ctx, ThreadInfo ti, int nLocals){
+    return ci.createDirectCallStackFrame(ctx, ti, this, nLocals);
   }
 
   public boolean isSyncRelevant () {

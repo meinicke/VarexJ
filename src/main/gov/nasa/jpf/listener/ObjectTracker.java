@@ -263,7 +263,7 @@ public class ObjectTracker extends PropertyListenerAdapter {
       Record rec = getRecord(ref);
       
       if (rec != null){
-        FieldInfo fi = storeInsn.getFieldInfo();
+        FieldInfo fi = storeInsn.getFieldInfo(null);
         
         if (logPut){
           log(ti, "put %1$s.%2$s = <%3$d>", rec.ei, fi.getName(), storeInsn.getLastValue());

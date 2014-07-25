@@ -803,7 +803,7 @@ public class ThreadInfo extends InfoObject
     // fall victim to GC, and that does not cause NoUncaughtExcceptionsProperty violations
     if (throwableRef == MJIEnv.NULL){
       // if no throwable was provided (the normal case), throw a java.lang.ThreadDeath Error
-      ClassInfo cix = ClassInfo.getInitializedSystemClassInfo("java.lang.ThreadDeath", this);
+      ClassInfo cix = ClassInfo.getInitializedSystemClassInfo(null, "java.lang.ThreadDeath", this);
       throwableRef = createException(NativeMethodInfo.CTX, cix, null, MJIEnv.NULL);
     }
 
@@ -1253,7 +1253,7 @@ public class ThreadInfo extends InfoObject
   
   public ClassInfo resolveReferencedClass (String clsName){
     ClassInfo ciTop = top.getClassInfo();
-    return ciTop.resolveReferencedClass(clsName);
+    return ciTop.resolveReferencedClass(null, clsName);
             
     //return ClassLoaderInfo.getCurrentClassLoader(this).getResolvedClassInfo(clsName);
   }
@@ -1800,7 +1800,7 @@ public class ThreadInfo extends InfoObject
     }
 
     if (!ci.isInitialized()){
-      if (ci.initializeClass(this)) {
+      if (ci.initializeClass(ctx, this)) {
         return getPC().getValue();
       }
     }
@@ -1890,8 +1890,6 @@ public class ThreadInfo extends InfoObject
   static int count = 0;
   static int count2 = 0;
   static long time = 0;
-  
-  private MethodInfo currentMethod = null; 
 
   /**
    * Execute next instruction.
@@ -1933,99 +1931,57 @@ public class ThreadInfo extends InfoObject
         		count2 = count;
         		time = System.currentTimeMillis();
         	}
-        	
-        	if (pc instanceof One) {// avoid overhead for calculating the next instruction
-        		
-        		if (debug) {
-        			System.out.print(top.getDepth());
-        			if (top.getDepth() < 10) {
-        				System.out.print(" ");
-        			}
-  					System.out.println(" " + pc.getValue() + " if True");
-  				}
-        		nextPc = pc.getValue().execute(FeatureExprFactory.True(), this);
-        		
-        		if (nextPc.getValue(true) == null) {
-        			currentMethod = null;
-        		} else {
-        			currentMethod = nextPc.getValue(true).getMethodInfo();
-        		}
+        	Instruction i = null;
+        	FeatureExpr ctx = top.stack.stackCTX;
+        	if (pc instanceof One) {
+        		i = pc.getValue();
         	} else {
-        		int min = Integer.MAX_VALUE;
-        		Instruction ins = null;
-        		boolean retInstr = false;
-        		currentMethod = top.mi;
-        		FeatureExpr c = top.stack.stackCTX;
-        		
-	        	for (Instruction i : pc.simplify(c).toList()) {
-	        		if (i != null) {
-	        			if (!(i instanceof ReturnInstruction)) {
-		        			if (i.getPosition() < min) {
-			        			if ((currentMethod == null || i.getMethodInfo() == currentMethod)) {
-			        				min = i.getPosition();
-			        				ins = i;
-			        			}
-		        			}
-	        			} else {
-	        				if (i.getMethodInfo() == currentMethod) {
-	        					retInstr = true;
-	        				}
-	        			}
-	        		}
-	        	}
-	        	
-	        	final int finalMin = min;
-	        	final ThreadInfo ti = this;
-	        	Map<Instruction, FeatureExpr> map = pc.simplify(c).toMap();
-	        	Conditional<Instruction> next = null;
-	        	final MethodInfo oldMethod = currentMethod;
-	        	
-	        	for (final Entry<Instruction, FeatureExpr> entry : map.entrySet()) {
-	        		final Instruction e = entry.getKey();
-          			if (e != null && e.getPosition() == finalMin && e.equals(ins) && oldMethod == e.getMethodInfo()) {
-          				c = entry.getValue().and(c);
-          				if (debug) {
-          					System.out.print(top.getDepth());
-          					if (top.getDepth() < 10) {
-                				System.out.print(" ");
-                			}
-          					System.out.println(" " + e + " " + c);
-						}
-          				next = e.execute(c, ti).simplify(c);
-          				// the executed instruction defines the next method 
-          				break;
-          			} else if (e != null && ins == null && retInstr && oldMethod == e.getMethodInfo()) {
-          				c = entry.getValue().and(c);
-          				if (debug) {
-          					System.out.print(top.getDepth());
-          					if (top.getDepth() < 10) {
-                				System.out.print(" ");
-                			}
-          					System.out.println(" " + e + " " + c);
-          				}
-          				next = e.execute(c, ti).simplify(c);
-          				break;
-          			}
-	        	}
-	        	
-	        	final Conditional<Instruction> finalNext = next; 
-	        	final FeatureExpr finalCtx = c;
-	        	final Instruction finalins = ins;
-	        	final boolean fret = retInstr;
-	        	
-	        	nextPc = pc.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
-	
-	          		@Override
-	          		public Conditional<Instruction> apply(final FeatureExpr ctx, final Instruction x) {
-	          			if (x != null && x.getPosition() == finalMin && x.equals(finalins) && oldMethod == x.getMethodInfo()) {
-	          				return new Choice<>(finalCtx, finalNext, new One<>(x));
-	          			} else if (x != null && finalins == null && fret && oldMethod == x.getMethodInfo()) {
-	          				return new Choice<>(finalCtx, finalNext, new One<>(x));
-	          			}
-	          			return new One<>(x);
-	          		} 
-	          	  }).simplify();
-	        	}
+	    		Map<Instruction, FeatureExpr> map = pc.toMap();
+	    		int minPos = Integer.MAX_VALUE;
+	    		MethodInfo m = top.getMethodInfo();
+	    		if (map.size() == 1) {
+	    			for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
+	    				i = e.getKey();
+	    			}
+	    		} else {
+		    		for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
+		    			final Instruction key = e.getKey();
+						if (!(key instanceof ReturnInstruction)){
+			    			if (key.position < minPos && key.mi == m) {
+			    				minPos = key.position;
+			    				i = key;
+			    			}
+		    			} else if (i == null && key.mi == m) {
+		    				i = key;
+		    			}
+		    		}
+		    		ctx = map.get(i).and(ctx);
+	    		}
+        	}	
+	    		
+	    		
+    		if (debug) {
+    			System.out.print(top.getDepth());
+    			if (top.getDepth() < 10) {
+    				System.out.print(" ");
+    			}
+				System.out.println(" " + i + " if " + ctx);
+			}
+    		
+    		Conditional<Instruction> next = i.execute(ctx, this);
+    		if (i instanceof InvokeInstruction) {
+    			nextPc = next;
+    		} else if (i instanceof ReturnInstruction) {
+    			next = new Choice<>(ctx, next, getPC());
+    			if (top != null) {
+    				nextPc = next.simplify(top.stack.stackCTX);
+    			} else {
+    				nextPc = next;
+    			}
+    		} else {
+    			nextPc = new Choice<>(ctx, next, pc).simplify(top.stack.stackCTX);
+    		}
+    		
         } catch (ClassInfoException cie) {
           nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
@@ -2533,7 +2489,7 @@ public class ThreadInfo extends InfoObject
     
     eiThread.setIntField(FeatureExprFactory.True(), "priority", Thread.NORM_PRIORITY);
 
-    ClassInfo ciPermit = sysCl.getResolvedClassInfo("java.lang.Thread$Permit");
+    ClassInfo ciPermit = sysCl.getResolvedClassInfo(NativeMethodInfo.CTX, "java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( null, ciPermit, this);
     eiPermit.setBooleanField("blockPark", true);
     eiThread.setReferenceField("permit", eiPermit.getObjectRef());
@@ -2554,7 +2510,7 @@ public class ThreadInfo extends InfoObject
   protected ElementInfo createMainThreadGroup (SystemClassLoaderInfo sysCl) {
     Heap heap = getHeap();
     
-    ClassInfo ciGroup = sysCl.getResolvedClassInfo("java.lang.ThreadGroup");
+    ClassInfo ciGroup = sysCl.getResolvedClassInfo(NativeMethodInfo.CTX, "java.lang.ThreadGroup");
     ElementInfo eiThreadGrp = heap.newObject( null, ciGroup, this);
 
     ElementInfo eiGrpName = heap.newString(FeatureExprFactory.True(), "main", this);
@@ -2870,7 +2826,7 @@ public class ThreadInfo extends InfoObject
     for (StackFrame frame = top; frame != null; frame = frame.getPrevious()) {
       // that means we have to turn the exception into an InvocationTargetException
       if (frame.isReflection()) {
-        ciException = ClassInfo.getInitializedSystemClassInfo("java.lang.reflect.InvocationTargetException", this);
+        ciException = ClassInfo.getInitializedSystemClassInfo(null, "java.lang.reflect.InvocationTargetException", this);
       }
 
       matchingHandler = frame.getHandlerFor( FeatureExprFactory.True(), ciException);
@@ -2932,7 +2888,7 @@ public class ThreadInfo extends InfoObject
     for (StackFrame frame = top; (frame != null); frame = frame.getPrevious()) {
       // that means we have to turn the exception into an InvocationTargetException
       if (frame.isReflection()) {
-        ciException = ClassInfo.getInitializedSystemClassInfo("java.lang.reflect.InvocationTargetException", this);
+        ciException = ClassInfo.getInitializedSystemClassInfo(ctx, "java.lang.reflect.InvocationTargetException", this);
         exceptionObjRef  = createException(ctx, ciException, exceptionName, exceptionObjRef);
         exceptionName = ciException.getName();
         eiException = heap.get(exceptionObjRef);
@@ -2964,7 +2920,7 @@ public class ThreadInfo extends InfoObject
         // direct call methods because we want to preserve the whole stack in case
         // we treat returned (report-only) handlers as NoUncaughtExceptionProperty
         // violations (passUncaughtHandler=false)
-        insn = callUncaughtHandler(pendingException);
+        insn = callUncaughtHandler(ctx, pendingException);
         if (insn != null) {
           // we only do this if there is a UncaughtHandler other than the standard
           // ThreadGroup, hence we have to check for the return value. If there is
@@ -3037,15 +2993,16 @@ public class ThreadInfo extends InfoObject
    * the standard ThreadGroup.uncaughtException(), we would have trouble mapping
    * this to NoUncaughtExceptionProperty violations (which is just a normal
    * printStackTrace() in there).
+ * @param ctx TODO
    */
-  protected Instruction callUncaughtHandler (ExceptionInfo xi){
+  protected Instruction callUncaughtHandler (FeatureExpr ctx, ExceptionInfo xi){
     Instruction insn = null;
     
     // 1. check if this thread has its own uncaughtExceptionHandler set. If not,
     // hand it over to ThreadGroup.uncaughtException()
     int  hRef = getInstanceUncaughtHandler();
     if (hRef != MJIEnv.NULL){
-      insn = callUncaughtHandler(xi, hRef, "[threadUncaughtHandler]");
+      insn = callUncaughtHandler(ctx, xi, hRef, "[threadUncaughtHandler]");
       
     } else {
       // 2. check if any of the ThreadGroup chain has an overridden uncaughtException
@@ -3053,13 +3010,13 @@ public class ThreadInfo extends InfoObject
       hRef = getThreadGroupUncaughtHandler(grpRef);
       
       if (hRef != MJIEnv.NULL){
-        insn = callUncaughtHandler(xi, hRef, "[threadGroupUncaughtHandler]");
+        insn = callUncaughtHandler(ctx, xi, hRef, "[threadGroupUncaughtHandler]");
       
       } else {
         // 3. as a last measure, check if there is a global handler 
         hRef = getGlobalUncaughtHandler();
         if (hRef != MJIEnv.NULL){
-          insn = callUncaughtHandler(xi, hRef, "[globalUncaughtHandler]");
+          insn = callUncaughtHandler(ctx, xi, hRef, "[globalUncaughtHandler]");
         }    
       }
     }
@@ -3138,7 +3095,7 @@ public class ThreadInfo extends InfoObject
     }
   }
   
-  protected Instruction callUncaughtHandler (ExceptionInfo xi, int handlerRef, String id){
+  protected Instruction callUncaughtHandler (FeatureExpr ctx, ExceptionInfo xi, int handlerRef, String id){
     ElementInfo eiHandler = getElementInfo(handlerRef);
     ClassInfo ciHandler = eiHandler.getClassInfo();
     MethodInfo miHandler = ciHandler.getMethod("uncaughtException(Ljava/lang/Thread;Ljava/lang/Throwable;)V", true);
@@ -3146,7 +3103,7 @@ public class ThreadInfo extends InfoObject
     // we have to clear this here in case there is a CG while executing the uncaughtHandler
     pendingException = null;
     
-    DirectCallStackFrame frame = miHandler.createDirectCallStackFrame(this, 0);
+    DirectCallStackFrame frame = miHandler.createDirectCallStackFrame(ctx, this, 0);
     int argOffset = frame.setReferenceArgument( 0, handlerRef, null);
     argOffset = frame.setReferenceArgument( argOffset, objRef, null);
     frame.setReferenceArgument( argOffset, xi.getExceptionReference(), null);

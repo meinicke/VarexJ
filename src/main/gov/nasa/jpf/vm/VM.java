@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
@@ -432,7 +433,7 @@ public abstract class VM {
     
     try {
       for (String clsName : getStartupSystemClassNames()) {
-        ClassInfo ci = sysCl.getResolvedClassInfo(clsName);
+        ClassInfo ci = sysCl.getResolvedClassInfo(NativeMethodInfo.CTX, clsName);
         ci.registerStartupClass( tiMain, list); // takes care of superclasses and interfaces
       }
     } catch (ClassInfoException e){
@@ -447,7 +448,7 @@ public abstract class VM {
    */
   protected ClassInfo getMainClassInfo (SystemClassLoaderInfo sysCl, String mainClassName, ThreadInfo tiMain, List<ClassInfo> list){
     try {
-      ClassInfo ciMain = sysCl.getResolvedClassInfo(mainClassName);
+      ClassInfo ciMain = sysCl.getResolvedClassInfo(null, mainClassName);
       ciMain.registerStartupClass(tiMain, list); // this might add a couple more
       
       return ciMain;
@@ -506,8 +507,8 @@ public abstract class VM {
     }
   }
   
-  protected void pushMainEntry (MethodInfo miMain, String[] args, ThreadInfo tiMain) {
-    DirectCallStackFrame frame = miMain.createDirectCallStackFrame(tiMain, 0);
+  protected void pushMainEntry (FeatureExpr ctx, MethodInfo miMain, String[] args, ThreadInfo tiMain) {
+    DirectCallStackFrame frame = miMain.createDirectCallStackFrame(ctx, tiMain, 0);
     pushMainEntryArgs( miMain, args, tiMain, frame);    
     tiMain.pushFrame(frame);
   }
@@ -523,11 +524,11 @@ public abstract class VM {
     return miMain;
   }
   
-  protected void pushClinits (List<ClassInfo> startupClasses, ThreadInfo tiMain) {
+  protected void pushClinits (FeatureExpr ctx, List<ClassInfo> startupClasses, ThreadInfo tiMain) {
     for (ClassInfo ci : startupClasses){
       MethodInfo mi = ci.getMethod("<clinit>()V", false);
       if (mi != null) {
-        DirectCallStackFrame frame = mi.createDirectCallStackFrame(tiMain, 0);
+        DirectCallStackFrame frame = mi.createDirectCallStackFrame(ctx, tiMain, 0);
         tiMain.pushFrame(frame);
       } else {
         ci.setInitialized();
@@ -538,15 +539,17 @@ public abstract class VM {
   /**
    * this is the main initialization point that sets up startup objects threads and callstacks.
    * If this returns false VM initialization cannot proceed and JPF will terminate
+ * @param ctx TODO
    */
-  public abstract boolean initialize ();
+  public abstract boolean initialize (FeatureExpr ctx);
   
   /**
    * create and initialize the main thread for the given ApplicationContext.
    * This is called from VM.initialize() implementations, the caller has to handle exceptions that should be reported
    * differently (JPFConfigException, ClassInfoException)
+ * @param ctx TODO
    */
-  protected ThreadInfo initializeMainThread (ApplicationContext appCtx, int tid){
+  protected ThreadInfo initializeMainThread (FeatureExpr ctx, ApplicationContext appCtx, int tid){
     SystemClassLoaderInfo sysCl = appCtx.sysCl;
     
     ThreadInfo tiMain = createMainThreadInfo(tid, appCtx);
@@ -568,22 +571,22 @@ public abstract class VM {
     // note that StackFrames have to be pushed in reverse order
     MethodInfo miMain = getMainEntryMethodInfo(appCtx.mainEntry, ciMain);
     appCtx.setEntryMethod(miMain);
-    pushMainEntry(miMain, appCtx.args, tiMain);
+    pushMainEntry(ctx, miMain, appCtx.args, tiMain);
     Collections.reverse(startupClasses);
-    pushClinits(startupClasses, tiMain);
+    pushClinits(ctx, startupClasses, tiMain);
 
     registerThreadListCleanup(sysCl.getThreadClassInfo());
 
     return tiMain;
   }
   
-  protected void initializeFinalizerThread (ApplicationContext appCtx, int tid) {
+  protected void initializeFinalizerThread (FeatureExpr ctx, ApplicationContext appCtx, int tid) {
     if(processFinalizers) {
       ApplicationContext app = getCurrentApplicationContext();
       FinalizerThreadInfo finalizerTi = (FinalizerThreadInfo) app.getFinalizerThread();
     
       finalizerTi = (FinalizerThreadInfo) createFinalizerThreadInfo(tid, app);
-      finalizerTi.createFinalizerThreadObject(app.getSystemClassLoader());
+      finalizerTi.createFinalizerThreadObject(ctx, app.getSystemClassLoader());
     
       appCtx.setFinalizerThread(finalizerTi);
     }

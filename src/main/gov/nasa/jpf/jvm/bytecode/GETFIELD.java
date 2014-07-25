@@ -72,7 +72,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 				ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 
-				FieldInfo fi = getFieldInfo();
+				FieldInfo fi = getFieldInfo(ctx);
 				if (fi == null) {
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
 				}

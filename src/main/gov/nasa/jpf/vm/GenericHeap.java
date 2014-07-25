@@ -306,7 +306,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   protected ClassInfo getArrayClassInfo (ThreadInfo ti, String elementType) {
     String type = "[" + elementType;
     SystemClassLoaderInfo sysCl = ti.getSystemClassLoaderInfo();
-    ClassInfo ciArray = sysCl.getResolvedClassInfo(type);
+    ClassInfo ciArray = sysCl.getResolvedClassInfo(null, type);
 
     if (!ciArray.isInitialized()) {
       // we do this explicitly here since there are no clinits for array classes

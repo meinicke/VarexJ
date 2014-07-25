@@ -78,7 +78,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     } catch (LoadOnJPFRequired lre) {
       return ti.getPC();
     }
-        
+    
     if (callee == null) {
       return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodException", cname + '.' + mname));
     }
@@ -86,7 +86,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     // this can be actually different than (can be a base)
     ClassInfo ciCallee = callee.getClassInfo();
     
-    if ( ciCallee.pushRequiredClinits(ti)) {
+    if ( ciCallee.pushRequiredClinits(ctx, ti)) {
       // do class initialization before continuing
       // note - this returns the next insn in the topmost clinit that just got pushed
       return ti.getPC();

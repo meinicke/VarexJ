@@ -150,12 +150,12 @@ public class ClassLoaderInfo
   
   public static ClassInfo getCurrentResolvedClassInfo (String clsName){
     ClassLoaderInfo cl = getCurrentClassLoader();
-    return cl.getResolvedClassInfo(clsName);
+    return cl.getResolvedClassInfo(null, clsName);
   }
 
   public static ClassInfo getSystemResolvedClassInfo (String clsName){
     ClassLoaderInfo cl = getCurrentSystemClassLoader();
-    return cl.getResolvedClassInfo(clsName);
+    return cl.getResolvedClassInfo(null, clsName);
   }
    
   /**
@@ -328,8 +328,9 @@ public class ClassLoaderInfo
    * by calling initializeClass(ti,insn)
    *
    * this is for loading classes from the file system 
+ * @param ctx TODO
    */
-  public ClassInfo getResolvedClassInfo (String className) throws ClassInfoException {
+  public ClassInfo getResolvedClassInfo (FeatureExpr ctx, String className) throws ClassInfoException {
     String typeName = Types.getClassNameFromTypeName( className);
     
     ClassInfo ci = resolvedClasses.get( typeName);
@@ -344,12 +345,12 @@ public class ClassLoaderInfo
           ci = loadedClasses.get( url); // have we loaded the class from this source before
           if (ci != null){
             if (ci.getClassLoaderInfo() != this){ // might have been loaded by another classloader
-              ci = ci.cloneFor(this);
+              ci = ci.cloneFor(ctx, this);
             }
           } else {
             try {
               log.info("loading class ", typeName, " from ",  url);
-              ci = match.createClassInfo(this);
+              ci = match.createClassInfo(ctx, this);
               
             } catch (ClassParseException cpx){
               throw new ClassInfoException( "error parsing class", this, "java.lang.NoClassDefFoundError", typeName, cpx);
@@ -457,14 +458,15 @@ public class ClassLoaderInfo
    * this one is for clients that need to synchronously get an initialized classinfo.
    * NOTE: we don't handle clinits here. If there is one, this will throw
    * an exception. NO STATIC BLOCKS / FIELDS ALLOWED
+ * @param ctx TODO
    */
-  public ClassInfo getInitializedClassInfo (String clsName, ThreadInfo ti){
-    ClassInfo ci = getResolvedClassInfo(clsName);
+  public ClassInfo getInitializedClassInfo (FeatureExpr ctx, String clsName, ThreadInfo ti){
+    ClassInfo ci = getResolvedClassInfo(ctx, clsName);
 
     ci.registerClass(FeatureExprFactory.True(), ti); // this is safe to call on already loaded classes
 
     if (!ci.isInitialized()) {
-      if (ci.initializeClass(ti)) {
+      if (ci.initializeClass(ctx, ti)) {
         throw new ClinitRequired(ci);
       }
     }
@@ -481,7 +483,7 @@ public class ClassLoaderInfo
    */
   public ClassInfo tryGetResolvedClassInfo (String className){
     try {
-      return getResolvedClassInfo(className);
+      return getResolvedClassInfo(null, className);
     } catch (ClassInfoException cx){
       return null;
     }
@@ -497,11 +499,11 @@ public class ClassLoaderInfo
   }
 
   // it acquires the resolvedClassInfo by executing the class loader loadClass() method
-  public ClassInfo loadClass(String cname) {
+  public ClassInfo loadClass(FeatureExpr ctx, String cname) {
     ClassInfo ci = null;
     if(roundTripRequired) {
       // loadClass bytecode needs to be executed by the JPF vm
-      ci = loadClassOnJPF(cname);
+      ci = loadClassOnJPF(ctx, cname);
     } else {
       // This class loader and the whole parent hierarchy use the standard class loading
       // mechanism, therefore the class is loaded natively
@@ -522,11 +524,11 @@ public class ClassLoaderInfo
           ci = parent.loadClassOnJVM(cname);
         } else {
           ClassLoaderInfo systemClassLoader = getCurrentSystemClassLoader();
-          ci = systemClassLoader.getResolvedClassInfo(cname);
+          ci = systemClassLoader.getResolvedClassInfo(null, cname);
         }
       } catch(ClassInfoException cie) {
         if(cie.getExceptionClass().equals("java.lang.ClassNotFoundException")) {
-          ci = getResolvedClassInfo(cname);
+          ci = getResolvedClassInfo(null, cname);
         } else {
           throw cie;
         }
@@ -549,7 +551,7 @@ public class ClassLoaderInfo
     }
   }
   
-  protected ClassInfo loadClassOnJPF (String typeName) {
+  protected ClassInfo loadClassOnJPF (FeatureExpr ctx, String typeName) {
     String className = Types.getClassNameFromTypeName(typeName);
     // Check if the given class is already resolved by this loader
     ClassInfo ci = getAlreadyResolvedClassInfo(className);
@@ -575,12 +577,12 @@ public class ClassLoaderInfo
       }
       
       // initiate the roundtrip & bail out
-      pushloadClassFrame(typeName);
+      pushloadClassFrame(ctx, typeName);
       throw new LoadOnJPFRequired(typeName);
     }
   }
 
-  protected void pushloadClassFrame (String typeName) {
+  protected void pushloadClassFrame (FeatureExpr ctx, String typeName) {
     ThreadInfo ti = VM.getVM().getCurrentThread();
 
     // obtain the class of this ClassLoader
@@ -590,7 +592,7 @@ public class ClassLoaderInfo
     MethodInfo miLoadClass = clClass.getMethod("loadClass(Ljava/lang/String;)Ljava/lang/Class;", true);
 
     // create a frame representing loadClass() & push it to the stack of the  current thread 
-    DirectCallStackFrame frame = miLoadClass.createDirectCallStackFrame( ti, 0);
+    DirectCallStackFrame frame = miLoadClass.createDirectCallStackFrame( ctx, ti, 0);
 
     String clsName = typeName.replace('/', '.');
     int sRef = ti.getEnv().newString(FeatureExprFactory.True(), clsName);

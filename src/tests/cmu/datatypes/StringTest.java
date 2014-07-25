@@ -3,7 +3,6 @@ package cmu.datatypes;
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class StringTest extends TestJPF {
@@ -179,9 +178,7 @@ public class StringTest extends TestJPF {
 		}
 	}
 
-	@Ignore
 	@Test
-	// TODO implement
 	public void doubleTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			double d = 1;

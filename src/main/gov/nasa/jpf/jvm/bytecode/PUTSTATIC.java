@@ -56,7 +56,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
-		AnnotationInfo[] annotations = getFieldInfo().getAnnotations();
+		AnnotationInfo[] annotations = getFieldInfo(ctx).getAnnotations();
 		boolean annotated = false;
 		for (AnnotationInfo ai : annotations) {
 			if (ai.getName().equals(gov.nasa.jpf.annotation.Conditional.class.getName())) {
@@ -74,7 +74,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			FieldInfo fieldInfo;
 
 			try {
-				fieldInfo = getFieldInfo();
+				fieldInfo = getFieldInfo(ctx);
 			} catch (LoadOnJPFRequired lre) {
 				return ti.getPC();
 			}
@@ -84,7 +84,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			}
 
 			ClassInfo ciField = fi.getClassInfo();
-			if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ti)) {
+			if (!mi.isClinit(ciField) && ciField.pushRequiredClinits(ctx, ti)) {
 				// note - this returns the next insn in the topmost clinit that just got pushed
 				return ti.getPC();
 			}

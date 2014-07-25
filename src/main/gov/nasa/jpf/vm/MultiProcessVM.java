@@ -29,6 +29,8 @@ import gov.nasa.jpf.vm.choice.MultiProcessThreadChoice;
 
 import java.util.ArrayList;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * A VM implementation that simulates running multiple applications within the same
  * JPF process (centralized model checking of distributed applications).
@@ -151,13 +153,13 @@ public class MultiProcessVM extends VM {
   }
 
   @Override
-  public boolean initialize(){
+  public boolean initialize(FeatureExpr ctx){
     try {
       ThreadInfo tiFirst = null;
       
       for (int i=0; i<appCtxs.length; i++){
-        ThreadInfo tiMain = initializeMainThread(appCtxs[i], i);
-        initializeFinalizerThread(appCtxs[i], appCtxs.length+i);
+        ThreadInfo tiMain = initializeMainThread(ctx, appCtxs[i], i);
+        initializeFinalizerThread(ctx, appCtxs[i], appCtxs.length+i);
         
         if (tiMain == null) {
           return false; // bail out

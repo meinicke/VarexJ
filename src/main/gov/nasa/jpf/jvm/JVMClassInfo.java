@@ -464,12 +464,12 @@ public class JVMClassInfo extends ClassInfo {
     }
   }
   
-  JVMClassInfo (String name, ClassLoaderInfo cli, ClassFile cf, String srcUrl, JVMCodeBuilder cb) throws ClassParseException {
+  JVMClassInfo (FeatureExpr ctx, String name, ClassLoaderInfo cli, ClassFile cf, String srcUrl, JVMCodeBuilder cb) throws ClassParseException {
     super( name, cli, srcUrl);
     
     new Initializer( cf, cb); // we just need the ctor
     
-    resolveAndLink();
+    resolveAndLink(ctx);
   }
   
   
@@ -582,24 +582,24 @@ public class JVMClassInfo extends ClassInfo {
   }
   
   @Override
-  public DirectCallStackFrame createDirectCallStackFrame (ThreadInfo ti, MethodInfo miCallee, int nLocals){
+  public DirectCallStackFrame createDirectCallStackFrame (FeatureExpr ctx, ThreadInfo ti, MethodInfo miCallee, int nLocals){
     int nOperands = miCallee.getNumberOfCallerStackSlots();
     
     MethodInfo miDirect = new MethodInfo(miCallee, nLocals, nOperands);
     setDirectCallCode( miDirect, miCallee);
     
-    return new JVMDirectCallStackFrame( miDirect, miCallee);
+    return new JVMDirectCallStackFrame( ctx, miDirect, miCallee);
   }
   
   /**
    * while this is a normal DirectCallStackFrame, it has different code which has to be created here 
    */
   @Override
-  public DirectCallStackFrame createRunStartStackFrame (ThreadInfo ti, MethodInfo miRun){
+  public DirectCallStackFrame createRunStartStackFrame (FeatureExpr ctx, ThreadInfo ti, MethodInfo miRun){
     MethodInfo miDirect = new MethodInfo( miRun, 0, 1);
     setRunStartCode( miDirect, miRun);
     
-    return new JVMDirectCallStackFrame( miDirect, miRun);
+    return new JVMDirectCallStackFrame( ctx, miDirect, miRun);
   }
   
   

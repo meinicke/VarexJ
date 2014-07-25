@@ -11,7 +11,7 @@ import de.fosd.typechef.featureexpr.FeatureModel;
 
 public abstract class Conditional<T> {
 	
-	public static FeatureModel fm = JPF.fmfile.isEmpty() ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);
+	public static FeatureModel fm = null;
 	
 	public static void setFM() {
 		fm = JPF.fmfile.isEmpty() ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);

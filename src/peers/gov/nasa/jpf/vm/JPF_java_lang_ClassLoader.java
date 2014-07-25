@@ -112,7 +112,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
     ClassLoaderInfo cl = ClassLoaderInfo.getCurrentSystemClassLoader();
 
-    ClassInfo ci = cl.getResolvedClassInfo(cname);
+    ClassInfo ci = cl.getResolvedClassInfo(NativeMethodInfo.CTX, cname);
 
     if(!ci.isRegistered()) {
       ci.registerClass(NativeMethodInfo.CTX, env.getThreadInfo());
@@ -199,9 +199,9 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     ClassLoaderInfo sysLoader = ClassLoaderInfo.getCurrentSystemClassLoader();
     ClassInfo pkgClass = null; 
     try {
-      pkgClass = sysLoader.getInitializedClassInfo(pkg_class_name, env.getThreadInfo());
+      pkgClass = sysLoader.getInitializedClassInfo(NativeMethodInfo.CTX, pkg_class_name, env.getThreadInfo());
     } catch (ClinitRequired x){
-      env.handleClinitRequest(x.getRequiredClassInfo());
+      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }
 
@@ -228,9 +228,9 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
     ClassInfo pkgClass = null; 
     try {
-      pkgClass = sysLoader.getInitializedClassInfo(pkg_class_name, env.getThreadInfo());
+      pkgClass = sysLoader.getInitializedClassInfo(NativeMethodInfo.CTX, pkg_class_name, env.getThreadInfo());
     } catch (ClinitRequired x){
-      env.handleClinitRequest(x.getRequiredClassInfo());
+      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }
 

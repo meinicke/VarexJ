@@ -57,10 +57,10 @@ public class JPF_java_lang_Class extends NativePeer {
   public int getComponentType____Ljava_lang_Class_2 (MJIEnv env, int robj) {
     if (isArray____Z(env, robj)) {
       ThreadInfo ti = env.getThreadInfo();
-      Instruction insn = ti.getPC().getValue();
+//      Instruction insn = ti.getPC().getValue();
       ClassInfo ci = env.getReferredClassInfo( NativeMethodInfo.CTX, robj).getComponentClassInfo();
 
-    if (ci.pushRequiredClinits(ti)){
+    if (ci.pushRequiredClinits(NativeMethodInfo.CTX, ti)){
         env.repeatInvocation();
         return MJIEnv.NULL;
       }
@@ -107,7 +107,7 @@ public class JPF_java_lang_Class extends NativePeer {
     	FeatureExpr ctx = NativeMethodInfo.CTX;
       return env.newAnnotationProxies(ctx, ai);
     } catch (ClinitRequired x){
-      env.handleClinitRequest(x.getRequiredClassInfo());
+      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }
   }
@@ -126,7 +126,7 @@ public class JPF_java_lang_Class extends NativePeer {
       try {
         return env.newAnnotationProxy(ctx, aciProxy, ai);
       } catch (ClinitRequired x){
-        env.handleClinitRequest(x.getRequiredClassInfo());
+        env.handleClinitRequest(ctx, x.getRequiredClassInfo());
         return MJIEnv.NULL;
       }
     } else {
@@ -147,7 +147,7 @@ public class JPF_java_lang_Class extends NativePeer {
     ClassLoaderInfo scli = env.getSystemClassLoaderInfo(); // this is the one responsible for builtin classes
     String primClsName = env.getStringObject(null, stringRef); // always initialized
     
-    ClassInfo ci = scli.getResolvedClassInfo(primClsName);
+    ClassInfo ci = scli.getResolvedClassInfo(NativeMethodInfo.CTX, primClsName);
     return ci.getClassObjectRef();
   }
 
@@ -161,7 +161,7 @@ public class JPF_java_lang_Class extends NativePeer {
     ThreadInfo ti = env.getThreadInfo();
 //    Instruction insn = ti.getPC().getValue();
 
-    if (ci.pushRequiredClinits(ti)){
+    if (ci.pushRequiredClinits(NativeMethodInfo.CTX, ti)){
       env.repeatInvocation();
       return MJIEnv.NULL;
     }
@@ -204,7 +204,7 @@ public class JPF_java_lang_Class extends NativePeer {
     // make the classloader of the class including the invocation of 
     // Class.forName() resolve the class with the given name
     try {
-      cls.resolveReferencedClass(name);
+      cls.resolveReferencedClass(NativeMethodInfo.CTX, name);
     } catch(LoadOnJPFRequired lre) {
       env.repeatInvocation();
       return MJIEnv.NULL;
@@ -212,7 +212,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
     // The class obtained here is the same as the resolved one, except
     // if it represents an array type
-    ClassInfo ci = cls.getClassLoaderInfo().getResolvedClassInfo(clsName);
+    ClassInfo ci = cls.getClassLoaderInfo().getResolvedClassInfo(NativeMethodInfo.CTX, clsName);
 
     return getClassObject(env, ci);
   }
@@ -246,14 +246,14 @@ public class JPF_java_lang_Class extends NativePeer {
 
       int objRef = env.newObjectOfUncheckedClass(ctx, ci);  // create the thing
 
-      frame = miCtor.createDirectCallStackFrame(ti, 1);
+      frame = miCtor.createDirectCallStackFrame(ctx, ti, 1);
       // note that we don't set this as a reflection call since it is supposed to propagate exceptions
       frame.setReferenceArgument(0, objRef, null);
       frame.setLocalReferenceVariable(ctx, 0, objRef);        // (1) store ref for retrieval during re-exec
       ti.pushFrame(frame);
       
       // check if we have to push clinits
-      ci.pushRequiredClinits(ti);
+      ci.pushRequiredClinits(ctx, ti);
       
       env.repeatInvocation();
       return MJIEnv.NULL;
@@ -361,7 +361,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
     ClassLoaderInfo cl = ci.getClassLoaderInfo();
     for (String ifcName : ci.getDirectInterfaceNames()){
-      ClassInfo ici = cl.getResolvedClassInfo(ifcName); // has to be already defined, so no exception
+      ClassInfo ici = cl.getResolvedClassInfo(NativeMethodInfo.CTX, ifcName); // has to be already defined, so no exception
       addDeclaredMethodsRec(methods,ici);
     }
 
@@ -498,7 +498,7 @@ public class JPF_java_lang_Class extends NativePeer {
 //    Instruction insn = ti.getPC().getValue();
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo( clsName);
     
-    if (ci.pushRequiredClinits(ti)){
+    if (ci.pushRequiredClinits(NativeMethodInfo.CTX, ti)){
       return null;
     } else {
       return ci;
@@ -508,7 +508,7 @@ public class JPF_java_lang_Class extends NativePeer {
   @MJI
   public void initialize0____V (MJIEnv env, int clsObjRef){
     ClassInfo ci = env.getReferredClassInfo( NativeMethodInfo.CTX, clsObjRef);
-    ci.pushRequiredClinits(ThreadInfo.currentThread);
+    ci.pushRequiredClinits(NativeMethodInfo.CTX, ThreadInfo.currentThread);
   }
 
   Set<ClassInfo> getInitializedInterfaces (MJIEnv env, ClassInfo ci){
@@ -517,7 +517,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
     Set<ClassInfo> ifcs = ci.getAllInterfaceClassInfos();
     for (ClassInfo ciIfc : ifcs){
-    if (ciIfc.pushRequiredClinits(ti)){
+    if (ciIfc.pushRequiredClinits(NativeMethodInfo.CTX, ti)){
         return null;
       } 
     }
@@ -661,7 +661,7 @@ public class JPF_java_lang_Class extends NativePeer {
   public int getEnumConstants_____3Ljava_lang_Object_2 (MJIEnv env, int clsRef){
     ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, clsRef);
     
-    if (env.requiresClinitExecution(ci)){
+    if (env.requiresClinitExecution(NativeMethodInfo.CTX, ci)){
       env.repeatInvocation();
       return 0;
     }
@@ -751,7 +751,7 @@ public class JPF_java_lang_Class extends NativePeer {
       ciEncl.registerClass(NativeMethodInfo.CTX, ti);
       
       if (!ciEncl.isInitialized()){
-        if (ciEncl.pushRequiredClinits(ti)){
+        if (ciEncl.pushRequiredClinits(NativeMethodInfo.CTX, ti)){
           env.repeatInvocation();
           return 0;
         }
@@ -777,7 +777,7 @@ public class JPF_java_lang_Class extends NativePeer {
     ClassInfo[] resolvedInnerClass = new ClassInfo[length];
     for(int i=0; i<length; i++) {
       try {
-        resolvedInnerClass[i] = cls.resolveReferencedClass(innerClassNames[i]);
+        resolvedInnerClass[i] = cls.resolveReferencedClass(NativeMethodInfo.CTX, innerClassNames[i]);
       } catch(LoadOnJPFRequired lre) {
         env.repeatInvocation();
         return MJIEnv.NULL;
@@ -845,7 +845,7 @@ public class JPF_java_lang_Class extends NativePeer {
     	FeatureExpr ctx = NativeMethodInfo.CTX;
       return env.newAnnotationProxies(ctx, ci.getDeclaredAnnotations());
     } catch (ClinitRequired x){
-      env.handleClinitRequest(x.getRequiredClassInfo());
+      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }
   }

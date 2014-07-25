@@ -24,6 +24,8 @@ import gov.nasa.jpf.vm.NativePeer;
 
 import java.io.File;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * just a helper construct to create ClassInfos that can be used in unit tests
  * (without superclasses, clinit calls and the other bells and whistles)
@@ -31,13 +33,13 @@ import java.io.File;
 class NonResolvedClassInfo extends JVMClassInfo {
     
   NonResolvedClassInfo (String clsName, File file) throws ClassParseException {
-    super( clsName, null, new ClassFile(file), file.getAbsolutePath(), new JVMCodeBuilder(new InstructionFactory()));
+    super( null, clsName, null, new ClassFile(file), file.getAbsolutePath(), new JVMCodeBuilder(new InstructionFactory()));
   }
 
   //--- these are overridden so that we can create instances without the whole JPF ClassInfo environment
   
   @Override
-  protected void resolveClass() {
+  protected void resolveClass(FeatureExpr ctx) {
     linkFields();
   }
 

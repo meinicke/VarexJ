@@ -24,6 +24,8 @@ import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 
@@ -40,7 +42,7 @@ public class ClassLoaderInfoTest extends TestJPF {
     VM vm = jpf.getVM();
     Heap heap = vm.getHeap();
 
-    vm.initialize(); // this should instantiate two SystemClassLoaders
+    vm.initialize(FeatureExprFactory.True()); // this should instantiate two SystemClassLoaders
 
     ThreadInfo[] threads = vm.getLiveThreads();
     assertTrue( threads.length == 2);
@@ -72,8 +74,8 @@ public class ClassLoaderInfoTest extends TestJPF {
     assertTrue( cl0ObjRef != cl1ObjRef);
 
     //--- compare the loaded classes
-    ClassInfo ci0 = cl0.getResolvedClassInfo("java.lang.Class");
-    ClassInfo ci1 = cl1.getResolvedClassInfo("java.lang.Class");
+    ClassInfo ci0 = cl0.getResolvedClassInfo(FeatureExprFactory.True(), "java.lang.Class");
+    ClassInfo ci1 = cl1.getResolvedClassInfo(FeatureExprFactory.True(), "java.lang.Class");
 
     assertTrue( ci0 != ci1);
     assertTrue( ci0.getUniqueId() != ci1.getUniqueId());

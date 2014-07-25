@@ -625,7 +625,7 @@ public class JPF implements Runnable {
 
     if (isRunnable()) {
       try {
-        if (vm.initialize()) {
+        if (vm.initialize(FeatureExprFactory.True())) {
           status = Status.RUNNING;
           search.search();
         }

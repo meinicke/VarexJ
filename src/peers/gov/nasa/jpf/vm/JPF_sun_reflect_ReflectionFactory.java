@@ -35,7 +35,7 @@ public class JPF_sun_reflect_ReflectionFactory extends NativePeer {
     // first non-serializable superclass. Oh my!
 
     // <2do> we really have to model ObjectStreamClass and ObjectStreamField
-    ClassInfo ci = ClassInfo.getInitializedClassInfo("gov.nasa.jpf.SerializationConstructor", env.getThreadInfo());
+    ClassInfo ci = ClassInfo.getInitializedClassInfo(NativeMethodInfo.CTX, "gov.nasa.jpf.SerializationConstructor", env.getThreadInfo());
     FeatureExpr ctx = NativeMethodInfo.CTX;
 	int sCtorRef = env.newObject(ctx, ci);
     

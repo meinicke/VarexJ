@@ -71,7 +71,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 					}
 
 					ElementInfo ei = ti.getModifiableElementInfoWithUpdatedSharedness(objRef);
-					FieldInfo fi = getFieldInfo();
+					FieldInfo fi = getFieldInfo(ctx);
 					if (fi == null) {
 						return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", "no field " + fname + " in " + ei));
 					}
@@ -99,7 +99,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 	}
 
 	public ElementInfo peekElementInfo(ThreadInfo ti) {
-		FieldInfo fi = getFieldInfo();
+		FieldInfo fi = getFieldInfo(null);
 		int storageSize = fi.getStorageSize();
 		int objRef = ti.getTopFrame().peek(FeatureExprFactory.True(), (storageSize == 1) ? 1 : 2).getValue();
 		ElementInfo ei = ti.getElementInfo(objRef);

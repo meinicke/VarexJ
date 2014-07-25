@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -43,9 +44,10 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
    * classinfo might not correspond with the static className, but can be one of
    * the super classes. Rather than checking for this on each subsequent access,
    * we get the right one that declares the field here
+ * @param ctx TODO
    */
-  protected void initialize() {
-    ClassInfo ciRef = mi.getClassInfo().resolveReferencedClass(className);
+  protected void initialize(FeatureExpr ctx) {
+    ClassInfo ciRef = mi.getClassInfo().resolveReferencedClass(ctx, className);
     
     FieldInfo f = ciRef.getStaticField(fname);
     ClassInfo ciField = f.getClassInfo();
@@ -60,14 +62,14 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
 
   public ClassInfo getClassInfo() {
     if (fi == null) {
-      initialize();
+      initialize(null);
     }
     return fi.getClassInfo();
   }
 
-  public FieldInfo getFieldInfo() {
+  public FieldInfo getFieldInfo(FeatureExpr ctx) {
     if (fi == null) {
-      initialize();
+      initialize(ctx);
     }
     return fi;
   }
@@ -81,13 +83,13 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
   }
 
   public StaticElementInfo getLastElementInfo() {
-    return getFieldInfo().getClassInfo().getStaticElementInfo();
+    return getFieldInfo(null).getClassInfo().getStaticElementInfo();
   }
 
   // this can be different than ciField - the field might be in one of its
   // superclasses
   public ClassInfo getLastClassInfo(){
-    return getFieldInfo().getClassInfo();
+    return getFieldInfo(null).getClassInfo();
   }
 
   public String getLastClassName() {
@@ -114,7 +116,7 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
   protected boolean isSchedulingRelevant (ThreadInfo ti) {
     
     //--- configured override
-    FieldInfo fi = getFieldInfo();
+    FieldInfo fi = getFieldInfo(null);
     if (fi.neverBreak()) {
       // this should filter out the bulk in most real apps (library code)
       return false;

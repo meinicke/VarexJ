@@ -80,7 +80,7 @@ public class JPF_java_lang_System extends NativePeer {
     }
 
     if (!ci.isInitialized()) {
-      if (ci.initializeClass(ti)) {
+      if (ci.initializeClass(NativeMethodInfo.CTX, ti)) {
         env.repeatInvocation();
         return MJIEnv.NULL;
       }
@@ -149,7 +149,7 @@ public class JPF_java_lang_System extends NativePeer {
     ElementInfo eiClassPath = heap.newString(NativeMethodInfo.CTX, JAVA_CLASS_PATH, ti);
     
     MethodInfo miGetProperty = system.getMethod("getProperty(Ljava/lang/String;)Ljava/lang/String;", true);
-    DirectCallStackFrame frame = miGetProperty.createDirectCallStackFrame(ti, 0);
+    DirectCallStackFrame frame = miGetProperty.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 0);
     frame.setReferenceArgument( 0, eiClassPath.getObjectRef(), null);
     frame.setFireWall(); // we don't want exceptions to escape into the SUT
     

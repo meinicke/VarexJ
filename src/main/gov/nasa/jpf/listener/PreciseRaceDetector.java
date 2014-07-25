@@ -221,7 +221,7 @@ public class PreciseRaceDetector extends PropertyListenerAdapter {
       if (StringSetMatcher.isMatch(mi.getBaseName(), includes, excludes)) {
         if (insn instanceof FieldInstruction) {
           FieldInstruction finsn = (FieldInstruction) insn;
-          FieldInfo fi = finsn.getFieldInfo();
+          FieldInfo fi = finsn.getFieldInfo(null);
           ElementInfo ei = finsn.peekElementInfo(ti);
 
           candidate = FieldRace.check(candidate, ti, finsn, ei, fi);

@@ -231,7 +231,7 @@ public class VarRecorder extends ListenerAdapter {
       if (inst instanceof LocalVariableInstruction) {
         type = ((LocalVariableInstruction) inst).getLocalVariableType();
       } else {
-        fi = ((FieldInstruction) inst).getFieldInfo();
+        fi = ((FieldInstruction) inst).getFieldInfo(null);
         type = fi.getType();
       }
     }

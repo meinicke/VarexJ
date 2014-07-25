@@ -1074,7 +1074,7 @@ public class MJIEnv {
  * @param ctx TODO
    */
   public int newObject (FeatureExpr ctx, ClassInfo ci) {
-    if (ci.pushRequiredClinits(ti)){
+    if (ci.pushRequiredClinits(ctx, ti)){
       throw new ClinitRequired(ci);
     }
     
@@ -1304,9 +1304,10 @@ public class MJIEnv {
   /**
    *  use this whenever a peer performs an operation on a class that might not be initialized yet
    *  Do a repeatInvocation() in this case 
+ * @param ctx TODO
    */
-  public boolean requiresClinitExecution(ClassInfo ci) {
-    return ci.pushRequiredClinits(ti);
+  public boolean requiresClinitExecution(FeatureExpr ctx, ClassInfo ci) {
+    return ci.pushRequiredClinits(ctx, ti);
   }
   
   /**
@@ -1371,13 +1372,13 @@ public class MJIEnv {
   }
 
   public void throwException (String clsName) {
-    ClassInfo ciX = ClassInfo.getInitializedClassInfo(clsName, ti);
+    ClassInfo ciX = ClassInfo.getInitializedClassInfo(null, clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
     exceptionRef = ti.createException(null, ciX, null, NULL);
   }
 
   public void throwException (String clsName, String details) {
-    ClassInfo ciX = ClassInfo.getInitializedClassInfo(clsName, ti);
+    ClassInfo ciX = ClassInfo.getInitializedClassInfo(null, clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
     exceptionRef = ti.createException(null, ciX, details, NULL);
   }
@@ -1753,13 +1754,13 @@ public class MJIEnv {
     }
   }
 
-  public void handleClinitRequest (ClassInfo ci) {
+  public void handleClinitRequest (FeatureExpr ctx, ClassInfo ci) {
     ThreadInfo ti = getThreadInfo();
 
     // NOTE: we have to repeat no matter what, since this is called from
     // a handler context (if we only had to create a class object w/o
     // calling clinit, we can't just go on)
-    ci.pushRequiredClinits(ti);
+    ci.pushRequiredClinits(ctx, ti);
     repeatInvocation();
   }
 

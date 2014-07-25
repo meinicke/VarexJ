@@ -343,7 +343,7 @@ public class Perturbator extends ListenerAdapter {
   public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute){
     
     if (insnToExecute instanceof GETFIELD){
-      FieldInfo fi = ((InstanceFieldInstruction)insnToExecute).getFieldInfo();
+      FieldInfo fi = ((InstanceFieldInstruction)insnToExecute).getFieldInfo(null);
       FieldPerturbation e = perturbedFields.get(fi);
 
       if (e != null) {  // managed field
@@ -419,7 +419,7 @@ public class Perturbator extends ListenerAdapter {
   public void instructionExecuted(VM vm, ThreadInfo ti, Instruction nextInsn, Instruction executedInsn) {
     
     if (executedInsn instanceof GETFIELD){
-      FieldInfo fi = ((InstanceFieldInstruction)executedInsn).getFieldInfo();
+      FieldInfo fi = ((InstanceFieldInstruction)executedInsn).getFieldInfo(null);
       FieldPerturbation p = perturbedFields.get(fi);
       if (p != null){
         if (isMatchingInstructionLocation(p, executedInsn)) {  // none or managed filePos

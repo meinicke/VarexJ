@@ -104,7 +104,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
   
   public abstract boolean isRead();
 
-  public abstract FieldInfo getFieldInfo ();
+  public abstract FieldInfo getFieldInfo (FeatureExpr ctx);
 
   // that's for an instructionExecuted() context
   public abstract ElementInfo getLastElementInfo();
@@ -251,7 +251,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
    */
   protected boolean isLockProtected (ThreadInfo ti, ElementInfo ei) {
 
-    FieldInfo fi = getFieldInfo(); // so that we make sure it's computed
+    FieldInfo fi = getFieldInfo(null); // so that we make sure it's computed
     FieldLockInfo flInfo = ei.getFieldLockInfo(fi);
     FieldLockInfo flInfoNext;
         

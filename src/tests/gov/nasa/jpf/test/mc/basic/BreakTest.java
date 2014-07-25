@@ -69,7 +69,7 @@ public class BreakTest extends TestJPF {
       SystemState ss = vm.getSystemState();
 
       if (executedInsn instanceof PUTFIELD) {  // break on field access
-        FieldInfo fi = ((PUTFIELD) executedInsn).getFieldInfo();
+        FieldInfo fi = ((PUTFIELD) executedInsn).getFieldInfo(null);
         if (fi.getClassInfo().getName().endsWith(".BreakTest")) {
           System.out.println("# ignoring after: " + executedInsn);
           ss.setIgnored(true);
@@ -101,7 +101,7 @@ public class BreakTest extends TestJPF {
       SystemState ss = vm.getSystemState();
 
       if (executedInsn instanceof PUTFIELD) {  // break on field access
-        FieldInfo fi = ((PUTFIELD) executedInsn).getFieldInfo();
+        FieldInfo fi = ((PUTFIELD) executedInsn).getFieldInfo(null);
         if (fi.getClassInfo().getName().endsWith(".BreakTest")) {
           System.out.println("# breaking after: " + executedInsn);
           ti.breakTransition("breakTest");

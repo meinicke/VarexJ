@@ -205,7 +205,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       try {
         return env.newAnnotationProxy(ctx, aciProxy, ai);
       } catch (ClinitRequired x){
-        env.handleClinitRequest(x.getRequiredClassInfo());
+        env.handleClinitRequest(ctx, x.getRequiredClassInfo());
         return MJIEnv.NULL;
       }
     }
@@ -222,7 +222,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     	FeatureExpr ctx = NativeMethodInfo.CTX;
       return env.newAnnotationProxies(ctx, ai);
     } catch (ClinitRequired x){
-      env.handleClinitRequest(x.getRequiredClassInfo());
+      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }
   }
@@ -415,7 +415,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   static boolean isAvailable (MJIEnv env, FieldInfo fi, int fobjRef){
     if (fi.isStatic()){
       ClassInfo fci = fi.getClassInfo();
-      if (fci.pushRequiredClinits(env.getThreadInfo())){
+      if (fci.pushRequiredClinits(NativeMethodInfo.CTX, env.getThreadInfo())){
         env.repeatInvocation();
         return false;
       }

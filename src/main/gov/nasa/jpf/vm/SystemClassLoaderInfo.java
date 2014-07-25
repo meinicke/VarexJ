@@ -24,6 +24,7 @@ import gov.nasa.jpf.util.JPFLogger;
 
 import java.io.File;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -109,8 +110,8 @@ public abstract class SystemClassLoaderInfo extends ClassLoaderInfo {
 
   
   @Override
-  public ClassInfo getResolvedClassInfo (String clsName){
-    ClassInfo ci = super.getResolvedClassInfo(clsName);
+  public ClassInfo getResolvedClassInfo (FeatureExpr ctx, String clsName){
+    ClassInfo ci = super.getResolvedClassInfo(ctx, clsName);
     
     if (unCachedClasses > 0){
       updateCachedClassInfos(ci);
@@ -143,8 +144,8 @@ public abstract class SystemClassLoaderInfo extends ClassLoaderInfo {
   
 
   @Override
-  public ClassInfo loadClass(String cname) {
-    return getResolvedClassInfo(cname);
+  public ClassInfo loadClass(FeatureExpr ctx, String cname) {
+    return getResolvedClassInfo(ctx, cname);
   }
 
   @Override

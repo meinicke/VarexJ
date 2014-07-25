@@ -464,7 +464,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       }
       
       //--- push the direct call
-      frame = miCallee.createDirectCallStackFrame(ti, 0);
+      frame = miCallee.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 0);
       frame.setReflection();
       
       int argOffset = 0;
@@ -480,7 +480,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       
       //--- check for and push required clinits
       if (miCallee.isStatic()){
-        calleeClass.pushRequiredClinits(ti);
+        calleeClass.pushRequiredClinits(NativeMethodInfo.CTX, ti);
       }
       
       return MJIEnv.NULL; // reexecute
@@ -517,7 +517,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     	FeatureExpr ctx = NativeMethodInfo.CTX;
       return env.newAnnotationProxies(ctx, aiList.toArray(new AnnotationInfo[aiList.size()]));
     } catch (ClinitRequired x){
-      env.handleClinitRequest(x.getRequiredClassInfo());
+      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }    
   }
@@ -539,7 +539,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       try {
         return env.newAnnotationProxy(ctx, aciProxy, ai);
       } catch (ClinitRequired x){
-        env.handleClinitRequest(x.getRequiredClassInfo());
+        env.handleClinitRequest(ctx, x.getRequiredClassInfo());
         return MJIEnv.NULL;
       }
     }
@@ -559,7 +559,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     	FeatureExpr ctx = NativeMethodInfo.CTX;
       return env.newAnnotationProxies(ctx, ai);
     } catch (ClinitRequired x){
-      env.handleClinitRequest(x.getRequiredClassInfo());
+      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }    
   }
@@ -584,7 +584,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       return paRef;
       
     } catch (ClinitRequired x){ // be prepared that we might have to initialize respective annotation classes
-      env.handleClinitRequest(x.getRequiredClassInfo());
+      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }    
   }

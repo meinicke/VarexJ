@@ -501,8 +501,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   /**
    * the initialization part that has to happen once we have super, fields, methods and annotations
    * NOTE - this has to be called by concrete ctors after parsing class files
+ * @param ctx TODO
    */
-  protected void resolveAndLink () throws ClassParseException {
+  protected void resolveAndLink (FeatureExpr ctx) throws ClassParseException {
     
     //--- these might get streamlined
     isStringClassInfo = isStringClassInfo0();
@@ -521,7 +522,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     nativePeer = loadNativePeer();
     checkUnresolvedNativeMethods();
 
-    resolveClass(); // takes care of super classes and interfaces
+    resolveClass(ctx); // takes care of super classes and interfaces
     linkFields(); // computes field offsets
     
     setAssertionStatus();
@@ -1328,7 +1329,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    */
   public ClassInfo getEnclosingClassInfo() {
     String enclName = getEnclosingClassName();
-    return (enclName == null ? null : classLoader.getResolvedClassInfo(enclName)); // ? is this supposed to use the same classloader
+    return (enclName == null ? null : classLoader.getResolvedClassInfo(null, enclName)); // ? is this supposed to use the same classloader
   }
 
   public String getEnclosingMethodName(){
@@ -1530,7 +1531,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     if (interfaces != null) {
       for (String iname : interfaces) {
 
-        ClassInfo ci = classLoader.getResolvedClassInfo(iname);
+        ClassInfo ci = classLoader.getResolvedClassInfo(null, iname);
 
         if (set != null){
           set.add(iname);
@@ -1697,7 +1698,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   public Set<ClassInfo> getAllInterfaceClassInfos() {
     Set<ClassInfo> set = new HashSet<ClassInfo>();
     for (String ifcName : getAllInterfaces()) {
-      set.add( classLoader.getResolvedClassInfo(ifcName));
+      set.add( classLoader.getResolvedClassInfo(null, ifcName));
     }
     return set;
   }
@@ -1714,7 +1715,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     ClassInfo[] innerClassInfos = new ClassInfo[innerClassNames.length];
     
     for (int i=0; i< innerClassNames.length; i++){
-      innerClassInfos[i] = classLoader.getResolvedClassInfo(innerClassNames[i]); // ? is this supposed to use the same classloader
+      innerClassInfos[i] = classLoader.getResolvedClassInfo(null, innerClassNames[i]); // ? is this supposed to use the same classloader
     }
     
     return innerClassInfos;
@@ -1729,7 +1730,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
         cn = Types.getTypeName(cn);
       }
 
-      ClassInfo cci = classLoader.getResolvedClassInfo(cn);
+      ClassInfo cci = classLoader.getResolvedClassInfo(null, cn);
 
       return cci;
     }
@@ -1821,14 +1822,14 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return false;
   }
 
-  public static ClassInfo getInitializedSystemClassInfo (String clsName, ThreadInfo ti){
+  public static ClassInfo getInitializedSystemClassInfo (FeatureExpr ctx, String clsName, ThreadInfo ti){
     ClassLoaderInfo systemLoader = ClassLoaderInfo.getCurrentSystemClassLoader();
-    ClassInfo ci = systemLoader.getResolvedClassInfo(clsName);
+    ClassInfo ci = systemLoader.getResolvedClassInfo(ctx, clsName);
 
     ci.registerClass(FeatureExprFactory.True(), ti); // this is safe to call on already loaded classes
 
     if (!ci.isInitialized()) {
-      if (ci.initializeClass(ti)) {
+      if (ci.initializeClass(ctx, ti)) {
         throw new ClinitRequired(ci);
       }
     }
@@ -1840,10 +1841,11 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * this one is for clients that need to synchronously get an initialized classinfo.
    * NOTE: we don't handle clinits here. If there is one, this will throw
    * an exception. NO STATIC BLOCKS / FIELDS ALLOWED
+ * @param ctx TODO
    */
-  public static ClassInfo getInitializedClassInfo (String clsName, ThreadInfo ti){
+  public static ClassInfo getInitializedClassInfo (FeatureExpr ctx, String clsName, ThreadInfo ti){
     ClassLoaderInfo cl = ClassLoaderInfo.getCurrentClassLoader();
-    return cl.getInitializedClassInfo(clsName, ti);
+    return cl.getInitializedClassInfo(ctx, clsName, ti);
   }
 
   public boolean isRegistered () {
@@ -2002,15 +2004,16 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * 
    * clients have to be aware of that frames might get pushed
    * and properly handle re-execution
+ * @param ctx TODO
    */
-  public boolean pushRequiredClinits (ThreadInfo ti){
+  public boolean pushRequiredClinits (FeatureExpr ctx, ThreadInfo ti){
     StaticElementInfo sei = getStaticElementInfo();    
     if (sei == null) {
       sei = registerClass(FeatureExprFactory.True(), ti);
     }
     
     if (sei.getStatus() == UNINITIALIZED){
-      if (initializeClass(ti)) {
+      if (initializeClass(ctx, ti)) {
         // there are new <clinit> frames on the stack
         return true;
       }
@@ -2031,17 +2034,18 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   /**
    * perform static initialization of class
    * this recursively initializes all super classes, but NOT the interfaces
+ * @param ctx TODO
+ * @param ti executing thread
    *
-   * @param ti executing thread
    * @return  true if clinit stackframes were pushed, idx.e. context instruction
    * needs to be re-executed
    */
-  public boolean initializeClass (ThreadInfo ti) {
+  public boolean initializeClass (FeatureExpr ctx, ThreadInfo ti) {
     int pushedFrames = 0;
 
     // push clinits of class hierarchy (upwards, since call stack is LIFO)
     for (ClassInfo ci = this; ci != null; ci = ci.getSuperClass()) {
-      if (ci.pushClinit(ti)) {
+      if (ci.pushClinit(ctx, ti)) {
         
         // note - we don't treat registration/initialization of a class as
         // a sharedness-changing operation since it is done automatically by
@@ -2068,9 +2072,10 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
 
   /**
    * local class initialization
+ * @param ctx TODO
    * @return true if we pushed a &lt;clinit&gt; frame
    */
-  protected boolean pushClinit (ThreadInfo ti) {
+  protected boolean pushClinit (FeatureExpr ctx, ThreadInfo ti) {
     StaticElementInfo sei = getStaticElementInfo();
     int stat = sei.getStatus();
     
@@ -2080,7 +2085,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
         // we have to sync, which we do by calling clinit
         MethodInfo mi = getMethod("<clinit>()V", false);
         if (mi != null) {
-          DirectCallStackFrame frame = createDirectCallStackFrame(ti, mi, 0);
+          DirectCallStackFrame frame = createDirectCallStackFrame(ctx, ti, mi, 0);
           ti.pushFrame(frame);
           return true;
 
@@ -2168,7 +2173,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return new HashMap<String, MethodInfo>(0);
   }
 
-  protected ClassInfo loadSuperClass (String superName) throws ClassInfoException {
+  protected ClassInfo loadSuperClass (FeatureExpr ctx, String superName) throws ClassInfoException {
     if (isObjectClassInfo()) {
       return null;
     }
@@ -2176,12 +2181,12 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     logger.finer("resolving superclass: ", superName, " of ", name);
 
     // resolve the superclass
-    ClassInfo sci = resolveReferencedClass(superName);
+    ClassInfo sci = resolveReferencedClass(ctx, superName);
 
     return sci;
   }
 
-  protected Set<ClassInfo> loadInterfaces (String[] ifcNames) throws ClassInfoException {
+  protected Set<ClassInfo> loadInterfaces (FeatureExpr ctx, String[] ifcNames) throws ClassInfoException {
     if (ifcNames == null || ifcNames.length == 0){
       return NO_INTERFACES;
       
@@ -2190,7 +2195,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
 
       for (String ifcName : ifcNames) {
         ClassInfo.logger.finer("resolving interface: ", ifcName, " of ", name);
-        ClassInfo ifc = resolveReferencedClass(ifcName);
+        ClassInfo ifc = resolveReferencedClass(ctx, ifcName);
         set.add(ifc);
       }
 
@@ -2201,13 +2206,14 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   /**
    * loads superclass and direct interfaces, and computes information
    * that depends on them
+ * @param ctx TODO
    */
-  protected void resolveClass() {
+  protected void resolveClass(FeatureExpr ctx) {
     if (!isObjectClassInfo){
-      superClass = loadSuperClass(superClassName);
+      superClass = loadSuperClass(ctx, superClassName);
       releaseActions = superClass.releaseActions;
     }
-    interfaces = loadInterfaces(interfaceNames);
+    interfaces = loadInterfaces(ctx, interfaceNames);
 
     //computeInheritedAnnotations(superClass);
 
@@ -2225,8 +2231,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * 
    * It loads the class referenced by these instructions and adds it to the 
    * resolvedClasses map of the classLoader
+ * @param ctx TODO
    */
-  public ClassInfo resolveReferencedClass(String cname) {
+  public ClassInfo resolveReferencedClass(FeatureExpr ctx, String cname) {
     if(name.equals(cname)) {
       return this;
     }
@@ -2238,7 +2245,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     }
  
     // The defining class loader of the class initiate the load of referenced classes
-    ci = classLoader.loadClass(cname);
+    ci = classLoader.loadClass(ctx, cname);
     classLoader.addResolvedClass(ci);
 
     return ci;
@@ -2362,8 +2369,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * 
    * It is used for the cases where cl tries to load a class that the original version 
    * of which has been loaded by some other classloader.
+ * @param ctx TODO
    */
-  public ClassInfo cloneFor (ClassLoaderInfo cl) {
+  public ClassInfo cloneFor (FeatureExpr ctx, ClassLoaderInfo cl) {
     ClassInfo ci;
 
     try {
@@ -2371,7 +2379,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
 
       ci.classLoader = cl;
       ci.interfaces = new HashSet<ClassInfo>();
-      ci.resolveClass();
+      ci.resolveClass(ctx);
 
       ci.id = -1;
       ci.uniqueId = -1;
@@ -2415,11 +2423,11 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return null;
   }
   
-  public DirectCallStackFrame createDirectCallStackFrame (ThreadInfo ti, MethodInfo callee, int nLocalSlots){
+  public DirectCallStackFrame createDirectCallStackFrame (FeatureExpr ctx, ThreadInfo ti, MethodInfo callee, int nLocalSlots){
     return null;
   }
   
-  public DirectCallStackFrame createRunStartStackFrame (ThreadInfo ti, MethodInfo miRun){
+  public DirectCallStackFrame createRunStartStackFrame (FeatureExpr ctx, ThreadInfo ti, MethodInfo miRun){
     return null;
   }
 }

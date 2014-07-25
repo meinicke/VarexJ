@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.jvm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ClassFileContainer;
 import gov.nasa.jpf.vm.ClassFileMatch;
@@ -50,13 +51,13 @@ public abstract class JVMClassFileContainer extends ClassFileContainer {
     }
     
     @Override
-    public JVMClassInfo createClassInfo (ClassLoaderInfo loader) throws ClassParseException {
+    public JVMClassInfo createClassInfo (FeatureExpr ctx, ClassLoaderInfo loader) throws ClassParseException {
       JVMSystemClassLoaderInfo sysCli = (JVMSystemClassLoaderInfo)loader.getSystemClassLoader();
       
       JVMCodeBuilder cb = sysCli.getCodeBuilder(typeName);
       ClassFile cf = new ClassFile(data);
       
-      return new JVMClassInfo( typeName, loader, cf, url, cb);
+      return new JVMClassInfo( ctx, typeName, loader, cf, url, cb);
     }
     
     @Override
