@@ -449,6 +449,27 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 	
 	@Test
+	public void testCatchException2() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Main m = new Main(true);
+			try {
+				m.exception(10);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+
+	@Test
+	public void testCatchException3() {
+		if (!RUN_WITH_JPF || verifyAssertionError(JPF_CONFIGURATION)) {
+			new Main(true).exception2();
+
+		}
+	}
+	
+	@Test
 	public void testThrowException() throws Exception {
 		if (!RUN_WITH_JPF || verifyUnhandledException(Exception.class.getName(), JPF_CONFIGURATION)) {
 			Main m = new Main(true);
@@ -494,6 +515,21 @@ class Main {
 	
 	public void exception() throws Exception {
 		throw new Exception("EXCEPTION");
+	}
+	
+	public void exception2() {
+		VariabilityAwareTest.check(VariabilityAwareTest.a);
+	}
+	
+	public void exception(int i) throws Exception {
+		if (i < 0) {
+			if (VariabilityAwareTest.a) {
+				throw new Exception("EXCEPTION");
+			}
+			method2(10);
+			return;
+		}
+		exception(i-1);
 	}
 
 	public Main(boolean z, boolean y) {
