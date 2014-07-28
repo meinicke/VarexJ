@@ -14,26 +14,8 @@ public class MineTest extends TestJPF {
 	@Test
 	public void runZipMe() {
 		if (verifyNoPropertyViolation(config)) {
-			if (!MinePumpSystem.FeatureSwitches.__SELECTED_FEATURE_startCommand) {
-				PL_Interface_impl.main(new String[]{"1"});
-			}
-		}
-	}
-	
-	@Test
-	public void runZipMe2() {
-		if (verifyNoPropertyViolation(config)) {
-			if (MinePumpSystem.FeatureSwitches.__SELECTED_FEATURE_startCommand) {
-				PL_Interface_impl.main(new String[]{"1"});
-			}
-		}
-	}
-	
-	@Test
-	public void runZipMe3() {
-		if (verifyNoPropertyViolation(config)) {
 			PL_Interface_impl.main(new String[]{"1"});
 		}
 	}
-
+	
 }

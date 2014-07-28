@@ -52,7 +52,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
 				}
 
-				ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
+				final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
 				if (isNewPorBoundary(e, ti)) {
 					if (createAndSetArrayCG(e, ti, aref, peekIndex(ctx, ti), true)) {
 						return new One<Instruction>(instruction);
@@ -64,23 +64,30 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 				// we should not set 'arrayRef' before the CG check
 				// (this would kill the CG loop optimization)
 				arrayRef = frame.pop(ctx);
+				
+				return index.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-				try {
-					push(ctx, frame, e, index.getValue());
-
-					Object attr = e.getElementAttr(index.getValue());
-					if (attr != null) {
-						if (getElementSize() == 1) {
-							frame.setOperandAttr(attr);
-						} else {
-							frame.setLongOperandAttr(attr);
+					@Override
+					public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
+						try {
+							push(ctx, frame, e, index);
+		
+							Object attr = e.getElementAttr(index);
+							if (attr != null) {
+								if (getElementSize() == 1) {
+									frame.setOperandAttr(attr);
+								} else {
+									frame.setLongOperandAttr(attr);
+								}
+							}
+		
+							return getNext(ctx, ti);
+						} catch (ArrayIndexOutOfBoundsExecutiveException ex) {
+							return new One<>(ex.getInstruction());
 						}
 					}
-
-					return getNext(ctx, ti);
-				} catch (ArrayIndexOutOfBoundsExecutiveException ex) {
-					return new One<>(ex.getInstruction());
-				}
+					
+				});
 
 			}
 

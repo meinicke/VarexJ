@@ -57,7 +57,7 @@ public abstract class SwitchInstruction extends JVMInstruction {
     return targets.length;
   }
 
-  protected Instruction executeConditional (FeatureExpr ctx, ThreadInfo ti){
+  protected Conditional<Instruction> executeConditional (FeatureExpr ctx, ThreadInfo ti){
     StackFrame frame = ti.getModifiableTopFrame();
 
     int value = frame.pop(ctx).getValue();
@@ -67,17 +67,17 @@ public abstract class SwitchInstruction extends JVMInstruction {
     for (int i = 0, l = matches.length; i < l; i++) {
       if (value == matches[i]) {
         lastIdx = i;
-        return mi.getInstructionAt(targets[i]);
+        return new One<>(mi.getInstructionAt(targets[i]));
       }
     }
 
-    return mi.getInstructionAt(target);
+    return new One<>(mi.getInstructionAt(target));
   }
   
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     // this can be overridden by subclasses, so we have to delegate the conditional execution
     // to avoid getting recursive in executeAllBranches()
-    return new One<>(executeConditional(ctx, ti));
+    return executeConditional(ctx, ti);
   }
 
   /** useful for symbolic execution modes */
@@ -89,7 +89,7 @@ public abstract class SwitchInstruction extends JVMInstruction {
 
       } else {
         // listener did override CG, fall back to conditional execution
-        return executeConditional(FeatureExprFactory.True(), ti);
+        return executeConditional(FeatureExprFactory.True(), ti).getValue();
       }
       
     } else {
