@@ -22,6 +22,7 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.SystemAttribute;
+import gov.nasa.jpf.jvm.bytecode.ATHROW;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
@@ -1914,6 +1915,9 @@ public class ThreadInfo extends InfoObject
     // on-the-fly instrumentation or even replace the instruction alltogether
     vm.notifyExecuteInstruction(this, pc.getValue(true));// TODO revise
 
+    boolean throwInstruction = false;
+    StackFrame oldStack = top;
+    
     if (!skipInstruction) {
         // enter the next bytecode
         try {
@@ -1975,8 +1979,16 @@ public class ThreadInfo extends InfoObject
     			next = new Choice<>(ctx, next, getPC());
     			if (top != null) {
     				nextPc = next.simplify(top.stack.stackCTX);
+    				
     			} else {
     				nextPc = next;
+    			}
+    		} else if (i instanceof ATHROW) {
+    			nextPc = new Choice<>(ctx, next, getPC()).simplify();
+    			if (!(pc instanceof One)) {
+    				oldStack.stack.stackCTX = oldStack.stack.stackCTX.andNot(ctx);
+    				throwInstruction = true;
+    				oldStack.setPC(pc.simplify(oldStack.stack.stackCTX));
     			}
     		} else {
     			nextPc = new Choice<>(ctx, next, pc).simplify(top.stack.stackCTX);
@@ -2013,6 +2025,9 @@ public class ThreadInfo extends InfoObject
     if (top != null) {
       // <2do> this is where we would have to handle general insn repeat
       setPC(nextPc);
+  		if (throwInstruction) {
+  			pushFrame(oldStack);
+  		}
       return nextPc;
     } else {
       return new One<>(null);
@@ -2669,7 +2684,6 @@ public class ThreadInfo extends InfoObject
    * Adds a new stack frame for a new called method.
    */
   public void pushFrame (StackFrame frame) {
-
     frame.setPrevious(top);
 
     top = frame;
@@ -2953,7 +2967,7 @@ public class ThreadInfo extends InfoObject
       // jump to the exception handler and set pc so that listeners can see it
       int handlerOffset = matchingHandler.getHandler();
       insn = handlerFrame.getMethodInfo().getInstructionAt(handlerOffset);
-      handlerFrame.setPC(new One<>(insn));
+      handlerFrame.setPC(new Choice<>(ctx, new One<>(insn), handlerFrame.getPC()));
 
       // notify before we reset the pendingException
       vm.notifyExceptionHandled(this);

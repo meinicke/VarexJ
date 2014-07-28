@@ -1195,7 +1195,7 @@ public int nLocals;
       StackFrame sf = (StackFrame) super.clone();
 
       sf.defreeze();
-      
+      sf.pc = pc.clone();
       sf.stack = stack.clone();
 //      sf.isRef = isRef.clone();
 
@@ -1813,7 +1813,6 @@ pw.print(stack);
 
   public void removeArguments (FeatureExpr ctx, MethodInfo mi) {
     int i = mi.getArgumentsSize();
-
     if (i != 0) {
       pop(ctx, i);
     }

@@ -92,6 +92,5 @@ public class RandomSearch extends Search {
       }
     }
     notifySearchFinished();
-    System.out.println(Conditional.map.size());
   }
 }

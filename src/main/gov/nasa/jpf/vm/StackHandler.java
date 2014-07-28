@@ -29,8 +29,8 @@ public class StackHandler implements Cloneable {
 
 	public int length = 0;
 
-	public final FeatureExpr stackCTX;
-
+	public FeatureExpr stackCTX;
+	
 	public int getStackWidth() {
 		return stack.toList().size();
 	}
@@ -601,9 +601,6 @@ public class StackHandler implements Cloneable {
 				Stack clone = stack.copy();
 				clone.clear();
 				
-				if (ctx.equals(f)) {
-					return new One<>(clone); 
-				}
 				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}

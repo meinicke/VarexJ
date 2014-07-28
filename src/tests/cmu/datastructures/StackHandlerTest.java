@@ -185,11 +185,26 @@ public class StackHandlerTest {
 		assertEquals(n1, stack.pop(f1.not()));
 		assertEquals(new One<>(-1), stack.getTop());
 	}
+	
+	@Test
+	public void clear() throws Exception {
+		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
+		int n = (int) (Math.random() * 10 + 1);
+		StackHandler stack = new StackHandler(FeatureExprFactory.True(), 0, n);
+		for (int i = 0; i < n; i++) {
+			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+			stack.push(FeatureExprFactory.True(), n1, Math.random() < 0.5);
+		}
+		System.out.println(stack);
+		stack.clear(f1);
+		System.out.println(stack);
+		assertEquals(2, stack.getStackWidth());
+	}
 
 	@Test
 	public void cloneEqualsTest() throws Exception {
 		int k = 0;
-		while (k++ < 1000) {
+		while (k++ < 100) {
 			FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 			int n = (int) (Math.random() * 10 + 2);
 			int m = (int) (Math.random() * 10 + 1);
