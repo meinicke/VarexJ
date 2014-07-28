@@ -189,7 +189,7 @@ public class StackHandlerTest {
 	@Test
 	public void cloneEqualsTest() throws Exception {
 		int k = 0;
-		while (k++ < 100) {
+		while (k++ < 1000) {
 			FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
 			int n = (int) (Math.random() * 10 + 2);
 			int m = (int) (Math.random() * 10 + 1);
@@ -755,8 +755,6 @@ public class StackHandlerTest {
 		stack.push(FeatureExprFactory.True(), new One<>(42), true);
 		stack.storeOperand(f1, 0);
 		assertEquals(new One<>(42), stack.pop(f1.not()));
-		
-
 	}
 
 }

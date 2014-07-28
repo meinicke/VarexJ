@@ -1,5 +1,6 @@
 package gov.nasa.jpf.jvm.bytecode.extended;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,23 +33,15 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	public String toString() {
 		String s= "One(";
 		if (value instanceof int[]) {
-			for (int x : (int[])value) {
-				s+= x + ", ";
-			}
+			s += Arrays.toString((int[])value);
 		} else if (value instanceof long[]) {
-			for (long x : (long[])value) {
-				s+= x + "l, ";
-			}
+			s += Arrays.toString((long[])value);
 		} else if (value instanceof double[]) {
-			for (double x : (double[])value) {
-				s+= x + "d, ";
-			}
+			s += Arrays.toString((double[])value);
 		} else if (value instanceof float[]) {
-			for (float x : (float[])value) {
-				s+= x + "f, ";
-			}
+			s += Arrays.toString((float[])value);
 		} else if (value instanceof char[]) {
-			s += new String((char[])value);
+			s += Arrays.toString((char[])value);
 		} else {
 			s+=value;
 		}
@@ -73,12 +66,16 @@ public class One<T> extends Conditional<T> implements Cloneable {
 			 if (value == ((One<?>)obj).value) {
 				 return true;
 			 }
+			 if (value instanceof char[]) {
+				 Arrays.equals((char[])value, (char[])((One<?>)obj).value);
+			 }
+			 
 			 if (((One<?>)obj).value != null && value != null && ((One<?>)obj).value.equals(value))
 				 return true;
 		 }
 		 return false;
 	}
-	
+
 	public int hashCode() {
 		throw new RuntimeException("hashCode not designed");
 	}

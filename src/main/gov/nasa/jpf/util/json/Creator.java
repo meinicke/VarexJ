@@ -19,8 +19,8 @@
 
 package gov.nasa.jpf.util.json;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MJIEnv;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * Creates new JPF from JSON value.

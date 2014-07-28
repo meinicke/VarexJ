@@ -5,6 +5,9 @@ import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.Function;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
+
+import java.util.Arrays;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -59,9 +62,7 @@ public class StackHandler implements Cloneable {
 		}
 		length = nLocals + nOperands;
 		locals = new Conditional[nLocals];
-		for (int i = 0; i < locals.length; i++) {
-			locals[i] = nullValue;
-		}
+		Arrays.fill(locals, nullValue);
 		stack = new One<>(new Stack(nOperands));
 		stackCTX = ctx;
 	}

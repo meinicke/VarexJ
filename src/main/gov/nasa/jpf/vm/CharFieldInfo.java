@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * fieldinfo for slots holding chars

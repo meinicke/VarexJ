@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.Map;
-
 import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -32,6 +30,9 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.Stack;
 import gov.nasa.jpf.vm.StackHandler;
 import gov.nasa.jpf.vm.ThreadInfo;
+
+import java.util.Map;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 

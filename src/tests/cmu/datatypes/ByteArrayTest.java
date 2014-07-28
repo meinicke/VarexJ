@@ -3,7 +3,6 @@ package cmu.datatypes;
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ByteArrayTest extends TestJPF {

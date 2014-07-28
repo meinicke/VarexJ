@@ -19,12 +19,9 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.ObjVector;
 
 import java.util.Iterator;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * a heap that implements search global object ids (SGOIDs) and uses

@@ -19,12 +19,12 @@
 
 package gov.nasa.jpf.jvm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ClassFileContainer;
 import gov.nasa.jpf.vm.ClassFileMatch;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.ClassParseException;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * ClassFileContainer that holds Java classfiles

@@ -19,8 +19,8 @@
 
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**

@@ -1,9 +1,5 @@
 package cmu;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 

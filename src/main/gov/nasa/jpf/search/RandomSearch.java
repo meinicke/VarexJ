@@ -20,6 +20,7 @@ package gov.nasa.jpf.search;
 
 
 import gov.nasa.jpf.Config;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.RestorableVMState;
 import gov.nasa.jpf.vm.VM;
 
@@ -91,5 +92,6 @@ public class RandomSearch extends Search {
       }
     }
     notifySearchFinished();
+    System.out.println(Conditional.map.size());
   }
 }

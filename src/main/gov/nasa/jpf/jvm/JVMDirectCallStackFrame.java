@@ -23,7 +23,6 @@ import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MethodInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * a direct call stackframe that supports JVM calling conventions

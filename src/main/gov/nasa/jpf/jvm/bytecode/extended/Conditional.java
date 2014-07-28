@@ -18,7 +18,7 @@ public abstract class Conditional<T> {
 		map.clear();
 	}
  	
-	protected static Map<FeatureExpr, Boolean> map = new HashMap<>();
+	public static Map<FeatureExpr, Boolean> map = new HashMap<>();
 	
 	
 	public static boolean isContradiction(FeatureExpr f) {
@@ -37,7 +37,6 @@ public abstract class Conditional<T> {
 	public static boolean isTautology(FeatureExpr f) {
 		return isContradiction(f.not());
 	}
-	
 	
 	public abstract T getValue();
 	public abstract T getValue(boolean ignore);

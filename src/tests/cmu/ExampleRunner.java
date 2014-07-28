@@ -1,11 +1,6 @@
 package cmu;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.util.test.TestJPF;
-
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class ExampleRunner extends TestJPF {
 

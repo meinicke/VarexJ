@@ -33,8 +33,6 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.omg.CosNaming.NamingContextPackage.AlreadyBound;
-
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 

@@ -25,7 +25,6 @@ import gov.nasa.jpf.SystemAttribute;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
-import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
@@ -1927,7 +1926,8 @@ public class ThreadInfo extends InfoObject
 //    			if (debug) System.out.print(count + ": ");
 //    		}
         	if (System.currentTimeMillis() - time > 1000) {
-        		System.out.println((count - count2) + " instructions / s");
+        		int instructions = (count - count2);
+        		System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s");
         		count2 = count;
         		time = System.currentTimeMillis();
         	}

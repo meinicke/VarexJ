@@ -1,5 +1,6 @@
 package gov.nasa.jpf.vm;
 
+
 /**
  * 
  * @author Jens
@@ -16,11 +17,9 @@ public class Stack {
 	}
 
 	public void clear() {
-		top = -1;
-		for (int i = 0; i < slots.length; i++) {
-			slots[i] = null;
+		for (; top > -1; top--) {
+			slots[top] = null;
 		}
-		// slots = new Entry[slots.length]; // alternative
 	}
 
 	public void setRef(int index, boolean ref) {
@@ -108,17 +107,7 @@ public class Stack {
 	Stack copy() {
 		Stack clone = new Stack(slots.length);
 		clone.top = top;
-//		if (top > -1) {
-//			System.arraycopy(slots, 0, clone.slots, 0, top + 1);
-//		}
-		
-		for (int i = 0; i <= top; i++) {
-//			if (slots[i] != null) {
-				clone.slots[i] = slots[i];
-//			} else {
-//				break;
-//			}
-		}
+		System.arraycopy(slots, 0, clone.slots, 0, top + 1);
 		return clone;
 	}
 
@@ -151,7 +140,7 @@ public class Stack {
 			if (((Stack) o).top != top) {
 				return false;
 			}
-			for (int i = top; i >= 0; i--) {
+			for (int i = 0; i <= top; i++) {
 				if (((Stack) o).slots[i] == null) {
 					if (slots[i] == null) {
 						continue;
@@ -164,6 +153,7 @@ public class Stack {
 				}
 			}
 			return true;
+//			return Arrays.equals(slots, ((Stack) o).slots);
 		}
 		return false;
 	}

@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.util.ObjectList;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
