@@ -27,6 +27,7 @@ import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Processor;
 
 import java.io.PrintWriter;
+import java.util.List;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -1234,21 +1235,22 @@ public abstract class ElementInfo implements Cloneable {
 
     // if we copy reference arrays, we first have to check element type compatibility
     // (the underlying Fields type is always int[], hence we have to do this explicitly)
-    if (isRefArray){
-      ClassInfo dstElementCi = ci.getComponentClassInfo();
-      Conditional<Integer>[] srcRefs = ((ArrayFields)eiSrc.fields).asReferenceArray();
-      int max = srcIdx + length;
-      for (int i=srcIdx; i<max; i++){
-        int eref = srcRefs[i].simplify(ctx).getValue();
-        if (eref != MJIEnv.NULL){
-          ClassInfo srcElementCi = ti.getClassInfo(eref);
-          if (!srcElementCi.isInstanceOf(dstElementCi)) {
-            throw new ArrayStoreException("incompatible reference array element type (required " + dstElementCi.getName() +
-                    ", found " + srcElementCi.getName());
-          }
-        }
-      }
-    }
+		if (isRefArray) {
+			ClassInfo dstElementCi = ci.getComponentClassInfo();
+			Conditional<Integer>[] srcRefs = ((ArrayFields) eiSrc.fields).asReferenceArray();
+			int max = srcIdx + length;
+			for (int i = srcIdx; i < max; i++) {
+				List<Integer> erefs = srcRefs[i].simplify(ctx).toList();
+				for (int eref : erefs) {
+					if (eref != MJIEnv.NULL) {
+						ClassInfo srcElementCi = ti.getClassInfo(eref);
+						if (!srcElementCi.isInstanceOf(dstElementCi)) {
+							throw new ArrayStoreException("incompatible reference array element type (required " + dstElementCi.getName() + ", found " + srcElementCi.getName());
+						}
+					}
+				}
+			}
+		}
 
     // NOTE - we have to clone the fields even in case System.arraycopy fails, since
     // the caller might handle ArrayStore/IndexOutOfBounds, and partial changes

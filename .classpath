@@ -22,6 +22,7 @@
 	<classpathentry kind="lib" path="lib/GPL.jar"/>
 	<classpathentry kind="lib" path="lib/ZipMe.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-core-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/Email.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_55"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
