@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -27,46 +30,51 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-
 /**
  * Store into reference array
- * ..., arrayref, index, value  => ...
+ * ..., arrayref, index, value => ...
  */
 public class AASTORE extends ArrayStoreInstruction {
 
-  int value;
+	Conditional<Integer> value;
 
-  protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = frame.pop(ctx).getValue();
-  }
+	protected void popValue(FeatureExpr ctx, StackFrame frame) {
+		value = frame.pop(ctx);
+	}
 
-  protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
-    ei.checkArrayBounds(ctx, index);
-    ei.setReferenceElement(index, value);
-  }
+	protected void setField(FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+		ei.checkArrayBounds(ctx, index);
+		ei.setReferenceElement(ctx, index, value);
+	}
 
-  protected Instruction checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei){
-    ClassInfo c = ei.getClassInfo();
+	protected Conditional<Instruction> checkArrayStoreException(FeatureExpr ctx, final ThreadInfo ti, ElementInfo ei) {
+		final ClassInfo c = ei.getClassInfo();
 
-    if (value != MJIEnv.NULL) { // no checks for storing 'null'
-      ClassInfo elementCi = ti.getClassInfo(value);
-      ClassInfo arrayElementCi = c.getComponentClassInfo();
-      if (!elementCi.isInstanceOf(arrayElementCi)) {
-        String exception = "java.lang.ArrayStoreException";
-        String exceptionDescription = elementCi.getName();
-        return ti.createAndThrowException(ctx, exception, exceptionDescription);
-      }
-    }
+		return value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    return null;
-  }
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer value) {
+				if (value != MJIEnv.NULL) { // no checks for storing 'null'
+					ClassInfo elementCi = ti.getClassInfo(value);
+					ClassInfo arrayElementCi = c.getComponentClassInfo();
+					if (!elementCi.isInstanceOf(arrayElementCi)) {
+						String exception = "java.lang.ArrayStoreException";
+						String exceptionDescription = elementCi.getName();
+						return new One<>(ti.createAndThrowException(ctx, exception, exceptionDescription));
+					}
+				}
 
+				return new One<>(null);
+			}
 
-  public int getByteCode () {
-    return 0x53;
-  }
+		}).simplify();
+	}
 
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	public int getByteCode() {
+		return 0x53;
+	}
+
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

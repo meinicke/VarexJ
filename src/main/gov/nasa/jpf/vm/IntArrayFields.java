@@ -26,6 +26,7 @@ import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -41,9 +42,7 @@ public class IntArrayFields extends ArrayFields {
   @SuppressWarnings("unchecked")
 public IntArrayFields (int length) {
     values = new Conditional[length];
-    for (int i = 0; i < length; i++) {
-    	values[i] = init;
-    }
+    Arrays.fill(values, init);
     
   }
 

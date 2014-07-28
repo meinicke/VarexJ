@@ -65,7 +65,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 				// don't set 'arrayRef' before we do the CG check (would kill loop optimization)
 				arrayRef = frame.pop(ctx);
 
-				Instruction xInsn = checkArrayStoreException(ctx, ti, e);
+				Instruction xInsn = checkArrayStoreException(ctx, ti, e).getValue();
 				if (xInsn != null) {
 					return new One<>(xInsn);
 				}
@@ -102,8 +102,8 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 		return ti.getTopFrame().peek(ctx, 1).getValue();
 	}
 
-	protected Instruction checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei) {
-		return null;
+	protected Conditional<Instruction> checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei) {
+		return new One<>(null);
 	}
 
 	protected abstract void popValue(FeatureExpr ctx, StackFrame frame);

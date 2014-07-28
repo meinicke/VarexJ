@@ -2455,12 +2455,12 @@ public class ThreadInfo extends InfoObject
           int nthreads = eiGrp.getIntField("nthreads").simplify(ctx).getValue(true);
 
           for (int i=0; i<nthreads; i++) {
-            int tref = eiThreads.getReferenceElement(i);
+            Conditional<Integer> tref = eiThreads.getReferenceElement(i);
 
-            if (tref == threadRef) { // compact the threads array
+            if (tref.getValue() == threadRef) { // compact the threads array
               int n1 = nthreads-1;
               for (int j=i; j<n1; j++) {
-                eiThreads.setReferenceElement(j, eiThreads.getReferenceElement(j+1));
+                eiThreads.setReferenceElement(j, eiThreads.getReferenceElement(j+1).getValue());
               }
               eiThreads.setReferenceElement(n1, MJIEnv.NULL);
 
@@ -2563,8 +2563,8 @@ public class ThreadInfo extends InfoObject
         ElementInfo eiThreads = env.getElementInfo(threadsRef);
         
         for (int i=0; i<nThreads; i++){
-          int tr = eiThreads.getReferenceElement(i);
-          eiNewThreads.setReferenceElement(i, tr);
+          Conditional<Integer> tr = eiThreads.getReferenceElement(i);
+          eiNewThreads.setReferenceElement(i, tr.getValue());
         }
         
         eiNewThreads.setReferenceElement(nThreads, objRef);

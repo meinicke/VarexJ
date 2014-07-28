@@ -93,7 +93,7 @@ public class BoxObjectCacheManager {
       byteCache = initByteCache(ctx, ti);
     }
 
-    if (b >= byteLow && b <= byteHigh) { return ti.getElementInfo(byteCache).getReferenceElement(b - byteLow); }
+    if (b >= byteLow && b <= byteHigh) { return ti.getElementInfo(byteCache).getReferenceElement(b - byteLow).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Byte");
     ElementInfo eiByte = ti.getHeap().newObject(null, ci, ti);
@@ -132,7 +132,7 @@ public class BoxObjectCacheManager {
       charCache = initCharCache(ctx, ti);
     }
 
-    if (c >= 0 && c <= charHigh) { return ti.getElementInfo(charCache).getReferenceElement(c); }
+    if (c >= 0 && c <= charHigh) { return ti.getElementInfo(charCache).getReferenceElement(c).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Character");
     ElementInfo eiChar = ti.getHeap().newObject(null, ci, ti);
@@ -175,7 +175,7 @@ public class BoxObjectCacheManager {
       shortCache = initShortCache(ctx, ti);
     }
 
-    if (s >= shortLow && s <= shortHigh) { return ti.getElementInfo(shortCache).getReferenceElement(s - shortLow); }
+    if (s >= shortLow && s <= shortHigh) { return ti.getElementInfo(shortCache).getReferenceElement(s - shortLow).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Short");
     ElementInfo eiShort = ti.getHeap().newObject(null, ci, ti);
@@ -216,7 +216,7 @@ public class BoxObjectCacheManager {
       intCache = initIntCache(ctx, ti);
     }
 
-    if (i >= intLow && i <= intHigh) { return ti.getElementInfo(intCache).getReferenceElement(i - intLow); }
+    if (i >= intLow && i <= intHigh) { return ti.getElementInfo(intCache).getReferenceElement(i - intLow).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
     ElementInfo eiInteger = ti.getHeap().newObject(ctx, ci, ti);
@@ -257,7 +257,7 @@ public class BoxObjectCacheManager {
       longCache = initLongCache(ctx, ti);
     }
 
-    if (l >= longLow && l <= longHigh) { return ti.getElementInfo(longCache).getReferenceElement((int) l - longLow); }
+    if (l >= longLow && l <= longHigh) { return ti.getElementInfo(longCache).getReferenceElement((int) l - longLow).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long");
     ElementInfo eiLong = ti.getHeap().newObject(ctx, ci, ti);

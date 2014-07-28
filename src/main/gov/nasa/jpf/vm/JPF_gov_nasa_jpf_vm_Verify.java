@@ -22,6 +22,7 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.IntTable;
 import gov.nasa.jpf.util.JPFLogger;
 import gov.nasa.jpf.util.ObjectConverter;
@@ -1206,12 +1207,12 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     String fmt = env.getStringObject(null, fmtRef);
     JPFLogger logger = JPF.getLogger(loggerId);
 
-    int[] argRefs = env.getReferenceArrayObject( argsRef);
+    Conditional<Integer>[] argRefs = env.getReferenceArrayObject( argsRef);
     Object[] args = new Object[argRefs.length];
     for (int i=0; i<args.length; i++){
-      ElementInfo eiArg = env.getElementInfo(argRefs[i]);
+      ElementInfo eiArg = env.getElementInfo(argRefs[i].getValue());
       if (eiArg.isStringObject()){
-        args[i] = env.getStringObject(null, argRefs[i]);
+        args[i] = env.getStringObject(null, argRefs[i].getValue());
       } else if (eiArg.isBoxObject()){
         args[i] = eiArg.asBoxObject(); 
       } else {

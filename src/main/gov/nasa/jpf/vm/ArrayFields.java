@@ -112,9 +112,9 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a double[]");
 	}
 
-	public int getReferenceValue(int pos) {
+	public Conditional<Integer> getReferenceValue(int pos) {
 		// overridden by subclass
-		throw new JPFException("not a reference array");
+		throw new JPFException(getClass() + "not a reference array");
 	}
 	
 	public Conditional<Integer> getReferenceValue2 (int index) {
@@ -175,7 +175,7 @@ public abstract class ArrayFields extends Fields {
 
 	public void setReferenceValue(FeatureExpr ctx, int pos, Conditional<Integer> newValue) {
 		// overridden by subclass
-		throw new JPFException("not a reference array");
+		throw new JPFException(getClass() + "not a reference array");
 	}
 
 	public boolean[] asBooleanArray() {
@@ -208,7 +208,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a int[]");
 	}
 
-	public int[] asReferenceArray() {
+	public Conditional<Integer>[] asReferenceArray() {
 		// overridden by subclass
 		throw new JPFException("not a reference array");
 	}

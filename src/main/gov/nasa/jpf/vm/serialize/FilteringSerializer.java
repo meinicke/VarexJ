@@ -207,9 +207,11 @@ public class FilteringSerializer extends AbstractSerializer implements Reference
     buf.add(afields.arrayLength());
 
     if (afields.isReferenceArray()) {
-      int[] values = afields.asReferenceArray();
+      Conditional<Integer>[] values = afields.asReferenceArray();
       for (int i = 0; i < values.length; i++) {
-        processReference(values[i]);
+    	  for (int v : values[i].toList()) {
+    		  processReference(v);
+    	  }
       }
     } else {
       afields.appendTo(buf);

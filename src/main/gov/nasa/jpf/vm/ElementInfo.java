@@ -296,9 +296,11 @@ public abstract class ElementInfo implements Cloneable {
       if (fields.isReferenceArray()) {
         n = ((ArrayFields)fields).arrayLength();
         for (i = 0; i < n; i++) {
-          int objref = fields.getReferenceValue(i);
-          if (objref != MJIEnv.NULL){
-            heap.queueMark( objref);
+          Conditional<Integer> objref = fields.getReferenceValue(i);
+          for (Integer ref : objref.toList()) {
+	          if (ref != MJIEnv.NULL){
+	            heap.queueMark(ref);
+	          }
           }
         }
       }
@@ -1208,11 +1210,12 @@ public abstract class ElementInfo implements Cloneable {
    * note that we have to do some additional type checking here because we store
    * reference arrays as int[], i.e. for reference arrays we can't rely on
    * System.arraycopy to do the element type checking for us
+ * @param ctx TODO
    *
    * @throws java.lang.ArrayIndexOutOfBoundsException
    * @throws java.lang.ArrayStoreException
    */
-  public void copyElements( ThreadInfo ti, ElementInfo eiSrc, int srcIdx, int dstIdx, int length){
+  public void copyElements( FeatureExpr ctx, ThreadInfo ti, ElementInfo eiSrc, int srcIdx, int dstIdx, int length){
 
     if (!isArray()){
       throw new ArrayStoreException("destination object not an array: " + ci.getName());
@@ -1233,10 +1236,10 @@ public abstract class ElementInfo implements Cloneable {
     // (the underlying Fields type is always int[], hence we have to do this explicitly)
     if (isRefArray){
       ClassInfo dstElementCi = ci.getComponentClassInfo();
-      int[] srcRefs = ((ArrayFields)eiSrc.fields).asReferenceArray();
+      Conditional<Integer>[] srcRefs = ((ArrayFields)eiSrc.fields).asReferenceArray();
       int max = srcIdx + length;
       for (int i=srcIdx; i<max; i++){
-        int eref = srcRefs[i];
+        int eref = srcRefs[i].simplify(ctx).getValue();
         if (eref != MJIEnv.NULL){
           ClassInfo srcElementCi = ti.getClassInfo(eref);
           if (!srcElementCi.isInstanceOf(dstElementCi)) {
@@ -1256,7 +1259,6 @@ public abstract class ElementInfo implements Cloneable {
     Conditional<?> srcVals = ((ArrayFields)eiSrc.getFields()).getValues();
     Conditional<?> dstVals = ((ArrayFields)fields).getValues();
     // this might throw ArrayIndexOutOfBoundsExceptions and ArrayStoreExceptions
-    FeatureExpr ctx = NativeMethodInfo.CTX;
     if (srcVals instanceof One && dstVals instanceof One) {// TODO jens revise array copy
     	if (srcVals.getValue() instanceof Conditional[]) {
     		try {
@@ -1279,6 +1281,10 @@ public abstract class ElementInfo implements Cloneable {
 	    		} else if (eiSrc.getFields() instanceof ByteArrayFields) {
 		    		for (int i = 0; i < length; i++) {
 		    			fields.setByteValue(ctx, dstIdx + i, src.getByteValue(i + srcIdx));
+		    		}
+	    		} else if (eiSrc.getFields() instanceof ReferenceArrayFields) {
+		    		for (int i = 0; i < length; i++) {
+		    			fields.setReferenceValue(ctx, dstIdx + i, src.getReferenceValue(i + srcIdx));
 		    		}
 	    		} else {
 	    			throw new RuntimeException("TODO implement array copy for " + src.getClass());
@@ -1362,6 +1368,12 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setReferenceValue(idx, value);
   }
+  
+  public void setReferenceElement(FeatureExpr ctx, int idx, Conditional<Integer> value){
+	    checkArray(idx);
+	    checkIsModifiable();
+	    fields.setReferenceValue(ctx, idx, value);
+	  }
 
 
   public boolean getBooleanElement(int idx) {
@@ -1400,7 +1412,7 @@ public abstract class ElementInfo implements Cloneable {
     checkArray(idx);
     return fields.getDoubleValue(idx).getValue();
   }
-  public int getReferenceElement(int idx) {
+  public Conditional<Integer> getReferenceElement(int idx) {
     checkArray(idx);
     return fields.getReferenceValue(idx);
   }
@@ -1526,7 +1538,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public int[] asReferenceArray() {
+  public Conditional<Integer>[] asReferenceArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asReferenceArray();
     } else {

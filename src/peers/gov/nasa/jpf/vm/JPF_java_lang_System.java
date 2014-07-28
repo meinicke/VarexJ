@@ -45,7 +45,7 @@ public class JPF_java_lang_System extends NativePeer {
     ElementInfo eiDst = env.getModifiableElementInfo(dstArrayRef);
     
     try {
-      eiDst.copyElements( env.getThreadInfo(), eiSrc ,srcIdx, dstIdx, length);
+      eiDst.copyElements( NativeMethodInfo.CTX, env.getThreadInfo() ,eiSrc, srcIdx, dstIdx, length);
     } catch (IndexOutOfBoundsException iobx){
       env.throwException("java.lang.IndexOutOfBoundsException", iobx.getMessage());
     } catch (ArrayStoreException asx){

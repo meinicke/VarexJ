@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Choice;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
@@ -25,17 +26,22 @@ import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.PrintUtils;
 
 import java.io.PrintStream;
+import java.util.Arrays;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * element values for reference array objects
  * (references are stored as int's)
  */
 public class ReferenceArrayFields extends ArrayFields {
+	  private static final One<Integer> init = new One<>(0);
+  Conditional<Integer>[] values; // the references
 
-  int[] values; // the references
-
-  public ReferenceArrayFields (int length) {
-    values = new int[length];
+  @SuppressWarnings("unchecked")
+public ReferenceArrayFields (int length) {
+	  values = new Conditional[length];
+      Arrays.fill(values, init);
 
     /** not required for MJIEnv.NULL = 0
     for (int i=0; i<length; i++) {
@@ -45,13 +51,13 @@ public class ReferenceArrayFields extends ArrayFields {
   }
 
   @Override
-  public int[] asReferenceArray() {
+  public Conditional<Integer>[] asReferenceArray() {
     return values;
   }
 
   @Override
   protected void printValue(PrintStream ps, int idx){
-    PrintUtils.printReference(ps, values[idx]);
+    PrintUtils.printReference(ps, values[idx].getValue());
   }
   
   @Override
@@ -74,7 +80,14 @@ public class ReferenceArrayFields extends ArrayFields {
   }
 
   public void appendTo (IntVector v) {
-    v.append(values);
+	  int [] a = new int[values.length];
+		for (int i = 0; i < values.length; i++) {
+			// TODO jens this does not work with conditional values
+			for (Integer val : values[i].toList()) {
+				a[i] = val;
+			}
+		}
+	    v.append(a);
   }
 
   public ReferenceArrayFields clone(){
@@ -86,40 +99,49 @@ public class ReferenceArrayFields extends ArrayFields {
 
   public boolean equals(Object o) {
     if (o instanceof ReferenceArrayFields) {
-      ReferenceArrayFields other = (ReferenceArrayFields)o;
+    	IntArrayFields other = (IntArrayFields)o;
 
-      int[] v = values;
-      int[] vOther = other.values;
-      if (v.length != vOther.length) {
-        return false;
-      }
-
-      for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
+        Conditional<Integer>[] v = values;
+        Conditional<Integer>[] vOther = other.values;
+        if (v.length != vOther.length) {
           return false;
         }
+
+        for (int i=0; i<v.length; i++) {
+          if (v[i].equals(vOther[i])) {
+            return false;
+          }
+        }
+
+        return compareAttrs(other);
+
+      } else {
+        return false;
       }
-
-      return compareAttrs(other);
-
-    } else {
-      return false;
-    }
   }
 
   public void setReferenceValue(int pos, int newValue) {
-    values[pos] = newValue;
+    values[pos] = new One<>(newValue);
   }
+  
+  @Override
+	public void setReferenceValue(FeatureExpr ctx, int pos, Conditional<Integer> newValue) {
+	  if (Conditional.isTautology(ctx)) {
+		  values[pos] = newValue;	  
+	  } else {
+		  values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+	  }
+	}
 
-  public int getReferenceValue(int pos) {
+  public Conditional<Integer> getReferenceValue(int pos) {
     return values[pos];
   }
 
   public void hash (HashData hd) {
-    int[] v = values;
-    for (int i=0; i < v.length; i++) {
-      hd.add(v[i]);
-    }
+	  Conditional<Integer>[] v = values;
+	    for (int i=0; i < v.length; i++) {
+	      hd.add(v[i].getValue());
+	    }
   }
 
 

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 
 import java.util.ArrayList;
@@ -177,18 +178,18 @@ public class FinalizerThreadInfo extends ThreadInfo {
     if(!tempFinalizeQueue.isEmpty()) {
       
       ElementInfo oldQueue = getFinalizeQueue();
-      int[] oldValues = oldQueue.asReferenceArray();    
+      Conditional<Integer>[] oldValues = oldQueue.asReferenceArray();    
       int len = oldValues.length;
       
       int n = tempFinalizeQueue.size();
       
       ElementInfo newQueue = getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", len+n, this);
-      int[] newValues = newQueue.asReferenceArray();
+      Conditional<Integer>[] newValues = newQueue.asReferenceArray();
       
       System.arraycopy(oldValues, 0, newValues, 0, len);
       
       for(ElementInfo ei: tempFinalizeQueue) {
-        newValues[len++] = ei.getObjectRef();
+        newValues[len++] = new One<>(ei.getObjectRef());
       }
       
       vm.getModifiableElementInfo(objRef).setReferenceField("finalizeQueue", newQueue.getObjectRef());

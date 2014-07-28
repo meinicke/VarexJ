@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm.serialize;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.FieldSpec;
 import gov.nasa.jpf.util.FinalBitSet;
 import gov.nasa.jpf.util.JPFLogger;
@@ -177,11 +178,11 @@ public class DynamicAbstractionSerializer extends FilteringSerializer {
       if (a != null) {
         if (fi.is1SlotField()) {
           if (fi.isReference()) {
-            int ref = fields.getReferenceValue(off);
-            buf.add(a.getAbstractObject(ref));
+            Conditional<Integer> ref = fields.getReferenceValue(off);
+            buf.add(a.getAbstractObject(ref.getValue()));
 
-            if (a.traverseObject(ref)) {
-              processReference(ref);
+            if (a.traverseObject(ref.getValue())) {
+              processReference(ref.getValue());
             }
 
           } else if (fi.isFloatField()) {
@@ -221,9 +222,9 @@ public class DynamicAbstractionSerializer extends FilteringSerializer {
     buf.add(fields.arrayLength());
 
     if (fields.isReferenceArray()) {
-      int[] values = fields.asReferenceArray();
+      Conditional<Integer>[] values = fields.asReferenceArray();
       for (int i = 0; i < values.length; i++) {
-        processReference(values[i]);
+        processReference(values[i].getValue());
         buf.add(values[i]);
       }
     } else {
@@ -263,9 +264,9 @@ public class DynamicAbstractionSerializer extends FilteringSerializer {
 
   // for ignored class, to get all live objects
   protected void processReferenceArray(ReferenceArrayFields fields) {
-    int[] slotValues = fields.asReferenceArray();
+    Conditional<Integer>[] slotValues = fields.asReferenceArray();
     for (int i = 0; i < slotValues.length; i++) {
-      processReference(slotValues[i]);
+      processReference(slotValues[i].getValue());
     }
   }
 

@@ -20,6 +20,7 @@ package gov.nasa.jpf.vm;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.Predicate;
 
 /**
@@ -35,9 +36,9 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
   public void runFinalizer__Ljava_lang_Object_2__V (MJIEnv env, int tiRef, int objRef) {
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
     int queueRef = env.getReferenceField(ctx, tiRef, "finalizeQueue").getValue();
-    int[] elements = env.getReferenceArrayObject(queueRef);
+    Conditional<Integer>[] elements = env.getReferenceArrayObject(queueRef);
 
-    if(elements.length>0 && elements[0]==objRef) {
+    if(elements.length>0 && elements[0].getValue()==objRef) {
       ThreadInfo finalizerTi = env.getThreadInfo();
       ClassInfo objCi = env.getElementInfo(objRef).getClassInfo();
       MethodInfo mi = objCi.getMethod("finalize()V", false);
@@ -56,15 +57,15 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
     int queueRef = env.getReferenceField(ctx, tiRef, "finalizeQueue").getValue();
     ThreadInfo ti = env.getThreadInfo();
-    int[] oldValues = env.getReferenceArrayObject(queueRef);
+    Conditional<Integer>[] oldValues = env.getReferenceArrayObject(queueRef);
     
-    assert (objRef == oldValues[0]);
+    assert (objRef == oldValues[0].getValue());
     
     assert (oldValues.length>0);
     
     int len = oldValues.length - 1;
     ElementInfo newQueue = env.getHeap().newArray(ctx, "Ljava/lang/Object;", len, ti);
-    int[] newValues = newQueue.asReferenceArray();
+    Conditional<Integer>[] newValues = newQueue.asReferenceArray();
     
     System.arraycopy(oldValues, 1, newValues, 0, len);
     env.getModifiableElementInfo(tiRef).setReferenceField("finalizeQueue", newQueue.getObjectRef());

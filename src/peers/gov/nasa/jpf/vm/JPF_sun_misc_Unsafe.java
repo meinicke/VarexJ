@@ -200,7 +200,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
       return ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();
     } else {
-      return ei.getReferenceElement((int)fieldOffset);
+      return ei.getReferenceElement((int)fieldOffset).simplify(NativeMethodInfo.CTX).getValue();
     }
   }
   

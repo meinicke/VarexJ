@@ -94,8 +94,8 @@ public class NamedFields extends Fields {
 		}
 	}
 
-	public int getReferenceValue(int index) {
-		return values[index].getValue();
+	public Conditional<Integer> getReferenceValue(int index) {
+		return values[index];
 	}
 
 	// same as above, just here to make intentions clear

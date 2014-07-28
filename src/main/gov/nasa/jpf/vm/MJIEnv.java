@@ -558,7 +558,7 @@ public class MJIEnv {
   }
 
   public int getReferenceArrayElement (int objref, int index) {
-    return heap.get(objref).getReferenceElement(index);
+    return heap.get(objref).getReferenceElement(index).getValue();
   }
 
   public void setShortField (int objref, String fname, short val) {
@@ -944,9 +944,9 @@ public class MJIEnv {
     return a;
   }
   
-  public int[] getReferenceArrayObject (int objref){
+  public Conditional<Integer>[] getReferenceArrayObject (int objref){
     ElementInfo ei = getElementInfo(objref);
-    int[] a = ei.asReferenceArray();
+    Conditional<Integer>[] a = ei.asReferenceArray();
 
     return a;    
   }
