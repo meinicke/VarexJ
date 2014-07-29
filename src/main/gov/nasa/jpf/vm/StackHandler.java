@@ -481,12 +481,9 @@ public class StackHandler implements Cloneable {
 				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
-				if (ctx.equals(f)) {
-					return new One<>(clone); 
-				}
 				return new Choice<>(ctx, new One<>(clone), new One<>(s));
 			}
-		}).simplifyValues();
+		}).simplify();
 	}
 
 	public Conditional<Integer> peek(FeatureExpr ctx) {

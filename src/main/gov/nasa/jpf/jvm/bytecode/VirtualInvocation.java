@@ -117,7 +117,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					 }
 				 }
 			}
-			
 			setupCallee(ctx, ti, callee); // this creates, initializes and
 											// pushes the callee StackFrame
 			if (!splitRef) {

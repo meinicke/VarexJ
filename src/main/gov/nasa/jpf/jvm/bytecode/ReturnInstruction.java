@@ -176,7 +176,6 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     // (DirectCallStackFrames don't use this)
     frame.removeArguments(ctx, mi);
     pushReturnValue(ctx, frame);
-
     if (attr != null) {
       setReturnAttr(ti, attr);
     }
