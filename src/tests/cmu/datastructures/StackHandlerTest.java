@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackHandler;
 
 import org.junit.Test;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 

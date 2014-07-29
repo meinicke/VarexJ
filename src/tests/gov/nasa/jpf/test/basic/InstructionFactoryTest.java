@@ -20,7 +20,6 @@
 package gov.nasa.jpf.test.basic;
 
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
@@ -28,6 +27,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import org.junit.Test;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**

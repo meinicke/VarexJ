@@ -22,7 +22,6 @@ import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
 import gov.nasa.jpf.jvm.bytecode.IRETURN;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -34,6 +33,7 @@ import gov.nasa.jpf.vm.choice.IntChoiceFromList;
 
 import org.junit.Test;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class SkipInstructionTest extends TestJPF {

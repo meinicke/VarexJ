@@ -1,15 +1,15 @@
 package cmu;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
-import gov.nasa.jpf.jvm.bytecode.extended.Choice;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.Function;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.Choice;
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 

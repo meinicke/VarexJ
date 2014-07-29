@@ -23,7 +23,6 @@ package gov.nasa.jpf.test.mc.basic;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ChoiceGenerator;
@@ -39,6 +38,7 @@ import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
 
 import org.junit.Test;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**

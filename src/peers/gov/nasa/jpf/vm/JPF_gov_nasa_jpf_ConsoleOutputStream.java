@@ -19,11 +19,11 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
