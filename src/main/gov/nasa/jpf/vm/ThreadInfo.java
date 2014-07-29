@@ -1962,8 +1962,7 @@ public class ThreadInfo extends InfoObject
 		    		ctx = map.get(i).and(ctx);
 	    		}
         	}	
-	    		
-	    		
+        		
     		if (debug) {
     			System.out.print(top.getDepth());
     			if (top.getDepth() < 10) {
@@ -1971,7 +1970,7 @@ public class ThreadInfo extends InfoObject
     			}
 				System.out.println(" " + i + " if " + ctx);
 			}
-    		
+    		int currentStackDepth = stackDepth;
     		Conditional<Instruction> next = i.execute(ctx, this);
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
@@ -1985,9 +1984,9 @@ public class ThreadInfo extends InfoObject
     			}
     		} else if (i instanceof ATHROW) {
     			nextPc = new Choice<>(ctx, next, getPC()).simplify();
-    			if (!(pc instanceof One)) {
+    			if (!(pc instanceof One) && currentStackDepth < stackDepth) {
     				oldStack.stack.stackCTX = oldStack.stack.stackCTX.andNot(ctx);
-    				throwInstruction = true;
+					throwInstruction = true;
     				oldStack.setPC(pc.simplify(oldStack.stack.stackCTX));
     			}
     		} else {

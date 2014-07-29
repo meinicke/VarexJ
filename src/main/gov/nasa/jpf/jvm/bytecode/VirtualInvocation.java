@@ -166,6 +166,9 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			ClassInfo cci = ti.getClassInfo(objRef);
 			if (lastCalleeCi != cci) { // callee ClassInfo has changed
 				lastCalleeCi = cci;
+				if (cci == null) {
+					System.out.println("Class not found for " + mname);
+				}
 				invokedMethod = cci.getMethod(mname, true);
 				// here we could catch the NoSuchMethodError
 				if (invokedMethod == null) {

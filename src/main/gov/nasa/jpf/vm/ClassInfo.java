@@ -1916,7 +1916,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     id = sei.getObjectRef();  // kind of a misnomer, it's really an id    
     uniqueId = ((long)classLoader.getId() << 32) | id;
     
-    eiClsObj.setIntField(ctx, ID_FIELD, id);      
+    eiClsObj.setIntField(FeatureExprFactory.True(), ID_FIELD, id);      
     
     return sei;
   }

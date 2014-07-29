@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
+import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
 import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
@@ -34,17 +35,25 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class ATHROW extends JVMInstruction {
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    int objref = frame.pop(ctx).getValue();
+		Conditional<Integer> objref = frame.pop(ctx);
+		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    if (objref == MJIEnv.NULL) {
-      return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
-    }
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objref) {
 
-    return new One<>(ti.throwException(ctx, objref));
-  }
+				if (objref == MJIEnv.NULL) {
+					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
+				}
+
+				return new One<>(ti.throwException(ctx, objref));
+			}
+
+		});
+
+	}
 
   public int getByteCode () {
     return 0xBF;

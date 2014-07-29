@@ -1965,6 +1965,10 @@ pw.print(stack);
 //    stack.incrTop(ctx, -2);
 //    top() -=2;
   }
+  
+  public <T> void push (FeatureExpr ctx, Conditional<T> v, boolean ref){
+	  stack.push(ctx, v, ref);
+  }
 
   public <T> void push (FeatureExpr ctx, Conditional<T> v){
 	  stack.push(ctx, v, false);

@@ -285,7 +285,7 @@ public class StackHandler implements Cloneable {
 			if (locals[index] == null) {
 				return false;
 			}
-			return locals[index].mapf(FeatureExprFactory.True(), new IsRefLocal()).simplify().getValue();
+			return locals[index].mapf(FeatureExprFactory.True(), new IsRefLocal()).simplifyValues().getValue();
 		} else {
 			final int i = index - locals.length;
 			return stack.map(new Function<Stack, Boolean>() {

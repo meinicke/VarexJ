@@ -477,6 +477,13 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 
+	@Test
+	public void staticMethodTest() throws Exception {
+		if (!RUN_WITH_JPF || verifyUnhandledException(Exception.class.getName(), JPF_CONFIGURATION)) {
+			StringBuilder b = new StringBuilder();
+			b.indexOf(" ");
+		}
+	}
 
 	private static boolean valid() {
 		return a;
