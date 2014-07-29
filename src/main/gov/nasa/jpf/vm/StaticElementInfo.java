@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.HashData;
 
 /**

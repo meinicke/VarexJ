@@ -19,8 +19,8 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.NativeStackFrame;
 import gov.nasa.jpf.vm.StackFrame;

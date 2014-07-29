@@ -1,4 +1,4 @@
-package gov.nasa.jpf.jvm.bytecode.extended;
+package cmu.conditional;
 
 import java.util.Arrays;
 import java.util.LinkedList;

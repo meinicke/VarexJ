@@ -18,7 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import cmu.conditional.Conditional;
 
 
 public abstract class SerializingStateSet implements StateSet {

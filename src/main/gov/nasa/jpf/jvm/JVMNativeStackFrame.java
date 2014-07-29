@@ -19,7 +19,7 @@
 
 package gov.nasa.jpf.jvm;
 
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativeStackFrame;
 import gov.nasa.jpf.vm.StackFrame;

@@ -19,7 +19,6 @@
 package gov.nasa.jpf.vm.serialize;
 
 
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.ArrayObjectQueue;
 import gov.nasa.jpf.util.BitArray;
 import gov.nasa.jpf.util.FinalBitSet;
@@ -48,6 +47,8 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.HashMap;
 import java.util.List;
+
+import cmu.conditional.Conditional;
 
 
 /**

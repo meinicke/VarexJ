@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
+import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;

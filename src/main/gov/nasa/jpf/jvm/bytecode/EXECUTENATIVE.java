@@ -20,7 +20,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import gov.nasa.jpf.jvm.JVMInstruction;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.NativeMethodInfo;
@@ -28,6 +27,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.lang.reflect.Method;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**

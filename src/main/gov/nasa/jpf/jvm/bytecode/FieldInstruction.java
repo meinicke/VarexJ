@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.Choice;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.jvm.JVMInstruction;
-import gov.nasa.jpf.jvm.bytecode.extended.Choice;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;

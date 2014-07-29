@@ -19,8 +19,6 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.BitSet64;
 import gov.nasa.jpf.util.FixedBitSet;
 import gov.nasa.jpf.util.HashData;
@@ -34,6 +32,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 

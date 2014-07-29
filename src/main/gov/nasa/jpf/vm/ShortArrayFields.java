@@ -18,12 +18,13 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
+
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 
 /**
  * element values for short[] objects

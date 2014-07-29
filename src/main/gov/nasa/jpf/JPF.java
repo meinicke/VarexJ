@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf;
 
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.report.Publisher;
 import gov.nasa.jpf.report.PublisherExtension;
 import gov.nasa.jpf.report.Reporter;
@@ -38,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 

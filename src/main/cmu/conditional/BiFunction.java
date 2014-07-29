@@ -1,4 +1,4 @@
-package gov.nasa.jpf.jvm.bytecode.extended;
+package cmu.conditional;
 /**
  * 
  * @author Jens Meinicke

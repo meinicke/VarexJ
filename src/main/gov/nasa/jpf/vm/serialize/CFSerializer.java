@@ -19,8 +19,6 @@
 
 package gov.nasa.jpf.vm.serialize;
 
-import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -30,6 +28,8 @@ import gov.nasa.jpf.vm.ThreadList;
 
 import java.util.Iterator;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 

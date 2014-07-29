@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.jvm.bytecode.extended.Choice;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
+import cmu.conditional.Choice;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;

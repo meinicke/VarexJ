@@ -21,7 +21,6 @@ package gov.nasa.jpf.vm.serialize;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
 import gov.nasa.jpf.util.FieldSpec;
 import gov.nasa.jpf.util.FinalBitSet;
 import gov.nasa.jpf.util.JPFLogger;
@@ -42,6 +41,8 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import cmu.conditional.Conditional;
 
 /**
  * a serializer that uses Abstraction objects stored as field attributes to

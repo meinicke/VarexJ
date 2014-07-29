@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;

@@ -19,17 +19,17 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.jvm.bytecode.extended.BiFunction;
-import gov.nasa.jpf.jvm.bytecode.extended.Choice;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.Function;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.PrintUtils;
 
 import java.io.PrintStream;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.Choice;
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -69,7 +69,7 @@ public class CharArrayFields extends ArrayFields {
 	}
 
 	public int arrayLength() {
-		return values.map(new ArrayLength()).simplifyValues().getValue();
+		return values.map(new ArrayLength()).simplifyValues().getValue(true);// TODO jens remove true
 	}
 	
 	private static final class ArrayLength implements Function<char[], Integer> {

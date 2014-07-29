@@ -18,14 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-//
-// Contributed by Peter C. Dillinger and the Georgia Tech Research Corporation
-//
-// Portions drawn from public domain work by Bob Jenkins, May 2006
-//
-// Modified by Peter C. Dillinger working under Mission Critical Technologies
-//
+import cmu.conditional.Conditional;
 
 //import gov.nasa.jpf.util.LongVector;
 

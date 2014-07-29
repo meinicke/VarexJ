@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.jvm.bytecode.extended.Choice;
-import gov.nasa.jpf.jvm.bytecode.extended.Conditional;
-import gov.nasa.jpf.jvm.bytecode.extended.One;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.PrintUtils;
@@ -28,6 +25,9 @@ import gov.nasa.jpf.util.PrintUtils;
 import java.io.PrintStream;
 import java.util.Arrays;
 
+import cmu.conditional.Choice;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**

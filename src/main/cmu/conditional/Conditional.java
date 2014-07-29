@@ -1,4 +1,4 @@
-package gov.nasa.jpf.jvm.bytecode.extended;
+package cmu.conditional;
 import gov.nasa.jpf.JPF;
 
 import java.util.HashMap;
