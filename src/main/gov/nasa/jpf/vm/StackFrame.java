@@ -1277,7 +1277,7 @@ public int nLocals;
 
     Object bAnn = null, cAnn = null;
     int ts, td;
-    int t = top();    
+    int t = attrs == null ? -1 : top();    
     stack.dup2_x1(ctx);
 
     ts=t; td = t+2;                              // ts=top, td=top+2

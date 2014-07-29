@@ -162,7 +162,7 @@ public class NATIVERETURN extends ReturnInstruction {
         break;
 
       case Types.T_LONG:
-        fr.pushLong(((Long)ret).longValue());
+        fr.push(ctx, new One<>(((Long)ret).longValue()));
         retSize=2;
         break;
 
@@ -173,7 +173,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
       case Types.T_DOUBLE:
         lval = Types.doubleToLong(((Double) ret).doubleValue());
-        fr.pushLong(lval);
+        fr.push(ctx, new One<>(lval));
         retSize=2;
         break;
 
