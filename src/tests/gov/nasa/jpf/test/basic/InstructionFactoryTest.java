@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import org.junit.Test;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -53,7 +54,7 @@ public class InstructionFactoryTest extends TestJPF {
       System.out.println(" ..but we negate it just for kicks..");
       r = -r;
 
-      frame.pushDouble(r);
+      frame.push(ctx, new One<>(r));
 
       return getNext(ctx, ti);
     }

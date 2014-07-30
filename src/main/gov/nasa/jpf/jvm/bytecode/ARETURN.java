@@ -18,7 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -48,23 +51,31 @@ public class ARETURN extends ReturnInstruction {
     frame.pushRef(ctx, ret);
   }
 
-  public int getReturnValue () {
-    return ret.getValue();
+  public Conditional<Integer> getReturnValue () {
+    return ret;
   }
   
-  public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
-    if (!isCompleted(ti)) { // we have to pull it from the operand stack
-      StackFrame frame = ti.getTopFrame();
-      ret = frame.peek(ctx);
-    }
-    
-    if (ret.getValue() == MJIEnv.NULL) {
-      return null;
-    } else {
-      return ti.getElementInfo(ret.getValue());
-    }
-  }
-  
+	public Object getReturnValue(FeatureExpr ctx, final ThreadInfo ti) {
+		if (!isCompleted(ti)) { // we have to pull it from the operand stack
+			StackFrame frame = ti.getTopFrame();
+			ret = frame.peek(ctx);
+		}
+
+		return ret.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<ElementInfo>>() {
+
+			@Override
+			public One<ElementInfo> apply(FeatureExpr ctx, Integer ret) {
+				if (ret == MJIEnv.NULL) {
+					return new One<>(null);
+				} else {
+					return new One<>(ti.getElementInfo(ret));
+				}
+			}
+
+		});
+
+	}
+
   public int getByteCode () {
     return 0xB0;
   }

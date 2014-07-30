@@ -98,8 +98,8 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 	}
 
 	@Override
-	public int peekIndex(FeatureExpr ctx, ThreadInfo ti) {
-		return ti.getTopFrame().peek(ctx, 1).getValue();
+	public Conditional<Integer> peekIndex(FeatureExpr ctx, ThreadInfo ti) {
+		return ti.getTopFrame().peek(ctx, 1);
 	}
 
 	protected Conditional<Instruction> checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei) {

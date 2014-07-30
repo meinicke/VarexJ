@@ -133,7 +133,7 @@ public class JVMStackFrameTest extends TestJPF {
     JVMStackFrame frame = new JVMStackFrame(0, 2);
 
     long value = 0x123456780ABCDEFL;
-    frame.pushLong(value);
+    frame.push(FeatureExprFactory.True(), new One<>(value));
 
     Object obj_Long = frame.getLocalValueObject(new LocalVarInfo("testLong", "J", "J", 0, 0, 0));
     assertTrue(obj_Long != null);
@@ -158,7 +158,7 @@ public class JVMStackFrameTest extends TestJPF {
 
     double value = Math.PI;
 
-    frame.pushDouble(value);
+    frame.push(FeatureExprFactory.True(), new One<>(value));
 
     Object obj_Double = frame.getLocalValueObject(new LocalVarInfo("testDouble", "D", "D", 0, 0, frame.getTopPos() - 1));
     assertTrue(obj_Double != null);

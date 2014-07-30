@@ -109,8 +109,8 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 	// wouldn't really be required for loads, but this is a general
 	// ArrayInstruction API
 	@Override
-	public int peekIndex(FeatureExpr ctx, ThreadInfo ti) {
-		return ti.getTopFrame().peek(ctx).getValue();
+	public Conditional<Integer> peekIndex(FeatureExpr ctx, ThreadInfo ti) {
+		return ti.getTopFrame().peek(ctx);
 	}
 
 	protected abstract void push(FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException;

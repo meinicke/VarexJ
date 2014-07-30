@@ -104,7 +104,7 @@ public class JVMStackFrame extends StackFrame {
 	}
 
 	public void setLongArgumentLocal(int idx, long v, Object attr) {
-		setLongLocalVariable(idx, v);
+		setLongLocalVariable(TRUE, idx, v);
 		if (attr != null) {
 			setLocalAttr(idx, attr);
 		}

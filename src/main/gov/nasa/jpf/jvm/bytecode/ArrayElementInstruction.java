@@ -34,15 +34,15 @@ public abstract class ArrayElementInstruction extends ArrayInstruction {
   protected Conditional<Integer> index; // the accessed element
 
   // we need this to be abstract because of the LongArrayStore insns
-  abstract public int peekIndex (FeatureExpr ctx, ThreadInfo ti);
+  abstract public Conditional<Integer> peekIndex (FeatureExpr ctx, ThreadInfo ti);
   
   
   
-  public int getIndex (FeatureExpr ctx, ThreadInfo ti){
+  public Conditional<Integer> getIndex (FeatureExpr ctx, ThreadInfo ti){
     if (!isCompleted(ti)){
       return peekIndex(ctx, ti);
     } else {
-      return index.getValue();
+      return index;
     }
   }
   
@@ -61,7 +61,7 @@ public abstract class ArrayElementInstruction extends ArrayInstruction {
   //--- element access related POR
   
   protected boolean createAndSetArrayCG ( ElementInfo ei, ThreadInfo ti,
-                                int aref, int idx, boolean isRead) {
+                                int aref, Conditional<Integer> conditional, boolean isRead) {
     // unfortunately we can't do the field filtering here because
     // there is no field info for array instructions - the reference might
     // have been on the operand-stack for a while, and the preceeding

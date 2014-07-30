@@ -107,10 +107,10 @@ public class INVOKECG extends JVMInstruction {
           } else if (a instanceof Integer){
             frame.push(ctx, (Integer)a, false);
           } else if (a instanceof Long){
-            frame.pushLong((Long)a);
+            frame.push(ctx, new One<>((Long)a));
             isLong = true;
           } else if (a instanceof Double){
-            frame.pushLong(Types.doubleToLong((Double)a));
+            frame.push(ctx, new One<>(Types.doubleToLong((Double)a)));
             isLong = true;
           } else if (a instanceof Byte){
             frame.push(ctx, (Byte)a, false);

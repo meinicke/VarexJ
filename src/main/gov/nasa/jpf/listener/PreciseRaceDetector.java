@@ -233,7 +233,7 @@ public class PreciseRaceDetector extends PropertyListenerAdapter {
 
           // these insns have been through their top half since they created CGs, but they haven't
           // removed the operands from the stack
-          int idx = ainsn.peekIndex(FeatureExprFactory.True(), ti);
+          int idx = ainsn.peekIndex(FeatureExprFactory.True(), ti).getValue();
 
           candidate = ArrayElementRace.check(candidate, ti, ainsn, ei, idx);
         }

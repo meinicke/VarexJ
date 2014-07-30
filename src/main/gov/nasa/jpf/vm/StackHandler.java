@@ -214,11 +214,6 @@ public class StackHandler implements Cloneable {
 		stack = stack.simplify();
 	}
 
-	// TODO remove
-	public void setLocal(final int index, final int value, final boolean isRef) {
-		locals[index] = new One<>(new Entry(value, isRef));
-	}
-
 	public void setLocal(FeatureExpr ctx, final int index, final Conditional<Integer> value, final boolean isRef) {
 		value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
@@ -274,38 +269,6 @@ public class StackHandler implements Cloneable {
 		}
 	}
 
-	// TODO remove
-	public boolean isRefLocal(final int index) {
-		if (index < 0) {
-			return false;
-		}
-
-		if (index < locals.length) {
-			if (locals[index] == null) {
-				return false;
-			}
-			return locals[index].mapf(FeatureExprFactory.True(), new IsRefLocal()).simplifyValues().getValue();
-		} else {
-			final int i = index - locals.length;
-			return stack.map(new Function<Stack, Boolean>() {
-
-				@Override
-				public Boolean apply(final Stack stack) {
-					return stack.isRefIndex(i);
-				}
-
-			}).simplify().getValue();
-		}
-	}
-	
-	private static final class IsRefLocal implements BiFunction<FeatureExpr, Entry, Conditional<Boolean>> {
-		@Override
-		public Conditional<Boolean> apply(final FeatureExpr x, final Entry y) {
-			return new One<>(y.isRef);
-		}
-	}
-
-	// TODO check calls, might iterate over stack, too.
 	// TODO change to conditional
 	public boolean isRefLocal(FeatureExpr ctx, final int index) {
 		if (index < 0) {
@@ -316,7 +279,7 @@ public class StackHandler implements Cloneable {
 			if (locals[index] == null) {
 				return false;
 			}
-			return locals[index].simplify(ctx).map(new IsRefLocal2()).simplifyValues().getValue(true);// TODO bad simplify
+			return locals[index].simplify(ctx).map(new IsRefLocal()).simplifyValues().getValue();
 		} else {
 			final int i = index - locals.length;
 			return stack.simplify(ctx).map(new Function<Stack, Boolean>() {
@@ -330,7 +293,7 @@ public class StackHandler implements Cloneable {
 		}
 	}
 	
-	private static final class IsRefLocal2 implements Function<Entry, Boolean> {
+	private static final class IsRefLocal implements Function<Entry, Boolean> {
 		@Override
 		public Boolean apply(final Entry y) {
 			return y.isRef;
@@ -458,7 +421,7 @@ public class StackHandler implements Cloneable {
 
 			}
 		}).simplifyValues();
-		stack = stack.simplify();// TODO can be avoided
+		stack = stack.simplify();
 		return result;
 	}
 
@@ -540,16 +503,24 @@ public class StackHandler implements Cloneable {
 		}).simplifyValues().getValue();
 	}
 
-	// TODO remove
-	public void set(final int offset, final int value, final boolean isRef) {
-		stack.map(new Function<Stack, Object>() {
+	public void set(final FeatureExpr ctx, final int offset, final int value, final boolean isRef) {
+		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
-			public Object apply(final Stack y) {
-				y.set(offset, value, isRef);
-				return null;
+			public Conditional<Stack> apply(FeatureExpr f, Stack stack) {
+				if (f.isContradiction()) {
+					return new One<>(stack);
+				}
+				Stack clone = stack.copy();
+				clone.set(offset, value, isRef);
+				if (f.isTautology()) {
+					return new One<>(clone);
+				}
+				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
 			}
-		});
+			
+		}).simplify();
+
 	}
 
 	public Conditional<Integer> getTop() {

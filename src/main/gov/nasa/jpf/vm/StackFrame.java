@@ -293,7 +293,7 @@ public int nLocals;
   public boolean includesReferenceOperand (int nTopSlots, int objRef){
 
     for (int i=0, j=top()-nTopSlots+1; i<nTopSlots && j>=0; i++, j++) {
-      if (stack.isRefLocal(j) && (stack.getLocal(TRUE, j).getValue().intValue() == objRef)){
+      if (stack.isRefLocal(TRUE, j) && (stack.getLocal(TRUE, j).getValue().intValue() == objRef)){
         return true;
       }
     }
@@ -307,7 +307,7 @@ public int nLocals;
   public boolean includesReferenceOperand (int objRef){
 
     for (int i=stackBase; i<=top(); i++) {
-    	if (stack.isRefLocal(i) && (stack.getLocal(TRUE, i).getValue().intValue() == objRef)){
+    	if (stack.isRefLocal(TRUE, i) && (stack.getLocal(TRUE, i).getValue().intValue() == objRef)){
         return true;
       }
     }
@@ -344,7 +344,7 @@ public int nLocals;
     int nArgSlots = miCallee.getArgumentsSize();
 
     for (int i=top()-1; i>=top()-nArgSlots; i--){
-      if (stack.isRefLocal(i)){
+      if (stack.isRefLocal(TRUE, i)){
         visitor.processReference(stack.getLocal(TRUE, i).getValue());
       }
     }
@@ -362,7 +362,7 @@ public int nLocals;
 //    int i = top()-offset;
 //    stack.get(i) = v;
 //  isRef.set(i, isRefValue);
-    stack.set(offset, v, isRefValue);
+    stack.set(TRUE, offset, v, isRefValue);
   }
 
   
@@ -918,11 +918,11 @@ public int nLocals;
 
   public void setLocalVariable (FeatureExpr ctx, int index, int v){
     // Hmm, should we treat this an error?
-    if (stack.isRefLocal(index) && stack.getLocal(ctx, index).getValue().intValue() != MJIEnv.NULL){
+    if (stack.isRefLocal(ctx, index) && stack.getLocal(ctx, index).getValue().intValue() != MJIEnv.NULL){
       VM.getVM().getSystemState().activateGC();      
     }
     
-    stack.setLocal(index, v, false);
+    stack.setLocal(ctx, index, v, false);
     
 //    stack.get(index) = v;
 //    isRef.clear(index);
@@ -932,15 +932,15 @@ public int nLocals;
     setLocalVariable( ctx, index, Float.floatToIntBits(f));
   }
 
-  public void setDoubleLocalVariable (int index, double f){
-    setLongLocalVariable( index, Double.doubleToLongBits(f));
+  public void setDoubleLocalVariable (FeatureExpr ctx, int index, double f){
+    setLongLocalVariable(ctx, index, Double.doubleToLongBits(f));
   }
 
   
   // <2do> replace with non-ref version
   public void setLocalVariable (FeatureExpr ctx, int index, Conditional<Integer> v, boolean ref) {
     // <2do> activateGc should be replaced by local refChanged
-    boolean activateGc = ref || (stack.isRefLocal(index) && (stack.getLocal(ctx, index).getValue().intValue() != MJIEnv.NULL));
+    boolean activateGc = ref || (stack.isRefLocal(ctx, index) && (stack.getLocal(ctx, index).getValue().intValue() != MJIEnv.NULL));
 
     stack.setLocal(ctx, index, v, ref);
 //    stack.get(index) = v;
@@ -955,7 +955,7 @@ public int nLocals;
     return stack.getLocal(ctx, i);
   }
 
-  public int getLocalVariable (String name) {
+  public int getLocalVariable (String name) {//JM UNUSED
     int idx = getLocalVariableSlotIndex(name);
     if (idx >= 0) {
       return getLocalVariable(TRUE, idx).getValue();
@@ -976,8 +976,8 @@ public int nLocals;
   }
 
 
-  public boolean isLocalVariableRef (int idx) {
-    return stack.isRefLocal(idx);
+  public boolean isLocalVariableRef (FeatureExpr ctx, int idx) {
+    return stack.isRefLocal(ctx, idx);
   }
 
   public String getLocalVariableType (String name) {
@@ -1041,22 +1041,22 @@ public int nLocals;
 
   public void visitReferenceSlots (ReferenceProcessor visitor){ 
     for (int i=0; i>=0 && i<=top(); i++){
-    	if (stack.isRefLocal(i)) {
+    	if (stack.isRefLocal(TRUE, i)) {
     		visitor.processReference(stack.getLocal(TRUE, i).getValue());
     	}
     }
   }
 
-  public void setLongLocalVariable (int index, long v) { // TODO implement
+  public void setLongLocalVariable (FeatureExpr ctx, int index, long v) {//JM UNUSED
     // WATCH OUT: apparently, slots can change type, so we have to
     // reset the reference flag (happened in JavaSeq)
 
-    stack.setLocal(index, Types.hiLong(v), false);// = Types.hiLong(v);
+    stack.setLocal(ctx, index, Types.hiLong(v), false);// = Types.hiLong(v);
 //    stack.setRef(index, false);
 //    isRef.clear(index);
 
     index++;
-    stack.setLocal(index, Types.loLong(v), false);
+    stack.setLocal(ctx, index, Types.loLong(v), false);
 //    stack.setRef(index, false);
 //    stack.get(index) = Types.loLong(v);
 //    isRef.clear(index);
@@ -1066,11 +1066,11 @@ public int nLocals;
     return Types.intsToLong(stack.getLocal(ctx, idx + 1).getValue(), stack.getLocal(ctx, idx).getValue());
   }
   
-  public double getDoubleLocalVariable (int idx) {
+  public double getDoubleLocalVariable (int idx) {//JM UNUSED
     return Types.intsToDouble(stack.getLocal(TRUE, idx + 1).getValue(), stack.getLocal(TRUE, idx).getValue());
   }
 
-  public float getFloatLocalVariable (int idx) {
+  public float getFloatLocalVariable (int idx) {//JM UNUSED
     int bits = stack.getLocal(TRUE, idx).getValue();
     return Float.intBitsToFloat(bits);
   }
@@ -1120,7 +1120,7 @@ public int nLocals;
     return pc;
   }
 
-  public void advancePC() {// TODO ???
+  public void advancePC() {
     int i = pc.getValue().getInstructionIndex() + 1;
     if (i < mi.getNumberOfInstructions()) {
       pc = new One<>(mi.getInstruction(i));
@@ -1184,9 +1184,7 @@ public int nLocals;
         attrs[i] = null;
       }
     }
-//    stack.setTop(ctx, stackBase-1);
     stack.clear(ctx);
-//    top() = stackBase-1;
   }
   
   // this is callerSlots deep copy
@@ -1545,7 +1543,7 @@ public int nLocals;
     }
     **/
     for (int i = 0; i <= top(); i++) {
-      if (stack.isRefLocal(i)) {
+      if (stack.isRefLocal(TRUE, i)) {
         int objref = stack.getLocal(TRUE, i).getValue();
         if (objref != MJIEnv.NULL) {
           heap.markThreadRoot(objref, tid);
@@ -1600,7 +1598,7 @@ public int nLocals;
       pw.print( "\t    [");
       pw.print(i);
       pw.print("] ");
-      if (stack.isRefLocal(i)) {
+      if (stack.isRefLocal(TRUE, i)) {
         pw.print( "@");
       }
       pw.print( stack.getLocal(TRUE, i).getValue());
@@ -1681,7 +1679,7 @@ pw.print(stack);
         }
       }
 
-      if (stack.isRefLocal(i)){
+      if (stack.isRefLocal(TRUE, i)){
         PrintUtils.printReference(ps, stack.getLocal(TRUE, i).getValue());
       } else {
         ps.print(stack.getLocal(TRUE, i).getValue());
@@ -1717,11 +1715,6 @@ pw.print(stack);
 
   public Conditional<Float> peekFloat(FeatureExpr ctx) {
 	  return stack.peekFloat(ctx, 0);
-//    return Float.intBitsToFloat(stack.peek(ctx).getValue());
-  }
-
-  public float peekFloat (int offset){
-    return Float.intBitsToFloat(stack.peek(TRUE, offset).getValue());    
   }
   
   public double peekDouble(FeatureExpr ctx) {
@@ -1730,7 +1723,6 @@ pw.print(stack);
   
   public double peekDouble (FeatureExpr ctx, int offset){
 	 return stack.peekDouble(ctx, offset).getValue();
-//	  return Types.intsToDouble( stack.peek(ctx, offset).getValue(), stack.peek(ctx, offset + 1).getValue());
   }
   
   public Conditional<Long> peekLong (FeatureExpr ctx) {
@@ -1741,36 +1733,13 @@ pw.print(stack);
 	  return stack.peekLong(ctx, offset);
 //    return Types.intsToLong( stack.peek(ctx, offset).getValue(), stack.peek(ctx, offset + 1).getValue());
   }
-  
-  /**
-   * Use: {@link StackFrame#push(FeatureExpr, Conditional)}.
-   * @param v
-   */
-  @Deprecated
-  public void pushLong (long v) {
-	  stack.push(TRUE, v);
-//    push(TRUE, new One<>((int) (v>>32)));
-//    push(TRUE, new One<>((int) v));	  
-  }
-
-
-  /**
-   * Use: {@link StackFrame#push(FeatureExpr, Conditional)}.
-   * @param v
-   */
-  @Deprecated
-  public void pushDouble (double v) {
-    stack.push(TRUE, v);
-//    push(TRUE, new One<>((int) (l>>32)));
-//    push(TRUE, new One<>((int) l));
-  }
 
 //  public void pushFloat (float v) {
 //	  stack.push(TRUE, v);  
 //    push(TRUE, new One<>(Float.floatToIntBits(v)));
 //  }
   
-  public Conditional<Double> popDouble (FeatureExpr ctx) {// TODO
+  public Conditional<Double> popDouble (FeatureExpr ctx) {
       
 //    int lo = stack.pop(ctx).getValue();//slots[i--];
 //    int hi = stack.pop(ctx).getValue();//slots[i--];
@@ -2035,7 +2004,7 @@ pw.print(stack);
   }
   
   public void setResult (long r, Object attr){
-    pushLong(r);
+    push(TRUE, new One<>(r));
     if (attr != null){
       setLongOperandAttr(attr);
     }    

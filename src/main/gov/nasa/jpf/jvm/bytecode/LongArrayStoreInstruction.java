@@ -53,8 +53,8 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
   }
 
   @Override
-  public int peekIndex(FeatureExpr ctx, ThreadInfo ti){
-    return ti.getTopFrame().peek(ctx, 2).getValue();
+  public Conditional<Integer> peekIndex(FeatureExpr ctx, ThreadInfo ti){
+    return ti.getTopFrame().peek(ctx, 2);
   }
   
   public void accept(InstructionVisitor insVisitor) {
