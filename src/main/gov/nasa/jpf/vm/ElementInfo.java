@@ -1402,9 +1402,9 @@ public abstract class ElementInfo implements Cloneable {
 //    
 //    return res == null ? 0 : res.getValue();
   }
-  public long getLongElement(int idx) {
+  public Conditional<Long> getLongElement(int idx) {
     checkArray(idx);
-    return fields.getLongValue(idx).getValue();
+    return fields.getLongValue(idx);
   }
   public float getFloatElement(int idx) {
     checkArray(idx);
@@ -1516,7 +1516,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public long[] asLongArray() {
+  public Conditional<Long>[] asLongArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asLongArray();
     } else {

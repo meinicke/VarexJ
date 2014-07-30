@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -144,6 +145,7 @@ public class ObjectConverter {
 
   }
 
+  // TODO jens implement all Types
   private static int getJPFArrayRef(FeatureExpr ctx, MJIEnv env, Object javaArr) throws NoSuchFieldException, IllegalAccessException {
         
     Class arrayElementClass = javaArr.getClass().getComponentType();
@@ -199,10 +201,10 @@ public class ObjectConverter {
     else if (arrayElementClass == Long.TYPE) {
       arrRef = env.newLongArray(javaArrLength);
       ElementInfo longArrRef = env.getModifiableElementInfo(arrRef);
-      long[] longArr = longArrRef.asLongArray();
+//      Conditional<Long>[] longArr = longArrRef.asLongArray();
 
       for (int i = 0; i < javaArrLength; i++) {
-        longArr[i] = Array.getLong(javaArr, i);
+    	  longArrRef.setLongElement(ctx, i, Array.getLong(javaArr, i));
       }
     }
     else if (arrayElementClass == Float.TYPE) {

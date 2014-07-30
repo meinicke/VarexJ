@@ -22,6 +22,9 @@ import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cmu.conditional.Choice;
 import cmu.conditional.Conditional;
@@ -34,25 +37,16 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class LongArrayFields extends ArrayFields {
 
   Conditional<Long>[] values;
+  
+  private final static One<Long> nullValue = new One<>(0l);
 
   public LongArrayFields (int length) {
     values = new Conditional[length];
-    for (int i = 0; i < values.length; i++) {
-		values[i] = new One<>(0l);
-	}
+    Arrays.fill(values, nullValue);
   }
 
-  public long[] asLongArray() {
-	  long[] array = new long[values.length];
-		int i = 0;
-		for (Conditional<Long> v : values) {
-			if (v == null) {
-				continue;
-			}
-			array[i++] = v.getValue();
-		}
-
-		return array;
+  public Conditional<Long>[] asLongArray() {
+	  return values;
   }
 
   protected void printValue(PrintStream ps, int idx){
@@ -71,9 +65,17 @@ public class LongArrayFields extends ArrayFields {
     return values.length * 8;
   }
 
-  public void appendTo (IntVector v) {
-    v.appendBits(asLongArray());
-  }
+	public void appendTo(IntVector v) {
+		List<Long> l = new ArrayList<>(values.length);
+		for (int i = 0; i < values.length; i++) {
+			l.addAll(values[i].toList());
+		}
+		long[] a = new long[l.size()];
+		for (int i = 0; i < l.size(); i++) {
+			a[i] = l.get(i);
+		}
+		v.appendBits(a);
+	}
 
   public LongArrayFields clone(){
     LongArrayFields f = (LongArrayFields)cloneFields();
@@ -86,14 +88,14 @@ public class LongArrayFields extends ArrayFields {
     if (o instanceof LongArrayFields) {
       LongArrayFields other = (LongArrayFields)o;
 
-      long[] v = asLongArray();
-      long[] vOther = other.asLongArray();
+      Conditional<Long>[] v = asLongArray();
+      Conditional<Long>[] vOther = other.asLongArray();
       if (v.length != vOther.length) {
         return false;
       }
 
       for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
+        if (!v[i].equals(vOther[i])) {
           return false;
         }
       }
@@ -121,7 +123,7 @@ public class LongArrayFields extends ArrayFields {
 
 
   public void hash(HashData hd) {
-    long[] v = asLongArray();
+    Conditional<Long>[] v = asLongArray();
     for (int i=0; i < v.length; i++) {
       hd.add(v[i]);
     }

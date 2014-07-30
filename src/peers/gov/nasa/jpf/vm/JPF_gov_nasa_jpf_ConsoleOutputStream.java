@@ -86,7 +86,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
   @MJI
   public void println____V (MJIEnv env, int objRef) {
 	  if (ThreadInfo.ctxOutput) {
-		  env.getVM().println("<> : " + NativeMethodInfo.CTX);
+		  env.getVM().println("<> : " + getCTXString(NativeMethodInfo.CTX));
 	  } else {
 		  env.getVM().println();
 	  }

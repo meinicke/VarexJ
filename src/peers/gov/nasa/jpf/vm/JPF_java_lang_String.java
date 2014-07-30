@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -32,9 +34,18 @@ public class JPF_java_lang_String extends NativePeer {
 
   
   @MJI
-  public int init___3CII__Ljava_lang_String_2 (MJIEnv env, int objRef, int valueRef, int offset, int count) {
-    char[] value = env.getCharArrayObject(valueRef).getValue();
-    String result = new String(value, offset, count);
+  public int init___3CII__Ljava_lang_String_2 (MJIEnv env, int objRef, int valueRef, final int offset, final int count) {
+    Conditional<char[]> value = env.getCharArrayObject(valueRef).simplify(NativeMethodInfo.CTX);
+    Conditional<String> result = value.map(new Function<char[], String>() {
+
+		@Override
+		public String apply(char[] value) {
+			return new String(value, offset, count);
+		}
+    	
+    });
+    
+    
     return env.newString(NativeMethodInfo.CTX, result);
   }
 
@@ -302,6 +313,7 @@ public class JPF_java_lang_String extends NativePeer {
 
     return -1;
   }
+ 
 
   @MJI
   public int lastIndexOf__I__I (MJIEnv env, int objref, int c) {

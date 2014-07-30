@@ -152,6 +152,10 @@ public class INVOKESTATIC extends InvokeInstruction {
       ClassInfo clsInfo = getClassInfo();
       if (clsInfo != null){
         MethodInfo callee = clsInfo.getMethod(mname, true);
+        if (callee == null) {
+        	throw new RuntimeException("Method " + mname + " in class " + clsInfo + " not found");
+        }
+        
         ClassInfo ciCallee = callee.getClassInfo(); // might be a superclass of ci, i.e. not what is referenced in the insn
         
         if (!ciCallee.isRegistered()){

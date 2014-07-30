@@ -1940,7 +1940,7 @@ public class ThreadInfo extends InfoObject
         	if (pc instanceof One) {
         		i = pc.getValue();
         	} else {
-	    		Map<Instruction, FeatureExpr> map = pc.toMap();
+	    		Map<Instruction, FeatureExpr> map = pc.simplify(ctx).toMap();// TODO jens why simplify (see AJSTATS)
 	    		int minPos = Integer.MAX_VALUE;
 	    		MethodInfo m = top.getMethodInfo();
 	    		if (map.size() == 1) {

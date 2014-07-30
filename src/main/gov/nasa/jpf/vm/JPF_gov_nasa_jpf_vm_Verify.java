@@ -453,8 +453,14 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   
   @MJI
   public static long getLongFromList___3J__J (MJIEnv env, int clsObjRef, int valArrayRef){
-    long[] values = env.getLongArrayObject(valArrayRef);
-    return getLongFromList( env, values);    
+    Conditional<Long>[] values = env.getLongArrayObject(valArrayRef);
+    long [] a = new long[values.length];
+	for (int i = 0; i < values.length; i++) {
+			a[i] = values[i].getValue();
+	}
+    
+    
+    return getLongFromList( env, a);    
   }
   
   @MJI

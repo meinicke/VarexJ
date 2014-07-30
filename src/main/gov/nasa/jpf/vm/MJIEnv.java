@@ -530,7 +530,7 @@ public class MJIEnv {
   }
 
   public long getLongArrayElement (int objref, int index) {
-    return heap.get(objref).getLongElement(index);
+    return heap.get(objref).getLongElement(index).getValue();
   }
 
   public void setLongField (FeatureExpr ctx, int objref, String fname, long val) {
@@ -913,9 +913,9 @@ public class MJIEnv {
     return a;
   }
 
-  public long[] getLongArrayObject (int objref) {
+  public Conditional<Long>[] getLongArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
-    long[] a = ei.asLongArray();
+    Conditional<Long>[] a = ei.asLongArray();
 
     return a;
   }

@@ -23,7 +23,9 @@ import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import cmu.conditional.Choice;
 import cmu.conditional.Conditional;
@@ -67,13 +69,17 @@ public IntArrayFields (int length) {
   }
 
   public void appendTo (IntVector v) {
-	  int [] a = new int[values.length];
+	 List<Integer> l = new ArrayList<>(values.length);
 	for (int i = 0; i < values.length; i++) {
-		// TODO jens this does not work with conditional values
-		for (Integer val : values[i].toList()) {
-			a[i] = val;
-		}
+		l.addAll(values[i].toList());
+//			a[i] = values[i].getValue();
 	}
+	
+	int[] a = new int[l.size()];
+	for (int i = 0; i < l.size(); i++) {
+		a[i] = l.get(i);
+	}
+	
     v.append(a);
   }
 

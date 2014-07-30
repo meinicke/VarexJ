@@ -213,7 +213,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a reference array");
 	}
 
-	public long[] asLongArray() {
+	public Conditional<Long>[] asLongArray() {
 		// overridden by subclass
 		throw new JPFException("not a long[]");
 	}

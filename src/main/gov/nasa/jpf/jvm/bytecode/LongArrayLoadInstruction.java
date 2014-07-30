@@ -32,7 +32,7 @@ public abstract class LongArrayLoadInstruction extends ArrayLoadInstruction {
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index)
                 throws ArrayIndexOutOfBoundsExecutiveException {
     e.checkArrayBounds(ctx, index);
-    frame.pushLong(e.getLongElement(index));
+    frame.push(ctx, e.getLongElement(index));
   }
   
   protected int getElementSize () {
