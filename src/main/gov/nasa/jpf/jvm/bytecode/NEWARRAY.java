@@ -99,9 +99,7 @@ public class NEWARRAY extends NewArrayInstruction {
 		sb.append("newarray ");
 		sb.append(getTypeName());
 		sb.append('[');
-		if (arrayLength.getValue() >= 0) {
-			sb.append(arrayLength);
-		}
+		sb.append(arrayLength);
 		sb.append(']');
 
 		return sb.toString();

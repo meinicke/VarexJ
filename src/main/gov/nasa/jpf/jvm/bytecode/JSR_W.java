@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -42,9 +43,16 @@ public class JSR_W extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    int tgtAdr = getNext(ctx, ti).getValue().getPosition();
+    Conditional<Integer> tgtAdr = getNext(ctx, ti).map(new Function<Instruction, Integer>() {
+
+		@Override
+		public Integer apply(Instruction i) {
+			return i.getPosition();
+		}
+    	
+    });
     
-    frame.push(ctx, new One<>(tgtAdr));
+    frame.push(ctx, tgtAdr);
 
     return new One<>(mi.getInstructionAt(target));
   }

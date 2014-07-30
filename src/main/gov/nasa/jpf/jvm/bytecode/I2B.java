@@ -36,10 +36,15 @@ public class I2B extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     Conditional<Integer> v = frame.pop(ctx);
     
-    frame.push(ctx, (byte) v.getValue().intValue(), false);
+    frame.push(ctx, mapr2(v, 0));
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return (byte)v1.intValue();
+	}
 
   public int getByteCode () {
     return 0x91;

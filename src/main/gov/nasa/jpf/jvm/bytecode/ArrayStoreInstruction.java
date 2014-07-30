@@ -31,7 +31,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * abstraction for all array store instructions
- *
+ * 
  * ... array, index, <value> => ...
  */
 public abstract class ArrayStoreInstruction extends ArrayElementInstruction implements StoreInstruction {
@@ -65,23 +65,30 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 				// don't set 'arrayRef' before we do the CG check (would kill loop optimization)
 				arrayRef = frame.pop(ctx);
 
-				Instruction xInsn = checkArrayStoreException(ctx, ti, e).getValue();
-				if (xInsn != null) {
-					return new One<>(xInsn);
-				}
-
-				return index.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+				Conditional<Instruction> xInsn = checkArrayStoreException(ctx, ti, e);
+				return xInsn.mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
 					@Override
-					public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
-						try {
-							setField(ctx, e, index);
-							e.setElementAttrNoClone(index, attr); // <2do> what if the value is the same but not the attr?
-							return getNext(ctx, ti);
-
-						} catch (ArrayIndexOutOfBoundsExecutiveException ex) { // at this point, the AIOBX is already processed
-							return new One<>(ex.getInstruction());
+					public Conditional<Instruction> apply(FeatureExpr ctx, Instruction xInsn) {
+						if (xInsn != null) {
+							return new One<>(xInsn);
 						}
+
+						return index.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+
+							@Override
+							public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
+								try {
+									setField(ctx, e, index);
+									e.setElementAttrNoClone(index, attr); // <2do> what if the value is the same but not the attr?
+									return getNext(ctx, ti);
+
+								} catch (ArrayIndexOutOfBoundsExecutiveException ex) { // at this point, the AIOBX is already processed
+									return new One<>(ex.getInstruction());
+								}
+							}
+
+						});
 					}
 
 				});

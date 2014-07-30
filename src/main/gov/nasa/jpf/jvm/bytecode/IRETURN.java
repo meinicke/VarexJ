@@ -48,8 +48,8 @@ public class IRETURN extends ReturnInstruction {
     ti.push(ctx, ret);
   }
   
-  public int getReturnValue () {
-    return ret.getValue();
+  public Conditional<Integer> getReturnValue () {
+    return ret;
   }
   
   public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
@@ -58,7 +58,7 @@ public class IRETURN extends ReturnInstruction {
       ret = frame.peek(ctx);
     }
 
-    return ret.getValue();
+    return ret;
   }
   
   public int getByteCode () {
