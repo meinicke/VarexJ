@@ -302,7 +302,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
       ei.setByteField(NativeMethodInfo.CTX, fi, val);
     } else {
-      ei.setByteElement(NativeMethodInfo.CTX, (int)fieldOffset, val);
+      ei.setByteElement(NativeMethodInfo.CTX, (int)fieldOffset, new One<>(val));
     }
   }
 
@@ -705,7 +705,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     }
     
     ElementInfo ei = env.getModifiableElementInfo(a.objRef);
-    ei.setByteElement(NativeMethodInfo.CTX, addr - a.startAdr, val);
+    ei.setByteElement(NativeMethodInfo.CTX, addr - a.startAdr, new One<>(val));
   }
   
   @MJI
@@ -750,11 +750,11 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getModifiableElementInfo(a.objRef);
 
     if (env.isBigEndianPlatform()){
-      ei.setByteElement(NativeMethodInfo.CTX,   addr, b0);
-      ei.setByteElement(NativeMethodInfo.CTX, addr+1, b1);
+      ei.setByteElement(NativeMethodInfo.CTX,   addr, new One<>(b0));
+      ei.setByteElement(NativeMethodInfo.CTX, addr+1, new One<>(b1));
     } else {
-      ei.setByteElement(NativeMethodInfo.CTX,   addr, b1);
-      ei.setByteElement(NativeMethodInfo.CTX, addr+1, b0);      
+      ei.setByteElement(NativeMethodInfo.CTX,   addr, new One<>(b1));
+      ei.setByteElement(NativeMethodInfo.CTX, addr+1, new One<>(b0));      
     }
   }
 
@@ -811,15 +811,15 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getModifiableElementInfo(a.objRef);
 
     if (env.isBigEndianPlatform()){
-      ei.setByteElement(NativeMethodInfo.CTX,   addr, b0);
-      ei.setByteElement(NativeMethodInfo.CTX, addr+1, b1);
-      ei.setByteElement(NativeMethodInfo.CTX, addr+2, b2);
-      ei.setByteElement(NativeMethodInfo.CTX, addr+3, b3);
+      ei.setByteElement(NativeMethodInfo.CTX,   addr, new One<>(b0));
+      ei.setByteElement(NativeMethodInfo.CTX, addr+1, new One<>(b1));
+      ei.setByteElement(NativeMethodInfo.CTX, addr+2, new One<>(b2));
+      ei.setByteElement(NativeMethodInfo.CTX, addr+3, new One<>(b3));
     } else {
-      ei.setByteElement(NativeMethodInfo.CTX,   addr, b3);
-      ei.setByteElement(NativeMethodInfo.CTX, addr+1, b2);
-      ei.setByteElement(NativeMethodInfo.CTX, addr+2, b1);
-      ei.setByteElement(NativeMethodInfo.CTX, addr+3, b0);
+      ei.setByteElement(NativeMethodInfo.CTX,   addr, new One<>(b3));
+      ei.setByteElement(NativeMethodInfo.CTX, addr+1, new One<>(b2));
+      ei.setByteElement(NativeMethodInfo.CTX, addr+2, new One<>(b1));
+      ei.setByteElement(NativeMethodInfo.CTX, addr+3, new One<>(b0));
     }
   }
 
@@ -894,24 +894,23 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     int offset = addr - a.startAdr;
     
     if (env.isBigEndianPlatform()){
-      ei.setByteElement(NativeMethodInfo.CTX,   offset, b0);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+1, b1);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+2, b2);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+3, b3);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+4, b4);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+5, b5);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+6, b6);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+7, b7);
-      
+      ei.setByteElement(NativeMethodInfo.CTX,   offset, new One<>(b0));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+1, new One<>(b1));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+2, new One<>(b2));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+3, new One<>(b3));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+4, new One<>(b4));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+5, new One<>(b5));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+6, new One<>(b6));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+7, new One<>(b7));
     } else {
-      ei.setByteElement(NativeMethodInfo.CTX,   offset, b7);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+1, b6);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+2, b5);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+3, b4);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+4, b3);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+5, b2);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+6, b1);
-      ei.setByteElement(NativeMethodInfo.CTX, offset+7, b0);
+      ei.setByteElement(NativeMethodInfo.CTX,   offset, new One<>(b7));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+1, new One<>(b6));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+2, new One<>(b5));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+3, new One<>(b4));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+4, new One<>(b3));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+5, new One<>(b2));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+6, new One<>(b1));
+      ei.setByteElement(NativeMethodInfo.CTX, offset+7, new One<>(b0));
     }
   }
 

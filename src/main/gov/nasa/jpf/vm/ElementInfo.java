@@ -1119,7 +1119,7 @@ public abstract class ElementInfo implements Cloneable {
   }
   public byte getByteField(FieldInfo fi) {
     if (fi.isByteField()){
-      return fields.getByteValue(fi.getStorageOffset()).getValue();
+      return fields.getByteValue(fi.getStorageOffset()).getValue().byteValue();
     } else {
       throw new JPFException("not a byte field: " + fi.getName());
     }
@@ -1330,10 +1330,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setBooleanValue(idx, value);
   }
-  public void setByteElement(FeatureExpr ctx, int idx, byte value){
+  public void setByteElement(FeatureExpr ctx, int idx, Conditional<Byte> value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setByteValue(ctx, idx, new One<>(value));
+    fields.setByteValue(ctx, idx, value);
   }
   public void setCharElement(FeatureExpr ctx, int idx, char value){
     checkArray(idx);

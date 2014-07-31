@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;
 import gov.nasa.jpf.vm.ByteArrayFields;
@@ -32,10 +34,17 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class BASTORE extends ArrayStoreInstruction {
 
-  byte value;
+  Conditional<Byte> value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = (byte)frame.pop(ctx).getValue().intValue();
+    value = frame.pop(ctx).map(new Function<Integer, Byte>() {
+
+		@Override
+		public Byte apply(Integer x) {
+			return x.byteValue();
+		}
+    	
+    });
   }
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
@@ -47,7 +56,7 @@ public class BASTORE extends ArrayStoreInstruction {
       ei.setByteElement(ctx, index, value);
 
     } else if (f instanceof BooleanArrayFields){
-      ei.setBooleanElement(index, value != 0 ? true : false);
+      ei.setBooleanElement(index, value.getValue() != 0 ? true : false);// TODO jens setBoolean(ctx, Conditional<Boolean>)
     }
 
   }
@@ -61,6 +70,6 @@ public class BASTORE extends ArrayStoreInstruction {
   }
   
   public byte getValue(){
-    return value;
+    return value.getValue();
   }
 }

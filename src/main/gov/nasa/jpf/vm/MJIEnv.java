@@ -397,7 +397,7 @@ public class MJIEnv {
 
 
   public void setByteArrayElement (FeatureExpr ctx, int objref, int index, byte value) {
-    heap.getModifiable(objref).setByteElement(ctx, index, value);
+    heap.getModifiable(objref).setByteElement(ctx, index, new One<>(value));
   }
 
   public byte getByteArrayElement (int objref, int index) {
@@ -982,7 +982,7 @@ public class MJIEnv {
   public int newByteArray (FeatureExpr ctx, byte[] buf){
     ElementInfo eiArray = heap.newArray(ctx, "B", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setByteElement( ctx, i, buf[i]);
+      eiArray.setByteElement( ctx, i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }

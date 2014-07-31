@@ -257,7 +257,7 @@ public class JSONObject{
 //        bytes[i] = vals[i].getDouble().byteValue();
 //      }
        for (int i = 0; i < vals.length; i++) {
-     	  arrayEI.setByteElement(ctx, i, vals[i].getDouble().byteValue());
+     	  arrayEI.setByteElement(ctx, i, new One<>(vals[i].getDouble().byteValue()));
        }
     } else if (arrayElementType.equals("short")) {
        arrayRef = env.newShortArray(vals.length);

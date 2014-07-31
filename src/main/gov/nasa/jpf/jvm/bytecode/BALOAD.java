@@ -34,16 +34,20 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  * ..., arrayref, index => ..., value
  */
 public class BALOAD extends ArrayLoadInstruction {
+	
+	private static final One<Byte> nullValue = new One<>((byte)0);
 
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
 
-    Conditional<Byte> value = new One<>((byte)0);
+    Conditional<Byte> value;
     Fields f = ei.getFields();
     if (f instanceof ByteArrayFields){
       value = ei.getByteElement(index);
     } else if (f instanceof BooleanArrayFields){
       value = new One<>((byte)(ei.getBooleanElement(index) ? 1 : 0));
+    } else {
+    	value = nullValue;
     }
 
     frame.push(ctx, value);
