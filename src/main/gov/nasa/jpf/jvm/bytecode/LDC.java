@@ -76,7 +76,7 @@ public class LDC extends JVMInstruction {
         // too bad we can't cache it, since location might change between different paths
         ElementInfo eiValue = ti.getHeap().newInternString(ctx, string, ti); 
         value = eiValue.getObjectRef();
-        frame.pushRef(value, ctx);
+        frame.pushRef(ctx, value);
         break;
 
       case INT:
@@ -100,7 +100,7 @@ public class LDC extends JVMInstruction {
           ci.registerClass(ctx, ti);
         }
 
-        frame.pushRef( ci.getClassObjectRef(), ctx);
+        frame.pushRef( ctx, ci.getClassObjectRef());
 
         break;
     }

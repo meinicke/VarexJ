@@ -101,7 +101,7 @@ public class INVOKECG extends JVMInstruction {
         
         if (a != null){
           if (a instanceof ObjRef){
-            frame.pushRef(((ObjRef)a).getReference(), ctx);
+            frame.pushRef(ctx, ((ObjRef)a).getReference());
           } else if (a instanceof Boolean){
             frame.push(ctx, (Boolean)a ? 1 : 0, false);
           } else if (a instanceof Integer){

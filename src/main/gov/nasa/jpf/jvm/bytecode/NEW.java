@@ -84,7 +84,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
 
     // pushes the return value onto the stack
     StackFrame frame = ti.getModifiableTopFrame();
-    frame.pushRef( objRef, ctx);
+    frame.pushRef( ctx, objRef);
 
     return getNext(ctx, ti);
   }

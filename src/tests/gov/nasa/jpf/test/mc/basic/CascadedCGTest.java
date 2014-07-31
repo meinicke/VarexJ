@@ -142,7 +142,7 @@ public class CascadedCGTest extends TestJPF {
               // restore old operand stack contents
               StackFrame frame = ti.getModifiableTopFrame();
               frame.pop(FeatureExprFactory.True());
-              frame.pushRef( getInsn.getLastThis(), FeatureExprFactory.True());
+              frame.pushRef( FeatureExprFactory.True(), getInsn.getLastThis());
             }
 
             cg = new IntChoiceFromSet("fieldReplace", 42, 43);

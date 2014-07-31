@@ -73,7 +73,7 @@ public class NEWARRAY extends NewArrayInstruction {
 				ElementInfo eiArray = heap.newArray(ctx, type, arrayLength, ti);
 				int arrayRef = eiArray.getObjectRef();
 
-				frame.pushRef(arrayRef, ctx);
+				frame.pushRef(ctx, arrayRef);
 
 				return getNext(ctx, ti);
 

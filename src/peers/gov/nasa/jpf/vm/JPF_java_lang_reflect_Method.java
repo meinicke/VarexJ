@@ -251,7 +251,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
           return false;
         } 
          
-        frame.pushRef(MJIEnv.NULL, NativeMethodInfo.CTX);
+        frame.pushRef(NativeMethodInfo.CTX, MJIEnv.NULL);
         continue;
       }
 

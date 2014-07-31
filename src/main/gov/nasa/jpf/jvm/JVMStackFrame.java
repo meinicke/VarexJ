@@ -77,7 +77,7 @@ public class JVMStackFrame extends StackFrame {
 	@Override
 	public void setExceptionReference(int exRef, FeatureExpr ctx) {
 		clearOperandStack(ctx);
-		pushRef(exRef, ctx);
+		pushRef(ctx, exRef);
 	}
 
 	// --- these are for setting up arguments from a VM / listener caller

@@ -91,7 +91,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
     int arrayRef = allocateArray(ti.getHeap(), type, arrayLengths, ti, 0);
 
     // put the result (the array reference) on the stack
-    frame.pushRef(arrayRef, ctx);
+    frame.pushRef(ctx, arrayRef);
 
     return getNext(ctx, ti);
   }

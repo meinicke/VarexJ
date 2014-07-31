@@ -1950,7 +1950,7 @@ pw.print(stack);
     //}
   }
 
-  public void pushRef (int ref, FeatureExpr ctx){
+  public void pushRef (FeatureExpr ctx, int ref){
 	  pushRef(ctx, new One<>(ref));
   }
   
@@ -1990,7 +1990,7 @@ pw.print(stack);
   //--- abstract argument & return passing that is shared between VM types
   
   public void setReferenceResult (int ref, Object attr){
-    pushRef(ref, TRUE);
+    pushRef(TRUE, ref);
     if (attr != null){
       setOperandAttr(attr);
     }
@@ -2047,7 +2047,7 @@ pw.print(stack);
   //--- VM independent exception handler setup
   
   public void setExceptionReference (int exRef, FeatureExpr ctx){
-    pushRef(exRef, TRUE);
+    pushRef(TRUE, exRef);
   }
   
   public int getExceptionReference (){

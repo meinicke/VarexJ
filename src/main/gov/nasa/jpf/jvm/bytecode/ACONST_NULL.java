@@ -37,7 +37,7 @@ public class ACONST_NULL extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    frame.pushRef(MJIEnv.NULL, ctx);
+    frame.pushRef(ctx, MJIEnv.NULL);
     
     return getNext(ctx, ti);
   }
