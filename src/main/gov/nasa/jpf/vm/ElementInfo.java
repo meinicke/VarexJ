@@ -1335,10 +1335,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setByteValue(ctx, idx, value);
   }
-  public void setCharElement(FeatureExpr ctx, int idx, char value){
+  public void setCharElement(FeatureExpr ctx, int idx, Conditional<Character> value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setCharValue(ctx, idx, new One<>(value));
+    fields.setCharValue(ctx, idx, value);
   }
   public void setShortElement(int idx, short value){
     checkArray(idx);

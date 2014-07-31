@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -30,10 +32,17 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class CASTORE extends ArrayStoreInstruction {
 
-  char value;
+  Conditional<Character> value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = (char)frame.pop(ctx).getValue().intValue();
+    value = frame.pop(ctx).map(new Function<Integer, Character>() {
+
+		@Override
+		public Character apply(Integer x) {
+			return (char)x.intValue();
+		}
+    	
+    });
   }
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {

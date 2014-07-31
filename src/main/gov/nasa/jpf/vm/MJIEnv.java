@@ -405,7 +405,7 @@ public class MJIEnv {
   }
 
   public void setCharArrayElement (FeatureExpr ctx, int objref, int index, char value) {
-    heap.getModifiable(objref).setCharElement(ctx, index, value);
+    heap.getModifiable(objref).setCharElement(ctx, index, new One<>(value));
   }
 
   public void setIntArrayElement (FeatureExpr ctx, int objref, int index, int value) {
@@ -893,7 +893,7 @@ public class MJIEnv {
   
   protected void method(FeatureExpr ctx, int objref, int idx, char value) {
 	  ElementInfo ei = getElementInfo(objref);
-	  ei.setCharElement(ctx, idx, value);
+	  ei.setCharElement(ctx, idx, new One<>(value));
   }
 
   public short[] getShortArrayObject (int objref) {
@@ -994,7 +994,7 @@ public class MJIEnv {
   public int newCharArray (FeatureExpr ctx, char[] buf){
     ElementInfo eiArray = heap.newArray(ctx, "C", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setCharElement(ctx, i, buf[i]);
+      eiArray.setCharElement(ctx, i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }
