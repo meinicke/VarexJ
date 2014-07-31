@@ -526,7 +526,7 @@ public class MJIEnv {
 
 
   public void setLongArrayElement (FeatureExpr ctx, int objref, int index, long value) {
-    heap.getModifiable(objref).setLongElement(ctx, index, value);
+    heap.getModifiable(objref).setLongElement(ctx, index, new One<>(value));
   }
 
   public long getLongArrayElement (int objref, int index) {
@@ -1054,7 +1054,7 @@ public class MJIEnv {
   public int newLongArray (long[] buf){
     ElementInfo eiArray = heap.newArray(null, "J", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setLongElement( null, i, buf[i]);
+      eiArray.setLongElement( null, i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }

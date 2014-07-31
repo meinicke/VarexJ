@@ -36,6 +36,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import java.util.HashMap;
 import java.util.Set;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -282,7 +283,7 @@ public class JSONObject{
 //      long[] longs = arrayEI.asLongArray();
       
       for (int i = 0; i < vals.length; i++) {
-    	  arrayEI.setLongElement(ctx, i, vals[i].getDouble().longValue());
+    	  arrayEI.setLongElement(ctx, i, new One<>(vals[i].getDouble().longValue()));
 //        longs[i] = vals[i].getDouble().longValue();
       }
     } else if (arrayElementType.equals("float")) {

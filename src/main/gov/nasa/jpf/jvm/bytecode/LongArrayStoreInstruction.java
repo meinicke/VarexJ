@@ -18,11 +18,12 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -36,7 +37,7 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
   protected void setField (FeatureExpr ctx, ElementInfo e, int index, long value)
                     throws ArrayIndexOutOfBoundsExecutiveException {
     e.checkArrayBounds(ctx, index);
-    e.setLongElement(ctx, index, value);
+    e.setLongElement(ctx, index, new One<>(value));
   }
 
   protected int getElementSize () {

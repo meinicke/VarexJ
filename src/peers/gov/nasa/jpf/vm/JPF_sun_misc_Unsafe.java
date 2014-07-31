@@ -18,9 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Conditional;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -486,7 +487,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
       ei.setLongField(NativeMethodInfo.CTX, fi, val);
     } else {
-      ei.setLongElement(NativeMethodInfo.CTX, (int)fieldOffset, val);
+      ei.setLongElement(NativeMethodInfo.CTX, (int)fieldOffset, new One<>(val));
     }
   }
 

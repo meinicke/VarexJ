@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -30,10 +31,10 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class LASTORE extends LongArrayStoreInstruction {
 
-  long value;
+  Conditional<Long> value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = frame.popLong(ctx).getValue();
+    value = frame.popLong(ctx);
   }
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {

@@ -2,6 +2,7 @@ package cmu.testprograms;
 
 import gov.nasa.jpf.util.test.TestJPF;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AJStatsTest extends TestJPF {
@@ -9,6 +10,7 @@ public class AJStatsTest extends TestJPF {
 	private static final String FM = "";
 	private static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\AJStats.jar", FM};
 
+// 	@Ignore 
  	@Test
 	public void ajStatsTest() {
 		if (verifyNoPropertyViolation(config)) {

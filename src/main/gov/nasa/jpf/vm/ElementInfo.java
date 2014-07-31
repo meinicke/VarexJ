@@ -1350,10 +1350,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setIntValue(ctx, idx, value);
   }
-  public void setLongElement(FeatureExpr ctx, int idx, long value) {
+  public void setLongElement(FeatureExpr ctx, int idx, Conditional<Long> value) {
     checkArray(idx);
     checkIsModifiable();
-    fields.setLongValue(ctx, idx, new One<>(value));
+    fields.setLongValue(ctx, idx, value);
   }
   public void setFloatElement(int idx, float value){
     checkArray(idx);

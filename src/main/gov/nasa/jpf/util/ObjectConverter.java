@@ -30,7 +30,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
-import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -204,7 +204,7 @@ public class ObjectConverter {
 //      Conditional<Long>[] longArr = longArrRef.asLongArray();
 
       for (int i = 0; i < javaArrLength; i++) {
-    	  longArrRef.setLongElement(ctx, i, Array.getLong(javaArr, i));
+    	  longArrRef.setLongElement(ctx, i, new One<>(Array.getLong(javaArr, i)));
       }
     }
     else if (arrayElementClass == Float.TYPE) {
