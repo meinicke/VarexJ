@@ -25,7 +25,9 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.Map;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -37,22 +39,36 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class DREM extends JVMInstruction {
 
   @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+  public Conditional<Instruction> execute (FeatureExpr ctx, final ThreadInfo ti) {
+    final StackFrame frame = ti.getModifiableTopFrame();
     
     Conditional<Double> v1 = frame.popDouble(ctx);
-    Conditional<Double> v2 = frame.popDouble(ctx);
+    final Conditional<Double> v2 = frame.popDouble(ctx);
     
-	Map<Double, FeatureExpr> map = v1.toMap();
-	for (double v : map.keySet()) {
-	    if (v == 0){
-	      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
-	    }
-	}
-    
-	frame.push(ctx, mapr(v1, v2));
+    return v1.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Instruction>>() {
 
-    return getNext(ctx, ti);
+		@Override
+		public Conditional<Instruction> apply(FeatureExpr ctx, final Double v1) {
+		    if (v1 == 0){
+		      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
+		    }
+		    
+			frame.push(ctx, v2.map(new Function<Double, Double>() {
+
+				@Override
+				public Double apply(Double v2) {
+					return v2.doubleValue() / v1.doubleValue();
+				}
+				
+			}));
+
+		    return getNext(ctx, ti);
+		}
+    	
+    });
+    
+    
+	
   }
   
 	@Override
