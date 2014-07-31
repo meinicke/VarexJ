@@ -22,10 +22,9 @@ import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import java.util.Map;
-
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -34,29 +33,34 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class IREM extends JVMInstruction {
 
-	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
-		StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		final StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Integer> v1 = frame.pop(ctx);
-		Conditional<Integer> v2 = frame.pop(ctx);
+		final Conditional<Integer> v2 = frame.pop(ctx);
 
-		Map<Integer, FeatureExpr> map = v1.toMap();
-		for (int v : map.keySet()) {
-			if (v == 0) {
-				return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "division by zero"));
+		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-			}
-		}
+				@Override
+				public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
+				    if (v1 == 0){
+				      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
+				    }
+				    
+					frame.push(ctx, v2.map(new Function<Integer, Integer>() {
 
-		frame.push(ctx, mapr(v1, v2));
+						@Override
+						public Integer apply(Integer v2) {
+							return v2.intValue() % v1.intValue();
+						}
+						
+					}));
 
-		return getNext(ctx, ti);
+				    return getNext(ctx, ti);
+				}
+		    	
+		    });
 
-	}
-
-	@Override
-	protected Number instruction(Number v1, Number v2) {
-		return v2.intValue() % v1.intValue();
 	}
 
 	public int getByteCode() {

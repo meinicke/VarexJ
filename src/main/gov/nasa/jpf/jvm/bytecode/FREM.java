@@ -25,7 +25,9 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.Map;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -35,28 +37,34 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class FREM extends JVMInstruction {
 
 	@Override
-	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
-		StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		final StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Float> v1 = frame.popFloat(ctx);
-		Conditional<Float> v2 = frame.popFloat(ctx);
+		final Conditional<Float> v2 = frame.popFloat(ctx);
 
-		Map<Float, FeatureExpr> map = v1.toMap();
-		for (Float v : map.keySet()) {
-			if (v == 0) {
-				return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "division by zero"));
+		return v1.mapf(ctx, new BiFunction<FeatureExpr, Float, Conditional<Instruction>>() {
+
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, final Float v1) {
+			    if (v1 == 0){
+			      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
+			    }
+			    
+				frame.push(ctx, v2.map(new Function<Float, Float>() {
+
+					@Override
+					public Float apply(Float v2) {
+						return v2.floatValue() % v1.floatValue();
+					}
+					
+				}));
+
+			    return getNext(ctx, ti);
 			}
-		}
-
-		frame.push(ctx, mapr(v1, v2));
-
-		return getNext(ctx, ti);
-
-	}
-
-	@Override
-	protected Number instruction(Number v1, Number v2) {
-		return v2.floatValue() % v1.floatValue();
+	    	
+	    });
+		
 	}
 
 	@Override

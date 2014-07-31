@@ -22,9 +22,6 @@ import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import java.util.Map;
-
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
@@ -70,11 +67,6 @@ public class DREM extends JVMInstruction {
     
 	
   }
-  
-	@Override
-	protected Number instruction(Number v1, Number v2) {
-		return v2.doubleValue() / v1.doubleValue();
-	}
 
   @Override
   public int getByteCode () {

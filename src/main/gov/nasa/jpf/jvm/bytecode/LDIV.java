@@ -25,7 +25,9 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.Map;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -35,26 +37,33 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class LDIV extends JVMInstruction {
 
 	@Override
-	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
-		StackFrame frame = ti.getModifiableTopFrame();
+	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		final StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Long> v1 = frame.popLong(ctx);
-		Conditional<Long> v2 = frame.popLong(ctx);
+		final Conditional<Long> v2 = frame.popLong(ctx);
 
-		Map<Long, FeatureExpr> map = v1.toMap();
-		for (long v : map.keySet()) {
-			if (v == 0) {
-				return new One<>(ti.createAndThrowException(ctx, "java.lang.ArithmeticException", "division by zero"));
-			}
-		}
+		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Instruction>>() {
 
-		frame.push(ctx, mapr(v1, v2));
-		return getNext(ctx, ti);
-	}
+				@Override
+				public Conditional<Instruction> apply(FeatureExpr ctx, final Long v1) {
+				    if (v1 == 0){
+				      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
+				    }
+				    
+					frame.push(ctx, v2.map(new Function<Long, Long>() {
 
-	@Override
-	protected Number instruction(Number v1, Number v2) {
-		return v2.longValue() / v1.longValue();
+						@Override
+						public Long apply(Long v2) {
+							return v2.longValue() / v1.longValue();
+						}
+						
+					}));
+
+				    return getNext(ctx, ti);
+				}
+		    	
+		    });
 	}
 
 	@Override
