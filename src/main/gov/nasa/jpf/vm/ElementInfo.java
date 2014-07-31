@@ -823,8 +823,8 @@ public abstract class ElementInfo implements Cloneable {
   public void setFloatField (String fname, float value) {
     setFloatField( getFieldInfo(fname), value);
   }
-  public void setDoubleField (String fname, double value) {
-    setDoubleField( getFieldInfo(fname), value);
+  public void setDoubleField (FeatureExpr ctx, String fname, Conditional<Double> value) {
+    setDoubleField( ctx, getFieldInfo(fname), value);
   }
   
   public void setReferenceField (String fname, int value) {
@@ -941,12 +941,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setDoubleField(FieldInfo fi, double newValue) {
+  public void setDoubleField(FeatureExpr ctx, FieldInfo fi, Conditional<Double> newValue) {
     checkIsModifiable();
 
     if (fi.isDoubleField()) {
       int offset = fi.getStorageOffset();
-      fields.setDoubleValue( offset, new One<>(newValue));
+      fields.setDoubleValue( ctx, offset, newValue);
     } else {
       throw new JPFException("not a double field: " + fi.getName());
     }
@@ -1270,7 +1270,7 @@ public abstract class ElementInfo implements Cloneable {
     			}
 	    		if (src instanceof DoubleArrayFields) {
 		    		for (int i = 0; i < length; i++) {
-		    			fields.setDoubleValue(dstIdx + i, src.getDoubleValue(i + srcIdx));
+		    			fields.setDoubleValue(ctx, dstIdx + i, src.getDoubleValue(i + srcIdx));
 		    		}
 	    		} else if (eiSrc.getFields() instanceof LongArrayFields) {
 		    		for (int i = 0; i < length; i++) {
@@ -1360,10 +1360,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setFloatValue(idx, value);
   }
-  public void setDoubleElement(int idx, double value){
+  public void setDoubleElement(FeatureExpr ctx, int idx, Conditional<Double> value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setDoubleValue(idx, new One<>(value));
+    fields.setDoubleValue(ctx, idx, value);
   }
   public void setReferenceElement(int idx, int value){
     checkArray(idx);
@@ -1410,9 +1410,9 @@ public abstract class ElementInfo implements Cloneable {
     checkArray(idx);
     return fields.getFloatValue(idx);
   }
-  public double getDoubleElement(int idx) {
+  public Conditional<Double> getDoubleElement(int idx) {
     checkArray(idx);
-    return fields.getDoubleValue(idx).getValue();
+    return fields.getDoubleValue(idx);
   }
   public Conditional<Integer> getReferenceElement(int idx) {
     checkArray(idx);

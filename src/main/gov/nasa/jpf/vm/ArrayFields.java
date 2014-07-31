@@ -163,7 +163,8 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException(getClass() + " not a long[]");
 	}
 
-	protected void setDoubleValue(int pos, Conditional<Double> newValue) {
+	@Override
+	public void setDoubleValue(FeatureExpr ctx, int pos, Conditional<Double> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a double[]");
 	}

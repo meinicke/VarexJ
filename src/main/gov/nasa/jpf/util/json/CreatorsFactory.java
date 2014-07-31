@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 
 import java.util.HashMap;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -147,7 +148,7 @@ class BoxedDoubleCreator implements Creator {
     if (read != null) {
       doubleRef = env.newObject(ctx, "java.lang.Double");
       ElementInfo ei = env.getModifiableElementInfo(doubleRef);
-      ei.setDoubleField("value", read.doubleValue());
+      ei.setDoubleField(ctx, "value", new One<>(read.doubleValue()));
     }
 
     return doubleRef;

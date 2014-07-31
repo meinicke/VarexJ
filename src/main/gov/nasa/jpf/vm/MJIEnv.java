@@ -379,8 +379,8 @@ public class MJIEnv {
     return heap.get(objref).getCharField(fname);
   }
 
-  public void setDoubleField (int objref, String fname, double val) {
-    heap.getModifiable(objref).setDoubleField(fname, val);
+  public void setDoubleField (FeatureExpr ctx, int objref, String fname, Conditional<Double> val) {
+    heap.getModifiable(objref).setDoubleField(ctx, fname, val);
   }
 
   public double getDoubleField (int objref, String fname) {
@@ -424,11 +424,11 @@ public class MJIEnv {
     return heap.get(objref).getFloatElement(index);
   }
 
-  public double getDoubleArrayElement (int objref, int index) {
+  public Conditional<Double> getDoubleArrayElement (int objref, int index) {
     return heap.get(objref).getDoubleElement(index);
   }
-  public void setDoubleArrayElement (int objref, int index, double value) {
-    heap.getModifiable(objref).setDoubleElement(index, value);
+  public void setDoubleArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Double> value) {
+    heap.getModifiable(objref).setDoubleElement(ctx, index, value);
   }
 
   public short getShortArrayElement (int objref, int index) {
@@ -618,9 +618,9 @@ public class MJIEnv {
     return ci.getStaticElementInfo().getCharField(fname);
   }
 
-  public void setStaticDoubleField (String clsName, String fname, double val) {
+  public void setStaticDoubleField (FeatureExpr ctx, String clsName, String fname, Conditional<Double> val) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setDoubleField(fname, val);
+    ci.getStaticElementInfo().setDoubleField(ctx, fname, val);
   }
 
   public double getStaticDoubleField (String clsName, String fname) {
@@ -1015,10 +1015,10 @@ public class MJIEnv {
     return heap.newArray(FeatureExprFactory.True(), "D", size, ti).getObjectRef();
   }
 
-  public int newDoubleArray (double[] buf){
+  public int newDoubleArray (FeatureExpr ctx, double[] buf){
     ElementInfo eiArray =  heap.newArray(FeatureExprFactory.True(), "D", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setDoubleElement(i, buf[i]);
+      eiArray.setDoubleElement(ctx, i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }
@@ -1230,9 +1230,9 @@ public class MJIEnv {
     return ei.getObjectRef();
   }
 
-  public int newDouble (double d){
-    ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Double"), ti);
-    ei.setDoubleField("value",d);
+  public int newDouble (FeatureExpr ctx, Conditional<Double> d){
+    ElementInfo ei = heap.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Double"), ti);
+    ei.setDoubleField(ctx,"value", d);
     return ei.getObjectRef();
   }
 
@@ -1633,7 +1633,7 @@ public class MJIEnv {
     } else if (v instanceof Byte){
       setByteField(proxyRef, fname, ((Byte)v).byteValue());
     } else if (v instanceof Double){
-      setDoubleField(proxyRef, fname, ((Double)v).doubleValue());
+      setDoubleField(ctx, proxyRef, fname, new One<>(((Double)v).doubleValue()));
 
     } else if (v instanceof AnnotationInfo.EnumValue){ // an enum constant
       AnnotationInfo.EnumValue ev = (AnnotationInfo.EnumValue)v;
@@ -1688,7 +1688,7 @@ public class MJIEnv {
       } else if (ftype.equals("double[]")){
         aref = newDoubleArray(a.length);
         for (int i=0; i<a.length; i++){
-          setDoubleArrayElement(aref,i,((Number)a[i]).doubleValue());
+          setDoubleArrayElement(ctx,aref,i, new One<>(((Number)a[i]).doubleValue()));
         }
       } else if (ftype.equals("java.lang.Class[]")){
         aref = newObjectArray("java.lang.Class", a.length);

@@ -27,6 +27,7 @@ import gov.nasa.jpf.util.RunRegistry;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_lang_reflect_Method extends NativePeer {
@@ -182,7 +183,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       double v = frame.getDoubleResult();
       ret = env.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Double"));
       rei = env.getModifiableElementInfo(ret);
-      rei.setDoubleField("value", v);
+      rei.setDoubleField(ctx, "value", new One<>(v));
     } else if (rt == Types.T_FLOAT) {
       attr = frame.getResultAttr();
       float v = frame.getFloatResult();

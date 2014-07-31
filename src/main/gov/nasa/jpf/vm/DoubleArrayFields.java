@@ -23,8 +23,10 @@ import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
 
+import cmu.conditional.Choice;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * element values for double[] objects
@@ -102,8 +104,13 @@ public class DoubleArrayFields extends ArrayFields {
     }
   }
 
-  protected void setDoubleValue (int pos, Conditional<Double> newValue) {
-    values[pos] = newValue;
+  @Override
+  public void setDoubleValue (FeatureExpr ctx, int pos, Conditional<Double> newValue) {
+	  if (Conditional.isTautology(ctx)) {
+		  values[pos] = newValue;	  
+	  } else {
+		  values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+	  }
   }
 
   public Conditional<Double> getDoubleValue (int pos) {

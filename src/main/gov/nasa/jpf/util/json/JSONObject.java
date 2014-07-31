@@ -228,7 +228,7 @@ public class JSONObject{
 		  ei.setFloatField(fi, val.getDouble().floatValue());
 
 		} else if (primitiveName.equals("double")) {
-		  ei.setDoubleField(fi, val.getDouble());
+		  ei.setDoubleField(ctx, fi, new One<>(val.getDouble()));
 		}
 	}
   }
@@ -298,7 +298,7 @@ public class JSONObject{
       arrayRef = env.newDoubleArray(vals.length);
       ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
       for (int i = 0; i < vals.length; i++) {
-    	  arrayEI.setDoubleElement(i, vals[i].getDouble());
+    	  arrayEI.setDoubleElement(ctx, i, new One<>(vals[i].getDouble()));
       }
       
 //      double[] doubles = arrayEI.asDoubleArray();
@@ -376,7 +376,7 @@ public class JSONObject{
 		    ei.setFloatField(fi, number.floatValue());
 
 		  } else if (primitiveName.equals("double")) {
-		    ei.setDoubleField(fi, number.doubleValue());
+		    ei.setDoubleField(ctx, fi, new One<>(number.doubleValue()));
 		  }
 	}
     } else if (cgResult instanceof Character) {

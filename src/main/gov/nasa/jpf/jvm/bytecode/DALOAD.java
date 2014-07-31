@@ -21,6 +21,8 @@ package gov.nasa.jpf.jvm.bytecode;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -32,8 +34,15 @@ public class DALOAD extends LongArrayLoadInstruction {
 
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    double value = ei.getDoubleElement(index);
-    frame.push(ctx, new One<>(Double.doubleToLongBits(value)));
+    Conditional<Double> value = ei.getDoubleElement(index);
+    frame.push(ctx, value.map(new Function<Double, Long>() {
+
+		@Override
+		public Long apply(Double value) {
+			return Double.doubleToLongBits(value);
+		}
+    	
+    }));
   }
 
   public int getByteCode () {

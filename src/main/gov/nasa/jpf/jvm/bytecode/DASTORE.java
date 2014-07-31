@@ -47,7 +47,7 @@ public class DASTORE extends LongArrayStoreInstruction {
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    ei.setDoubleElement(index, value.getValue());
+    ei.setDoubleElement(ctx, index, value);
   }
 
 

@@ -268,7 +268,7 @@ public abstract class Fields implements Cloneable {
 
   public abstract void setLongValue (FeatureExpr ctx, int index, Conditional<Long> newValue);
 
-  protected abstract void setDoubleValue (int index, Conditional<Double> newValue);
+  public abstract void setDoubleValue (FeatureExpr ctx, int index, Conditional<Double> newValue);
 
   public abstract Fields clone ();
 

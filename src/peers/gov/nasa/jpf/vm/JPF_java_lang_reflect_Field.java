@@ -23,6 +23,7 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.lang.reflect.Modifier;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_lang_reflect_Field extends NativePeer {
@@ -328,7 +329,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, DoubleFieldInfo.class, "double", true);
     if (ei != null){
-      ei.setDoubleField(fi,val);
+      ei.setDoubleField(NativeMethodInfo.CTX,fi, new One<>(val));
     }
   }
 
@@ -344,7 +345,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
 	if (!(fi instanceof ReferenceFieldInfo)) { // primitive type, we need to box it
       if (fi instanceof DoubleFieldInfo){
         double d = ei.getDoubleField(fi);
-        return env.newDouble(d);
+        return env.newDouble(ctx, new One<>(d));
       } else if (fi instanceof FloatFieldInfo){
         float f = ei.getFloatField(fi);
         return env.newFloat(f);
@@ -527,7 +528,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         return true;
       } else if ("double".equals(fieldType)){
         double val = env.getDoubleField(value, fieldName);
-        ei.setDoubleField(fi, val);
+        ei.setDoubleField(ctx, fi, new One<>(val));
         return true;
       } else {
         return false;

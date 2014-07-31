@@ -242,10 +242,25 @@ public class NamedFields extends Fields {
 	}
 
 	@Override
-	protected void setDoubleValue(int index, Conditional<Double> newValue) {
-		final Double value = newValue.getValue();
-		values[index++] = new One<>(Types.hiDouble(value));
-		values[index] = new One<>(Types.loDouble(value));
+	public void setDoubleValue(FeatureExpr ctx, final int index, Conditional<Double> newValue) {
+		newValue.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Double newValue) {
+				if (Conditional.isTautology(ctx)) {
+					values[index] = new One<>(Types.hiDouble(newValue));
+					values[index + 1] = new One<>(Types.loDouble(newValue));
+				} else if (!Conditional.isContradiction(ctx)) {
+					values[index] = new Choice<>(ctx, new One<>(Types.hiDouble(newValue)), values[index]);
+					values[index + 1] = new Choice<>(ctx, new One<>(Types.loDouble(newValue)), values[index + 1]);
+				}
+				return null;
+			}
+
+		});
+		values[index] = values[index].simplify();
+		values[index + 1] = values[index + 1].simplify();
+		
 	}
 
 	public float getFloatValue(int index) {

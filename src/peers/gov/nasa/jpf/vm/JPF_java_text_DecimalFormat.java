@@ -26,6 +26,7 @@ import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 // NOTE - this only works because DecimalFormat is a Format subclass, i.e.
@@ -199,7 +200,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
     FeatureExpr ctx = NativeMethodInfo.CTX;
 	if(number instanceof Double) {
       numberRef = env.newObject(ctx, "java.lang.Double");
-      env.setDoubleField(numberRef, "value", number.doubleValue());
+      env.setDoubleField(ctx, numberRef, "value", new One<>(number.doubleValue()));
     } else if(number instanceof Long) {
       numberRef = env.newObject(ctx, "java.lang.Long");
       env.setLongField(ctx, numberRef, "value", number.longValue());

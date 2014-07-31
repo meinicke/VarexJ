@@ -46,7 +46,7 @@ public class DoubleFieldInfo extends DoubleSlotFieldInfo {
 
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setDoubleValue(storageOffset, new One<>(init));
+    ei.getFields().setDoubleValue(ctx, storageOffset, new One<>(init));
   }
 
   public Class<? extends ChoiceGenerator<?>> getChoiceGeneratorType() {

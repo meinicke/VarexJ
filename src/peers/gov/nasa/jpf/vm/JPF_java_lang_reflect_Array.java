@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -123,7 +124,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       
     } else if (at.equals("double")){
       int vref = env.newObject(ctx, "java.lang.Double");
-      env.setDoubleField(vref, "value", env.getDoubleArrayElement(aref,index));
+      env.setDoubleField(ctx, vref, "value", env.getDoubleArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("boolean")){
@@ -231,7 +232,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public double getDouble__Ljava_lang_Object_2I__D (MJIEnv env, int clsRef, int aref, int index) {
     if (check(env, aref, index)) {
-      return env.getDoubleArrayElement(aref, index);
+      return env.getDoubleArrayElement(aref, index).getValue();
     }
     return 0;
   }
@@ -288,7 +289,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setDouble__Ljava_lang_Object_2ID__V (MJIEnv env, int clsRef, int aref, int index, double val) {
     if (check(env, aref, index)) {
-      env.setDoubleArrayElement(aref, index, val);
+      env.setDoubleArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
     }
   }
 }

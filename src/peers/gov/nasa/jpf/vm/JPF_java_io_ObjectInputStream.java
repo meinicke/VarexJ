@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.annotation.MJI;
 
 public class JPF_java_io_ObjectInputStream extends NativePeer {
@@ -63,7 +64,7 @@ public class JPF_java_io_ObjectInputStream extends NativePeer {
       bits |= 0x00000000000000ff & b0;
       
       double d = Double.longBitsToDouble(bits);
-      env.setDoubleArrayElement(daRef, i, d);
+      env.setDoubleArrayElement(NativeMethodInfo.CTX, daRef, i, new One<>(d));
     }
   }
 

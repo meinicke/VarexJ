@@ -119,7 +119,7 @@ public class ObjectConverter {
         newObjEI.setFloatField(fi, javaField.getFloat(javaObject));
       }
       else if (jpfTypeName.equals("double")) {
-        newObjEI.setDoubleField(fi, javaField.getDouble(javaObject));
+        newObjEI.setDoubleField(ctx, fi, new One<>(javaField.getDouble(javaObject)));
       }
     }
     catch (Exception ex) {
