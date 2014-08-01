@@ -103,7 +103,7 @@ class BoxedIntCreator implements Creator {
     if (read != null) {
       intRef = env.newObject(ctx, "java.lang.Integer");
       ElementInfo ei = env.getModifiableElementInfo(intRef);
-      ei.setIntField(ctx, "value", read.intValue());
+      ei.setIntField(ctx, "value", new One<>(read.intValue()));
     }
 
     return intRef;

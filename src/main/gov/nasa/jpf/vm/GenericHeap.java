@@ -515,7 +515,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 //    	snap[i] = array[i].getValue();
 //    }
     for (int i = 0; i < stackSnapshot.length; i++) {
-    	eiSnap.setIntElement(FeatureExprFactory.True(), i, stackSnapshot[i]);
+    	eiSnap.setIntElement(FeatureExprFactory.True(), i, new One<>(stackSnapshot[i]));
     }
 //    System.arraycopy( stackSnapshot, 0, snap, 0, stackSnapshot.length);
     eiThrowable.setReferenceField("snapshot", snapRef);

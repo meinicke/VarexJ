@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -76,7 +77,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
     if (hasSharedField) {
       env.setBooleanField(objref, "shared", false);
     }
-    env.setIntField(ctx, objref, "count", n);
+    env.setIntField(ctx, objref, "count", new One<>(n));
     
     return objref;
   }
@@ -167,7 +168,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
     if (hasSharedField) {
       env.setBooleanField(objref, "shared", false);
     }
-    env.setIntField(ctx, objref, "count", n);
+    env.setIntField(ctx, objref, "count", new One<>(n));
     
     return objref;
     

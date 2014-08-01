@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.annotation.MJI;
 
 
@@ -46,7 +47,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
     }
 
     int fidx = fi.getFieldIndex();
-    env.setIntField(NativeMethodInfo.CTX, objRef, "fieldId", fidx);
+    env.setIntField(NativeMethodInfo.CTX, objRef, "fieldId", new One<>(fidx));
   }
 
   @MJI

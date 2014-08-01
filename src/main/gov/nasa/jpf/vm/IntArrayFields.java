@@ -113,19 +113,13 @@ public IntArrayFields (int length) {
   }
   
   @Override
-	public void setIntValue(FeatureExpr ctx, int index, Conditional<Integer> newValue) {
-	  values[index] = newValue;
-	}
-
-  @Override
-  public void setIntValue (FeatureExpr ctx, int pos, int newValue) {
+	public void setIntValue(FeatureExpr ctx, int pos, Conditional<Integer> newValue) {
 	  if (Conditional.isTautology(ctx)) {
-		  values[pos] = new One<>(newValue);	  
+		  values[pos] = newValue;	  
 	  } else {
-		  values[pos] = new Choice<>(ctx, new One<>(newValue), values[pos]).simplify();
+		  values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
 	  }
-    
-  }
+	}
 
   public Conditional<Integer> getIntValue (int pos) {
     return values[pos];

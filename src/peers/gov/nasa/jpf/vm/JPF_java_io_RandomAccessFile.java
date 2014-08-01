@@ -23,6 +23,7 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.HashMap;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -39,7 +40,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
 	static HashMap<Integer, Integer> File2DataMap;
 	
   public static boolean init (Config conf) {
-    File2DataMap = new HashMap<Integer, Integer>();
+    File2DataMap = new HashMap<>();
     return (File2DataMap != null);
   } 
 
@@ -213,8 +214,8 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int int_array = env.getReferenceField(ctx, chunk_obj, data).getValue();
     int old_value = env.getIntArrayElement(int_array, index);
     env.setIntArrayElement(ctx, int_array,
-                             index, (old_value & ~(0xff << bit_shift)) |
-                             data_value << bit_shift);
+                             index, new One<>((old_value & ~(0xff << bit_shift)) |
+                             data_value << bit_shift));
   }
 
   private static byte getDataValue(MJIEnv env, int chunk_obj, long position,

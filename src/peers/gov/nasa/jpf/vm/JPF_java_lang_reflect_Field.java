@@ -23,6 +23,7 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.lang.reflect.Modifier;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -290,7 +291,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, IntegerFieldInfo.class, "int", true);
     if (ei != null){
-      ei.setIntField(NativeMethodInfo.CTX,fi, val);
+      ei.setIntField(NativeMethodInfo.CTX,fi, new One<>(val));
     }
   }
 
@@ -354,8 +355,8 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         return env.newLong(ctx, l);
       } else if (fi instanceof IntegerFieldInfo){
         // this might actually represent a plethora of types
-        int i = ei.getIntField(fi).simplify(ctx).getValue();
-        return env.newInteger(i);
+        Conditional<Integer> i = ei.getIntField(fi);
+        return env.newInteger(ctx, i);
       } else if (fi instanceof BooleanFieldInfo){
         boolean b = ei.getBooleanField(fi);
         return env.newBoolean(b);
@@ -515,7 +516,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         ei.setShortField(fi, val);
         return true;
       } else if ("int".equals(fieldType)){
-        int val = env.getIntField(NativeMethodInfo.CTX, value, fieldName).getValue().intValue();
+        Conditional<Integer> val = env.getIntField(NativeMethodInfo.CTX, value, fieldName);
         ei.setIntField(NativeMethodInfo.CTX, fi, val);
         return true;
       } else if ("long".equals(fieldType)){

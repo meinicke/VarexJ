@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -39,7 +40,7 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerArray extends NativePe
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     int value = env.getIntArrayElement(arrayRef, index);
     if (value == expect) {
-      env.setIntArrayElement(ctx, arrayRef, index, update);
+      env.setIntArrayElement(ctx, arrayRef, index, new One<>(update));
       return true;
     } else {
       return false;

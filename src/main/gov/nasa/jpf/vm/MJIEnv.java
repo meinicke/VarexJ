@@ -408,7 +408,7 @@ public class MJIEnv {
     heap.getModifiable(objref).setCharElement(ctx, index, new One<>(value));
   }
 
-  public void setIntArrayElement (FeatureExpr ctx, int objref, int index, int value) {
+  public void setIntArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Integer> value) {
     heap.getModifiable(objref).setIntElement(ctx, index, value);
   }
 
@@ -443,15 +443,15 @@ public class MJIEnv {
     return heap.get(objref).getCharElement(index);
   }
 
-  public void setIntField (FeatureExpr ctx, int objref, String fname, int val) {
+  public void setIntField (FeatureExpr ctx, int objref, String fname, Conditional<Integer> val) {
     ElementInfo ei = heap.getModifiable(objref);
     ei.setIntField(ctx, fname, val);
   }
 
   // these two are the workhorses
-  public void setDeclaredIntField (int objref, String refType, String fname, int val) {
+  public void setDeclaredIntField (FeatureExpr ctx, int objref, String refType, String fname, Conditional<Integer> val) {
     ElementInfo ei = heap.getModifiable(objref);
-    ei.setDeclaredIntField(fname, refType, val);
+    ei.setDeclaredIntField(ctx, fname, refType, val);
   }
 
   public Conditional<Integer> getIntField (FeatureExpr ctx, int objref, String fname) {
@@ -561,8 +561,8 @@ public class MJIEnv {
     return heap.get(objref).getReferenceElement(index).getValue();
   }
 
-  public void setShortField (int objref, String fname, short val) {
-    setIntField(null, objref, fname, /*(int)*/ val);
+  public void setShortField (FeatureExpr ctx, int objref, String fname, short val) {
+    setIntField(ctx, objref, fname, /*(int)*/ new One<>((int)val));
   }
 
   public short getShortField (int objref, String fname) {
@@ -648,12 +648,12 @@ public class MJIEnv {
     return ci.getStaticElementInfo().getFloatField(fname);
   }
 
-  public void setStaticIntField (FeatureExpr ctx, String clsName, String fname, int val) {
+  public void setStaticIntField (FeatureExpr ctx, String clsName, String fname, Conditional<Integer> val) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
     ci.getStaticElementInfo().setIntField(ctx, fname, val);
   }
 
-  public void setStaticIntField (FeatureExpr ctx, int clsObjRef, String fname, int val) {
+  public void setStaticIntField (FeatureExpr ctx, int clsObjRef, String fname, Conditional<Integer> val) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
     cei.setIntField(ctx, fname, val);
   }
@@ -1042,7 +1042,7 @@ public class MJIEnv {
   public int newIntArray (FeatureExpr ctx, int[] buf){
     ElementInfo eiArray = heap.newArray(ctx, "I", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setIntElement( ctx, i, buf[i]);
+      eiArray.setIntElement( ctx, i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }
@@ -1218,9 +1218,9 @@ public class MJIEnv {
     return getStaticReferenceField("java.lang.Boolean", b ? "TRUE" : "FALSE");
   }
 
-  public int newInteger (int n){
-    ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer"), ti);
-    ei.setIntField(null, "value",n);
+  public int newInteger (FeatureExpr ctx, Conditional<Integer> n){
+    ElementInfo ei = heap.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer"), ti);
+    ei.setIntField(ctx, "value",n);
     return ei.getObjectRef();
   }
 
@@ -1621,13 +1621,13 @@ public class MJIEnv {
     } else if (v instanceof Boolean){
       setBooleanField(proxyRef, fname, ((Boolean)v).booleanValue());
     } else if (v instanceof Integer){
-      setIntField(null, proxyRef, fname, ((Integer)v).intValue());
+      setIntField(ctx, proxyRef, fname, new One<>(((Integer)v).intValue()));
     } else if (v instanceof Long){
       setLongField(ctx, proxyRef, fname, ((Long)v).longValue());
     } else if (v instanceof Float){
       setFloatField(proxyRef, fname, ((Float)v).floatValue());
     } else if (v instanceof Short){
-      setShortField(proxyRef, fname, ((Short)v).shortValue());
+      setShortField(ctx, proxyRef, fname, ((Short)v).shortValue());
     } else if (v instanceof Character){
       setCharField(proxyRef, fname, ((Character)v).charValue());
     } else if (v instanceof Byte){
@@ -1673,7 +1673,7 @@ public class MJIEnv {
       } else if (ftype.equals("int[]")){
         aref = newIntArray(a.length);
         for (int i=0; i<a.length; i++){
-          setIntArrayElement(ctx,aref,i, ((Number)a[i]).intValue());
+          setIntArrayElement(ctx,aref,i, new One<>(((Number)a[i]).intValue()));
         }
       } else if (ftype.equals("boolean[]")){
         aref = newBooleanArray(a.length);

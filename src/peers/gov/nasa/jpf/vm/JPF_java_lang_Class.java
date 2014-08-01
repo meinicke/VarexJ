@@ -531,7 +531,7 @@ public class JPF_java_lang_Class extends NativePeer {
     
     int eidx = env.newObject(NativeMethodInfo.CTX, fci);
     ElementInfo ei = env.getModifiableElementInfo(eidx);    
-    ei.setIntField(NativeMethodInfo.CTX, "regIdx", regIdx);
+    ei.setIntField(NativeMethodInfo.CTX, "regIdx", new One<>(regIdx));
     
     return eidx;
   }

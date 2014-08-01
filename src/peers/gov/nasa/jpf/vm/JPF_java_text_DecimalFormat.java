@@ -191,8 +191,8 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
   }
 
   private static void updateParsePositionRef(MJIEnv env,int parsePositionRef, ParsePosition parsePosition) {
-    env.setIntField(NativeMethodInfo.CTX, parsePositionRef, "index", parsePosition.getIndex());
-    env.setIntField(NativeMethodInfo.CTX, parsePositionRef, "errorIndex", parsePosition.getErrorIndex());
+    env.setIntField(NativeMethodInfo.CTX, parsePositionRef, "index", new One<>(parsePosition.getIndex()));
+    env.setIntField(NativeMethodInfo.CTX, parsePositionRef, "errorIndex", new One<>(parsePosition.getErrorIndex()));
   }
 
   private static int createNumberRefFromNumber(MJIEnv env,Number number) {

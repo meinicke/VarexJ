@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 import java.util.Date;
 import java.util.TimeZone;
 
+import cmu.conditional.One;
+
 /**
  * native peer for JPFs concrete TimeZone class, which is just delegating to the
  * host VM so that we are independent of Java versions 
@@ -46,7 +48,7 @@ public class JPF_gov_nasa_jpf_DelegatingTimeZone extends NativePeer {
     int rawOffset = tz.getRawOffset();
     
     env.setReferenceField(NativeMethodInfo.CTX, objRef, "ID", idRef);
-    env.setIntField(NativeMethodInfo.CTX, objRef, "rawOffset", rawOffset);
+    env.setIntField(NativeMethodInfo.CTX, objRef, "rawOffset", new One<>(rawOffset));
   }
   
   @MJI

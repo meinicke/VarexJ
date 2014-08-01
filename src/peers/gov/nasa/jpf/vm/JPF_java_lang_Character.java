@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
@@ -174,8 +175,8 @@ public class JPF_java_lang_Character extends NativePeer {
     env.setStaticByteField(ctx, "java.lang.Character", "CURRENCY_SYMBOL", (byte) 26);
     env.setStaticByteField(ctx, "java.lang.Character", "MODIFIER_SYMBOL", (byte) 27);
     env.setStaticByteField(ctx, "java.lang.Character", "OTHER_SYMBOL", (byte) 28);
-    env.setStaticIntField(ctx, "java.lang.Character", "MIN_RADIX", 2);
-    env.setStaticIntField(ctx, "java.lang.Character", "MAX_RADIX", 36);
+    env.setStaticIntField(ctx, "java.lang.Character", "MIN_RADIX", new One<>(2));
+    env.setStaticIntField(ctx, "java.lang.Character", "MAX_RADIX", new One<>(36));
     env.setStaticCharField("java.lang.Character", "MIN_VALUE", '\u0000');
     env.setStaticCharField("java.lang.Character", "MAX_VALUE", '\uffff');
 

@@ -114,7 +114,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
     FeatureExpr ctx = NativeMethodInfo.CTX;
 	if (at.equals("int")){
       int vref = env.newObject(ctx, "java.lang.Integer");
-      env.setIntField(ctx, vref, "value", env.getIntArrayElement(aref,index));
+      env.setIntField(ctx, vref, "value", new One<>(env.getIntArrayElement(aref,index)));
       return vref;
       
     } else if (at.equals("long")){
@@ -144,7 +144,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       
     } else if (at.equals("short")){
       int vref = env.newObject(ctx, "java.lang.Short");
-      env.setShortField(vref, "value", env.getShortArrayElement(aref,index));
+      env.setShortField(ctx, vref, "value", env.getShortArrayElement(aref,index));
       return vref;
 
     } else if (at.equals("float")){
@@ -268,7 +268,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setInt__Ljava_lang_Object_2II__V (MJIEnv env, int clsRef, int aref, int index, int val) {
     if (check(env, aref, index)) {
-      env.setIntArrayElement(NativeMethodInfo.CTX, aref, index, val);
+      env.setIntArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
     }
   }
 

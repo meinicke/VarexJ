@@ -26,6 +26,7 @@ import gov.nasa.jpf.util.RunRegistry;
 
 import java.lang.reflect.Modifier;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -63,7 +64,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     int eidx = env.newObject(NativeMethodInfo.CTX, ciCtor);
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
-    ei.setIntField(NativeMethodInfo.CTX, "regIdx", regIdx);
+    ei.setIntField(NativeMethodInfo.CTX, "regIdx", new One<>(regIdx));
     return eidx;
   }
 

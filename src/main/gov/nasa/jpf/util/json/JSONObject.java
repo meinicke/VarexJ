@@ -220,7 +220,7 @@ public class JSONObject{
     } else {
 		FeatureExpr ctx = NativeMethodInfo.CTX;
 		if (primitiveName.equals("int")) {
-		  ei.setIntField(ctx, fi, val.getDouble().intValue());
+		  ei.setIntField(ctx, fi, new One<>(val.getDouble().intValue()));
 
 		} else if (primitiveName.equals("long")) {
 		  ei.setLongField(ctx, fi, val.getDouble().longValue());
@@ -275,7 +275,7 @@ public class JSONObject{
       
 
       for (int i = 0; i < vals.length; i++) {
-    	  arrayEI.setIntElement(ctx, i, vals[i].getDouble().intValue());
+    	  arrayEI.setIntElement(ctx, i, new One<>(vals[i].getDouble().intValue()));
 //        ints[i] = vals[i].getDouble().intValue();
       }
     } else if (arrayElementType.equals("long")) {
@@ -368,7 +368,7 @@ public class JSONObject{
       } else {
 		FeatureExpr ctx = NativeMethodInfo.CTX;
 		if (primitiveName.equals("int")) {
-		    ei.setIntField(ctx, fi, number.intValue());
+		    ei.setIntField(ctx, fi, new One<>(number.intValue()));
 
 		  } else if (primitiveName.equals("long")) {
 		    ei.setLongField(ctx, fi, number.longValue());

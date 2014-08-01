@@ -60,7 +60,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 	int eidx = env.newObject( ctx, ciMth);
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
-    ei.setIntField(ctx, "regIdx", regIdx);
+    ei.setIntField(ctx, "regIdx", new One<>(regIdx));
     ei.setBooleanField("isAccessible", mi.isPublic());
     
     return eidx;

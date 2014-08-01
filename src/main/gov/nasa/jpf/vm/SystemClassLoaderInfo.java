@@ -24,6 +24,7 @@ import gov.nasa.jpf.util.JPFLogger;
 
 import java.io.File;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -158,7 +159,7 @@ public abstract class SystemClassLoaderInfo extends ClassLoaderInfo {
     //id = computeId(objRef);
     
     // cross link
-    ei.setIntField(FeatureExprFactory.True(), ID_FIELD, id);
+    ei.setIntField(FeatureExprFactory.True(), ID_FIELD, new One<>(id));
   }
   
 

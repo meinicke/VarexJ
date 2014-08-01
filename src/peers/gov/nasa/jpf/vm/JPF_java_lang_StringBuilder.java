@@ -78,7 +78,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 						env.setReferenceField(currentCtx, objref, "value", arefNew);
 					}
 	
-					env.setIntField(currentCtx, objref, "count", n);
+					env.setIntField(currentCtx, objref, "count", new One<>(n));
 				}
 			}
 		}
@@ -121,7 +121,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 				}
 //				System.arraycopy(src, 0, dst, 0, src.length);
 				env.setReferenceField(ctx, objref, "value", aref);
-				env.setIntField(ctx, objref, "count", src.length);
+				env.setIntField(ctx, objref, "count", new One<>(src.length));
 				return null;
 			}
 

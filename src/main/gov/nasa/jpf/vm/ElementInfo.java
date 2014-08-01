@@ -798,8 +798,8 @@ public abstract class ElementInfo implements Cloneable {
   // -- end attributes --
   
   
-  public void setDeclaredIntField(String fname, String clsBase, int value) {
-    setIntField(null, getDeclaredFieldInfo(clsBase, fname), value);
+  public void setDeclaredIntField(FeatureExpr ctx, String fname, String clsBase, Conditional<Integer> value) {
+    setIntField(ctx, getDeclaredFieldInfo(clsBase, fname), value);
   }
 
   public void setBooleanField (String fname, boolean value) {
@@ -814,7 +814,7 @@ public abstract class ElementInfo implements Cloneable {
   public void setShortField (String fname, short value) {
     setShortField( getFieldInfo(fname), value);
   }
-  public void setIntField(FeatureExpr ctx, String fname, int value) {
+  public void setIntField(FeatureExpr ctx, String fname, Conditional<Integer> value) {
     setIntField(ctx, getFieldInfo(fname), value);
   }
   public void setLongField (FeatureExpr ctx, String fname, long value) {
@@ -908,12 +908,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setIntField(FeatureExpr ctx, FieldInfo fi, int newValue) {
+  public void setIntField(FeatureExpr ctx, FieldInfo fi, Conditional<Integer> newValue) {
     checkIsModifiable();
 
     if (fi.isIntField()) {
       int offset = fi.getStorageOffset();
-      fields.setIntValue( ctx, offset, (newValue));
+      fields.setIntValue( ctx, offset, newValue);
     } else {
       throw new JPFException("not an int field: " + fi.getName());
     }
@@ -1345,7 +1345,7 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setShortValue(idx, value);
   }
-  public void setIntElement(FeatureExpr ctx, int idx, int value){
+  public void setIntElement(FeatureExpr ctx, int idx, Conditional<Integer> value){
     checkArray(idx);
     checkIsModifiable();
     fields.setIntValue(ctx, idx, value);

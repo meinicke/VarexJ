@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -282,7 +283,7 @@ public class JPF_java_lang_String extends NativePeer {
       }
 
       ei = ei.getModifiableInstance();
-      ei.setIntField(ctx, "hash", h);
+      ei.setIntField(ctx, "hash", new One<>(h));
     }
 
     return h;

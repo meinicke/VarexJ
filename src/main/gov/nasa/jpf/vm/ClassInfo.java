@@ -44,6 +44,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -1916,7 +1917,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     id = sei.getObjectRef();  // kind of a misnomer, it's really an id    
     uniqueId = ((long)classLoader.getId() << 32) | id;
     
-    eiClsObj.setIntField(FeatureExprFactory.True(), ID_FIELD, id);      
+    eiClsObj.setIntField(FeatureExprFactory.True(), ID_FIELD, new One<>(id));      
     
     return sei;
   }
@@ -1965,7 +1966,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     ElementInfo ei = createClassObject(ctx, ti);
     
     sei.setClassObjectRef(ei.getObjectRef());
-    ei.setIntField(ctx, ID_FIELD, id);      
+    ei.setIntField(ctx, ID_FIELD, new One<>(id));      
     
     return ei;
   }

@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -190,7 +191,7 @@ public class ClassLoaderInfo
     this.id = computeId(objRef);
     ElementInfo ei = vm.getModifiableElementInfo(objRef);
 
-    ei.setIntField(ctx, ID_FIELD, id);
+    ei.setIntField(ctx, ID_FIELD, new One<>(id));
     if (parent != null) {
       ei.setReferenceField("parent", parent.objRef);
     }

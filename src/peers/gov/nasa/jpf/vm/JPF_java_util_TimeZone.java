@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -70,7 +71,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
 
     int tzRef = env.newObject(ctx, "java.util.TimeZone");
     env.setReferenceField(ctx, tzRef, "ID", idRef);
-    env.setIntField(ctx, tzRef, "rawOffset", rawOffset);
+    env.setIntField(ctx, tzRef, "rawOffset", new One<>(rawOffset));
     
     return tzRef;
   }
@@ -88,7 +89,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
 
     int tzRef = env.newObject(ctx, "java.util.TimeZone");
     env.setReferenceField(ctx, tzRef, "ID", idRef);
-    env.setIntField(ctx, tzRef, "rawOffset", defaultRawOffset);
+    env.setIntField(ctx, tzRef, "rawOffset", new One<>(defaultRawOffset));
     
     return tzRef;
   }
@@ -124,7 +125,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
     }
     
     env.setReferenceField(NativeMethodInfo.CTX, objRef, "ID", idRef);
-    env.setIntField(NativeMethodInfo.CTX, objRef, "rawOffset", rawOffset);
+    env.setIntField(NativeMethodInfo.CTX, objRef, "rawOffset", new One<>(rawOffset));
   }
   
   @MJI
@@ -152,8 +153,8 @@ public class JPF_java_util_TimeZone extends NativePeer {
     }
     
     if (offsetsRef != MJIEnv.NULL) {
-      env.setIntArrayElement( NativeMethodInfo.CTX, offsetsRef, 0, rawOffset);
-      env.setIntArrayElement( NativeMethodInfo.CTX, offsetsRef, 1, dstOffset);
+      env.setIntArrayElement( NativeMethodInfo.CTX, offsetsRef, 0, new One<>(rawOffset));
+      env.setIntArrayElement( NativeMethodInfo.CTX, offsetsRef, 1, new One<>(dstOffset));
     }
     
     return (rawOffset + dstOffset);

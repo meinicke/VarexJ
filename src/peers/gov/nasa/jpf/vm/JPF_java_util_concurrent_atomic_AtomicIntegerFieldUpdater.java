@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.annotation.MJI;
 
 
@@ -45,7 +46,7 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerFieldUpdater extends A
     }
 
     int fidx = fi.getFieldIndex();
-    env.setIntField(NativeMethodInfo.CTX, objRef, "fieldId", fidx);
+    env.setIntField(NativeMethodInfo.CTX, objRef, "fieldId", new One<>(fidx));
   }
 
   @MJI
@@ -63,7 +64,7 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerFieldUpdater extends A
     int v = ei.getIntField(fi).simplify(NativeMethodInfo.CTX).getValue();
     if (v == fExpect) {
       ei = ei.getModifiableInstance();
-      ei.setIntField(NativeMethodInfo.CTX, fi, fUpdate);
+      ei.setIntField(NativeMethodInfo.CTX, fi, new One<>(fUpdate));
       return true;
     } else {
       return false;
@@ -89,7 +90,7 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerFieldUpdater extends A
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
-    ei.setIntField(NativeMethodInfo.CTX, fi, fNewValue);
+    ei.setIntField(NativeMethodInfo.CTX, fi, new One<>(fNewValue));
   }
 
   @MJI
@@ -125,7 +126,7 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerFieldUpdater extends A
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     int result = ei.getIntField(fi).simplify(NativeMethodInfo.CTX).getValue();
 
-    ei.setIntField(NativeMethodInfo.CTX, fi, fNewValue);
+    ei.setIntField(NativeMethodInfo.CTX, fi, new One<>(fNewValue));
 
     return result;
   }
@@ -143,7 +144,7 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerFieldUpdater extends A
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     int result = ei.getIntField(fi).simplify(NativeMethodInfo.CTX).getValue();
 
-    ei.setIntField(NativeMethodInfo.CTX, fi, result + fDelta);
+    ei.setIntField(NativeMethodInfo.CTX, fi, new One<>(result + fDelta));
 
     return result;
   }

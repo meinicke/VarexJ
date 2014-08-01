@@ -1699,7 +1699,7 @@ public class ThreadInfo extends InfoObject
         ei.setReferenceField("clsName", heap.newString(ctx, clsName, ThreadInfo.this).getObjectRef());
         ei.setReferenceField("mthName", heap.newString(ctx, mthName, ThreadInfo.this).getObjectRef());
         ei.setReferenceField("fileName", heap.newString(ctx, fileName, ThreadInfo.this).getObjectRef());
-        ei.setIntField(ctx, "line", line);
+        ei.setIntField(ctx, "line", new One<>(line));
 
         return ei.getObjectRef();
       }
@@ -2463,7 +2463,7 @@ public class ThreadInfo extends InfoObject
               }
               eiThreads.setReferenceElement(ctx, n1, new One<>(MJIEnv.NULL));
 
-              eiGrp.setIntField(ctx, "nthreads", n1);
+              eiGrp.setIntField(ctx, "nthreads", new One<>(n1));
               if (n1 == 0) {
                 eiGrp.lock(this);
                 eiGrp.notifiesAll();
@@ -2502,7 +2502,7 @@ public class ThreadInfo extends InfoObject
     ElementInfo eiGroup = createMainThreadGroup(ctx, sysCl);
     eiThread.setReferenceField("group", eiGroup.getObjectRef());
     
-    eiThread.setIntField(FeatureExprFactory.True(), "priority", Thread.NORM_PRIORITY);
+    eiThread.setIntField(FeatureExprFactory.True(), "priority", new One<>(Thread.NORM_PRIORITY));
 
     ClassInfo ciPermit = sysCl.getResolvedClassInfo(NativeMethodInfo.CTX, "java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( null, ciPermit, this);
@@ -2532,7 +2532,7 @@ public class ThreadInfo extends InfoObject
     ElementInfo eiGrpName = heap.newString(ctx, "main", this);
     eiThreadGrp.setReferenceField("name", eiGrpName.getObjectRef());
 
-    eiThreadGrp.setIntField(ctx, "maxPriority", java.lang.Thread.MAX_PRIORITY);
+    eiThreadGrp.setIntField(ctx, "maxPriority", new One<>(java.lang.Thread.MAX_PRIORITY));
 
     // 'threads' and 'nthreads' will be set later from createMainThreadObject
 
@@ -2573,7 +2573,7 @@ public class ThreadInfo extends InfoObject
         eiGroup.setReferenceField(fiThreads, newThreadsRef);
       }
       
-      eiGroup.setIntField(NativeMethodInfo.CTX, finThreads, nThreads+1);
+      eiGroup.setIntField(NativeMethodInfo.CTX, finThreads, new One<>(nThreads+1));
       
       /** <2do> we don't model this yet
       FieldInfo finUnstartedThreads = eiGroup.getFieldInfo("nUnstartedThreads");

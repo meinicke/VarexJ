@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.ClosedMemento;
 import gov.nasa.jpf.vm.Instruction;
@@ -73,6 +74,6 @@ public class JPF_gov_nasa_jpf_test_mc_basic_RestorerTest$X extends NativePeer {
     }
     
     a.count++;
-    env.setIntField(NativeMethodInfo.CTX, objref, "id", a.count);
+    env.setIntField(NativeMethodInfo.CTX, objref, "id", new One<>(a.count));
   }
 }

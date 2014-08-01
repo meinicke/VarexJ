@@ -251,17 +251,16 @@ public abstract class Fields implements Cloneable {
 
   public abstract void setReferenceValue (FeatureExpr ctx, int index, Conditional<Integer> newValue);
 
-  public abstract void setBooleanValue (int index, boolean newValue);
+  public abstract void setBooleanValue (int index, boolean newValue);// TODO
 
   public abstract void setByteValue (FeatureExpr ctx, int index, Conditional<Byte> newValue);
 
   public abstract void setCharValue (FeatureExpr ctx, int index, Conditional<Character> newValue);
 
-  public abstract void setShortValue (int index, short newValue);
+  public abstract void setShortValue (int index, short newValue);// TODO
 
-  public abstract void setFloatValue (int index, float newValue);
+  public abstract void setFloatValue (int index, float newValue);// TODO
 
-  public abstract void setIntValue (FeatureExpr ctx, int index, int newValue);// TODO remove
   public abstract void setIntValue (FeatureExpr ctx, int index, Conditional<Integer> newValue);
 
   public abstract void setLongValue (FeatureExpr ctx, int index, Conditional<Long> newValue);

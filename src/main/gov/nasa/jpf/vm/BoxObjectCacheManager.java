@@ -200,7 +200,7 @@ public class BoxObjectCacheManager {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
     for (int i = 0; i < n; i++) {
       ElementInfo eiInteger = heap.newSystemObject(ctx, ci, ti, ANCHOR);
-      eiInteger.setIntField(ctx, "value", i + intLow);
+      eiInteger.setIntField(ctx, "value", new One<>(i + intLow));
       eiArray.setReferenceElement(ctx, i, new One<>(eiInteger.getObjectRef()));
     }
 
@@ -221,7 +221,7 @@ public class BoxObjectCacheManager {
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
     ElementInfo eiInteger = ti.getHeap().newObject(ctx, ci, ti);
-    eiInteger.setIntField(ctx, "value", i);
+    eiInteger.setIntField(ctx, "value", new One<>(i));
     return eiInteger.getObjectRef();
   }
 

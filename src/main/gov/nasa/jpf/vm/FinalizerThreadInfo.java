@@ -90,7 +90,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     int grpRef = ThreadInfo.getCurrentThread().getThreadGroupRef();
     eiThread.setReferenceField("group", grpRef);
     
-    eiThread.setIntField(FeatureExprFactory.True(), "priority", Thread.MAX_PRIORITY-2);
+    eiThread.setIntField(FeatureExprFactory.True(), "priority", new One<>(Thread.MAX_PRIORITY-2));
 
     ClassInfo ciPermit = sysCl.getResolvedClassInfo(null, "java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( null, ciPermit, this);
