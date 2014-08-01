@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * this is an artificial bytecode that we use to deal with the particularities of 
@@ -75,7 +76,8 @@ public class INVOKECLINIT extends INVOKESTATIC {
       }
     }
     
-    setupCallee(ctx, ti, callee); // this creates, initializes and pushes the callee StackFrame
+    // JM initialize without condition
+    setupCallee(FeatureExprFactory.True(), ti, callee); // this creates, initializes and pushes the callee StackFrame
 
     return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
   }

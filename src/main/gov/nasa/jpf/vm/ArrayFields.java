@@ -147,7 +147,7 @@ public abstract class ArrayFields extends Fields {
 	}
 	
 	@Override
-	public void setIntValue(int index, Conditional<Integer> newValue) {
+	public void setIntValue(FeatureExpr ctx, int index, Conditional<Integer> newValue) {
 		// overridden by subclass
 		throw new JPFException(getClass() + " not an int[]");		
 	}

@@ -967,12 +967,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void set1SlotField(FieldInfo fi, Conditional<Integer> val) {
+  public void set1SlotField(FeatureExpr ctx, FieldInfo fi, Conditional<Integer> val) {
     checkIsModifiable();
 
     if (fi.is1SlotField()) {
       int offset = fi.getStorageOffset();
-      fields.setIntValue( offset, val);
+      fields.setIntValue( ctx, offset, val);
     } else {
       throw new JPFException("not a 1 slot field: " + fi.getName());
     }
@@ -1278,7 +1278,7 @@ public abstract class ElementInfo implements Cloneable {
 		    		}
 	    		} else if (eiSrc.getFields() instanceof IntArrayFields) {
 		    		for (int i = 0; i < length; i++) {
-		    			fields.setIntValue(dstIdx + i, src.getIntValue(i + srcIdx));
+		    			fields.setIntValue(ctx, dstIdx + i, src.getIntValue(i + srcIdx));
 		    		}
 	    		} else if (eiSrc.getFields() instanceof ByteArrayFields) {
 		    		for (int i = 0; i < length; i++) {

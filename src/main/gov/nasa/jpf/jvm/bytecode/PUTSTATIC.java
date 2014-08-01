@@ -69,7 +69,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			frame.pop(ctx);
 			frame.push(ctx, new Choice<>(feature, new One<>(1), new One<>(0)));
 		}
-
+		
 		if (!ti.isFirstStepInsn()) { // top half
 			FieldInfo fieldInfo;
 

@@ -113,7 +113,7 @@ public IntArrayFields (int length) {
   }
   
   @Override
-	public void setIntValue(int index, Conditional<Integer> newValue) {
+	public void setIntValue(FeatureExpr ctx, int index, Conditional<Integer> newValue) {
 	  values[index] = newValue;
 	}
 

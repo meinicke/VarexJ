@@ -216,8 +216,8 @@ public class NamedFields extends Fields {
 		}
 	}
 
-	public void setIntValue(int index, Conditional<Integer> newValue) {
-		values[index] = newValue;
+	public void setIntValue(FeatureExpr ctx, int index, Conditional<Integer> newValue) {
+		values[index] = new Choice<>(ctx, newValue, values[index]).simplify();;
 	}
 
 	@Override

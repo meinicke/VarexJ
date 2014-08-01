@@ -56,7 +56,7 @@ public class HashedAllocationContext implements AllocationContext {
     
     for (StackFrame frame = ti.getTopFrame(); frame != null; frame = frame.getPrevious() ) {
       if (!(frame instanceof DirectCallStackFrame)) {
-        Instruction insn = frame.getPC().simplify(fexpr).getValue();
+        Instruction insn = frame.getPC().simplify(fexpr).getValue(true);
         
         //h = hashMixin(h, insn.hashCode()); // this is the Instruction object system hash - not reproducible between runs
         
