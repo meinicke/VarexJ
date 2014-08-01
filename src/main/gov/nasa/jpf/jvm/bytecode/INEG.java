@@ -34,7 +34,7 @@ public class INEG extends JVMInstruction {
 		StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Integer> v = frame.pop(ctx);
-		frame.push(ctx, mapr2(v, 0));
+		frame.push(ctx, mapr2(v, null));
 
 		return getNext(ctx, ti);
 	}

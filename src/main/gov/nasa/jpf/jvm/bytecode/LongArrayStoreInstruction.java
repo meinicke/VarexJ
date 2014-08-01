@@ -35,7 +35,7 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  */
 public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
   protected void setField (FeatureExpr ctx, ElementInfo e, int index, long value)
-                    throws ArrayIndexOutOfBoundsExecutiveException {
+                    throws ArrayIndexOutOfBoundsExecutiveException {// JM unused
     e.checkArrayBounds(ctx, index);
     e.setLongElement(ctx, index, new One<>(value));
   }
@@ -44,7 +44,7 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
     return 2;
   }
 
-  protected long getValue (ThreadInfo ti) {
+  protected long getValue (ThreadInfo ti) {// JM unused
     StackFrame frame = ti.getModifiableTopFrame();    
     return frame.popLong(FeatureExprFactory.True()).getValue();
   }

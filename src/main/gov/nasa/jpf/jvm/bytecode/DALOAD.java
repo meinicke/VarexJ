@@ -23,7 +23,6 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
-import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**

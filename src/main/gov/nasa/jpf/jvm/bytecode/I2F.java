@@ -18,12 +18,11 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -38,17 +37,15 @@ public class I2F extends JVMInstruction {
 
     Conditional<Integer> v = frame.pop(ctx);
     
-    frame.push(ctx, v.map(new Function<Integer, Float>() {
-
-		@Override
-		public Float apply(Integer f) {
-			return (float)f.intValue();
-		}
-    	
-	}));
+    frame.push(ctx, mapr2(v, 0));
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return (float)v1.intValue();
+	}
 
   public int getByteCode () {
     return 0x86;

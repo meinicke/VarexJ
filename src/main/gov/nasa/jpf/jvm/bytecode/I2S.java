@@ -37,10 +37,15 @@ public class I2S extends JVMInstruction {
 
     Conditional<Integer> v = frame.pop(ctx);
     
-    frame.push(ctx, v);
+    frame.push( ctx, mapr2(v, null), false);
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return (int) (short) v1.intValue();
+	}
 
   public int getByteCode () {
     return 0x93;

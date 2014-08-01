@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import gov.nasa.jpf.jvm.JVMInstruction;
@@ -57,23 +58,30 @@ public abstract class SwitchInstruction extends JVMInstruction {
     return targets.length;
   }
 
-  protected Conditional<Instruction> executeConditional (FeatureExpr ctx, ThreadInfo ti){
-    StackFrame frame = ti.getModifiableTopFrame();
+	protected Conditional<Instruction> executeConditional(FeatureExpr ctx, ThreadInfo ti) {
+		StackFrame frame = ti.getModifiableTopFrame();
 
-    int value = frame.pop(ctx).getValue();
+		Conditional<Integer> value = frame.pop(ctx);
 
-    lastIdx = DEFAULT;
+		return value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-    for (int i = 0, l = matches.length; i < l; i++) {
-      if (value == matches[i]) {
-        lastIdx = i;
-        return new One<>(mi.getInstructionAt(targets[i]));
-      }
-    }
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer value) {
+				lastIdx = DEFAULT;
 
-    return new One<>(mi.getInstructionAt(target));
-  }
-  
+				for (int i = 0, l = matches.length; i < l; i++) {
+					if (value == matches[i]) {
+						lastIdx = i;
+						return new One<>(mi.getInstructionAt(targets[i]));
+					}
+				}
+
+				return new One<>(mi.getInstructionAt(target));
+			}
+
+		});
+	}
+
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     // this can be overridden by subclasses, so we have to delegate the conditional execution
     // to avoid getting recursive in executeAllBranches()

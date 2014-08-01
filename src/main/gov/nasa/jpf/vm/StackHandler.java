@@ -356,7 +356,7 @@ public class StackHandler implements Cloneable {
 				} else if (value instanceof Byte) {
 					clone.push(((Byte)value).intValue(), isRef);
 				} else {
-					throw new RuntimeException(value + " cannot be pushed to the stack.");
+					throw new RuntimeException(value + " of type " + value.getClass() + " cannot be pushed to the stack.");
 				}
 				
 				if (stackCTX.equivalentTo(f)) {

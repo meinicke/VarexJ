@@ -83,13 +83,13 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
   }
 
   public StaticElementInfo getLastElementInfo() {
-    return getFieldInfo(null).getClassInfo().getStaticElementInfo();
+    return getFieldInfo(FeatureExprFactory.True()).getClassInfo().getStaticElementInfo();
   }
 
   // this can be different than ciField - the field might be in one of its
   // superclasses
   public ClassInfo getLastClassInfo(){
-    return getFieldInfo(null).getClassInfo();
+    return getFieldInfo(FeatureExprFactory.True()).getClassInfo();
   }
 
   public String getLastClassName() {

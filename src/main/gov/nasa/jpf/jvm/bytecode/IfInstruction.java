@@ -185,7 +185,7 @@ public abstract class IfInstruction extends JVMInstruction {
 				}); 
 			}
 	    	
-		}).simplify();
+		}).simplifyValues();
   }
   
   protected boolean compare(int x, int y) {

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -29,8 +30,8 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class LRETURN extends LongReturn {
 
-  public long getReturnValue () {
-    return ret.getValue();
+  public Conditional<Long> getReturnValue () {
+    return ret;
   }
 
   public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
@@ -39,7 +40,7 @@ public class LRETURN extends LongReturn {
       ret = frame.peekLong(ctx);
     }
 
-    return ret.getValue();
+    return ret;
   }
 
   public int getByteCode () {

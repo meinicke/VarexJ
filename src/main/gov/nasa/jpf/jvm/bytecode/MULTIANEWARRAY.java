@@ -77,7 +77,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     for (int i = dimensions - 1; i >= 0; i--) {
-      arrayLengths[i] = frame.pop(ctx).getValue();
+      arrayLengths[i] = frame.pop(ctx).getValue();// TODO Jens
     }
 
     // there is no clinit for array classes, but we still have  to create a class object

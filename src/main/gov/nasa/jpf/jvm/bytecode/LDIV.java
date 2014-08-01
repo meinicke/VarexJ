@@ -22,9 +22,6 @@ import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import java.util.Map;
-
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;

@@ -39,7 +39,7 @@ public class IASTORE extends ArrayStoreInstruction {
 
   protected void setField (FeatureExpr ctx, final ElementInfo ei, final int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+    value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {// TODO jens replace with ei.setIntElement(ctx, index, value);
 
 		@Override
 		public Conditional<Object> apply(FeatureExpr ctx, Integer value) {

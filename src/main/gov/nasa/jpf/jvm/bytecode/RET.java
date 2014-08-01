@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -41,8 +42,15 @@ public class RET extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
-    int jumpTgt = frame.getLocalVariable(ctx, index).getValue();
-    return new One<>(mi.getInstructionAt(jumpTgt));
+    Conditional<Integer> jumpTgt = frame.getLocalVariable(ctx, index);
+    return jumpTgt.map(new Function<Integer, Instruction>() {
+
+		@Override
+		public Instruction apply(Integer jumpTgt) {
+			 return mi.getInstructionAt(jumpTgt);
+		}
+    	
+    });
   }
 
   public int getLength() {

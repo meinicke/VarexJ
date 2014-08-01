@@ -37,7 +37,7 @@ public class I2D extends JVMInstruction {
 
     Conditional<Integer> ival = frame.pop(ctx);
     
-    frame.push(ctx, mapr2(ival, 0));
+    frame.push(ctx, mapr2(ival, null));
 
     return getNext(ctx, ti);
   }

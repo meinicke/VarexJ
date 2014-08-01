@@ -31,7 +31,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class DRETURN extends LongReturn {
   
 
-  public double getReturnValue() {
+  public double getReturnValue() {// JM unused
     return Types.longToDouble(ret.getValue());
   }
 

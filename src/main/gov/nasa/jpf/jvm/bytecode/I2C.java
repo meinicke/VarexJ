@@ -34,12 +34,17 @@ public class I2C extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    int v = frame.pop(ctx).getValue();
+    Conditional<Integer> v = frame.pop(ctx);
     
-    frame.push( ctx, (char)v, false);
+    frame.push( ctx, mapr2(v, null), false);
 
     return getNext(ctx, ti);
   }
+  
+  @Override
+	protected Number instruction(Number v1, Number v2) {
+		return (int) (char) v1.intValue();
+	}
 
   public int getByteCode () {
     return 0x92;
