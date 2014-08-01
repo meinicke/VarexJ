@@ -37,100 +37,102 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class IntArrayFields extends ArrayFields {
 
-  Conditional<Integer>[] values;
+	Conditional<Integer>[] values;
 
-  private static final One<Integer> init = new One<>(0);
-  
-  @SuppressWarnings("unchecked")
-public IntArrayFields (int length) {
-    values = new Conditional[length];
-    Arrays.fill(values, init);
-    
-  }
+	private static final One<Integer> init = new One<>(0);
 
-  public Conditional<Integer>[] asIntArray() {
-    return values;
-  }
+	@SuppressWarnings("unchecked")
+	public IntArrayFields(int length) {
+		values = new Conditional[length];
+		Arrays.fill(values, init);
 
-  protected void printValue(PrintStream ps, int idx){
-    ps.print(values[idx]);
-  }
-  
-  public Conditional<?> getValues(){
-    return new One<>(values);
-  }
-
-  public int arrayLength() {
-    return values.length;
-  }
-
-  public int getHeapSize() {  // in bytes
-    return values.length * 4;
-  }
-
-  public void appendTo (IntVector v) {
-	 List<Integer> l = new ArrayList<>(values.length);
-	for (int i = 0; i < values.length; i++) {
-		l.addAll(values[i].toList());
-//			a[i] = values[i].getValue();
 	}
-	
-	int[] a = new int[l.size()];
-	for (int i = 0; i < l.size(); i++) {
-		a[i] = l.get(i);
+
+	@Override
+	public Conditional<Integer>[] asIntArray() {
+		return values;
 	}
-	
-    v.append(a);
-  }
 
-  public IntArrayFields clone(){
-    IntArrayFields f = (IntArrayFields)cloneFields();
-    f.values = values.clone();
-    return f;
-  }
+	protected void printValue(PrintStream ps, int idx) {
+		ps.print(values[idx]);
+	}
 
-  public boolean equals (Object o) {
-    if (o instanceof IntArrayFields) {
-      IntArrayFields other = (IntArrayFields)o;
+	@Override
+	public Conditional<?> getValues() {
+		return new One<>(values);
+	}
 
-      Conditional<Integer>[] v = values;
-      Conditional<Integer>[] vOther = other.values;
-      if (v.length != vOther.length) {
-        return false;
-      }
+	public int arrayLength() {
+		return values.length;
+	}
 
-      for (int i=0; i<v.length; i++) {
-        if (v[i].equals(vOther[i])) {
-          return false;
-        }
-      }
+	public int getHeapSize() { // in bytes
+		return values.length * 4;
+	}
 
-      return compareAttrs(other);
+	public void appendTo(IntVector v) {
+		List<Integer> l = new ArrayList<>(values.length);
+		for (int i = 0; i < values.length; i++) {
+			l.addAll(values[i].toList());
+			// a[i] = values[i].getValue();
+		}
 
-    } else {
-      return false;
-    }
-  }
-  
-  @Override
+		int[] a = new int[l.size()];
+		for (int i = 0; i < l.size(); i++) {
+			a[i] = l.get(i);
+		}
+
+		v.append(a);
+	}
+
+	public IntArrayFields clone() {
+		IntArrayFields f = (IntArrayFields) cloneFields();
+		f.values = values.clone();
+		return f;
+	}
+
+	public boolean equals(Object o) {
+		if (o instanceof IntArrayFields) {
+			IntArrayFields other = (IntArrayFields) o;
+
+			Conditional<Integer>[] v = values;
+			Conditional<Integer>[] vOther = other.values;
+			if (v.length != vOther.length) {
+				return false;
+			}
+
+			for (int i = 0; i < v.length; i++) {
+				if (v[i].equals(vOther[i])) {
+					return false;
+				}
+			}
+
+			return compareAttrs(other);
+
+		} else {
+			return false;
+		}
+	}
+
+	@Override
 	public void setIntValue(FeatureExpr ctx, int pos, Conditional<Integer> newValue) {
-	  if (Conditional.isTautology(ctx)) {
-		  values[pos] = newValue;	  
-	  } else {
-		  values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
-	  }
+		if (Conditional.isTautology(ctx)) {
+			values[pos] = newValue;
+		} else {
+			values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+		}
 	}
 
-  public Conditional<Integer> getIntValue (int pos) {
-    return values[pos];
-  }
+	@Override
+	public Conditional<Integer> getIntValue(int pos) {
+		return values[pos];
+	}
 
-
-  public void hash(HashData hd) {
-    Conditional<Integer>[] v = values;
-    for (int i=0; i < v.length; i++) {
-      hd.add(v[i].getValue());
-    }
-  }
+	public void hash(HashData hd) {
+		Conditional<Integer>[] v = values;
+		for (int i = 0; i < v.length; i++) {
+			hd.add(v[i].getValue());
+		}
+	}
 
 }

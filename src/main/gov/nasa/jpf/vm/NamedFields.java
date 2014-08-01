@@ -19,15 +19,14 @@
 
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.IntVector;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Choice;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.IntVector;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * value container for non-array classes
@@ -47,7 +46,8 @@ public class NamedFields extends Fields {
 			values[i] = new One<>(0);
 		}
 	}
-
+	
+	@Override
 	public int[] asFieldSlots() {
 		int[] array = new int[values.length];
 		int i = 0;
@@ -67,6 +67,7 @@ public class NamedFields extends Fields {
 		return values.length * 4;
 	}
 
+	@Override
 	public Conditional<Integer> getIntValue(int index) {
 		return values[index];
 	}
@@ -94,10 +95,12 @@ public class NamedFields extends Fields {
 		}
 	}
 
+	@Override
 	public Conditional<Integer> getReferenceValue(int index) {
 		return values[index];
 	}
 
+	@Override
 	public Conditional<Long> getLongValue(final int index) {
 		return values[index + 1].mapr(new Function<Integer, Conditional<Long>>() {
 
@@ -116,10 +119,12 @@ public class NamedFields extends Fields {
 		});
 	}
 
+	@Override
 	public boolean getBooleanValue(int index) {
 		return Types.intToBoolean(values[index].getValue());
 	}
 
+	@Override
 	public Conditional<Byte> getByteValue(int index) {
 		return values[index].map(new Function<Integer, Byte>() {
 
@@ -131,6 +136,7 @@ public class NamedFields extends Fields {
 		});
 	}
 
+	@Override
 	public Conditional<Character> getCharValue(int index) {
 		return values[index].map(new GetCharValue());
 	}
@@ -142,6 +148,7 @@ public class NamedFields extends Fields {
 		}
 	}
 
+	@Override
 	public short getShortValue(int index) {
 		return (short) values[index].getValue().intValue();
 	}
@@ -151,12 +158,7 @@ public class NamedFields extends Fields {
 		return asFieldSlots();
 	}
 
-	// --- the field modifier methods (both instance and static)
-
-	public void setReferenceValue(int index, int newValue) {
-		setReferenceValue(FeatureExprFactory.True(), index, new One<>(newValue));// TODO jens add ctx
-	}
-
+	@Override
 	public void setReferenceValue(FeatureExpr ctx, int index, Conditional<Integer> newValue) {
 		if (Conditional.isTautology(ctx)) {
 			values[index] = newValue;
@@ -165,10 +167,12 @@ public class NamedFields extends Fields {
 		}
 	}
 
+	@Override
 	public void setBooleanValue(int index, boolean newValue) {
 		values[index] = new One<>(newValue ? 1 : 0);
 	}
 
+	@Override
 	public void setByteValue(FeatureExpr ctx, int index, Conditional<Byte> newValue) {
 		if (Conditional.isTautology(ctx)) {
 			values[index] = new One<>((int)newValue.getValue());	
@@ -184,8 +188,9 @@ public class NamedFields extends Fields {
 		}
 	}
 
+	@Override
 	public void setCharValue(FeatureExpr ctx, int index, Conditional<Character> newValue) {
-		values[index] = newValue.map(new SetCharValue());
+		values[index] = new Choice<>(ctx, newValue.map(new SetCharValue()), values[index]).simplify();
 	}
 	
 	private static final class SetCharValue implements Function<Character, Integer> {
@@ -195,22 +200,17 @@ public class NamedFields extends Fields {
 		}
 	}
 
+	@Override
 	public void setShortValue(int index, short newValue) {
 		values[index] = new One<>((int) newValue);
 	}
 
+	@Override
 	public void setFloatValue(int index, float newValue) {
 		values[index] = new One<>(Types.floatToInt(newValue));
 	}
 
-	public void setIntValue(FeatureExpr ctx, int index, int newValue) {
-		if (Conditional.isTautology(ctx)) {
-			values[index] = new One<>(newValue);
-		} else {
-			values[index] = new Choice<>(ctx, new One<>(newValue), values[index]).simplify();
-		}
-	}
-
+	@Override
 	public void setIntValue(FeatureExpr ctx, int pos, Conditional<Integer> newValue) {
 		 if (Conditional.isTautology(ctx)) {
 			  values[pos] = newValue;	  
@@ -262,10 +262,12 @@ public class NamedFields extends Fields {
 		
 	}
 
+	@Override
 	public float getFloatValue(int index) {
 		return Types.intToFloat(values[index].getValue());
 	}
 
+	@Override
 	public Conditional<Double> getDoubleValue(int index) {
 		return new One<>(Types.intsToDouble(values[index + 1].getValue(), values[index].getValue()));
 	}

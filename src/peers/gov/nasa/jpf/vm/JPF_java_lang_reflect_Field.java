@@ -265,7 +265,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, CharFieldInfo.class, "char", true);
     if (ei != null){
-      ei.setCharField(fi,val);
+      ei.setCharField(NativeMethodInfo.CTX,fi, val);
     }
   }
 
@@ -365,7 +365,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         return env.newByte(z);
       } else if (fi instanceof CharFieldInfo){
         char c = ei.getCharField(fi);
-        return env.newCharacter(c);
+        return env.newCharacter(ctx, c);
       } else if (fi instanceof ShortFieldInfo){
         short s = ei.getShortField(fi);
         return env.newShort(s);
@@ -509,7 +509,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         return true;
       } else if ("char".equals(fieldType)){
         char val = env.getCharField(value, fieldName);
-        ei.setCharField(fi, val);
+        ei.setCharField(ctx, fi, val);
         return true;
       } else if ("short".equals(fieldType)){
         short val = env.getShortField(value, fieldName);

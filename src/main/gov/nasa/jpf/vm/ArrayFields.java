@@ -67,83 +67,82 @@ public abstract class ArrayFields extends Fields {
 
 	public abstract Conditional<?> getValues();
 
+	@Override
 	public boolean getBooleanValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a boolean[]");
 	}
 
+	@Override
 	public Conditional<Byte> getByteValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a byte[]");
 	}
 
+	@Override
 	public Conditional<Character> getCharValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a char[]");
 	}
 
+	@Override
 	public short getShortValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a short[]");
 	}
 
+	@Override
 	public Conditional<Integer> getIntValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not an int[]");
 	}
 
-	public Conditional<Integer> getIntValue2(int pos) {
-		// overridden by subclass
-		throw new JPFException("not an int[]");
-	}
-
+	@Override
 	public Conditional<Long> getLongValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a long[]");
 	}
 
+	@Override
 	public float getFloatValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a float[]");
 	}
 
+	@Override
 	public Conditional<Double> getDoubleValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a double[]");
 	}
 
+	@Override
 	public Conditional<Integer> getReferenceValue(int pos) {
 		// overridden by subclass
 		throw new JPFException(getClass() + "not a reference array");
 	}
-	
-	public Conditional<Integer> getReferenceValue2 (int index) {
-		throw new JPFException("not implemented");
-	}
 
+	@Override
 	public void setBooleanValue(int pos, boolean newValue) {
 		// overridden by subclass
 		throw new JPFException("not a boolean[]");
 	}
 
+	@Override
 	public void setByteValue(FeatureExpr ctx, int pos, Conditional<Byte> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a byte[]");
 	}
 
+	@Override
 	public void setCharValue(FeatureExpr ctx, int pos, Conditional<Character> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a char[]");
 	}
 
+	@Override
 	public void setShortValue(int pos, short newValue) {
 		// overridden by subclass
 		throw new JPFException("not a short[]");
-	}
-
-	public void setIntValue(FeatureExpr ctx, int pos, int newValue) {
-		// overridden by subclass
-		throw new JPFException("not an int[]");
 	}
 	
 	@Override
@@ -152,6 +151,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException(getClass() + " not an int[]");		
 	}
 
+	@Override
 	public void setFloatValue(int pos, float newValue) {
 		// overridden by subclass
 		throw new JPFException("not a float[]");
@@ -169,11 +169,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a double[]");
 	}
 
-	public void setReferenceValue(int pos, int newValue) {
-		// overridden by subclass
-		throw new JPFException("not a reference array");
-	}
-
+	@Override
 	public void setReferenceValue(FeatureExpr ctx, int pos, Conditional<Integer> newValue) {
 		// overridden by subclass
 		throw new JPFException(getClass() + "not a reference array");

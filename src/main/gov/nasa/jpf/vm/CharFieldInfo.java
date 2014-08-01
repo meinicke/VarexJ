@@ -46,7 +46,7 @@ public class CharFieldInfo extends SingleSlotFieldInfo {
 
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setCharValue(null, storageOffset, new One<>(init));
+    ei.getFields().setCharValue(ctx, storageOffset, new One<>(init));
   }
 
   public boolean isCharField() {

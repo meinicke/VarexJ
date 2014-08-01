@@ -333,7 +333,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getModifiableElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      ei.setCharField(fi, val);
+      ei.setCharField(NativeMethodInfo.CTX, fi, val);
     } else {
       ei.setCharElement(NativeMethodInfo.CTX, (int)fieldOffset, new One<>(val));
     }

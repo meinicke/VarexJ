@@ -808,8 +808,8 @@ public abstract class ElementInfo implements Cloneable {
   public void setByteField (FeatureExpr ctx, String fname, byte value) {
     setByteField( ctx, getFieldInfo(fname), value);
   }
-  public void setCharField (String fname, char value) {
-    setCharField( getFieldInfo(fname), value);
+  public void setCharField (FeatureExpr ctx, String fname, char value) {
+    setCharField( ctx, getFieldInfo(fname), value);
   }
   public void setShortField (String fname, short value) {
     setShortField( getFieldInfo(fname), value);
@@ -886,12 +886,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setCharField(FieldInfo fi, char newValue) {
+  public void setCharField(FeatureExpr ctx, FieldInfo fi, char newValue) {
     checkIsModifiable();
     
     if (fi.isCharField()) {
       int offset = fi.getStorageOffset();
-      fields.setCharValue(null, offset, new One<>(newValue));
+      fields.setCharValue(ctx, offset, new One<>(newValue));
     } else {
       throw new JPFException("not a char field: " + fi.getName());
     }

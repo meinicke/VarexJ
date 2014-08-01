@@ -94,10 +94,16 @@ public class ByteArrayFields extends ArrayFields {
     return f;
   }
 
+  @Override
   public void setByteValue (FeatureExpr ctx, int pos, Conditional<Byte> b) {
-    values[pos] = new Choice<>(ctx, b, values[pos]).simplify();
+	  if (Conditional.isTautology(ctx)) {
+		  values[pos] = values[pos];
+	  } else {
+		  values[pos] = new Choice<>(ctx, b, values[pos]).simplify();
+	  }
   }
 
+  @Override
   public Conditional<Byte> getByteValue (int pos) {
     return values[pos];
   }
