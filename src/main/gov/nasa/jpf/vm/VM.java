@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -469,13 +470,13 @@ public abstract class VM {
     return sysCli;
   }
   
-  protected void createSystemClassLoaderObject (SystemClassLoaderInfo sysCl, ThreadInfo tiMain) {
+  protected void createSystemClassLoaderObject (FeatureExpr ctx, SystemClassLoaderInfo sysCl, ThreadInfo tiMain) {
     Heap heap = getHeap();
 
     // create ClassLoader object for the ClassLoader type defined by this SystemClassLoaderInfo
     // NOTE - this requires the SystemClassLoaderInfo cache to be initialized
     ClassInfo ciCl = sysCl.getClassLoaderClassInfo();
-    ElementInfo ei = heap.newObject( null, ciCl, tiMain);
+    ElementInfo ei = heap.newObject(ctx, ciCl, tiMain);
     //ei.setReferenceField("parent", MJIEnv.NULL);
     heap.registerPinDown(ei.getObjectRef());
 
@@ -490,7 +491,7 @@ public abstract class VM {
       ElementInfo eiArgs = heap.newArray(FeatureExprFactory.True(), "Ljava/lang/String;", args.length, tiMain);
       for (int i = 0; i < args.length; i++) {
         ElementInfo eiArg = heap.newString(FeatureExprFactory.True(), args[i], tiMain);
-        eiArgs.setReferenceElement(i, eiArg.getObjectRef());
+        eiArgs.setReferenceElement(FeatureExprFactory.True(), i, new One<>(eiArg.getObjectRef()));
       }
       frame.setReferenceArgument( 0, eiArgs.getObjectRef(), null);
 
@@ -561,11 +562,11 @@ public abstract class VM {
     }
     
     // create essential objects (we can't call ctors yet)
-    createSystemClassLoaderObject(sysCl, tiMain);
+    createSystemClassLoaderObject(ctx, sysCl, tiMain);
     for (ClassInfo ci : startupClasses) {
-      ci.createAndLinkStartupClassObject(tiMain);
+      ci.createAndLinkStartupClassObject(ctx, tiMain);
     }
-    tiMain.createMainThreadObject(sysCl);
+    tiMain.createMainThreadObject(ctx, sysCl);
     registerThread(tiMain);
     
     // note that StackFrames have to be pushed in reverse order

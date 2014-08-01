@@ -486,8 +486,8 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   }
   
   
-  public ElementInfo newSystemThrowable (ClassInfo ciThrowable, String details, int[] stackSnapshot, int causeRef,
-                                 ThreadInfo ti, int anchor) {
+  public ElementInfo newSystemThrowable (FeatureExpr fexpr, ClassInfo ciThrowable, String details, int[] stackSnapshot,
+                                 int causeRef, ThreadInfo ti, int anchor) {
     SystemClassLoaderInfo sysCl = ti.getSystemClassLoaderInfo(); 
     ClassInfo ciString = sysCl.getStringClassInfo();
     ClassInfo ciChars = sysCl.getCharArrayClassInfo();
@@ -495,7 +495,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     //--- the Throwable object itself
     AllocationContext ctx = getSystemAllocationContext( ciThrowable, ti, anchor);
     int xRef = getNewElementInfoIndex( ctx);
-    ElementInfo eiThrowable = createObject( null, ciThrowable, ti, xRef);
+    ElementInfo eiThrowable = createObject(fexpr, ciThrowable, ti, xRef);
     
     //--- the detailMsg field
     if (details != null) {

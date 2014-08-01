@@ -123,11 +123,11 @@ public class MJIEnv {
     return heap.get(objref).isArray();
   }
 
-  public int getArrayLength (int objref) {
+  public int getArrayLength (FeatureExpr ctx, int objref) {
     if (isArray(objref)) {
       return heap.get(objref).arrayLength();
     } else {
-      throwException("java.lang.IllegalArgumentException");
+      throwException(ctx, "java.lang.IllegalArgumentException");
 
       return 0;
     }
@@ -553,8 +553,8 @@ public class MJIEnv {
 //    return ei.getLongField(fname, refType);
 //  }
 
-  public void setReferenceArrayElement (int objref, int index, int eRef) {
-    heap.getModifiable(objref).setReferenceElement(index, eRef);
+  public void setReferenceArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Integer> eRef) {
+    heap.getModifiable(objref).setReferenceElement(ctx, index, eRef);
   }
 
   public int getReferenceArrayElement (int objref, int index) {
@@ -772,7 +772,7 @@ public class MJIEnv {
 	    }  
   }
 
-  public String[] getStringArrayObject (int aRef){
+  public String[] getStringArrayObject (FeatureExpr ctx, int aRef){
     String[] sa = null;
      
     if (aRef == NULL) return sa;
@@ -781,12 +781,12 @@ public class MJIEnv {
     if (aci.isArray()){
       ClassInfo eci = aci.getComponentClassInfo();
       if (eci.getName().equals("java.lang.String")){
-        int len = getArrayLength(aRef);
+        int len = getArrayLength(ctx, aRef);
         sa = new String[len];
 
         for (int i=0; i<len; i++){
           int sRef = getReferenceArrayElement(aRef,i);
-          sa[i] = getStringObject(null, sRef);
+          sa[i] = getStringObject(ctx, sRef);
         }
 
         return sa;
@@ -816,11 +816,11 @@ public class MJIEnv {
     
   }
 
-  public Object[] getArgumentArray (int argRef) {
+  public Object[] getArgumentArray (FeatureExpr ctx, int argRef) {
     Object[] args = null;
     if (argRef == NULL) return args;
 
-    int nArgs = getArrayLength(argRef);
+    int nArgs = getArrayLength(ctx, argRef);
     args = new Object[nArgs];
 
     for (int i=0; i<nArgs; i++){
@@ -1114,11 +1114,11 @@ public class MJIEnv {
     }
   }
 
-  public int newStringArray (String[] a){
+  public int newStringArray (FeatureExpr ctx, String[] a){
     int aref = newObjectArray("Ljava/lang/String;", a.length);
 
     for (int i=0; i<a.length; i++){
-      setReferenceArrayElement(aref, i, newString(FeatureExprFactory.True(), new One<>(a[i])));
+      setReferenceArrayElement(ctx, aref, i, new One<>(newString(FeatureExprFactory.True(), new One<>(a[i]))));
     }
 
     return aref;
@@ -1143,9 +1143,9 @@ public class MJIEnv {
     return newString(FeatureExprFactory.True(), new One<>(s));
   }
 
-  public String format (int fmtRef, int argRef){
+  public String format (FeatureExpr ctx, int fmtRef, int argRef){
     String format = getStringObject(null, fmtRef);
-    int len = getArrayLength(argRef);
+    int len = getArrayLength(ctx, argRef);
     Object[] arg = new Object[len];
 
     for (int i=0; i<len; i++){
@@ -1178,9 +1178,9 @@ public class MJIEnv {
     return String.format(format,arg);
   }
 
-  public String format (Locale l,int fmtRef, int argRef){
+  public String format (FeatureExpr ctx,Locale l, int fmtRef, int argRef){
 	    String format = getStringObject(null, fmtRef);
-	    int len = getArrayLength(argRef);
+	    int len = getArrayLength(ctx, argRef);
 	    Object[] arg = new Object[len];
 
 	    for (int i=0; i<len; i++){
@@ -1269,8 +1269,8 @@ public class MJIEnv {
 
   public void notify (ElementInfo ei) {
     if (!ei.isLockedBy(ti)){
-      throwException("java.lang.IllegalMonitorStateException",
-                                 "un-synchronized notify");
+      throwException(NativeMethodInfo.CTX,
+                                 "java.lang.IllegalMonitorStateException", "un-synchronized notify");
       return;
     }
 
@@ -1285,8 +1285,8 @@ public class MJIEnv {
 
   public void notifyAll (ElementInfo ei) {
     if (!ei.isLockedBy(ti)){
-      throwException("java.lang.IllegalMonitorStateException",
-                                 "un-synchronized notifyAll");
+      throwException(NativeMethodInfo.CTX,
+                                 "java.lang.IllegalMonitorStateException", "un-synchronized notifyAll");
       return;
     }
 
@@ -1371,24 +1371,24 @@ public class MJIEnv {
     exceptionRef = xRef;
   }
 
-  public void throwException (String clsName) {
+  public void throwException (FeatureExpr ctx, String clsName) {
     ClassInfo ciX = ClassInfo.getInitializedClassInfo(null, clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
-    exceptionRef = ti.createException(null, ciX, null, NULL);
+    exceptionRef = ti.createException(ctx, ciX, null, NULL);
   }
 
-  public void throwException (String clsName, String details) {
-    ClassInfo ciX = ClassInfo.getInitializedClassInfo(null, clsName, ti);
+  public void throwException (FeatureExpr ctx, String clsName, String details) {
+    ClassInfo ciX = ClassInfo.getInitializedClassInfo(ctx, clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
-    exceptionRef = ti.createException(null, ciX, details, NULL);
+    exceptionRef = ti.createException(ctx, ciX, details, NULL);
   }
 
-  public void throwAssertion (String details) {
-    throwException("java.lang.AssertionError", details);
+  public void throwAssertion (FeatureExpr ctx, String details) {
+    throwException(ctx, "java.lang.AssertionError", details);
   }
 
-  public void throwInterrupt(){
-    throwException("java.lang.InterruptedException");
+  public void throwInterrupt(FeatureExpr ctx){
+    throwException(ctx, "java.lang.InterruptedException");
   }
 
   public void stopThread(){
@@ -1668,7 +1668,7 @@ public class MJIEnv {
       if (ftype.equals("java.lang.String[]")){
         aref = newObjectArray("Ljava/lang/String;", a.length);
         for (int i=0; i<a.length; i++){
-          setReferenceArrayElement(aref,i,newString(FeatureExprFactory.True(), new One<>(a[i].toString())));
+          setReferenceArrayElement(ctx,aref,i, new One<>(newString(FeatureExprFactory.True(), new One<>(a[i].toString()))));
         }
       } else if (ftype.equals("int[]")){
         aref = newIntArray(a.length);
@@ -1699,18 +1699,18 @@ public class MJIEnv {
             throw new ClinitRequired(cci);
           }
           int cref = cci.getClassObjectRef();
-          setReferenceArrayElement(aref,i,cref);
+          setReferenceArrayElement(ctx,aref,i, new One<>(cref));
         }
       }
 
       if (aref != NULL){
         setReferenceField(ctx, proxyRef, fname, aref);
       } else {
-        throwException("AnnotationElement type not supported: " + ftype);
+        throwException(ctx, "AnnotationElement type not supported: " + ftype);
       }
 
     } else {
-      throwException("AnnotationElement type not supported: " + ftype);
+      throwException(ctx, "AnnotationElement type not supported: " + ftype);
     }
   }
 
@@ -1739,7 +1739,7 @@ public class MJIEnv {
         ClassInfo aciProxy = aci.getAnnotationProxy();
 
         int ar = newAnnotationProxy(ctx, aciProxy, ai[i]);
-        setReferenceArrayElement(aref, i, ar);
+        setReferenceArrayElement(ctx, aref, i, new One<>(ar));
       }
       return aref;
 

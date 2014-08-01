@@ -19,6 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -83,7 +84,7 @@ public class ReferenceFieldInfo extends SingleSlotFieldInfo {
       Heap heap = vm.getHeap();
       ref = heap.newString(ctx, sInit, ti).getObjectRef();
     }
-    ei.getFields().setReferenceValue( storageOffset, ref);
+    ei.getFields().setReferenceValue(ctx, storageOffset, new One<>(ref));
   }
 
   public Object getValueObject (Fields f){

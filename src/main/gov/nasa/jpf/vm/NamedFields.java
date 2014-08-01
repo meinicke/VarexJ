@@ -98,11 +98,6 @@ public class NamedFields extends Fields {
 		return values[index];
 	}
 
-	// same as above, just here to make intentions clear
-	public Conditional<Integer> getReferenceValue2(int index) {
-		return values[index];
-	}
-
 	public Conditional<Long> getLongValue(final int index) {
 		return values[index + 1].mapr(new Function<Integer, Conditional<Long>>() {
 

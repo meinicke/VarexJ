@@ -64,8 +64,8 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
         if (mi != null && mi.isPublic() && !mi.isStatic()) {
           testMethods[i++] = mi;
         } else {
-          env.throwException("java.lang.RuntimeException",
-                  "no such test method: public void " + test + "()");
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.RuntimeException", "no such test method: public void " + test + "()");
           return false;
         }
       }
@@ -111,7 +111,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
         testClass = frame.getClassInfo();
         testClassCtor = testClass.getMethod("<init>()V", true);
 
-        String[] selectedTests = env.getStringArrayObject(selectedTestsRef);
+        String[] selectedTests = env.getStringArrayObject(NativeMethodInfo.CTX, selectedTestsRef);
         if (initializeTestMethods(env, selectedTests)) {
           env.repeatInvocation();
         }

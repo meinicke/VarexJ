@@ -66,7 +66,7 @@ public class JPF_java_text_DateFormat extends NativePeer {
       return dref;
 
     } catch (ParseException px) {
-      env.throwException("java.text.ParseException", px.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.text.ParseException", px.getMessage());
       return 0;
     }
   }

@@ -97,7 +97,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       ClassInfo ci = miCallee.getClassInfo();
 
        if (ci.isAbstract()){
-        env.throwException("java.lang.InstantiationException");
+        env.throwException(ctx, "java.lang.InstantiationException");
         return MJIEnv.NULL;
       }
 

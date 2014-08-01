@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -77,7 +78,7 @@ public class BoxObjectCacheManager {
     for (int i = 0; i < n; i++) {
       ElementInfo eiByte = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiByte.setByteField(ctx, "value", val++);
-      eiArray.setReferenceElement(i, eiByte.getObjectRef());
+      eiArray.setReferenceElement(ctx, i, new One<>(eiByte.getObjectRef()));
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
@@ -116,7 +117,7 @@ public class BoxObjectCacheManager {
     for (int i = 0; i < n; i++) {
       ElementInfo eiChar = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiChar.setCharField("value", (char) i);
-      eiArray.setReferenceElement(i, eiChar.getObjectRef());
+      eiArray.setReferenceElement(ctx, i, new One<>(eiChar.getObjectRef()));
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
@@ -159,7 +160,7 @@ public class BoxObjectCacheManager {
     for (int i = 0; i < n; i++) {
       ElementInfo eiShort = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiShort.setShortField("value", val++);
-      eiArray.setReferenceElement(i, eiShort.getObjectRef());
+      eiArray.setReferenceElement(ctx, i, new One<>(eiShort.getObjectRef()));
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
@@ -200,7 +201,7 @@ public class BoxObjectCacheManager {
     for (int i = 0; i < n; i++) {
       ElementInfo eiInteger = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiInteger.setIntField(ctx, "value", i + intLow);
-      eiArray.setReferenceElement(i, eiInteger.getObjectRef());
+      eiArray.setReferenceElement(ctx, i, new One<>(eiInteger.getObjectRef()));
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
@@ -216,7 +217,7 @@ public class BoxObjectCacheManager {
       intCache = initIntCache(ctx, ti);
     }
 
-    if (i >= intLow && i <= intHigh) { return ti.getElementInfo(intCache).getReferenceElement(i - intLow).getValue(); }
+    if (i >= intLow && i <= intHigh) { return ti.getElementInfo(intCache).getReferenceElement(i - intLow).simplify(ctx).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
     ElementInfo eiInteger = ti.getHeap().newObject(ctx, ci, ti);
@@ -241,7 +242,7 @@ public class BoxObjectCacheManager {
     for (int i = 0; i < n; i++) {
       ElementInfo eiLong = heap.newSystemObject(ctx, ci, ti, ANCHOR);
       eiLong.setLongField(ctx, "value", i + longLow);
-      eiArray.setReferenceElement(i, eiLong.getObjectRef());
+      eiArray.setReferenceElement(ctx, i, new One<>(eiLong.getObjectRef()));
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);

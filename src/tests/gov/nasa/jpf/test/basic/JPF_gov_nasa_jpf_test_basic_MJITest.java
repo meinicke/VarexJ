@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.UncaughtException;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -64,7 +65,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
         env.setIntArrayElement(NativeMethodInfo.CTX, ea, 1, 42);
       }
 
-      env.setReferenceArrayElement(ar, i, ea);
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, ar, i, new One<>(ea));
     }
 
     return ar;
@@ -87,7 +88,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     System.out.println("# entering nativeCreateStringArray()");
 
     int ar = env.newObjectArray("Ljava/lang/String;", size);
-    env.setReferenceArrayElement(ar, 1, env.newString(FeatureExprFactory.True(), "one"));
+    env.setReferenceArrayElement(NativeMethodInfo.CTX, ar, 1, new One<>(env.newString(FeatureExprFactory.True(), "one")));
 
     return ar;
   }
@@ -95,7 +96,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
   @MJI
   public void nativeException____V (MJIEnv env, int robj) {
     System.out.println("# entering nativeException()");
-    env.throwException("java.lang.UnsupportedOperationException", "caught me");
+    env.throwException(NativeMethodInfo.CTX, "java.lang.UnsupportedOperationException", "caught me");
   }
 
   @SuppressWarnings("null")

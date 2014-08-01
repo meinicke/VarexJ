@@ -75,9 +75,9 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
       
     } catch (ClassInfoException cix){
       if (cix.getCause() instanceof ClassParseException){
-        env.throwException("java.lang.ClassFormatError", typeName);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.ClassFormatError", typeName);
       } else {
-        env.throwException("java.lang.ClassNotFoundException", typeName);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.ClassNotFoundException", typeName);
       }
       return MJIEnv.NULL;      
     }
@@ -102,6 +102,6 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
     String[] resources = cl.findResources(rname);
 
-    return env.newStringArray(resources);
+    return env.newStringArray(NativeMethodInfo.CTX, resources);
   }
 }

@@ -42,7 +42,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
 
     if (!fci.isPrimitive() || !fci.getName().equals("long")) {
       // that's also just an approximation, but we need to check
-      env.throwException("java.lang.RuntimeException", "wrong field type");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "wrong field type");
     }
 
     int fidx = fi.getFieldIndex();

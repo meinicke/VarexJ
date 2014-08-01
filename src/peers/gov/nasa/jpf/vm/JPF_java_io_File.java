@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -79,7 +80,7 @@ public class JPF_java_io_File extends NativePeer {
       String pn = getFile(env,objref).getCanonicalPath();
       return env.newString(NativeMethodInfo.CTX, pn);
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
       return MJIEnv.NULL;
     }
   }
@@ -91,7 +92,7 @@ public class JPF_java_io_File extends NativePeer {
       File canonicalFile = file.getCanonicalFile();
       return createJPFFile(env, canonicalFile);
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
       return MJIEnv.NULL;
     }
   }
@@ -105,7 +106,7 @@ public class JPF_java_io_File extends NativePeer {
       URL url = f.toURL();
       return env.newString(NativeMethodInfo.CTX, url.toString());
     } catch (MalformedURLException mfux) {
-      env.throwException("java.net.MalformedURLException", mfux.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.net.MalformedURLException", mfux.getMessage());
       return MJIEnv.NULL;
     }
   }
@@ -164,7 +165,7 @@ public class JPF_java_io_File extends NativePeer {
       return fileToCreate.createNewFile();
 
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
       return false;
     }
   }
@@ -174,7 +175,7 @@ public class JPF_java_io_File extends NativePeer {
 	  File f=getFile(env,objref);
     if (f.isDirectory()){
       String[] farr=f.list();
-      return env.newStringArray(farr);
+      return env.newStringArray(NativeMethodInfo.CTX, farr);
     } else {
       return MJIEnv.NULL;
     }
@@ -188,7 +189,7 @@ public class JPF_java_io_File extends NativePeer {
 
     for (int i = 0; i < roots.length; i++) {
       int rootFileRef = createJPFFile(env, roots[i]);
-      rootsEI.setReferenceElement(i, rootFileRef);
+      rootsEI.setReferenceElement(NativeMethodInfo.CTX, i, new One<>(rootFileRef));
     }
 
     return rootResultRef;

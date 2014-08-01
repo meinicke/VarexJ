@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
@@ -26,9 +25,12 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Heap;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -54,7 +56,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 
     if (dim.length > (d + 1)) {
       for (int i = 0; i < l; i++) {
-        eiArray.setReferenceElement(i, allocateArray(heap, type, dim, ti, d + 1));
+        eiArray.setReferenceElement(NativeMethodInfo.CTX, i, new One<>(allocateArray(heap, type, dim, ti, d + 1)));
       }
     }
 

@@ -103,13 +103,13 @@ public class JPF_java_util_TimeZone extends NativePeer {
   @MJI
   public int getAvailableIDs_____3Ljava_lang_String_2 (MJIEnv env, int clsObjRef){
     String[] ids = TimeZone.getAvailableIDs();
-    return env.newStringArray(ids);
+    return env.newStringArray(NativeMethodInfo.CTX, ids);
   }
   
   @MJI
   public int getAvailableIDs__I___3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int rawOffset){
     String[] ids = TimeZone.getAvailableIDs(rawOffset);
-    return env.newStringArray(ids);    
+    return env.newStringArray(NativeMethodInfo.CTX, ids);    
   }
 
   @MJI

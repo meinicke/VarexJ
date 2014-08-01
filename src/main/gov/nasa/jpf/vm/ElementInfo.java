@@ -323,7 +323,7 @@ public abstract class ElementInfo implements Cloneable {
               // (this is why we have our own implementation)
               heap.registerWeakReference(this);
             } else {
-              Conditional<Integer> objref = fields.getReferenceValue2(fi.getStorageOffset());
+              Conditional<Integer> objref = fields.getReferenceValue(fi.getStorageOffset());
               for (Integer ref : objref.toList()) {
 	              if (ref != MJIEnv.NULL){
 	                heap.queueMark(ref);
@@ -1168,7 +1168,7 @@ public abstract class ElementInfo implements Cloneable {
   }
   public Conditional<Integer> getReferenceField (FieldInfo fi) {
     if (fi.isReference()){
-      return fields.getReferenceValue2(fi.getStorageOffset());
+      return fields.getReferenceValue(fi.getStorageOffset());
     } else {
       throw new JPFException("not a reference field: " + fi.getName());
     }
@@ -1365,18 +1365,11 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setDoubleValue(ctx, idx, value);
   }
-  public void setReferenceElement(int idx, int value){
+  public void setReferenceElement(FeatureExpr ctx, int idx, Conditional<Integer> value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setReferenceValue(idx, value);
+    fields.setReferenceValue(ctx, idx, value);
   }
-  
-  public void setReferenceElement(FeatureExpr ctx, int idx, Conditional<Integer> value){
-	    checkArray(idx);
-	    checkIsModifiable();
-	    fields.setReferenceValue(ctx, idx, value);
-	  }
-
 
   public boolean getBooleanElement(int idx) {
     checkArray(idx);

@@ -56,8 +56,8 @@ public interface Heap extends Iterable<ElementInfo> {
   
   ElementInfo newInternString (FeatureExpr ctx, String str, ThreadInfo ti);
   
-  ElementInfo newSystemThrowable (ClassInfo ci, String details, int[] stackSnapshot, int causeRef,
-                          ThreadInfo ti, int anchor);
+  ElementInfo newSystemThrowable (FeatureExpr ctx, ClassInfo ci, String details, int[] stackSnapshot,
+                          int causeRef, ThreadInfo ti, int anchor);
   
   Iterable<ElementInfo> liveObjects();
 

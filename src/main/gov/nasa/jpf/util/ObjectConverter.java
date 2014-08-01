@@ -247,7 +247,7 @@ public class ObjectConverter {
           newArrElRef = MJIEnv.NULL;
         }
 
-        fields.setReferenceValue(i, newArrElRef);
+        fields.setReferenceValue(ctx, i, new One<>(newArrElRef));
       }
     }
 

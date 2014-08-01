@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.List;
 
+import cmu.conditional.One;
+
 /**
  * native peer for ResourceBundle
  */
@@ -40,7 +42,7 @@ public class JPF_java_util_ResourceBundle extends NativePeer {
       MethodInfo mi = frame.getMethodInfo();
       ClassInfo ci = mi.getClassInfo();
       int clsObjRef = ci.getClassObjectRef();
-      env.setReferenceArrayElement(aRef, j++, clsObjRef);
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aRef, j++, new One<>(clsObjRef));
     }
 
     return aRef;

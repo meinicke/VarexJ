@@ -1566,7 +1566,7 @@ public class ThreadInfo extends InfoObject
     ElementInfo eiArray = heap.newArray(ctx, "Ljava/lang/StackTraceElement;", nVisible, this);
     for (int i=0; i<nVisible; i++){
       int eref = list[i].createJPFStackTraceElement(ctx);
-      eiArray.setReferenceElement( i, eref);
+      eiArray.setReferenceElement( ctx, i, new One<>(eref));
     }
 
     return eiArray.getObjectRef();
@@ -1617,7 +1617,7 @@ public class ThreadInfo extends InfoObject
     // try the 'stackTrace' field first, it might have been set explicitly
     int aRef = env.getReferenceField(ctx, objRef, "stackTrace").getValue(); // StackTrace[]
     if (aRef != MJIEnv.NULL) {
-      int len = env.getArrayLength(aRef);
+      int len = env.getArrayLength(ctx, aRef);
       for (int i=0; i<len; i++) {
         int steRef = env.getReferenceArrayElement(aRef, i);
         if (steRef != MJIEnv.NULL){  // might be ignored (e.g. direct call)
@@ -1694,7 +1694,7 @@ public class ThreadInfo extends InfoObject
       } else {
         Heap heap = vm.getHeap();
         ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.StackTraceElement");
-        ElementInfo ei = heap.newObject(null, ci, ThreadInfo.this);
+        ElementInfo ei = heap.newObject(ctx, ci, ThreadInfo.this);
 
         ei.setReferenceField("clsName", heap.newString(ctx, clsName, ThreadInfo.this).getObjectRef());
         ei.setReferenceField("mthName", heap.newString(ctx, mthName, ThreadInfo.this).getObjectRef());
@@ -1787,7 +1787,7 @@ public class ThreadInfo extends InfoObject
    */
   int createException (FeatureExpr ctx, ClassInfo ci, String details, int causeRef){
     int[] snap = getSnapshot(ctx, MJIEnv.NULL);
-    return vm.getHeap().newSystemThrowable(ci, details, snap, causeRef, this, 0).getObjectRef();
+    return vm.getHeap().newSystemThrowable(ctx, ci, details, snap, causeRef, this, 0).getObjectRef();
   }
 
   /**
@@ -2459,9 +2459,9 @@ public class ThreadInfo extends InfoObject
             if (tref.getValue() == threadRef) { // compact the threads array
               int n1 = nthreads-1;
               for (int j=i; j<n1; j++) {
-                eiThreads.setReferenceElement(j, eiThreads.getReferenceElement(j+1).getValue());
+                eiThreads.setReferenceElement(ctx, j, eiThreads.getReferenceElement(j+1));
               }
-              eiThreads.setReferenceElement(n1, MJIEnv.NULL);
+              eiThreads.setReferenceElement(ctx, n1, new One<>(MJIEnv.NULL));
 
               eiGrp.setIntField(ctx, "nthreads", n1);
               if (n1 == 0) {
@@ -2485,20 +2485,21 @@ public class ThreadInfo extends InfoObject
    * 
    * This method is here to keep all Thread/ThreadGroup field dependencies in one place. The downside of not keeping this in
    * VM is that we can't override in order to have specialized ThreadInfos, but there is no factory for them anyways
+ * @param ctx TODO
    */
-  protected void createMainThreadObject (SystemClassLoaderInfo sysCl){
+  protected void createMainThreadObject (FeatureExpr ctx, SystemClassLoaderInfo sysCl){
     //--- now create & initialize all the related JPF objects
     Heap heap = getHeap();
 
     ClassInfo ciThread = sysCl.threadClassInfo;
-    ElementInfo eiThread = heap.newObject( null, ciThread, this);
+    ElementInfo eiThread = heap.newObject(ctx, ciThread, this);
     objRef = eiThread.getObjectRef();
      
     ElementInfo eiName = heap.newString(FeatureExprFactory.True(), MAIN_NAME, this);
     int nameRef = eiName.getObjectRef();
     eiThread.setReferenceField("name", nameRef);
     
-    ElementInfo eiGroup = createMainThreadGroup(sysCl);
+    ElementInfo eiGroup = createMainThreadGroup(ctx, sysCl);
     eiThread.setReferenceField("group", eiGroup.getObjectRef());
     
     eiThread.setIntField(FeatureExprFactory.True(), "priority", Thread.NORM_PRIORITY);
@@ -2508,7 +2509,7 @@ public class ThreadInfo extends InfoObject
     eiPermit.setBooleanField("blockPark", true);
     eiThread.setReferenceField("permit", eiPermit.getObjectRef());
 
-    addToThreadGroup(eiGroup);
+    addToThreadGroup(NativeMethodInfo.CTX, eiGroup);
     
     addId( objRef, id);
 
@@ -2520,17 +2521,18 @@ public class ThreadInfo extends InfoObject
   /**
    * this creates and inits the main ThreadGroup object, which we have to do explicitly since
    * we can't execute bytecode yet
+ * @param ctx TODO
    */
-  protected ElementInfo createMainThreadGroup (SystemClassLoaderInfo sysCl) {
+  protected ElementInfo createMainThreadGroup (FeatureExpr ctx, SystemClassLoaderInfo sysCl) {
     Heap heap = getHeap();
     
-    ClassInfo ciGroup = sysCl.getResolvedClassInfo(NativeMethodInfo.CTX, "java.lang.ThreadGroup");
-    ElementInfo eiThreadGrp = heap.newObject( null, ciGroup, this);
+    ClassInfo ciGroup = sysCl.getResolvedClassInfo(ctx, "java.lang.ThreadGroup");
+    ElementInfo eiThreadGrp = heap.newObject(ctx, ciGroup, this);
 
-    ElementInfo eiGrpName = heap.newString(FeatureExprFactory.True(), "main", this);
+    ElementInfo eiGrpName = heap.newString(ctx, "main", this);
     eiThreadGrp.setReferenceField("name", eiGrpName.getObjectRef());
 
-    eiThreadGrp.setIntField(FeatureExprFactory.True(), "maxPriority", java.lang.Thread.MAX_PRIORITY);
+    eiThreadGrp.setIntField(ctx, "maxPriority", java.lang.Thread.MAX_PRIORITY);
 
     // 'threads' and 'nthreads' will be set later from createMainThreadObject
 
@@ -2539,13 +2541,14 @@ public class ThreadInfo extends InfoObject
 
   /**
    * this is used for all thread objects, not just main 
+ * @param ctx TODO
    */
-  protected void addToThreadGroup (ElementInfo eiGroup){
+  protected void addToThreadGroup (FeatureExpr ctx, ElementInfo eiGroup){
     FieldInfo finThreads = eiGroup.getFieldInfo("nthreads");
     int nThreads = eiGroup.getIntField(finThreads).getValue();
     
     if (eiGroup.getBooleanField("destroyed")){
-      env.throwException("java.lang.IllegalThreadStateException");
+      env.throwException(ctx, "java.lang.IllegalThreadStateException");
       
     } else {
       FieldInfo fiThreads = eiGroup.getFieldInfo("threads");
@@ -2553,7 +2556,7 @@ public class ThreadInfo extends InfoObject
       
       if (threadsRef == MJIEnv.NULL){
         threadsRef = env.newObjectArray("Ljava/lang/Thread;", 1);
-        env.setReferenceArrayElement(threadsRef, 0, objRef);
+        env.setReferenceArrayElement(ctx, threadsRef, 0, new One<>(objRef));
         eiGroup.setReferenceField(fiThreads, threadsRef);
         
       } else {
@@ -2563,10 +2566,10 @@ public class ThreadInfo extends InfoObject
         
         for (int i=0; i<nThreads; i++){
           Conditional<Integer> tr = eiThreads.getReferenceElement(i);
-          eiNewThreads.setReferenceElement(i, tr.getValue());
+          eiNewThreads.setReferenceElement(ctx, i, tr);
         }
         
-        eiNewThreads.setReferenceElement(nThreads, objRef);
+        eiNewThreads.setReferenceElement(ctx, nThreads, new One<>( objRef));
         eiGroup.setReferenceField(fiThreads, newThreadsRef);
       }
       

@@ -18,8 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * native peer for java.util.concurrent.atomic.AtomicReferenceArray
@@ -39,7 +40,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceArray extends Native
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     int value = env.getReferenceArrayElement(arrayRef, index);
     if (value == fExpect) {
-      env.setReferenceArrayElement(arrayRef, index, fUpdate);
+      env.setReferenceArrayElement(ctx, arrayRef, index, new One<>(fUpdate));
       return true;
     } else {
       return false;

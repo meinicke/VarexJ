@@ -225,7 +225,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void assertTrue__Z__V (MJIEnv env, int clsObjRef, boolean b) {
     if (!b) {
-      env.throwException("java.lang.AssertionError", "assertTrue failed");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.AssertionError", "assertTrue failed");
     }
   }
 
@@ -549,7 +549,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
   @MJI
   public static void print___3Ljava_lang_String_2__V (MJIEnv env, int clsRef, int argsRef){
-    int n = env.getArrayLength(argsRef);
+    int n = env.getArrayLength(NativeMethodInfo.CTX, argsRef);
     for (int i=0; i<n; i++){
       int aref = env.getReferenceArrayElement(argsRef, i);
       String s = env.getStringObject(null, aref);
@@ -582,7 +582,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
       if (a instanceof Integer) {
         return ((Integer) a).intValue();
       } else {
-        env.throwException("java.lang.RuntimeException", "element attribute not an Integer: " + a);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "element attribute not an Integer: " + a);
       }
     }
 
@@ -598,7 +598,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
         attrs[i++] = v;
       }
       if (i != l) {
-        env.throwException("java.lang.RuntimeException", "found non-Integer attributes");
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "found non-Integer attributes");
         return 0;
       }
 
@@ -657,11 +657,11 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
         if (fi != null) {
           ei.setFieldAttr(fi, Integer.valueOf(attr));
         } else {
-          env.throwException("java.lang.NoSuchFieldException",
-                  ei.getClassInfo().getName() + '.' + fname);
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.NoSuchFieldException", ei.getClassInfo().getName() + '.' + fname);
         }
       } else {
-        env.throwException("java.lang.RuntimeException", "illegal reference value: " + oRef);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "illegal reference value: " + oRef);
       }
     }
   }
@@ -678,11 +678,11 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
         if (fi != null) {
           return getAttribute( env, ei.getFieldAttr(fi));
         } else {
-          env.throwException("java.lang.NoSuchFieldException",
-                  ei.toString() + '.' + fname);
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.NoSuchFieldException", ei.toString() + '.' + fname);
         }
       } else {
-        env.throwException("java.lang.RuntimeException", "illegal reference value: " + oRef);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "illegal reference value: " + oRef);
       }
     }
 
@@ -701,11 +701,11 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
         if (fi != null) {
           ei.addFieldAttr(fi, Integer.valueOf(attr));
         } else {
-          env.throwException("java.lang.NoSuchFieldException",
-                  ei.getClassInfo().getName() + '.' + fname);
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.NoSuchFieldException", ei.getClassInfo().getName() + '.' + fname);
         }
       } else {
-        env.throwException("java.lang.RuntimeException", "illegal reference value: " + oRef);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "illegal reference value: " + oRef);
       }
     }
   }
@@ -722,11 +722,11 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
         if (fi != null) {
           return getAttributeList( env, ei.getFieldAttr(fi));          
         } else {
-          env.throwException("java.lang.NoSuchFieldException",
-                  ei.toString() + '.' + fname);
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.NoSuchFieldException", ei.toString() + '.' + fname);
         }
       } else {
-        env.throwException("java.lang.RuntimeException", "illegal reference value: " + oRef);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "illegal reference value: " + oRef);
       }
     }
 
@@ -746,7 +746,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
       if (slotIdx >= 0) {
         frame.setLocalAttr(slotIdx, Integer.valueOf(attr));
       } else {
-        env.throwException("java.lang.RuntimeException", "local variable not found: " + slotName);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "local variable not found: " + slotName);
       }
     }
   }
@@ -761,7 +761,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (slotIdx >= 0) {
       return getAttribute( env, frame.getLocalAttr(slotIdx));
     } else {
-      env.throwException("java.lang.RuntimeException", "local variable not found: " + slotName);
+      env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "local variable not found: " + slotName);
       return 0;
     }
   }
@@ -779,7 +779,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
       if (slotIdx >= 0) {
         frame.addLocalAttr(slotIdx, Integer.valueOf(attr));
       } else {
-        env.throwException("java.lang.RuntimeException", "local variable not found: " + slotName);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "local variable not found: " + slotName);
       }
     }
   }
@@ -794,7 +794,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (slotIdx >= 0) {
       return getAttributeList( env, frame.getLocalAttr(slotIdx));
     } else {
-      env.throwException("java.lang.RuntimeException", "local variable not found: " + slotName);
+      env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "local variable not found: " + slotName);
     }
     
     return MJIEnv.NULL;
@@ -811,15 +811,15 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
           if (idx < ei.arrayLength()) {
             ei.setElementAttr(idx, Integer.valueOf(attr));
           } else {
-            env.throwException("java.lang.ArrayIndexOutOfBoundsException",
-                    Integer.toString(idx));
+            env.throwException(NativeMethodInfo.CTX,
+                    "java.lang.ArrayIndexOutOfBoundsException", Integer.toString(idx));
           }
         } else {
-          env.throwException("java.lang.RuntimeException",
-                  "not an array: " + ei);
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.RuntimeException", "not an array: " + ei);
         }
       } else {
-        env.throwException("java.lang.RuntimeException", "illegal reference value: " + oRef);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "illegal reference value: " + oRef);
       }
     }
   }
@@ -835,15 +835,15 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
           if (idx < ei.arrayLength()) {
             return getAttribute( env, ei.getElementAttr( idx));
           } else {
-            env.throwException("java.lang.ArrayIndexOutOfBoundsException",
-                    Integer.toString(idx));
+            env.throwException(NativeMethodInfo.CTX,
+                    "java.lang.ArrayIndexOutOfBoundsException", Integer.toString(idx));
           }
         } else {
-          env.throwException("java.lang.RuntimeException",
-                  "not an array: " + ei);
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.RuntimeException", "not an array: " + ei);
         }
       } else {
-        env.throwException("java.lang.RuntimeException", "illegal reference value: " + oRef);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "illegal reference value: " + oRef);
       }
     }
 
@@ -861,15 +861,15 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
           if (idx < ei.arrayLength()) {
             ei.addElementAttr(idx, Integer.valueOf(attr));
           } else {
-            env.throwException("java.lang.ArrayIndexOutOfBoundsException",
-                    Integer.toString(idx));
+            env.throwException(NativeMethodInfo.CTX,
+                    "java.lang.ArrayIndexOutOfBoundsException", Integer.toString(idx));
           }
         } else {
-          env.throwException("java.lang.RuntimeException",
-                  "not an array: " + ei);
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.RuntimeException", "not an array: " + ei);
         }
       } else {
-        env.throwException("java.lang.RuntimeException", "illegal reference value: " + oRef);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "illegal reference value: " + oRef);
       }
     }
   }
@@ -884,15 +884,15 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
           if (idx < ei.arrayLength()) {
             return getAttributeList( env, ei.getElementAttr( idx));
           } else {
-            env.throwException("java.lang.ArrayIndexOutOfBoundsException",
-                    Integer.toString(idx));
+            env.throwException(NativeMethodInfo.CTX,
+                    "java.lang.ArrayIndexOutOfBoundsException", Integer.toString(idx));
           }
         } else {
-          env.throwException("java.lang.RuntimeException",
-                  "not an array: " + ei);
+          env.throwException(NativeMethodInfo.CTX,
+                  "java.lang.RuntimeException", "not an array: " + ei);
         }
       } else {
-        env.throwException("java.lang.RuntimeException", "illegal reference value: " + oRef);
+        env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "illegal reference value: " + oRef);
       }
     }
 
@@ -1007,11 +1007,11 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (argRef != MJIEnv.NULL) {
       Config conf = env.getConfig();
 
-      int n = env.getArrayLength(argRef);
+      int n = env.getArrayLength(NativeMethodInfo.CTX, argRef);
       for (int i=0; i<n; i++) {
         int pRef = env.getReferenceArrayElement(argRef, i);
         if (pRef != MJIEnv.NULL) {
-          String p = env.getStringObject(null, pRef);
+          String p = env.getStringObject(NativeMethodInfo.CTX, pRef);
           config.parse(p);
         }
       }

@@ -22,6 +22,7 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.Map;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -84,7 +85,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
     String[] resources = cl.findResources(rname);
 
-    return env.newStringArray(resources);
+    return env.newStringArray(NativeMethodInfo.CTX, resources);
   }
 
   @MJI
@@ -130,7 +131,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     // determine whether that the corresponding class is already defined by this 
     // classloader, if so, this attempt is invalid, and loading throws a LinkageError
     if (cl.getDefinedClassInfo(cname) != null) {  // attempt to define twice
-      env.throwException("java.lang.LinkageError"); 
+      env.throwException(NativeMethodInfo.CTX, "java.lang.LinkageError"); 
       return MJIEnv.NULL;
     }
         
@@ -149,7 +150,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
       return ci.getClassObjectRef();
       
     } catch (ClassInfoException cix){
-      env.throwException("java.lang.ClassFormatError");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.ClassFormatError");
       return MJIEnv.NULL;
     }
   }
@@ -172,7 +173,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   protected static void checkForProhibitedPkg(MJIEnv env, String name) {
     if(name != null && name.startsWith("java.")) {
-      env.throwException("java.lang.SecurityException", "Prohibited package name: " + name);
+      env.throwException(NativeMethodInfo.CTX, "java.lang.SecurityException", "Prohibited package name: " + name);
     }
   }
 
@@ -182,13 +183,13 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     }
 
     if((name.indexOf('/') != -1) || (name.charAt(0) == '[')) {
-      env.throwException("java.lang.NoClassDefFoundError", "IllegalName: " + name);
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NoClassDefFoundError", "IllegalName: " + name);
     }
   }
 
   protected static void checkData(MJIEnv env, byte[] buffer, int offset, int length) {
     if(offset<0 || length<0 || offset+length > buffer.length) {
-      env.throwException("java.lang.IndexOutOfBoundsException");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IndexOutOfBoundsException");
     }
   }
 
@@ -216,7 +217,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     for(String name: cl.getPackages().keySet()) {
       int pkgRef = createPackageObject(env, pkgClass, name, cl);
       // place the object into the array
-      env.setReferenceArrayElement(pkgArr, i++, pkgRef);
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, pkgArr, i++, new One<>(pkgRef));
     }
 
     return pkgArr;

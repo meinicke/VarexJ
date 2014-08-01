@@ -38,7 +38,7 @@ public class JPF_java_lang_Short extends NativePeer {
     try {
       return Short.parseShort(env.getStringObject(null, strRef));
     } catch (NumberFormatException e) {
-      env.throwException("java.lang.NumberFormatException");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NumberFormatException");
 
       return 0;
     }
@@ -51,7 +51,7 @@ public class JPF_java_lang_Short extends NativePeer {
     try {
       return Short.parseShort(env.getStringObject(null, strRef), radix);
     } catch (NumberFormatException e) {
-      env.throwException("java.lang.NumberFormatException");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NumberFormatException");
 
       return 0;
     }

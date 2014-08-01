@@ -132,7 +132,7 @@ public class JPF_java_lang_String extends NativePeer {
       return env.newByteArray(NativeMethodInfo.CTX, b);
 
     } catch (UnsupportedEncodingException uex) {
-      env.throwException(uex.getClass().getName(), uex.getMessage());
+      env.throwException(NativeMethodInfo.CTX, uex.getClass().getName(), uex.getMessage());
       return MJIEnv.NULL;
     }
   }
@@ -481,7 +481,7 @@ public class JPF_java_lang_String extends NativePeer {
 
     String[] result = obj.split(s, limit);
 
-    return env.newStringArray(result);
+    return env.newStringArray(NativeMethodInfo.CTX, result);
   }
 
   @MJI
@@ -491,7 +491,7 @@ public class JPF_java_lang_String extends NativePeer {
 
     String[] result = obj.split(s);
 
-    return env.newStringArray(result);
+    return env.newStringArray(NativeMethodInfo.CTX, result);
   }
 
   @MJI
@@ -572,13 +572,13 @@ public class JPF_java_lang_String extends NativePeer {
 
   @MJI
   public int format__Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int fmtRef, int argRef) {
-    return env.newString(NativeMethodInfo.CTX, env.format(fmtRef, argRef));
+    return env.newString(NativeMethodInfo.CTX, env.format(NativeMethodInfo.CTX, fmtRef, argRef));
   }
 
   @MJI
   public int format__Ljava_util_Locale_2Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int locRef, int fmtRef, int argRef) {
     Locale loc = JPF_java_util_Locale.getLocale(env, locRef);
-    return env.newString(NativeMethodInfo.CTX, env.format(loc, fmtRef, argRef));
+    return env.newString(NativeMethodInfo.CTX, env.format(NativeMethodInfo.CTX, loc, fmtRef, argRef));
   }
 
   @MJI

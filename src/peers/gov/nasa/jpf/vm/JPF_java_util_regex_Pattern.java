@@ -35,7 +35,7 @@ public class JPF_java_util_regex_Pattern extends NativePeer {
     Pattern p = Pattern.compile(patSpec,patFlags);
     String[] result=p.split(s,limit);
 
-    return env.newStringArray(result);
+    return env.newStringArray(NativeMethodInfo.CTX, result);
   }
 
 }

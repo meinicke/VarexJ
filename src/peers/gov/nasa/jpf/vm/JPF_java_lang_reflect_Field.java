@@ -103,11 +103,11 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
 
     // our guards (still need IllegalAccessException)
     if (ei == null) {
-      env.throwException("java.lang.NullPointerException");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException");
       return null;
     }
     if (fiType != null && !fiType.isInstance(fi)) {
-      env.throwException("java.lang.IllegalArgumentException", "field type incompatible with " + type);
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "field type incompatible with " + type);
       return null;
     }
 
@@ -375,7 +375,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return ref;
     }
     
-    env.throwException("java.lang.IllegalArgumentException", "unknown field type");
+    env.throwException(ctx, "java.lang.IllegalArgumentException", "unknown field type");
     return MJIEnv.NULL;
   }
 
@@ -423,7 +423,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       
     } else {
       if (fobjRef == MJIEnv.NULL){
-        env.throwException("java.lang.NullPointerException");
+        env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException");
         return false;        
       }
       // class had obviously been initialized, otherwise we won't have an instance of it
@@ -450,15 +450,15 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     }
         
     if (Modifier.isFinal(modifiers)) {
-      env.throwException("java.lang.IllegalAccessException", "field " + fi.getName() + " is final");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalAccessException", "field " + fi.getName() + " is final");
       return;
     }
     ClassInfo ci = fi.getClassInfo();
     ClassInfo cio = env.getClassInfo(fobjRef);
 
     if (!fi.isStatic() && !cio.isInstanceOf(ci)) {
-      env.throwException("java.lang.IllegalArgumentException", 
-                         fi.getType() + "field " + fi.getName() + " does not belong to this object");
+      env.throwException(NativeMethodInfo.CTX, 
+                         "java.lang.IllegalArgumentException", fi.getType() + "field " + fi.getName() + " does not belong to this object");
       return;
     }
     
@@ -466,8 +466,8 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     Object attr = (attrs==null)? null: attrs[2];
     
     if (!setValue(NativeMethodInfo.CTX, env, fi, fobjRef, val, attr)) {
-      env.throwException("java.lang.IllegalArgumentException",  
-                         "Can not set " + fi.getType() + " field " + fi.getFullName() + " to " + ((MJIEnv.NULL != val) ? env.getClassInfo(val).getName() + " object " : "null"));
+      env.throwException(NativeMethodInfo.CTX,  
+                         "java.lang.IllegalArgumentException", "Can not set " + fi.getType() + " field " + fi.getFullName() + " to " + ((MJIEnv.NULL != val) ? env.getClassInfo(val).getName() + " object " : "null"));
     }
   }
 

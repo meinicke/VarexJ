@@ -22,6 +22,7 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.Locale;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_util_Locale extends NativePeer {
@@ -112,7 +113,7 @@ public class JPF_java_util_Locale extends NativePeer {
 
     int aref = env.newObjectArray("java.lang.String", s.length);
     for (int i=0; i<s.length; i++) {
-      env.setReferenceArrayElement(aref, i, env.newString(NativeMethodInfo.CTX, s[i]));
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, i, new One<>(env.newString(NativeMethodInfo.CTX, s[i])));
     }
     
     return aref;
@@ -124,7 +125,7 @@ public class JPF_java_util_Locale extends NativePeer {
 
     int aref = env.newObjectArray("java.lang.String", s.length);
     for (int i=0; i<s.length; i++) {
-      env.setReferenceArrayElement(aref, i, env.newString(NativeMethodInfo.CTX, s[i]));
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, i, new One<>(env.newString(NativeMethodInfo.CTX, s[i])));
     }
     
     return aref;    

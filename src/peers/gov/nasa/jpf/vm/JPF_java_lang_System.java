@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
+import cmu.conditional.One;
+
 /**
  * MJI NativePeer class for java.lang.System library abstraction
  */
@@ -37,7 +39,7 @@ public class JPF_java_lang_System extends NativePeer {
                                                                               int dstArrayRef, int dstIdx,
                                                                               int length) {
     if ((srcArrayRef == MJIEnv.NULL) || (dstArrayRef == MJIEnv.NULL)) {
-      env.throwException("java.lang.NullPointerException");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException");
       return;
     }
 
@@ -47,9 +49,9 @@ public class JPF_java_lang_System extends NativePeer {
     try {
       eiDst.copyElements( NativeMethodInfo.CTX, env.getThreadInfo() ,eiSrc, srcIdx, dstIdx, length);
     } catch (IndexOutOfBoundsException iobx){
-      env.throwException("java.lang.IndexOutOfBoundsException", iobx.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IndexOutOfBoundsException", iobx.getMessage());
     } catch (ArrayStoreException asx){
-      env.throwException("java.lang.ArrayStoreException", asx.getMessage());      
+      env.throwException(NativeMethodInfo.CTX, "java.lang.ArrayStoreException", asx.getMessage());      
     }
   }
 
@@ -69,8 +71,8 @@ public class JPF_java_lang_System extends NativePeer {
   
   int createPrintStream (MJIEnv env, int clsObjRef){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC().getValue();
-    StackFrame frame = ti.getTopFrame();
+//    Instruction insn = ti.getPC().getValue();
+//    StackFrame frame = ti.getTopFrame();
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("gov.nasa.jpf.ConsoleOutputStream");
 
     // it's not really used, but it would be hack'ish to use a class whose
@@ -105,10 +107,10 @@ public class JPF_java_lang_System extends NativePeer {
     int i=0;
     
     for (Map.Entry<Object,Object> e : p.entrySet() ){
-      env.setReferenceArrayElement(aref,i++, 
-                                   env.newString(NativeMethodInfo.CTX, e.getKey().toString()));
-      env.setReferenceArrayElement(aref,i++,
-                                   env.newString(NativeMethodInfo.CTX, e.getValue().toString()));
+      env.setReferenceArrayElement(NativeMethodInfo.CTX,aref, 
+                                   i++, new One<>(env.newString(NativeMethodInfo.CTX, e.getKey().toString())));
+      env.setReferenceArrayElement(NativeMethodInfo.CTX,aref,
+                                   i++, new One<>(env.newString(NativeMethodInfo.CTX, e.getValue().toString())));
     }
     
     return aref;
@@ -220,8 +222,8 @@ public class JPF_java_lang_System extends NativePeer {
       }
             
       if (v != null){
-        env.setReferenceArrayElement(aref,i++, env.newString(NativeMethodInfo.CTX, s));
-        env.setReferenceArrayElement(aref,i++, env.newString(NativeMethodInfo.CTX, v));
+        env.setReferenceArrayElement(NativeMethodInfo.CTX,aref, i++, new One<>(env.newString(NativeMethodInfo.CTX, s)));
+        env.setReferenceArrayElement(NativeMethodInfo.CTX,aref, i++, new One<>(env.newString(NativeMethodInfo.CTX, v)));
       }
     }
         

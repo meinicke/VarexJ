@@ -1875,7 +1875,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
       
       ClassInfo.logger.finer("registering class: ", name);
       
-      ElementInfo ei = createClassObject( null, ti);
+      ElementInfo ei = createClassObject(ctx, ti);
       sei = createAndLinkStaticElementInfo(ctx , ti, ei);
       
       // SUT class is fully resolved and registered (but not necessarily initialized), notify listeners
@@ -1960,12 +1960,12 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return sei;
   }
   
-  ElementInfo createAndLinkStartupClassObject (ThreadInfo ti) {
+  ElementInfo createAndLinkStartupClassObject (FeatureExpr ctx, ThreadInfo ti) {
     StaticElementInfo sei = getStaticElementInfo();
-    ElementInfo ei = createClassObject(null, ti);
+    ElementInfo ei = createClassObject(ctx, ti);
     
     sei.setClassObjectRef(ei.getObjectRef());
-    ei.setIntField(FeatureExprFactory.True(), ID_FIELD, id);      
+    ei.setIntField(ctx, ID_FIELD, id);      
     
     return ei;
   }

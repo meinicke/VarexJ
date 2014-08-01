@@ -219,7 +219,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
       ei.setReferenceField(fi, valRef);
     } else {
-      ei.setReferenceElement((int)fieldOffset, valRef);
+      ei.setReferenceElement(NativeMethodInfo.CTX, (int)fieldOffset, new One<>(valRef));
     }
   }
   
@@ -650,7 +650,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
   @MJI
   public long allocateMemory__J__J (MJIEnv env, int unsafeRef, long nBytes) {
     if (nBytes < 0 || nBytes > Integer.MAX_VALUE) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory block size: " + nBytes);
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory block size: " + nBytes);
       return 0;
     }
     
@@ -673,7 +673,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     if (startAddress != MJIEnv.NULL){
       Alloc a = removeAlloc(addr);
       if (a == null){
-        env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+        env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       } else {
         env.releasePinDown(a.objRef);
       }
@@ -686,7 +686,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     Alloc a = getAlloc(addr);
     
     if (a == null) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       return 0;
     }
     
@@ -700,7 +700,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     Alloc a = getAlloc(addr);
     
     if (a == null) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       return;
     }
     
@@ -714,7 +714,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     Alloc a = getAlloc(addr);
     
     if (a == null) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       return 0;
     }
     
@@ -740,7 +740,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     Alloc a = getAlloc(addr);
     
     if (a == null) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       return;
     }
         
@@ -764,7 +764,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     Alloc a = getAlloc(addr);
     
     if (a == null) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       return 0;
     }
     
@@ -799,7 +799,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     Alloc a = getAlloc(addr);
     
     if (a == null) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       return;
     }
         
@@ -829,7 +829,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     Alloc a = getAlloc(addr);
     
     if (a == null) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       return 0;
     }
     
@@ -877,7 +877,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     Alloc a = getAlloc(addr);
     
     if (a == null) {
-      env.throwException("java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
       return;
     }
         

@@ -30,15 +30,15 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   public int getLength__Ljava_lang_Object_2__I (MJIEnv env, int clsObjRef, 
                                                     int objRef) {
     if (objRef == MJIEnv.NULL) {
-      env.throwException("java.lang.NullPointerException", "array argument is null");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException", "array argument is null");
       return 0;
     }
     if (!env.isArray(objRef)) {
-      env.throwException("java.lang.IllegalArgumentException", "argument is not an array");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "argument is not an array");
       return 0;
     }
 
-    return env.getArrayLength(objRef);
+    return env.getArrayLength(NativeMethodInfo.CTX, objRef);
   }
   
   @MJI
@@ -71,7 +71,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
                                                                                int dimArrayRef) {
     ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, componentTypeRef);
     String clsName = ci.getName();
-    int n = env.getArrayLength(dimArrayRef);
+    int n = env.getArrayLength(NativeMethodInfo.CTX, dimArrayRef);
     int i;
 
     clsName = Types.getTypeSignature(clsName, true);
@@ -98,7 +98,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
     
       for (int i=0; i<len; i++) {
         int eRef = createNewMultiArray(env, arrayType.substring(1), dim, level+1);
-        env.setReferenceArrayElement(aRef, i, eRef);
+        env.setReferenceArrayElement(NativeMethodInfo.CTX, aRef, i, new One<>(eRef));
       }
     } else {
       aRef = createNewArray( env, arrayType, len);
@@ -159,15 +159,15 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
 
   private static boolean check (MJIEnv env, int aref, int index) {
     if (aref == MJIEnv.NULL) {
-      env.throwException("java.lang.NullPointerException", "array argument is null");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException", "array argument is null");
       return false;
     }
     if (!env.isArray(aref)) {
-      env.throwException("java.lang.IllegalArgumentException", "argument is not an array");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "argument is not an array");
       return false;
     }
-    if (index < 0 || index >= env.getArrayLength(aref)) {
-      env.throwException("java.lang.IndexOutOfBoundsException", "index " + index + " is out of bounds");
+    if (index < 0 || index >= env.getArrayLength(NativeMethodInfo.CTX, aref)) {
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IndexOutOfBoundsException", "index " + index + " is out of bounds");
       return false;
     }
     return true;

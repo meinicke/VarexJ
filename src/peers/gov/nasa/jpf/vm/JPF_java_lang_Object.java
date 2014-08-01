@@ -42,8 +42,8 @@ public class JPF_java_lang_Object extends NativePeer {
     ElementInfo eiClone = null;
     
     if (!ci.isInstanceOf("java.lang.Cloneable")) {
-      env.throwException("java.lang.CloneNotSupportedException",
-          ci.getName() + " does not implement java.lang.Cloneable.");
+      env.throwException(NativeMethodInfo.CTX,
+          "java.lang.CloneNotSupportedException", ci.getName() + " does not implement java.lang.Cloneable.");
       return MJIEnv.NULL;  // meaningless
       
     } else {
@@ -61,7 +61,7 @@ public class JPF_java_lang_Object extends NativePeer {
         eiClone = heap.newArray(NativeMethodInfo.CTX, componentType, ei.arrayLength(), env.getThreadInfo());
         
       } else {
-        eiClone = heap.newObject(null, ci, env.getThreadInfo());
+        eiClone = heap.newObject(NativeMethodInfo.CTX, ci, env.getThreadInfo());
       }
       
       // Ok, this is nasty but efficient
@@ -97,7 +97,7 @@ public class JPF_java_lang_Object extends NativePeer {
           env.lockNotified(objref);
 
           if (ti.isInterrupted(true)) {
-            env.throwException("java.lang.InterruptedException");
+            env.throwException(NativeMethodInfo.CTX, "java.lang.InterruptedException");
           }
           break;
 
@@ -109,12 +109,12 @@ public class JPF_java_lang_Object extends NativePeer {
 
       // no need for a CG if we got interrupted - don't give up locks, throw InterruptedException
       if (ti.isInterrupted(true)) {
-        env.throwException("java.lang.InterruptedException");
+        env.throwException(NativeMethodInfo.CTX, "java.lang.InterruptedException");
 
       } else {
         if (!ei.isLockedBy(ti)){
-          env.throwException("java.lang.IllegalMonitorStateException",
-                             "un-synchronized wait");
+          env.throwException(NativeMethodInfo.CTX,
+                             "java.lang.IllegalMonitorStateException", "un-synchronized wait");
           return;
         }
         // releases the lock and sets BLOCKED threads to UNBLOCKED

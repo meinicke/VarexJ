@@ -63,7 +63,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
     
       return id;
     } catch (NoSuchAlgorithmException x){
-      env.throwException("java.security.NoSuchAlgorithmException", algorithm);
+      env.throwException(NativeMethodInfo.CTX, "java.security.NoSuchAlgorithmException", algorithm);
       return -1;
     }
   }

@@ -49,7 +49,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
     int slen = s.length();
     FeatureExpr ctx = NativeMethodInfo.CTX;
     int aref = env.getReferenceField(ctx, objref, "value").getValue();
-    int alen = env.getArrayLength(aref);
+    int alen = env.getArrayLength(ctx, aref);
     int count = env.getIntField(ctx, objref, "count").getValue().intValue();
     int i, j;
     int n = count + slen;
@@ -147,7 +147,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
   public int append__C__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, char c) {
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
     int aref = env.getReferenceField(ctx, objref, "value").getValue();
-    int alen = env.getArrayLength(aref);
+    int alen = env.getArrayLength(ctx, aref);
     
 	int count = env.getIntField(ctx, objref, "count").getValue().intValue();
     int n = count +1;

@@ -22,6 +22,7 @@ package gov.nasa.jpf.test.mc.threads;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
@@ -57,7 +58,7 @@ public class JPF_gov_nasa_jpf_test_mc_threads_ExceptionalThreadChoiceTest extend
         
       String exceptionName = cg.getExceptionForCurrentChoice();
       if (exceptionName != null){
-        env.throwException(exceptionName);
+        env.throwException(NativeMethodInfo.CTX, exceptionName);
       }
     }
   }

@@ -36,7 +36,7 @@ public class JPF_java_lang_reflect_Proxy extends NativePeer {
       return ci.getClassObjectRef();
       
     } catch (ClassInfoException cix){
-      env.throwException("java.lang.ClassFormatError", clsName); // <2do> check if this is the right one
+      env.throwException(NativeMethodInfo.CTX, "java.lang.ClassFormatError", clsName); // <2do> check if this is the right one
       return MJIEnv.NULL;
     }
   }

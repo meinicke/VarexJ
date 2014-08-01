@@ -145,7 +145,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     long current_len = env.getLongField(this_ptr, current_length).getValue();
     int chunk_size = env.getStaticIntField(RandomAccessFile, CHUNK_SIZE);
     if (current_posn >= current_len) {
-      env.throwException(EOFException);
+      env.throwException(ctx, EOFException);
     }
     int chunk = findDataChunk(env, this_ptr, current_posn,
                               chunk_size);

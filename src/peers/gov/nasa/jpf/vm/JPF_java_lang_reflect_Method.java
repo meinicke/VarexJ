@@ -108,7 +108,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
     int aRef = env.newObjectArray("Ljava/lang/Class;", argTypeNames.length);
     for (int i = 0; i < argTypeNames.length; i++) {
-      env.setReferenceArrayElement(aRef, i, ar[i]);
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aRef, i, new One<>(ar[i]));
     }
 
     return aRef;
@@ -140,7 +140,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
      
     int aRef = env.newObjectArray("Ljava/lang/Class;", exceptionNames.length);
     for (int i = 0; i < exceptionNames.length; i++) {
-      env.setReferenceArrayElement(aRef, i, ar[i]);
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aRef, i, new One<>(ar[i]));
     }
      
     return aRef;
@@ -235,10 +235,10 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     nArgs         = destTypeNames.length;
     
     // according to the API docs, passing null instead of an empty array is allowed for no args
-    passedCount   = (argsRef != MJIEnv.NULL) ? env.getArrayLength(argsRef) : 0;
+    passedCount   = (argsRef != MJIEnv.NULL) ? env.getArrayLength(NativeMethodInfo.CTX, argsRef) : 0;
     
     if (nArgs != passedCount) {
-      env.throwException(IllegalArgumentException.class.getName(), "Wrong number of arguments passed.  Actual = " + passedCount + ".  Expected = " + nArgs);
+      env.throwException(NativeMethodInfo.CTX, IllegalArgumentException.class.getName(), "Wrong number of arguments passed.  Actual = " + passedCount + ".  Expected = " + nArgs);
       return false;
     }
     
@@ -248,7 +248,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       // we have to handle null references explicitly
       if (sourceRef == MJIEnv.NULL) {
         if ((destTypes[i] != Types.T_REFERENCE) && (destTypes[i] != Types.T_ARRAY)) {
-          env.throwException(IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Actual = (null).  Expected = " + destTypeNames[i]);
+          env.throwException(NativeMethodInfo.CTX, IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Actual = (null).  Expected = " + destTypeNames[i]);
           return false;
         } 
          
@@ -262,7 +262,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
       Object attr = env.getElementInfo(argsRef).getFields().getFieldAttr(i);
       if ((argIdx = pushArg( argIdx, frame, source, sourceType, destTypes[i], attr)) < 0 ){
-        env.throwException(IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Source Class = " + sourceClass.getName() + ".  Dest Class = " + destTypeNames[i]);
+        env.throwException(NativeMethodInfo.CTX, IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Source Class = " + sourceClass.getName() + ".  Dest Class = " + destTypeNames[i]);
         return false;        
       }
     }
@@ -436,7 +436,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       //--- check the instance we are calling on
       if (!miCallee.isStatic()) {
         if (objRef == MJIEnv.NULL){
-          env.throwException("java.lang.NullPointerException");
+          env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException");
           return MJIEnv.NULL;
           
         } else {
@@ -444,7 +444,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
           ClassInfo objClass = eiObj.getClassInfo();
         
           if (!objClass.isInstanceOf(calleeClass)) {
-            env.throwException(IllegalArgumentException.class.getName(), "Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = " + calleeClass);
+            env.throwException(NativeMethodInfo.CTX, IllegalArgumentException.class.getName(), "Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = " + calleeClass);
             return MJIEnv.NULL;
           }
         }
@@ -457,7 +457,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
         ClassInfo callerClass = caller.getClassInfo();
 
         if (callerClass != calleeClass) {
-          env.throwException(IllegalAccessException.class.getName(), "Class " + callerClass.getName() +
+          env.throwException(NativeMethodInfo.CTX, IllegalAccessException.class.getName(), "Class " + callerClass.getName() +
                   " can not access a member of class " + calleeClass.getName()
                   + " with modifiers \"" + Modifier.toString(miCallee.getModifiers()));
           return MJIEnv.NULL;
@@ -579,7 +579,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       FeatureExpr ctx = NativeMethodInfo.CTX;
       for (int i=0; i<pa.length; i++){
         int eRef = env.newAnnotationProxies(ctx, pa[i]);
-        env.setReferenceArrayElement(paRef, i, eRef);
+        env.setReferenceArrayElement(ctx, paRef, i, new One<>(eRef));
       }
 
       return paRef;

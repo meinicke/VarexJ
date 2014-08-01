@@ -41,7 +41,7 @@ public class JPF_java_net_URLEncoder extends NativePeer {
       return env.newString(NativeMethodInfo.CTX, e);
 
     } catch (UnsupportedEncodingException x){
-      env.throwException("java.io.UnsupportedEncodingException", x.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.io.UnsupportedEncodingException", x.getMessage());
       return MJIEnv.NULL;
     }
   }

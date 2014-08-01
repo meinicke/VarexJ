@@ -173,7 +173,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
   @MJI
   public int printf__Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_io_PrintStream_2
                    (MJIEnv env, int objref, int fmtRef, int argRef) {
-    env.getVM().print(env.format(fmtRef,argRef));
+    env.getVM().print(env.format(NativeMethodInfo.CTX, fmtRef, argRef));
     return objref;
   }
   

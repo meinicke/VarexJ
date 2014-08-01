@@ -38,6 +38,7 @@ import java.util.Set;
 
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Object parsed from JSON document.
@@ -331,7 +332,7 @@ public class JSONObject{
           }
         }
 
-        fields.setReferenceValue(i, newObjRef);
+        fields.setReferenceValue(FeatureExprFactory.True(), i, new One<>(newObjRef));
       }
     }
 

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -177,14 +178,14 @@ public class JPF_java_lang_Class extends NativePeer {
                                                                        int rcls,
                                                                        int clsNameRef) {
     if (clsNameRef == MJIEnv.NULL){
-      env.throwException("java.lang.NullPointerException", "no class name provided");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException", "no class name provided");
       return MJIEnv.NULL;
     }
     
     String clsName = env.getStringObject(null, clsNameRef);
     
     if (clsName.isEmpty()){
-      env.throwException("java.lang.ClassNotFoundException", "empty class name");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.ClassNotFoundException", "empty class name");
       return MJIEnv.NULL;  
     }
     
@@ -234,13 +235,13 @@ public class JPF_java_lang_Class extends NativePeer {
     FeatureExpr ctx = NativeMethodInfo.CTX;
 	if (frame == null){ // first time around
       if(ci.isAbstract()){ // not allowed to instantiate
-        env.throwException("java.lang.InstantiationException");
+        env.throwException(ctx, "java.lang.InstantiationException");
         return MJIEnv.NULL;
       }
 
       // <2do> - still need to handle protected
       if (miCtor.isPrivate()) {
-        env.throwException("java.lang.IllegalAccessException", "cannot access non-public member of class " + ci.getName());
+        env.throwException(ctx, "java.lang.IllegalAccessException", "cannot access non-public member of class " + ci.getName());
         return MJIEnv.NULL;
       }
 
@@ -282,7 +283,7 @@ public class JPF_java_lang_Class extends NativePeer {
     
     StringBuilder sb = new StringBuilder(mname);
     sb.append('(');
-    int nParams = argTypesRef != MJIEnv.NULL ? env.getArrayLength(argTypesRef) : 0;
+    int nParams = argTypesRef != MJIEnv.NULL ? env.getArrayLength(NativeMethodInfo.CTX, argTypesRef) : 0;
     for (int i=0; i<nParams; i++) {
       int cRef = env.getReferenceArrayElement(argTypesRef, i);
       ClassInfo cit = env.getReferredClassInfo( NativeMethodInfo.CTX, cRef);
@@ -296,7 +297,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
     MethodInfo mi = ci.getReflectionMethod(fullMthName, isRecursiveLookup);
     if (mi == null || (publicOnly && !mi.isPublic())) {
-      env.throwException("java.lang.NoSuchMethodException", ci.getName() + '.' + fullMthName);
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NoSuchMethodException", ci.getName() + '.' + fullMthName);
       return MJIEnv.NULL;
       
     } else {
@@ -398,7 +399,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
       for (MethodInfo mi : methods.values()){
         int mref = createMethodObject(env, mci, mi);
-        env.setReferenceArrayElement(aref,i++,mref);
+        env.setReferenceArrayElement(NativeMethodInfo.CTX,aref,i++, new One<>(mref));
       }
 
       return aref;
@@ -433,7 +434,7 @@ public class JPF_java_lang_Class extends NativePeer {
     for (int i=0, j=0; i<methodInfos.length; i++) {
       if (methodInfos[i] != null){
         int mref = createMethodObject(env, mci, methodInfos[i]);
-        env.setReferenceArrayElement(aref,j++,mref);
+        env.setReferenceArrayElement(NativeMethodInfo.CTX,aref,j++, new One<>(mref));
       }
     }
     
@@ -448,7 +449,7 @@ public class JPF_java_lang_Class extends NativePeer {
     }
     
     ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, objref);
-    ArrayList<MethodInfo> ctors = new ArrayList<MethodInfo>();
+    ArrayList<MethodInfo> ctors = new ArrayList<>();
     
     // we have to filter out the ctors and the static init
     for (MethodInfo mi : ci.getDeclaredMethodInfos()){
@@ -463,7 +464,7 @@ public class JPF_java_lang_Class extends NativePeer {
     int aref = env.newObjectArray("Ljava/lang/reflect/Constructor;", nCtors);
     
     for (int i=0; i<nCtors; i++){
-      env.setReferenceArrayElement(aref, i, createMethodObject(env, mci, ctors.get(i)));
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, i, new One<>(createMethodObject(env, mci, ctors.get(i))));
     }
     
     return aref;
@@ -513,7 +514,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
   Set<ClassInfo> getInitializedInterfaces (MJIEnv env, ClassInfo ci){
     ThreadInfo ti = env.getThreadInfo();
-    Instruction insn = ti.getPC().getValue();
+//    Instruction insn = ti.getPC().getValue();
 
     Set<ClassInfo> ifcs = ci.getAllInterfaceClassInfos();
     for (ClassInfo ciIfc : ifcs){
@@ -551,12 +552,12 @@ public class JPF_java_lang_Class extends NativePeer {
     
     for (i=0; i<nStatic; i++) {
       FieldInfo fi = ci.getStaticField(i);
-      env.setReferenceArrayElement(aref, j++, createFieldObject(env, fi, fci));
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, j++, new One<>(createFieldObject(env, fi, fci)));
     }    
     
     for (i=0; i<nInstance; i++) {
       FieldInfo fi = ci.getDeclaredInstanceField(i);
-      env.setReferenceArrayElement(aref, j++, createFieldObject(env, fi, fci));
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, j++, new One<>(createFieldObject(env, fi, fci)));
     }
     
     return aref;
@@ -578,7 +579,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
     }
     
-    ArrayList<FieldInfo> fiList = new ArrayList<FieldInfo>();
+    ArrayList<FieldInfo> fiList = new ArrayList<>();
     for (; ci != null; ci = ci.getSuperClass()){
       // the host VM returns them in order of declaration, but the spec says there is no guaranteed order so we keep it simple
       for (FieldInfo fi : ci.getDeclaredInstanceFields()){
@@ -602,7 +603,7 @@ public class JPF_java_lang_Class extends NativePeer {
     int aref = env.newObjectArray("Ljava/lang/reflect/Field;", fiList.size());
     int j=0;
     for (FieldInfo fi : fiList){
-      env.setReferenceArrayElement(aref, j++, createFieldObject(env, fi, fci));
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, j++, new One<>(createFieldObject(env, fi, fci)));
     }
     
     return aref;
@@ -626,7 +627,7 @@ public class JPF_java_lang_Class extends NativePeer {
     }
     
     if (fi == null) {      
-      env.throwException("java.lang.NoSuchFieldException", fname);
+      env.throwException(NativeMethodInfo.CTX, "java.lang.NoSuchFieldException", fname);
       return MJIEnv.NULL;
       
     } else {
@@ -667,7 +668,7 @@ public class JPF_java_lang_Class extends NativePeer {
     }
 
     if (ci.getSuperClass().getName().equals("java.lang.Enum")) {      
-      ArrayList<FieldInfo> list = new ArrayList<FieldInfo>();
+      ArrayList<FieldInfo> list = new ArrayList<>();
       String cName = ci.getName();
       
       for (FieldInfo fi : ci.getDeclaredStaticFields()) {
@@ -680,7 +681,7 @@ public class JPF_java_lang_Class extends NativePeer {
       StaticElementInfo sei = ci.getStaticElementInfo();
       int i=0;
       for (FieldInfo fi : list){
-        env.setReferenceArrayElement( aRef, i++, sei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue());
+        env.setReferenceArrayElement( NativeMethodInfo.CTX, aRef, i++, sei.getReferenceField(fi));
       }
       return aRef;
     }
@@ -702,7 +703,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
     int i=0;
     for (ClassInfo ifc: interfaces){
-      env.setReferenceArrayElement(aref, i++, ifc.getClassObjectRef());
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, i++, new One<>(ifc.getClassObjectRef()));
     }
     
     return aref;
@@ -790,7 +791,7 @@ public class JPF_java_lang_Class extends NativePeer {
       if (!ici.isRegistered()) {
         ici.registerClass(NativeMethodInfo.CTX, ti);
       }
-      env.setReferenceArrayElement(aref, i, ici.getClassObjectRef());
+      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, i, new One<>(ici.getClassObjectRef()));
     }
     
     return aref;

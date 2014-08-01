@@ -71,7 +71,7 @@ public class JPF_java_lang_Thread extends NativePeer {
   public void setName0__Ljava_lang_String_2__V (MJIEnv env, int objref, int nameRef) {
     // it bails if you try to set a null name
     if (nameRef == MJIEnv.NULL) {
-      env.throwException("java.lang.IllegalArgumentException");
+      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException");
 
       return;
     }
@@ -174,7 +174,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       // silently ignored in Java 1.4, but the 1.5 spec explicitly marks this
       // as illegal, so we adopt this by throwing an IllegalThreadState, too
       if (! tiStartee.isNew()) {
-        env.throwException("java.lang.IllegalThreadStateException");
+        env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalThreadStateException");
         return;
       }
 
@@ -320,7 +320,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       ei.setMonitorWithoutLocked(tiJoiner);
       
       // note that we have to throw even if the thread to join to is not alive anymore
-      env.throwInterrupt();
+      env.throwInterrupt(NativeMethodInfo.CTX);
       return;
     }
 
@@ -349,7 +349,7 @@ public class JPF_java_lang_Thread extends NativePeer {
     } else { // first time exec, create a CG if the thread is still alive
 
       if (timeout < 0){
-        env.throwException("java.lang.IllegalArgumentException", "timeout value is negative");
+        env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "timeout value is negative");
         return;
       }
 

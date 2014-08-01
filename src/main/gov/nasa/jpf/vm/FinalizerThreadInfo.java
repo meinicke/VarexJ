@@ -78,10 +78,10 @@ public class FinalizerThreadInfo extends ThreadInfo {
   protected void createFinalizerThreadObject (FeatureExpr ctx, SystemClassLoaderInfo sysCl){
     Heap heap = getHeap();
 
-    ElementInfo eiThread = heap.newObject( null, ci, this);
+    ElementInfo eiThread = heap.newObject( ctx, ci, this);
     objRef = eiThread.getObjectRef();
     
-    ElementInfo eiName = heap.newString(FeatureExprFactory.True(), new One<>(FINALIZER_NAME), this);
+    ElementInfo eiName = heap.newString(ctx, new One<>(FINALIZER_NAME), this);
     int nameRef = eiName.getObjectRef();
     eiThread.setReferenceField("name", nameRef);
     
@@ -97,7 +97,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     eiPermit.setBooleanField("blockPark", true);
     eiThread.setReferenceField("permit", eiPermit.getObjectRef());
 
-    addToThreadGroup(getElementInfo(grpRef));
+    addToThreadGroup(ctx, getElementInfo(grpRef));
     
     addId( objRef, id);
     

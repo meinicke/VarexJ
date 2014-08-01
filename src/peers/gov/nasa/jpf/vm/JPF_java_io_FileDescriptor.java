@@ -69,7 +69,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
     } else if (mode == FD_WRITE){
       return openWrite(fname);
     } else {
-      env.throwException("java.io.IOException", "illegal open mode: " + mode);
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "illegal open mode: " + mode);
       return -1;
     }
   }
@@ -141,9 +141,9 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
       content.set(fd, null);
       
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException("java.io.IOException", "file not open");      
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "file not open");      
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
     }
   }
   
@@ -173,7 +173,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         content.set(fd, fos);
         
       } else {
-        env.throwException("java.io.IOException", "illegal mode: " + mode);
+        env.throwException(ctx, "java.io.IOException", "illegal mode: " + mode);
       }
     }
   }
@@ -196,7 +196,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           env.setLongField(ctx, objref, "off", fc.position());
           
         } else {
-          env.throwException("java.io.IOException", "write attempt on file opened for read access");
+          env.throwException(ctx, "java.io.IOException", "write attempt on file opened for read access");
         }
         
       } else {
@@ -204,13 +204,13 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           reopen(env,objref);
           write__I__(env,objref,b); // try again
         } else {
-          env.throwException("java.io.IOException", "write attempt on closed file");
+          env.throwException(ctx, "java.io.IOException", "write attempt on closed file");
         }
       }
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException("java.io.IOException", "file not open");      
+      env.throwException(ctx, "java.io.IOException", "file not open");      
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
     }    
   }
   
@@ -239,7 +239,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           env.setLongField(ctx, objref, "off", fc.position());
           
         } else {
-          env.throwException("java.io.IOException", "write attempt on file opened for read access");
+          env.throwException(ctx, "java.io.IOException", "write attempt on file opened for read access");
         }
         
       } else {
@@ -247,13 +247,13 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           reopen(env,objref);
           write___3BII__(env,objref,bref,offset,len); // try again
         } else {
-          env.throwException("java.io.IOException", "write attempt on closed file");
+          env.throwException(ctx, "java.io.IOException", "write attempt on closed file");
         }
       }
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException("java.io.IOException", "file not open");      
+      env.throwException(ctx, "java.io.IOException", "file not open");      
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
     }        
   }
   
@@ -275,7 +275,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           env.setLongField(ctx, objref, "off", fc.position());
           return r;
         } else {
-          env.throwException("java.io.IOException", "read attempt on file opened for write access");
+          env.throwException(ctx, "java.io.IOException", "read attempt on file opened for write access");
           return -1;                  
         }
         
@@ -284,15 +284,15 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           reopen(env,objref);
           return read____I(env,objref); // try again
         } else {
-          env.throwException("java.io.IOException", "read attempt on closed file");
+          env.throwException(ctx, "java.io.IOException", "read attempt on closed file");
           return -1;
         }
       }
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException("java.io.IOException", "file not open");
+      env.throwException(ctx, "java.io.IOException", "file not open");
       return -1;
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
       return -1;
     }
   }
@@ -321,7 +321,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           return r;
           
         } else {
-          env.throwException("java.io.IOException", "read attempt on file opened for write access");
+          env.throwException(ctx, "java.io.IOException", "read attempt on file opened for write access");
           return -1;                  
         }
         
@@ -330,15 +330,15 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           reopen(env,objref);
           return read___3BII__I(env,objref,bufref,offset,len); // try again
         } else {
-          env.throwException("java.io.IOException", "read attempt on closed file");
+          env.throwException(ctx, "java.io.IOException", "read attempt on closed file");
           return -1;        
         }
       }
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException("java.io.IOException", "file not open");
+      env.throwException(ctx, "java.io.IOException", "file not open");
       return -1;
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
       return -1;
     }
   }
@@ -362,20 +362,20 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           return r;
           
         } else {
-          env.throwException("java.io.IOException", "skip attempt on file opened for write access");
+          env.throwException(ctx, "java.io.IOException", "skip attempt on file opened for write access");
           return -1;                  
         }
         
       } else {
-        env.throwException("java.io.IOException", "skip attempt on closed file");
+        env.throwException(ctx, "java.io.IOException", "skip attempt on closed file");
         return -1;        
       }
           
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException("java.io.IOException", "file not open");
+      env.throwException(ctx, "java.io.IOException", "file not open");
       return -1;
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
       return -1;
     }    
   }
@@ -394,13 +394,13 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         }
         
       } else {
-        env.throwException("java.io.IOException", "sync attempt on closed file");
+        env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "sync attempt on closed file");
       }
           
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException("java.io.IOException", "file not open");      
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "file not open");      
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
     }        
   }
   
@@ -419,20 +419,20 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           return fis.available();
           
         } else {
-          env.throwException("java.io.IOException", "available() on file opened for write access");
+          env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "available() on file opened for write access");
           return -1;                  
         }
         
       } else {
-        env.throwException("java.io.IOException", "available() on closed file");
+        env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "available() on closed file");
         return -1;        
       }
           
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException("java.io.IOException", "file not open");
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "file not open");
       return -1;
     } catch (IOException iox) {
-      env.throwException("java.io.IOException", iox.getMessage());
+      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
       return -1;
     }    
     

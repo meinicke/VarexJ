@@ -47,7 +47,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 				final String s = sEntry.getKey();
 				FeatureExpr stringCtx = arefCtx.and(sEntry.getValue());
 				final int slen = s.length();
-				final int alen = env.getArrayLength(aref);
+				final int alen = env.getArrayLength(ctx, aref);
 				Conditional<Integer> condCount = env.getIntField(ctx, objref, "count").simplify(stringCtx);
 				Map<Integer, FeatureExpr> map = condCount.toMap();
 				for (Entry<Integer, FeatureExpr> countEntry : map.entrySet()) {
@@ -101,7 +101,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 	@MJI
 	public void $init__Ljava_lang_String_2__V(final MJIEnv env, final int objref, int sRef) {
 		if (sRef == MJIEnv.NULL) {
-			env.throwException("java.lang.NullPointerException");
+			env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException");
 			return;
 		}
 		FeatureExpr ctx = NativeMethodInfo.CTX;
