@@ -28,7 +28,7 @@ public class JPF_java_util_logging_Level extends NativePeer {
   @MJI
   public int getLocalizedName____Ljava_lang_String_2 (MJIEnv env, int objRef){
     Level level = null;    
-    int val = env.getIntField(NativeMethodInfo.CTX, objRef, "value").getValue().intValue();
+    int val = env.getIntField(objRef, "value").getValue().intValue();
     
     switch (val){
     case Integer.MIN_VALUE : 

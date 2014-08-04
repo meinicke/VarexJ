@@ -35,7 +35,7 @@ public class JPF_gov_nasa_jpf_DelegatingTimeZone extends NativePeer {
   TimeZone tz; // only used within (atomic) peer methods
   
   private TimeZone getTimeZone (MJIEnv env, int objRef){
-    int rawOffset = env.getIntField(NativeMethodInfo.CTX, objRef, "rawOffset").getValue().intValue();
+    int rawOffset = env.getIntField(objRef, "rawOffset").getValue().intValue();
     tz.setRawOffset(rawOffset);
     return tz;
   }

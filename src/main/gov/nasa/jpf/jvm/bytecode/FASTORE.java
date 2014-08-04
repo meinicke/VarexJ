@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -30,15 +32,22 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class FASTORE extends ArrayStoreInstruction {
 
-  float value;
+  Conditional<Float> value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = Float.intBitsToFloat(frame.pop(ctx).getValue());
+    value = frame.pop(ctx).map(new Function<Integer, Float>() {
+
+		@Override
+		public Float apply(Integer v) {
+			return Float.intBitsToFloat(v);
+		}
+    	
+    });
   }
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    ei.setFloatElement(index, value);
+    ei.setFloatElement(ctx, index, value);
   }
 
 

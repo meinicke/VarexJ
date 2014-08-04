@@ -531,7 +531,12 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   
   @MJI
   public static float getFloatFromList___3F__F (MJIEnv env, int clsObjRef, int valArrayRef){
-    float[] values = env.getFloatArrayObject(valArrayRef);
+    Conditional<Float>[] condValues = env.getFloatArrayObject(valArrayRef);
+    float[] values = new float[condValues.length];
+    for (int i = 0; i < condValues.length; i++) {
+    	values[i] = condValues[i].getValue(); 
+    }
+    
     return getFloatFromList( env, values);
   }
 

@@ -39,14 +39,14 @@ public class JPF_java_text_Format extends NativePeer {
   }
   
   static void putInstance (MJIEnv env, int objref, Format fmt) {
-    int id = env.getIntField(NativeMethodInfo.CTX,  objref, "id").getValue().intValue();
+    int id = env.getIntField(objref,  "id").getValue().intValue();
     formatters.put(new Integer(id), fmt);
   }
 
   static Format getInstance (MJIEnv env, int objref) {
     // <2do> that's braindead
     
-    int id = env.getIntField(NativeMethodInfo.CTX,  objref, "id").getValue().intValue();
+    int id = env.getIntField(objref,  "id").getValue().intValue();
     return formatters.get(id);
   }
 

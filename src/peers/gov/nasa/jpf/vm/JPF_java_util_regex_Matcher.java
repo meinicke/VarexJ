@@ -41,13 +41,13 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   }
 
   void putInstance (MJIEnv env, int objref, Matcher matcher) {
-    int id = env.getIntField(NativeMethodInfo.CTX,  objref, "id").getValue().intValue();
+    int id = env.getIntField(objref,  "id").getValue().intValue();
     matchers.put(id, matcher);
   }
 
   Matcher getInstance (MJIEnv env, int objref) {
     
-    int id = env.getIntField(NativeMethodInfo.CTX,  objref, "id").getValue().intValue();
+    int id = env.getIntField(objref,  "id").getValue().intValue();
     return matchers.get(id);
   }
   
@@ -58,7 +58,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     
     int regexRef = env.getReferenceField(ctx, patRef, "regex").getValue();
     String regex = env.getStringObject(null, regexRef);
-    int flags = env.getIntField(NativeMethodInfo.CTX, patRef, "flags").getValue().intValue();
+    int flags = env.getIntField(patRef, "flags").getValue().intValue();
     
     Pattern pat = Pattern.compile(regex, flags);
 

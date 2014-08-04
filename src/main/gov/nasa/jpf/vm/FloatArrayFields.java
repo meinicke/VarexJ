@@ -22,22 +22,29 @@ import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * element values for float[] objects
  */
 public class FloatArrayFields extends ArrayFields {
 
-  float[] values;
+  private static final One<Float> nullValue = new One<>(0f);
+  Conditional<Float>[] values;
 
-  public FloatArrayFields (int length) {
-    values = new float[length];
+  @SuppressWarnings("unchecked")
+public FloatArrayFields (int length) {
+    values = new Conditional[length];
+    Arrays.fill(values, nullValue);
   }
 
-  public float[] asFloatArray() {
+  public Conditional<Float>[] asFloatArray() {
     return values;
   }
 
@@ -58,7 +65,17 @@ public class FloatArrayFields extends ArrayFields {
   }
 
   public void appendTo (IntVector v) {
-    v.appendRawBits(values);
+	  List<Float> l = new ArrayList<>(values.length);
+		for (int i = 0; i < values.length; i++) {
+			l.addAll(values[i].toList());
+			// a[i] = values[i].getValue();
+		}
+
+		float[] a = new float[l.size()];
+		for (int i = 0; i < l.size(); i++) {
+			a[i] = l.get(i);
+		}
+		v.appendRawBits(a);
   }
 
   public FloatArrayFields clone(){
@@ -71,14 +88,14 @@ public class FloatArrayFields extends ArrayFields {
     if (o instanceof FloatArrayFields) {
       FloatArrayFields other = (FloatArrayFields)o;
 
-      float[] v = values;
-      float[] vOther = other.values;
+      Conditional<Float>[] v = values;
+      Conditional<Float>[] vOther = other.values;
       if (v.length != vOther.length) {
         return false;
       }
 
       for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
+        if (!v[i].equals(vOther[i])) {
           return false;
         }
       }
@@ -90,17 +107,17 @@ public class FloatArrayFields extends ArrayFields {
     }
   }
 
-  public void setFloatValue (int pos, float newValue) {
+  public void setFloatValue (FeatureExpr ctx, int pos, Conditional<Float> newValue) {
     values[pos] = newValue;
   }
 
-  public float getFloatValue (int pos) {
+  public Conditional<Float> getFloatValue (int pos) {
     return values[pos];
   }
 
 
   public void hash(HashData hd) {
-    float[] v = values;
+    Conditional<Float>[] v = values;
     for (int i=0; i < v.length; i++) {
       hd.add(v[i]);
     }

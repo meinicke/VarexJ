@@ -49,7 +49,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
   }
   
   private static TimeZone getTimeZone (MJIEnv env, int objRef){
-    int rawOffset = env.getIntField(NativeMethodInfo.CTX, objRef, "rawOffset").getValue().intValue();
+    int rawOffset = env.getIntField(objRef, "rawOffset").simplify(NativeMethodInfo.CTX).getValue().intValue();
     tz.setRawOffset(rawOffset);
     return tz;
   }
@@ -97,7 +97,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
   @MJI
   public void setDefaultValues__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int tzRef){
     defaultID = env.getStringField(tzRef, "ID");
-    defaultRawOffset = env.getIntField( NativeMethodInfo.CTX, tzRef, "rawOffset").getValue().intValue();
+    defaultRawOffset = env.getIntField( tzRef, "rawOffset").getValue().intValue();
   }
   
   //--- the ID queries

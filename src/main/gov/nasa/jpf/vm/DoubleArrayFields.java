@@ -42,7 +42,7 @@ public class DoubleArrayFields extends ArrayFields {
 	}
   }
 
-  public double[] asDoubleArray() {
+  public double[] asDoubleArray() {// TODO jens return values;
 		double[] array = new double[values.length];
 		int i = 0;
 		for (Conditional<Double> v : values) {

@@ -18,10 +18,11 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -32,8 +33,15 @@ public class FALOAD extends ArrayLoadInstruction {
 
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    float value = ei.getFloatElement(index);
-    frame.push(ctx, new One<>( Float.floatToIntBits(value)));
+    Conditional<Float> value = ei.getFloatElement(index);
+    frame.push(ctx, value.map(new Function<Float, Integer>() {
+
+		@Override
+		public Integer apply(Float v) {
+			return Float.floatToIntBits(v);
+		}
+    	
+    }));
   }
 
   public int getByteCode () {

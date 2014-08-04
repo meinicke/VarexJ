@@ -63,7 +63,7 @@ public class MethodInfoRegistry {
   }
 
   public MethodInfo getMethodInfo (MJIEnv env, int objRef, String fieldName) {
-    int idx = env.getIntField( null, objRef, fieldName).getValue().intValue();
+    int idx = env.getIntField( objRef, fieldName).getValue().intValue();
     
     assert ((idx >= 0) || (idx < nRegistered)) : "illegal MethodInfo request: " + idx + ", " + nRegistered;
     

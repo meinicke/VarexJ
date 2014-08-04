@@ -180,7 +180,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     FieldInfo fi = getFieldInfo(env, objRef);
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, FloatFieldInfo.class, "float", false);
     if (ei != null){
-      return ei.getFloatField(fi);
+      return ei.getFloatField(fi).getValue();
     }
     return 0;
   }
@@ -190,7 +190,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     FieldInfo fi = getFieldInfo(env, objRef);
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, DoubleFieldInfo.class, "double", false);
     if (ei != null){
-      return ei.getDoubleField(fi);
+      return ei.getDoubleField(fi).getValue();
     }
     return 0;
   }
@@ -317,7 +317,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, FloatFieldInfo.class, "float", true);
     if (ei != null){
-      ei.setFloatField(fi,val);
+      ei.setFloatField(NativeMethodInfo.CTX,fi, new One<>(val));
     }
   }
 
@@ -345,11 +345,11 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     FeatureExpr ctx = NativeMethodInfo.CTX;
 	if (!(fi instanceof ReferenceFieldInfo)) { // primitive type, we need to box it
       if (fi instanceof DoubleFieldInfo){
-        double d = ei.getDoubleField(fi);
-        return env.newDouble(ctx, new One<>(d));
+        Conditional<Double> d = ei.getDoubleField(fi);
+        return env.newDouble(ctx, d);
       } else if (fi instanceof FloatFieldInfo){
-        float f = ei.getFloatField(fi);
-        return env.newFloat(f);
+        Conditional<Float> f = ei.getFloatField(fi);
+        return env.newFloat(ctx, f);
       } else if (fi instanceof LongFieldInfo){
         long l = ei.getLongField(fi).getValue();
         return env.newLong(ctx, l);
@@ -408,7 +408,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   }
 
   static FieldInfo getFieldInfo (MJIEnv env, int objRef) {
-    int fidx = env.getIntField( NativeMethodInfo.CTX, objRef, "regIdx").getValue().intValue();
+    int fidx = env.getIntField( objRef, "regIdx").getValue().intValue();
     assert ((fidx >= 0) || (fidx < nRegistered)) : "illegal FieldInfo request: " + fidx + ", " + nRegistered;
     
     return registered[fidx];
@@ -516,7 +516,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         ei.setShortField(fi, val);
         return true;
       } else if ("int".equals(fieldType)){
-        Conditional<Integer> val = env.getIntField(NativeMethodInfo.CTX, value, fieldName);
+        Conditional<Integer> val = env.getIntField(value, fieldName);
         ei.setIntField(NativeMethodInfo.CTX, fi, val);
         return true;
       } else if ("long".equals(fieldType)){
@@ -524,12 +524,12 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         ei.setLongField(ctx, fi, val);
         return true;
       } else if ("float".equals(fieldType)){
-        float val = env.getFloatField(value, fieldName);
-        ei.setFloatField(fi, val);
+        Conditional<Float> val = env.getFloatField(value, fieldName);
+        ei.setFloatField(ctx, fi, val);
         return true;
       } else if ("double".equals(fieldType)){
-        double val = env.getDoubleField(value, fieldName);
-        ei.setDoubleField(ctx, fi, new One<>(val));
+        Conditional<Double> val = env.getDoubleField(value, fieldName);
+        ei.setDoubleField(ctx, fi, val);
         return true;
       } else {
         return false;
@@ -556,7 +556,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
 
   @MJI
   public boolean equals__Ljava_lang_Object_2__Z (MJIEnv env, int objRef, int fobjRef){
-    int fidx = env.getIntField(NativeMethodInfo.CTX, fobjRef, "regIdx").getValue().intValue();
+    int fidx = env.getIntField(fobjRef, "regIdx").getValue().intValue();
     if (fidx >= 0 && fidx < nRegistered){
       FieldInfo fi1 = getFieldInfo(env, objRef);
       FieldInfo fi2 = getFieldInfo(env, fobjRef);

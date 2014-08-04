@@ -224,8 +224,19 @@ public class NamedFields extends Fields {
 	}
 
 	@Override
-	public void setFloatValue(int index, float newValue) {
-		values[index] = new One<>(Types.floatToInt(newValue));
+	public void setFloatValue(FeatureExpr ctx, int index, Conditional<Float> newValue) {
+		if (Conditional.isTautology(ctx)) {
+			values[index] = new One<>(Types.floatToInt(newValue.getValue()));	
+		} else {
+			values[index] = new Choice<>(ctx, newValue.map(new Function<Float, Integer>() {
+	
+				@Override
+				public Integer apply(Float v) {
+					return Types.floatToInt(v);
+				}
+				
+			}), values[index]).simplify();
+		}
 	}
 
 	@Override
@@ -281,8 +292,14 @@ public class NamedFields extends Fields {
 	}
 
 	@Override
-	public float getFloatValue(int index) {
-		return Types.intToFloat(values[index].getValue());
+	public Conditional<Float> getFloatValue(int index) {
+		return values[index].map(new Function<Integer, Float>() {
+			
+			@Override
+			public Float apply(Integer v) {
+				return Types.intToFloat(v);
+			}
+		});
 	}
 
 	@Override

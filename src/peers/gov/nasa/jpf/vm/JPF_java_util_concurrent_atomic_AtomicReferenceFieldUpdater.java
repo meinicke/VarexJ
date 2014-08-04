@@ -58,7 +58,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
       return false;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -85,7 +85,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
       return;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -106,7 +106,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
       return 0;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -121,7 +121,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
       return 0;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     int result = ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();

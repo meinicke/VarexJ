@@ -383,15 +383,15 @@ public class MJIEnv {
     heap.getModifiable(objref).setDoubleField(ctx, fname, val);
   }
 
-  public double getDoubleField (int objref, String fname) {
+  public Conditional<Double> getDoubleField (int objref, String fname) {
     return heap.get(objref).getDoubleField(fname);
   }
 
-  public void setFloatField (int objref, String fname, float val) {
-    heap.getModifiable(objref).setFloatField(fname, val);
+  public void setFloatField (FeatureExpr ctx, int objref, String fname, Conditional<Float> val) {
+    heap.getModifiable(objref).setFloatField(ctx, fname, val);
   }
 
-  public float getFloatField (int objref, String fname) {
+  public Conditional<Float> getFloatField (int objref, String fname) {
     return heap.get(objref).getFloatField(fname);
   }
 
@@ -416,11 +416,11 @@ public class MJIEnv {
     heap.getModifiable(objref).setShortElement(index, value);
   }
 
-  public void setFloatArrayElement (int objref, int index, float value) {
-    heap.getModifiable(objref).setFloatElement(index, value);
+  public void setFloatArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Float> value) {
+    heap.getModifiable(objref).setFloatElement(ctx, index, value);
   }
 
-  public float getFloatArrayElement (int objref, int index) {
+  public Conditional<Float> getFloatArrayElement (int objref, int index) {
     return heap.get(objref).getFloatElement(index);
   }
 
@@ -454,9 +454,9 @@ public class MJIEnv {
     ei.setDeclaredIntField(ctx, fname, refType, val);
   }
 
-  public Conditional<Integer> getIntField (FeatureExpr ctx, int objref, String fname) {
+  public Conditional<Integer> getIntField (int objref, String fname) {
     ElementInfo ei = heap.get(objref);
-    return ei.getIntField(fname).simplify(ctx);
+    return ei.getIntField(fname);
   }
 
   public int getDeclaredIntField (int objref, String refType, String fname) {
@@ -509,18 +509,18 @@ public class MJIEnv {
   }
 
   public int getIntValue (int objref) {
-    return getIntField(null, objref, "value").getValue();
+    return getIntField(objref, "value").getValue();
   }
 
   public long getLongValue (int objref) {
     return getLongField(objref, "value").getValue();
   }
 
-  public float getFloatValue (int objref) {
+  public Conditional<Float> getFloatValue (int objref) {
     return getFloatField(objref, "value");
   }
 
-  public double getDoubleValue (int objref) {
+  public Conditional<Double> getDoubleValue (int objref) {
     return getDoubleField(objref, "value");
   }
 
@@ -566,7 +566,7 @@ public class MJIEnv {
   }
 
   public short getShortField (int objref, String fname) {
-    return (short) (int) getIntField(null, objref, fname).getValue();
+    return (short) (int) getIntField(objref, fname).getValue();
   }
 
   public String getTypeName (int objref) {
@@ -624,27 +624,27 @@ public class MJIEnv {
     ci.getStaticElementInfo().setDoubleField(ctx, fname, val);
   }
 
-  public double getStaticDoubleField (String clsName, String fname) {
+  public Conditional<Double> getStaticDoubleField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
     return ci.getStaticElementInfo().getDoubleField(fname);
   }
   
-  public double getStaticDoubleField (int clsObjRef, String fname) {
+  public Conditional<Double> getStaticDoubleField (int clsObjRef, String fname) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
     return cei.getDoubleField(fname);
   }
 
-  public double getStaticDoubleField (ClassInfo ci, String fname) {
+  public Conditional<Double> getStaticDoubleField (ClassInfo ci, String fname) {
     ElementInfo ei = ci.getStaticElementInfo();
     return ei.getDoubleField(fname);
   }
   
-  public void setStaticFloatField (String clsName, String fname, float val) {
+  public void setStaticFloatField (FeatureExpr ctx, String clsName, String fname, Conditional<Float> val) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setFloatField(fname, val);
+    ci.getStaticElementInfo().setFloatField(ctx, fname, val);
   }
 
-  public float getStaticFloatField (String clsName, String fname) {
+  public Conditional<Float> getStaticFloatField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
     return ci.getStaticElementInfo().getFloatField(fname);
   }
@@ -831,9 +831,9 @@ public class MJIEnv {
       if (clsName.equals("java.lang.Boolean")){
         args[i] = Boolean.valueOf(getBooleanField(aref,"value").getValue());
       } else if (clsName.equals("java.lang.Integer")){
-        args[i] = getIntField(null,aref, "value").getValue();
+        args[i] = getIntField(aref,"value").getValue();
       } else if (clsName.equals("java.lang.Double")){
-        args[i] = Double.valueOf(getDoubleField(aref,"value"));
+        args[i] = Double.valueOf(getDoubleField(aref,"value").getValue());
       } else if (clsName.equals("java.lang.String")){
         args[i] = getStringObject(null, aref);
       }
@@ -859,7 +859,7 @@ public class MJIEnv {
   }
 
   public Integer getIntegerObject (int objref){
-    return getIntField(null, objref, "value").getValue();
+    return getIntField(objref, "value").getValue();
   }
 
   public Long getLongObject (int objref){
@@ -867,11 +867,11 @@ public class MJIEnv {
   }
 
   public Float getFloatObject (int objref){
-    return new Float(getFloatField(objref, "value"));
+    return new Float(getFloatField(objref, "value").getValue());
   }
 
   public Double getDoubleObject (int objref){
-    return new Double(getDoubleField(objref, "value"));
+    return new Double(getDoubleField(objref, "value").getValue());
   }
 
   // danger - the returned arrays could be used to modify contents of stored objects
@@ -921,9 +921,9 @@ public class MJIEnv {
     return a;
   }
 
-  public float[] getFloatArrayObject (int objref) {
+  public Conditional<Float>[] getFloatArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
-    float[] a = ei.asFloatArray();
+    Conditional<Float>[] a = ei.asFloatArray();
 
     return a;
   }
@@ -1031,7 +1031,7 @@ public class MJIEnv {
   public int newFloatArray (float[] buf){
     ElementInfo eiArray =  heap.newArray(FeatureExprFactory.True(), "F", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setFloatElement( i, buf[i]);
+      eiArray.setFloatElement(FeatureExprFactory.True(), i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }
@@ -1237,9 +1237,9 @@ public class MJIEnv {
     return ei.getObjectRef();
   }
 
-  public int newFloat (float f){
+  public int newFloat (FeatureExpr ctx, Conditional<Float> f){
     ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Float"), ti);
-    ei.setFloatField("value",f);
+    ei.setFloatField(ctx,"value", f);
     return ei.getObjectRef();
   }
 
@@ -1626,7 +1626,7 @@ public class MJIEnv {
     } else if (v instanceof Long){
       setLongField(ctx, proxyRef, fname, ((Long)v).longValue());
     } else if (v instanceof Float){
-      setFloatField(proxyRef, fname, ((Float)v).floatValue());
+      setFloatField(ctx, proxyRef, fname, new One<>(((Float)v).floatValue()));
     } else if (v instanceof Short){
       setShortField(ctx, proxyRef, fname, ((Short)v).shortValue());
     } else if (v instanceof Character){

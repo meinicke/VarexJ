@@ -59,7 +59,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     }
 
     FeatureExpr ctx = NativeMethodInfo.CTX;
-	int fidx = env.getIntField(ctx, objRef, "fieldId").getValue().intValue();
+	int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -87,7 +87,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     }
 
     FeatureExpr ctx = NativeMethodInfo.CTX;
-	int fidx = env.getIntField(ctx, objRef, "fieldId").getValue().intValue();
+	int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -108,7 +108,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
       return 0;  // re-executed anyways
     }
 
-    int fidx = env.getIntField(NativeMethodInfo.CTX, objRef, "fieldId").getValue().intValue();
+    int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
@@ -124,7 +124,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     }
 
     FeatureExpr ctx = NativeMethodInfo.CTX;
-	int fidx = env.getIntField(ctx, objRef, "fieldId").getValue().intValue();
+	int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     long result = ei.getLongField(fi).getValue();
@@ -143,7 +143,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     }
 
     FeatureExpr ctx = NativeMethodInfo.CTX;
-	int fidx = env.getIntField(ctx, objRef, "fieldId").getValue().intValue();
+	int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     long result = ei.getLongField(fi).getValue();

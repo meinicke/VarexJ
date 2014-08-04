@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -44,7 +45,7 @@ public class FloatFieldInfo extends SingleSlotFieldInfo {
   }
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setFloatValue(storageOffset, init);
+    ei.getFields().setFloatValue(ctx, storageOffset, new One<>(init));
   }
 
   public Class<? extends ChoiceGenerator<?>> getChoiceGeneratorType() {
@@ -52,12 +53,12 @@ public class FloatFieldInfo extends SingleSlotFieldInfo {
   }
 
   public String valueToString (Fields f) {
-    float v = f.getFloatValue(storageOffset);
+    float v = f.getFloatValue(storageOffset).getValue();
     return Float.toString(v);
   }
 
   public Object getValueObject (Fields f){
-    float v = f.getFloatValue(storageOffset);
+    float v = f.getFloatValue(storageOffset).getValue();
     return new Float(v);
   }
 

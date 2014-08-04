@@ -91,7 +91,7 @@ public class JPF_java_io_ObjectInputStream extends NativePeer {
       bits |= 0x000000ff & b0;
 
       float f = Float.intBitsToFloat(bits);
-      env.setFloatArrayElement(faRef, i, f);
+      env.setFloatArrayElement(NativeMethodInfo.CTX, faRef, i, new One<>(f));
     }
   }
 }

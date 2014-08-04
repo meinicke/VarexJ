@@ -65,7 +65,7 @@ public abstract class ArrayFields extends Fields {
 
 	protected abstract void printValue(PrintStream ps, int idx);
 
-	public abstract Conditional<?> getValues();
+	public abstract Conditional<?> getValues();// TODO ???
 
 	@Override
 	public Conditional<Boolean> getBooleanValue(int pos) {
@@ -104,7 +104,7 @@ public abstract class ArrayFields extends Fields {
 	}
 
 	@Override
-	public float getFloatValue(int pos) {
+	public Conditional<Float> getFloatValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a float[]");
 	}
@@ -152,7 +152,7 @@ public abstract class ArrayFields extends Fields {
 	}
 
 	@Override
-	public void setFloatValue(int pos, float newValue) {
+	public void setFloatValue(FeatureExpr ctx, int pos, Conditional<Float> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a float[]");
 	}
@@ -190,12 +190,12 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a char[]");
 	}
 
-	public char[] asCharArray(int offset, int length) {
+	public char[] asCharArray(int offset, int length) {// TODO
 		// overridden by subclass
 		throw new JPFException("not a char[]");
 	}
 
-	public short[] asShortArray() {
+	public short[] asShortArray() {// TODO
 		// overridden by subclass
 		throw new JPFException("not a short[]");
 	}
@@ -215,17 +215,17 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a long[]");
 	}
 
-	public float[] asFloatArray() {
+	public Conditional<Float>[] asFloatArray() {
 		// overridden by subclass
 		throw new JPFException("not a float[]");
 	}
 
-	public double[] asDoubleArray() {
+	public double[] asDoubleArray() {// TODO
 		// overridden by subclass
 		throw new JPFException("not a double[]");
 	}
 
-	public int[] asFieldSlots() {
+	public int[] asFieldSlots() {// TODO
 		throw new JPFException("array has no field slots");
 	}
 

@@ -48,7 +48,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 				FeatureExpr stringCtx = arefCtx.and(sEntry.getValue());
 				final int slen = s.length();
 				final int alen = env.getArrayLength(ctx, aref);
-				Conditional<Integer> condCount = env.getIntField(ctx, objref, "count").simplify(stringCtx);
+				Conditional<Integer> condCount = env.getIntField(objref, "count").simplify(stringCtx);
 				Map<Integer, FeatureExpr> map = condCount.toMap();
 				for (Entry<Integer, FeatureExpr> countEntry : map.entrySet()) {
 					Integer count = countEntry.getKey();
@@ -224,7 +224,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 
 					@Override
 					public Conditional<String> apply(FeatureExpr ctx, final char[] buf) {
-						final Conditional<Integer> count = env.getIntField(ctx, objref, "count");
+						final Conditional<Integer> count = env.getIntField(objref, "count").simplify(ctx);
 						return count.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<String>>() {
 
 							@Override

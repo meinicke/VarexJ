@@ -226,7 +226,7 @@ public class JSONObject{
 		  ei.setLongField(ctx, fi, val.getDouble().longValue());
 
 		} else if (primitiveName.equals("float")) {
-		  ei.setFloatField(fi, val.getDouble().floatValue());
+		  ei.setFloatField(ctx, fi, new One<>(val.getDouble().floatValue()));
 
 		} else if (primitiveName.equals("double")) {
 		  ei.setDoubleField(ctx, fi, new One<>(val.getDouble()));
@@ -291,10 +291,11 @@ public class JSONObject{
     } else if (arrayElementType.equals("float")) {
       arrayRef = env.newFloatArray(vals.length);
       ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
-      float[] floats = arrayEI.asFloatArray();
+//      Conditional<Float>[] floats = arrayEI.asFloatArray();
 
       for (int i = 0; i < vals.length; i++) {
-        floats[i] = vals[i].getDouble().floatValue();
+    	  arrayEI.setFloatElement(ctx, i, new One<>(vals[i].getDouble().floatValue()));
+//        floats[i] = vals[i].getDouble().floatValue();
       }
     } else if (arrayElementType.equals("double")) {
       arrayRef = env.newDoubleArray(vals.length);
@@ -375,7 +376,7 @@ public class JSONObject{
 		    ei.setLongField(ctx, fi, number.longValue());
 
 		  } else if (primitiveName.equals("float")) {
-		    ei.setFloatField(fi, number.floatValue());
+		    ei.setFloatField(ctx, fi, new One<>(number.floatValue()));
 
 		  } else if (primitiveName.equals("double")) {
 		    ei.setDoubleField(ctx, fi, new One<>(number.doubleValue()));

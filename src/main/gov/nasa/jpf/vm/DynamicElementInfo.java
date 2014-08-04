@@ -183,11 +183,11 @@ public class DynamicElementInfo extends ElementInfo {
       } else if ("Integer".equals(cname)){
         return getIntField("value").getValue();
       } else if ("Float".equals(cname)){
-        return Float.valueOf( getFloatField("value"));
+        return Float.valueOf( getFloatField("value").getValue());
       } else if ("Long".equals(cname)){
         return getLongField("value").getValue();
       } else if ("Double".equals(cname)){
-        return Double.valueOf( getDoubleField("value"));
+        return Double.valueOf( getDoubleField("value").getValue());
       }
     }
     

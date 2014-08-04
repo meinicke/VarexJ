@@ -189,7 +189,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       float v = frame.getFloatResult();
       ret = env.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Float"));
       rei = env.getModifiableElementInfo(ret);
-      rei.setFloatField("value", v);
+      rei.setFloatField(ctx, "value", new One<>(v));
     } else if (rt == Types.T_LONG) {
       attr = frame.getLongResultAttr();
       long v = frame.getLongResult();
@@ -300,7 +300,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     switch (srcType) {
     case Types.T_DOUBLE:
     {
-      double v = eiArg.getDoubleField("value");
+      double v = eiArg.getDoubleField("value").getValue();
       if (destType == Types.T_DOUBLE){
         return frame.setDoubleArgument( argIdx, v, attr);
       }
@@ -308,7 +308,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_FLOAT: // covers float, double
     {
-      float v = eiArg.getFloatField("value");
+      float v = eiArg.getFloatField("value").getValue();
       switch (destType){
       case Types.T_FLOAT:
         return frame.setFloatArgument( argIdx, v, attr);

@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -116,7 +117,7 @@ public class ObjectConverter {
         newObjEI.setLongField(ctx, fi, javaField.getLong(javaObject));
       }
       else if (jpfTypeName.equals("float")) {
-        newObjEI.setFloatField(fi, javaField.getFloat(javaObject));
+        newObjEI.setFloatField(ctx, fi, new One<>(javaField.getFloat(javaObject)));
       }
       else if (jpfTypeName.equals("double")) {
         newObjEI.setDoubleField(ctx, fi, new One<>(javaField.getDouble(javaObject)));
@@ -146,6 +147,7 @@ public class ObjectConverter {
   }
 
   // TODO jens implement all Types
+  // TODO jens check seems to be to expensive
   private static int getJPFArrayRef(FeatureExpr ctx, MJIEnv env, Object javaArr) throws NoSuchFieldException, IllegalAccessException {
         
     Class arrayElementClass = javaArr.getClass().getComponentType();
@@ -210,10 +212,11 @@ public class ObjectConverter {
     else if (arrayElementClass == Float.TYPE) {
       arrRef = env.newFloatArray(javaArrLength);
       ElementInfo floatArrRef = env.getModifiableElementInfo(arrRef);
-      float[] floatArr = floatArrRef.asFloatArray();
+//      Conditional<Float>[] floatArr = floatArrRef.asFloatArray();
 
       for (int i = 0; i < javaArrLength; i++) {
-        floatArr[i] = Array.getFloat(javaArr, i);
+    	  floatArrRef.setFloatElement(ctx, i, new One<>(Array.getFloat(javaArr, i)));
+//        floatArr[i] = Array.getFloat(javaArr, i);
       }
     }
     else if (arrayElementClass == Double.TYPE) {
@@ -303,10 +306,10 @@ public class ObjectConverter {
       javaField.setLong(javaObject, ei.getLongField(fi).getValue());
     }
     else if (primitiveType.equals("float")) {
-      javaField.setFloat(javaObject, ei.getFloatField(fi));
+      javaField.setFloat(javaObject, ei.getFloatField(fi).getValue());
     }
     else if (primitiveType.equals("double")) {
-      javaField.setDouble(javaObject, ei.getDoubleField(fi));
+      javaField.setDouble(javaObject, ei.getDoubleField(fi).getValue());
     }
     else {
       throw new JPFException("Can't convert " + primitiveType + " to " +

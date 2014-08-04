@@ -133,7 +133,7 @@ class BoxedFloatCreator implements Creator {
     if (read != null) {
       floatRef = env.newObject(ctx, "java.lang.Float");
       ElementInfo ei = env.getModifiableElementInfo(floatRef);
-      ei.setFloatField("value", read.floatValue());
+      ei.setFloatField(ctx, "value", new One<>(read.floatValue()));
     }
 
     return floatRef;

@@ -57,7 +57,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
   public int fieldOffset__Ljava_lang_reflect_Field_2__I (MJIEnv env, int unsafeRef, int fieldRef) {
     //FieldInfo fi = JPF_java_lang_reflect_Field.getFieldInfo(env, fieldRef);
     //return fi.getStorageOffset();
-    return env.getIntField(NativeMethodInfo.CTX, fieldRef, "regIdx").getValue().intValue();
+    return env.getIntField(fieldRef, "regIdx").getValue().intValue();
   }
 
   @MJI
@@ -432,9 +432,9 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      return ei.getFloatField(fi);
+      return ei.getFloatField(fi).getValue();
     } else {
-      return ei.getFloatElement((int)fieldOffset);
+      return ei.getFloatElement((int)fieldOffset).getValue();
     }
   }
 
@@ -449,9 +449,9 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getModifiableElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      ei.setFloatField(fi, val);
+      ei.setFloatField(NativeMethodInfo.CTX, fi, new One<>(val));
     } else {
-      ei.setFloatElement((int)fieldOffset, val);
+      ei.setFloatElement(NativeMethodInfo.CTX, (int)fieldOffset, new One<>(val));
     }
   }
 
@@ -510,7 +510,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      return ei.getDoubleField(fi);
+      return ei.getDoubleField(fi).getValue();
     } else {
       return ei.getDoubleElement((int)fieldOffset).getValue();
     }

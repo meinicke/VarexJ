@@ -149,7 +149,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
 
     } else if (at.equals("float")){
       int vref = env.newObject(ctx, "java.lang.Float");
-      env.setFloatField(vref, "value", env.getFloatArrayElement(aref,index));
+      env.setFloatField(ctx, vref, "value", env.getFloatArrayElement(aref,index));
       return vref;
 
     } else {
@@ -224,7 +224,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public float getFloat__Ljava_lang_Object_2I__F (MJIEnv env, int clsRef, int aref, int index) {
     if (check(env, aref, index)) {
-      return env.getFloatArrayElement(aref, index);
+      return env.getFloatArrayElement(aref, index).getValue();
     }
     return 0;
   }
@@ -282,7 +282,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setFloat__Ljava_lang_Object_2IF__V (MJIEnv env, int clsRef, int aref, int index, float val) {
     if (check(env, aref, index)) {
-      env.setFloatArrayElement(aref, index, val);
+      env.setFloatArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
     }
   }
 

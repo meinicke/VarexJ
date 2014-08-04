@@ -70,12 +70,12 @@ public class DoubleSpec {
         int id = ti.getThis();
         if(id>=0){  // in a normal (non-static) method
           ElementInfo ei = vm.getElementInfo(id);
-          ret = ei.getDoubleField(varId[0]);
+          ret = ei.getDoubleField(varId[0]).getValue();
         }
         else { // static method (no this)- must be static var
           ClassInfo ci = ti.getTopFrameMethodInfo().getClassInfo();
           ElementInfo ei = ci.getStaticElementInfo();
-          ret = ei.getDoubleField(varId[0]);
+          ret = ei.getDoubleField(varId[0]).getValue();
         }
       }
       break;
@@ -83,7 +83,7 @@ public class DoubleSpec {
     case 2: { // static variable name TODO other cases here...
       ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(varId[0]);
       ElementInfo ei = ci.getStaticElementInfo();
-      ret = ei.getDoubleField(varId[1]);
+      ret = ei.getDoubleField(varId[1]).getValue();
       break;
     }
     default: 

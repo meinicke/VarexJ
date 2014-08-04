@@ -187,7 +187,7 @@ public class DynamicAbstractionSerializer extends FilteringSerializer {
             }
 
           } else if (fi.isFloatField()) {
-            buf.add(a.getAbstractValue(fields.getFloatValue(off)));
+            buf.add(a.getAbstractValue(fields.getFloatValue(off).getValue()));
           } else {
             buf.add(a.getAbstractValue(fields.getIntValue(off).getValue()));
           }

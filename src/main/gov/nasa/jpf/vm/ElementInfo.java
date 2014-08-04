@@ -820,8 +820,8 @@ public abstract class ElementInfo implements Cloneable {
   public void setLongField (FeatureExpr ctx, String fname, long value) {
     setLongField( ctx, getFieldInfo(fname), value);
   }
-  public void setFloatField (String fname, float value) {
-    setFloatField( getFieldInfo(fname), value);
+  public void setFloatField (FeatureExpr ctx, String fname, Conditional<Float> value) {
+    setFloatField( ctx, getFieldInfo(fname), value);
   }
   public void setDoubleField (FeatureExpr ctx, String fname, Conditional<Double> value) {
     setDoubleField( ctx, getFieldInfo(fname), value);
@@ -919,7 +919,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setLongField(FeatureExpr ctx, FieldInfo fi, long newValue) {
+  public void setLongField(FeatureExpr ctx, FieldInfo fi, long newValue) {// TODO jens
     checkIsModifiable();
 
     if (fi.isLongField()) {
@@ -930,12 +930,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setFloatField(FieldInfo fi, float newValue) {
+  public void setFloatField(FeatureExpr ctx, FieldInfo fi, Conditional<Float> newValue) {
     checkIsModifiable();
 
     if (fi.isFloatField()) {
       int offset = fi.getStorageOffset();
-      fields.setFloatValue( offset, newValue);
+      fields.setFloatValue( ctx, offset, newValue);
     } else {
       throw new JPFException("not a float field: " + fi.getName());
     }
@@ -1066,22 +1066,22 @@ public abstract class ElementInfo implements Cloneable {
     return getCharField( fi);
   }
 
-  public double getDeclaredDoubleField(String fname, String refType) {
+  public Conditional<Double> getDeclaredDoubleField(String fname, String refType) {
     FieldInfo fi = getDeclaredFieldInfo(refType, fname);
     return getDoubleField( fi);
   }
 
-  public double getDoubleField(String fname) {
+  public Conditional<Double> getDoubleField(String fname) {
     FieldInfo fi = getFieldInfo(fname);
     return getDoubleField( fi);
   }
 
-  public float getDeclaredFloatField(String fname, String refType) {
+  public Conditional<Float> getDeclaredFloatField(String fname, String refType) {
     FieldInfo fi = getDeclaredFieldInfo(refType, fname);
     return getFloatField( fi);
   }
 
-  public float getFloatField(String fname) {
+  public Conditional<Float> getFloatField(String fname) {
     FieldInfo fi = getFieldInfo(fname);
     return getFloatField( fi);
   }
@@ -1152,16 +1152,16 @@ public abstract class ElementInfo implements Cloneable {
       throw new JPFException("not a long field: " + fi.getName());
     }
   }
-  public float getFloatField (FieldInfo fi){
+  public Conditional<Float> getFloatField (FieldInfo fi){
     if (fi.isFloatField()){
       return fields.getFloatValue(fi.getStorageOffset());
     } else {
       throw new JPFException("not a float field: " + fi.getName());
     }
   }
-  public double getDoubleField (FieldInfo fi){
+  public Conditional<Double> getDoubleField (FieldInfo fi){
     if (fi.isDoubleField()){
-      return fields.getDoubleValue(fi.getStorageOffset()).getValue();
+      return fields.getDoubleValue(fi.getStorageOffset());
     } else {
       throw new JPFException("not a double field: " + fi.getName());
     }
@@ -1355,10 +1355,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setLongValue(ctx, idx, value);
   }
-  public void setFloatElement(int idx, float value){
+  public void setFloatElement(FeatureExpr ctx, int idx, Conditional<Float> value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setFloatValue(idx, value);
+    fields.setFloatValue(ctx, idx, value);
   }
   public void setDoubleElement(FeatureExpr ctx, int idx, Conditional<Double> value){
     checkArray(idx);
@@ -1399,7 +1399,7 @@ public abstract class ElementInfo implements Cloneable {
     checkArray(idx);
     return fields.getLongValue(idx);
   }
-  public float getFloatElement(int idx) {
+  public Conditional<Float> getFloatElement(int idx) {
     checkArray(idx);
     return fields.getFloatValue(idx);
   }
@@ -1517,7 +1517,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public float[] asFloatArray() {
+  public Conditional<Float>[] asFloatArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asFloatArray();
     } else {

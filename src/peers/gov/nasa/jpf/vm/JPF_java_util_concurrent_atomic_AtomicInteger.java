@@ -34,7 +34,7 @@ public class JPF_java_util_concurrent_atomic_AtomicInteger extends NativePeer {
  
   @MJI
   public boolean compareAndSet__II__Z (MJIEnv env, int objRef, int expect, int update){
-    int value = env.getIntField(NativeMethodInfo.CTX, objRef, "value").getValue().intValue();
+    int value = env.getIntField(objRef, "value").getValue().intValue();
     if (value == expect){
       env.setIntField(NativeMethodInfo.CTX, objRef, "value", new One<>(update));
       return true;

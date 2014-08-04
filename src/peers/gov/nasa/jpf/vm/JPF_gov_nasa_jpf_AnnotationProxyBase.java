@@ -66,7 +66,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
         sb.append('=');
         
         if (ft.equals("int")){
-          sb.append(env.getIntField(ctx,objref, fn));
+          sb.append(env.getIntField(objref,fn));
 
         } else if (ft.equals("long")){
           sb.append(env.getLongField(objref,fn));
