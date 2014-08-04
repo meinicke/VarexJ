@@ -68,7 +68,7 @@ public abstract class ArrayFields extends Fields {
 	public abstract Conditional<?> getValues();
 
 	@Override
-	public boolean getBooleanValue(int pos) {
+	public Conditional<Boolean> getBooleanValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a boolean[]");
 	}
@@ -122,7 +122,7 @@ public abstract class ArrayFields extends Fields {
 	}
 
 	@Override
-	public void setBooleanValue(int pos, boolean newValue) {
+	public void setBooleanValue(FeatureExpr ctx, int pos, Conditional<Boolean> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a boolean[]");
 	}
@@ -175,7 +175,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException(getClass() + "not a reference array");
 	}
 
-	public boolean[] asBooleanArray() {
+	public Conditional<Boolean>[] asBooleanArray() {
 		// overridden by subclass
 		throw new JPFException("not a boolean[]");
 	}

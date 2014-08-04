@@ -92,9 +92,9 @@ public class FinalizerThreadInfo extends ThreadInfo {
     
     eiThread.setIntField(FeatureExprFactory.True(), "priority", new One<>(Thread.MAX_PRIORITY-2));
 
-    ClassInfo ciPermit = sysCl.getResolvedClassInfo(null, "java.lang.Thread$Permit");
-    ElementInfo eiPermit = heap.newObject( null, ciPermit, this);
-    eiPermit.setBooleanField("blockPark", true);
+    ClassInfo ciPermit = sysCl.getResolvedClassInfo(ctx, "java.lang.Thread$Permit");
+    ElementInfo eiPermit = heap.newObject( ctx, ciPermit, this);
+    eiPermit.setBooleanField(ctx, "blockPark", new One<>(true));
     eiThread.setReferenceField("permit", eiPermit.getObjectRef());
 
     addToThreadGroup(ctx, getElementInfo(grpRef));
@@ -106,7 +106,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     // start the thread by pushing Thread.run()
     startFinalizerThread(ctx);
     
-    eiThread.setBooleanField("done", false);
+    eiThread.setBooleanField(ctx, "done", new One<>(false));
     ElementInfo finalizeQueue = getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", 0, this);
     eiThread.setReferenceField("finalizeQueue", finalizeQueue.getObjectRef());
     

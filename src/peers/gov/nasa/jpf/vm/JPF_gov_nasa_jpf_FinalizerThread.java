@@ -18,10 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Conditional;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.Predicate;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
@@ -103,6 +104,6 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
   }
   
   protected void shutdown(MJIEnv env, int objRef) {
-    env.getModifiableElementInfo(objRef).setBooleanField("done", true);
+    env.getModifiableElementInfo(objRef).setBooleanField(NativeMethodInfo.CTX, "done", new One<>(true));
   }
 }

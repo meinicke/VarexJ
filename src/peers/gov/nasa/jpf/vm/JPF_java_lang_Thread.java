@@ -123,7 +123,7 @@ public class JPF_java_lang_Thread extends NativePeer {
     ThreadInfo interruptedThread = env.getThreadInfoForObjRef(objref);
 
     if (!ti.isFirstStepInsn()) {
-      interruptedThread.interrupt();
+      interruptedThread.interrupt(NativeMethodInfo.CTX);
       
       // the interrupted thread can re-acquire the lock and therefore is runnable again
       // hence we should give it a chance to do so (Thread.interrupt() does not require
@@ -143,13 +143,13 @@ public class JPF_java_lang_Thread extends NativePeer {
   @MJI
   public boolean isInterrupted____Z (MJIEnv env, int objref) {
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
-    return ti.isInterrupted(false);
+    return ti.isInterrupted(NativeMethodInfo.CTX, false);
   }
 
   @MJI
   public boolean interrupted____Z (MJIEnv env, int clsObjRef) {
     ThreadInfo ti = env.getThreadInfo();
-    return ti.isInterrupted(true);
+    return ti.isInterrupted(NativeMethodInfo.CTX, true);
   }
 
   @MJI
@@ -313,7 +313,7 @@ public class JPF_java_lang_Thread extends NativePeer {
     SystemState ss = env.getSystemState();
     ElementInfo ei = env.getModifiableElementInfo(joineeRef); // the thread object to wait on
 
-    if (tiJoiner.isInterrupted(true)){ // interrupt status is set, throw and bail
+    if (tiJoiner.isInterrupted(NativeMethodInfo.CTX, true)){ // interrupt status is set, throw and bail
       
       // since we use lock-free joins, we need to remove ourselves from the
       // lock contender list

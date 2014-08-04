@@ -129,7 +129,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       
     } else if (at.equals("boolean")){
       int vref = env.newObject(ctx, "java.lang.Boolean");
-      env.setBooleanField(vref, "value", env.getBooleanArrayElement(aref,index));
+      env.setBooleanField(ctx, vref, "value", env.getBooleanArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("char")){
@@ -139,7 +139,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       
     } else if (at.equals("byte")){
       int vref = env.newObject(ctx, "java.lang.Byte");
-      env.setByteField(vref, "value", env.getByteArrayElement(aref,index));
+      env.setByteField(ctx, vref, "value", env.getByteArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("short")){
@@ -176,7 +176,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public boolean getBoolean__Ljava_lang_Object_2I__Z (MJIEnv env, int clsRef, int aref, int index) {
     if (check(env, aref, index)) {
-      return env.getBooleanArrayElement(aref, index);
+      return env.getBooleanArrayElement(aref, index).getValue();
     }
     return false;
   }
@@ -184,7 +184,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public static byte getByte__Ljava_lang_Object_2I__B (MJIEnv env, int clsRef, int aref, int index) {
     if (check(env, aref, index)) {
-      return env.getByteArrayElement(aref, index);
+      return env.getByteArrayElement(aref, index).getValue();
     }
     return 0;
   }
@@ -240,7 +240,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setBoolean__Ljava_lang_Object_2IZ__V (MJIEnv env, int clsRef, int aref, int index, boolean val) {
     if (check(env, aref, index)) {
-      env.setBooleanArrayElement(aref, index, val);
+      env.setBooleanArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
     }
   }
 

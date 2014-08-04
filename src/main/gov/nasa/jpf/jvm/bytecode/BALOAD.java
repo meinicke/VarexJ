@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;
@@ -45,7 +46,14 @@ public class BALOAD extends ArrayLoadInstruction {
     if (f instanceof ByteArrayFields){
       value = ei.getByteElement(index);
     } else if (f instanceof BooleanArrayFields){
-      value = new One<>((byte)(ei.getBooleanElement(index) ? 1 : 0));
+    	value = ei.getBooleanElement(index).map(new Function<Boolean, Byte>() {
+
+			@Override
+			public Byte apply(Boolean v) {
+				return (byte) (v ? 1 : 0);
+			}
+    		
+    	}).simplify();
     } else {
     	value = nullValue;
     }

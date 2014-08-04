@@ -1082,16 +1082,16 @@ public class ThreadInfo extends InfoObject
     return env;
   }
 
-  public boolean isInterrupted (boolean resetStatus) {
+  public boolean isInterrupted (FeatureExpr ctx, boolean resetStatus) {
     ElementInfo ei = getElementInfo(getThreadObjectRef());
-    boolean status =  ei.getBooleanField("interrupted");
+    Conditional<Boolean> status =  ei.getBooleanField("interrupted");
 
-    if (resetStatus && status) {
+    if (resetStatus && status.getValue()) {
       ei = ei.getModifiableInstance();
-      ei.setBooleanField("interrupted", false);
+      ei.setBooleanField(ctx, "interrupted", new One<>(false));
     }
 
-    return status;
+    return status.getValue();
   }
 
   /**
@@ -2502,11 +2502,11 @@ public class ThreadInfo extends InfoObject
     ElementInfo eiGroup = createMainThreadGroup(ctx, sysCl);
     eiThread.setReferenceField("group", eiGroup.getObjectRef());
     
-    eiThread.setIntField(FeatureExprFactory.True(), "priority", new One<>(Thread.NORM_PRIORITY));
+    eiThread.setIntField(ctx, "priority", new One<>(Thread.NORM_PRIORITY));
 
-    ClassInfo ciPermit = sysCl.getResolvedClassInfo(NativeMethodInfo.CTX, "java.lang.Thread$Permit");
-    ElementInfo eiPermit = heap.newObject( null, ciPermit, this);
-    eiPermit.setBooleanField("blockPark", true);
+    ClassInfo ciPermit = sysCl.getResolvedClassInfo(ctx, "java.lang.Thread$Permit");
+    ElementInfo eiPermit = heap.newObject( ctx, ciPermit, this);
+    eiPermit.setBooleanField(ctx, "blockPark", new One<>(true));
     eiThread.setReferenceField("permit", eiPermit.getObjectRef());
 
     addToThreadGroup(NativeMethodInfo.CTX, eiGroup);
@@ -2547,7 +2547,7 @@ public class ThreadInfo extends InfoObject
     FieldInfo finThreads = eiGroup.getFieldInfo("nthreads");
     int nThreads = eiGroup.getIntField(finThreads).getValue();
     
-    if (eiGroup.getBooleanField("destroyed")){
+    if (eiGroup.getBooleanField("destroyed").getValue()){
       env.throwException(ctx, "java.lang.IllegalThreadStateException");
       
     } else {
@@ -2592,7 +2592,7 @@ public class ThreadInfo extends InfoObject
     }
   }
 
-  public void interrupt () {
+  public void interrupt (FeatureExpr ctx) {
     ElementInfo eiThread = getModifiableElementInfo(getThreadObjectRef());
 
     State status = getState();
@@ -2604,12 +2604,12 @@ public class ThreadInfo extends InfoObject
     case NOTIFIED:
     case TIMEDOUT:
       // just set interrupt flag
-      eiThread.setBooleanField("interrupted", true);
+      eiThread.setBooleanField(ctx, "interrupted", new One<>(true));
       break;
 
     case WAITING:
     case TIMEOUT_WAITING:
-      eiThread.setBooleanField("interrupted", true);
+      eiThread.setBooleanField(ctx, "interrupted", new One<>(true));
       setState(State.INTERRUPTED);
 
       // since this is potentially called w/o owning the wait lock, we

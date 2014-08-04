@@ -232,7 +232,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           
           byte[] buf = new byte[len]; // <2do> make this a permanent buffer
           for (int i=0, j=offset; i<len; i++, j++){
-            buf[i] = env.getByteArrayElement(bref, j);
+            buf[i] = env.getByteArrayElement(bref, j).getValue();
           }
           fos.write(buf);
           

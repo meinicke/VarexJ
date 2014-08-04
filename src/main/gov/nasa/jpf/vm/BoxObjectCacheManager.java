@@ -77,7 +77,7 @@ public class BoxObjectCacheManager {
     byte val = byteLow;
     for (int i = 0; i < n; i++) {
       ElementInfo eiByte = heap.newSystemObject(ctx, ci, ti, ANCHOR);
-      eiByte.setByteField(ctx, "value", val++);
+      eiByte.setByteField(ctx, "value", new One<>(val++));
       eiArray.setReferenceElement(ctx, i, new One<>(eiByte.getObjectRef()));
     }
 
@@ -97,8 +97,8 @@ public class BoxObjectCacheManager {
     if (b >= byteLow && b <= byteHigh) { return ti.getElementInfo(byteCache).getReferenceElement(b - byteLow).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Byte");
-    ElementInfo eiByte = ti.getHeap().newObject(null, ci, ti);
-    eiByte.setByteField(ctx, "value", b);
+    ElementInfo eiByte = ti.getHeap().newObject(ctx, ci, ti);
+    eiByte.setByteField(ctx, "value", new One<>(b));
     return eiByte.getObjectRef();
   }
 

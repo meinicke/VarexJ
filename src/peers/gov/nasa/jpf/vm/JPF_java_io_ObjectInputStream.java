@@ -38,14 +38,14 @@ public class JPF_java_io_ObjectInputStream extends NativePeer {
     int j=bOff;
     
     for (int i=dOff; i<imax; i++){
-      byte b0 = env.getByteArrayElement(baRef, j++);
-      byte b1 = env.getByteArrayElement(baRef, j++);
-      byte b2 = env.getByteArrayElement(baRef, j++);
-      byte b3 = env.getByteArrayElement(baRef, j++);
-      byte b4 = env.getByteArrayElement(baRef, j++);
-      byte b5 = env.getByteArrayElement(baRef, j++);
-      byte b6 = env.getByteArrayElement(baRef, j++);
-      byte b7 = env.getByteArrayElement(baRef, j++);
+      byte b0 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b1 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b2 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b3 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b4 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b5 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b6 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b7 = env.getByteArrayElement(baRef, j++).getValue();
       
       long bits = 0x00000000000000ff & b7;
       bits <<= 8;
@@ -77,10 +77,10 @@ public class JPF_java_io_ObjectInputStream extends NativePeer {
     int j=bOff;
 
     for (int i=fOff; i<imax; i++){
-      byte b0 = env.getByteArrayElement(baRef, j++);
-      byte b1 = env.getByteArrayElement(baRef, j++);
-      byte b2 = env.getByteArrayElement(baRef, j++);
-      byte b3 = env.getByteArrayElement(baRef, j++);
+      byte b0 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b1 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b2 = env.getByteArrayElement(baRef, j++).getValue();
+      byte b3 = env.getByteArrayElement(baRef, j++).getValue();
 
       int bits = 0x000000ff & b3;
       bits <<= 8;

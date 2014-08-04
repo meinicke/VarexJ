@@ -187,7 +187,6 @@ public class StringTest extends TestJPF {
 				assertTrue("data,ISO=EFGH","EFGH".equals(new String(data,dname)));
 				assertTrue("more,ISO=IJKL","IJKL".equals(new String(more,d)));
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				fail("default encoding failure");
 			}
 			assertTrue("more1,3=JKL","JKL".equals(new String(more,1,3)));

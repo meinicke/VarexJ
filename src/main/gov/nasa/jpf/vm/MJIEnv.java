@@ -346,28 +346,28 @@ public class MJIEnv {
 
   
   // the instance field setters
-  public void setBooleanField (int objref, String fname, boolean val) {
-    heap.getModifiable(objref).setBooleanField(fname, val);
+  public void setBooleanField (FeatureExpr ctx, int objref, String fname, Conditional<Boolean> val) {
+    heap.getModifiable(objref).setBooleanField(ctx, fname, val);
   }
 
-  public boolean getBooleanField (int objref, String fname) {
+  public Conditional<Boolean> getBooleanField (int objref, String fname) {
     return heap.get(objref).getBooleanField(fname);
   }
 
-  public boolean getBooleanArrayElement (int objref, int index) {
+  public Conditional<Boolean> getBooleanArrayElement (int objref, int index) {
     return heap.get(objref).getBooleanElement(index);
   }
 
-  public void setBooleanArrayElement (int objref, int index, boolean value) {
-    heap.getModifiable(objref).setBooleanElement(index, value);
+  public void setBooleanArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Boolean> value) {
+    heap.getModifiable(objref).setBooleanElement(ctx, index, value);
   }
 
 
-  public void setByteField (int objref, String fname, byte val) {
-    heap.getModifiable(objref).setByteField(null, fname, val);
+  public void setByteField (FeatureExpr ctx, int objref, String fname, Conditional<Byte> val) {
+    heap.getModifiable(objref).setByteField(ctx, fname, val);
   }
 
-  public byte getByteField (int objref, String fname) {
+  public Conditional<Byte> getByteField (int objref, String fname) {
     return heap.get(objref).getByteField(fname);
   }
 
@@ -400,8 +400,8 @@ public class MJIEnv {
     heap.getModifiable(objref).setByteElement(ctx, index, new One<>(value));
   }
 
-  public byte getByteArrayElement (int objref, int index) {
-    return heap.get(objref).getByteElement(index).getValue();
+  public Conditional<Byte> getByteArrayElement (int objref, int index) {
+    return heap.get(objref).getByteElement(index);
   }
 
   public void setCharArrayElement (FeatureExpr ctx, int objref, int index, char value) {
@@ -492,11 +492,11 @@ public class MJIEnv {
   }
 
   // the box object accessors (should probably test for the appropriate class)
-  public boolean getBooleanValue (int objref) {
+  public Conditional<Boolean> getBooleanValue (int objref) {
     return getBooleanField(objref, "value");
   }
 
-  public byte getByteValue (int objref) {
+  public Conditional<Byte> getByteValue (int objref) {
     return getByteField(objref, "value");
   }
 
@@ -585,26 +585,27 @@ public class MJIEnv {
   
   // <2do> this uses the current system CL, we should probably use an explicit CL argument
   
-  public void setStaticBooleanField (String clsName, String fname,
-                                     boolean value) {
+  public void setStaticBooleanField (FeatureExpr ctx, String clsName,
+                                     String fname, Conditional<Boolean> value) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setBooleanField(fname, value);
+    ci.getStaticElementInfo().setBooleanField(ctx, fname, value);
   }
-  public void setStaticBooleanField (int clsObjRef, String fname, boolean val) {
+  public void setStaticBooleanField (FeatureExpr ctx, int clsObjRef, String fname, Conditional<Boolean> val) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
-    cei.setBooleanField(fname, val);
+    cei.setBooleanField(ctx, fname, val);
   }
   
-  public boolean getStaticBooleanField (String clsName, String fname) {
+  public Conditional<Boolean> getStaticBooleanField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
     return ci.getStaticElementInfo().getBooleanField(fname);
   }
 
-  public void setStaticByteField (FeatureExpr ctx, String clsName, String fname, byte value) {
+  public void setStaticByteField (FeatureExpr ctx, String clsName, String fname, Conditional<Byte> value) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setByteField(ctx, fname, value);  }
+    ci.getStaticElementInfo().setByteField(ctx, fname, value);  
+    }
 
-  public byte getStaticByteField (String clsName, String fname) {
+  public Conditional<Byte> getStaticByteField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
     return ci.getStaticElementInfo().getByteField(fname);
   }
@@ -828,7 +829,7 @@ public class MJIEnv {
       ClassInfo ci = getClassInfo(aref);
       String clsName = ci.getName();
       if (clsName.equals("java.lang.Boolean")){
-        args[i] = Boolean.valueOf(getBooleanField(aref,"value"));
+        args[i] = Boolean.valueOf(getBooleanField(aref,"value").getValue());
       } else if (clsName.equals("java.lang.Integer")){
         args[i] = getIntField(null,aref, "value").getValue();
       } else if (clsName.equals("java.lang.Double")){
@@ -842,11 +843,11 @@ public class MJIEnv {
   }
 
   public Boolean getBooleanObject (int objref){
-    return Boolean.valueOf(getBooleanField(objref, "value"));
+    return Boolean.valueOf(getBooleanField(objref, "value").getValue());
   }
 
-  public Byte getByteObject (int objref){
-    return new Byte(getByteField(objref, "value"));
+  public Conditional<Byte> getByteObject (int objref){
+    return getByteField(objref, "value");
   }
 
   public Character getCharObject (int objref){
@@ -937,9 +938,9 @@ public class MJIEnv {
     return a;
   }
 
-  public boolean[] getBooleanArrayObject (int objref) {
+  public Conditional<Boolean>[] getBooleanArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
-    boolean[] a = ei.asBooleanArray();
+    Conditional<Boolean>[] a = ei.asBooleanArray();
 
     return a;
   }
@@ -1242,9 +1243,9 @@ public class MJIEnv {
     return ei.getObjectRef();
   }
 
-  public int newByte (byte b){
-    ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Byte"), ti);
-    ei.setByteField(null,"value", b);
+  public int newByte (FeatureExpr ctx, Conditional<Byte> b){
+    ElementInfo ei = heap.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Byte"), ti);
+    ei.setByteField(ctx,"value", b);
     return ei.getObjectRef();
   }
 
@@ -1619,7 +1620,7 @@ public class MJIEnv {
     if (v instanceof String){
       setReferenceField(ctx, proxyRef, fname, newString(FeatureExprFactory.True(), new One<>((String)v)));
     } else if (v instanceof Boolean){
-      setBooleanField(proxyRef, fname, ((Boolean)v).booleanValue());
+      setBooleanField(ctx, proxyRef, fname, new One<>(((Boolean)v).booleanValue()));
     } else if (v instanceof Integer){
       setIntField(ctx, proxyRef, fname, new One<>(((Integer)v).intValue()));
     } else if (v instanceof Long){
@@ -1631,7 +1632,7 @@ public class MJIEnv {
     } else if (v instanceof Character){
       setCharField(ctx, proxyRef, fname, ((Character)v).charValue());
     } else if (v instanceof Byte){
-      setByteField(proxyRef, fname, ((Byte)v).byteValue());
+      setByteField(ctx, proxyRef, fname, new One<>(((Byte)v).byteValue()));
     } else if (v instanceof Double){
       setDoubleField(ctx, proxyRef, fname, new One<>(((Double)v).doubleValue()));
 
@@ -1678,7 +1679,7 @@ public class MJIEnv {
       } else if (ftype.equals("boolean[]")){
         aref = newBooleanArray(a.length);
         for (int i=0; i<a.length; i++){
-          setBooleanArrayElement(aref,i,((Boolean)a[i]).booleanValue());
+          setBooleanArrayElement(ctx,aref,i, new One<>(((Boolean)a[i]).booleanValue()));
         }
       } else if (ftype.equals("long[]")){
         aref = newLongArray(a.length);

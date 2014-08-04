@@ -120,8 +120,15 @@ public class NamedFields extends Fields {
 	}
 
 	@Override
-	public boolean getBooleanValue(int index) {
-		return Types.intToBoolean(values[index].getValue());
+	public Conditional<Boolean> getBooleanValue(int index) {
+		return values[index].map(new Function<Integer, Boolean>() {
+
+			@Override
+			public Boolean apply(Integer v) {
+				return Types.intToBoolean(v);
+			}
+			
+		});
 	}
 
 	@Override
@@ -168,8 +175,19 @@ public class NamedFields extends Fields {
 	}
 
 	@Override
-	public void setBooleanValue(int index, boolean newValue) {
-		values[index] = new One<>(newValue ? 1 : 0);
+	public void setBooleanValue(FeatureExpr ctx, int index, Conditional<Boolean> newValue) {
+		if (Conditional.isTautology(ctx)) {
+			values[index] = new One<>(newValue.getValue() ? 1 : 0);
+		} else {
+			values[index] = new Choice<>(ctx, newValue.map(new Function<Boolean, Integer>() {
+	
+				@Override
+				public Integer apply(Boolean v) {
+					return v ? 1 : 0;
+				}
+				
+			}), values[index]).simplify();
+		}
 	}
 
 	@Override

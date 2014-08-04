@@ -802,10 +802,10 @@ public abstract class ElementInfo implements Cloneable {
     setIntField(ctx, getDeclaredFieldInfo(clsBase, fname), value);
   }
 
-  public void setBooleanField (String fname, boolean value) {
-    setBooleanField( getFieldInfo(fname), value);
+  public void setBooleanField (FeatureExpr ctx, String fname, Conditional<Boolean> value) {
+    setBooleanField( ctx, getFieldInfo(fname), value);
   }
-  public void setByteField (FeatureExpr ctx, String fname, byte value) {
+  public void setByteField (FeatureExpr ctx, String fname, Conditional<Byte> value) {
     setByteField( ctx, getFieldInfo(fname), value);
   }
   public void setCharField (FeatureExpr ctx, String fname, char value) {
@@ -864,23 +864,23 @@ public abstract class ElementInfo implements Cloneable {
     return null; // only for DynamicElementInfos
   }
 
-  public void setBooleanField(FieldInfo fi, boolean newValue) {
+  public void setBooleanField(FeatureExpr ctx, FieldInfo fi, Conditional<Boolean> newValue) {
     checkIsModifiable();
     
     if (fi.isBooleanField()) {
       int offset = fi.getStorageOffset();
-      fields.setBooleanValue( offset, newValue);
+      fields.setBooleanValue( ctx, offset, newValue);
     } else {
       throw new JPFException("not a boolean field: " + fi.getName());
     }
   }
 
-  public void setByteField(FeatureExpr ctx, FieldInfo fi, byte newValue) {
+  public void setByteField(FeatureExpr ctx, FieldInfo fi, Conditional<Byte> newValue) {
     checkIsModifiable();
     
     if (fi.isByteField()) {
       int offset = fi.getStorageOffset();
-      fields.setByteValue(ctx, offset, new One<>(newValue));
+      fields.setByteValue(ctx, offset, newValue);
     } else {
       throw new JPFException("not a byte field: " + fi.getName());
     }
@@ -1036,22 +1036,22 @@ public abstract class ElementInfo implements Cloneable {
     return getLongField( fi);
   }
 
-  public boolean getDeclaredBooleanField(String fname, String refType) {
+  public Conditional<Boolean> getDeclaredBooleanField(String fname, String refType) {
     FieldInfo fi = getDeclaredFieldInfo(refType, fname);
     return getBooleanField( fi);
   }
 
-  public boolean getBooleanField(String fname) {
+  public Conditional<Boolean> getBooleanField(String fname) {
     FieldInfo fi = getFieldInfo(fname);
     return getBooleanField( fi);
   }
 
-  public byte getDeclaredByteField(String fname, String refType) {
+  public Conditional<Byte> getDeclaredByteField(String fname, String refType) {
     FieldInfo fi = getDeclaredFieldInfo(refType, fname);
     return getByteField( fi);
   }
 
-  public byte getByteField(String fname) {
+  public Conditional<Byte> getByteField(String fname) {
     FieldInfo fi = getFieldInfo(fname);
     return getByteField( fi);
   }
@@ -1110,16 +1110,16 @@ public abstract class ElementInfo implements Cloneable {
   // those are the cached field value accessors. The caller is responsible
   // for assuring type compatibility
 
-  public boolean getBooleanField(FieldInfo fi) {
+  public Conditional<Boolean> getBooleanField(FieldInfo fi) {
     if (fi.isBooleanField()){
       return fields.getBooleanValue(fi.getStorageOffset());
     } else {
       throw new JPFException("not a boolean field: " + fi.getName());
     }
   }
-  public byte getByteField(FieldInfo fi) {
+  public Conditional<Byte> getByteField(FieldInfo fi) {
     if (fi.isByteField()){
-      return fields.getByteValue(fi.getStorageOffset()).getValue().byteValue();
+      return fields.getByteValue(fi.getStorageOffset());
     } else {
       throw new JPFException("not a byte field: " + fi.getName());
     }
@@ -1325,10 +1325,10 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setBooleanElement(int idx, boolean value){
+  public void setBooleanElement(FeatureExpr ctx, int idx, Conditional<Boolean> value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setBooleanValue(idx, value);
+    fields.setBooleanValue(ctx, idx, value);
   }
   public void setByteElement(FeatureExpr ctx, int idx, Conditional<Byte> value){
     checkArray(idx);
@@ -1371,7 +1371,7 @@ public abstract class ElementInfo implements Cloneable {
     fields.setReferenceValue(ctx, idx, value);
   }
 
-  public boolean getBooleanElement(int idx) {
+  public Conditional<Boolean> getBooleanElement(int idx) {
     checkArray(idx);
     return fields.getBooleanValue(idx);
   }
@@ -1469,7 +1469,7 @@ public abstract class ElementInfo implements Cloneable {
 
 
   // <2do> these will check for corresponding ArrayFields types
-  public boolean[] asBooleanArray() {
+  public Conditional<Boolean>[] asBooleanArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asBooleanArray();
     } else {

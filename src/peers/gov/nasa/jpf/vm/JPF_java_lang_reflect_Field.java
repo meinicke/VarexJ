@@ -120,7 +120,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     FieldInfo fi = getFieldInfo(env, objRef);    
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, BooleanFieldInfo.class, "boolean", false);
     if (ei != null){
-      return ei.getBooleanField(fi);
+      return ei.getBooleanField(fi).getValue();
     }
     return false;
   }
@@ -130,7 +130,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     FieldInfo fi = getFieldInfo(env, objRef);
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ByteFieldInfo.class, "byte", false);
     if (ei != null){
-      return ei.getByteField(fi);
+      return ei.getByteField(fi).getValue();
     }
     return 0;
   }
@@ -239,7 +239,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, BooleanFieldInfo.class, "boolean", true);
     if (ei != null){
-      ei.setBooleanField(fi,val);
+      ei.setBooleanField(NativeMethodInfo.CTX,fi, new One<>(val));
     }
   }
 
@@ -252,7 +252,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ByteFieldInfo.class, "byte", true);
     if (ei != null){
-      ei.setByteField(NativeMethodInfo.CTX,fi, val);
+      ei.setByteField(NativeMethodInfo.CTX,fi, new One<>(val));
     }
   }
 
@@ -358,11 +358,11 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         Conditional<Integer> i = ei.getIntField(fi);
         return env.newInteger(ctx, i);
       } else if (fi instanceof BooleanFieldInfo){
-        boolean b = ei.getBooleanField(fi);
-        return env.newBoolean(b);
+        Conditional<Boolean> b = ei.getBooleanField(fi);
+        return env.newBoolean(b.getValue());
       } else if (fi instanceof ByteFieldInfo){
-        byte z = ei.getByteField(fi);
-        return env.newByte(z);
+        Conditional<Byte> z = ei.getByteField(fi);
+        return env.newByte(ctx, z);
       } else if (fi instanceof CharFieldInfo){
         char c = ei.getCharField(fi);
         return env.newCharacter(ctx, c);
@@ -500,11 +500,11 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       ei.setFieldAttr(fi, attr);
 
       if ("boolean".equals(fieldType)){
-        boolean val = env.getBooleanField(value, fieldName);
-        ei.setBooleanField(fi, val);
+        Conditional<Boolean> val = env.getBooleanField(value, fieldName);
+        ei.setBooleanField(ctx, fi, val);
         return true;
       } else if ("byte".equals(fieldType)){
-        byte val = env.getByteField(value, fieldName);
+        Conditional<Byte> val = env.getByteField(value, fieldName);
         ei.setByteField(ctx, fi, val);
         return true;
       } else if ("char".equals(fieldType)){

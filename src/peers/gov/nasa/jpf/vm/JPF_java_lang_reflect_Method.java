@@ -61,7 +61,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
     ei.setIntField(ctx, "regIdx", new One<>(regIdx));
-    ei.setBooleanField("isAccessible", mi.isPublic());
+    ei.setBooleanField(ctx, "isAccessible", new One<>(mi.isPublic()));
     
     return eidx;
   }
@@ -363,7 +363,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_BYTE:
     { 
-      byte v = eiArg.getByteField("value");
+      byte v = eiArg.getByteField("value").getValue();
       switch (destType){
       case Types.T_BYTE:
       case Types.T_SHORT:
@@ -396,7 +396,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_BOOLEAN:
     {
-      boolean v = eiArg.getBooleanField("value");
+      boolean v = eiArg.getBooleanField("value").getValue();
       if (destType == Types.T_BOOLEAN){
         return frame.setArgument( argIdx, v ? 1 : 0, attr);
       }

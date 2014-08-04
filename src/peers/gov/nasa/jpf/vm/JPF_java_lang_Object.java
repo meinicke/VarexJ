@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -96,7 +97,7 @@ public class JPF_java_lang_Object extends NativePeer {
           // thread status set by explicit notify() call
           env.lockNotified(objref);
 
-          if (ti.isInterrupted(true)) {
+          if (ti.isInterrupted(NativeMethodInfo.CTX, true)) {
             env.throwException(NativeMethodInfo.CTX, "java.lang.InterruptedException");
           }
           break;
@@ -108,7 +109,7 @@ public class JPF_java_lang_Object extends NativePeer {
     } else { // first time, break the transition (if we don't have a pending interrupt)
 
       // no need for a CG if we got interrupted - don't give up locks, throw InterruptedException
-      if (ti.isInterrupted(true)) {
+      if (ti.isInterrupted(NativeMethodInfo.CTX, true)) {
         env.throwException(NativeMethodInfo.CTX, "java.lang.InterruptedException");
 
       } else {

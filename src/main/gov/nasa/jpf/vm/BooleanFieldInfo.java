@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -44,7 +45,7 @@ public class BooleanFieldInfo extends SingleSlotFieldInfo {
   }
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setBooleanValue(storageOffset, init);
+    ei.getFields().setBooleanValue(ctx, storageOffset, new One<>(init));
   }
 
   public boolean isBooleanField() {
@@ -57,7 +58,7 @@ public class BooleanFieldInfo extends SingleSlotFieldInfo {
   }
 
   public String valueToString (Fields f) {
-    boolean b = f.getBooleanValue(storageOffset);
+    boolean b = f.getBooleanValue(storageOffset).getValue();
     return Boolean.toString(b);
   }
 

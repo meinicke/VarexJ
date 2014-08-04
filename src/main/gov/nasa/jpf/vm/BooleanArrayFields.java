@@ -24,26 +24,35 @@ import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import cmu.conditional.Choice;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * element values for boolean[] objects
  */
 public class BooleanArrayFields extends ArrayFields {
 
-  boolean[] values;
+  Conditional<Boolean>[] values;
 
-  public BooleanArrayFields (int length) {
-    values = new boolean[length];
+  private static One<Boolean> nullValue = new One<>(false);
+  
+  @SuppressWarnings("unchecked")
+public BooleanArrayFields (int length) {
+    values = new Conditional[length];
+    Arrays.fill(values, nullValue);
   }
 
   protected void printValue(PrintStream ps, int idx){
-    ps.print(values[idx] ? 't' : 'f');
+    ps.print(values[idx].getValue() ? 't' : 'f');
   }
 
-  public boolean[] asBooleanArray() {
+  public Conditional<Boolean>[] asBooleanArray() {
     return values;
   }
 
@@ -66,14 +75,14 @@ public class BooleanArrayFields extends ArrayFields {
     if (o instanceof BooleanArrayFields) {
       BooleanArrayFields other = (BooleanArrayFields)o;
 
-      boolean[] v = values;
-      boolean[] vOther = other.values;
+      Conditional<Boolean>[] v = values;
+      Conditional<Boolean>[] vOther = other.values;
       if (v.length != vOther.length) {
         return false;
       }
 
       for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
+        if (!v[i].equals(vOther[i])) {
           return false;
         }
       }
@@ -92,20 +101,34 @@ public class BooleanArrayFields extends ArrayFields {
   }
 
   // for serialization
-  public void appendTo(IntVector v) {
-    v.appendPacked(values);
+  public void appendTo(IntVector v) {// makes no sense
+	  List<Boolean> l = new ArrayList<>(values.length);
+		for (int i = 0; i < values.length; i++) {
+			l.addAll(values[i].toList());
+			// a[i] = values[i].getValue();
+		}
+
+		boolean[] a = new boolean[l.size()];
+		for (int i = 0; i < l.size(); i++) {
+			a[i] = l.get(i);
+		}
+		v.appendPacked(a);
   }
 
-  public boolean getBooleanValue (int pos) {
+  public Conditional<Boolean> getBooleanValue (int pos) {
     return values[pos];
   }
 
-  public void setBooleanValue (int pos, boolean v) {
-    values[pos] = v;
+  public void setBooleanValue (FeatureExpr ctx, int pos, Conditional<Boolean> newValue) {
+	  if (Conditional.isTautology(ctx)) {
+			values[pos] = newValue;
+		} else {
+			values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+		}
   }
 
   public void hash (HashData hd) {
-    boolean[] v = values;
+    Conditional<Boolean>[] v = values;
     for (int i=0; i < v.length; i++) {
       hd.add(v[i]);
     }

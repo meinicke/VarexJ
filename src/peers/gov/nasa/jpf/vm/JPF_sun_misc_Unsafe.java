@@ -125,7 +125,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
 
     } else { // first time
 
-      if (ti.isInterrupted(false)) {
+      if (ti.isInterrupted(ctx, false)) {
         // there is no lock, so we go directly back to running and therefore
         // have to remove ourself from the contender list
         ei.setMonitorWithoutLocked(ti);
@@ -134,7 +134,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
         return;
       }
 
-      if (ei.getBooleanField("blockPark")) { // we have to wait, but don't need a lock
+      if (ei.getBooleanField("blockPark").getValue()) { // we have to wait, but don't need a lock
 
         // running -> waiting | timeout_waiting
         ei.wait(ti, timeout, false);
@@ -147,7 +147,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
         env.repeatInvocation();
   
       } else {
-        ei.setBooleanField("blockPark", true); // next time
+        ei.setBooleanField(ctx, "blockPark", new One<>(true)); // next time
       }
     }
   }
@@ -182,7 +182,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
         }
         
       } else {
-        eiPermit.setBooleanField("blockPark", false);
+        eiPermit.setBooleanField(ctx, "blockPark", new One<>(false));
       }      
     }
   }
@@ -247,9 +247,9 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      return ei.getBooleanField(fi);
+      return ei.getBooleanField(fi).getValue();
     } else {
-      return ei.getBooleanElement((int)fieldOffset);
+      return ei.getBooleanElement((int)fieldOffset).getValue();
     }
   }
 
@@ -264,9 +264,9 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getModifiableElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      ei.setBooleanField(fi, val);
+      ei.setBooleanField(NativeMethodInfo.CTX, fi, new One<>(val));
     } else {
-      ei.setBooleanElement((int)fieldOffset, val);
+      ei.setBooleanElement(NativeMethodInfo.CTX, (int)fieldOffset, new One<>(val));
     }
   }
 
@@ -283,7 +283,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      return ei.getByteField(fi);
+      return ei.getByteField(fi).getValue();
     } else {
       return ei.getByteElement((int)fieldOffset).getValue();
     }
@@ -300,7 +300,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     ElementInfo ei = env.getModifiableElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      ei.setByteField(NativeMethodInfo.CTX, fi, val);
+      ei.setByteField(NativeMethodInfo.CTX, fi, new One<>(val));
     } else {
       ei.setByteElement(NativeMethodInfo.CTX, (int)fieldOffset, new One<>(val));
     }

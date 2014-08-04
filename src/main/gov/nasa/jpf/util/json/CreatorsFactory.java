@@ -58,7 +58,7 @@ class BoxedBoolCreator implements Creator {
     if (read != null) {
       boolRef = env.newObject(ctx, "java.lang.Boolean");
       ElementInfo ei = env.getModifiableElementInfo(boolRef);
-      ei.setBooleanField("value", (read == true));
+      ei.setBooleanField(ctx, "value", new One<>(read == true));
     }
 
     return boolRef;
@@ -73,7 +73,7 @@ class BoxedByteCreator implements Creator {
     if (read != null) {
       byteRef = env.newObject(ctx, "java.lang.Byte");
       ElementInfo ei = env.getModifiableElementInfo(byteRef);
-      ei.setByteField(ctx, "value", read.byteValue());
+      ei.setByteField(ctx, "value", new One<>(read.byteValue()));
     }
 
     return byteRef;

@@ -56,7 +56,7 @@ public class JPF_java_io_InputStreamReader extends NativePeer {
       decoder.reset();
     }
     for (int i=0; i<len; i++){
-      in.put(env.getByteArrayElement(bref,i));
+      in.put(env.getByteArrayElement(bref,i).getValue());
     }
     in.flip();
     

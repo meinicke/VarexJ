@@ -56,7 +56,14 @@ public class BASTORE extends ArrayStoreInstruction {
       ei.setByteElement(ctx, index, value);
 
     } else if (f instanceof BooleanArrayFields){
-      ei.setBooleanElement(index, value.getValue() != 0 ? true : false);// TODO jens setBoolean(ctx, Conditional<Boolean>)
+      ei.setBooleanElement(ctx, index, value.map(new Function<Byte, Boolean>() {
+
+		@Override
+		public Boolean apply(Byte v) {
+			return v != 0 ? Boolean.TRUE : Boolean.FALSE;
+		}
+    	  
+      }));
     }
 
   }

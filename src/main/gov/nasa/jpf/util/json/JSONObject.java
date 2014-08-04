@@ -36,6 +36,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import java.util.HashMap;
 import java.util.Set;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -207,18 +208,17 @@ public class JSONObject{
 
   private static void fillPrimitive(ElementInfo ei, FieldInfo fi, Value val) {
     String primitiveName = fi.getType();
-
+    FeatureExpr ctx = FeatureExprFactory.True();
     if (primitiveName.equals("boolean")) {
-      ei.setBooleanField(fi, val.getBoolean());
+      ei.setBooleanField(ctx, fi, new One<>(val.getBoolean()));
 
     } else if (primitiveName.equals("byte")) {
-      ei.setByteField(NativeMethodInfo.CTX, fi, val.getDouble().byteValue());
+      ei.setByteField(ctx, fi, new One<>(val.getDouble().byteValue()));
 
     } else if (primitiveName.equals("short")) {
       ei.setShortField(fi, val.getDouble().shortValue());
 
     } else {
-		FeatureExpr ctx = NativeMethodInfo.CTX;
 		if (primitiveName.equals("int")) {
 		  ei.setIntField(ctx, fi, new One<>(val.getDouble().intValue()));
 
@@ -245,10 +245,11 @@ public class JSONObject{
     if (arrayElementType.equals("boolean")) {
        arrayRef = env.newBooleanArray(vals.length);
        ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
-       boolean bools[] = arrayEI.asBooleanArray();
+       Conditional<Boolean>[] bools = arrayEI.asBooleanArray();
 
        for (int i = 0; i < vals.length; i++) {
-        bools[i] = vals[i].getBoolean();
+    	  arrayEI.setBooleanElement(ctx, i, new One<>(vals[i].getBoolean()));
+//        bools[i] = vals[i].getBoolean();
       }
     } else if (arrayElementType.equals("byte")) {
        arrayRef = env.newByteArray(vals.length);
@@ -355,18 +356,18 @@ public class JSONObject{
 
     if (primitiveName.equals("boolean") && cgResult instanceof Boolean) {
       Boolean bool = (Boolean) cgResult;
-      ei.setBooleanField(fi, bool.booleanValue());
+      ei.setBooleanField(FeatureExprFactory.True(), fi, new One<>(bool.booleanValue()));
     } else if (cgResult instanceof Number) {
       Number number = (Number) cgResult;
 
       if (primitiveName.equals("byte")) {
-        ei.setByteField(NativeMethodInfo.CTX, fi, number.byteValue());
+        ei.setByteField(FeatureExprFactory.True(), fi, new One<>(number.byteValue()));
 
       } else if (primitiveName.equals("short")) {
         ei.setShortField(fi, number.shortValue());
 
       } else {
-		FeatureExpr ctx = NativeMethodInfo.CTX;
+		FeatureExpr ctx = FeatureExprFactory.True();
 		if (primitiveName.equals("int")) {
 		    ei.setIntField(ctx, fi, new One<>(number.intValue()));
 
