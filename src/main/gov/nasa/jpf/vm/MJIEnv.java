@@ -941,14 +941,13 @@ public class MJIEnv {
     return a;
   }
 
-  public double[] getDoubleArrayObject (int objref) {
+  public Conditional<Double>[] getDoubleArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
     if (ei == null) {
     	System.out.println("MJIEnv.getDoubleArrayObject(" + objref +  ")");
     }
-    double[] a = ei.asDoubleArray();
+    return ei.asDoubleArray();
 
-    return a;
   }
 
   public Conditional<Boolean>[] getBooleanArrayObject (int objref) {

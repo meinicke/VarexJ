@@ -952,8 +952,8 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setReferenceField(FieldInfo fi, int newValue) {
-	  setReferenceField(FeatureExprFactory.True(), fi, new One<>(newValue));// TODO jens add ctx
+  public void setReferenceField(FieldInfo fi, int newValue) {// TODO jens remove
+	  setReferenceField(FeatureExprFactory.True(), fi, new One<>(newValue));
   }
   
   public void setReferenceField(FeatureExpr ctx, FieldInfo fi, Conditional<Integer> newValue) {
@@ -1525,7 +1525,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public double[] asDoubleArray() {
+  public Conditional<Double>[] asDoubleArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asDoubleArray();
     } else {

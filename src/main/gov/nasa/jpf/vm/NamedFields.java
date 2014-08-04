@@ -19,6 +19,8 @@
 
 package gov.nasa.jpf.vm;
 
+import java.util.Arrays;
+
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import cmu.conditional.BiFunction;
@@ -33,18 +35,17 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class NamedFields extends Fields {
 
+	private static final One<Integer> nullValue = new One<>(0);
 	/**
 	 * this is where we store the instance data. Since field types are
 	 * heterogenous, we have to map everything into int
 	 */
 	protected Conditional<Integer>[] values;
 
+	@SuppressWarnings("unchecked")
 	public NamedFields(int dataSize) {
 		values = new Conditional[dataSize];
-
-		for (int i = 0; i < values.length; i++) {
-			values[i] = new One<>(0);
-		}
+		Arrays.fill(values, nullValue);
 	}
 	
 	@Override
@@ -350,7 +351,7 @@ public class NamedFields extends Fields {
 				return false;
 			}
 			for (int i = 0; i < l; i++) {
-				if (v1[i].equals(v2[i])) {
+				if (!v1[i].equals(v2[i])) {
 					return false;
 				}
 			}
@@ -412,7 +413,7 @@ public class NamedFields extends Fields {
 	}
 
 	// <2do> replace with copyTo() !!
-	public int[] getRawValues() {
+	public int[] getRawValues() {// TODO jens
 		return getValues();
 	}
 

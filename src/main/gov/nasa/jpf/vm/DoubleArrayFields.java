@@ -22,6 +22,8 @@ import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import cmu.conditional.Choice;
 import cmu.conditional.Conditional;
@@ -42,17 +44,8 @@ public class DoubleArrayFields extends ArrayFields {
 	}
   }
 
-  public double[] asDoubleArray() {// TODO jens return values;
-		double[] array = new double[values.length];
-		int i = 0;
-		for (Conditional<Double> v : values) {
-			if (v == null) {
-				continue;
-			}
-			array[i++] = v.getValue();
-		}
-
-		return array;
+  public Conditional<Double>[] asDoubleArray() {// TODO jens return values;
+	  return values;
   }
 
   protected void printValue(PrintStream ps, int idx){
@@ -72,7 +65,16 @@ public class DoubleArrayFields extends ArrayFields {
   }
 
   public void appendTo (IntVector v) {
-    v.appendRawBits(asDoubleArray());
+	  List<Double> l = new ArrayList<>(values.length);
+		for (int i = 0; i < values.length; i++) {
+			l.addAll(values[i].toList());
+		}
+
+		double[] a = new double[l.size()];
+		for (int i = 0; i < l.size(); i++) {
+			a[i] = l.get(i);
+		}
+		v.appendRawBits(a);
   }
 
   public DoubleArrayFields clone(){
@@ -85,14 +87,14 @@ public class DoubleArrayFields extends ArrayFields {
     if (o instanceof DoubleArrayFields) {
       DoubleArrayFields other = (DoubleArrayFields)o;
 
-      double[] v = asDoubleArray();
-      double[] vOther = ((DoubleArrayFields) o).asDoubleArray();
+      Conditional<Double>[] v = asDoubleArray();
+      Conditional<Double>[] vOther = ((DoubleArrayFields) o).asDoubleArray();
       if (v.length != vOther.length) {
         return false;
       }
 
       for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
+        if (!v[i].equals(vOther[i])) {
           return false;
         }
       }
@@ -119,7 +121,7 @@ public class DoubleArrayFields extends ArrayFields {
 
 
   public void hash(HashData hd) {
-    double[] v = asDoubleArray();
+    Conditional<Double>[] v = asDoubleArray();
     for (int i=0; i < v.length; i++) {
       hd.add(v[i]);
     }

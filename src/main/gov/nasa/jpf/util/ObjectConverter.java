@@ -223,10 +223,11 @@ public class ObjectConverter {
     else if (arrayElementClass == Double.TYPE) {
       arrRef = env.newDoubleArray(javaArrLength);
       ElementInfo floatArrRef = env.getModifiableElementInfo(arrRef);
-      double[] doubleArr = floatArrRef.asDoubleArray();
+//      double[] doubleArr = floatArrRef.asDoubleArray();
 
       for (int i = 0; i < javaArrLength; i++) {
-        doubleArr[i] = Array.getDouble(javaArr, i);
+    	  floatArrRef.setDoubleElement(ctx, i, new One<>(Array.getDouble(javaArr, i)));
+//        doubleArr[i] = Array.getDouble(javaArr, i);
       }
     }
     else {

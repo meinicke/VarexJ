@@ -511,8 +511,12 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   
   @MJI
   public static double getDoubleFromList___3D__D (MJIEnv env, int clsObjRef, int valArrayRef){
-    double[] values = env.getDoubleArrayObject(valArrayRef);
-    return getDoubleFromList( env, values);
+	  	Conditional<Double>[] values = env.getDoubleArrayObject(valArrayRef);
+	  	double [] a = new double[values.length];
+		for (int i = 0; i < values.length; i++) {
+				a[i] = values[i].getValue();
+		}
+		return getDoubleFromList( env, a);
   }
 
   @MJI

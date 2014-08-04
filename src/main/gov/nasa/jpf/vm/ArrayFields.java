@@ -190,11 +190,6 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a char[]");
 	}
 
-	public char[] asCharArray(int offset, int length) {// TODO
-		// overridden by subclass
-		throw new JPFException("not a char[]");
-	}
-
 	public Conditional<Short>[] asShortArray() {
 		// overridden by subclass
 		throw new JPFException("not a short[]");
@@ -220,7 +215,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a float[]");
 	}
 
-	public double[] asDoubleArray() {// TODO
+	public Conditional<Double>[] asDoubleArray() {
 		// overridden by subclass
 		throw new JPFException("not a double[]");
 	}
