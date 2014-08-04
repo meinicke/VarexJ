@@ -385,7 +385,7 @@ public class JSONObject{
 	}
     } else if (cgResult instanceof Character) {
       Character c = (Character) cgResult;
-      ei.setCharField(FeatureExprFactory.True(), fi, c);
+      ei.setCharField(FeatureExprFactory.True(), fi, new One<>(c));
       
     } else {
       throw new JPFException("Can't convert " + cgResult.getClass().getCanonicalName() +

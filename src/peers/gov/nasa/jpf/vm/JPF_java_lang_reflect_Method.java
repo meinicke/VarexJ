@@ -380,7 +380,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_CHAR:
     {
-      char v = eiArg.getCharField("value");
+      char v = eiArg.getCharField("value").getValue();
       switch (destType){
       case Types.T_CHAR:
       case Types.T_INT:

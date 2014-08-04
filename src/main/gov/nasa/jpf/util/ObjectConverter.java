@@ -102,7 +102,7 @@ public class ObjectConverter {
       javaField.setAccessible(true);
 
       if (jpfTypeName.equals("char")) {
-        newObjEI.setCharField(ctx, fi, javaField.getChar(javaObject));
+        newObjEI.setCharField(ctx, fi, new One<>(javaField.getChar(javaObject)));
       }
       else if (jpfTypeName.equals("byte")) {
         newObjEI.setByteField(ctx, fi, new One<>(javaField.getByte(javaObject)));
@@ -293,7 +293,7 @@ public class ObjectConverter {
     javaField.setAccessible(true);
 
     if (primitiveType.equals("char")) {
-      javaField.setChar(javaObject, ei.getCharField(fi));
+      javaField.setChar(javaObject, ei.getCharField(fi).getValue());
     }
     else if (primitiveType.equals("byte")) {
       javaField.setByte(javaObject, ei.getByteField(fi).getValue());

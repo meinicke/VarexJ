@@ -134,7 +134,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       
     } else if (at.equals("char")){
       int vref = env.newObject(ctx, "java.lang.Character");
-      env.setCharField(ctx, vref, "value", env.getCharArrayElement(aref,index).getValue());
+      env.setCharField(ctx, vref, "value", env.getCharArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("byte")){

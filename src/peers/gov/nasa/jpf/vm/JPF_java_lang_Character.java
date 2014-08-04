@@ -177,8 +177,8 @@ public class JPF_java_lang_Character extends NativePeer {
     env.setStaticByteField(ctx, "java.lang.Character", "OTHER_SYMBOL", new One<>((byte) 28));
     env.setStaticIntField(ctx, "java.lang.Character", "MIN_RADIX", new One<>(2));
     env.setStaticIntField(ctx, "java.lang.Character", "MAX_RADIX", new One<>(36));
-    env.setStaticCharField(ctx, "java.lang.Character", "MIN_VALUE", '\u0000');
-    env.setStaticCharField(ctx, "java.lang.Character", "MAX_VALUE", '\uffff');
+    env.setStaticCharField(ctx, "java.lang.Character", "MIN_VALUE", new One<>('\u0000'));
+    env.setStaticCharField(ctx, "java.lang.Character", "MAX_VALUE", new One<>('\uffff'));
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("char");
     env.setStaticReferenceField(ctx, "java.lang.Character", 

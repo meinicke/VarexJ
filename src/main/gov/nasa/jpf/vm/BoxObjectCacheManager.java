@@ -116,7 +116,7 @@ public class BoxObjectCacheManager {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Character");
     for (int i = 0; i < n; i++) {
       ElementInfo eiChar = heap.newSystemObject(ctx, ci, ti, ANCHOR);
-      eiChar.setCharField(ctx, "value", (char) i);
+      eiChar.setCharField(ctx, "value", new One<>((char) i));
       eiArray.setReferenceElement(ctx, i, new One<>(eiChar.getObjectRef()));
     }
 
@@ -137,7 +137,7 @@ public class BoxObjectCacheManager {
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Character");
     ElementInfo eiChar = ti.getHeap().newObject(ctx, ci, ti);
-    eiChar.setCharField(ctx, "value", c);
+    eiChar.setCharField(ctx, "value", new One<>(c));
     return eiChar.getObjectRef();
   }
 

@@ -808,7 +808,7 @@ public abstract class ElementInfo implements Cloneable {
   public void setByteField (FeatureExpr ctx, String fname, Conditional<Byte> value) {
     setByteField( ctx, getFieldInfo(fname), value);
   }
-  public void setCharField (FeatureExpr ctx, String fname, char value) {
+  public void setCharField (FeatureExpr ctx, String fname, Conditional<Character> value) {
     setCharField( ctx, getFieldInfo(fname), value);
   }
   public void setShortField (FeatureExpr ctx, String fname, Conditional<Short> value) {
@@ -886,12 +886,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setCharField(FeatureExpr ctx, FieldInfo fi, char newValue) {// TODO condtional
+  public void setCharField(FeatureExpr ctx, FieldInfo fi, Conditional<Character> newValue) {
     checkIsModifiable();
     
     if (fi.isCharField()) {
       int offset = fi.getStorageOffset();
-      fields.setCharValue(ctx, offset, new One<>(newValue));
+      fields.setCharValue(ctx, offset, newValue);
     } else {
       throw new JPFException("not a char field: " + fi.getName());
     }
@@ -1056,12 +1056,12 @@ public abstract class ElementInfo implements Cloneable {
     return getByteField( fi);
   }
 
-  public char getDeclaredCharField(String fname, String refType) {
+  public Conditional<Character> getDeclaredCharField(String fname, String refType) {
     FieldInfo fi = getDeclaredFieldInfo(refType, fname);
     return getCharField( fi);
   }
 
-  public char getCharField(String fname) {
+  public Conditional<Character> getCharField(String fname) {
     FieldInfo fi = getFieldInfo(fname);
     return getCharField( fi);
   }
@@ -1124,9 +1124,9 @@ public abstract class ElementInfo implements Cloneable {
       throw new JPFException("not a byte field: " + fi.getName());
     }
   }
-  public char getCharField(FieldInfo fi) {
+  public Conditional<Character> getCharField(FieldInfo fi) {
     if (fi.isCharField()){
-      return fields.getCharValue(fi.getStorageOffset()).getValue();// TODO remove getValue()
+      return fields.getCharValue(fi.getStorageOffset());
     } else {
       throw new JPFException("not a char field: " + fi.getName());
     }

@@ -80,7 +80,7 @@ public class JPFOutputStream extends OutputStream {
         ps.print(ei.getByteField(fi));
         break;
       case Types.T_CHAR:
-        PrintUtils.printCharLiteral(ps, ei.getCharField(fi));
+        PrintUtils.printCharLiteral(ps, ei.getCharField(fi).getValue());
         break;
       case Types.T_SHORT:
         ps.print(ei.getShortField(fi));

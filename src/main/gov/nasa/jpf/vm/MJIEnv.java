@@ -372,11 +372,11 @@ public class MJIEnv {
     return heap.get(objref).getByteField(fname);
   }
 
-  public void setCharField (FeatureExpr ctx, int objref, String fname, char val) {
+  public void setCharField (FeatureExpr ctx, int objref, String fname, Conditional<Character> val) {
     heap.getModifiable(objref).setCharField(ctx, fname, val);
   }
 
-  public char getCharField (int objref, String fname) {
+  public Conditional<Character> getCharField (int objref, String fname) {
     return heap.get(objref).getCharField(fname);
   }
 
@@ -501,7 +501,7 @@ public class MJIEnv {
     return getByteField(objref, "value");
   }
 
-  public char getCharValue (int objref) {
+  public Conditional<Character> getCharValue (int objref) {
     return getCharField(objref, "value");
   }
 
@@ -625,11 +625,12 @@ public class MJIEnv {
     return ci.getStaticElementInfo().getByteField(fname);
   }
 
-  public void setStaticCharField (FeatureExpr ctx, String clsName, String fname, char value) {
+  public void setStaticCharField (FeatureExpr ctx, String clsName, String fname, Conditional<Character> value) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setCharField(ctx, fname, value);  }
+    ci.getStaticElementInfo().setCharField(ctx, fname, value);  
+    }
 
-  public char getStaticCharField (String clsName, String fname) {
+  public Conditional<Character> getStaticCharField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
     return ci.getStaticElementInfo().getCharField(fname);
   }
@@ -866,7 +867,7 @@ public class MJIEnv {
   }
 
   public Character getCharObject (int objref){
-    return new Character(getCharField(objref, "value"));
+    return new Character(getCharField(objref, "value").getValue());
   }
 
   public Short getShortObject (int objref){
@@ -1267,7 +1268,7 @@ public class MJIEnv {
     return ei.getObjectRef();
   }
 
-  public int newCharacter (FeatureExpr ctx, char c){
+  public int newCharacter (FeatureExpr ctx, Conditional<Character> c){
     ElementInfo ei =  heap.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Character"), ti);
     ei.setCharField(ctx, "value", c);
     return ei.getObjectRef();
@@ -1642,7 +1643,7 @@ public class MJIEnv {
     } else if (v instanceof Short){
       setShortField(ctx, proxyRef, fname, new One<>(((Short)v).shortValue()));
     } else if (v instanceof Character){
-      setCharField(ctx, proxyRef, fname, ((Character)v).charValue());
+      setCharField(ctx, proxyRef, fname, new One<>(((Character)v).charValue()));
     } else if (v instanceof Byte){
       setByteField(ctx, proxyRef, fname, new One<>(((Byte)v).byteValue()));
     } else if (v instanceof Double){
