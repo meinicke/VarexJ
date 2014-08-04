@@ -57,7 +57,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
     
     if (n < alen) {
       for (i=count, j=0; i<n; i++, j++) {
-        env.setCharArrayElement(ctx, aref, i, s.charAt(j));
+        env.setCharArrayElement(ctx, aref, i, new One<>(s.charAt(j)));
       }
     } else {
       int m = 3 * alen / 2;
@@ -66,10 +66,10 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
       }
       int arefNew = env.newCharArray(ctx, m);
       for (i=0; i<count; i++) {
-        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i).getValue());
+        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
       }
       for (j=0; i<n; i++, j++) {
-        env.setCharArrayElement(ctx, arefNew, i, s.charAt(j));
+        env.setCharArrayElement(ctx, arefNew, i, new One<>(s.charAt(j)));
       }
       env.setReferenceField(ctx, objref, "value", arefNew);
     }
@@ -154,14 +154,14 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
     int n = count +1;
     
     if (n < alen) {
-      env.setCharArrayElement(ctx, aref, count, c);
+      env.setCharArrayElement(ctx, aref, count, new One<>(c));
     } else {
       int m = 3 * alen / 2;
       int arefNew = env.newCharArray(ctx, m);
       for (int i=0; i<count; i++) {
-        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i).getValue());
+        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
       }
-      env.setCharArrayElement(ctx, arefNew, count, c);
+      env.setCharArrayElement(ctx, arefNew, count, new One<>(c));
       env.setReferenceField(ctx, objref, "value", arefNew);
     }
     

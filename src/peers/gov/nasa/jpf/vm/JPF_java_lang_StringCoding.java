@@ -38,7 +38,14 @@ public class JPF_java_lang_StringCoding extends NativePeer {
     
     int cref = env.newCharArray(NativeMethodInfo.CTX, len);
     for (int i=0,j=off; i<len; i++,j++) {
-      env.setCharArrayElement(NativeMethodInfo.CTX, cref, i, (char)env.getByteArrayElement(bref,j).getValue().byteValue());
+      env.setCharArrayElement(NativeMethodInfo.CTX, cref, i, env.getByteArrayElement(bref,j).map(new Function<Byte, Character>() {
+
+		@Override
+		public Character apply(Byte b) {
+			return (char)b.byteValue();
+		}
+    	  
+      }));
     }
     
     return cref;

@@ -36,6 +36,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 	  return appendString(ctx, env, objref, new One<>(s));
   }
 	  
+	// TODO jens revise
 	int appendString(FeatureExpr ctx, MJIEnv env, int objref, Conditional<String> conditionalS) {
 		Conditional<Integer> condAref = env.getReferenceField(ctx, objref, "value");
 		Map<Integer, FeatureExpr> arefMap = condAref.toMap();
@@ -58,7 +59,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 	
 					if (n < alen) {
 						for (i = count, j = 0; i < n; i++, j++) {
-							env.setCharArrayElement(currentCtx, aref, i, s.charAt(j));
+							env.setCharArrayElement(currentCtx, aref, i, new One<>(s.charAt(j)));
 						}
 					} else {
 						int m = 3 * alen / 2;
@@ -69,11 +70,11 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 						for (i = 0; i < count; i++) {
 							Map<Character, FeatureExpr> charMap = env.getCharArrayElement(aref, i).simplify(currentCtx).toMap();
 							for (char c : charMap.keySet()) {// XXX also setCharArrayElement(..., Cond(c)) possible
-								env.setCharArrayElement(currentCtx.and(charMap.get(c)), arefNew, i, c);
+								env.setCharArrayElement(currentCtx.and(charMap.get(c)), arefNew, i, new One<>(c));
 							}
 						}
 						for (j = 0; i < n; i++, j++) {
-							env.setCharArrayElement(currentCtx, arefNew, i, s.charAt(j));
+							env.setCharArrayElement(currentCtx, arefNew, i, new One<>(s.charAt(j)));
 						}
 						env.setReferenceField(currentCtx, objref, "value", arefNew);
 					}
@@ -117,7 +118,7 @@ int appendString (FeatureExpr ctx, MJIEnv env, int objref, String s) {
 				int aref = env.newCharArray(ctx, src.length + 16);
 //				char[] dst = env.getCharArrayObject(aref).getValue();
 				for (int i = 0; i < src.length; i++) {
-					env.setCharArrayElement(ctx, aref, i, src[i]);
+					env.setCharArrayElement(ctx, aref, i, new One<>(src[i]));
 				}
 //				System.arraycopy(src, 0, dst, 0, src.length);
 				env.setReferenceField(ctx, objref, "value", aref);

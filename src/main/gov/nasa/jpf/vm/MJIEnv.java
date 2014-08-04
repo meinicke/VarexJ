@@ -405,8 +405,8 @@ public class MJIEnv {
     return heap.get(objref).getByteElement(index);
   }
 
-  public void setCharArrayElement (FeatureExpr ctx, int objref, int index, char value) {// TODO jens
-    heap.getModifiable(objref).setCharElement(ctx, index, new One<>(value));
+  public void setCharArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Character> value) {
+    heap.getModifiable(objref).setCharElement(ctx, index, value);
   }
 
   public void setIntArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Integer> value) {

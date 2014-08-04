@@ -25,6 +25,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
+import cmu.conditional.One;
+
 public class JPF_java_io_InputStreamReader extends NativePeer {
 
   static final int BUF_SIZE = 128;
@@ -64,7 +66,7 @@ public class JPF_java_io_InputStreamReader extends NativePeer {
     
     int n = out.position();
     for (int i=0, j=off; i<n; i++,j++){
-      env.setCharArrayElement(NativeMethodInfo.CTX, cref,j, out.get(i));
+      env.setCharArrayElement(NativeMethodInfo.CTX, cref,j, new One<>(out.get(i)));
     }
     out.clear();
     if (n == len){
