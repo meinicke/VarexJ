@@ -947,10 +947,6 @@ public abstract class ElementInfo implements Cloneable {
       throw new JPFException("not a double field: " + fi.getName());
     }
   }
-
-  public void setReferenceField(FieldInfo fi, int newValue) {// TODO jens remove
-	  setReferenceField(FeatureExprFactory.True(), fi, new One<>(newValue));
-  }
   
   public void setReferenceField(FeatureExpr ctx, FieldInfo fi, Conditional<Integer> newValue) {
     checkIsModifiable();

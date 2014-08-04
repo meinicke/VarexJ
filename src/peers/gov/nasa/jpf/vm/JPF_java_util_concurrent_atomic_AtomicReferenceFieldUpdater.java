@@ -64,7 +64,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
 
     int v = ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();
     if (v == fExpect) {
-      ei.setReferenceField(fi, fUpdate);
+      ei.setReferenceField(NativeMethodInfo.CTX, fi, new One<>(fUpdate));
       return true;
     } else {
       return false;
@@ -89,7 +89,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
-    ei.setReferenceField(fi, fNewValue);
+    ei.setReferenceField(NativeMethodInfo.CTX, fi, new One<>(fNewValue));
   }
 
   @MJI
@@ -126,7 +126,7 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceFieldUpdater extends
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     int result = ei.getReferenceField(fi).simplify(NativeMethodInfo.CTX).getValue();
 
-    ei.setReferenceField(fi, fNewValue);
+    ei.setReferenceField(NativeMethodInfo.CTX, fi, new One<>(fNewValue));
 
     return result;
   }

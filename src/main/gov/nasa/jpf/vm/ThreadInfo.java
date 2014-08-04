@@ -2557,7 +2557,7 @@ public class ThreadInfo extends InfoObject
       if (threadsRef == MJIEnv.NULL){
         threadsRef = env.newObjectArray("Ljava/lang/Thread;", 1);
         env.setReferenceArrayElement(ctx, threadsRef, 0, new One<>(objRef));
-        eiGroup.setReferenceField(fiThreads, threadsRef);
+        eiGroup.setReferenceField(ctx, fiThreads, new One<>(threadsRef));
         
       } else {
         int newThreadsRef = env.newObjectArray("Ljava/lang/Thread;", nThreads+1);
@@ -2570,7 +2570,7 @@ public class ThreadInfo extends InfoObject
         }
         
         eiNewThreads.setReferenceElement(ctx, nThreads, new One<>( objRef));
-        eiGroup.setReferenceField(fiThreads, newThreadsRef);
+        eiGroup.setReferenceField(ctx, fiThreads, new One<>(newThreadsRef));
       }
       
       eiGroup.setIntField(NativeMethodInfo.CTX, finThreads, new One<>(nThreads+1));

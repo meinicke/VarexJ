@@ -157,7 +157,7 @@ public class JSONObject{
             convertPrimititve(ei, fi, cgResult);
           } else {
             int newFieldRef = ObjectConverter.JPFObjectFromJavaObject(ctx, env, cgResult);
-            ei.setReferenceField(fi, newFieldRef);
+            ei.setReferenceField(ctx, fi, new One<>(newFieldRef));
           }
         } else {
           logger.warning("Value for field ", fi.getFullName(), " isn't specified");
@@ -179,13 +179,13 @@ public class JSONObject{
     } else {
       if (isArrayType(fi.getType())) {
         int newArrRef = createArray(ctx, env, fi.getTypeClassInfo(), val, cgs, prefix + fieldName);
-        ei.setReferenceField(fi, newArrRef);
+        ei.setReferenceField(ctx, fi, new One<>(newArrRef));
 
       } else {
         Creator creator = CreatorsFactory.getCreator(fi.getType());
         if (creator != null) {
           int newSubObjRef = creator.create(ctx, env, fi.getType(), val);
-          ei.setReferenceField(fi, newSubObjRef);
+          ei.setReferenceField(ctx, fi, new One<>(newSubObjRef));
           
         } else {
           // Not a special case. Fill it recursively

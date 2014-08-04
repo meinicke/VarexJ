@@ -73,7 +73,7 @@ public class ObjectConverter {
                 fieldJPFObjRef = JPFObjectFromJavaObject(ctx, env, fieldJavaObj);
               }
 
-              newObjEI.setReferenceField(fi, fieldJPFObjRef);
+              newObjEI.setReferenceField(ctx, fi, new One<>(fieldJPFObjRef));
 
             } catch (NoSuchFieldException nsfx){
               throw new JPFException("JPF object creation failed, no such field: " + fi.getFullName(), nsfx);
