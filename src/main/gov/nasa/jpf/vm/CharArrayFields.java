@@ -37,7 +37,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class CharArrayFields extends ArrayFields {
 
-	private Conditional<char[]> values;// TODO change to Conditional<Character>[]
+	private Conditional<char[]> values;
 
 	public CharArrayFields(int length) {
 		values = new One<>(new char[length]);

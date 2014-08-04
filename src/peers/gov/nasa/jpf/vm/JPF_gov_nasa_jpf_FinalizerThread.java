@@ -69,7 +69,7 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
     Conditional<Integer>[] newValues = newQueue.asReferenceArray();
     
     System.arraycopy(oldValues, 1, newValues, 0, len);
-    env.getModifiableElementInfo(tiRef).setReferenceField("finalizeQueue", newQueue.getObjectRef());
+    env.getModifiableElementInfo(tiRef).setReferenceField(ctx, "finalizeQueue", newQueue.getObjectRef());
   }
   
   // a predicate to obtain all alive, non-finalizer threads within the ti process 

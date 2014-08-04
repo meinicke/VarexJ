@@ -193,7 +193,7 @@ public class ClassLoaderInfo
 
     ei.setIntField(ctx, ID_FIELD, new One<>(id));
     if (parent != null) {
-      ei.setReferenceField("parent", parent.objRef);
+      ei.setReferenceField(ctx, "parent", parent.objRef);
     }
     classInfo = ei.getClassInfo();
     roundTripRequired = isRoundTripRequired();

@@ -83,19 +83,19 @@ public class FinalizerThreadInfo extends ThreadInfo {
     
     ElementInfo eiName = heap.newString(ctx, new One<>(FINALIZER_NAME), this);
     int nameRef = eiName.getObjectRef();
-    eiThread.setReferenceField("name", nameRef);
+    eiThread.setReferenceField(ctx, "name", nameRef);
     
     // Since we create FinalizerThread upon VM initialization, they are assigned to the
     // same group as the main thread
     int grpRef = ThreadInfo.getCurrentThread().getThreadGroupRef();
-    eiThread.setReferenceField("group", grpRef);
+    eiThread.setReferenceField(ctx, "group", grpRef);
     
-    eiThread.setIntField(FeatureExprFactory.True(), "priority", new One<>(Thread.MAX_PRIORITY-2));
+    eiThread.setIntField(ctx, "priority", new One<>(Thread.MAX_PRIORITY-2));
 
     ClassInfo ciPermit = sysCl.getResolvedClassInfo(ctx, "java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( ctx, ciPermit, this);
     eiPermit.setBooleanField(ctx, "blockPark", new One<>(true));
-    eiThread.setReferenceField("permit", eiPermit.getObjectRef());
+    eiThread.setReferenceField(ctx, "permit", eiPermit.getObjectRef());
 
     addToThreadGroup(ctx, getElementInfo(grpRef));
     
@@ -108,11 +108,11 @@ public class FinalizerThreadInfo extends ThreadInfo {
     
     eiThread.setBooleanField(ctx, "done", new One<>(false));
     ElementInfo finalizeQueue = getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", 0, this);
-    eiThread.setReferenceField("finalizeQueue", finalizeQueue.getObjectRef());
+    eiThread.setReferenceField(ctx, "finalizeQueue", finalizeQueue.getObjectRef());
     
     // create an internal private lock used for lock-free wait
-    ElementInfo lock = getHeap().newObject(null, appCtx.getSystemClassLoader().objectClassInfo, this);
-    eiThread.setReferenceField("semaphore", lock.getObjectRef());
+    ElementInfo lock = getHeap().newObject(ctx, appCtx.getSystemClassLoader().objectClassInfo, this);
+    eiThread.setReferenceField(ctx, "semaphore", lock.getObjectRef());
     
     // make it wait on the internal private lock until its finalizeQueue is populated. This way,
     // we avoid scheduling points from including FinalizerThreads
@@ -191,7 +191,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
         newValues[len++] = new One<>(ei.getObjectRef());
       }
       
-      vm.getModifiableElementInfo(objRef).setReferenceField("finalizeQueue", newQueue.getObjectRef());
+      vm.getModifiableElementInfo(objRef).setReferenceField(FeatureExprFactory.True(), "finalizeQueue", newQueue.getObjectRef());
       tempFinalizeQueue.clear();
       
       assert hasQueuedFinalizers();

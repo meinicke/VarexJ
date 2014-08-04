@@ -762,7 +762,6 @@ public class MJIEnv {
   /**
    * turn JPF String object into a VM String object
    * (this is a method available for non gov..jvm NativePeer classes)
- * @param ctx TODO
    */
   public String getStringObject (FeatureExpr ctx, int objRef) {
     if (objRef != MJIEnv.NULL) {

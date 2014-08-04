@@ -827,11 +827,7 @@ public abstract class ElementInfo implements Cloneable {
     setDoubleField( ctx, getFieldInfo(fname), value);
   }
   
-  public void setReferenceField (String fname, int value) {
-	    setReferenceField(FeatureExprFactory.True(), fname, value);// TODO jens remove
-	  }
-  
-  public void setReferenceField (FeatureExpr ctx, String fname, int value) {
+  public void setReferenceField(FeatureExpr ctx, String fname, int value) {
     setReferenceField( ctx, getFieldInfo(fname), new One<>(value));
   }
 
@@ -1568,7 +1564,7 @@ public abstract class ElementInfo implements Cloneable {
 
     if (ref != MJIEnv.NULL) {
       ElementInfo ei = VM.getVM().getHeap().get(ref);
-      return ei.asString().getValue();
+      return ei.asString().simplify(ctx).getValue();
     } else {
       return "null";
     }
