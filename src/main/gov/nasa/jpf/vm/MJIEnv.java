@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -412,8 +413,8 @@ public class MJIEnv {
     heap.getModifiable(objref).setIntElement(ctx, index, value);
   }
 
-  public void setShortArrayElement (int objref, int index, short value) {
-    heap.getModifiable(objref).setShortElement(index, value);
+  public void setShortArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Short> value) {
+    heap.getModifiable(objref).setShortElement(ctx, index, value);
   }
 
   public void setFloatArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Float> value) {
@@ -431,7 +432,7 @@ public class MJIEnv {
     heap.getModifiable(objref).setDoubleElement(ctx, index, value);
   }
 
-  public short getShortArrayElement (int objref, int index) {
+  public Conditional<Short> getShortArrayElement (int objref, int index) {
     return heap.get(objref).getShortElement(index);
   }
 
@@ -504,7 +505,7 @@ public class MJIEnv {
     return getCharField(objref, "value");
   }
 
-  public short getShortValue (int objref) {
+  public Conditional<Short> getShortValue (int objref) {
     return getShortField(objref, "value");
   }
 
@@ -561,12 +562,26 @@ public class MJIEnv {
     return heap.get(objref).getReferenceElement(index).getValue();
   }
 
-  public void setShortField (FeatureExpr ctx, int objref, String fname, short val) {
-    setIntField(ctx, objref, fname, /*(int)*/ new One<>((int)val));
+  public void setShortField (FeatureExpr ctx, int objref, String fname, Conditional<Short> val) {
+    setIntField(ctx, objref, fname, /*(int)*/ val.map(new Function<Short, Integer>() {
+
+		@Override
+		public Integer apply(Short v) {
+			return (int)v.shortValue();
+		}
+    	
+    }));
   }
 
-  public short getShortField (int objref, String fname) {
-    return (short) (int) getIntField(objref, fname).getValue();
+  public Conditional<Short> getShortField (int objref, String fname) {
+    return getIntField(objref, fname).map(new Function<Integer, Short>() {
+
+		@Override
+		public Short apply(Integer v) {
+			return (short)v.intValue();
+		}
+    	
+    });
   }
 
   public String getTypeName (int objref) {
@@ -727,7 +742,7 @@ public class MJIEnv {
     return ci.getStaticElementInfo().getReferenceField(fname).getValue();
   }
 
-  public short getStaticShortField (String clsName, String fname) {
+  public Conditional<Short> getStaticShortField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
     return ci.getStaticElementInfo().getShortField(fname);
   }
@@ -855,7 +870,7 @@ public class MJIEnv {
   }
 
   public Short getShortObject (int objref){
-    return new Short(getShortField(objref, "value"));
+    return new Short(getShortField(objref, "value").getValue());
   }
 
   public Integer getIntegerObject (int objref){
@@ -897,11 +912,9 @@ public class MJIEnv {
 	  ei.setCharElement(ctx, idx, new One<>(value));
   }
 
-  public short[] getShortArrayObject (int objref) {
+  public Conditional<Short>[] getShortArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
-    short[] a = ei.asShortArray();
-
-    return a;
+    return ei.asShortArray();
   }
 
   public int[] getIntArrayObject (FeatureExpr ctx, int objref) {
@@ -1004,10 +1017,10 @@ public class MJIEnv {
     return heap.newArray(FeatureExprFactory.True(), "S", size, ti).getObjectRef();
   }
   
-  public int newShortArray (short[] buf){
+  public int newShortArray (FeatureExpr ctx, short[] buf){
     ElementInfo eiArray = heap.newArray(FeatureExprFactory.True(), "S", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setShortElement(i, buf[i]);
+      eiArray.setShortElement(ctx, i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }
@@ -1249,9 +1262,9 @@ public class MJIEnv {
     return ei.getObjectRef();
   }
 
-  public int newShort (short s){
+  public int newShort (FeatureExpr ctx, Conditional<Short> s){
     ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Short"), ti);
-    ei.setShortField("value",s);
+    ei.setShortField(ctx,"value", s);
     return ei.getObjectRef();
   }
 
@@ -1628,7 +1641,7 @@ public class MJIEnv {
     } else if (v instanceof Float){
       setFloatField(ctx, proxyRef, fname, new One<>(((Float)v).floatValue()));
     } else if (v instanceof Short){
-      setShortField(ctx, proxyRef, fname, ((Short)v).shortValue());
+      setShortField(ctx, proxyRef, fname, new One<>(((Short)v).shortValue()));
     } else if (v instanceof Character){
       setCharField(ctx, proxyRef, fname, ((Character)v).charValue());
     } else if (v instanceof Byte){

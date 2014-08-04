@@ -88,7 +88,7 @@ class BoxedShortCreator implements Creator {
     if (read != null) {
       shortRef = env.newObject(ctx, "java.lang.Short");
       ElementInfo ei = env.getModifiableElementInfo(shortRef);
-      ei.setShortField("value", read.shortValue());
+      ei.setShortField(ctx, "value", new One<>(read.shortValue()));
     }
 
     return shortRef;

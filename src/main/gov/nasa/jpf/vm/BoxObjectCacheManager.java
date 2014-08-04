@@ -159,7 +159,7 @@ public class BoxObjectCacheManager {
     short val = shortLow;
     for (int i = 0; i < n; i++) {
       ElementInfo eiShort = heap.newSystemObject(ctx, ci, ti, ANCHOR);
-      eiShort.setShortField("value", val++);
+      eiShort.setShortField(ctx, "value", new One<>(val++));
       eiArray.setReferenceElement(ctx, i, new One<>(eiShort.getObjectRef()));
     }
 
@@ -179,8 +179,8 @@ public class BoxObjectCacheManager {
     if (s >= shortLow && s <= shortHigh) { return ti.getElementInfo(shortCache).getReferenceElement(s - shortLow).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Short");
-    ElementInfo eiShort = ti.getHeap().newObject(null, ci, ti);
-    eiShort.setShortField("value", s);
+    ElementInfo eiShort = ti.getHeap().newObject(ctx, ci, ti);
+    eiShort.setShortField(ctx, "value", new One<>(s));
     return eiShort.getObjectRef();
   }
 

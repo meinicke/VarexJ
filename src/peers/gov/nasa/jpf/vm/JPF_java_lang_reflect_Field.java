@@ -150,7 +150,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     FieldInfo fi = getFieldInfo(env, objRef);
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ShortFieldInfo.class, "short", false);
     if (ei != null){
-      return ei.getShortField(fi);
+      return ei.getShortField(fi).getValue();
     }
     return 0;
   }
@@ -278,7 +278,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ShortFieldInfo.class, "short", true);
     if (ei != null){
-      ei.setShortField(fi,val);
+      ei.setShortField(NativeMethodInfo.CTX,fi, new One<>(val));
     }
   }  
 
@@ -367,8 +367,8 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         char c = ei.getCharField(fi);
         return env.newCharacter(ctx, c);
       } else if (fi instanceof ShortFieldInfo){
-        short s = ei.getShortField(fi);
-        return env.newShort(s);
+        Conditional<Short> s = ei.getShortField(fi);
+        return env.newShort(ctx, s);
       }
       
     } else { // it's a reference
@@ -512,8 +512,8 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         ei.setCharField(ctx, fi, val);
         return true;
       } else if ("short".equals(fieldType)){
-        short val = env.getShortField(value, fieldName);
-        ei.setShortField(fi, val);
+        Conditional<Short> val = env.getShortField(value, fieldName);
+        ei.setShortField(ctx, fi, val);
         return true;
       } else if ("int".equals(fieldType)){
         Conditional<Integer> val = env.getIntField(value, fieldName);

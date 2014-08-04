@@ -156,8 +156,15 @@ public class NamedFields extends Fields {
 	}
 
 	@Override
-	public short getShortValue(int index) {
-		return (short) values[index].getValue().intValue();
+	public Conditional<Short> getShortValue(int index) {
+		return values[index].map(new Function<Integer, Short>() {
+
+			@Override
+			public Short apply(Integer v) {
+				return (short)v.intValue();
+			}
+			
+		});
 	}
 
 	// <2do> get rid of it!! this is only for internal use, to increase efficiency
@@ -219,8 +226,20 @@ public class NamedFields extends Fields {
 	}
 
 	@Override
-	public void setShortValue(int index, short newValue) {
-		values[index] = new One<>((int) newValue);
+	public void setShortValue(FeatureExpr ctx, int index, Conditional<Short> newValue) {
+		
+		if (Conditional.isTautology(ctx)) {
+			values[index] = new One<>((int)(newValue.getValue()));	
+		} else {
+			values[index] = new Choice<>(ctx, newValue.map(new Function<Short, Integer>() {
+	
+				@Override
+				public Integer apply(Short v) {
+					return (int)v;
+				}
+				
+			}), values[index]).simplify();
+		}
 	}
 
 	@Override

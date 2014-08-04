@@ -86,7 +86,7 @@ public abstract class ArrayFields extends Fields {
 	}
 
 	@Override
-	public short getShortValue(int pos) {
+	public Conditional<Short> getShortValue(int pos) {
 		// overridden by subclass
 		throw new JPFException("not a short[]");
 	}
@@ -140,7 +140,7 @@ public abstract class ArrayFields extends Fields {
 	}
 
 	@Override
-	public void setShortValue(int pos, short newValue) {
+	public void setShortValue(FeatureExpr ctx, int pos, Conditional<Short> newValue) {
 		// overridden by subclass
 		throw new JPFException("not a short[]");
 	}
@@ -195,7 +195,7 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a char[]");
 	}
 
-	public short[] asShortArray() {// TODO
+	public Conditional<Short>[] asShortArray() {
 		// overridden by subclass
 		throw new JPFException("not a short[]");
 	}

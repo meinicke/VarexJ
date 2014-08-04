@@ -22,22 +22,30 @@ import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import cmu.conditional.Choice;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * element values for short[] objects
  */
 public class ShortArrayFields extends ArrayFields {
 
-  short[] values;
+  private static final One<Short> nullValue = new One<>((short)0);
+  Conditional<Short>[] values;
 
+  @SuppressWarnings("unchecked")
   public ShortArrayFields (int length) {
-    values = new short[length];
+    values = new Conditional[length];
+    Arrays.fill(values, nullValue);
   }
 
-  public short[] asShortArray() {
+  public Conditional<Short>[] asShortArray() {
     return values;
   }
 
@@ -58,7 +66,16 @@ public class ShortArrayFields extends ArrayFields {
   }
 
   public void appendTo (IntVector v) {
-    v.appendPacked(values);
+	  List<Short> l = new ArrayList<>(values.length);
+		for (int i = 0; i < values.length; i++) {
+			l.addAll(values[i].toList());
+		}
+
+		short[] a = new short[l.size()];
+		for (int i = 0; i < l.size(); i++) {
+			a[i] = l.get(i);
+		}
+		v.appendPacked(a);
   }
 
   public ShortArrayFields clone(){
@@ -70,14 +87,14 @@ public class ShortArrayFields extends ArrayFields {
   public boolean equals (Object o) {
     if (o instanceof ShortArrayFields) {
       ShortArrayFields other = (ShortArrayFields)o;
-      short[] v = values;
-      short[] vOther = other.values;
+      Conditional<Short>[] v = values;
+      Conditional<Short>[] vOther = other.values;
       if (v.length != vOther.length) {
         return false;
       }
 
       for (int i=0; i<v.length; i++) {
-        if (v[i] != vOther[i]) {
+        if (!v[i].equals(vOther[i])) {
           return false;
         }
       }
@@ -90,16 +107,20 @@ public class ShortArrayFields extends ArrayFields {
   }
 
 
-  public short getShortValue(int pos) {
+  public Conditional<Short> getShortValue(int pos) {
     return values[pos];
   }
 
-  public void setShortValue (int pos, short newValue) {
-    values[pos] = newValue;
+  public void setShortValue (FeatureExpr ctx, int pos, Conditional<Short> newValue) {
+	  if (Conditional.isTautology(ctx)) {
+			values[pos] = newValue;
+		} else {
+			values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+		}
   }
 
   public void hash(HashData hd) {
-    short[] v = values;
+    Conditional<Short>[] v = values;
     for (int i=0; i < v.length; i++) {
       hd.add(v[i]);
     }

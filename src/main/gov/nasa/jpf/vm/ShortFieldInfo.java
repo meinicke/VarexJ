@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -46,7 +47,7 @@ public class ShortFieldInfo extends SingleSlotFieldInfo {
 
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setShortValue(storageOffset, init);
+    ei.getFields().setShortValue(ctx, storageOffset, new One<>(init));
   }
 
   public boolean isShortField() {
@@ -63,7 +64,7 @@ public class ShortFieldInfo extends SingleSlotFieldInfo {
   }
 
   public String valueToString (Fields f) {
-    short i = f.getShortValue(storageOffset);
+    short i = f.getShortValue(storageOffset).getValue();
     return Short.toString(i);
   }
 

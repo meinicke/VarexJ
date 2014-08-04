@@ -200,7 +200,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public short getShort__Ljava_lang_Object_2I__S (MJIEnv env, int clsRef, int aref, int index) {
     if (check(env, aref, index)) {
-      return env.getShortArrayElement(aref, index);
+      return env.getShortArrayElement(aref, index).getValue();
     }
     return 0;
   }
@@ -261,7 +261,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setShort__Ljava_lang_Object_2IS__V (MJIEnv env, int clsRef, int aref, int index, short val) {
     if (check(env, aref, index)) {
-      env.setShortArrayElement(aref, index, val);
+      env.setShortArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
     }
   }
 

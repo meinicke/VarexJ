@@ -811,8 +811,8 @@ public abstract class ElementInfo implements Cloneable {
   public void setCharField (FeatureExpr ctx, String fname, char value) {
     setCharField( ctx, getFieldInfo(fname), value);
   }
-  public void setShortField (String fname, short value) {
-    setShortField( getFieldInfo(fname), value);
+  public void setShortField (FeatureExpr ctx, String fname, Conditional<Short> value) {
+    setShortField( ctx, getFieldInfo(fname), value);
   }
   public void setIntField(FeatureExpr ctx, String fname, Conditional<Integer> value) {
     setIntField(ctx, getFieldInfo(fname), value);
@@ -886,7 +886,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setCharField(FeatureExpr ctx, FieldInfo fi, char newValue) {
+  public void setCharField(FeatureExpr ctx, FieldInfo fi, char newValue) {// TODO condtional
     checkIsModifiable();
     
     if (fi.isCharField()) {
@@ -897,12 +897,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setShortField(FieldInfo fi, short newValue) {
+  public void setShortField(FeatureExpr ctx, FieldInfo fi, Conditional<Short> newValue) {
     checkIsModifiable();
 
     if (fi.isShortField()) {
       int offset = fi.getStorageOffset();
-      fields.setShortValue( offset, newValue);
+      fields.setShortValue(ctx, offset, newValue);
     } else {
       throw new JPFException("not a short field: " + fi.getName());
     }
@@ -1086,12 +1086,12 @@ public abstract class ElementInfo implements Cloneable {
     return getFloatField( fi);
   }
 
-  public short getDeclaredShortField(String fname, String refType) {
+  public Conditional<Short> getDeclaredShortField(String fname, String refType) {
     FieldInfo fi = getDeclaredFieldInfo(refType, fname);
     return getShortField( fi);
   }
 
-  public short getShortField(String fname) {
+  public Conditional<Short> getShortField(String fname) {
     FieldInfo fi = getFieldInfo(fname);
     return getShortField( fi);
   }
@@ -1126,12 +1126,12 @@ public abstract class ElementInfo implements Cloneable {
   }
   public char getCharField(FieldInfo fi) {
     if (fi.isCharField()){
-      return fields.getCharValue(fi.getStorageOffset()).getValue();
+      return fields.getCharValue(fi.getStorageOffset()).getValue();// TODO remove getValue()
     } else {
       throw new JPFException("not a char field: " + fi.getName());
     }
   }
-  public short getShortField(FieldInfo fi) {
+  public Conditional<Short> getShortField(FieldInfo fi) {
     if (fi.isShortField()){
       return fields.getShortValue(fi.getStorageOffset());
     } else {
@@ -1340,10 +1340,10 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     fields.setCharValue(ctx, idx, value);
   }
-  public void setShortElement(int idx, short value){
+  public void setShortElement(FeatureExpr ctx, int idx, Conditional<Short> value){
     checkArray(idx);
     checkIsModifiable();
-    fields.setShortValue(idx, value);
+    fields.setShortValue(ctx, idx, value);
   }
   public void setIntElement(FeatureExpr ctx, int idx, Conditional<Integer> value){
     checkArray(idx);
@@ -1383,7 +1383,7 @@ public abstract class ElementInfo implements Cloneable {
     checkArray(idx);
     return fields.getCharValue(idx);
   }
-  public short getShortElement(int idx) {
+  public Conditional<Short> getShortElement(int idx) {
     checkArray(idx);
     return fields.getShortValue(idx);
   }
@@ -1485,7 +1485,7 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public short[] asShortArray() {
+  public Conditional<Short>[] asShortArray() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).asShortArray();
     } else {

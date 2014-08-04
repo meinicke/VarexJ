@@ -241,7 +241,7 @@ public abstract class Fields implements Cloneable {
 
   public abstract Conditional<Character> getCharValue (int index);
 
-  public abstract short getShortValue (int index);// TODO
+  public abstract Conditional<Short> getShortValue (int index);
 
   public abstract Conditional<Float> getFloatValue (int index);
 
@@ -257,7 +257,7 @@ public abstract class Fields implements Cloneable {
 
   public abstract void setCharValue (FeatureExpr ctx, int index, Conditional<Character> newValue);
 
-  public abstract void setShortValue (int index, short newValue);// TODO
+  public abstract void setShortValue (FeatureExpr ctx, int index, Conditional<Short> newValue);
 
   public abstract void setFloatValue (FeatureExpr ctx, int index, Conditional<Float> newValue);
 

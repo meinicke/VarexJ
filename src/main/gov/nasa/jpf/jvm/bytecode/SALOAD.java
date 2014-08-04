@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.One;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -32,8 +32,8 @@ public class SALOAD extends ArrayLoadInstruction {
 
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    short value = ei.getShortElement(index);
-    frame.push(ctx, new One<>((int)value));
+    Conditional<Short> value = ei.getShortElement(index);
+    frame.push(ctx, value);
   }
 
 

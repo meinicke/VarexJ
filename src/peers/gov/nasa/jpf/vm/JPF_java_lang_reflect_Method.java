@@ -347,7 +347,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_SHORT:
     { 
-      int v = eiArg.getShortField("value");
+      int v = eiArg.getShortField("value").getValue();
       switch (destType){
       case Types.T_SHORT:
       case Types.T_INT:

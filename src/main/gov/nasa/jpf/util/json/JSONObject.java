@@ -216,7 +216,7 @@ public class JSONObject{
       ei.setByteField(ctx, fi, new One<>(val.getDouble().byteValue()));
 
     } else if (primitiveName.equals("short")) {
-      ei.setShortField(fi, val.getDouble().shortValue());
+      ei.setShortField(ctx, fi, new One<>(val.getDouble().shortValue()));
 
     } else {
 		if (primitiveName.equals("int")) {
@@ -264,10 +264,11 @@ public class JSONObject{
     } else if (arrayElementType.equals("short")) {
        arrayRef = env.newShortArray(vals.length);
        ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
-       short shorts[] = arrayEI.asShortArray();
+//       short shorts[] = arrayEI.asShortArray();
 
        for (int i = 0; i < vals.length; i++) {
-        shorts[i] = vals[i].getDouble().shortValue();
+    	   arrayEI.setShortElement(ctx, i, new One<>(vals[i].getDouble().shortValue()));
+//        shorts[i] = vals[i].getDouble().shortValue();
       }
     } else if (arrayElementType.equals("int")) {
       arrayRef = env.newIntArray(vals.length);
@@ -355,20 +356,20 @@ public class JSONObject{
   private void convertPrimititve(ElementInfo ei, FieldInfo fi, Object cgResult) {
     String primitiveName = fi.getType();
 
+    FeatureExpr ctx = FeatureExprFactory.True();
     if (primitiveName.equals("boolean") && cgResult instanceof Boolean) {
       Boolean bool = (Boolean) cgResult;
-      ei.setBooleanField(FeatureExprFactory.True(), fi, new One<>(bool.booleanValue()));
+      ei.setBooleanField(ctx, fi, new One<>(bool.booleanValue()));
     } else if (cgResult instanceof Number) {
       Number number = (Number) cgResult;
 
       if (primitiveName.equals("byte")) {
-        ei.setByteField(FeatureExprFactory.True(), fi, new One<>(number.byteValue()));
+        ei.setByteField(ctx, fi, new One<>(number.byteValue()));
 
       } else if (primitiveName.equals("short")) {
-        ei.setShortField(fi, number.shortValue());
+        ei.setShortField(ctx, fi, new One<>(number.shortValue()));
 
       } else {
-		FeatureExpr ctx = FeatureExprFactory.True();
 		if (primitiveName.equals("int")) {
 		    ei.setIntField(ctx, fi, new One<>(number.intValue()));
 

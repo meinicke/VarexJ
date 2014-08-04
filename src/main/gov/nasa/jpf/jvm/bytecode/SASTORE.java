@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -29,15 +31,22 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class SASTORE extends ArrayStoreInstruction {
 
-  short value;
+  Conditional<Short> value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = (short)frame.pop(ctx).getValue().intValue();
+    value = frame.pop(ctx).map(new Function<Integer, Short>() {
+
+		@Override
+		public Short apply(Integer v) {
+			return (short)v.intValue();
+		}
+    	
+    });
   }
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    ei.setShortElement(index, value);
+    ei.setShortElement(ctx, index, value);
   }
 
 
