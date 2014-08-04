@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Function;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -49,7 +50,15 @@ public class JPF_java_lang_StringCoding extends NativePeer {
 
     int bref = env.newByteArray(len);
     for (int i=0,j=off; i<len; i++,j++) {
-      env.setByteArrayElement(NativeMethodInfo.CTX, bref, i, (byte)env.getCharArrayElement(cref,j).getValue().charValue());
+      env.setByteArrayElement(NativeMethodInfo.CTX, bref, i, env.getCharArrayElement(cref,j).map(new Function<Character, Byte>() {
+
+		@Override
+		public Byte apply(Character c) {
+			return (byte)c.charValue();
+		}
+    	  
+      }));
+      
     }
 
     return bref; 

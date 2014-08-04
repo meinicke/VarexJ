@@ -827,7 +827,7 @@ public abstract class ElementInfo implements Cloneable {
     setDoubleField( ctx, getFieldInfo(fname), value);
   }
   
-  public void setReferenceField(FeatureExpr ctx, String fname, int value) {
+  public void setReferenceField(FeatureExpr ctx, String fname, int value) {// TODO jens
     setReferenceField( ctx, getFieldInfo(fname), new One<>(value));
   }
 
@@ -1001,7 +1001,7 @@ public abstract class ElementInfo implements Cloneable {
     // be aware of that static fields are not flattened (they are unique), i.e.
     // the FieldInfo might actually refer to another ClassInfo/StaticElementInfo
     FieldInfo fi = getDeclaredFieldInfo(clsBase, fname);
-    return getIntField( fi).getValue();
+    return getIntField( fi).getValue();// TODO jens
   }
 
   public Conditional<Integer> getIntField(String fname) {
@@ -1203,7 +1203,6 @@ public abstract class ElementInfo implements Cloneable {
    * note that we have to do some additional type checking here because we store
    * reference arrays as int[], i.e. for reference arrays we can't rely on
    * System.arraycopy to do the element type checking for us
- * @param ctx TODO
    *
    * @throws java.lang.ArrayIndexOutOfBoundsException
    * @throws java.lang.ArrayStoreException

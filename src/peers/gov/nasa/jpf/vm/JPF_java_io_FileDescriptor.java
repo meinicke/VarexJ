@@ -316,7 +316,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           
           int r = fis.read(buf);
           for (int i=0, j=offset; i<len; i++, j++) {
-            env.setByteArrayElement(ctx, bufref, j, buf[i]);
+            env.setByteArrayElement(ctx, bufref, j, new One<>(buf[i]));
           }
           env.setLongField(ctx, objref, "off", new One<>(fc.position()));
           return r;

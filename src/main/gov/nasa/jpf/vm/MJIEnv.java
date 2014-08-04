@@ -397,15 +397,15 @@ public class MJIEnv {
   }
 
 
-  public void setByteArrayElement (FeatureExpr ctx, int objref, int index, byte value) {
-    heap.getModifiable(objref).setByteElement(ctx, index, new One<>(value));
+  public void setByteArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Byte> value) {
+    heap.getModifiable(objref).setByteElement(ctx, index, value);
   }
 
   public Conditional<Byte> getByteArrayElement (int objref, int index) {
     return heap.get(objref).getByteElement(index);
   }
 
-  public void setCharArrayElement (FeatureExpr ctx, int objref, int index, char value) {
+  public void setCharArrayElement (FeatureExpr ctx, int objref, int index, char value) {// TODO jens
     heap.getModifiable(objref).setCharElement(ctx, index, new One<>(value));
   }
 
@@ -437,7 +437,7 @@ public class MJIEnv {
   }
 
   public int getIntArrayElement (int objref, int index) {
-    return heap.get(objref).getIntElement(index).getValue();
+    return heap.get(objref).getIntElement(index).getValue();// TODO jens
   }
 
   public Conditional<Character> getCharArrayElement (int objref, int index) {
@@ -462,32 +462,32 @@ public class MJIEnv {
 
   public int getDeclaredIntField (int objref, String refType, String fname) {
     ElementInfo ei = heap.get(objref);
-    return ei.getDeclaredIntField(fname, refType);
+    return ei.getDeclaredIntField(fname, refType);// TODO jens
   }
 
   // these two are the workhorses
-  public void setDeclaredReferenceField (int objref, String refType, String fname, int val) {
+  public void setDeclaredReferenceField (int objref, String refType, String fname, int val) {// TODO jens
     ElementInfo ei = heap.getModifiable(objref);
     ei.setDeclaredReferenceField(fname, refType, val);
   }
 
-  public void setReferenceField (FeatureExpr ctx, int objref, String fname, int ref) {
+  public void setReferenceField (FeatureExpr ctx, int objref, String fname, int ref) {// TODO jens
      ElementInfo ei = heap.getModifiable(objref);
      ei.setReferenceField(ctx, fname, ref);
   }
 
   public Conditional<Integer> getReferenceField (FeatureExpr ctx, int objref, String fname) {
     ElementInfo ei = heap.get(objref);
-    return ei.getReferenceField(fname).simplify(ctx);
+    return ei.getReferenceField(fname).simplify(ctx);// TODO jens
   }
 
   // we need this in case of a masked field
   public int getReferenceField (int objref, FieldInfo fi) {
     ElementInfo ei = heap.get(objref);
-    return ei.getReferenceField(fi).simplify(null).getValue();
+    return ei.getReferenceField(fi).simplify(null).getValue();// TODO jens
   }
 
-  public String getStringField (int objref, String fname){
+  public String getStringField (int objref, String fname){// TODO jens
     int ref = getReferenceField(null, objref, fname).getValue();
     return getStringObject(null, ref);
   }
@@ -510,11 +510,11 @@ public class MJIEnv {
   }
 
   public int getIntValue (int objref) {
-    return getIntField(objref, "value").getValue();
+    return getIntField(objref, "value").getValue();// TODO jens
   }
 
   public long getLongValue (int objref) {
-    return getLongField(objref, "value").getValue();
+    return getLongField(objref, "value").getValue();// TODO jens
   }
 
   public Conditional<Float> getFloatValue (int objref) {
@@ -526,7 +526,7 @@ public class MJIEnv {
   }
 
 
-  public void setLongArrayElement (FeatureExpr ctx, int objref, int index, long value) {
+  public void setLongArrayElement (FeatureExpr ctx, int objref, int index, long value) {// TODO jens
     heap.getModifiable(objref).setLongElement(ctx, index, new One<>(value));
   }
 
@@ -559,7 +559,7 @@ public class MJIEnv {
   }
 
   public int getReferenceArrayElement (int objref, int index) {
-    return heap.get(objref).getReferenceElement(index).getValue();
+    return heap.get(objref).getReferenceElement(index).getValue();// TODO jens
   }
 
   public void setShortField (FeatureExpr ctx, int objref, String fname, Conditional<Short> val) {
@@ -677,17 +677,17 @@ public class MJIEnv {
 
   public int getStaticIntField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    return ci.getStaticElementInfo().getIntField(fname).simplify(null).getValue();
+    return ci.getStaticElementInfo().getIntField(fname).simplify(null).getValue();// TODO jens
   }
   
   public int getStaticIntField (int clsObjRef, String fname) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
-    return cei.getIntField(fname).simplify(null).getValue();
+    return cei.getIntField(fname).simplify(null).getValue();// TODO jens
   }
 
   public int getStaticIntField (ClassInfo ci, String fname) {
     ElementInfo ei = ci.getStaticElementInfo();
-    return ei.getIntField(fname).simplify(null).getValue();
+    return ei.getIntField(fname).simplify(null).getValue();// TODO jens
   }
 
   public void setStaticLongField (FeatureExpr ctx, String clsName, String fname, Conditional<Long> value) {
@@ -701,7 +701,7 @@ public class MJIEnv {
   }
 
   public long getStaticLongField (int clsRef, String fname) {
-    ClassInfo ci = getReferredClassInfo(FeatureExprFactory.True(), clsRef);
+    ClassInfo ci = getReferredClassInfo(FeatureExprFactory.True(), clsRef);// TODO jens
     return getStaticLongField(ci,fname);
   }
 
@@ -712,10 +712,10 @@ public class MJIEnv {
 
   public long getStaticLongField (ClassInfo ci, String fname){
     ElementInfo ei = ci.getStaticElementInfo();
-    return ei.getLongField(fname).getValue();
+    return ei.getLongField(fname).getValue();// TODO jens
   }
 
-  public void setStaticReferenceField (FeatureExpr ctx, String clsName, String fname, int objref) {
+  public void setStaticReferenceField (FeatureExpr ctx, String clsName, String fname, int objref) {// TODO jens
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
 
     // <2do> - we should REALLY check for type compatibility here
@@ -726,21 +726,21 @@ public class MJIEnv {
     ElementInfo cei = getModifiableStaticElementInfo(clsObjRef);
 
     // <2do> - we should REALLY check for type compatibility here
-    cei.setReferenceField(null, fname, objref);
+    cei.setReferenceField(null, fname, objref);// TODO jens
   }
 
   public int getStaticReferenceField (String clsName, String fname) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    return ci.getStaticElementInfo().getReferenceField(fname).getValue();
+    return ci.getStaticElementInfo().getReferenceField(fname).getValue();// TODO jens
   }
 
   public int getStaticReferenceField (int clsObjRef, String fname) {
     ElementInfo cei = getStaticElementInfo(clsObjRef);
-    return cei.getReferenceField(fname).getValue();
+    return cei.getReferenceField(fname).getValue();// TODO jens
   }
 
   public int getStaticReferenceField (ClassInfo ci, String fname){
-    return ci.getStaticElementInfo().getReferenceField(fname).getValue();
+    return ci.getStaticElementInfo().getReferenceField(fname).getValue();// TODO jens
   }
 
   public Conditional<Short> getStaticShortField (String clsName, String fname) {
@@ -858,7 +858,7 @@ public class MJIEnv {
   }
 
   public Boolean getBooleanObject (int objref){
-    return Boolean.valueOf(getBooleanField(objref, "value").getValue());
+    return Boolean.valueOf(getBooleanField(objref, "value").getValue());// TODO jens
   }
 
   public Conditional<Byte> getByteObject (int objref){
@@ -866,32 +866,32 @@ public class MJIEnv {
   }
 
   public Character getCharObject (int objref){
-    return new Character(getCharField(objref, "value").getValue());
+    return new Character(getCharField(objref, "value").getValue());// TODO jens
   }
 
   public Short getShortObject (int objref){
-    return new Short(getShortField(objref, "value").getValue());
+    return new Short(getShortField(objref, "value").getValue());// TODO jens
   }
 
   public Integer getIntegerObject (int objref){
-    return getIntField(objref, "value").getValue();
+    return getIntField(objref, "value").getValue();// TODO jens
   }
 
   public Long getLongObject (int objref){
-    return getLongField(objref, "value").getValue();
+    return getLongField(objref, "value").getValue();// TODO jens
   }
 
   public Float getFloatObject (int objref){
-    return new Float(getFloatField(objref, "value").getValue());
+    return new Float(getFloatField(objref, "value").getValue());// TODO jens
   }
 
   public Double getDoubleObject (int objref){
-    return new Double(getDoubleField(objref, "value").getValue());
+    return new Double(getDoubleField(objref, "value").getValue());// TODO jens
   }
 
   // danger - the returned arrays could be used to modify contents of stored objects
 
-  public byte[] getByteArrayObject (FeatureExpr ctx, int objref) {
+  public byte[] getByteArrayObject (FeatureExpr ctx, int objref) {// TODO jens
     ElementInfo ei = getElementInfo(objref);
     Conditional<Byte>[] ba = ei.asByteArray();
 
@@ -906,18 +906,13 @@ public class MJIEnv {
     ElementInfo ei = getElementInfo(objref);
     return ei.asCharArray();
   }
-  
-  protected void method(FeatureExpr ctx, int objref, int idx, char value) {
-	  ElementInfo ei = getElementInfo(objref);
-	  ei.setCharElement(ctx, idx, new One<>(value));
-  }
 
   public Conditional<Short>[] getShortArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
     return ei.asShortArray();
   }
 
-  public int[] getIntArrayObject (FeatureExpr ctx, int objref) {
+  public int[] getIntArrayObject (FeatureExpr ctx, int objref) {// TODO jens
     ElementInfo ei = getElementInfo(objref);
     Conditional<Integer>[] array = ei.asIntArray();
     int[] a = new int[array.length];
@@ -984,15 +979,15 @@ public class MJIEnv {
     return ei.canLock(ti);
   }
 
-  public int newBooleanArray (int size) {
+  public int newBooleanArray (int size) {// TODO jens
     return heap.newArray(FeatureExprFactory.True(), "Z", size, ti).getObjectRef();
   }
 
-  public int newByteArray (int size) {
+  public int newByteArray (int size) {// TODO jens
     return heap.newArray(FeatureExprFactory.True(), "B", size, ti).getObjectRef();
   }
 
-  public int newByteArray (FeatureExpr ctx, byte[] buf){
+  public int newByteArray (FeatureExpr ctx, byte[] buf){// TODO jens
     ElementInfo eiArray = heap.newArray(ctx, "B", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setByteElement( ctx, i, new One<>(buf[i]));
@@ -1000,11 +995,11 @@ public class MJIEnv {
     return eiArray.getObjectRef();
   }
 
-  public int newCharArray (FeatureExpr ctx, int size) {
+  public int newCharArray (FeatureExpr ctx, int size) {// TODO jens
     return heap.newArray(ctx, "C", size, ti).getObjectRef();
   }
 
-  public int newCharArray (FeatureExpr ctx, char[] buf){
+  public int newCharArray (FeatureExpr ctx, char[] buf){// TODO jens
     ElementInfo eiArray = heap.newArray(ctx, "C", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setCharElement(ctx, i, new One<>(buf[i]));
@@ -1012,11 +1007,11 @@ public class MJIEnv {
     return eiArray.getObjectRef();
   }
 
-  public int newShortArray (int size) {
+  public int newShortArray (int size) {// TODO jens
     return heap.newArray(FeatureExprFactory.True(), "S", size, ti).getObjectRef();
   }
   
-  public int newShortArray (FeatureExpr ctx, short[] buf){
+  public int newShortArray (FeatureExpr ctx, short[] buf){// TODO jens
     ElementInfo eiArray = heap.newArray(FeatureExprFactory.True(), "S", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setShortElement(ctx, i, new One<>(buf[i]));
@@ -1024,23 +1019,23 @@ public class MJIEnv {
     return eiArray.getObjectRef();
   }
 
-  public int newDoubleArray (int size) {
+  public int newDoubleArray (int size) {// TODO jens
     return heap.newArray(FeatureExprFactory.True(), "D", size, ti).getObjectRef();
   }
 
   public int newDoubleArray (FeatureExpr ctx, double[] buf){
-    ElementInfo eiArray =  heap.newArray(FeatureExprFactory.True(), "D", buf.length, ti);
+    ElementInfo eiArray =  heap.newArray(ctx, "D", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setDoubleElement(ctx, i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }
 
-  public int newFloatArray (int size) {
+  public int newFloatArray (int size) {// TODO jens
     return heap.newArray(FeatureExprFactory.True(), "F", size, ti).getObjectRef();
   }
   
-  public int newFloatArray (float[] buf){
+  public int newFloatArray (float[] buf){// TODO jens
     ElementInfo eiArray =  heap.newArray(FeatureExprFactory.True(), "F", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setFloatElement(FeatureExprFactory.True(), i, new One<>(buf[i]));
@@ -1048,11 +1043,11 @@ public class MJIEnv {
     return eiArray.getObjectRef();
   }
 
-  public int newIntArray (int size) {
+  public int newIntArray (int size) {// TODO jens
     return heap.newArray(FeatureExprFactory.True(), "I", size, ti).getObjectRef();
   }
 
-  public int newIntArray (FeatureExpr ctx, int[] buf){
+  public int newIntArray (FeatureExpr ctx, int[] buf){// TODO jens
     ElementInfo eiArray = heap.newArray(ctx, "I", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setIntElement( ctx, i, new One<>(buf[i]));
@@ -1060,11 +1055,11 @@ public class MJIEnv {
     return eiArray.getObjectRef();
   }
 
-  public int newLongArray (int size) {
+  public int newLongArray (int size) {// TODO jens
     return heap.newArray(FeatureExprFactory.True(), "J", size, ti).getObjectRef();
   }
 
-  public int newLongArray (long[] buf){
+  public int newLongArray (long[] buf){// TODO jens
     ElementInfo eiArray = heap.newArray(null, "J", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setLongElement( null, i, new One<>(buf[i]));
@@ -1072,7 +1067,7 @@ public class MJIEnv {
     return eiArray.getObjectRef();
   }
 
-  public int newObjectArray (String elementClsName, int size) {
+  public int newObjectArray (String elementClsName, int size) {// TODO jens
     if (!elementClsName.endsWith(";")) {
       elementClsName = Types.getTypeSignature(elementClsName, false);
     }
@@ -1115,7 +1110,7 @@ public class MJIEnv {
     }
   }
   
-  public int newString (FeatureExpr ctx, String s) {
+  public int newString (FeatureExpr ctx, String s) {// TODO jens remove
 	  return newString(ctx, new One<>(s));
   }
   
@@ -1137,7 +1132,7 @@ public class MJIEnv {
     return aref;
   }
 
-  public int newString (int arrayRef) {
+  public int newString (int arrayRef) {// TODO jens
     String t = getArrayType(arrayRef);
     String s = null;
 
@@ -1227,7 +1222,7 @@ public class MJIEnv {
 	  }
 
 
-  public int newBoolean (boolean b){
+  public int newBoolean (boolean b){// TODO jens
     return getStaticReferenceField("java.lang.Boolean", b ? "TRUE" : "FALSE");
   }
 

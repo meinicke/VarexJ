@@ -25,6 +25,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -66,7 +67,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     
     int n = out.position();
     for (int i=0; i<n; i++){
-      env.setByteArrayElement(NativeMethodInfo.CTX,bref,i, out.get(i));
+      env.setByteArrayElement(NativeMethodInfo.CTX,bref,i, new One<>(out.get(i)));
     }
     
     return n;
@@ -94,7 +95,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     
     int n = out.position();
     for (int i=0; i<n; i++){
-      env.setByteArrayElement(NativeMethodInfo.CTX,bufref,i, out.get(i));
+      env.setByteArrayElement(NativeMethodInfo.CTX,bufref,i, new One<>(out.get(i)));
     }
     
     return n;

@@ -129,7 +129,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     long current_posn = env.getLongField(this_ptr, current_position).getValue();
     long current_len = env.getLongField(this_ptr, current_length).getValue();
     while (i < len && current_posn < current_len) {
-      env.setByteArrayElement(NativeMethodInfo.CTX, data_array, start + i, readByte____B(env, this_ptr));
+      env.setByteArrayElement(NativeMethodInfo.CTX, data_array, start + i, new One<>(readByte____B(env, this_ptr)));
       i += 1;
       current_posn += 1;
     }

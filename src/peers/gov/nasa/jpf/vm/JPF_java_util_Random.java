@@ -249,7 +249,7 @@ public class JPF_java_util_Random extends NativePeer {
     storeRandomState(env, objRef, delegatee);
 
     for (int i = 0; i < n; i++) {
-      env.setByteArrayElement(NativeMethodInfo.CTX, dataRef, i, data[i]);
+      env.setByteArrayElement(NativeMethodInfo.CTX, dataRef, i, new One<>(data[i]));
     }
   }
   
