@@ -198,7 +198,6 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     Conditional<Long> val = frame.peekLong(ctx);
     lastValue = val;
 
-    // TODO remove One
     if ((!eiFieldOwner.get2SlotField(fi).simplify(ctx).equals(val)) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       eiFieldOwner.set2SlotField(ctx, fi, val);

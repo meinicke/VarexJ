@@ -785,7 +785,7 @@ public class ThreadInfo extends InfoObject
     setState(State.RUNNING);
   }
 
-  public void setStopped(int throwableRef){
+  public void setStopped(FeatureExpr ctx, int throwableRef){
     if (isTerminated()){
       // no need to kill twice
       return;
@@ -803,8 +803,8 @@ public class ThreadInfo extends InfoObject
     // fall victim to GC, and that does not cause NoUncaughtExcceptionsProperty violations
     if (throwableRef == MJIEnv.NULL){
       // if no throwable was provided (the normal case), throw a java.lang.ThreadDeath Error
-      ClassInfo cix = ClassInfo.getInitializedSystemClassInfo(null, "java.lang.ThreadDeath", this);
-      throwableRef = createException(NativeMethodInfo.CTX, cix, null, MJIEnv.NULL);
+      ClassInfo cix = ClassInfo.getInitializedSystemClassInfo(ctx, "java.lang.ThreadDeath", this);
+      throwableRef = createException(ctx, cix, null, MJIEnv.NULL);
     }
 
     // now the tricky part - this thread is alive but might be blocked, notified
@@ -1547,7 +1547,6 @@ public class ThreadInfo extends InfoObject
   /**
    * turn a snapshot into an JPF array of StackTraceElements, which means
    * a lot of objects. Do this only on demand
- * @param ctx TODO
    */
   public int createStackTraceElements (FeatureExpr ctx, int[] snapshot) {
     int n = snapshot.length/2;
@@ -1599,7 +1598,6 @@ public class ThreadInfo extends InfoObject
    * is that this might be working off a StackTraceElement[] that is created when the exception
    * is created. At the time printStackTrace() is called, the StackFrames in question
    * are most likely already be unwinded
- * @param ctx TODO
    */
   public void printStackTrace (FeatureExpr ctx, PrintWriter pw, int objRef) {
     // 'env' usage is not ideal, since we don't know from what context we are called, and
@@ -2419,7 +2417,6 @@ public class ThreadInfo extends InfoObject
   
   /**
    * this is called upon ThreadInfo.exit() and corresponds to the private Thread.exit()
- * @param ctx TODO
    */
   void cleanupThreadObject (FeatureExpr ctx, ElementInfo ei) {
     // ideally, this should be done by calling Thread.exit(), but this
@@ -2442,7 +2439,6 @@ public class ThreadInfo extends InfoObject
    * lowest layer).
    * Since we already depend on ThreadGroup fields during VM initialization we just keep all Thread/ThreadGroup
    * related methods here
- * @param ctx TODO
    */
   void cleanupThreadGroup (FeatureExpr ctx, int grpRef, int threadRef) {
     if (grpRef != MJIEnv.NULL) {
@@ -2485,7 +2481,6 @@ public class ThreadInfo extends InfoObject
    * 
    * This method is here to keep all Thread/ThreadGroup field dependencies in one place. The downside of not keeping this in
    * VM is that we can't override in order to have specialized ThreadInfos, but there is no factory for them anyways
- * @param ctx TODO
    */
   protected void createMainThreadObject (FeatureExpr ctx, SystemClassLoaderInfo sysCl){
     //--- now create & initialize all the related JPF objects
@@ -2521,7 +2516,6 @@ public class ThreadInfo extends InfoObject
   /**
    * this creates and inits the main ThreadGroup object, which we have to do explicitly since
    * we can't execute bytecode yet
- * @param ctx TODO
    */
   protected ElementInfo createMainThreadGroup (FeatureExpr ctx, SystemClassLoaderInfo sysCl) {
     Heap heap = getHeap();
@@ -2541,7 +2535,6 @@ public class ThreadInfo extends InfoObject
 
   /**
    * this is used for all thread objects, not just main 
- * @param ctx TODO
    */
   protected void addToThreadGroup (FeatureExpr ctx, ElementInfo eiGroup){
     FieldInfo finThreads = eiGroup.getFieldInfo("nthreads");
@@ -2573,7 +2566,7 @@ public class ThreadInfo extends InfoObject
         eiGroup.setReferenceField(ctx, fiThreads, new One<>(newThreadsRef));
       }
       
-      eiGroup.setIntField(NativeMethodInfo.CTX, finThreads, new One<>(nThreads+1));
+      eiGroup.setIntField(ctx, finThreads, new One<>(nThreads+1));
       
       /** <2do> we don't model this yet
       FieldInfo finUnstartedThreads = eiGroup.getFieldInfo("nUnstartedThreads");
@@ -3009,7 +3002,6 @@ public class ThreadInfo extends InfoObject
    * the standard ThreadGroup.uncaughtException(), we would have trouble mapping
    * this to NoUncaughtExceptionProperty violations (which is just a normal
    * printStackTrace() in there).
- * @param ctx TODO
    */
   protected Instruction callUncaughtHandler (FeatureExpr ctx, ExceptionInfo xi){
     Instruction insn = null;

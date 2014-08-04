@@ -44,7 +44,6 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
    * classinfo might not correspond with the static className, but can be one of
    * the super classes. Rather than checking for this on each subsequent access,
    * we get the right one that declares the field here
- * @param ctx TODO
    */
   protected void initialize(FeatureExpr ctx) {
     ClassInfo ciRef = mi.getClassInfo().resolveReferencedClass(ctx, className);

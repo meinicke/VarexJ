@@ -124,7 +124,6 @@ public class FinalizerThreadInfo extends ThreadInfo {
   /**
    * Pushes a frame corresponding to Thread.run() into the finalizer thread stack to
    * start the thread.
- * @param ctx TODO
    */
   protected void startFinalizerThread(FeatureExpr ctx) {
     MethodInfo mi = ci.getMethod("run()V", false);

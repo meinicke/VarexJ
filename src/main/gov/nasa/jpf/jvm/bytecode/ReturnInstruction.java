@@ -180,7 +180,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
       setReturnAttr(ti, attr);
     }
 
-    return getNext(ctx, ti);// TODO ?new One<>(frame.getPC().getValue().getNext());
+    return getNext(ctx, ti);
   }
   
   public void accept(InstructionVisitor insVisitor) {

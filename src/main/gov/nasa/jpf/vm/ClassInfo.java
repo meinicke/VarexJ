@@ -502,7 +502,6 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   /**
    * the initialization part that has to happen once we have super, fields, methods and annotations
    * NOTE - this has to be called by concrete ctors after parsing class files
- * @param ctx TODO
    */
   protected void resolveAndLink (FeatureExpr ctx) throws ClassParseException {
     
@@ -1842,7 +1841,6 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * this one is for clients that need to synchronously get an initialized classinfo.
    * NOTE: we don't handle clinits here. If there is one, this will throw
    * an exception. NO STATIC BLOCKS / FIELDS ALLOWED
- * @param ctx TODO
    */
   public static ClassInfo getInitializedClassInfo (FeatureExpr ctx, String clsName, ThreadInfo ti){
     ClassLoaderInfo cl = ClassLoaderInfo.getCurrentClassLoader();
@@ -1857,7 +1855,6 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   /**
    * this registers a ClassInfo in the corresponding ClassLoader statics so that we can cross-link from
    * SUT code and access static fields.
- * @param ctx TODO
    */
   public StaticElementInfo registerClass (FeatureExpr ctx, ThreadInfo ti){
     StaticElementInfo sei = getStaticElementInfo();
@@ -2004,8 +2001,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * push the corresponding DirectCallStackFrames.
    * 
    * clients have to be aware of that frames might get pushed
-   * and properly handle re-execution
- * @param ctx TODO
+   * and properly handle re-execution 
    */
   public boolean pushRequiredClinits (FeatureExpr ctx, ThreadInfo ti){
     StaticElementInfo sei = getStaticElementInfo();    
@@ -2035,7 +2031,6 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   /**
    * perform static initialization of class
    * this recursively initializes all super classes, but NOT the interfaces
- * @param ctx TODO
  * @param ti executing thread
    *
    * @return  true if clinit stackframes were pushed, idx.e. context instruction
@@ -2073,7 +2068,6 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
 
   /**
    * local class initialization
- * @param ctx TODO
    * @return true if we pushed a &lt;clinit&gt; frame
    */
   protected boolean pushClinit (FeatureExpr ctx, ThreadInfo ti) {
@@ -2207,7 +2201,6 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   /**
    * loads superclass and direct interfaces, and computes information
    * that depends on them
- * @param ctx TODO
    */
   protected void resolveClass(FeatureExpr ctx) {
     if (!isObjectClassInfo){
@@ -2232,7 +2225,6 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * 
    * It loads the class referenced by these instructions and adds it to the 
    * resolvedClasses map of the classLoader
- * @param ctx TODO
    */
   public ClassInfo resolveReferencedClass(FeatureExpr ctx, String cname) {
     if(name.equals(cname)) {
@@ -2370,7 +2362,6 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * 
    * It is used for the cases where cl tries to load a class that the original version 
    * of which has been loaded by some other classloader.
- * @param ctx TODO
    */
   public ClassInfo cloneFor (FeatureExpr ctx, ClassLoaderInfo cl) {
     ClassInfo ci;

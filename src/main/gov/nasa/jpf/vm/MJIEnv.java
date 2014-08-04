@@ -1079,7 +1079,6 @@ public class MJIEnv {
    * check if the ClassInfo is properly initialized
    * if yes, create a new instance of it but don't call any ctor
    * if no, throw a ClinitRequired exception
- * @param ctx TODO
    */
   public int newObject (FeatureExpr ctx, ClassInfo ci) {
     if (ci.pushRequiredClinits(ctx, ti)){
@@ -1094,7 +1093,6 @@ public class MJIEnv {
    * this creates a new object without checking if the ClassInfo needs
    * initialization. This is useful in a context that already
    * is aware and handles re-execution
- * @param ctx TODO
    */
   public int newObjectOfUncheckedClass (FeatureExpr ctx, ClassInfo ci){
     ElementInfo ei = heap.newObject(ctx, ci, ti);
@@ -1269,15 +1267,15 @@ public class MJIEnv {
   }
 
 
-  public void notify (int objref) {
+  public void notify (FeatureExpr ctx, int objref) {
     // objref can't be NULL since the corresponding INVOKE would have failed
     ElementInfo ei = getModifiableElementInfo(objref);
-    notify(ei);
+    notify(ctx, ei);
   }
 
-  public void notify (ElementInfo ei) {
+  public void notify (FeatureExpr ctx, ElementInfo ei) {
     if (!ei.isLockedBy(ti)){
-      throwException(NativeMethodInfo.CTX,
+      throwException(ctx,
                                  "java.lang.IllegalMonitorStateException", "un-synchronized notify");
       return;
     }
@@ -1285,15 +1283,15 @@ public class MJIEnv {
     ei.notifies(getSystemState(), ti); 
   }
   
-  public void notifyAll (int objref) {
+  public void notifyAll (FeatureExpr ctx, int objref) {
     // objref can't be NULL since the corresponding INVOKE would have failed
     ElementInfo ei = getElementInfo(objref);
-    notifyAll(ei);
+    notifyAll(ctx, ei);
   }
 
-  public void notifyAll (ElementInfo ei) {
+  public void notifyAll (FeatureExpr ctx, ElementInfo ei) {
     if (!ei.isLockedBy(ti)){
-      throwException(NativeMethodInfo.CTX,
+      throwException(ctx,
                                  "java.lang.IllegalMonitorStateException", "un-synchronized notifyAll");
       return;
     }
@@ -1312,7 +1310,6 @@ public class MJIEnv {
   /**
    *  use this whenever a peer performs an operation on a class that might not be initialized yet
    *  Do a repeatInvocation() in this case 
- * @param ctx TODO
    */
   public boolean requiresClinitExecution(FeatureExpr ctx, ClassInfo ci) {
     return ci.pushRequiredClinits(ctx, ti);
@@ -1399,13 +1396,13 @@ public class MJIEnv {
     throwException(ctx, "java.lang.InterruptedException");
   }
 
-  public void stopThread(){
-    stopThreadWithException(MJIEnv.NULL);
+  public void stopThread(FeatureExpr ctx){
+    stopThreadWithException(ctx, MJIEnv.NULL);
   }
 
-  public void stopThreadWithException (int xRef){
+  public void stopThreadWithException (FeatureExpr ctx, int xRef){
     // this will call throwException(xRef) with the proper Throwable
-    ti.setStopped(xRef);
+    ti.setStopped(ctx, xRef);
   }
 
   void setCallEnvironment (MethodInfo mi) {

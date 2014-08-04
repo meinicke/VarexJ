@@ -167,7 +167,7 @@ public class JPF_java_lang_Object extends NativePeer {
         
     // this is a bit cluttered throughout the whole system, with the actual thread
     // notification (status change) taking place in the ElementInfo
-    env.notify(ei);
+    env.notify(NativeMethodInfo.CTX, ei);
   }
 
   @MJI
@@ -182,7 +182,7 @@ public class JPF_java_lang_Object extends NativePeer {
     
     if (!ti.isFirstStepInsn()) { // first time around
       ElementInfo ei = env.getModifiableElementInfo(objref);
-      env.notifyAll(ei); // do that before we create a CG
+      env.notifyAll(NativeMethodInfo.CTX, ei); // do that before we create a CG
       
       ChoiceGenerator<?> cg = ss.getSchedulerFactory().createNotifyAllCG(ei, ti);
       if (ss.setNextChoiceGenerator(cg)){

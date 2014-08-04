@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * a stackframe that is used for executing Java bytecode, supporting both locals
@@ -89,7 +90,7 @@ public class JVMStackFrame extends StackFrame {
 	 */
 	@Override
 	public void setArgumentLocal(int idx, int v, Object attr) {
-		setLocalVariable(NativeMethodInfo.CTX, idx, v);
+		setLocalVariable(TRUE, idx, v);
 		if (attr != null) {
 			setLocalAttr(idx, attr);
 		}

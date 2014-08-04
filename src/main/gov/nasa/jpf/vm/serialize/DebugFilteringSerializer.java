@@ -33,7 +33,6 @@ public class DebugFilteringSerializer extends FilteringSerializer implements Deb
 
   @Override
   public void setOutputStream(OutputStream os) {
-    // TODO Auto-generated method stub
 
   }
 

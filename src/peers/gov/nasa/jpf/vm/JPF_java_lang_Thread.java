@@ -461,6 +461,6 @@ public class JPF_java_lang_Thread extends NativePeer {
       }
     }
 
-    tiStop.setStopped(throwableRef);
+    tiStop.setStopped(NativeMethodInfo.CTX, throwableRef);
   }
 }

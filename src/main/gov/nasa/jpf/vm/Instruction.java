@@ -295,7 +295,6 @@ public abstract class Instruction implements Cloneable {
 	 * this is a misnomer - we actually push the clinit calls here in case we
 	 * need some. 'causedClinitCalls' might be more appropriate, but it is used
 	 * in a number of external projects
-	 * @param ctx TODO
 	 */
 	public boolean requiresClinitExecution(FeatureExpr ctx, ThreadInfo ti, ClassInfo ci) {
 		return ci.pushRequiredClinits(ctx, ti);

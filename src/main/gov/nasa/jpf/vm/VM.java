@@ -429,12 +429,12 @@ public abstract class VM {
    * 
    * returned ClassInfos are not yet registered in Statics and don't have class objects
    */
-  protected List<ClassInfo> getStartupSystemClassInfos (SystemClassLoaderInfo sysCl, ThreadInfo tiMain){
+  protected List<ClassInfo> getStartupSystemClassInfos (FeatureExpr ctx, SystemClassLoaderInfo sysCl, ThreadInfo tiMain){
     LinkedList<ClassInfo> list = new LinkedList<ClassInfo>();
     
     try {
       for (String clsName : getStartupSystemClassNames()) {
-        ClassInfo ci = sysCl.getResolvedClassInfo(NativeMethodInfo.CTX, clsName);
+        ClassInfo ci = sysCl.getResolvedClassInfo(ctx, clsName);
         ci.registerStartupClass( tiMain, list); // takes care of superclasses and interfaces
       }
     } catch (ClassInfoException e){
@@ -540,7 +540,6 @@ public abstract class VM {
   /**
    * this is the main initialization point that sets up startup objects threads and callstacks.
    * If this returns false VM initialization cannot proceed and JPF will terminate
- * @param ctx TODO
    */
   public abstract boolean initialize (FeatureExpr ctx);
   
@@ -548,13 +547,12 @@ public abstract class VM {
    * create and initialize the main thread for the given ApplicationContext.
    * This is called from VM.initialize() implementations, the caller has to handle exceptions that should be reported
    * differently (JPFConfigException, ClassInfoException)
- * @param ctx TODO
    */
   protected ThreadInfo initializeMainThread (FeatureExpr ctx, ApplicationContext appCtx, int tid){
     SystemClassLoaderInfo sysCl = appCtx.sysCl;
     
     ThreadInfo tiMain = createMainThreadInfo(tid, appCtx);
-    List<ClassInfo> startupClasses = getStartupSystemClassInfos(sysCl, tiMain);
+    List<ClassInfo> startupClasses = getStartupSystemClassInfos(ctx, sysCl, tiMain);
     ClassInfo ciMain = getMainClassInfo(sysCl, appCtx.mainClassName, tiMain, startupClasses);
 
     if (!checkSystemClassCompatibility( sysCl)){

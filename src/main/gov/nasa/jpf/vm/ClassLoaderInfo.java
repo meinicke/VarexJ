@@ -177,7 +177,6 @@ public class ClassLoaderInfo
   
   /**
    * for all other classloaders, which require an already instantiated ClassLoader object 
- * @param ctx TODO
    */
   protected ClassLoaderInfo (FeatureExpr ctx, VM vm, int objRef, ClassPath cp, ClassLoaderInfo parent) {
     resolvedClasses = new HashMap<String,ClassInfo>();
@@ -329,7 +328,6 @@ public class ClassLoaderInfo
    * by calling initializeClass(ti,insn)
    *
    * this is for loading classes from the file system 
- * @param ctx TODO
    */
   public ClassInfo getResolvedClassInfo (FeatureExpr ctx, String className) throws ClassInfoException {
     String typeName = Types.getClassNameFromTypeName( className);
@@ -459,7 +457,6 @@ public class ClassLoaderInfo
    * this one is for clients that need to synchronously get an initialized classinfo.
    * NOTE: we don't handle clinits here. If there is one, this will throw
    * an exception. NO STATIC BLOCKS / FIELDS ALLOWED
- * @param ctx TODO
    */
   public ClassInfo getInitializedClassInfo (FeatureExpr ctx, String clsName, ThreadInfo ti){
     ClassInfo ci = getResolvedClassInfo(ctx, clsName);

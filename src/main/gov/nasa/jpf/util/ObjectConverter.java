@@ -42,7 +42,6 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 public class ObjectConverter {
   /**
    * Create JPF object from Java object
- * @param ctx TODO
  * @param env - MJI environment
  * @param javaObject - java object that is used to created JPF object from
    * @return reference to new JPF object

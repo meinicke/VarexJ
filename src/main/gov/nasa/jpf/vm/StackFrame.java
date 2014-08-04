@@ -557,7 +557,6 @@ public int nLocals;
   /**
    * this returns all of them - use either if you know there will be only
    * one attribute at callerSlots time, or check/process result with ObjectList
- * @param ctx TODO
    */
   public Object getOperandAttr (FeatureExpr ctx, int offset) {
     int i = getTopPos(ctx)-offset;
@@ -663,7 +662,6 @@ public int nLocals;
   /**
    * this returns all of them - use either if you know there will be only
    * one attribute at callerSlots time, or check/process result with ObjectList
- * @param ctx TODO
    */
   public Object getLongOperandAttr (FeatureExpr ctx) {
     return getOperandAttr(ctx, 1);
@@ -1801,7 +1799,7 @@ pw.print(stack);
 		if (hasAttrs()) {
 			int top = getTopPos(ctx);
 			int t = top - n;
-			if (attrs != null) { // just to avoid memory leaks // TODO
+			if (attrs != null) { // just to avoid memory leaks
 				for (int i = top; i > t; i--) {
 					attrs[i] = null;
 				}

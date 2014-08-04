@@ -124,7 +124,7 @@ public class DynamicElementInfo extends ElementInfo {
       throw new JPFException("object is not of type java.lang.String");
     }
 
-    int vref = getDeclaredReferenceField("value", "java.lang.String").simplify(NativeMethodInfo.CTX).getValue();    
+    int vref = getDeclaredReferenceField("value", "java.lang.String").getValue();    
     if (vref != MJIEnv.NULL){
       ElementInfo eVal = VM.getVM().getHeap().get(vref);
       return eVal.asCharArray();

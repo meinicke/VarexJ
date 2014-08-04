@@ -56,7 +56,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 
     if (dim.length > (d + 1)) {
       for (int i = 0; i < l; i++) {
-        eiArray.setReferenceElement(NativeMethodInfo.CTX, i, new One<>(allocateArray(heap, type, dim, ti, d + 1)));
+        eiArray.setReferenceElement(FeatureExprFactory.True(), i, new One<>(allocateArray(heap, type, dim, ti, d + 1)));
       }
     }
 
