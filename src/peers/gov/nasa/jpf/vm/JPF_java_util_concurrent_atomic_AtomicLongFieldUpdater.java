@@ -65,7 +65,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
 
     long v = ei.getLongField(fi).getValue();
     if (v == fExpect) {
-      ei.setLongField(ctx, fi, fUpdate);
+      ei.setLongField(ctx, fi, new One<>(fUpdate));
       return true;
     } else {
       return false;
@@ -91,7 +91,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
 
-    ei.setLongField(ctx, fi, fNewValue);
+    ei.setLongField(ctx, fi, new One<>(fNewValue));
   }
 
   @MJI
@@ -129,7 +129,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     long result = ei.getLongField(fi).getValue();
 
-    ei.setLongField(ctx, fi, fNewValue);
+    ei.setLongField(ctx, fi, new One<>(fNewValue));
 
     return result;
   }
@@ -148,7 +148,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
     long result = ei.getLongField(fi).getValue();
 
-    ei.setLongField(ctx, fi, result + fDelta);
+    ei.setLongField(ctx, fi, new One<>(result + fDelta));
 
     return result;
   }

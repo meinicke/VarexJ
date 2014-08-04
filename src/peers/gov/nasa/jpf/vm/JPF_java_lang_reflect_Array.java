@@ -216,7 +216,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public long getLong__Ljava_lang_Object_2I__J (MJIEnv env, int clsRef, int aref, int index) {
     if (check(env, aref, index)) {
-      return env.getLongArrayElement(aref, index);
+      return env.getLongArrayElement(aref, index).getValue();
     }
     return 0;
   }

@@ -203,7 +203,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
       env.setDoubleField(ctx, numberRef, "value", new One<>(number.doubleValue()));
     } else if(number instanceof Long) {
       numberRef = env.newObject(ctx, "java.lang.Long");
-      env.setLongField(ctx, numberRef, "value", number.longValue());
+      env.setLongField(ctx, numberRef, "value", new One<>(number.longValue()));
     }
     return numberRef;
   }

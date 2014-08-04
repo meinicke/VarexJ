@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -62,7 +63,7 @@ public class JPF_java_text_DateFormat extends NativePeer {
       long t = d.getTime();
       FeatureExpr ctx = NativeMethodInfo.CTX;
       int dref = env.newObject(NativeMethodInfo.CTX, "java.util.Date");
-      env.setLongField(ctx, dref, "fastTime", t);
+      env.setLongField(ctx, dref, "fastTime", new One<>(t));
       return dref;
 
     } catch (ParseException px) {

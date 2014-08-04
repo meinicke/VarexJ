@@ -18,8 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * native peer for java.util.concurrent.atomic.AtomicLong
@@ -36,7 +37,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLong extends NativePeer {
     long value = env.getLongField(objRef, "value").getValue();
     FeatureExpr ctx = NativeMethodInfo.CTX;
     if (value == expect){
-      env.setLongField(ctx, objRef, "value", update);
+      env.setLongField(ctx, objRef, "value", new One<>(update));
       return true;
     } else {
       return false;

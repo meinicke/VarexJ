@@ -304,7 +304,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, LongFieldInfo.class, "long", true);
     if (ei != null){
-      ei.setLongField(NativeMethodInfo.CTX,fi, val);
+      ei.setLongField(NativeMethodInfo.CTX,fi, new One<>(val));
     }
   }
 
@@ -351,7 +351,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         Conditional<Float> f = ei.getFloatField(fi);
         return env.newFloat(ctx, f);
       } else if (fi instanceof LongFieldInfo){
-        long l = ei.getLongField(fi).getValue();
+        Conditional<Long> l = ei.getLongField(fi);
         return env.newLong(ctx, l);
       } else if (fi instanceof IntegerFieldInfo){
         // this might actually represent a plethora of types
@@ -520,7 +520,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
         ei.setIntField(NativeMethodInfo.CTX, fi, val);
         return true;
       } else if ("long".equals(fieldType)){
-        long val = env.getLongField(value, fieldName).getValue();
+        Conditional<Long> val = env.getLongField(value, fieldName);
         ei.setLongField(ctx, fi, val);
         return true;
       } else if ("float".equals(fieldType)){

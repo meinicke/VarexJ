@@ -30,14 +30,14 @@ public class JPF_java_util_concurrent_atomic_AtomicLongArray extends NativePeer 
   public long getNative__I__J (MJIEnv env, int objRef, int index) {
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
-    return env.getLongArrayElement(arrayRef, index);
+    return env.getLongArrayElement(arrayRef, index).getValue();
   }
 
   @MJI
   public boolean compareAndSetNative__IJJ__Z (MJIEnv env, int objRef, int index, long expect, long update) {
 	  FeatureExpr ctx = NativeMethodInfo.CTX;
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
-    long value = env.getLongArrayElement(arrayRef, index);
+    long value = env.getLongArrayElement(arrayRef, index).getValue();
     if (value == expect) {
       env.setLongArrayElement(ctx, arrayRef, index, update);
       return true;

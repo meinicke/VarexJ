@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -193,7 +194,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           FileChannel fc = fos.getChannel();
           fc.position(off);
           fos.write(b);
-          env.setLongField(ctx, objref, "off", fc.position());
+          env.setLongField(ctx, objref, "off", new One<>(fc.position()));
           
         } else {
           env.throwException(ctx, "java.io.IOException", "write attempt on file opened for read access");
@@ -236,7 +237,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           }
           fos.write(buf);
           
-          env.setLongField(ctx, objref, "off", fc.position());
+          env.setLongField(ctx, objref, "off", new One<>(fc.position()));
           
         } else {
           env.throwException(ctx, "java.io.IOException", "write attempt on file opened for read access");
@@ -272,7 +273,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           FileChannel fc = fis.getChannel();
           fc.position(off);
           int r = fis.read();
-          env.setLongField(ctx, objref, "off", fc.position());
+          env.setLongField(ctx, objref, "off", new One<>(fc.position()));
           return r;
         } else {
           env.throwException(ctx, "java.io.IOException", "read attempt on file opened for write access");
@@ -317,7 +318,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           for (int i=0, j=offset; i<len; i++, j++) {
             env.setByteArrayElement(ctx, bufref, j, buf[i]);
           }
-          env.setLongField(ctx, objref, "off", fc.position());
+          env.setLongField(ctx, objref, "off", new One<>(fc.position()));
           return r;
           
         } else {
@@ -358,7 +359,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           fc.position(off);
 
           long r = fis.skip(nBytes);
-          env.setLongField(ctx, objref, "off", fc.position());
+          env.setLongField(ctx, objref, "off", new One<>(fc.position()));
           return r;
           
         } else {

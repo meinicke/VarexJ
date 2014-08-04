@@ -88,11 +88,11 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     setDataValue(env, chunk, current_posn, (byte) data, chunk_size);
     current_posn += 1;
     FeatureExpr ctx = NativeMethodInfo.CTX;
-	env.setLongField(ctx, this_ptr, current_position, current_posn);
+	env.setLongField(ctx, this_ptr, current_position, new One<>(current_posn));
     if (current_posn >= current_len) {
-      env.setLongField(ctx, this_ptr, current_length, current_posn + 1);
+      env.setLongField(ctx, this_ptr, current_length, new One<>(current_posn + 1));
       // update length in the mapped object if it exists
-      env.setLongField(ctx, getMapping(env,this_ptr), current_length, current_posn + 1);
+      env.setLongField(ctx, getMapping(env,this_ptr), current_length, new One<>(current_posn + 1));
     }
   }
 
@@ -115,11 +115,11 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     FeatureExpr ctx = NativeMethodInfo.CTX;
     if (current_posn >= len && len < current_len) {
       
-	env.setLongField(ctx, this_ptr, current_position, len);
+	env.setLongField(ctx, this_ptr, current_position, new One<>(len));
     }
-    env.setLongField(ctx, this_ptr, current_length, len);
+    env.setLongField(ctx, this_ptr, current_length, new One<>(len));
     // update length in the mapped object if it exists
-    env.setLongField(ctx, getMapping(env,this_ptr), current_length, current_posn + 1);
+    env.setLongField(ctx, getMapping(env,this_ptr), current_length, new One<>(current_posn + 1));
   }
 
   @MJI
@@ -151,7 +151,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int chunk = findDataChunk(env, this_ptr, current_posn,
                               chunk_size);
     byte result = getDataValue(env, chunk, current_posn, chunk_size);
-    env.setLongField(ctx, this_ptr, current_position, current_posn + 1);
+    env.setLongField(ctx, this_ptr, current_position, new One<>(current_posn + 1));
     return result;
   }
 
@@ -195,7 +195,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int result = env.newObject(ctx, dataRep);
     int int_array = env.newIntArray(chunk_size/INT_SIZE);
     env.setReferenceField(NativeMethodInfo.CTX, result, data, int_array);
-    env.setLongField(ctx, result, chunk_index, chunk_idx);
+    env.setLongField(ctx, result, chunk_index, new One<>(chunk_idx));
     env.setReferenceField(NativeMethodInfo.CTX, result, next, cur_obj);
     if (prev_obj == MJIEnv.NULL) {
       env.setReferenceField(NativeMethodInfo.CTX, this_ptr, data_root, result);

@@ -817,7 +817,7 @@ public abstract class ElementInfo implements Cloneable {
   public void setIntField(FeatureExpr ctx, String fname, Conditional<Integer> value) {
     setIntField(ctx, getFieldInfo(fname), value);
   }
-  public void setLongField (FeatureExpr ctx, String fname, long value) {
+  public void setLongField (FeatureExpr ctx, String fname, Conditional<Long> value) {
     setLongField( ctx, getFieldInfo(fname), value);
   }
   public void setFloatField (FeatureExpr ctx, String fname, Conditional<Float> value) {
@@ -915,12 +915,12 @@ public abstract class ElementInfo implements Cloneable {
     }
   }
 
-  public void setLongField(FeatureExpr ctx, FieldInfo fi, long newValue) {// TODO jens
+  public void setLongField(FeatureExpr ctx, FieldInfo fi, Conditional<Long> newValue) {
     checkIsModifiable();
 
     if (fi.isLongField()) {
       int offset = fi.getStorageOffset();
-      fields.setLongValue( ctx, offset, new One<>(newValue));
+      fields.setLongValue( ctx, offset, newValue);
     } else {
       throw new JPFException("not a long field: " + fi.getName());
     }

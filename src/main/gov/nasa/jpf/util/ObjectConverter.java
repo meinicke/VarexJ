@@ -114,7 +114,7 @@ public class ObjectConverter {
         newObjEI.setIntField(ctx, fi, new One<>(javaField.getInt(javaObject)));
       }
       else if (jpfTypeName.equals("long")) {
-        newObjEI.setLongField(ctx, fi, javaField.getLong(javaObject));
+        newObjEI.setLongField(ctx, fi, new One<>(javaField.getLong(javaObject)));
       }
       else if (jpfTypeName.equals("float")) {
         newObjEI.setFloatField(ctx, fi, new One<>(javaField.getFloat(javaObject)));

@@ -241,7 +241,7 @@ public class BoxObjectCacheManager {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long");
     for (int i = 0; i < n; i++) {
       ElementInfo eiLong = heap.newSystemObject(ctx, ci, ti, ANCHOR);
-      eiLong.setLongField(ctx, "value", i + longLow);
+      eiLong.setLongField(ctx, "value", new One<>((long) (i + longLow)));
       eiArray.setReferenceElement(ctx, i, new One<>(eiLong.getObjectRef()));
     }
 
@@ -262,7 +262,7 @@ public class BoxObjectCacheManager {
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long");
     ElementInfo eiLong = ti.getHeap().newObject(ctx, ci, ti);
-    eiLong.setLongField(ctx, "value", l);
+    eiLong.setLongField(ctx, "value", new One<>(l));
     return eiLong.getObjectRef();
   }
 }

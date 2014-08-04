@@ -223,7 +223,7 @@ public class JSONObject{
 		  ei.setIntField(ctx, fi, new One<>(val.getDouble().intValue()));
 
 		} else if (primitiveName.equals("long")) {
-		  ei.setLongField(ctx, fi, val.getDouble().longValue());
+		  ei.setLongField(ctx, fi, new One<>(val.getDouble().longValue()));
 
 		} else if (primitiveName.equals("float")) {
 		  ei.setFloatField(ctx, fi, new One<>(val.getDouble().floatValue()));
@@ -374,7 +374,7 @@ public class JSONObject{
 		    ei.setIntField(ctx, fi, new One<>(number.intValue()));
 
 		  } else if (primitiveName.equals("long")) {
-		    ei.setLongField(ctx, fi, number.longValue());
+		    ei.setLongField(ctx, fi, new One<>(number.longValue()));
 
 		  } else if (primitiveName.equals("float")) {
 		    ei.setFloatField(ctx, fi, new One<>(number.floatValue()));

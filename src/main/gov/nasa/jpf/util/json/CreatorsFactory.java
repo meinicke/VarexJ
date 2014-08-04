@@ -118,7 +118,7 @@ class BoxedLongCreator implements Creator {
     if (read != null) {
       longRef = env.newObject(ctx, "java.lang.Long");
       ElementInfo ei = env.getModifiableElementInfo(longRef);
-      ei.setLongField(ctx, "value", read.longValue());
+      ei.setLongField(ctx, "value", new One<>(read.longValue()));
     }
 
     return longRef;

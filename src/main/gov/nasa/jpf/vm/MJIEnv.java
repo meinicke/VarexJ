@@ -530,11 +530,11 @@ public class MJIEnv {
     heap.getModifiable(objref).setLongElement(ctx, index, new One<>(value));
   }
 
-  public long getLongArrayElement (int objref, int index) {
-    return heap.get(objref).getLongElement(index).getValue();
+  public Conditional<Long> getLongArrayElement (int objref, int index) {
+    return heap.get(objref).getLongElement(index);
   }
 
-  public void setLongField (FeatureExpr ctx, int objref, String fname, long val) {
+  public void setLongField (FeatureExpr ctx, int objref, String fname, Conditional<Long> val) {
     ElementInfo ei = heap.getModifiable(objref);
     ei.setLongField(ctx, fname, val);
   }
@@ -690,14 +690,14 @@ public class MJIEnv {
     return ei.getIntField(fname).simplify(null).getValue();
   }
 
-  public void setStaticLongField (String clsName, String fname, long value) {
+  public void setStaticLongField (FeatureExpr ctx, String clsName, String fname, Conditional<Long> value) {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
-    ci.getStaticElementInfo().setLongField(null, fname, value);
+    ci.getStaticElementInfo().setLongField(ctx, fname, value);
   }
 
-  public void setStaticLongField (int clsObjRef, String fname, long val) {
+  public void setStaticLongField (FeatureExpr ctx, int clsObjRef, String fname, Conditional<Long> val) {
     ElementInfo cei = getModifiableStaticElementInfo(clsObjRef);
-    cei.setLongField(null, fname, val);
+    cei.setLongField(ctx, fname, val);
   }
 
   public long getStaticLongField (int clsRef, String fname) {
@@ -1237,7 +1237,7 @@ public class MJIEnv {
     return ei.getObjectRef();
   }
 
-  public int newLong (FeatureExpr ctx, long l){
+  public int newLong (FeatureExpr ctx, Conditional<Long> l){
     ElementInfo ei = heap.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long"), ti);
     ei.setLongField(ctx, "value", l);
     return ei.getObjectRef();
@@ -1636,7 +1636,7 @@ public class MJIEnv {
     } else if (v instanceof Integer){
       setIntField(ctx, proxyRef, fname, new One<>(((Integer)v).intValue()));
     } else if (v instanceof Long){
-      setLongField(ctx, proxyRef, fname, ((Long)v).longValue());
+      setLongField(ctx, proxyRef, fname, new One<>(((Long)v).longValue()));
     } else if (v instanceof Float){
       setFloatField(ctx, proxyRef, fname, new One<>(((Float)v).floatValue()));
     } else if (v instanceof Short){
