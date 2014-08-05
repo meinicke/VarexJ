@@ -27,7 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import cmu.conditional.BiFunction;
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -177,7 +177,7 @@ public class NativeMethodInfo extends MethodInfo {
 //								if (f.equivalentTo(f.andNot(ctx))) {
 //									return new One<>(y);
 //								}
-								return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
+								return ChoiceFactory.create(ctx, new One<>(y.getNext()), new One<>(y));
 							}
 
 						}).simplify();

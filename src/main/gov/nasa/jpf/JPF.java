@@ -31,7 +31,6 @@ import gov.nasa.jpf.util.RunRegistry;
 import gov.nasa.jpf.vm.NoOutOfMemoryErrorProperty;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.VMListener;
-import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -303,6 +302,11 @@ public class JPF implements Runnable {
 //      if (factory.equals("X")) {
 //      StackHandlerFactory.setStackHandler(); // TODO
 //    } else { }
+      
+      // Set ChoiceFactory
+//    if (factory.equals("Y")) {
+//    ChoiceFactory.setFactory(); // TODO
+//  } else { }
       
       
       // Set the feature model

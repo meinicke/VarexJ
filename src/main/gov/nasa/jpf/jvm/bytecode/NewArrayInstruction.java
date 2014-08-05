@@ -19,11 +19,11 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.AllocInstruction;
 import gov.nasa.jpf.vm.Types;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 
 public abstract class NewArrayInstruction extends JVMInstruction implements AllocInstruction {
 

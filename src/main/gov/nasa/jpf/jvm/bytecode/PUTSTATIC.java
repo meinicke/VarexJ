@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Choice;
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
 import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -29,6 +26,9 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -67,7 +67,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			StackFrame frame = ti.getModifiableTopFrame();
 			FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
 			frame.pop(ctx);
-			frame.push(ctx, new Choice<>(feature, new One<>(1), new One<>(0)));
+			frame.push(ctx, ChoiceFactory.create(feature, new One<>(1), new One<>(0)));
 		}
 		
 		if (!ti.isFirstStepInsn()) { // top half

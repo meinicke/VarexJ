@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
 

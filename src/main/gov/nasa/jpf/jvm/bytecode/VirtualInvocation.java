@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -122,7 +123,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			if (!splitRef) {
 				return ti.getPC();
 			}
-			return new Choice<>(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify(); // we can't just return the first callee insn
+			return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify(); // we can't just return the first callee insn
 								// if a listener throws an exception
 
 		}

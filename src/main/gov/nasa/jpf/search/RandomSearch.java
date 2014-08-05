@@ -19,7 +19,6 @@
 package gov.nasa.jpf.search;
 
 
-import cmu.conditional.Conditional;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.RestorableVMState;
 import gov.nasa.jpf.vm.VM;

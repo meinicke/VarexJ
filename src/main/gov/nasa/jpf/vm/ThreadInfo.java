@@ -47,7 +47,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -1973,7 +1973,7 @@ public class ThreadInfo extends InfoObject
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
     		} else if (i instanceof ReturnInstruction) {
-    			next = new Choice<>(ctx, next, getPC());
+    			next = ChoiceFactory.create(ctx, next, getPC());
     			if (top != null) {
     				nextPc = next.simplify(top.stack.getCtx());
     				
@@ -1981,14 +1981,14 @@ public class ThreadInfo extends InfoObject
     				nextPc = next;
     			}
     		} else if (i instanceof ATHROW) {
-    			nextPc = new Choice<>(ctx, next, getPC()).simplify();
+    			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
     			if (!(pc instanceof One) && currentStackDepth < stackDepth) {
     				oldStack.stack.setCtx(oldStack.stack.getCtx().andNot(ctx));
 					throwInstruction = true;
     				oldStack.setPC(pc.simplify(oldStack.stack.getCtx()));
     			}
     		} else {
-    			nextPc = new Choice<>(ctx, next, pc).simplify(top.stack.getCtx());
+    			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
     		}
     		
         } catch (ClassInfoException cie) {
@@ -2962,7 +2962,7 @@ public class ThreadInfo extends InfoObject
       // jump to the exception handler and set pc so that listeners can see it
       int handlerOffset = matchingHandler.getHandler();
       insn = handlerFrame.getMethodInfo().getInstructionAt(handlerOffset);
-      handlerFrame.setPC(new Choice<>(ctx, new One<>(insn), handlerFrame.getPC()));
+      handlerFrame.setPC(ChoiceFactory.create(ctx, new One<>(insn), handlerFrame.getPC()));
 
       // notify before we reset the pendingException
       vm.notifyExceptionHandled(this);

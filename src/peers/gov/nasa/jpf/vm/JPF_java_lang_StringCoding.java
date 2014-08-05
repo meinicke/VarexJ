@@ -19,8 +19,8 @@
 
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Function;
 import gov.nasa.jpf.annotation.MJI;
+import cmu.conditional.Function;
 
 /**
  * we are not really interested in model checking this, so we intercept

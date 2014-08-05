@@ -24,7 +24,7 @@ import gov.nasa.jpf.util.IntVector;
 
 import java.io.PrintStream;
 
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -99,7 +99,7 @@ public class ByteArrayFields extends ArrayFields {
 	  if (Conditional.isTautology(ctx)) {
 		  values[pos] = b;
 	  } else {
-		  values[pos] = new Choice<>(ctx, b, values[pos]).simplify();
+		  values[pos] = ChoiceFactory.create(ctx, b, values[pos]).simplify();
 	  }
   }
 

@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.va.Stack;
 import java.util.Map;
 
 import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -112,7 +113,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 		return ti.getPC();
 	}
 	
-	return new Choice<>(ctx, ti.getPC(), new One<Instruction>(this)).simplify();
+	return ChoiceFactory.create(ctx, ti.getPC(), new One<Instruction>(this)).simplify();
   }
 
   /**

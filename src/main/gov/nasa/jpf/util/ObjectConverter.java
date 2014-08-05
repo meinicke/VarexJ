@@ -30,7 +30,6 @@ import gov.nasa.jpf.vm.MJIEnv;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
-import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;

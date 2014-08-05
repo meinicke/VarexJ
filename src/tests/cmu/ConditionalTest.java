@@ -6,7 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import cmu.conditional.BiFunction;
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
@@ -148,7 +148,7 @@ public class ConditionalTest {
 	}
 	
 	private static Conditional<Integer> Choice(FeatureExpr f, Conditional<Integer> first, Conditional<Integer> second) {
-		return new Choice<>(f, first, second);
+		return ChoiceFactory.create(f, first, second);
 	}
 
 	private static One<Integer> One(int i) {

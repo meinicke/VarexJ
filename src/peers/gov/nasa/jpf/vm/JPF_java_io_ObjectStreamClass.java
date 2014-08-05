@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Conditional;
 import gov.nasa.jpf.annotation.MJI;
+import cmu.conditional.Conditional;
 
 public class JPF_java_io_ObjectStreamClass extends NativePeer {
   @MJI

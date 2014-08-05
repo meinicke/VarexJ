@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Conditional;
 import gov.nasa.jpf.util.IntArray;
 import gov.nasa.jpf.util.IntTable;
+import cmu.conditional.Conditional;
 
 /**
  * Implements a lossless StateSet

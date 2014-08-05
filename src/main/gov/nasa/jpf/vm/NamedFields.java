@@ -19,12 +19,13 @@
 
 package gov.nasa.jpf.vm;
 
-import java.util.Arrays;
-
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
+
+import java.util.Arrays;
+
 import cmu.conditional.BiFunction;
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
@@ -178,7 +179,7 @@ public class NamedFields extends Fields {
 		if (Conditional.isTautology(ctx)) {
 			values[index] = newValue;
 		} else {
-			values[index] = new Choice<>(ctx, newValue, values[index]).simplify();
+			values[index] = ChoiceFactory.create(ctx, newValue, values[index]).simplify();
 		}
 	}
 
@@ -187,7 +188,7 @@ public class NamedFields extends Fields {
 		if (Conditional.isTautology(ctx)) {
 			values[index] = new One<>(newValue.getValue() ? 1 : 0);
 		} else {
-			values[index] = new Choice<>(ctx, newValue.map(new Function<Boolean, Integer>() {
+			values[index] = ChoiceFactory.create(ctx, newValue.map(new Function<Boolean, Integer>() {
 	
 				@Override
 				public Integer apply(Boolean v) {
@@ -203,7 +204,7 @@ public class NamedFields extends Fields {
 		if (Conditional.isTautology(ctx)) {
 			values[index] = new One<>((int)newValue.getValue());	
 		} else {
-			values[index] = new Choice<>(ctx, newValue.map(new Function<Byte, Integer>() {
+			values[index] = ChoiceFactory.create(ctx, newValue.map(new Function<Byte, Integer>() {
 	
 				@Override
 				public Integer apply(Byte x) {
@@ -216,7 +217,7 @@ public class NamedFields extends Fields {
 
 	@Override
 	public void setCharValue(FeatureExpr ctx, int index, Conditional<Character> newValue) {
-		values[index] = new Choice<>(ctx, newValue.map(new SetCharValue()), values[index]).simplify();
+		values[index] = ChoiceFactory.create(ctx, newValue.map(new SetCharValue()), values[index]).simplify();
 	}
 	
 	private static final class SetCharValue implements Function<Character, Integer> {
@@ -232,7 +233,7 @@ public class NamedFields extends Fields {
 		if (Conditional.isTautology(ctx)) {
 			values[index] = new One<>((int)(newValue.getValue()));	
 		} else {
-			values[index] = new Choice<>(ctx, newValue.map(new Function<Short, Integer>() {
+			values[index] = ChoiceFactory.create(ctx, newValue.map(new Function<Short, Integer>() {
 	
 				@Override
 				public Integer apply(Short v) {
@@ -248,7 +249,7 @@ public class NamedFields extends Fields {
 		if (Conditional.isTautology(ctx)) {
 			values[index] = new One<>(Types.floatToInt(newValue.getValue()));	
 		} else {
-			values[index] = new Choice<>(ctx, newValue.map(new Function<Float, Integer>() {
+			values[index] = ChoiceFactory.create(ctx, newValue.map(new Function<Float, Integer>() {
 	
 				@Override
 				public Integer apply(Float v) {
@@ -264,7 +265,7 @@ public class NamedFields extends Fields {
 		 if (Conditional.isTautology(ctx)) {
 			  values[pos] = newValue;	  
 		  } else {
-			  values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+			  values[pos] = ChoiceFactory.create(ctx, newValue, values[pos]).simplify();
 		  }
 	}
 
@@ -278,8 +279,8 @@ public class NamedFields extends Fields {
 					values[index] = new One<>(Types.hiLong(newValue));
 					values[index + 1] = new One<>(Types.loLong(newValue));
 				} else if (!Conditional.isContradiction(ctx)) {
-					values[index] = new Choice<>(ctx, new One<>(Types.hiLong(newValue)), values[index]);
-					values[index + 1] = new Choice<>(ctx, new One<>(Types.loLong(newValue)), values[index + 1]);
+					values[index] = ChoiceFactory.create(ctx, new One<>(Types.hiLong(newValue)), values[index]);
+					values[index + 1] = ChoiceFactory.create(ctx, new One<>(Types.loLong(newValue)), values[index + 1]);
 				}
 				return null;
 			}
@@ -299,8 +300,8 @@ public class NamedFields extends Fields {
 					values[index] = new One<>(Types.hiDouble(newValue));
 					values[index + 1] = new One<>(Types.loDouble(newValue));
 				} else if (!Conditional.isContradiction(ctx)) {
-					values[index] = new Choice<>(ctx, new One<>(Types.hiDouble(newValue)), values[index]);
-					values[index + 1] = new Choice<>(ctx, new One<>(Types.loDouble(newValue)), values[index + 1]);
+					values[index] = ChoiceFactory.create(ctx, new One<>(Types.hiDouble(newValue)), values[index]);
+					values[index + 1] = ChoiceFactory.create(ctx, new One<>(Types.loDouble(newValue)), values[index + 1]);
 				}
 				return null;
 			}

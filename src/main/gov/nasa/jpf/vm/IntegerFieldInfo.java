@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 

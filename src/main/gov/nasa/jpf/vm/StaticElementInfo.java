@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Conditional;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.HashData;
+import cmu.conditional.Conditional;
 
 /**
  * A specialized version of ElementInfo that is used for static fields. Each

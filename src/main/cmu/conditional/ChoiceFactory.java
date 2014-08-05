@@ -1,0 +1,26 @@
+package cmu.conditional;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
+public class ChoiceFactory {
+	
+	private static Factory f = new DefaultChoiceFactory();
+	
+	public static <T> IChoice<T> create(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
+		return f.create(featureExpr, thenBranch, elseBranch);
+	}
+}
+
+interface Factory {
+	<T> IChoice<T> create(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch); 
+}
+
+class DefaultChoiceFactory implements Factory {
+
+	@Override
+	public <T> IChoice<T> create(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
+		return new Choice<>(featureExpr, thenBranch, elseBranch);
+	}
+}
+
+

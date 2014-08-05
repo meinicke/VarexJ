@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -115,7 +115,7 @@ public class ShortArrayFields extends ArrayFields {
 	  if (Conditional.isTautology(ctx)) {
 			values[pos] = newValue;
 		} else {
-			values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+			values[pos] = ChoiceFactory.create(ctx, newValue, values[pos]).simplify();
 		}
   }
 

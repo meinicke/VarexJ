@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Choice;
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
@@ -33,6 +30,9 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.VM;
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -138,7 +138,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     	if (Conditional.isTautology(ctx)) {
     		val = frame.peek(ctx);
     	} else {
-    		val = new Choice<>(ctx, frame.peek(ctx), eiFieldOwner.get1SlotField(fi)).simplify();
+    		val = ChoiceFactory.create(ctx, frame.peek(ctx), eiFieldOwner.get1SlotField(fi)).simplify();
     	}
     }
     lastValue = val;

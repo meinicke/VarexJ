@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**

@@ -2,7 +2,6 @@ package cmu.testprograms;
 
 import gov.nasa.jpf.util.test.TestJPF;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class AJStatsTest extends TestJPF {

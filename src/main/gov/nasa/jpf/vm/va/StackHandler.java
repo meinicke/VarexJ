@@ -6,7 +6,7 @@ import gov.nasa.jpf.vm.Types;
 import java.util.Arrays;
 
 import cmu.conditional.BiFunction;
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
@@ -193,7 +193,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 			if (locals[index] == null) {
 				locals[index] = new One<>(new Entry(MJIEnv.NULL, false));
 			}
-			locals[index] = new Choice<>(ctx, popEntry(ctx), locals[index]).simplify();
+			locals[index] = ChoiceFactory.create(ctx, popEntry(ctx), locals[index]).simplify();
 		}
 	}
 
@@ -208,7 +208,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (stackCTX.equivalentTo(f)) {
 					stack = new One<>(clone);
 				} else {
-					stack = new Choice<>(f, new One<>(clone), stack);
+					stack = ChoiceFactory.create(f, new One<>(clone), stack);
 				}
 				return new One<>(new Entry(res, ref));
 			}
@@ -230,8 +230,8 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (Conditional.isContradiction(f)) {
 					return null;
 				}
-				locals[index + 1] = new Choice<>(f, new One<>(new Entry(stack.pop(), false)), locals[index + 1]);
-				locals[index] = new Choice<>(f, new One<>(new Entry(stack.pop(), false)), locals[index]);
+				locals[index + 1] = ChoiceFactory.create(f, new One<>(new Entry(stack.pop(), false)), locals[index + 1]);
+				locals[index] = ChoiceFactory.create(f, new One<>(new Entry(stack.pop(), false)), locals[index]);
 				return null;
 			}
 		});
@@ -267,7 +267,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 			if (locals[index] == null) {
 				locals[index] = new One<>(new Entry(0, false));
 			}
-			locals[index] = new Choice<>(ctx, new One<>(new Entry(value, isRef)), locals[index]).simplify();
+			locals[index] = ChoiceFactory.create(ctx, new One<>(new Entry(value, isRef)), locals[index]).simplify();
 		}
 	}
 
@@ -408,7 +408,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (stackCTX.equivalentTo(f)) {
 					return new One<>(clone);
 				}
-				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
+				return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
 	}
@@ -481,7 +481,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (stackCTX.equivalentTo(f)) {
 					stack = new One<>(clone);
 				} else {
-					stack = new Choice<>(f, new One<>(clone), stack);
+					stack = ChoiceFactory.create(f, new One<>(clone), stack);
 				}
 				return (Conditional<T>) new One<>(res);
 
@@ -514,7 +514,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
-				return new Choice<>(ctx, new One<>(clone), new One<>(s));
+				return ChoiceFactory.create(ctx, new One<>(clone), new One<>(s));
 			}
 		}).simplify();
 	}
@@ -614,7 +614,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (f.isTautology()) {
 					return new One<>(clone);
 				}
-				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
+				return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
 			}
 			
 		}).simplify();
@@ -658,7 +658,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 					return new One<>(clone);
 				}
 				
-				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
+				return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
 	}
@@ -681,7 +681,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
-				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
+				return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
 	}
@@ -880,7 +880,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (stackCTX.equivalentTo(f)) {
 					return new One<>(clone);
 				}
-				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
+				return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
 	}

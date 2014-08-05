@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.vm.StackFrame;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
-import gov.nasa.jpf.vm.StackFrame;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 

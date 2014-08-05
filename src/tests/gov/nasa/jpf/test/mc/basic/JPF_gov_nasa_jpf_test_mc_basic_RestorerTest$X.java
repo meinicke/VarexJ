@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
-import cmu.conditional.One;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.ClosedMemento;
 import gov.nasa.jpf.vm.Instruction;
@@ -28,6 +27,7 @@ import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
+import cmu.conditional.One;
 
 /**
  * peer for the regression test for on-demand state restoration by means of

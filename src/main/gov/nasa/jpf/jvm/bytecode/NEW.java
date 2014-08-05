@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.AllocInstruction;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -31,6 +29,8 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 

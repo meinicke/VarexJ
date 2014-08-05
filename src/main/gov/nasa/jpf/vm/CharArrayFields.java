@@ -26,7 +26,7 @@ import gov.nasa.jpf.util.PrintUtils;
 import java.io.PrintStream;
 
 import cmu.conditional.BiFunction;
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
@@ -152,7 +152,7 @@ public class CharArrayFields extends ArrayFields {
 						char[] clone = new char[values.length];
 						System.arraycopy(values, 0, clone, 0, clone.length);
 						clone[pos] = newValue;
-						return new Choice<>(ctx, new One<>(clone), new One<>(values));
+						return ChoiceFactory.create(ctx, new One<>(clone), new One<>(values));
 					}
 
 				});
@@ -171,7 +171,7 @@ public class CharArrayFields extends ArrayFields {
 		if (Conditional.isTautology(ctx)) {
 			values = new One<>(newValues);
 		} else {
-			values = new Choice<>(ctx, new One<>(newValues), values).simplify();
+			values = ChoiceFactory.create(ctx, new One<>(newValues), values).simplify();
 		}
 	}
 

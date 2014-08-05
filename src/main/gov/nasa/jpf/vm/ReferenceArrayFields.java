@@ -25,7 +25,7 @@ import gov.nasa.jpf.util.PrintUtils;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -129,7 +129,7 @@ public ReferenceArrayFields (int length) {
 	  if (Conditional.isTautology(ctx)) {
 		  values[pos] = newValue;	  
 	  } else {
-		  values[pos] = new Choice<>(ctx, newValue, values[pos]).simplify();
+		  values[pos] = ChoiceFactory.create(ctx, newValue, values[pos]).simplify();
 	  }
 	}
 

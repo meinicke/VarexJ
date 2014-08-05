@@ -18,13 +18,13 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.util.ObjectList;
+import gov.nasa.jpf.util.Source;
 import cmu.conditional.BiFunction;
-import cmu.conditional.Choice;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
-import gov.nasa.jpf.util.ObjectList;
-import gov.nasa.jpf.util.Source;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -317,7 +317,7 @@ public abstract class Instruction implements Cloneable {
 
 			@Override
 			public Conditional<Instruction> apply(final FeatureExpr f, final Instruction y) {
-				return new Choice<>(ctx, new One<>(y.getNext()), new One<>(y));
+				return ChoiceFactory.create(ctx, new One<>(y.getNext()), new One<>(y));
 			}
 
 		}).simplify();

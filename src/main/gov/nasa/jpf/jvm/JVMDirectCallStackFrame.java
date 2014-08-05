@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.jvm;
 
-import cmu.conditional.One;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MethodInfo;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**

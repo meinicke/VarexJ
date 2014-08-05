@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.util;
 
+import gov.nasa.jpf.JPFException;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import gov.nasa.jpf.JPFException;
 
 
 /**

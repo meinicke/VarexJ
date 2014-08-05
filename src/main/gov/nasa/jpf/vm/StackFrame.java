@@ -27,7 +27,6 @@ import gov.nasa.jpf.util.OATHash;
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.PrintUtils;
 import gov.nasa.jpf.vm.va.IStackHandler;
-import gov.nasa.jpf.vm.va.StackHandler;
 import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 import java.io.PrintStream;
