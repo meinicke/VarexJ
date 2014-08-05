@@ -382,7 +382,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 				if (Conditional.isContradiction(f)) {
 					return new One<>(stack);
 				}
-
 				Stack clone = stack.copy();
 				if (value instanceof Integer) {
 					clone.push((Integer) value, isRef);

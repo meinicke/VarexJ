@@ -11,14 +11,13 @@ public class Choice<T> extends IChoice<T> implements Cloneable {
 	private Conditional<T> thenBranch;
 	private Conditional<T> elseBranch;
 	private FeatureExpr featureExpr;
-
-	public Choice(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
-		if (featureExpr == null) {
-			throw new RuntimeException("ctx = null");
-		}
+	
+	Choice(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
+		super(featureExpr, thenBranch, elseBranch);
 		this.featureExpr = featureExpr;
 		this.thenBranch = thenBranch;
 		this.elseBranch = elseBranch;
+		
 	}
 
 	@Override

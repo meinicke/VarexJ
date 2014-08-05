@@ -112,13 +112,15 @@ public class ConditionalTest {
 			}
 			
 		});
-		v1 = v1.mapf(fb, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+		System.out.println(v1);
+		v1 = v1.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 			@Override
 			public Conditional<Integer> apply(FeatureExpr c, Integer x) {
 				return Choice(c.and(fb), One(3), One(x));
 			}
 			
 		});
+		System.out.println(v1);
 		assertEquals(Choice(fa, Choice((fa.and(fb)), One(3), One(2)), Choice(fb.andNot(fa), One(3), One(1))), v1);
 	}
 	

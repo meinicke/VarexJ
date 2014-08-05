@@ -30,9 +30,9 @@ import gov.nasa.jpf.vm.va.Stack;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import cmu.conditional.Choice;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
+import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -101,7 +101,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 				 if (stack.getStackWidth() > 1) {
 					 boolean split = false;
 					 for (int i = 0; i < callee.getArgumentsSize(); i++) {
-						 if (stack.peek(ctx, i) instanceof Choice) {
+						 if (stack.peek(ctx, i) instanceof IChoice) {
 							 split = true;
 							 splitRef = true;
 							 break;
