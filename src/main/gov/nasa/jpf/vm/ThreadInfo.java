@@ -1934,7 +1934,7 @@ public class ThreadInfo extends InfoObject
         		time = System.currentTimeMillis();
         	}
         	Instruction i = null;
-        	FeatureExpr ctx = top.stack.stackCTX;
+        	FeatureExpr ctx = top.stack.getCtx();
         	if (pc instanceof One) {
         		i = pc.getValue();
         	} else {
@@ -1975,7 +1975,7 @@ public class ThreadInfo extends InfoObject
     		} else if (i instanceof ReturnInstruction) {
     			next = new Choice<>(ctx, next, getPC());
     			if (top != null) {
-    				nextPc = next.simplify(top.stack.stackCTX);
+    				nextPc = next.simplify(top.stack.getCtx());
     				
     			} else {
     				nextPc = next;
@@ -1983,12 +1983,12 @@ public class ThreadInfo extends InfoObject
     		} else if (i instanceof ATHROW) {
     			nextPc = new Choice<>(ctx, next, getPC()).simplify();
     			if (!(pc instanceof One) && currentStackDepth < stackDepth) {
-    				oldStack.stack.stackCTX = oldStack.stack.stackCTX.andNot(ctx);
+    				oldStack.stack.setCtx(oldStack.stack.getCtx().andNot(ctx));
 					throwInstruction = true;
-    				oldStack.setPC(pc.simplify(oldStack.stack.stackCTX));
+    				oldStack.setPC(pc.simplify(oldStack.stack.getCtx()));
     			}
     		} else {
-    			nextPc = new Choice<>(ctx, next, pc).simplify(top.stack.stackCTX);
+    			nextPc = new Choice<>(ctx, next, pc).simplify(top.stack.getCtx());
     		}
     		
         } catch (ClassInfoException cie) {

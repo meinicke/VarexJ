@@ -1,4 +1,6 @@
-package gov.nasa.jpf.vm;
+package gov.nasa.jpf.vm.va;
+
+import gov.nasa.jpf.vm.MJIEnv;
 
 
 /**

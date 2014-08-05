@@ -21,7 +21,6 @@
 	<classpathentry kind="lib" path="lib/BankAccount.jar"/>
 	<classpathentry kind="lib" path="lib/GPL.jar"/>
 	<classpathentry kind="lib" path="lib/ZipMe.jar"/>
-	<classpathentry kind="lib" path="lib/prevayler-core-2.6.jar"/>
 	<classpathentry kind="lib" path="lib/Email.jar"/>
 	<classpathentry kind="lib" path="lib/Elevator.jar"/>
 	<classpathentry kind="lib" path="lib/Mine.jar"/>

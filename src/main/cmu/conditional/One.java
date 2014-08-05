@@ -51,10 +51,10 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Conditional<T> simplify(FeatureExpr ctx) {
-		if (value instanceof Conditional) {
+		if (value instanceof Conditional) {// TODO jens invalid
 			((Conditional<?>) value).simplify(ctx);
 		}
-		if (value instanceof One) {
+		if (value instanceof One) {// TODO jens invalid
 			value = (T) ((One<?>) value).getValue();
 		}
 		return this;

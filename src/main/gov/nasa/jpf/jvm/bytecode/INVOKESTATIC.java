@@ -25,11 +25,11 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.Stack;
-import gov.nasa.jpf.vm.StackHandler;
 import gov.nasa.jpf.vm.StaticElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
+import gov.nasa.jpf.vm.va.IStackHandler;
+import gov.nasa.jpf.vm.va.Stack;
 
 import java.util.Map;
 
@@ -104,7 +104,7 @@ public class INVOKESTATIC extends InvokeInstruction {
 	// set ctx for native method calls
     boolean splitRef = false;
 	if (callee.isMJI()) {
-		 StackHandler stack = ti.getTopFrame().stack;
+		 IStackHandler stack = ti.getTopFrame().stack;
 		 if (stack.getStackWidth() > 1) {
 			 boolean split = false;
 			 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
@@ -116,7 +116,7 @@ public class INVOKESTATIC extends InvokeInstruction {
 			 }
 			 
 			 if (split) {
-				 Map<Stack, FeatureExpr> stacks = stack.stack.simplify(ctx).toMap();
+				 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
 				 for (FeatureExpr c : stacks.values()) {
 					 ctx = ctx.and(c);
 					 break;

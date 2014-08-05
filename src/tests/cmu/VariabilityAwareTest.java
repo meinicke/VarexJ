@@ -476,6 +476,30 @@ public class VariabilityAwareTest extends TestJPF {
 			m.conditionalException();
 		}
 	}
+	
+	@Test
+	public void testProjectExample() throws Exception {
+		if (!RUN_WITH_JPF || verifyAssertionError(JPF_CONFIGURATION)) {
+			int x = 1;
+			int y = 1;
+			if (c) {
+				y = 0;
+			}
+			if (x * y < 3) {
+				x = x + 1;
+			}
+			if (y == 1) {
+				x = -1;
+			}
+			if (d) {
+				x = 0;
+			}
+			while (x > 0) {
+				x = x - 1;
+			}
+			check(x == 0);
+		}
+	}
 
 	private static boolean valid() {
 		return a;

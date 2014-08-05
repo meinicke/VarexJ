@@ -26,6 +26,9 @@ import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.util.OATHash;
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.PrintUtils;
+import gov.nasa.jpf.vm.va.IStackHandler;
+import gov.nasa.jpf.vm.va.StackHandler;
+import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -107,7 +110,7 @@ public abstract class StackFrame implements Cloneable {
   protected Conditional<Instruction> pc;         // the next insn to execute (program counter)
   protected MethodInfo mi;          // which method is executed in this frame
 
-  public StackHandler stack;
+  public IStackHandler stack;
 
 public int nLocals;
 
@@ -127,7 +130,7 @@ public int nLocals;
     stackBase = nLocals;
 //    int top() = nLocals-1;
 
-    stack = new StackHandler(ctx, nLocals, nOperands);
+    stack = StackHandlerFactory.createStack(ctx, nLocals, nOperands);
     
 //    int nSlots = nLocals + nOperands;
 //    if (nSlots > 0){
@@ -164,7 +167,7 @@ public int nLocals;
   protected StackFrame (int nLocals, int nOperands){
     stackBase = nLocals;
     this.nLocals = nLocals;
-    stack = new StackHandler(FeatureExprFactory.True(), nLocals, nOperands);
+    stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), nLocals, nOperands);
   }
   
   
@@ -472,7 +475,7 @@ public int nLocals;
     assert (top() >= stackBase);
     if (attrs == null) {
       if (a == null) return;
-      attrs = new Object[stack.length];
+      attrs = new Object[stack.getLength()];
     }
     attrs[top()] = a;
   }
@@ -513,7 +516,7 @@ public int nLocals;
     assert (top() >= stackBase);
     if (a != null){
       if (attrs == null) {
-        attrs = new Object[stack.length];
+        attrs = new Object[stack.getLength()];
       }
 
       attrs[top()] = ObjectList.add(attrs[top()], a);
@@ -580,7 +583,7 @@ public int nLocals;
 
     if (attrs == null) {
       if (a == null) return;
-      attrs = new Object[stack.length];
+      attrs = new Object[stack.getLength()];
     }
     attrs[i] = a;
   }
@@ -625,7 +628,7 @@ public int nLocals;
 
     if (a != null){
       if (attrs == null) {
-        attrs = new Object[stack.length];
+        attrs = new Object[stack.getLength()];
       }
       attrs[i] = ObjectList.add(attrs[i],a);
     }    
@@ -751,7 +754,7 @@ public int nLocals;
     assert index < stackBase;
     if (attrs == null){
       if (a == null) return;
-      attrs = new Object[stack.length];
+      attrs = new Object[stack.getLength()];
     }
     attrs[index] = a;
   }
@@ -798,7 +801,7 @@ public int nLocals;
     assert index < stackBase;
     if (attrs == null){
       if (attr == null) return;
-      attrs = new Object[stack.length];
+      attrs = new Object[stack.getLength()];
     }
     attrs[index] = ObjectList.add(attrs[index], attr);
   }
@@ -1028,7 +1031,7 @@ public int nLocals;
   }
   public void setSlotAttr (int i, Object a){
     if (attrs == null){
-      attrs = new Object[stack.length];
+      attrs = new Object[stack.getLength()];
     }
     attrs[i] = a;
   }

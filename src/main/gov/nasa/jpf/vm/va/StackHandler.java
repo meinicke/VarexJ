@@ -1,4 +1,7 @@
-package gov.nasa.jpf.vm;
+package gov.nasa.jpf.vm.va;
+
+import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.Types;
 
 import java.util.Arrays;
 
@@ -10,8 +13,7 @@ import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
-// TODO replace by interface
-public class StackHandler implements Cloneable {
+public class StackHandler implements Cloneable, IStackHandler {
 
 	enum Type {
 		INT, FLOAT, LONG, DOUBLE
@@ -30,10 +32,17 @@ public class StackHandler implements Cloneable {
 
 	public FeatureExpr stackCTX;
 	
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#getStackWidth()
+	 */
+	@Override
 	public int getStackWidth() {
 		return stack.toList().size();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuilder string = new StringBuilder();
@@ -72,7 +81,21 @@ public class StackHandler implements Cloneable {
 		locals = new Conditional[0];
 		stackCTX = FeatureExprFactory.True();
 	}
+	
+	@Override
+	public FeatureExpr getCtx() {
+		return stackCTX;
+	}
+	
+	@Override
+	public void setCtx(FeatureExpr ctx) {
+		stackCTX = ctx;
+	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#clone()
+	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public StackHandler clone() {
 		StackHandler clone = new StackHandler();
@@ -109,12 +132,10 @@ public class StackHandler implements Cloneable {
 	 * ############################################################
 	 */
 
-	/**
-	 * Pushes the local variable at the index position to the stack.
-	 * 
-	 * @param index
-	 *            The index of the local variable
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#pushLocal(de.fosd.typechef.featureexpr.FeatureExpr, int)
 	 */
+	@Override
 	public void pushLocal(final FeatureExpr ctx, final int index) {
 		Conditional<Entry> value = locals[index];
 		if (value == null) {
@@ -130,6 +151,10 @@ public class StackHandler implements Cloneable {
 		});
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#pushLongLocal(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public void pushLongLocal(FeatureExpr ctx, int index) {
 		Conditional<Entry> value = locals[index];
 		if (value == null) {
@@ -157,13 +182,10 @@ public class StackHandler implements Cloneable {
 		});
 	}
 
-	/**
-	 * Pops the top value and saves it at the index position.
-	 * 
-	 * @param ctx
-	 * @param index
-	 *            The index of the local variable
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#storeOperand(de.fosd.typechef.featureexpr.FeatureExpr, int)
 	 */
+	@Override
 	public void storeOperand(final FeatureExpr ctx, final int index) {
 		if (Conditional.isTautology(ctx)) {
 			locals[index] = popEntry(ctx);
@@ -196,6 +218,10 @@ public class StackHandler implements Cloneable {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#storeLongOperand(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public void storeLongOperand(final FeatureExpr ctx, final int index) {
 		stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
 
@@ -214,6 +240,10 @@ public class StackHandler implements Cloneable {
 		stack = stack.simplify();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#setLocal(de.fosd.typechef.featureexpr.FeatureExpr, int, cmu.conditional.Conditional, boolean)
+	 */
+	@Override
 	public void setLocal(FeatureExpr ctx, final int index, final Conditional<Integer> value, final boolean isRef) {
 		value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
@@ -226,6 +256,10 @@ public class StackHandler implements Cloneable {
 		});
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#setLocal(de.fosd.typechef.featureexpr.FeatureExpr, int, int, boolean)
+	 */
+	@Override
 	public void setLocal(final FeatureExpr ctx, final int index, final int value, final boolean isRef) {
 		if (Conditional.isTautology(ctx)) {
 			locals[index] = new One<>(new Entry(value, isRef));
@@ -237,6 +271,10 @@ public class StackHandler implements Cloneable {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#getLocal(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public Conditional<Integer> getLocal(FeatureExpr ctx, final int index) {
 		if (index < 0) {
 			return new One<>(-1);
@@ -270,6 +308,10 @@ public class StackHandler implements Cloneable {
 	}
 
 	// TODO change to conditional
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#isRefLocal(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public boolean isRefLocal(FeatureExpr ctx, final int index) {
 		if (index < 0) {
 			return false;
@@ -306,16 +348,18 @@ public class StackHandler implements Cloneable {
 	 * ########################################################
 	 */
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#push(de.fosd.typechef.featureexpr.FeatureExpr, T)
+	 */
+	@Override
 	public <T> void push(final FeatureExpr ctx, final T value) {
 		push(ctx, value, false);
 	}
 
-	/**
-	 * 
-	 * @param ctx
-	 * @param value Can be a {@link Conditional}, or an int, double, or long.
-	 * @param isRef Sets the new value to be a reference or not.
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#push(de.fosd.typechef.featureexpr.FeatureExpr, java.lang.Object, boolean)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public void push(final FeatureExpr ctx, final Object value, final boolean isRef) {
 		if (value instanceof Conditional) {
@@ -369,22 +413,42 @@ public class StackHandler implements Cloneable {
 		}).simplify();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#pop(de.fosd.typechef.featureexpr.FeatureExpr)
+	 */
+	@Override
 	public Conditional<Integer> pop(final FeatureExpr ctx) {
 		return pop(ctx, Type.INT);
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#popLong(de.fosd.typechef.featureexpr.FeatureExpr)
+	 */
+	@Override
 	public Conditional<Long> popLong(final FeatureExpr ctx) {
 		return pop(ctx, Type.LONG);
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#popDouble(de.fosd.typechef.featureexpr.FeatureExpr)
+	 */
+	@Override
 	public Conditional<Double> popDouble(final FeatureExpr ctx) {
 		return pop(ctx, Type.DOUBLE);
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#popFloat(de.fosd.typechef.featureexpr.FeatureExpr)
+	 */
+	@Override
 	public Conditional<Float> popFloat(final FeatureExpr ctx) {
 		return pop(ctx, Type.FLOAT);
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#pop(de.fosd.typechef.featureexpr.FeatureExpr, gov.nasa.jpf.vm.StackHandler.Type)
+	 */
+	@Override
 	public <T> Conditional<T> pop(final FeatureExpr ctx, final Type t) {
 		Conditional<T> result = stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<T>>() {
 
@@ -427,6 +491,10 @@ public class StackHandler implements Cloneable {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#pop(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public void pop(final FeatureExpr ctx, final int n) {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
@@ -451,22 +519,42 @@ public class StackHandler implements Cloneable {
 		}).simplify();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#peek(de.fosd.typechef.featureexpr.FeatureExpr)
+	 */
+	@Override
 	public Conditional<Integer> peek(FeatureExpr ctx) {
 		return peek(ctx, 0);
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#peek(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public Conditional<Integer> peek(FeatureExpr ctx, final int offset) {
 		return peek(ctx, offset, Type.INT);
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#peekDouble(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public Conditional<Double> peekDouble(FeatureExpr ctx, final int offset) {
 		return peek(ctx, offset, Type.DOUBLE);
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#peekLong(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public Conditional<Long> peekLong(FeatureExpr ctx, final int offset) {
 		return peek(ctx, offset, Type.LONG);
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#peekFloat(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public Conditional<Float> peekFloat(FeatureExpr ctx, final int offset) {
 		return peek(ctx, offset, Type.FLOAT);
 	}
@@ -494,6 +582,10 @@ public class StackHandler implements Cloneable {
 		}).simplifyValues();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#isRef(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public boolean isRef(final FeatureExpr ctx, final int offset) {// change to Conditional<Boolean>
 		return stack.simplify(ctx).map(new Function<Stack, Boolean>() {
 
@@ -505,6 +597,10 @@ public class StackHandler implements Cloneable {
 		}).simplifyValues().getValue();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#set(de.fosd.typechef.featureexpr.FeatureExpr, int, int, boolean)
+	 */
+	@Override
 	public void set(final FeatureExpr ctx, final int offset, final int value, final boolean isRef) {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
@@ -525,6 +621,10 @@ public class StackHandler implements Cloneable {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#getTop()
+	 */
+	@Override
 	public Conditional<Integer> getTop() {
 		return stack.map(new GetTop());
 	}
@@ -536,6 +636,10 @@ public class StackHandler implements Cloneable {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#setTop(de.fosd.typechef.featureexpr.FeatureExpr, int)
+	 */
+	@Override
 	public void setTop(final FeatureExpr ctx, final int i) {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
@@ -559,6 +663,10 @@ public class StackHandler implements Cloneable {
 		}).simplify();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#clear(de.fosd.typechef.featureexpr.FeatureExpr)
+	 */
+	@Override
 	public void clear(final FeatureExpr ctx) {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
@@ -578,10 +686,18 @@ public class StackHandler implements Cloneable {
 		}).simplify();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#getSlots()
+	 */
+	@Override
 	public int[] getSlots() {
 		return getSlots(FeatureExprFactory.True());
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#getSlots(de.fosd.typechef.featureexpr.FeatureExpr)
+	 */
+	@Override
 	public int[] getSlots(FeatureExpr ctx) {
 		int[] slots = new int[length];
 		int i = 0;
@@ -599,6 +715,9 @@ public class StackHandler implements Cloneable {
 		return slots;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (o == null) {
@@ -627,10 +746,18 @@ public class StackHandler implements Cloneable {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#hashCode()
+	 */
+	@Override
 	public int hashCode() {
 		throw new RuntimeException("hashCode not designed");
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#hasAnyRef(de.fosd.typechef.featureexpr.FeatureExpr)
+	 */
+	@Override
 	public boolean hasAnyRef(FeatureExpr ctx) {
 		for (Conditional<Entry> local : locals) {
 			if (local == null) {
@@ -655,51 +782,58 @@ public class StackHandler implements Cloneable {
 	 * Stack Instructions
 	 */
 
-	/**
-	 * .. A B => .. B A B
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#dup_x1(de.fosd.typechef.featureexpr.FeatureExpr)
 	 */
+	@Override
 	public void dup_x1(final FeatureExpr ctx) {
 		function(ctx, StackInstruction.DUP_X1);
 	}
 
-	/**
-	 * .. A B C D => .. C D A B C D
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#dup2_x2(de.fosd.typechef.featureexpr.FeatureExpr)
 	 */
+	@Override
 	public void dup2_x2(final FeatureExpr ctx) {
 		function(ctx, StackInstruction.DUP2_X2);
 	}
 
-	/**
-	 * .. A B C => .. B C A B C
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#dup2_x1(de.fosd.typechef.featureexpr.FeatureExpr)
 	 */
+	@Override
 	public void dup2_x1(final FeatureExpr ctx) {
 		function(ctx, StackInstruction.DUP2_X1);
 	}
 
-	/**
-	 * .. A B => .. A B A B
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#dup2(de.fosd.typechef.featureexpr.FeatureExpr)
 	 */
+	@Override
 	public void dup2(final FeatureExpr ctx) {
 		function(ctx, StackInstruction.DUP2);
 	}
 
-	/**
-	 * .. A => .. A A
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#dup(de.fosd.typechef.featureexpr.FeatureExpr)
 	 */
+	@Override
 	public void dup(final FeatureExpr ctx) {
 		function(ctx, StackInstruction.DUP);
 	}
 
-	/**
-	 * .. A B C => .. C A B C
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#dup_x2(de.fosd.typechef.featureexpr.FeatureExpr)
 	 */
+	@Override
 	public void dup_x2(final FeatureExpr ctx) {
 		function(ctx, StackInstruction.DUP_X2);
 	}
 
-	/**
-	 * .. A B => .. B A
+	/* (non-Javadoc)
+	 * @see gov.nasa.jpf.vm.IStackHandler#swap(de.fosd.typechef.featureexpr.FeatureExpr)
 	 */
+	@Override
 	public void swap(final FeatureExpr ctx) {
 		function(ctx, StackInstruction.SWAP);
 	}
@@ -749,6 +883,16 @@ public class StackHandler implements Cloneable {
 				return new Choice<>(ctx, new One<>(clone), new One<>(stack));
 			}
 		}).simplify();
+	}
+
+	@Override
+	public int getLength() {
+		return length;
+	}
+
+	@Override
+	public Conditional<Stack> getStack() {
+		return stack;
 	}
 
 }
