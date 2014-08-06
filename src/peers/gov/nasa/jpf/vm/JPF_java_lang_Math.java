@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -29,157 +30,157 @@ public class JPF_java_lang_Math extends NativePeer {
   // increase performance. If we want to do that, we should probably inline
   // their real implementation here, instead of delegating (just a compromise)
   @MJI
-  public double abs__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double abs__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     // return Math.abs(a);
     
     return (a <= .0) ? (.0 - a) : a;
   }
 
   @MJI
-  public float abs__F__F (MJIEnv env, int clsObjRef, float a) {
+  public float abs__F__F (MJIEnv env, int clsObjRef, float a, FeatureExpr ctx) {
     return Math.abs(a);
   }
 
   @MJI
-  public int abs__I__I (MJIEnv env, int clsObjRef, int a) {
+  public int abs__I__I (MJIEnv env, int clsObjRef, int a, FeatureExpr ctx) {
     //return Math.abs(a);
     return (a < 0) ? -a : a; // that's probably slightly faster
   }
 
   @MJI
-  public long abs__J__J (MJIEnv env, int clsObjRef, long a) {
+  public long abs__J__J (MJIEnv env, int clsObjRef, long a, FeatureExpr ctx) {
     //return Math.abs(a);
     
     return (a < 0) ? -a : a;
   }
 
   @MJI
-  public double max__DD__D (MJIEnv env, int clsObjRef, double a, double b) {
+  public double max__DD__D (MJIEnv env, int clsObjRef, double a, double b, FeatureExpr ctx) {
     // that one has to handle inexact numbers, so it's probably not worth the hassle
     // to inline it
     return Math.max(a, b);
   }
 
   @MJI
-  public float max__FF__F (MJIEnv env, int clsObjRef, float a, float b) {
+  public float max__FF__F (MJIEnv env, int clsObjRef, float a, float b, FeatureExpr ctx) {
     return Math.max(a, b);
   }
 
   @MJI
-  public int max__II__I (MJIEnv env, int clsObjRef, int a, int b) {
+  public int max__II__I (MJIEnv env, int clsObjRef, int a, int b, FeatureExpr ctx) {
     //return Math.max(a, b);
     
     return (a >= b) ? a : b;
   }
 
   @MJI
-  public long max__JJ__J (MJIEnv env, int clsObjRef, long a, long b) {
+  public long max__JJ__J (MJIEnv env, int clsObjRef, long a, long b, FeatureExpr ctx) {
     //return Math.max(a, b);
     return (a >= b) ? a : b;
   }
 
   @MJI
-  public double min__DD__D (MJIEnv env, int clsObjRef, double a, double b) {
+  public double min__DD__D (MJIEnv env, int clsObjRef, double a, double b, FeatureExpr ctx) {
     return Math.min(a, b);
   }
 
   @MJI
-  public float min__FF__F (MJIEnv env, int clsObjRef, float a, float b) {
+  public float min__FF__F (MJIEnv env, int clsObjRef, float a, float b, FeatureExpr ctx) {
     return Math.min(a, b);
   }
 
   @MJI
-  public int min__II__I (MJIEnv env, int clsObjRef, int a, int b) {
+  public int min__II__I (MJIEnv env, int clsObjRef, int a, int b, FeatureExpr ctx) {
     return Math.min(a, b);
   }
 
   @MJI
-  public long min__JJ__J (MJIEnv env, int clsObjRef, long a, long b) {
+  public long min__JJ__J (MJIEnv env, int clsObjRef, long a, long b, FeatureExpr ctx) {
     return Math.min(a, b);
   }
 
   @MJI
-  public double pow__DD__D (MJIEnv env, int clsObjRef, double a, double b) {
+  public double pow__DD__D (MJIEnv env, int clsObjRef, double a, double b, FeatureExpr ctx) {
     return Math.pow(a, b);
   }
 
   @MJI
-  public double sqrt__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double sqrt__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.sqrt(a);
   }
   
   @MJI
-  public double random____D (MJIEnv env, int clsObjRef) {
+  public double random____D (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     return Math.random();
   }
   
   @MJI
-  public long round__D__J (MJIEnv env, int clsObjRef, double a){
+  public long round__D__J (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx){
     return Math.round(a);
   }
   
   @MJI
-  public double exp__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double exp__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.exp(a);
   }
   
   @MJI
-  public double asin__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double asin__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.asin(a);
   }
 
   @MJI
-  public double acos__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double acos__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.acos(a);
   }
   
   @MJI
-  public double atan__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double atan__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.atan(a);
   }
   
   @MJI
-  public double atan2__DD__D (MJIEnv env, int clsObjRef, double a, double b) {
+  public double atan2__DD__D (MJIEnv env, int clsObjRef, double a, double b, FeatureExpr ctx) {
     return Math.atan2(a,b);
   }
   
   @MJI
-  public double ceil__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double ceil__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.ceil(a);
   }
   
   @MJI
-  public double cos__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double cos__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.cos(a);
   }
   
   @MJI
-  public double floor__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double floor__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.floor(a);
   }
   
   @MJI
-  public double log10__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double log10__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
 	return Math.log10(a);
   }  
   
   @MJI
-  public double log__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double log__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.log(a);
   }
   
   @MJI
-  public double rint__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double rint__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.rint(a);
   }
   
   @MJI
-  public double sin__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double sin__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.sin(a);
   }
   
   @MJI
-  public double tan__D__D (MJIEnv env, int clsObjRef, double a) {
+  public double tan__D__D (MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
     return Math.tan(a);
   }
 }

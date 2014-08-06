@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.test.mc.threads;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -34,7 +35,7 @@ import gov.nasa.jpf.vm.choice.ExceptionThreadChoiceFromSet;
 public class JPF_gov_nasa_jpf_test_mc_threads_ExceptionalThreadChoiceTest extends NativePeer {
 
   @MJI
-  public void foo____V (MJIEnv env, int objRef){
+  public void foo____V (MJIEnv env, int objRef, FeatureExpr ctx){
     
     ThreadInfo ti = env.getThreadInfo();
     if (!ti.isFirstStepInsn()){
@@ -58,7 +59,7 @@ public class JPF_gov_nasa_jpf_test_mc_threads_ExceptionalThreadChoiceTest extend
         
       String exceptionName = cg.getExceptionForCurrentChoice();
       if (exceptionName != null){
-        env.throwException(NativeMethodInfo.CTX, exceptionName);
+        env.throwException(ctx, exceptionName);
       }
     }
   }

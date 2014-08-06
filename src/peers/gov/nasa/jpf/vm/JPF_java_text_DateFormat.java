@@ -44,48 +44,48 @@ public class JPF_java_text_DateFormat extends NativePeer {
   }
 
   @MJI
-  public void setTimeZone__Ljava_util_TimeZone_2__V(MJIEnv env, int objref,int timeZoneRef) {
+  public void setTimeZone__Ljava_util_TimeZone_2__V(MJIEnv env, int objref,int timeZoneRef, FeatureExpr ctx) {
     String timeZoneId = env.getStringField(timeZoneRef, "ID");
     TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
     DateFormat fmt = getInstance(env,objref);
     fmt.setTimeZone(timeZone);
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     int calendarRef = env.getReferenceField(ctx, objref, "calendar").getValue();
-    env.setReferenceField(NativeMethodInfo.CTX, calendarRef, "zone", timeZoneRef);
+    env.setReferenceField(ctx, calendarRef, "zone", timeZoneRef);
   }
 
   @MJI
-  public int parse__Ljava_lang_String_2__Ljava_util_Date_2 (MJIEnv env, int objref, int strRef) {
+  public int parse__Ljava_lang_String_2__Ljava_util_Date_2 (MJIEnv env, int objref, int strRef, FeatureExpr ctx) {
     DateFormat f = getInstance(env,objref);
     String s = env.getStringObject(null, strRef);
     try {
       Date d = f.parse(s);
       long t = d.getTime();
-      FeatureExpr ctx = NativeMethodInfo.CTX;
-      int dref = env.newObject(NativeMethodInfo.CTX, "java.util.Date");
+      
+      int dref = env.newObject(ctx, "java.util.Date");
       env.setLongField(ctx, dref, "fastTime", new One<>(t));
       return dref;
 
     } catch (ParseException px) {
-      env.throwException(NativeMethodInfo.CTX, "java.text.ParseException", px.getMessage());
+      env.throwException(ctx, "java.text.ParseException", px.getMessage());
       return 0;
     }
   }
   
   @MJI
-  public void setLenient__Z__V (MJIEnv env, int objref, boolean isLenient) {
+  public void setLenient__Z__V (MJIEnv env, int objref, boolean isLenient, FeatureExpr ctx) {
     DateFormat f = getInstance(env,objref);
     f.setLenient(isLenient);
   }
   
   @MJI
-  public int format__Ljava_util_Date_2__Ljava_lang_String_2 (MJIEnv env, int objref, int dateRef) {
+  public int format__Ljava_util_Date_2__Ljava_lang_String_2 (MJIEnv env, int objref, int dateRef, FeatureExpr ctx) {
     DateFormat fmt = getInstance(env,objref);
     if (fmt != null) {
       Date d = env.getDateObject(dateRef);
       
       String s = fmt.format(d);
-      int sref = env.newString(NativeMethodInfo.CTX, s);
+      int sref = env.newString(ctx, s);
       return sref;
     }
     

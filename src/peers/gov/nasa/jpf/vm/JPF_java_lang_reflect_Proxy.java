@@ -18,25 +18,26 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 
 public class JPF_java_lang_reflect_Proxy extends NativePeer {
   @MJI
-  public int defineClass0 (MJIEnv env, int clsObjRef, int classLoaderRef, int nameRef, int bufferRef, int offset, int length) {  
+  public int defineClass0 (MJIEnv env, int clsObjRef, int classLoaderRef, int nameRef, int bufferRef, int offset, int length, FeatureExpr ctx) {  
     String clsName = env.getStringObject(null, nameRef);
-    byte[] buffer = env.getByteArrayObject(NativeMethodInfo.CTX, bufferRef);
+    byte[] buffer = env.getByteArrayObject(ctx, bufferRef);
     
     try {
       ClassInfo ci = ClassLoaderInfo.getCurrentClassLoader().getResolvedClassInfo( clsName, buffer, offset, length);
       if (!ci.isRegistered()) {
         ThreadInfo ti = env.getThreadInfo();
-        ci.registerClass(NativeMethodInfo.CTX, ti);
+        ci.registerClass(ctx, ti);
       }
       return ci.getClassObjectRef();
       
     } catch (ClassInfoException cix){
-      env.throwException(NativeMethodInfo.CTX, "java.lang.ClassFormatError", clsName); // <2do> check if this is the right one
+      env.throwException(ctx, "java.lang.ClassFormatError", clsName); // <2do> check if this is the right one
       return MJIEnv.NULL;
     }
   }

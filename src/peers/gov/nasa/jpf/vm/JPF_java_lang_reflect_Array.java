@@ -28,34 +28,34 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public int getLength__Ljava_lang_Object_2__I (MJIEnv env, int clsObjRef, 
-                                                    int objRef) {
+                                                    int objRef, FeatureExpr ctx) {
     if (objRef == MJIEnv.NULL) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException", "array argument is null");
+      env.throwException(ctx, "java.lang.NullPointerException", "array argument is null");
       return 0;
     }
     if (!env.isArray(objRef)) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "argument is not an array");
+      env.throwException(ctx, "java.lang.IllegalArgumentException", "argument is not an array");
       return 0;
     }
 
-    return env.getArrayLength(NativeMethodInfo.CTX, objRef);
+    return env.getArrayLength(ctx, objRef);
   }
   
   @MJI
   public int newArray__Ljava_lang_Class_2I__Ljava_lang_Object_2 (MJIEnv env, int clsRef,
-                                                                        int componentTypeRef, int length) {
-    ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, componentTypeRef);
+                                                                        int componentTypeRef, int length, FeatureExpr ctx) {
+    ClassInfo ci = env.getReferredClassInfo(ctx, componentTypeRef);
     String clsName = ci.getName();
     
-    return createNewArray( env, clsName, length);
+    return createNewArray( env, clsName, length, ctx);
   }
   
-  static int createNewArray (MJIEnv env, String clsName, int length) {
+  static int createNewArray (MJIEnv env, String clsName, int length, FeatureExpr ctx) {
     int aRef = MJIEnv.NULL;
     
     if ("boolean".equals(clsName)) { aRef = env.newBooleanArray(length); }
     else if ("byte".equals(clsName)) { aRef = env.newByteArray(length); }
-    else if ("char".equals(clsName)) { aRef = env.newCharArray(NativeMethodInfo.CTX, length); }
+    else if ("char".equals(clsName)) { aRef = env.newCharArray(ctx, length); }
     else if ("short".equals(clsName)) { aRef = env.newShortArray(length); }
     else if ("int".equals(clsName)) { aRef = env.newIntArray(length); }
     else if ("long".equals(clsName)) { aRef = env.newLongArray(length); }
@@ -68,10 +68,10 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public int multiNewArray__Ljava_lang_Class_2_3I__Ljava_lang_Object_2 (MJIEnv env, int clsRef,
                                                                                int componentTypeRef,
-                                                                               int dimArrayRef) {
-    ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, componentTypeRef);
+                                                                               int dimArrayRef, FeatureExpr ctx) {
+    ClassInfo ci = env.getReferredClassInfo(ctx, componentTypeRef);
     String clsName = ci.getName();
-    int n = env.getArrayLength(NativeMethodInfo.CTX, dimArrayRef);
+    int n = env.getArrayLength(ctx, dimArrayRef);
     int i;
 
     clsName = Types.getTypeSignature(clsName, true);
@@ -85,11 +85,11 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       dim[i] = env.getIntArrayElement(dimArrayRef, i);
     }
     
-    int aRef = createNewMultiArray(env, arrayType, dim, 0); 
+    int aRef = createNewMultiArray(env, arrayType, dim, 0, ctx); 
     return aRef;
   }
   
-  static int createNewMultiArray (MJIEnv env, String arrayType, int[] dim, int level) {
+  static int createNewMultiArray (MJIEnv env, String arrayType, int[] dim, int level, FeatureExpr ctx) {
     int aRef = MJIEnv.NULL;
     int len = dim[level];
     
@@ -97,11 +97,11 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       aRef = env.newObjectArray(arrayType, len);
     
       for (int i=0; i<len; i++) {
-        int eRef = createNewMultiArray(env, arrayType.substring(1), dim, level+1);
-        env.setReferenceArrayElement(NativeMethodInfo.CTX, aRef, i, new One<>(eRef));
+        int eRef = createNewMultiArray(env, arrayType.substring(1), dim, level+1, ctx);
+        env.setReferenceArrayElement(ctx, aRef, i, new One<>(eRef));
       }
     } else {
-      aRef = createNewArray( env, arrayType, len);
+      aRef = createNewArray( env, arrayType, len, ctx);
     }
     
     return aRef;
@@ -109,9 +109,9 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
 
   @MJI
   public int get__Ljava_lang_Object_2I__Ljava_lang_Object_2 (MJIEnv env, int clsRef,
-                                                                    int aref, int index){
+                                                                    int aref, int index, FeatureExpr ctx){
     String at = env.getArrayType(aref);
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
 	if (at.equals("int")){
       int vref = env.newObject(ctx, "java.lang.Integer");
       env.setIntField(ctx, vref, "value", new One<>(env.getIntArrayElement(aref,index)));
@@ -157,139 +157,139 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
     }
   }
 
-  private static boolean check (MJIEnv env, int aref, int index) {
+  private static boolean check (MJIEnv env, int aref, int index, FeatureExpr ctx) {
     if (aref == MJIEnv.NULL) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException", "array argument is null");
+      env.throwException(ctx, "java.lang.NullPointerException", "array argument is null");
       return false;
     }
     if (!env.isArray(aref)) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "argument is not an array");
+      env.throwException(ctx, "java.lang.IllegalArgumentException", "argument is not an array");
       return false;
     }
-    if (index < 0 || index >= env.getArrayLength(NativeMethodInfo.CTX, aref)) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.IndexOutOfBoundsException", "index " + index + " is out of bounds");
+    if (index < 0 || index >= env.getArrayLength(ctx, aref)) {
+      env.throwException(ctx, "java.lang.IndexOutOfBoundsException", "index " + index + " is out of bounds");
       return false;
     }
     return true;
   }
 
   @MJI
-  public boolean getBoolean__Ljava_lang_Object_2I__Z (MJIEnv env, int clsRef, int aref, int index) {
-    if (check(env, aref, index)) {
+  public boolean getBoolean__Ljava_lang_Object_2I__Z (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
       return env.getBooleanArrayElement(aref, index).getValue();
     }
     return false;
   }
 
   @MJI
-  public static byte getByte__Ljava_lang_Object_2I__B (MJIEnv env, int clsRef, int aref, int index) {
-    if (check(env, aref, index)) {
+  public static byte getByte__Ljava_lang_Object_2I__B (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
       return env.getByteArrayElement(aref, index).getValue();
     }
     return 0;
   }
 
   @MJI
-  public char getChar__Ljava_lang_Object_2I__C (MJIEnv env, int clsRef, int aref, int index) {
-    if (check(env, aref, index)) {
+  public char getChar__Ljava_lang_Object_2I__C (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
       return env.getCharArrayElement(aref, index).getValue();
     }
     return 0;
   }
 
   @MJI
-  public short getShort__Ljava_lang_Object_2I__S (MJIEnv env, int clsRef, int aref, int index) {
-    if (check(env, aref, index)) {
+  public short getShort__Ljava_lang_Object_2I__S (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
       return env.getShortArrayElement(aref, index).getValue();
     }
     return 0;
   }
 
   @MJI
-  public int getInt__Ljava_lang_Object_2I__I (MJIEnv env, int clsRef, int aref, int index) {
-    if (check(env, aref, index)) {
+  public int getInt__Ljava_lang_Object_2I__I (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
       return env.getIntArrayElement(aref, index);
     }
     return 0;
   }
 
   @MJI
-  public long getLong__Ljava_lang_Object_2I__J (MJIEnv env, int clsRef, int aref, int index) {
-    if (check(env, aref, index)) {
+  public long getLong__Ljava_lang_Object_2I__J (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
       return env.getLongArrayElement(aref, index).getValue();
     }
     return 0;
   }
 
   @MJI
-  public float getFloat__Ljava_lang_Object_2I__F (MJIEnv env, int clsRef, int aref, int index) {
-    if (check(env, aref, index)) {
+  public float getFloat__Ljava_lang_Object_2I__F (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
       return env.getFloatArrayElement(aref, index).getValue();
     }
     return 0;
   }
 
   @MJI
-  public double getDouble__Ljava_lang_Object_2I__D (MJIEnv env, int clsRef, int aref, int index) {
-    if (check(env, aref, index)) {
+  public double getDouble__Ljava_lang_Object_2I__D (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
       return env.getDoubleArrayElement(aref, index).getValue();
     }
     return 0;
   }
 
   @MJI
-  public void setBoolean__Ljava_lang_Object_2IZ__V (MJIEnv env, int clsRef, int aref, int index, boolean val) {
-    if (check(env, aref, index)) {
-      env.setBooleanArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
+  public void setBoolean__Ljava_lang_Object_2IZ__V (MJIEnv env, int clsRef, int aref, int index, boolean val, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+      env.setBooleanArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 
   @MJI
-  public void setByte__Ljava_lang_Object_2IB__V (MJIEnv env, int clsRef, int aref, int index, byte val) {
-    if (check(env, aref, index)) {
-      env.setByteArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
+  public void setByte__Ljava_lang_Object_2IB__V (MJIEnv env, int clsRef, int aref, int index, byte val, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+      env.setByteArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 
   @MJI
-  public void setChar__Ljava_lang_Object_2IC__V (MJIEnv env, int clsRef, int aref, int index, char val) {
-    if (check(env, aref, index)) {
-      env.setCharArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
+  public void setChar__Ljava_lang_Object_2IC__V (MJIEnv env, int clsRef, int aref, int index, char val, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+      env.setCharArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 
   @MJI
-  public void setShort__Ljava_lang_Object_2IS__V (MJIEnv env, int clsRef, int aref, int index, short val) {
-    if (check(env, aref, index)) {
-      env.setShortArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
+  public void setShort__Ljava_lang_Object_2IS__V (MJIEnv env, int clsRef, int aref, int index, short val, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+      env.setShortArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 
   @MJI
-  public void setInt__Ljava_lang_Object_2II__V (MJIEnv env, int clsRef, int aref, int index, int val) {
-    if (check(env, aref, index)) {
-      env.setIntArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
+  public void setInt__Ljava_lang_Object_2II__V (MJIEnv env, int clsRef, int aref, int index, int val, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+      env.setIntArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 
   @MJI
-  public void setLong__Ljava_lang_Object_2IJ__V (MJIEnv env, int clsRef, int aref, int index, long val) {
-    if (check(env, aref, index)) {
-      env.setLongArrayElement(NativeMethodInfo.CTX, aref, index, val);
+  public void setLong__Ljava_lang_Object_2IJ__V (MJIEnv env, int clsRef, int aref, int index, long val, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+      env.setLongArrayElement(ctx, aref, index, val);
     }
   }
 
   @MJI
-  public void setFloat__Ljava_lang_Object_2IF__V (MJIEnv env, int clsRef, int aref, int index, float val) {
-    if (check(env, aref, index)) {
-      env.setFloatArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
+  public void setFloat__Ljava_lang_Object_2IF__V (MJIEnv env, int clsRef, int aref, int index, float val, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+      env.setFloatArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 
   @MJI
-  public void setDouble__Ljava_lang_Object_2ID__V (MJIEnv env, int clsRef, int aref, int index, double val) {
-    if (check(env, aref, index)) {
-      env.setDoubleArrayElement(NativeMethodInfo.CTX, aref, index, new One<>(val));
+  public void setDouble__Ljava_lang_Object_2ID__V (MJIEnv env, int clsRef, int aref, int index, double val, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+      env.setDoubleArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 }

@@ -31,11 +31,11 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
 
   @MJI
   public void $init__Ljava_lang_Class_2Ljava_lang_String_2__V (MJIEnv env, int objRef,
-                                 int tClsObjRef, int fNameRef) {
+                                 int tClsObjRef, int fNameRef, FeatureExpr ctx) {
 
     // direct Object subclass, so we don't have to call a super ctor
 
-    ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, tClsObjRef);
+    ClassInfo ci = env.getReferredClassInfo(ctx, tClsObjRef);
     String fname = env.getStringObject(null, fNameRef);
     FieldInfo fi = ci.getInstanceField(fname);
 
@@ -43,22 +43,22 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
 
     if (!fci.isPrimitive() || !fci.getName().equals("long")) {
       // that's also just an approximation, but we need to check
-      env.throwException(NativeMethodInfo.CTX, "java.lang.RuntimeException", "wrong field type");
+      env.throwException(ctx, "java.lang.RuntimeException", "wrong field type");
     }
 
     int fidx = fi.getFieldIndex();
-    env.setIntField(NativeMethodInfo.CTX, objRef, "fieldId", new One<>(fidx));
+    env.setIntField(ctx, objRef, "fieldId", new One<>(fidx));
   }
 
   @MJI
   public boolean compareAndSet__Ljava_lang_Object_2JJ__Z
-  (MJIEnv env, int objRef, int tRef, long fExpect, long fUpdate){
+  (MJIEnv env, int objRef, int tRef, long fExpect, long fUpdate, FeatureExpr ctx){
 
     if (isNewPorFieldBoundary(env, objRef, tRef) && createAndSetFieldCG(env, tRef)) {
       return false;  // re-executed anyways
     }
 
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
 	int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
@@ -74,19 +74,19 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
 
   @MJI
   public boolean weakCompareAndSet__Ljava_lang_Object_2JJ__Z
-  (MJIEnv env, int objRef, int tRef, long fExpect, long fUpdate){
-    return(compareAndSet__Ljava_lang_Object_2JJ__Z(env, objRef, tRef, fExpect, fUpdate));
+  (MJIEnv env, int objRef, int tRef, long fExpect, long fUpdate, FeatureExpr ctx){
+    return(compareAndSet__Ljava_lang_Object_2JJ__Z(env, objRef, tRef, fExpect, fUpdate, ctx));
   }
 
   @MJI
   public void set__Ljava_lang_Object_2J__
-  (MJIEnv env, int objRef, int tRef, long fNewValue){
+  (MJIEnv env, int objRef, int tRef, long fNewValue, FeatureExpr ctx){
 
     if (isNewPorFieldBoundary(env, objRef, tRef) && createAndSetFieldCG(env, tRef)) {
       return;  // re-executed anyways
     }
 
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
 	int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
@@ -96,13 +96,13 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
 
   @MJI
   public void lazySet__Ljava_lang_Object_2J__
-  (MJIEnv env, int objRef, int tRef, long fNewValue){
-     set__Ljava_lang_Object_2J__(env, objRef, tRef, fNewValue);
+  (MJIEnv env, int objRef, int tRef, long fNewValue, FeatureExpr ctx){
+     set__Ljava_lang_Object_2J__(env, objRef, tRef, fNewValue, ctx);
   }
 
   @MJI
   public long get__Ljava_lang_Object_2__J
-  (MJIEnv env, int objRef, int tRef){
+  (MJIEnv env, int objRef, int tRef, FeatureExpr ctx){
 
     if (isNewPorFieldBoundary(env, objRef, tRef) && createAndSetFieldCG(env, tRef)) {
       return 0;  // re-executed anyways
@@ -117,13 +117,13 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
 
   @MJI
   public long getAndSet__Ljava_lang_Object_2J__J
-  (MJIEnv env, int objRef, int tRef, long fNewValue){
+  (MJIEnv env, int objRef, int tRef, long fNewValue, FeatureExpr ctx){
 
     if (isNewPorFieldBoundary(env, objRef, tRef) && createAndSetFieldCG(env, tRef)) {
       return 0;  // re-executed anyways
     }
 
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
 	int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);
@@ -136,13 +136,13 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
 
   @MJI
   public long getAndAdd__Ljava_lang_Object_2J__J
-  (MJIEnv env, int objRef, int tRef, long fDelta){
+  (MJIEnv env, int objRef, int tRef, long fDelta, FeatureExpr ctx){
 
     if (isNewPorFieldBoundary(env, objRef, tRef) && createAndSetFieldCG(env, tRef)) {
       return 0;  // re-executed anyways
     }
 
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
 	int fidx = env.getIntField(objRef, "fieldId").getValue().intValue();
     ElementInfo ei = env.getModifiableElementInfo(tRef);
     FieldInfo fi = env.getClassInfo(tRef).getInstanceField(fidx);

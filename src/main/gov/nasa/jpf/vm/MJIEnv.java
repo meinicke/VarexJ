@@ -76,7 +76,7 @@ public class MJIEnv {
   // transition boundaries
   int                     exceptionRef;
 
-  MJIEnv (ThreadInfo ti) {
+  protected MJIEnv (ThreadInfo ti) {
     this.ti = ti;
 
     // set those here so that we don't have an inconsistent state between
@@ -88,7 +88,11 @@ public class MJIEnv {
     exceptionRef = NULL;
   }
 
-  public VM getVM () {
+  public MJIEnv() {
+	// TODO Auto-generated constructor stub
+}
+
+public VM getVM () {
     return vm;
   }
 

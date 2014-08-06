@@ -27,6 +27,8 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  */
@@ -44,7 +46,7 @@ public class JPF_gov_nasa_jpf_vm_multiProcess_ThreadTest extends NativePeer {
   }
 
   @MJI
-  public void keepThread__Ljava_lang_Thread_2I__V(MJIEnv env, int objRef, int thdRef, int prcId) {
+  public void keepThread__Ljava_lang_Thread_2I__V(MJIEnv env, int objRef, int thdRef, int prcId, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfoForObjRef(thdRef);
     if(!prcIds.contains(prcId)) {
       prcIds.add(prcId);
@@ -59,7 +61,7 @@ public class JPF_gov_nasa_jpf_vm_multiProcess_ThreadTest extends NativePeer {
   private static List<Integer> threadIds = new ArrayList<Integer>();
 
   @MJI
-  public static void addToThreads__Ljava_lang_Thread_2__V (MJIEnv env, int objRef, int thdRef) {
+  public static void addToThreads__Ljava_lang_Thread_2__V (MJIEnv env, int objRef, int thdRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfoForObjRef(thdRef);
 
     int id = ti.getId();

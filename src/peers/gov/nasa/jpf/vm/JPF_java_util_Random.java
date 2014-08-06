@@ -139,8 +139,8 @@ public class JPF_java_util_Random extends NativePeer {
     return getNativeSeed( rand);
   }
 
-  static void storeSeed (MJIEnv env, int objRef, long seed){
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  static void storeSeed (MJIEnv env, int objRef, long seed, FeatureExpr ctx){
+	  
     env.setLongField(ctx, objRef, "seed", new One<>(seed));
   }
 
@@ -153,77 +153,77 @@ public class JPF_java_util_Random extends NativePeer {
     setNativeSeed( rand, seed);
   }
   
-  static void storeRandomState (MJIEnv env, int objRef, Random rand){
+  static void storeRandomState (MJIEnv env, int objRef, Random rand, FeatureExpr ctx){
     long seed = getNativeSeed( rand);
-    storeSeed( env, objRef, seed);
+    storeSeed( env, objRef, seed, ctx);
   }
   
   
   //--- the publics
 
   @MJI
-  public void $init____V (MJIEnv env, int objRef){
+  public void $init____V (MJIEnv env, int objRef, FeatureExpr ctx){
     long seed = computeDefaultSeed();
-    storeSeed( env, objRef, seed);
+    storeSeed( env, objRef, seed, ctx);
   }
   
   @MJI
-  public void $init__J__V (MJIEnv env, int objRef, long seedStarter){
+  public void $init__J__V (MJIEnv env, int objRef, long seedStarter, FeatureExpr ctx){
     // note - the provided seedStarter is modified by java.util.Random, it is
     // NOT the internal value that is consecutively used
     Random rand = new Random(seedStarter);
-    storeRandomState(env, objRef, rand);    
+    storeRandomState(env, objRef, rand, ctx);    
   }
   
   @MJI
-  public void setSeed__J__V (MJIEnv env, int objRef, long seedStarter){
+  public void setSeed__J__V (MJIEnv env, int objRef, long seedStarter, FeatureExpr ctx){
     // my, what an effort to change a long.
     restoreRandomState( env, objRef, delegatee);
     delegatee.setSeed(seedStarter); // compute the new internal value
-    storeRandomState(env, objRef, delegatee);    
+    storeRandomState(env, objRef, delegatee, ctx);    
   }
   
   @MJI
-  public boolean nextBoolean____Z (MJIEnv env, int objRef){
+  public boolean nextBoolean____Z (MJIEnv env, int objRef, FeatureExpr ctx){
     if (enumerateRandom){
-      return JPF_gov_nasa_jpf_vm_Verify.getBoolean____Z(env,-1);
+      return JPF_gov_nasa_jpf_vm_Verify.getBoolean____Z(env,-1, ctx);
 
     } else {
       restoreRandomState(env, objRef, delegatee);
       boolean ret = delegatee.nextBoolean();
-      storeRandomState(env, objRef, delegatee);
+      storeRandomState(env, objRef, delegatee, ctx);
       return ret;
     }
   }
   
   @MJI
-  public int nextInt__I__I (MJIEnv env, int objRef, int n){
+  public int nextInt__I__I (MJIEnv env, int objRef, int n, FeatureExpr ctx){
     if (enumerateRandom){
-      return JPF_gov_nasa_jpf_vm_Verify.getInt__II__I(env,-1,0,n-1);
+      return JPF_gov_nasa_jpf_vm_Verify.getInt__II__I(env,-1,0,n-1, ctx);
       
     } else {
       restoreRandomState(env, objRef, delegatee);
       int ret = delegatee.nextInt(n);
-      storeRandomState(env, objRef, delegatee);
+      storeRandomState(env, objRef, delegatee, ctx);
       return ret;
     }
   }
   
   @MJI
-  public int nextInt____I (MJIEnv env, int objRef){
+  public int nextInt____I (MJIEnv env, int objRef, FeatureExpr ctx){
     if (enumerateRandom){
       return JPF_gov_nasa_jpf_vm_Verify.getIntFromList(env, defaultIntSet);
       
     } else {
       restoreRandomState(env, objRef, delegatee);
       int ret = delegatee.nextInt();
-      storeRandomState(env, objRef, delegatee);
+      storeRandomState(env, objRef, delegatee, ctx);
       return ret;
     }
   }
   
   @MJI
-  public int next__I__I (MJIEnv env, int objRef, int nBits){
+  public int next__I__I (MJIEnv env, int objRef, int nBits, FeatureExpr ctx){
     if (enumerateRandom){
       // <2do> we can't do this with an interval since it most likely would explode our state space
       return JPF_gov_nasa_jpf_vm_Verify.getIntFromList(env, defaultIntSet);
@@ -231,74 +231,74 @@ public class JPF_java_util_Random extends NativePeer {
     } else {
       restoreRandomState(env, objRef, delegatee);
       int ret = delegatee.next( nBits);
-      storeRandomState(env, objRef, delegatee);
+      storeRandomState(env, objRef, delegatee, ctx);
       return ret;
     }
   }
   
   @MJI
-  public void nextBytes___3B__V (MJIEnv env, int objRef, int dataRef){
+  public void nextBytes___3B__V (MJIEnv env, int objRef, int dataRef, FeatureExpr ctx){
     // <2do> this one is an even worse state exploder. We could use cascaded CGs,
     // but chances are this really kills us, so we just ignore 'enumerateRandom' for now
     
-    int n = env.getArrayLength(NativeMethodInfo.CTX, dataRef);
+    int n = env.getArrayLength(ctx, dataRef);
     byte[] data = new byte[n];
 
     restoreRandomState(env, objRef, delegatee);
     delegatee.nextBytes(data);
-    storeRandomState(env, objRef, delegatee);
+    storeRandomState(env, objRef, delegatee, ctx);
 
     for (int i = 0; i < n; i++) {
-      env.setByteArrayElement(NativeMethodInfo.CTX, dataRef, i, new One<>(data[i]));
+      env.setByteArrayElement(ctx, dataRef, i, new One<>(data[i]));
     }
   }
   
   @MJI
-  public long nextLong____J (MJIEnv env, int objRef){
+  public long nextLong____J (MJIEnv env, int objRef, FeatureExpr ctx){
     if (enumerateRandom){
       return JPF_gov_nasa_jpf_vm_Verify.getLongFromList(env, defaultLongSet);
       
     } else {
       restoreRandomState(env, objRef, delegatee);
       long ret = delegatee.nextLong();
-      storeRandomState(env, objRef, delegatee);
+      storeRandomState(env, objRef, delegatee, ctx);
       return ret;
     }    
   }
 
   @MJI
-  public float nextFloat____F (MJIEnv env, int objRef){
+  public float nextFloat____F (MJIEnv env, int objRef, FeatureExpr ctx){
     if (enumerateRandom){
-      return JPF_gov_nasa_jpf_vm_Verify.getFloatFromList(env, defaultFloatSet);
+      return JPF_gov_nasa_jpf_vm_Verify.getFloatFromList(env, defaultFloatSet, ctx);
       
     } else {
       restoreRandomState(env, objRef, delegatee);
       float ret = delegatee.nextFloat();
-      storeRandomState(env, objRef, delegatee);
+      storeRandomState(env, objRef, delegatee, ctx);
       return ret;
     }    
   }
 
   @MJI
-  public double nextDouble____D (MJIEnv env, int objRef){
+  public double nextDouble____D (MJIEnv env, int objRef, FeatureExpr ctx){
     if (enumerateRandom){
-      return JPF_gov_nasa_jpf_vm_Verify.getDoubleFromList(env, defaultDoubleSet);
+      return JPF_gov_nasa_jpf_vm_Verify.getDoubleFromList(env, defaultDoubleSet, ctx);
       
     } else {
       restoreRandomState(env, objRef, delegatee);
       double ret = delegatee.nextDouble();
-      storeRandomState(env, objRef, delegatee);
+      storeRandomState(env, objRef, delegatee, ctx);
       return ret;
     }    
   }
 
   @MJI
-  public double nextGaussian____D (MJIEnv env, int objRef){
+  public double nextGaussian____D (MJIEnv env, int objRef, FeatureExpr ctx){
     // <2do> we don't support this yet, neither for enumerateRandom nor
     // delegation (which would require an additional 'haveNextGaussian' state)
     restoreRandomState(env, objRef, delegatee);
     double ret = delegatee.nextGaussian();
-    storeRandomState(env, objRef, delegatee);
+    storeRandomState(env, objRef, delegatee, ctx);
     return ret;
   }
 }

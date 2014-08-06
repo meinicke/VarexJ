@@ -24,6 +24,8 @@ import gov.nasa.jpf.annotation.MJI;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * native peer for java.net.URLDecoder forwarding
  */
@@ -31,16 +33,16 @@ public class JPF_java_net_URLDecoder extends NativePeer {
 
   @MJI
   public int decode__Ljava_lang_String_2Ljava_lang_String_2__Ljava_lang_String_2(MJIEnv env, int clsObjRef,
-          int sRef, int encRef){
+          int sRef, int encRef, FeatureExpr ctx){
     String s = env.getStringObject(null, sRef);
     String enc = env.getStringObject(null, encRef);
 
     try {
       String e = URLDecoder.decode(s, enc);
-      return env.newString(NativeMethodInfo.CTX, e);
+      return env.newString(ctx, e);
 
     } catch (UnsupportedEncodingException x){
-      env.throwException(NativeMethodInfo.CTX, "java.io.UnsupportedEncodingException", x.getMessage());
+      env.throwException(ctx, "java.io.UnsupportedEncodingException", x.getMessage());
       return MJIEnv.NULL;
     }
   }

@@ -1678,7 +1678,7 @@ public class ThreadInfo extends InfoObject
     }
 
     StackTraceElement (int sRef){
-    	FeatureExpr ctx = NativeMethodInfo.CTX;
+      FeatureExpr ctx = FeatureExprFactory.True();
       clsName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "clsName").getValue());
       mthName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "mthName").getValue());
       fileName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "fileName").getValue());
@@ -2504,7 +2504,7 @@ public class ThreadInfo extends InfoObject
     eiPermit.setBooleanField(ctx, "blockPark", new One<>(true));
     eiThread.setReferenceField(ctx, "permit", new One<>(eiPermit.getObjectRef()));
 
-    addToThreadGroup(NativeMethodInfo.CTX, eiGroup);
+    addToThreadGroup(ctx, eiGroup);
     
     addId( objRef, id);
 

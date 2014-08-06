@@ -24,6 +24,7 @@ import gov.nasa.jpf.annotation.MJI;
 import java.util.List;
 
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * native peer for ResourceBundle
@@ -31,7 +32,7 @@ import cmu.conditional.One;
 public class JPF_java_util_ResourceBundle extends NativePeer {
 
   @MJI
-  public int getClassContext_____3Ljava_lang_Class_2 (MJIEnv env, int clsRef){
+  public int getClassContext_____3Ljava_lang_Class_2 (MJIEnv env, int clsRef, FeatureExpr ctx){
     ThreadInfo ti = env.getThreadInfo();
 
     List<StackFrame> list = ti.getInvokedStackFrames();
@@ -42,7 +43,7 @@ public class JPF_java_util_ResourceBundle extends NativePeer {
       MethodInfo mi = frame.getMethodInfo();
       ClassInfo ci = mi.getClassInfo();
       int clsObjRef = ci.getClassObjectRef();
-      env.setReferenceArrayElement(NativeMethodInfo.CTX, aRef, j++, new One<>(clsObjRef));
+      env.setReferenceArrayElement(ctx, aRef, j++, new One<>(clsObjRef));
     }
 
     return aRef;

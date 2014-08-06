@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
@@ -41,7 +42,7 @@ public class JPF_java_lang_Thread extends NativePeer {
    */
   @MJI
   public void init0__Ljava_lang_ThreadGroup_2Ljava_lang_Runnable_2Ljava_lang_String_2J__V (MJIEnv env,
-                         int objRef, int groupRef, int runnableRef, int nameRef, long stackSize) {
+                         int objRef, int groupRef, int runnableRef, int nameRef, long stackSize, FeatureExpr ctx) {
     VM vm = env.getVM();
     
     // we only need to create the ThreadInfo - its initialization will take care
@@ -50,28 +51,28 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public boolean isAlive____Z (MJIEnv env, int objref) {
+  public boolean isAlive____Z (MJIEnv env, int objref, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
     return ti.isAlive();      
   }
 
   @MJI
-  public void setDaemon0__Z__V (MJIEnv env, int objref, boolean isDaemon) {
+  public void setDaemon0__Z__V (MJIEnv env, int objref, boolean isDaemon, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
     ti.setDaemon(isDaemon);
   }
 
   @MJI
-  public void dumpStack____V (MJIEnv env, int clsObjRef){
+  public void dumpStack____V (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     ThreadInfo ti = env.getThreadInfo();
     ti.printStackTrace(); // this is not correct, we should go through VM.print
   }
 
   @MJI
-  public void setName0__Ljava_lang_String_2__V (MJIEnv env, int objref, int nameRef) {
+  public void setName0__Ljava_lang_String_2__V (MJIEnv env, int objref, int nameRef, FeatureExpr ctx) {
     // it bails if you try to set a null name
     if (nameRef == MJIEnv.NULL) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException");
+      env.throwException(ctx, "java.lang.IllegalArgumentException");
 
       return;
     }
@@ -89,26 +90,26 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public void setPriority0__I__V (MJIEnv env, int objref, int prio) {
+  public void setPriority0__I__V (MJIEnv env, int objref, int prio, FeatureExpr ctx) {
     // again, we have to cache this in ThreadData for performance reasons
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
     ti.setPriority(prio);
   }
 
   @MJI
-  public int countStackFrames____I (MJIEnv env, int objref) {
+  public int countStackFrames____I (MJIEnv env, int objref, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
     return ti.countStackFrames();
   }
 
   @MJI
-  public int currentThread____Ljava_lang_Thread_2 (MJIEnv env, int clsObjRef) {
+  public int currentThread____Ljava_lang_Thread_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     return ti.getThreadObjectRef();
   }
 
   @MJI
-  public boolean holdsLock__Ljava_lang_Object_2__Z (MJIEnv env, int clsObjRef, int objref) {
+  public boolean holdsLock__Ljava_lang_Object_2__Z (MJIEnv env, int clsObjRef, int objref, FeatureExpr ctx) {
     ThreadInfo  ti = env.getThreadInfo();
     ElementInfo ei = env.getElementInfo(objref);
 
@@ -116,14 +117,14 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public void interrupt____V (MJIEnv env, int objref) {
+  public void interrupt____V (MJIEnv env, int objref, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     SystemState ss = env.getSystemState();
 
     ThreadInfo interruptedThread = env.getThreadInfoForObjRef(objref);
 
     if (!ti.isFirstStepInsn()) {
-      interruptedThread.interrupt(NativeMethodInfo.CTX);
+      interruptedThread.interrupt(ctx);
       
       // the interrupted thread can re-acquire the lock and therefore is runnable again
       // hence we should give it a chance to do so (Thread.interrupt() does not require
@@ -141,19 +142,19 @@ public class JPF_java_lang_Thread extends NativePeer {
   // these could be in the model, but we keep it symmetric, which also saves
   // us the effort of avoiding unwanted shared object field access CGs
   @MJI
-  public boolean isInterrupted____Z (MJIEnv env, int objref) {
+  public boolean isInterrupted____Z (MJIEnv env, int objref, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
-    return ti.isInterrupted(NativeMethodInfo.CTX, false);
+    return ti.isInterrupted(ctx, false);
   }
 
   @MJI
-  public boolean interrupted____Z (MJIEnv env, int clsObjRef) {
+  public boolean interrupted____Z (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
-    return ti.isInterrupted(NativeMethodInfo.CTX, true);
+    return ti.isInterrupted(ctx, true);
   }
 
   @MJI
-  public void start____V (MJIEnv env, int objref) {
+  public void start____V (MJIEnv env, int objref, FeatureExpr ctx) {
     ThreadInfo tiCurrent = env.getThreadInfo();
     SystemState ss = env.getSystemState();
     VM vm = tiCurrent.getVM();
@@ -174,7 +175,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       // silently ignored in Java 1.4, but the 1.5 spec explicitly marks this
       // as illegal, so we adopt this by throwing an IllegalThreadState, too
       if (! tiStartee.isNew()) {
-        env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalThreadStateException");
+        env.throwException(ctx, "java.lang.IllegalThreadStateException");
         return;
       }
 
@@ -201,7 +202,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       // we do direct call run() invocation so that we have a well defined
       // exit point (DIRECTCALLRETURN) in case the thread is stopped or there is
       // a fail-safe UncaughtExceptionHandler set
-      DirectCallStackFrame runFrame = miRun.createRunStartStackFrame(NativeMethodInfo.CTX, tiStartee);
+      DirectCallStackFrame runFrame = miRun.createRunStartStackFrame(ctx, tiStartee);
       runFrame.setReferenceArgument(0, runnableRef, null);
             
       tiStartee.pushFrame(runFrame);
@@ -222,7 +223,7 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public void yield____V (MJIEnv env, int clsObjRef) {
+  public void yield____V (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     SystemState ss = env.getSystemState();
 
@@ -237,7 +238,7 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public void sleep__JI__V (MJIEnv env, int clsObjRef, long millis, int nanos) {
+  public void sleep__JI__V (MJIEnv env, int clsObjRef, long millis, int nanos, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     SystemState ss = env.getSystemState();
 
@@ -255,7 +256,7 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public void suspend____ (MJIEnv env, int threadObjRef) {
+  public void suspend____ (MJIEnv env, int threadObjRef, FeatureExpr ctx) {
     ThreadInfo currentThread = env.getThreadInfo();
     ThreadInfo target = env.getThreadInfoForObjRef(threadObjRef);
     SystemState ss = env.getSystemState();
@@ -276,7 +277,7 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public void resume____ (MJIEnv env, int threadObjRef) {
+  public void resume____ (MJIEnv env, int threadObjRef, FeatureExpr ctx) {
     ThreadInfo currentThread = env.getThreadInfo();
     ThreadInfo target = env.getThreadInfoForObjRef(threadObjRef);
     SystemState ss = env.getSystemState();
@@ -304,7 +305,7 @@ public class JPF_java_lang_Thread extends NativePeer {
   /**
    * this is here so that we don't have to break the transition on a synchronized call
    */
-  static void join0 (MJIEnv env, int joineeRef, long timeout){
+  static void join0 (MJIEnv env, int joineeRef, long timeout, FeatureExpr ctx){
     ThreadInfo tiJoiner = env.getThreadInfo(); // this is the CURRENT thread (joiner)
     System.out.println("JPF_java_lang_Thread.join0(" + joineeRef + ")");
     ThreadInfo tiJoinee = env.getThreadInfoForObjRef(joineeRef);
@@ -313,14 +314,14 @@ public class JPF_java_lang_Thread extends NativePeer {
     SystemState ss = env.getSystemState();
     ElementInfo ei = env.getModifiableElementInfo(joineeRef); // the thread object to wait on
 
-    if (tiJoiner.isInterrupted(NativeMethodInfo.CTX, true)){ // interrupt status is set, throw and bail
+    if (tiJoiner.isInterrupted(ctx, true)){ // interrupt status is set, throw and bail
       
       // since we use lock-free joins, we need to remove ourselves from the
       // lock contender list
       ei.setMonitorWithoutLocked(tiJoiner);
       
       // note that we have to throw even if the thread to join to is not alive anymore
-      env.throwInterrupt(NativeMethodInfo.CTX);
+      env.throwInterrupt(ctx);
       return;
     }
 
@@ -349,7 +350,7 @@ public class JPF_java_lang_Thread extends NativePeer {
     } else { // first time exec, create a CG if the thread is still alive
 
       if (timeout < 0){
-        env.throwException(NativeMethodInfo.CTX, "java.lang.IllegalArgumentException", "timeout value is negative");
+        env.throwException(ctx, "java.lang.IllegalArgumentException", "timeout value is negative");
         return;
       }
 
@@ -380,23 +381,23 @@ public class JPF_java_lang_Thread extends NativePeer {
    */
 
   @MJI
-  public void join____V (MJIEnv env, int objref){
-    join0(env,objref,0);
+  public void join____V (MJIEnv env, int objref, FeatureExpr ctx){
+    join0(env,objref,0, ctx);
   }
 
   @MJI
-  public void join__J__V (MJIEnv env, int objref, long millis) {
-    join0(env,objref,millis);
+  public void join__J__V (MJIEnv env, int objref, long millis, FeatureExpr ctx) {
+    join0(env,objref,millis, ctx);
 
   }
 
   @MJI
-  public void join__JI__V (MJIEnv env, int objref, long millis, int nanos) {
-    join0(env,objref,millis); // <2do> we ignore nanos for now
+  public void join__JI__V (MJIEnv env, int objref, long millis, int nanos, FeatureExpr ctx) {
+    join0(env,objref,millis, ctx); // <2do> we ignore nanos for now
   }
 
   @MJI
-  public int getState0____I (MJIEnv env, int objref) {
+  public int getState0____I (MJIEnv env, int objref, FeatureExpr ctx) {
     // return the state index with respect to one of the public Thread.States
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
 
@@ -429,18 +430,18 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public long getId____J (MJIEnv env, int objref) {
+  public long getId____J (MJIEnv env, int objref, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
     return ti.getId();
   }
   
   @MJI
-  public void stop____V (MJIEnv env, int threadRef) {
-    stop__Ljava_lang_Throwable_2__V(env, threadRef, MJIEnv.NULL);
+  public void stop____V (MJIEnv env, int threadRef, FeatureExpr ctx) {
+    stop__Ljava_lang_Throwable_2__V(env, threadRef, MJIEnv.NULL, ctx);
   }
 
   @MJI
-  public void stop__Ljava_lang_Throwable_2__V(MJIEnv env, int threadRef, int throwableRef) {
+  public void stop__Ljava_lang_Throwable_2__V(MJIEnv env, int threadRef, int throwableRef, FeatureExpr ctx) {
     ThreadInfo tiStop = env.getThreadInfoForObjRef(threadRef);  // the thread to stop
     ThreadInfo tiCurrent = env.getThreadInfo(); // the currently executing thread
 
@@ -461,6 +462,6 @@ public class JPF_java_lang_Thread extends NativePeer {
       }
     }
 
-    tiStop.setStopped(NativeMethodInfo.CTX, throwableRef);
+    tiStop.setStopped(ctx, throwableRef);
   }
 }

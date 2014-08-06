@@ -33,15 +33,15 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
-  public void $init____V (MJIEnv env, int objRef) {
+  public void $init____V (MJIEnv env, int objRef, FeatureExpr ctx) {
     ClassLoaderInfo systemCl = ClassLoaderInfo.getCurrentSystemClassLoader();
-    $init__Ljava_lang_ClassLoader_2__V (env, objRef, systemCl.getClassLoaderObjectRef());
+    $init__Ljava_lang_ClassLoader_2__V (env, objRef, systemCl.getClassLoaderObjectRef(), ctx);
   }
 
   @MJI
-  public void $init__Ljava_lang_ClassLoader_2__V (MJIEnv env, int objRef, int parentRef) {
+  public void $init__Ljava_lang_ClassLoader_2__V (MJIEnv env, int objRef, int parentRef, FeatureExpr ctx) {
     Heap heap = env.getHeap();
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     //--- Retrieve the parent ClassLoaderInfo
     ClassLoaderInfo parent = env.getClassLoaderInfo(parentRef);
 
@@ -62,34 +62,34 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   }
 
   @MJI
-  public int getSystemClassLoader____Ljava_lang_ClassLoader_2 (MJIEnv env, int clsObjRef) {
+  public int getSystemClassLoader____Ljava_lang_ClassLoader_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     return ClassLoaderInfo.getCurrentSystemClassLoader().getClassLoaderObjectRef();
   }
 
   @MJI
-  public int getResource0__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef){
+  public int getResource0__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef, FeatureExpr ctx){
     String rname = env.getStringObject(null, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
     String resourcePath = cl.findResource(rname);
 
-    return env.newString(NativeMethodInfo.CTX, resourcePath);
+    return env.newString(ctx, resourcePath);
   }
 
   @MJI
-  public int getResources0__Ljava_lang_String_2___3Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef) {
+  public int getResources0__Ljava_lang_String_2___3Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef, FeatureExpr ctx) {
     String rname = env.getStringObject(null, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
     String[] resources = cl.findResources(rname);
 
-    return env.newStringArray(NativeMethodInfo.CTX, resources);
+    return env.newStringArray(ctx, resources);
   }
 
   @MJI
-  public int findLoadedClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef) {
+  public int findLoadedClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef, FeatureExpr ctx) {
     String cname = env.getStringObject(null, nameRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
@@ -103,20 +103,20 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   }
 
   @MJI
-  public int findSystemClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef) {
+  public int findSystemClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef, FeatureExpr ctx) {
     String cname = env.getStringObject(null, nameRef);
 
-    checkForIllegalName(env, cname);
+    checkForIllegalName(env, cname, ctx);
     if(env.hasException()) {
       return MJIEnv.NULL;
     }
 
     ClassLoaderInfo cl = ClassLoaderInfo.getCurrentSystemClassLoader();
 
-    ClassInfo ci = cl.getResolvedClassInfo(NativeMethodInfo.CTX, cname);
+    ClassInfo ci = cl.getResolvedClassInfo(ctx, cname);
 
     if(!ci.isRegistered()) {
-      ci.registerClass(NativeMethodInfo.CTX, env.getThreadInfo());
+      ci.registerClass(ctx, env.getThreadInfo());
     }
 
     return ci.getClassObjectRef();
@@ -124,18 +124,18 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int defineClass0__Ljava_lang_String_2_3BII__Ljava_lang_Class_2 
-                                      (MJIEnv env, int objRef, int nameRef, int bufferRef, int offset, int length) {
+                                      (MJIEnv env, int objRef, int nameRef, int bufferRef, int offset, int length, FeatureExpr ctx) {
     String cname = env.getStringObject(null, nameRef);
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
     // determine whether that the corresponding class is already defined by this 
     // classloader, if so, this attempt is invalid, and loading throws a LinkageError
     if (cl.getDefinedClassInfo(cname) != null) {  // attempt to define twice
-      env.throwException(NativeMethodInfo.CTX, "java.lang.LinkageError"); 
+      env.throwException(ctx, "java.lang.LinkageError"); 
       return MJIEnv.NULL;
     }
         
-    byte[] buffer = env.getByteArrayObject(NativeMethodInfo.CTX, bufferRef);
+    byte[] buffer = env.getByteArrayObject(ctx, bufferRef);
     
     try {
       ClassInfo ci = cl.getResolvedClassInfo( cname, buffer, offset, length);
@@ -145,64 +145,64 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
       // since we don't do much with minor and major versions
 
       ThreadInfo ti = env.getThreadInfo();
-      ci.registerClass(NativeMethodInfo.CTX, ti);
+      ci.registerClass(ctx, ti);
 
       return ci.getClassObjectRef();
       
     } catch (ClassInfoException cix){
-      env.throwException(NativeMethodInfo.CTX, "java.lang.ClassFormatError");
+      env.throwException(ctx, "java.lang.ClassFormatError");
       return MJIEnv.NULL;
     }
   }
 
 
-  protected static boolean check(MJIEnv env, String cname, byte[] buffer, int offset, int length) {
+  protected static boolean check(MJIEnv env, String cname, byte[] buffer, int offset, int length, FeatureExpr ctx) {
     // throw SecurityExcpetion if the package prefix is java
-    checkForProhibitedPkg(env, cname);
+    checkForProhibitedPkg(env, cname, ctx);
 
     // throw NoClassDefFoundError if the given class does name might 
     // not be a valid binary name
-    checkForIllegalName(env, cname);
+    checkForIllegalName(env, cname, ctx);
 
     // throw IndexOutOfBoundsException if buffer length is not consistent
     // with offset
-    checkData(env, buffer, offset, length);
+    checkData(env, buffer, offset, length, ctx);
 
     return !env.hasException();
   }
 
-  protected static void checkForProhibitedPkg(MJIEnv env, String name) {
+  protected static void checkForProhibitedPkg(MJIEnv env, String name, FeatureExpr ctx) {
     if(name != null && name.startsWith("java.")) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.SecurityException", "Prohibited package name: " + name);
+      env.throwException(ctx, "java.lang.SecurityException", "Prohibited package name: " + name);
     }
   }
 
-  protected static void checkForIllegalName(MJIEnv env, String name) {
+  protected static void checkForIllegalName(MJIEnv env, String name, FeatureExpr ctx) {
     if((name == null) || (name.length() == 0)) {
       return;
     }
 
     if((name.indexOf('/') != -1) || (name.charAt(0) == '[')) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.NoClassDefFoundError", "IllegalName: " + name);
+      env.throwException(ctx, "java.lang.NoClassDefFoundError", "IllegalName: " + name);
     }
   }
 
-  protected static void checkData(MJIEnv env, byte[] buffer, int offset, int length) {
+  protected static void checkData(MJIEnv env, byte[] buffer, int offset, int length, FeatureExpr ctx) {
     if(offset<0 || length<0 || offset+length > buffer.length) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.IndexOutOfBoundsException");
+      env.throwException(ctx, "java.lang.IndexOutOfBoundsException");
     }
   }
 
   static String pkg_class_name = "java.lang.Package";
 
   @MJI
-  public int getPackages_____3Ljava_lang_Package_2 (MJIEnv env, int objRef) {
+  public int getPackages_____3Ljava_lang_Package_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
     ClassLoaderInfo sysLoader = ClassLoaderInfo.getCurrentSystemClassLoader();
     ClassInfo pkgClass = null; 
     try {
-      pkgClass = sysLoader.getInitializedClassInfo(NativeMethodInfo.CTX, pkg_class_name, env.getThreadInfo());
+      pkgClass = sysLoader.getInitializedClassInfo(ctx, pkg_class_name, env.getThreadInfo());
     } catch (ClinitRequired x){
-      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
+      env.handleClinitRequest(ctx, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }
 
@@ -215,37 +215,37 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
     int i = 0;
     for(String name: cl.getPackages().keySet()) {
-      int pkgRef = createPackageObject(env, pkgClass, name, cl);
+      int pkgRef = createPackageObject(env, pkgClass, name, cl, ctx);
       // place the object into the array
-      env.setReferenceArrayElement(NativeMethodInfo.CTX, pkgArr, i++, new One<>(pkgRef));
+      env.setReferenceArrayElement(ctx, pkgArr, i++, new One<>(pkgRef));
     }
 
     return pkgArr;
   }
 
   @MJI
-  public int getPackage__Ljava_lang_String_2__Ljava_lang_Package_2 (MJIEnv env, int objRef, int nameRef) {
+  public int getPackage__Ljava_lang_String_2__Ljava_lang_Package_2 (MJIEnv env, int objRef, int nameRef, FeatureExpr ctx) {
     ClassLoaderInfo sysLoader = ClassLoaderInfo.getCurrentSystemClassLoader();
 
     ClassInfo pkgClass = null; 
     try {
-      pkgClass = sysLoader.getInitializedClassInfo(NativeMethodInfo.CTX, pkg_class_name, env.getThreadInfo());
+      pkgClass = sysLoader.getInitializedClassInfo(ctx, pkg_class_name, env.getThreadInfo());
     } catch (ClinitRequired x){
-      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
+      env.handleClinitRequest(ctx, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
     String pkgName = env.getStringObject(null, nameRef);
     if(cl.getPackages().get(pkgName)!=null) {
-      return createPackageObject(env, pkgClass, pkgName, cl);
+      return createPackageObject(env, pkgClass, pkgName, cl, ctx);
     } else {
       return MJIEnv.NULL;
     }
   }
 
-  public static int createPackageObject(MJIEnv env, ClassInfo pkgClass, String pkgName, ClassLoaderInfo cl) {
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+  public static int createPackageObject(MJIEnv env, ClassInfo pkgClass, String pkgName, ClassLoaderInfo cl, FeatureExpr ctx) {
+    
 	int pkgRef = env.newObject(ctx, pkgClass);
     ElementInfo ei = env.getModifiableElementInfo(pkgRef);
 
@@ -263,27 +263,27 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   }
 
   @MJI
-  public void setDefaultAssertionStatus__Z__V (MJIEnv env, int objRef, boolean enabled) {
+  public void setDefaultAssertionStatus__Z__V (MJIEnv env, int objRef, boolean enabled, FeatureExpr ctx) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
     cl.setDefaultAssertionStatus(enabled);
   }
 
   @MJI
-  public void setPackageAssertionStatus__Ljava_lang_String_2Z__V (MJIEnv env, int objRef, int strRef, boolean enabled) {
+  public void setPackageAssertionStatus__Ljava_lang_String_2Z__V (MJIEnv env, int objRef, int strRef, boolean enabled, FeatureExpr ctx) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
     String pkgName = env.getStringObject(null, strRef);
     cl.setPackageAssertionStatus(pkgName, enabled);
   }
 
   @MJI
-  public void setClassAssertionStatus__Ljava_lang_String_2Z__V (MJIEnv env, int objRef, int strRef, boolean enabled) {
+  public void setClassAssertionStatus__Ljava_lang_String_2Z__V (MJIEnv env, int objRef, int strRef, boolean enabled, FeatureExpr ctx) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
     String clsName = env.getStringObject(null, strRef);
     cl.setClassAssertionStatus(clsName, enabled);
   }
 
   @MJI
-  public void clearAssertionStatus____V (MJIEnv env, int objRef) {
+  public void clearAssertionStatus____V (MJIEnv env, int objRef, FeatureExpr ctx) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
     cl.clearAssertionStatus();
   }

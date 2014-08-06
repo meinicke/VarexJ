@@ -27,7 +27,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_util_Locale extends NativePeer {
 
-  static Locale getLocale (MJIEnv env, int locref) {
+  static Locale getLocale (MJIEnv env, int locref, FeatureExpr ctx) {
 
     //--- check first if it's one of the standard locales (ci is obviously loaded at this point
     ClassInfo ci = env.getClassInfo(locref);  // Locale is final, so we can do this
@@ -46,7 +46,7 @@ public class JPF_java_util_Locale extends NativePeer {
 
     String country, language, variant;
     FieldInfo fiBase = ci.getInstanceField("baseLocale");
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     if (fiBase != null){ // Java >= 1.7
       int baseLocref = env.getReferenceField(locref, fiBase);
       country = env.getStringObject(null, env.getReferenceField(ctx,baseLocref, "region").getValue());
@@ -64,68 +64,68 @@ public class JPF_java_util_Locale extends NativePeer {
   }
   
   @MJI
-  public int getDisplayName__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref) {
-    Locale locale = getLocale(env, locref);
+  public int getDisplayName__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref, FeatureExpr ctx) {
+    Locale locale = getLocale(env, locref, ctx);
     String name = locale.getDisplayName();
-    return env.newString(NativeMethodInfo.CTX, name);
+    return env.newString(ctx, name);
   }
   
   @MJI
-  public int getDisplayVariant__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref) {
-    Locale locale = getLocale(env, locref);
+  public int getDisplayVariant__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref, FeatureExpr ctx) {
+    Locale locale = getLocale(env, locref, ctx);
     String variant = locale.getDisplayVariant();
-    return env.newString(NativeMethodInfo.CTX, variant);    
+    return env.newString(ctx, variant);    
   }
   
   @MJI
-  public int getDisplayCountry__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref) {
-    Locale locale = getLocale(env, locref);
+  public int getDisplayCountry__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref, FeatureExpr ctx) {
+    Locale locale = getLocale(env, locref, ctx);
     String country = locale.getDisplayCountry();
-    return env.newString(NativeMethodInfo.CTX, country);
+    return env.newString(ctx, country);
 
   }
 
   @MJI
-  public int getDisplayLanguage__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref) {
-    Locale locale = getLocale(env, locref);
+  public int getDisplayLanguage__Ljava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objref, int locref, FeatureExpr ctx) {
+    Locale locale = getLocale(env, locref, ctx);
     String language = locale.getDisplayLanguage();
-    return env.newString(NativeMethodInfo.CTX, language);
+    return env.newString(ctx, language);
   }
 
   @MJI
-  public int getISO3Country____Ljava_lang_String_2 (MJIEnv env, int objref) {
-    Locale locale = getLocale(env, objref);
+  public int getISO3Country____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx) {
+    Locale locale = getLocale(env, objref, ctx);
     String s = locale.getISO3Country();
-    return env.newString(NativeMethodInfo.CTX, s);    
+    return env.newString(ctx, s);    
   }
 
   @MJI
-  public int getISO3Language____Ljava_lang_String_2 (MJIEnv env, int objref) {
-    Locale locale = getLocale(env, objref);
+  public int getISO3Language____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx) {
+    Locale locale = getLocale(env, objref, ctx);
     String s = locale.getISO3Language();
-    return env.newString(NativeMethodInfo.CTX, s);
+    return env.newString(ctx, s);
   }
 
   //--- the static ones
   @MJI
-  public int getISOCountries_____3Ljava_lang_String_2 (MJIEnv env, int clsref) {
+  public int getISOCountries_____3Ljava_lang_String_2 (MJIEnv env, int clsref, FeatureExpr ctx) {
     String[] s = Locale.getISOCountries();
 
     int aref = env.newObjectArray("java.lang.String", s.length);
     for (int i=0; i<s.length; i++) {
-      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, i, new One<>(env.newString(NativeMethodInfo.CTX, s[i])));
+      env.setReferenceArrayElement(ctx, aref, i, new One<>(env.newString(ctx, s[i])));
     }
     
     return aref;
   }
   
   @MJI
-  public int getISOLanguages_____3Ljava_lang_String_2 (MJIEnv env, int clsref) {
+  public int getISOLanguages_____3Ljava_lang_String_2 (MJIEnv env, int clsref, FeatureExpr ctx) {
     String[] s = Locale.getISOLanguages();
 
     int aref = env.newObjectArray("java.lang.String", s.length);
     for (int i=0; i<s.length; i++) {
-      env.setReferenceArrayElement(NativeMethodInfo.CTX, aref, i, new One<>(env.newString(NativeMethodInfo.CTX, s[i])));
+      env.setReferenceArrayElement(ctx, aref, i, new One<>(env.newString(ctx, s[i])));
     }
     
     return aref;    

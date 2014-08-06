@@ -25,6 +25,8 @@ import gov.nasa.jpf.util.JPFLogger;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 
@@ -35,7 +37,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
   static JPFLogger log = JPF.getLogger("class");
   
   @MJI
-  public void addURL0__Ljava_lang_String_2__V (MJIEnv env, int objRef, int urlRef) throws MalformedURLException {
+  public void addURL0__Ljava_lang_String_2__V (MJIEnv env, int objRef, int urlRef, FeatureExpr ctx) throws MalformedURLException {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
     String url = env.getStringObject(null, urlRef);
 
@@ -56,15 +58,15 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
   }
 
   @MJI
-  public int findClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef) {
+  public int findClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef, FeatureExpr ctx) {
     String typeName = env.getStringObject(null, nameRef);
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
     ThreadInfo ti = env.getThreadInfo();
 
     try {
-      ClassInfo ci = cl.getResolvedClassInfo( NativeMethodInfo.CTX, typeName);
+      ClassInfo ci = cl.getResolvedClassInfo( ctx, typeName);
       if(!ci.isRegistered()) {
-        ci.registerClass(NativeMethodInfo.CTX, env.getThreadInfo());
+        ci.registerClass(ctx, env.getThreadInfo());
       }
       // note that we don't initialize yet
       return ci.getClassObjectRef();
@@ -75,33 +77,33 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
       
     } catch (ClassInfoException cix){
       if (cix.getCause() instanceof ClassParseException){
-        env.throwException(NativeMethodInfo.CTX, "java.lang.ClassFormatError", typeName);
+        env.throwException(ctx, "java.lang.ClassFormatError", typeName);
       } else {
-        env.throwException(NativeMethodInfo.CTX, "java.lang.ClassNotFoundException", typeName);
+        env.throwException(ctx, "java.lang.ClassNotFoundException", typeName);
       }
       return MJIEnv.NULL;      
     }
   }
 
   @MJI
-  public int findResource0__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef){
+  public int findResource0__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef, FeatureExpr ctx){
     String rname = env.getStringObject(null, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
     String resourcePath = cl.findResource(rname);
 
-    return env.newString(NativeMethodInfo.CTX, resourcePath);
+    return env.newString(ctx, resourcePath);
   }
 
   @MJI
-  public int findResources0__Ljava_lang_String_2___3Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef) {
+  public int findResources0__Ljava_lang_String_2___3Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef, FeatureExpr ctx) {
     String rname = env.getStringObject(null, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
     String[] resources = cl.findResources(rname);
 
-    return env.newStringArray(NativeMethodInfo.CTX, resources);
+    return env.newStringArray(ctx, resources);
   }
 }

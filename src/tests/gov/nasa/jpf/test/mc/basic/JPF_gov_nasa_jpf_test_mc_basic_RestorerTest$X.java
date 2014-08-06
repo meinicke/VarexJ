@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * peer for the regression test for on-demand state restoration by means of
@@ -57,7 +58,7 @@ public class JPF_gov_nasa_jpf_test_mc_basic_RestorerTest$X extends NativePeer {
   }
 
   @MJI
-  public void $init (MJIEnv env, int objref){
+  public void $init (MJIEnv env, int objref, FeatureExpr ctx){
     ThreadInfo ti = env.getThreadInfo();
     StackFrame caller = ti.getCallerStackFrame();
     Instruction insn = caller.getPC().getValue();
@@ -74,6 +75,6 @@ public class JPF_gov_nasa_jpf_test_mc_basic_RestorerTest$X extends NativePeer {
     }
     
     a.count++;
-    env.setIntField(NativeMethodInfo.CTX, objref, "id", new One<>(a.count));
+    env.setIntField(ctx, objref, "id", new One<>(a.count));
   }
 }

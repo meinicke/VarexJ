@@ -29,14 +29,13 @@ public class JPF_sun_reflect_ReflectionFactory extends NativePeer {
 
   @MJI
   public int newConstructorForSerialization__Ljava_lang_Class_2Ljava_lang_reflect_Constructor_2__Ljava_lang_reflect_Constructor_2 (MJIEnv env, int objRef,
-                                                                                                                                          int clsRef, int ctorRef){
+                                                                                                                                          int clsRef, int ctorRef, FeatureExpr ctx){
     // NOPE - unnless I miss my guess, this creates an artificial
     // ctor for the concrete type that explicitly calls the default ctor of the
     // first non-serializable superclass. Oh my!
 
     // <2do> we really have to model ObjectStreamClass and ObjectStreamField
-    ClassInfo ci = ClassInfo.getInitializedClassInfo(NativeMethodInfo.CTX, "gov.nasa.jpf.SerializationConstructor", env.getThreadInfo());
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    ClassInfo ci = ClassInfo.getInitializedClassInfo(ctx, "gov.nasa.jpf.SerializationConstructor", env.getThreadInfo());
 	int sCtorRef = env.newObject(ctx, ci);
     
     env.setReferenceField(ctx, sCtorRef, "mdc", clsRef);

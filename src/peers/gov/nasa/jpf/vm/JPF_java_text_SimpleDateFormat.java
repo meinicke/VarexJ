@@ -26,6 +26,8 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * (incomplete) native peer for SimpleDateFormat. See Format for details
  * about native formatter delegation
@@ -40,13 +42,13 @@ public class JPF_java_text_SimpleDateFormat extends NativePeer {
   }
 
   @MJI
-  public void init0____V (MJIEnv env, int objref) {
+  public void init0____V (MJIEnv env, int objref, FeatureExpr ctx) {
     SimpleDateFormat fmt = new SimpleDateFormat();
     JPF_java_text_Format.putInstance(env,objref,fmt);
   }
 
   @MJI
-  public void init0__Ljava_lang_String_2__V (MJIEnv env, int objref, int patternref) {
+  public void init0__Ljava_lang_String_2__V (MJIEnv env, int objref, int patternref, FeatureExpr ctx) {
     String pattern = env.getStringObject(null, patternref);
 
     SimpleDateFormat fmt = new SimpleDateFormat(pattern);
@@ -54,7 +56,7 @@ public class JPF_java_text_SimpleDateFormat extends NativePeer {
   }
 
   @MJI
-  public void init0__II__V (MJIEnv env, int objref, int timeStyle, int dateStyle) {
+  public void init0__II__V (MJIEnv env, int objref, int timeStyle, int dateStyle, FeatureExpr ctx) {
     // we are lost here - can't call this SimpleDateFormat ctor because it's package private
     // (this is called - and has to be intercepted - from the DateFormat.getInstance() factory)
 
@@ -72,10 +74,10 @@ public class JPF_java_text_SimpleDateFormat extends NativePeer {
   }
 
   @MJI
-  public int format0 (MJIEnv env, int objref, long dateTime) {
+  public int format0 (MJIEnv env, int objref, long dateTime, FeatureExpr ctx) {
     Date date = new Date(dateTime);
     SimpleDateFormat f = getInstance(env,objref);
     String s = f.format(date);
-    return env.newString(NativeMethodInfo.CTX, s);
+    return env.newString(ctx, s);
   }
 }

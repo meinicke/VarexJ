@@ -31,7 +31,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
   boolean hasSharedField = false; // Java 1.4 has, 1.5 doesn't
 
   @MJI
-  public void $clinit____V (MJIEnv env, int clsObjRef) {
+  public void $clinit____V (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     // apparently, Java 1.5 has changed the implementation of class
     // StringBuffer so that it doesn't use the 'shared' state anymore
     // (which was a performance hack to avoid copying the char array
@@ -46,9 +46,9 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
     }
   }
   
-  int appendString (MJIEnv env, int objref, String s) {
+  int appendString (MJIEnv env, int objref, String s, FeatureExpr ctx) {
     int slen = s.length();
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     int aref = env.getReferenceField(ctx, objref, "value").getValue();
     int alen = env.getArrayLength(ctx, aref);
     int count = env.getIntField(objref, "count").getValue().intValue();
@@ -96,46 +96,46 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 */
 
   @MJI
-  public int append__Ljava_lang_String_2__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int sref) {
+  public int append__Ljava_lang_String_2__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int sref, FeatureExpr ctx) {
     String s = env.getStringObject(null, sref);    
     if (s == null) s = "null";
     
-    return appendString(env, objref, s);
+    return appendString(env, objref, s, ctx);
   }
   
   @MJI
-  public int append__I__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int i) {
+  public int append__I__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int i, FeatureExpr ctx) {
     String s = Integer.toString(i);
     
-    return appendString(env, objref, s);
+    return appendString(env, objref, s, ctx);
   }
 
   @MJI
-  public int append__F__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, float f) {
+  public int append__F__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, float f, FeatureExpr ctx) {
     String s = Float.toString(f);
     
-    return appendString(env, objref, s);
+    return appendString(env, objref, s, ctx);
   }
 
   @MJI
-  public int append__D__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, double d) {
+  public int append__D__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, double d, FeatureExpr ctx) {
     String s = Double.toString(d);
     
-    return appendString(env, objref, s);
+    return appendString(env, objref, s, ctx);
   }
   
   @MJI
-  public int append__J__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, long l) {
+  public int append__J__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, long l, FeatureExpr ctx) {
     String s = Long.toString(l);
     
-    return appendString(env, objref, s);
+    return appendString(env, objref, s, ctx);
   }
 
   @MJI
-  public int append__Z__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, boolean b) {
+  public int append__Z__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, boolean b, FeatureExpr ctx) {
     String s = b ? "true" : "false";
     
-    return appendString(env, objref, s);
+    return appendString(env, objref, s, ctx);
   }
  
 /*
@@ -145,8 +145,8 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 */
  
   @MJI
-  public int append__C__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, char c) {
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  public int append__C__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, char c, FeatureExpr ctx) {
+	  
     int aref = env.getReferenceField(ctx, objref, "value").getValue();
     int alen = env.getArrayLength(ctx, aref);
     

@@ -18,12 +18,13 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 public class JPF_java_text_Bidi extends NativePeer {
 
   @MJI
-  public void $clinit____V (MJIEnv env, int clsObjRef) {
+  public void $clinit____V (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     // do nothing
   }
   
@@ -31,13 +32,13 @@ public class JPF_java_text_Bidi extends NativePeer {
   public void nativeBidiChars (MJIEnv env, int clsObjRef,
                                       int bidiRef, int textRef, int textStart,
                                       int embeddingsRef, int embeddingsStart,
-                                      int length, int flags) {
+                                      int length, int flag, FeatureExpr ctx) {
     // <2do> need to forward
   }
 
   @MJI
   public boolean requiresBidi (MJIEnv env, int clsObjRef,
-                                      int textRef, int start, int limit) {
+                                      int textRef, int start, int limit, FeatureExpr ctx) {
     // not supported for now
     return false;
   }

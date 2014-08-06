@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
@@ -86,7 +87,7 @@ public class JPF_sun_net_www_protocol_http_Handler extends NativePeer {
   }
 
   @MJI
-  public int getConnectionClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objref, int surlRef){
+  public int getConnectionClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objref, int surlRef, FeatureExpr ctx){
     String url = env.getStringObject(null, surlRef);
 
     if (map != null){
@@ -97,7 +98,7 @@ public class JPF_sun_net_www_protocol_http_Handler extends NativePeer {
           ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
 
           // this might re-execute if there is a clinit
-          int clsObjRef = JPF_java_lang_Class.getClassObject(env, ci);
+          int clsObjRef = JPF_java_lang_Class.getClassObject(env, ci, ctx);
 
           if (clsObjRef != MJIEnv.NULL){
             logger.info("using ", clsName, " for URL ", url);

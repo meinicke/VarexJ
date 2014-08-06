@@ -53,10 +53,10 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     return true;
   }
 
-  static int createMethodObject (MJIEnv env, ClassInfo ciMth, MethodInfo mi){
+  static int createMethodObject (MJIEnv env, ClassInfo ciMth, MethodInfo mi, FeatureExpr ctx){
     // note - it is the callers responsibility to ensure Method is properly initialized    
     int regIdx = registry.registerMethodInfo(mi);
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
 	int eidx = env.newObject( ctx, ciMth);
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
@@ -73,9 +73,9 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   }
   
   @MJI
-  public int getName____Ljava_lang_String_2 (MJIEnv env, int objRef) {
+  public int getName____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
     MethodInfo mi = getMethodInfo(env, objRef);
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     int nameRef = env.getReferenceField( ctx, objRef, "name").getValue();
     if (nameRef == MJIEnv.NULL) {
       
@@ -87,12 +87,12 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   }
 
   @MJI
-  public int getModifiers____I (MJIEnv env, int objRef){
+  public int getModifiers____I (MJIEnv env, int objRef, FeatureExpr ctx){
     MethodInfo mi = getMethodInfo(env, objRef);
     return mi.getModifiers();
   }
   
-  static int getParameterTypes( MJIEnv env, MethodInfo mi) {
+  static int getParameterTypes( MJIEnv env, MethodInfo mi, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     String[] argTypeNames = mi.getArgumentTypeNames();
     int[] ar = new int[argTypeNames.length];
@@ -100,7 +100,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     for (int i = 0; i < argTypeNames.length; i++) {
       ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(argTypeNames[i]);
       if (!ci.isRegistered()) {
-        ci.registerClass(NativeMethodInfo.CTX, ti);
+        ci.registerClass(ctx, ti);
       }
 
       ar[i] = ci.getClassObjectRef();
@@ -108,18 +108,18 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
     int aRef = env.newObjectArray("Ljava/lang/Class;", argTypeNames.length);
     for (int i = 0; i < argTypeNames.length; i++) {
-      env.setReferenceArrayElement(NativeMethodInfo.CTX, aRef, i, new One<>(ar[i]));
+      env.setReferenceArrayElement(ctx, aRef, i, new One<>(ar[i]));
     }
 
     return aRef;
   }
   
   @MJI
-  public int getParameterTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef){
-    return getParameterTypes(env, getMethodInfo(env, objRef));
+  public int getParameterTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx){
+    return getParameterTypes(env, getMethodInfo(env, objRef), ctx);
   }
   
-  int getExceptionTypes(MJIEnv env, MethodInfo mi) {
+  int getExceptionTypes(MJIEnv env, MethodInfo mi, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     String[] exceptionNames = mi.getThrownExceptionClassNames();
      
@@ -132,7 +132,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     for (int i = 0; i < exceptionNames.length; i++) {
       ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(exceptionNames[i]);
       if (!ci.isRegistered()) {
-        ci.registerClass(NativeMethodInfo.CTX, ti);
+        ci.registerClass(ctx, ti);
       }
        
       ar[i] = ci.getClassObjectRef();
@@ -140,44 +140,44 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
      
     int aRef = env.newObjectArray("Ljava/lang/Class;", exceptionNames.length);
     for (int i = 0; i < exceptionNames.length; i++) {
-      env.setReferenceArrayElement(NativeMethodInfo.CTX, aRef, i, new One<>(ar[i]));
+      env.setReferenceArrayElement(ctx, aRef, i, new One<>(ar[i]));
     }
      
     return aRef;
   }
   
   @MJI
-  public int getExceptionTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef) {
-    return getExceptionTypes(env, getMethodInfo(env, objRef));
+  public int getExceptionTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
+    return getExceptionTypes(env, getMethodInfo(env, objRef), ctx);
   }
   
   @MJI
-  public int getReturnType____Ljava_lang_Class_2 (MJIEnv env, int objRef){
+  public int getReturnType____Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     MethodInfo mi = getMethodInfo(env, objRef);
     ThreadInfo ti = env.getThreadInfo();
 
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(mi.getReturnTypeName());
     if (!ci.isRegistered()) {
-      ci.registerClass(NativeMethodInfo.CTX, ti);
+      ci.registerClass(ctx, ti);
     }
 
     return ci.getClassObjectRef();
   }
   
   @MJI
-  public int getDeclaringClass____Ljava_lang_Class_2 (MJIEnv env, int objRef){
+  public int getDeclaringClass____Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     MethodInfo mi = getMethodInfo(env, objRef);    
     ClassInfo ci = mi.getClassInfo();
     // it's got to be registered, otherwise we wouldn't be able to acquire the Method object
     return ci.getClassObjectRef();
   }
     
-  static int createBoxedReturnValueObject (MJIEnv env, MethodInfo mi, DirectCallStackFrame frame) {
+  static int createBoxedReturnValueObject (MJIEnv env, MethodInfo mi, DirectCallStackFrame frame, FeatureExpr ctx) {
     byte rt = mi.getReturnTypeCode();
     int ret = MJIEnv.NULL;
     ElementInfo rei;
     Object attr = null;
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     if (rt == Types.T_DOUBLE) {
       attr = frame.getLongResultAttr();
       double v = frame.getDoubleResult();
@@ -223,7 +223,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     return ret;
   }
 
-  static boolean pushUnboxedArguments (MJIEnv env, MethodInfo mi, DirectCallStackFrame frame, int argIdx, int argsRef) {
+  static boolean pushUnboxedArguments (MJIEnv env, MethodInfo mi, DirectCallStackFrame frame, int argIdx, int argsRef, FeatureExpr ctx) {
     ElementInfo source;
     ClassInfo sourceClass;
     String destTypeNames[];
@@ -235,10 +235,10 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     nArgs         = destTypeNames.length;
     
     // according to the API docs, passing null instead of an empty array is allowed for no args
-    passedCount   = (argsRef != MJIEnv.NULL) ? env.getArrayLength(NativeMethodInfo.CTX, argsRef) : 0;
+    passedCount   = (argsRef != MJIEnv.NULL) ? env.getArrayLength(ctx, argsRef) : 0;
     
     if (nArgs != passedCount) {
-      env.throwException(NativeMethodInfo.CTX, IllegalArgumentException.class.getName(), "Wrong number of arguments passed.  Actual = " + passedCount + ".  Expected = " + nArgs);
+      env.throwException(ctx, IllegalArgumentException.class.getName(), "Wrong number of arguments passed.  Actual = " + passedCount + ".  Expected = " + nArgs);
       return false;
     }
     
@@ -248,11 +248,11 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       // we have to handle null references explicitly
       if (sourceRef == MJIEnv.NULL) {
         if ((destTypes[i] != Types.T_REFERENCE) && (destTypes[i] != Types.T_ARRAY)) {
-          env.throwException(NativeMethodInfo.CTX, IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Actual = (null).  Expected = " + destTypeNames[i]);
+          env.throwException(ctx, IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Actual = (null).  Expected = " + destTypeNames[i]);
           return false;
         } 
          
-        frame.pushRef(NativeMethodInfo.CTX, MJIEnv.NULL);
+        frame.pushRef(ctx, MJIEnv.NULL);
         continue;
       }
 
@@ -261,8 +261,8 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       sourceType = getSourceType( sourceClass, destTypes[i], destTypeNames[i]);
 
       Object attr = env.getElementInfo(argsRef).getFields().getFieldAttr(i);
-      if ((argIdx = pushArg( argIdx, frame, source, sourceType, destTypes[i], attr)) < 0 ){
-        env.throwException(NativeMethodInfo.CTX, IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Source Class = " + sourceClass.getName() + ".  Dest Class = " + destTypeNames[i]);
+      if ((argIdx = pushArg( argIdx, frame, source, sourceType, destTypes[i], attr, ctx)) < 0 ){
+        env.throwException(ctx, IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Source Class = " + sourceClass.getName() + ".  Dest Class = " + destTypeNames[i]);
         return false;        
       }
     }
@@ -296,7 +296,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   
   // do the proper type conversion - Java is pretty forgiving here and does
   // not throw exceptions upon value truncation
-  private static int pushArg( int argIdx, DirectCallStackFrame frame, ElementInfo eiArg, byte srcType, byte destType, Object attr){    
+  private static int pushArg( int argIdx, DirectCallStackFrame frame, ElementInfo eiArg, byte srcType, byte destType, Object attr, FeatureExpr ctx){    
     switch (srcType) {
     case Types.T_DOUBLE:
     {
@@ -319,7 +319,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_LONG:
     {
-      long v = eiArg.getLongField("value").simplify(NativeMethodInfo.CTX).getValue();
+      long v = eiArg.getLongField("value").simplify(ctx).getValue();
       switch (destType){
       case Types.T_LONG:
         return frame.setLongArgument(argIdx, v, attr);
@@ -332,7 +332,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     case Types.T_INT:
     { 
-      int v = eiArg.getIntField("value").simplify(NativeMethodInfo.CTX).getValue();
+      int v = eiArg.getIntField("value").simplify(ctx).getValue();
       switch (destType){
       case Types.T_INT:
         return frame.setArgument( argIdx, v, attr);
@@ -425,7 +425,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   }
 
   @MJI
-  public int invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, int objRef, int argsRef) {
+  public int invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, int objRef, int argsRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     MethodInfo miCallee = getMethodInfo(env, mthRef);
     ClassInfo calleeClass = miCallee.getClassInfo();
@@ -436,7 +436,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       //--- check the instance we are calling on
       if (!miCallee.isStatic()) {
         if (objRef == MJIEnv.NULL){
-          env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException");
+          env.throwException(ctx, "java.lang.NullPointerException");
           return MJIEnv.NULL;
           
         } else {
@@ -444,7 +444,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
           ClassInfo objClass = eiObj.getClassInfo();
         
           if (!objClass.isInstanceOf(calleeClass)) {
-            env.throwException(NativeMethodInfo.CTX, IllegalArgumentException.class.getName(), "Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = " + calleeClass);
+            env.throwException(ctx, IllegalArgumentException.class.getName(), "Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = " + calleeClass);
             return MJIEnv.NULL;
           }
         }
@@ -457,7 +457,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
         ClassInfo callerClass = caller.getClassInfo();
 
         if (callerClass != calleeClass) {
-          env.throwException(NativeMethodInfo.CTX, IllegalAccessException.class.getName(), "Class " + callerClass.getName() +
+          env.throwException(ctx, IllegalAccessException.class.getName(), "Class " + callerClass.getName() +
                   " can not access a member of class " + calleeClass.getName()
                   + " with modifiers \"" + Modifier.toString(miCallee.getModifiers()));
           return MJIEnv.NULL;
@@ -465,14 +465,14 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       }
       
       //--- push the direct call
-      frame = miCallee.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 0);
+      frame = miCallee.createDirectCallStackFrame(ctx, ti, 0);
       frame.setReflection();
       
       int argOffset = 0;
       if (!miCallee.isStatic()) {
         frame.setReferenceArgument( argOffset++, objRef, null);
       }
-      if (!pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef)) {
+      if (!pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef, ctx)) {
         // we've got a IllegalArgumentException
         return MJIEnv.NULL;  
       }
@@ -481,19 +481,19 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       
       //--- check for and push required clinits
       if (miCallee.isStatic()){
-        calleeClass.pushRequiredClinits(NativeMethodInfo.CTX, ti);
+        calleeClass.pushRequiredClinits(ctx, ti);
       }
       
       return MJIEnv.NULL; // reexecute
       
     } else { // we have returned from the direct call
-      return createBoxedReturnValueObject( env, miCallee, frame);
+      return createBoxedReturnValueObject( env, miCallee, frame, ctx);
     }
   }
   
 
   // this one has to collect annotations upwards in the inheritance chain
-  static int getAnnotations (MJIEnv env, MethodInfo mi){
+  static int getAnnotations (MJIEnv env, MethodInfo mi, FeatureExpr ctx){
     String mname = mi.getName();
     String msig = mi.genericSignature;
     ArrayList<AnnotationInfo> aiList = new ArrayList<AnnotationInfo>();
@@ -515,23 +515,23 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
 
     try {
-    	FeatureExpr ctx = NativeMethodInfo.CTX;
+    	
       return env.newAnnotationProxies(ctx, aiList.toArray(new AnnotationInfo[aiList.size()]));
     } catch (ClinitRequired x){
-      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
+      env.handleClinitRequest(ctx, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }    
   }
 
   @MJI
-  public int getAnnotations_____3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef){
-    return getAnnotations( env, getMethodInfo(env,mthRef));
+  public int getAnnotations_____3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, FeatureExpr ctx){
+    return getAnnotations( env, getMethodInfo(env,mthRef), ctx);
   }
   
   // the following ones consist of a package default implementation that is shared with
   // the constructor peer, and a public model method
-  static int getAnnotation (MJIEnv env, MethodInfo mi, int annotationClsRef){
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  static int getAnnotation (MJIEnv env, MethodInfo mi, int annotationClsRef, FeatureExpr ctx){
+	  
     ClassInfo aci = env.getReferredClassInfo(ctx, annotationClsRef);
     
     AnnotationInfo ai = mi.getAnnotation(aci.getName());
@@ -549,34 +549,34 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   }  
 
   @MJI
-  public int getAnnotation__Ljava_lang_Class_2__Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, int annotationClsRef) {
-    return getAnnotation(env, getMethodInfo(env,mthRef), annotationClsRef);
+  public int getAnnotation__Ljava_lang_Class_2__Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, int annotationClsRef, FeatureExpr ctx) {
+    return getAnnotation(env, getMethodInfo(env,mthRef), annotationClsRef, ctx);
   }
   
-  static int getDeclaredAnnotations (MJIEnv env, MethodInfo mi){
+  static int getDeclaredAnnotations (MJIEnv env, MethodInfo mi, FeatureExpr ctx){
     AnnotationInfo[] ai = mi.getAnnotations();
 
     try {
-    	FeatureExpr ctx = NativeMethodInfo.CTX;
+    	
       return env.newAnnotationProxies(ctx, ai);
     } catch (ClinitRequired x){
-      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
+      env.handleClinitRequest(ctx, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }    
   }
 
   @MJI
-  public int getDeclaredAnnotations_____3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef){
-    return getDeclaredAnnotations( env, getMethodInfo(env,mthRef));
+  public int getDeclaredAnnotations_____3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, FeatureExpr ctx){
+    return getDeclaredAnnotations( env, getMethodInfo(env,mthRef), ctx);
   }
   
-  static int getParameterAnnotations (MJIEnv env, MethodInfo mi){
+  static int getParameterAnnotations (MJIEnv env, MethodInfo mi, FeatureExpr ctx){
     AnnotationInfo[][] pa = mi.getParameterAnnotations();
     // this should always return an array object, even if the method has no arguments
     
     try {
       int paRef = env.newObjectArray("[Ljava/lang/annotation/Annotation;", pa.length);
-      FeatureExpr ctx = NativeMethodInfo.CTX;
+      
       for (int i=0; i<pa.length; i++){
         int eRef = env.newAnnotationProxies(ctx, pa[i]);
         env.setReferenceArrayElement(ctx, paRef, i, new One<>(eRef));
@@ -585,18 +585,18 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       return paRef;
       
     } catch (ClinitRequired x){ // be prepared that we might have to initialize respective annotation classes
-      env.handleClinitRequest(NativeMethodInfo.CTX, x.getRequiredClassInfo());
+      env.handleClinitRequest(ctx, x.getRequiredClassInfo());
       return MJIEnv.NULL;
     }    
   }
 
   @MJI
-  public int getParameterAnnotations_____3_3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef){
-    return getParameterAnnotations( env, getMethodInfo(env,mthRef));
+  public int getParameterAnnotations_____3_3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, FeatureExpr ctx){
+    return getParameterAnnotations( env, getMethodInfo(env,mthRef), ctx);
   }
 
   @MJI
-  public int toString____Ljava_lang_String_2 (MJIEnv env, int objRef){
+  public int toString____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     StringBuilder sb = new StringBuilder();
     
     MethodInfo mi = getMethodInfo(env, objRef);
@@ -622,12 +622,12 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     
     sb.append(')');
     
-    int sref = env.newString(NativeMethodInfo.CTX, sb.toString());
+    int sref = env.newString(ctx, sb.toString());
     return sref;
   }
 
   @MJI
-  public boolean equals__Ljava_lang_Object_2__Z (MJIEnv env, int objRef, int mthRef){
+  public boolean equals__Ljava_lang_Object_2__Z (MJIEnv env, int objRef, int mthRef, FeatureExpr ctx){
     ElementInfo ei = env.getElementInfo(mthRef);
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo(JPF_java_lang_Class.METHOD_CLASSNAME);
 
@@ -655,7 +655,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   }
 
   @MJI
-  public int hashCode____I (MJIEnv env, int objRef){
+  public int hashCode____I (MJIEnv env, int objRef, FeatureExpr ctx){
     MethodInfo mi = getMethodInfo(env, objRef);
     return mi.getClassName().hashCode() ^ mi.getName().hashCode();
   }

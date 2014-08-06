@@ -63,20 +63,20 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public int open__Ljava_lang_String_2I__I (MJIEnv env, int objref,
-                                                   int fnameRef, int mode){
+                                                   int fnameRef, int mode, FeatureExpr ctx){
     String fname = env.getStringObject(null, fnameRef);
     if (mode == FD_READ){
-      return openRead(fname);
+      return openRead(fname, ctx);
     } else if (mode == FD_WRITE){
-      return openWrite(fname);
+      return openWrite(fname, ctx);
     } else {
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "illegal open mode: " + mode);
+      env.throwException(ctx, "java.io.IOException", "illegal open mode: " + mode);
       return -1;
     }
   }
 
   @MJI
-  public int openRead (String fname) {
+  public int openRead (String fname, FeatureExpr ctx) {
     File file = new File(fname);
     if (file.exists()) {
       try {
@@ -101,7 +101,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
   
   @MJI
-  public int openWrite (String fname){
+  public int openWrite (String fname, FeatureExpr ctx){
     File file = new File(fname);
     try {
       FileOutputStream fos = new FileOutputStream(file);
@@ -122,7 +122,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
 
   @MJI
-  public void close0 (MJIEnv env, int objref) {
+  public void close0 (MJIEnv env, int objref, FeatureExpr ctx) {
     int fd = env.getIntField(objref, "fd").getValue().intValue();
     
     try {
@@ -142,17 +142,16 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
       content.set(fd, null);
       
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "file not open");      
+      env.throwException(ctx, "java.io.IOException", "file not open");      
     } catch (IOException iox) {
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
     }
   }
   
   // that's a JPF specific thing - we backrack into
   // a state where the file was still open, and hence don't want to
   // change the FileDescriptor identify
-  void reopen (MJIEnv env, int objref) throws IOException {
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+  void reopen (MJIEnv env, int objref, FeatureExpr ctx) throws IOException {
 	int fd = env.getIntField(objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off").getValue();
     
@@ -180,8 +179,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
   
   @MJI
-  public void write__I__ (MJIEnv env, int objref, int b){
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+  public void write__I__ (MJIEnv env, int objref, int b, FeatureExpr ctx){
 	int fd = env.getIntField(objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off").getValue();
     
@@ -202,8 +200,8 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         
       } else {
         if (env.getIntField(objref, "state").getValue().intValue() == FD_OPENED){ // backtracked
-          reopen(env,objref);
-          write__I__(env,objref,b); // try again
+          reopen(env,objref, ctx);
+          write__I__(env,objref,b, ctx); // try again
         } else {
           env.throwException(ctx, "java.io.IOException", "write attempt on closed file");
         }
@@ -217,8 +215,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public void write___3BII__ (MJIEnv env, int objref,
-                                     int bref, int offset, int len){
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+                                     int bref, int offset, int len, FeatureExpr ctx){
 	int fd = env.getIntField(objref, "fd").getValue();
     long off = env.getLongField(objref,"off").getValue();
     
@@ -245,8 +242,8 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         
       } else {
         if (env.getIntField(objref, "state").getValue().intValue() == FD_OPENED){ // backtracked
-          reopen(env,objref);
-          write___3BII__(env,objref,bref,offset,len); // try again
+          reopen(env,objref, ctx);
+          write___3BII__(env,objref,bref,offset,len, ctx); // try again
         } else {
           env.throwException(ctx, "java.io.IOException", "write attempt on closed file");
         }
@@ -259,8 +256,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
   
   @MJI
-  public int read____I (MJIEnv env, int objref) {
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+  public int read____I (MJIEnv env, int objref, FeatureExpr ctx) {
 	int fd = env.getIntField(objref, "fd").getValue();
     long off = env.getLongField(objref,"off").simplify(ctx).getValue();
         
@@ -282,8 +278,8 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         
       } else {
         if (env.getIntField(objref, "state").getValue().intValue() == FD_OPENED){ // backtracked
-          reopen(env,objref);
-          return read____I(env,objref); // try again
+          reopen(env,objref, ctx);
+          return read____I(env,objref, ctx); // try again
         } else {
           env.throwException(ctx, "java.io.IOException", "read attempt on closed file");
           return -1;
@@ -299,8 +295,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
   
   @MJI
-  public int read___3BII__I (MJIEnv env, int objref, int bufref, int offset, int len) {
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+  public int read___3BII__I (MJIEnv env, int objref, int bufref, int offset, int len, FeatureExpr ctx) {
 	int fd = env.getIntField(objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off").getValue();
         
@@ -328,8 +323,8 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         
       } else {
         if (env.getIntField(objref, "state").getValue().intValue() == FD_OPENED){ // backtracked
-          reopen(env,objref);
-          return read___3BII__I(env,objref,bufref,offset,len); // try again
+          reopen(env,objref, ctx);
+          return read___3BII__I(env,objref,bufref,offset,len, ctx); // try again
         } else {
           env.throwException(ctx, "java.io.IOException", "read attempt on closed file");
           return -1;        
@@ -345,8 +340,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
   
   @MJI
-  public long skip__J__J (MJIEnv env, int objref, long nBytes) {
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+  public long skip__J__J (MJIEnv env, int objref, long nBytes, FeatureExpr ctx) {
 	int fd = env.getIntField(objref, "fd").getValue().intValue();
     long off = env.getLongField(objref,"off").getValue();
         
@@ -382,7 +376,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
   
   @MJI
-  public void sync____ (MJIEnv env, int objref){
+  public void sync____ (MJIEnv env, int objref, FeatureExpr ctx){
     int fd = env.getIntField(objref, "fd").getValue().intValue();
 
     try {
@@ -395,20 +389,20 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         }
         
       } else {
-        env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "sync attempt on closed file");
+        env.throwException(ctx, "java.io.IOException", "sync attempt on closed file");
       }
           
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "file not open");      
+      env.throwException(ctx, "java.io.IOException", "file not open");      
     } catch (IOException iox) {
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
     }        
   }
   
   @MJI
-  public int available____I (MJIEnv env, int objref) {
+  public int available____I (MJIEnv env, int objref, FeatureExpr ctx) {
     int fd = env.getIntField(objref, "fd").getValue().intValue();
-    long off = env.getLongField(objref,"off").simplify(NativeMethodInfo.CTX).getValue();
+    long off = env.getLongField(objref,"off").simplify(ctx).getValue();
     
     try {
       Object fs = content.get(fd);
@@ -420,20 +414,20 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           return fis.available();
           
         } else {
-          env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "available() on file opened for write access");
+          env.throwException(ctx, "java.io.IOException", "available() on file opened for write access");
           return -1;                  
         }
         
       } else {
-        env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "available() on closed file");
+        env.throwException(ctx, "java.io.IOException", "available() on closed file");
         return -1;        
       }
           
     } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", "file not open");
+      env.throwException(ctx, "java.io.IOException", "file not open");
       return -1;
     } catch (IOException iox) {
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
       return -1;
     }    
     

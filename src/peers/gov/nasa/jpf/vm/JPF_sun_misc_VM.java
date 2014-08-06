@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -26,7 +27,7 @@ import gov.nasa.jpf.annotation.MJI;
 public class JPF_sun_misc_VM extends NativePeer {
   
   @MJI
-  public void initialize____V (MJIEnv env, int clsObjRef){
+  public void initialize____V (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     // nothing here yet
   }
 }

@@ -20,11 +20,12 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_io_ObjectInputStream extends NativePeer {
 
   @MJI
-  public int latestUserDefinedLoader____Ljava_lang_ClassLoader_2 (MJIEnv env, int clsRef){
+  public int latestUserDefinedLoader____Ljava_lang_ClassLoader_2 (MJIEnv env, int clsRef, FeatureExpr ctx){
     // class loaders are not yet supported
     return MJIEnv.NULL;
   }
@@ -33,7 +34,7 @@ public class JPF_java_io_ObjectInputStream extends NativePeer {
   public void bytesToDoubles___3BI_3DII__ (MJIEnv env, int clsRef,
                                                   int baRef, int bOff,
                                                   int daRef, int dOff,
-                                                  int nDoubles){
+                                                  int nDoubles, FeatureExpr ctx){
     int imax = dOff + nDoubles;
     int j=bOff;
     
@@ -64,7 +65,7 @@ public class JPF_java_io_ObjectInputStream extends NativePeer {
       bits |= 0x00000000000000ff & b0;
       
       double d = Double.longBitsToDouble(bits);
-      env.setDoubleArrayElement(NativeMethodInfo.CTX, daRef, i, new One<>(d));
+      env.setDoubleArrayElement(ctx, daRef, i, new One<>(d));
     }
   }
 
@@ -72,7 +73,7 @@ public class JPF_java_io_ObjectInputStream extends NativePeer {
   public void bytesToFloats___3BI_3FII__ (MJIEnv env, int clsRef,
                                                  int baRef, int bOff,
                                                  int faRef, int fOff,
-                                                 int nFloats){
+                                                 int nFloats, FeatureExpr ctx){
     int imax = fOff + nFloats;
     int j=bOff;
 
@@ -91,7 +92,7 @@ public class JPF_java_io_ObjectInputStream extends NativePeer {
       bits |= 0x000000ff & b0;
 
       float f = Float.intBitsToFloat(bits);
-      env.setFloatArrayElement(NativeMethodInfo.CTX, faRef, i, new One<>(f));
+      env.setFloatArrayElement(ctx, faRef, i, new One<>(f));
     }
   }
 }

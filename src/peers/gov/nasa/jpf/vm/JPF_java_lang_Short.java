@@ -23,6 +23,7 @@
  */
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -34,11 +35,11 @@ public class JPF_java_lang_Short extends NativePeer {
   @MJI
   public short parseShort__Ljava_lang_String_2__S (MJIEnv env, 
                                                           int clsObjRef, 
-                                                          int strRef) {
+                                                          int strRef, FeatureExpr ctx) {
     try {
       return Short.parseShort(env.getStringObject(null, strRef));
     } catch (NumberFormatException e) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.NumberFormatException");
+      env.throwException(ctx, "java.lang.NumberFormatException");
 
       return 0;
     }
@@ -47,23 +48,23 @@ public class JPF_java_lang_Short extends NativePeer {
   @MJI
   public short parseShort__Ljava_lang_String_2I__S (MJIEnv env, 
                                                             int clsObjRef, 
-                                                            int strRef, int radix) {
+                                                            int strRef, int radix, FeatureExpr ctx) {
     try {
       return Short.parseShort(env.getStringObject(null, strRef), radix);
     } catch (NumberFormatException e) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.NumberFormatException");
+      env.throwException(ctx, "java.lang.NumberFormatException");
 
       return 0;
     }
   }
 
   @MJI
-  public int toString__S__Ljava_lang_String_2 (MJIEnv env, int objref, short val) {
-    return env.newString(NativeMethodInfo.CTX, Short.toString(val));
+  public int toString__S__Ljava_lang_String_2 (MJIEnv env, int objref, short val, FeatureExpr ctx) {
+    return env.newString(ctx, Short.toString(val));
   }
 
   @MJI
-  public int valueOf__S__Ljava_lang_Short_2 (MJIEnv env, int clsRef, short val) {
-    return env.valueOfShort(NativeMethodInfo.CTX, val);
+  public int valueOf__S__Ljava_lang_Short_2 (MJIEnv env, int clsRef, short val, FeatureExpr ctx) {
+    return env.valueOfShort(ctx, val);
   }
 }

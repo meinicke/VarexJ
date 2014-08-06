@@ -36,15 +36,13 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JPF_java_io_File extends NativePeer {
 
-  static File getFile(MJIEnv env, int objref) {
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  static File getFile(MJIEnv env, int objref, FeatureExpr ctx) {
     int fnref = env.getReferenceField(ctx, objref, "filename").getValue();
     String fname = env.getStringObject(null, fnref);
     return new File(fname);
   }
 
-  static int createJPFFile(MJIEnv env, File file) {
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+  static int createJPFFile(MJIEnv env, File file, FeatureExpr ctx) {
 	int newFileRef = env.newObject(ctx, "java.io.File");
     ElementInfo fileEI = env.getModifiableElementInfo(newFileRef);
 
@@ -55,44 +53,44 @@ public class JPF_java_io_File extends NativePeer {
   }
 
   @MJI
-  public int getParentFile____Ljava_io_File_2(MJIEnv env, int objref) {
-    File thisFile = getFile(env, objref);
+  public int getParentFile____Ljava_io_File_2(MJIEnv env, int objref, FeatureExpr ctx) {
+    File thisFile = getFile(env, objref, ctx);
     File parent = thisFile.getParentFile();
 
-    return createJPFFile(env, parent);
+    return createJPFFile(env, parent, ctx);
   }
   
   @MJI
-  public int getAbsolutePath____Ljava_lang_String_2 (MJIEnv env, int objref) {
-    String pn = getFile(env,objref).getAbsolutePath();
-    return env.newString(NativeMethodInfo.CTX, pn);
+  public int getAbsolutePath____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx) {
+    String pn = getFile(env,objref, ctx).getAbsolutePath();
+    return env.newString(ctx, pn);
   }
 
   @MJI
-  public int getAbsoluteFile____Ljava_io_File_2 (MJIEnv env, int objref) {
-    File absoluteFile = getFile(env, objref).getAbsoluteFile();
-    return createJPFFile(env, absoluteFile);
+  public int getAbsoluteFile____Ljava_io_File_2 (MJIEnv env, int objref, FeatureExpr ctx) {
+    File absoluteFile = getFile(env, objref, ctx).getAbsoluteFile();
+    return createJPFFile(env, absoluteFile, ctx);
   }
 
   @MJI
-  public int getCanonicalPath____Ljava_lang_String_2 (MJIEnv env, int objref) {
+  public int getCanonicalPath____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     try {
-      String pn = getFile(env,objref).getCanonicalPath();
-      return env.newString(NativeMethodInfo.CTX, pn);
+      String pn = getFile(env,objref, ctx).getCanonicalPath();
+      return env.newString(ctx, pn);
     } catch (IOException iox) {
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
       return MJIEnv.NULL;
     }
   }
 
   @MJI
-  public int getCanonicalFile____Ljava_io_File_2(MJIEnv env, int objref) {
+  public int getCanonicalFile____Ljava_io_File_2(MJIEnv env, int objref, FeatureExpr ctx) {
     try {
-      File file = getFile(env, objref);
+      File file = getFile(env, objref, ctx);
       File canonicalFile = file.getCanonicalFile();
-      return createJPFFile(env, canonicalFile);
+      return createJPFFile(env, canonicalFile, ctx);
     } catch (IOException iox) {
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
       return MJIEnv.NULL;
     }
   }
@@ -100,96 +98,96 @@ public class JPF_java_io_File extends NativePeer {
   // internal helper
   @SuppressWarnings("deprecation")
   @MJI
-  public int getURLSpec____Ljava_lang_String_2 (MJIEnv env, int objref){
+  public int getURLSpec____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx){
     try {
-      File f = getFile(env,objref);
+      File f = getFile(env,objref, ctx);
       URL url = f.toURL();
-      return env.newString(NativeMethodInfo.CTX, url.toString());
+      return env.newString(ctx, url.toString());
     } catch (MalformedURLException mfux) {
-      env.throwException(NativeMethodInfo.CTX, "java.net.MalformedURLException", mfux.getMessage());
+      env.throwException(ctx, "java.net.MalformedURLException", mfux.getMessage());
       return MJIEnv.NULL;
     }
   }
 
   @MJI
-  public int getURISpec____Ljava_lang_String_2 (MJIEnv env, int objref){
-    File f = getFile(env, objref);
+  public int getURISpec____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx){
+    File f = getFile(env, objref, ctx);
     URI uri = f.toURI();
-    return env.newString(NativeMethodInfo.CTX, uri.toString());
+    return env.newString(ctx, uri.toString());
   }
 
   @MJI
-  public boolean isAbsolute____Z (MJIEnv env, int objref) {
-    return getFile(env, objref).isAbsolute();
+  public boolean isAbsolute____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env, objref, ctx).isAbsolute();
   }
 
   @MJI
-  public boolean isDirectory____Z (MJIEnv env, int objref) {
-    return getFile(env,objref).isDirectory();
+  public boolean isDirectory____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).isDirectory();
   }
 
   @MJI
-  public boolean isFile____Z (MJIEnv env, int objref) {
-    return getFile(env,objref).isFile();
+  public boolean isFile____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).isFile();
   }
   
   @MJI
-  public boolean delete____Z (MJIEnv env, int objref) {
-    return getFile(env,objref).delete();
+  public boolean delete____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).delete();
   }
   
   @MJI
-  public long length____J (MJIEnv env, int objref) {
-    return getFile(env,objref).length();
+  public long length____J (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).length();
   }
   
   @MJI
-  public boolean canRead____Z (MJIEnv env, int objref) {
-    return getFile(env,objref).canRead();
+  public boolean canRead____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).canRead();
   }
 
   @MJI
-  public boolean canWrite____Z (MJIEnv env, int objref) {
-    return getFile(env,objref).canWrite();
+  public boolean canWrite____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).canWrite();
   }
 
   @MJI
-  public boolean exists____Z (MJIEnv env, int objref) {
-    return getFile(env,objref).exists();
+  public boolean exists____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).exists();
   }
 
   @MJI
-  public boolean createNewFile____Z(MJIEnv env, int objref) {
-    File fileToCreate = getFile(env, objref);
+  public boolean createNewFile____Z(MJIEnv env, int objref, FeatureExpr ctx) {
+    File fileToCreate = getFile(env, objref, ctx);
     try {
       return fileToCreate.createNewFile();
 
     } catch (IOException iox) {
-      env.throwException(NativeMethodInfo.CTX, "java.io.IOException", iox.getMessage());
+      env.throwException(ctx, "java.io.IOException", iox.getMessage());
       return false;
     }
   }
 
   @MJI
-  public int list_____3Ljava_lang_String_2(MJIEnv env, int objref){
-	  File f=getFile(env,objref);
+  public int list_____3Ljava_lang_String_2(MJIEnv env, int objref, FeatureExpr ctx){
+	  File f=getFile(env,objref, ctx);
     if (f.isDirectory()){
       String[] farr=f.list();
-      return env.newStringArray(NativeMethodInfo.CTX, farr);
+      return env.newStringArray(ctx, farr);
     } else {
       return MJIEnv.NULL;
     }
   }
 
   @MJI
-  public int listRoots_____3Ljava_io_File_2(MJIEnv env, int classRef) {
+  public int listRoots_____3Ljava_io_File_2(MJIEnv env, int classRef, FeatureExpr ctx) {
     File[] roots = File.listRoots();
     int rootResultRef = env.newObjectArray("java.io.File", roots.length);
     ElementInfo rootsEI = env.getModifiableElementInfo(rootResultRef);
 
     for (int i = 0; i < roots.length; i++) {
-      int rootFileRef = createJPFFile(env, roots[i]);
-      rootsEI.setReferenceElement(NativeMethodInfo.CTX, i, new One<>(rootFileRef));
+      int rootFileRef = createJPFFile(env, roots[i], ctx);
+      rootsEI.setReferenceElement(ctx, i, new One<>(rootFileRef));
     }
 
     return rootResultRef;

@@ -42,7 +42,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
     int      nArgs = nmi.getNumberOfArguments();
     byte[]   argTypes = nmi.getArgumentTypes();
 
-    Object[] a = new Object[nArgs+2];
+    Object[] a = new Object[nArgs+3];
 
     int      stackOffset;
     int      i, j, k;
@@ -124,7 +124,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
       
       setThis(thisRef);
     }
-
+    a[a.length - 1] = ctx;
     setArgs(a);
   }
 }

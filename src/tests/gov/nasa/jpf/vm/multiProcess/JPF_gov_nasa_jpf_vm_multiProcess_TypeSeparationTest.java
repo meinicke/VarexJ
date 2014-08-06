@@ -29,6 +29,8 @@ import gov.nasa.jpf.vm.NativePeer;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  */
@@ -42,8 +44,8 @@ public class JPF_gov_nasa_jpf_vm_multiProcess_TypeSeparationTest extends NativeP
   private static List<ClassInfo> annClasses =  new ArrayList<ClassInfo>();
 
   @MJI
-  public void keepAnnotationClass__Ljava_lang_Class_2I__V(MJIEnv env, int objRef, int annoClsRef, int prcId) {
-    ClassInfo aci = env.getReferredClassInfo(NativeMethodInfo.CTX, annoClsRef);
+  public void keepAnnotationClass__Ljava_lang_Class_2I__V(MJIEnv env, int objRef, int annoClsRef, int prcId, FeatureExpr ctx) {
+    ClassInfo aci = env.getReferredClassInfo(ctx, annoClsRef);
     if(!prcIds.contains(prcId)) {
       prcIds.add(prcId);
       annClasses.add(aci);
@@ -57,7 +59,7 @@ public class JPF_gov_nasa_jpf_vm_multiProcess_TypeSeparationTest extends NativeP
   private static List<ClassLoaderInfo> classLoaders =  new ArrayList<ClassLoaderInfo>();
 
   @MJI
-  public void keepClassLoader__Ljava_lang_ClassLoader_2I__V(MJIEnv env, int objRef, int clRef, int prcId) {
+  public void keepClassLoader__Ljava_lang_ClassLoader_2I__V(MJIEnv env, int objRef, int clRef, int prcId, FeatureExpr ctx) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(clRef);
 
     if(!prcIds.contains(prcId)) {

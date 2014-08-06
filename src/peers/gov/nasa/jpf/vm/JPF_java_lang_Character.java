@@ -31,108 +31,108 @@ public class JPF_java_lang_Character extends NativePeer {
   // <2do> at this point we deliberately do not override clinit
 
   @MJI
-  public boolean isDefined__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isDefined__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isDefined(c);
   }
 
   @MJI
-  public boolean isDigit__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isDigit__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isDigit(c);
   }
 
   @MJI
-  public boolean isISOControl__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isISOControl__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isISOControl(c);
   }
 
   @MJI
   public boolean isIdentifierIgnorable__C__Z (MJIEnv env, int clsObjRef, 
-                                                  char c) {
+                                                  char c, FeatureExpr ctx) {
     return Character.isIdentifierIgnorable(c);
   }
 
   @MJI
   public boolean isJavaIdentifierPart__C__Z (MJIEnv env, int clsObjRef, 
-                                                 char c) {
+                                                 char c, FeatureExpr ctx) {
     return Character.isJavaIdentifierPart(c);
   }
 
   @MJI
   public boolean isJavaIdentifierStart__C__Z (MJIEnv env, int clsObjRef, 
-                                                  char c) {
+                                                  char c, FeatureExpr ctx) {
     return Character.isJavaIdentifierStart(c);
   }
 
   @MJI
   public boolean isJavaLetterOrDigit__C__Z (MJIEnv env, int clsObjRef, 
-                                                char c) {
+                                                char c, FeatureExpr ctx) {
     return Character.isJavaIdentifierPart(c);
   }
 
   @MJI
-  public boolean isJavaLetter__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isJavaLetter__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isJavaIdentifierStart(c);
   }
 
   @MJI
-  public boolean isLetterOrDigit__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isLetterOrDigit__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isLetterOrDigit(c);
   }
 
   @MJI
-  public boolean isLetter__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isLetter__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isLetter(c);
   }
 
   @MJI
-  public boolean isLowerCase__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isLowerCase__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isLowerCase(c);
   }
 
   @MJI
-  public int getNumericValue__C__I (MJIEnv env, int clsObjRef, char c) {
+  public int getNumericValue__C__I (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.getNumericValue(c);
   }
 
   @MJI
-  public boolean isSpaceChar__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isSpaceChar__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isSpaceChar(c);
   }
 
   @MJI
-  public boolean isSpace__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isSpace__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isWhitespace(c);
   }
 
   @MJI
-  public boolean isTitleCase__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isTitleCase__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isTitleCase(c);
   }
 
   @MJI
-  public int getType__C__I (MJIEnv env, int clsObjRef, char c) {
+  public int getType__C__I (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.getType(c);
   }
 
   @MJI
   public boolean isUnicodeIdentifierPart__C__Z (MJIEnv env, int clsObjRef, 
-                                                    char c) {
+                                                    char c, FeatureExpr ctx) {
     return Character.isUnicodeIdentifierPart(c);
   }
 
   @MJI
   public boolean isUnicodeIdentifierStart__C__Z (MJIEnv env, int clsObjRef, 
-                                                     char c) {
+                                                     char c, FeatureExpr ctx) {
     return Character.isUnicodeIdentifierStart(c);
   }
 
   @MJI
-  public boolean isUpperCase__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isUpperCase__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isUpperCase(c);
   }
 
   @MJI
-  public boolean isWhitespace__C__Z (MJIEnv env, int clsObjRef, char c) {
+  public boolean isWhitespace__C__Z (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.isWhitespace(c);
   }
 
@@ -145,8 +145,7 @@ public class JPF_java_lang_Character extends NativePeer {
   // It is actually Ok to bypass the real clinit if we turn all the
   // important methods into native ones, i.e. delegate to the real thing.
   @MJI
-  public void $clinit____V (MJIEnv env, int clsObjRef) {
-	  FeatureExpr ctx = FeatureExprFactory.True();
+  public void $clinit____V (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     env.setStaticByteField(ctx, "java.lang.Character", "UNASSIGNED", new One<>((byte) 0));
     env.setStaticByteField(ctx, "java.lang.Character", "UPPERCASE_LETTER", new One<>((byte) 1));
     env.setStaticByteField(ctx, "java.lang.Character", "LOWERCASE_LETTER", new One<>((byte) 2));
@@ -186,33 +185,33 @@ public class JPF_java_lang_Character extends NativePeer {
   }
 
   @MJI
-  public int digit__CI__I (MJIEnv env, int clsObjRef, char c, int radix) {
+  public int digit__CI__I (MJIEnv env, int clsObjRef, char c, int radix, FeatureExpr ctx) {
     return Character.digit(c, radix);
   }
 
   @MJI
   public char forDigit__II__C (MJIEnv env, int clsObjRef, int digit, 
-                                   int radix) {
+                                   int radix, FeatureExpr ctx) {
     return Character.forDigit(digit, radix);
   }
 
   @MJI
-  public char toLowerCase__C__C (MJIEnv env, int clsObjRef, char c) {
+  public char toLowerCase__C__C (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.toLowerCase(c);
   }
 
   @MJI
-  public char toTitleCase__C__C (MJIEnv env, int clsObjRef, char c) {
+  public char toTitleCase__C__C (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.toTitleCase(c);
   }
 
   @MJI
-  public char toUpperCase__C__C (MJIEnv env, int clsObjRef, char c) {
+  public char toUpperCase__C__C (MJIEnv env, int clsObjRef, char c, FeatureExpr ctx) {
     return Character.toUpperCase(c);
   }
 
   @MJI
-  public int valueOf__C__Ljava_lang_Character_2 (MJIEnv env, int clsRef, char val) {
-    return env.valueOfCharacter(NativeMethodInfo.CTX, val);
+  public int valueOf__C__Ljava_lang_Character_2 (MJIEnv env, int clsRef, char val, FeatureExpr ctx) {
+    return env.valueOfCharacter(ctx, val);
   }
 }

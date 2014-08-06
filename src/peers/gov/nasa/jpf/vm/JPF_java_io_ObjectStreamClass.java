@@ -20,30 +20,31 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_io_ObjectStreamClass extends NativePeer {
   @MJI
-  public void initNative____V (MJIEnv env, int clsObjRef) {
+  public void initNative____V (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     // cut off
   }
   
   // why is this here??
   @MJI
-  public boolean hasStaticInitializer__Ljava_lang_Class_2__Z (MJIEnv env, int objRef, int clsRef){
-    ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, clsRef);
+  public boolean hasStaticInitializer__Ljava_lang_Class_2__Z (MJIEnv env, int objRef, int clsRef, FeatureExpr ctx){
+    ClassInfo ci = env.getReferredClassInfo(ctx, clsRef);
     MethodInfo mi = ci.getMethod("<clinit>()V", false);          
     return (mi != null);
   }
 
   // just a little accelerator
   @MJI
-  public int getDeclaredSUID__Ljava_lang_Class_2__Ljava_lang_Long_2 (MJIEnv env, int objRef, int clsRef){
-    ClassInfo ci = env.getReferredClassInfo(NativeMethodInfo.CTX, clsRef);
+  public int getDeclaredSUID__Ljava_lang_Class_2__Ljava_lang_Long_2 (MJIEnv env, int objRef, int clsRef, FeatureExpr ctx){
+    ClassInfo ci = env.getReferredClassInfo(ctx, clsRef);
     FieldInfo fi = ci.getDeclaredStaticField("serialVersionUID");
     if (fi != null){
       ElementInfo ei = ci.getStaticElementInfo();
       Conditional<Long> l = ei.getLongField(fi);
-      return env.newLong(NativeMethodInfo.CTX, l);
+      return env.newLong(ctx, l);
     } else {
       return MJIEnv.NULL;
     }

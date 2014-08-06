@@ -34,6 +34,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * very simple URLConnection model that can be used for reading static URL contents
  *
@@ -134,7 +136,7 @@ public class JPF_gov_nasa_jpf_CachedROHttpConnection extends NativePeer {
   }
 
   @MJI
-  public int getContents__Ljava_lang_String_2___3B (MJIEnv env, int objRef, int surlRef){
+  public int getContents__Ljava_lang_String_2___3B (MJIEnv env, int objRef, int surlRef, FeatureExpr ctx){
     String url = env.getStringObject(null, surlRef);
 
     // first we check if it's already cached in memory
@@ -156,7 +158,7 @@ public class JPF_gov_nasa_jpf_CachedROHttpConnection extends NativePeer {
     }
 
     if (data != null){
-      return env.newByteArray(NativeMethodInfo.CTX, data);
+      return env.newByteArray(ctx, data);
     } else {
       return MJIEnv.NULL;
     }

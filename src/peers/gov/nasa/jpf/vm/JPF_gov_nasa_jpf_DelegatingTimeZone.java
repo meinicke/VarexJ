@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * native peer for JPFs concrete TimeZone class, which is just delegating to the
@@ -42,31 +43,31 @@ public class JPF_gov_nasa_jpf_DelegatingTimeZone extends NativePeer {
 
   //--- native methods
   @MJI
-  public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef){
+  public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef, FeatureExpr ctx){
     String id = env.getStringObject(null, idRef);
     TimeZone tz = TimeZone.getTimeZone(id);
     int rawOffset = tz.getRawOffset();
     
-    env.setReferenceField(NativeMethodInfo.CTX, objRef, "ID", idRef);
-    env.setIntField(NativeMethodInfo.CTX, objRef, "rawOffset", new One<>(rawOffset));
+    env.setReferenceField(ctx, objRef, "ID", idRef);
+    env.setIntField(ctx, objRef, "rawOffset", new One<>(rawOffset));
   }
   
   @MJI
   public int getOffset__IIIIII__I (MJIEnv env, int objRef,
-      int era, int year, int month, int day, int dayOfWeek, int milliseconds){
+      int era, int year, int month, int day, int dayOfWeek, int milliseconds, FeatureExpr ctx){
     TimeZone tz = getTimeZone( env, objRef);
     return tz.getOffset(era, year, month, day, dayOfWeek, milliseconds);
   }
 
   @MJI
-  public boolean inDaylightTime__J__Z (MJIEnv env, int objRef, long time){
+  public boolean inDaylightTime__J__Z (MJIEnv env, int objRef, long time, FeatureExpr ctx){
     Date date = new Date(time);
     TimeZone tz = getTimeZone( env, objRef);
     return tz.inDaylightTime(date);
   }
   
   @MJI
-  public boolean useDaylightTime____Z (MJIEnv env, int objRef){
+  public boolean useDaylightTime____Z (MJIEnv env, int objRef, FeatureExpr ctx){
     TimeZone tz = getTimeZone( env, objRef);
     return tz.useDaylightTime();
   }

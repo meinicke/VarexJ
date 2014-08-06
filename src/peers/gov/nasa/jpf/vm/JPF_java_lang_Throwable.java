@@ -34,8 +34,8 @@ public class JPF_java_lang_Throwable extends NativePeer {
    * return array of StackTraceElement elements from the snapshot stored in the Throwable
    */
   @MJI
-  public int createStackTrace_____3Ljava_lang_StackTraceElement_2 (MJIEnv env, int objref) {
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  public int createStackTrace_____3Ljava_lang_StackTraceElement_2 (MJIEnv env, int objref, FeatureExpr ctx) {
+	  
     int aref = env.getReferenceField(ctx, objref, "snapshot").getValue();
     int[] snap = env.getIntArrayObject(ctx, aref);
     
@@ -43,9 +43,9 @@ public class JPF_java_lang_Throwable extends NativePeer {
   }
   
   @MJI
-  public int fillInStackTrace____Ljava_lang_Throwable_2 (MJIEnv env, int objref) {
+  public int fillInStackTrace____Ljava_lang_Throwable_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
 	int[] snap = ti.getSnapshot(ctx, objref);
     
     int aref = env.newIntArray(ctx, snap);
@@ -56,28 +56,28 @@ public class JPF_java_lang_Throwable extends NativePeer {
     
   // native because we don't want to waste states
   @MJI
-  public void printStackTrace____V (MJIEnv env, int objRef) {
-    env.getThreadInfo().printStackTrace(NativeMethodInfo.CTX, objRef);
+  public void printStackTrace____V (MJIEnv env, int objRef, FeatureExpr ctx) {
+    env.getThreadInfo().printStackTrace(ctx, objRef);
   }
   
   // a helper method to get a string representation of the stacktrace
   @MJI
-  public int getStackTraceAsString____Ljava_lang_String_2 (MJIEnv env, int objRef) {
+  public int getStackTraceAsString____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     
-    ti.printStackTrace(NativeMethodInfo.CTX, pw, objRef);
+    ti.printStackTrace(ctx, pw, objRef);
     String stackTrace = sw.toString();
     pw.close();
     
-    return env.newString(NativeMethodInfo.CTX, stackTrace);
+    return env.newString(ctx, stackTrace);
   }
   
   @MJI
-  public int toString____Ljava_lang_String_2 (MJIEnv env, int objRef){
+  public int toString____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     ClassInfo ci = env.getClassInfo(objRef);
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     int msgRef = env.getReferenceField(ctx, objRef, "detailMessage").getValue();
     
     String s = ci.getName();
@@ -85,6 +85,6 @@ public class JPF_java_lang_Throwable extends NativePeer {
       s += ": " + env.getStringObject(null, msgRef);
     }
     
-    return env.newString(NativeMethodInfo.CTX, s);
+    return env.newString(ctx, s);
   }
 }

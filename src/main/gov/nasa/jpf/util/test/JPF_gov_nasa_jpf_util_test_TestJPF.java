@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.ArrayList;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -47,15 +48,15 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
 
   boolean done;
 
-  private static void pushDirectCallFrame(MJIEnv env, MethodInfo mi, int objRef) {
+  private static void pushDirectCallFrame(MJIEnv env, MethodInfo mi, int objRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
 
-    DirectCallStackFrame frame = mi.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 0);
+    DirectCallStackFrame frame = mi.createDirectCallStackFrame(ctx, ti, 0);
     frame.setReferenceArgument( 0, objRef, null);
     ti.pushFrame(frame);
   }
 
-  private boolean initializeTestMethods(MJIEnv env, String[] selectedTests) {
+  private boolean initializeTestMethods(MJIEnv env, String[] selectedTests, FeatureExpr ctx) {
     if (selectedTests != null && selectedTests.length > 0) {
       testMethods = new MethodInfo[selectedTests.length];
       int i = 0;
@@ -64,7 +65,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
         if (mi != null && mi.isPublic() && !mi.isStatic()) {
           testMethods[i++] = mi;
         } else {
-          env.throwException(NativeMethodInfo.CTX,
+          env.throwException(ctx,
                   "java.lang.RuntimeException", "no such test method: public void " + test + "()");
           return false;
         }
@@ -95,13 +96,13 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
   }
 
   @MJI
-  public void $init____V (MJIEnv env, int objRef){
+  public void $init____V (MJIEnv env, int objRef, FeatureExpr ctx){
     // nothing
   }
 
   @MJI
   public void runTestsOfThisClass___3Ljava_lang_String_2__V (MJIEnv env, int clsObjRef,
-                                                                    int selectedTestsRef) {
+                                                                    int selectedTestsRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
 
     if (!done) {
@@ -111,24 +112,24 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
         testClass = frame.getClassInfo();
         testClassCtor = testClass.getMethod("<init>()V", true);
 
-        String[] selectedTests = env.getStringArrayObject(NativeMethodInfo.CTX, selectedTestsRef);
-        if (initializeTestMethods(env, selectedTests)) {
+        String[] selectedTests = env.getStringArrayObject(ctx, selectedTestsRef);
+        if (initializeTestMethods(env, selectedTests, ctx)) {
           env.repeatInvocation();
         }
 
       } else { // this is re-executed
         if (testObjRef == MJIEnv.NULL) { // create a new test object
-          testObjRef = env.newObject(NativeMethodInfo.CTX, testClass);
+          testObjRef = env.newObject(ctx, testClass);
 
           if (testClassCtor != null) {
-            pushDirectCallFrame(env, testClassCtor, testObjRef);
+            pushDirectCallFrame(env, testClassCtor, testObjRef, ctx);
             env.repeatInvocation();
           }
 
         } else { // enter the next test
           if (testMethods != null && (index < testMethods.length)) {
             MethodInfo miTest = testMethods[index++];
-            pushDirectCallFrame(env, miTest, testObjRef);
+            pushDirectCallFrame(env, miTest, testObjRef,ctx);
 
             if (index < testMethods.length) {
               testObjRef = MJIEnv.NULL;
@@ -144,13 +145,13 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
   }
 
   @MJI
-  public int createAndRunJPF__Ljava_lang_StackTraceElement_2_3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef, int a1, int a2){
+  public int createAndRunJPF__Ljava_lang_StackTraceElement_2_3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef, int a1, int a2, FeatureExpr ctx){
     // don't get recursive
     return MJIEnv.NULL;
   }
 
   @MJI
-  public int getProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int keyRef){
+  public int getProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int keyRef, FeatureExpr ctx){
     String key = env.getStringObject(null, keyRef);
     String val = env.getConfig().getString(key);
     
@@ -165,17 +166,17 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
    * if any of our methods are executed, we know that we already run under JPF
    */
   @MJI
-  public boolean isJPFRun____Z (MJIEnv env, int clsObjRef){
+  public boolean isJPFRun____Z (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     return true;
   }
 
   @MJI
-  public boolean isJUnitRun____Z (MJIEnv env, int clsObjRef){
+  public boolean isJUnitRun____Z (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     return false;
   }
 
   @MJI
-  public boolean isRunTestRun____Z (MJIEnv env, int clsObjRef){
+  public boolean isRunTestRun____Z (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     return false;
   }
 
@@ -183,75 +184,75 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
   // we need to override these so that the actual test code gets executed
   // if we fail to intercept, the bytecode will actually start JPF
   @MJI
-  public int noPropertyViolation___3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef, int jpfArgsRef){
+  public int noPropertyViolation___3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef, int jpfArgsRef, FeatureExpr ctx){
     return MJIEnv.NULL;
   }
 
   @MJI
-  public boolean verifyNoPropertyViolation___3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef, int jpfArgsRef){
+  public boolean verifyNoPropertyViolation___3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef, int jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 
   @MJI
   public boolean verifyAssertionErrorDetails__Ljava_lang_String_2_3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef,
-                                  int detailsRef, int jpfArgsRef){
+                                  int detailsRef, int jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 
   @MJI
-  public boolean verifyAssertionError___3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef, int jpfArgsRef){
+  public boolean verifyAssertionError___3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef, int jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 
   @MJI
   public int unhandledException__Ljava_lang_String_2Ljava_lang_String_2_3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef,
-                                  int xClassNameRef, int detailsRef, int jpfArgsRef){
+                                  int xClassNameRef, int detailsRef, int jpfArgsRef, FeatureExpr ctx){
     return MJIEnv.NULL;
   }
 
   @MJI
   public boolean verifyUnhandledException__Ljava_lang_String_2_3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef,
-                                  int xClassNameRef, int jpfArgsRef){
+                                  int xClassNameRef, int jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 
   @MJI
   public boolean verifyUnhandledExceptionDetails__Ljava_lang_String_2Ljava_lang_String_2_3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef,
-                                  int xClassNameRef, int detailsRef, int jpfArgsRef){
+                                  int xClassNameRef, int detailsRef, int jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 
   @MJI
   public int propertyViolation__Ljava_lang_Class_2_3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef,
-                                  int propClsRef, int jpfArgsRef){
+                                  int propClsRef, int jpfArgsRef, FeatureExpr ctx){
     return MJIEnv.NULL;
   }
 
   @MJI
   public boolean verifyPropertyViolation__Lgov_nasa_jpf_util_TypeRef_2_3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef,
-                                  int propClsRef, int jpfArgsRef){
+                                  int propClsRef, int jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 
   @MJI
   public int jpfException__Ljava_lang_Class_2_3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef,
-                                  int xClsRef, int jpfArgsRef){
+                                  int xClsRef, int jpfArgsRef, FeatureExpr ctx){
     return MJIEnv.NULL;
   }
 
   @MJI
   public boolean verifyJPFException__Lgov_nasa_jpf_util_TypeRef_2_3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef,
-                                  int xClsRef, int jpfArgsRef){
+                                  int xClsRef, int jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 
   @MJI
-  public int deadlock___3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef, int jpfArgsRef){
+  public int deadlock___3Ljava_lang_String_2__Lgov_nasa_jpf_JPF_2 (MJIEnv env, int clsObjRef, int jpfArgsRef, FeatureExpr ctx){
     return MJIEnv.NULL;
   }
 
   @MJI
-  public boolean verifyDeadlock___3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef, int jpfArgsRef){
+  public boolean verifyDeadlock___3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef, int jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 

@@ -24,6 +24,8 @@ import gov.nasa.jpf.annotation.MJI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 public class JPF_java_security_MessageDigest extends NativePeer {
   
   MessageDigest[] digests;
@@ -52,7 +54,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
   }
   
   @MJI
-  public int init0__Ljava_lang_String_2__I (MJIEnv env, int objRef, int algRef) {
+  public int init0__Ljava_lang_String_2__I (MJIEnv env, int objRef, int algRef, FeatureExpr ctx) {
     String algorithm = env.getStringObject(null, algRef);
     
     try {
@@ -63,25 +65,25 @@ public class JPF_java_security_MessageDigest extends NativePeer {
     
       return id;
     } catch (NoSuchAlgorithmException x){
-      env.throwException(NativeMethodInfo.CTX, "java.security.NoSuchAlgorithmException", algorithm);
+      env.throwException(ctx, "java.security.NoSuchAlgorithmException", algorithm);
       return -1;
     }
   }
   
   @MJI
-  public int digest___3B___3B (MJIEnv env, int objRef, int inputRef){
+  public int digest___3B___3B (MJIEnv env, int objRef, int inputRef, FeatureExpr ctx){
     MessageDigest md = getDigest(env, objRef);
-    byte[] input = env.getByteArrayObject(NativeMethodInfo.CTX, inputRef);
+    byte[] input = env.getByteArrayObject(ctx, inputRef);
     
     byte[] res = md.digest(input);
-    return env.newByteArray(NativeMethodInfo.CTX, res);
+    return env.newByteArray(ctx, res);
   }
 
   @MJI
-  public int digest_____3B (MJIEnv env, int objRef){
+  public int digest_____3B (MJIEnv env, int objRef, FeatureExpr ctx){
     MessageDigest md = getDigest(env, objRef);    
     byte[] res = md.digest();
-    return env.newByteArray(NativeMethodInfo.CTX, res);
+    return env.newByteArray(ctx, res);
   }
   
   @MJI
@@ -91,9 +93,9 @@ public class JPF_java_security_MessageDigest extends NativePeer {
   }
 
   @MJI
-  public void update___3B__V (MJIEnv env, int objRef, int inputRef){
+  public void update___3B__V (MJIEnv env, int objRef, int inputRef, FeatureExpr ctx){
     MessageDigest md = getDigest(env, objRef);
-    byte[] input = env.getByteArrayObject(NativeMethodInfo.CTX, inputRef);
+    byte[] input = env.getByteArrayObject(ctx, inputRef);
     md.update(input);
   }
 }

@@ -26,6 +26,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_io_InputStreamReader extends NativePeer {
 
@@ -47,7 +48,7 @@ public class JPF_java_io_InputStreamReader extends NativePeer {
   @MJI
   public int decode___3BI_3CIZ__I (MJIEnv env, int objref,
                                          int bref, int len, int cref, int off,
-                                         boolean endOfInput){
+                                         boolean endOfInput, FeatureExpr ctx){
     int c = -1;
     int lim = in.limit();
     
@@ -66,7 +67,7 @@ public class JPF_java_io_InputStreamReader extends NativePeer {
     
     int n = out.position();
     for (int i=0, j=off; i<n; i++,j++){
-      env.setCharArrayElement(NativeMethodInfo.CTX, cref,j, new One<>(out.get(i)));
+      env.setCharArrayElement(ctx, cref,j, new One<>(out.get(i)));
     }
     out.clear();
     if (n == len){
@@ -81,7 +82,7 @@ public class JPF_java_io_InputStreamReader extends NativePeer {
   // between decode() calls. Granted, that seems strange, but there is an
   // InputStream.read() in the loop which might just branch into user code
   @MJI
-  public int decode__IZ__I (MJIEnv env, int objref, int b, boolean endOfInput){
+  public int decode__IZ__I (MJIEnv env, int objref, int b, boolean endOfInput, FeatureExpr ctx){
     int c = -1;
     int lim = in.limit();
     

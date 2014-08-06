@@ -29,7 +29,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
 
   @MJI
-  public int annotationType____Ljava_lang_Class_2 (MJIEnv env, int objref) {
+  public int annotationType____Ljava_lang_Class_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     ClassInfo ciProxy = env.getClassInfo(objref);  // this would be the proxy
     
     // we could also pull it out from the interfaces, but we know the naming scheme
@@ -41,7 +41,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
   }
   
   @MJI
-  public int toString____Ljava_lang_String_2 (MJIEnv env, int objref){
+  public int toString____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx){
     StringBuffer sb = new StringBuffer();
     
     ClassInfo ci = env.getClassInfo(objref);
@@ -52,7 +52,6 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
     sb.append(cname.substring(0,idx));
     
     FieldInfo[] fields = ci.getDeclaredInstanceFields();
-    FeatureExpr ctx = NativeMethodInfo.CTX;
     if (fields.length > 0){
       sb.append('(');
       for (int i=0; i<fields.length; i++){
@@ -166,6 +165,6 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
     }
     
     
-    return env.newString(NativeMethodInfo.CTX, sb.toString());
+    return env.newString(ctx, sb.toString());
   }
 }

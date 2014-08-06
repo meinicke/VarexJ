@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import sun.misc.Hashing;
 
@@ -28,31 +29,31 @@ import sun.misc.Hashing;
 public class JPF_sun_misc_Hashing extends NativePeer {
     
   @MJI 
-  public int murmur3_32__I_3BII__I (MJIEnv env, int clsRef, int seed, int dataRef, int offset, int len){
-    byte[] data = env.getByteArrayObject(NativeMethodInfo.CTX, dataRef);
+  public int murmur3_32__I_3BII__I (MJIEnv env, int clsRef, int seed, int dataRef, int offset, int len, FeatureExpr ctx){
+    byte[] data = env.getByteArrayObject(ctx, dataRef);
     return Hashing.murmur3_32(seed, data, offset, len);
   }
   
   @MJI 
-  public int murmur3_32__I_3CII__I (MJIEnv env, int clsRef, int seed, int dataRef, int offset, int len){
+  public int murmur3_32__I_3CII__I (MJIEnv env, int clsRef, int seed, int dataRef, int offset, int len, FeatureExpr ctx){
     char[] data = env.getCharArrayObject(dataRef).getValue();
     return Hashing.murmur3_32(seed, data, offset, len);
   }
   
   @MJI 
-  public int murmur3_32__I_3III__I (MJIEnv env, int clsRef, int seed, int dataRef, int offset, int len){
-    int[] data = env.getIntArrayObject(NativeMethodInfo.CTX, dataRef);
+  public int murmur3_32__I_3III__I (MJIEnv env, int clsRef, int seed, int dataRef, int offset, int len, FeatureExpr ctx){
+    int[] data = env.getIntArrayObject(ctx, dataRef);
     return Hashing.murmur3_32(seed, data, offset, len);
   }
 
   @MJI
-  public int stringHash32__Ljava_lang_String_2__I (MJIEnv env, int clsRef, int sRef){
+  public int stringHash32__Ljava_lang_String_2__I (MJIEnv env, int clsRef, int sRef, FeatureExpr ctx){
     String s = env.getStringObject(null, sRef);
     return Hashing.stringHash32(s);
   }
   
   @MJI
-  public int randomHashSeed__Ljava_lang_Object_2__I (MJIEnv env, int clsRef, int objRef){
+  public int randomHashSeed__Ljava_lang_Object_2__I (MJIEnv env, int clsRef, int objRef, FeatureExpr ctx){
     // <2do> since the original implementation uses things like System.currentTimeMillis()
     // we have to model this to make it reproducible between JPF runs
     return Hashing.randomHashSeed( Integer.valueOf(objRef));

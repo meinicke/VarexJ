@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -28,11 +29,11 @@ public class JPF_java_lang_Integer extends NativePeer {
 
   @MJI
   public int parseInt__Ljava_lang_String_2__I (MJIEnv env, int clsObjRef, 
-                                                   int strRef) {
+                                                   int strRef, FeatureExpr ctx) {
     try {
       return Integer.parseInt(env.getStringObject(null, strRef));
     } catch (NumberFormatException e) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.NumberFormatException");
+      env.throwException(ctx, "java.lang.NumberFormatException");
 
       return 0;
     }
@@ -40,43 +41,43 @@ public class JPF_java_lang_Integer extends NativePeer {
 
   @MJI
   public int parseInt__Ljava_lang_String_2I__I (MJIEnv env, int clsObjRef, 
-                                                    int strRef, int radix) {
+                                                    int strRef, int radix, FeatureExpr ctx) {
     try {
       return Integer.parseInt(env.getStringObject(null, strRef), radix);
     } catch (NumberFormatException e) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.NumberFormatException");
+      env.throwException(ctx, "java.lang.NumberFormatException");
 
       return 0;
     }
   }
 
   @MJI
-  public int toBinaryString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val) {
-    return env.newString(NativeMethodInfo.CTX, Integer.toBinaryString(val));
+  public int toBinaryString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val, FeatureExpr ctx) {
+    return env.newString(ctx, Integer.toBinaryString(val));
   }
 
   @MJI
-  public int toHexString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val) {
-    return env.newString(NativeMethodInfo.CTX, Integer.toHexString(val));
+  public int toHexString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val, FeatureExpr ctx) {
+    return env.newString(ctx, Integer.toHexString(val));
   }
 
   @MJI
-  public int toOctalString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val) {
-    return env.newString(NativeMethodInfo.CTX, Integer.toOctalString(val));
+  public int toOctalString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val, FeatureExpr ctx) {
+    return env.newString(ctx, Integer.toOctalString(val));
   }
 
   @MJI
-  public int toString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val) {
-    return env.newString(NativeMethodInfo.CTX, Integer.toString(val));
+  public int toString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val, FeatureExpr ctx) {
+    return env.newString(ctx, Integer.toString(val));
   }
 
   @MJI
-  public int toString__II__Ljava_lang_String_2 (MJIEnv env, int objref, int val, int radix) {
-    return env.newString(NativeMethodInfo.CTX, Integer.toString(val, radix));
+  public int toString__II__Ljava_lang_String_2 (MJIEnv env, int objref, int val, int radix, FeatureExpr ctx) {
+    return env.newString(ctx, Integer.toString(val, radix));
   }
 
   @MJI
-  public int valueOf__I__Ljava_lang_Integer_2 (MJIEnv env, int clsRef, int val) {
-    return env.valueOfInteger(NativeMethodInfo.CTX, val);
+  public int valueOf__I__Ljava_lang_Integer_2 (MJIEnv env, int clsRef, int val, FeatureExpr ctx) {
+    return env.valueOfInteger(ctx, val);
   }
 }

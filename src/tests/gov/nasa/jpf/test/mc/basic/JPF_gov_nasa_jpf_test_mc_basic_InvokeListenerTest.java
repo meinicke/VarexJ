@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.test.mc.basic;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.NativePeer;
@@ -29,7 +30,7 @@ import gov.nasa.jpf.vm.NativePeer;
 public class JPF_gov_nasa_jpf_test_mc_basic_InvokeListenerTest extends NativePeer {
 
   @MJI
-  public double testNativeInstanceMethod__DI__D (MJIEnv env, int objref, double d, int c){
+  public double testNativeInstanceMethod__DI__D (MJIEnv env, int objref, double d, int c, FeatureExpr ctx){
     return d+c;
   }
 }

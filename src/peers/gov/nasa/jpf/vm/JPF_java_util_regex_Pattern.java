@@ -23,10 +23,12 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.regex.Pattern;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 public class JPF_java_util_regex_Pattern extends NativePeer {
 
   @MJI
-  public int split0__Ljava_lang_String_2I___3Ljava_lang_String_2(MJIEnv env,int patRef,int strRef,int limit){
+  public int split0__Ljava_lang_String_2I___3Ljava_lang_String_2(MJIEnv env,int patRef,int strRef,int limit, FeatureExpr ctx){
     String s = env.getStringObject(null, strRef);
     String patSpec = env.getStringField(patRef,"regex");
     int patFlags = env.getIntField(patRef, "flags").getValue().intValue();
@@ -35,7 +37,7 @@ public class JPF_java_util_regex_Pattern extends NativePeer {
     Pattern p = Pattern.compile(patSpec,patFlags);
     String[] result=p.split(s,limit);
 
-    return env.newStringArray(NativeMethodInfo.CTX, result);
+    return env.newStringArray(ctx, result);
   }
 
 }

@@ -34,8 +34,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
   
   @MJI
-  public void runFinalizer__Ljava_lang_Object_2__V (MJIEnv env, int tiRef, int objRef) {
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  public void runFinalizer__Ljava_lang_Object_2__V (MJIEnv env, int tiRef, int objRef, FeatureExpr ctx) {
     int queueRef = env.getReferenceField(ctx, tiRef, "finalizeQueue").getValue();
     Conditional<Integer>[] elements = env.getReferenceArrayObject(queueRef);
 
@@ -49,13 +48,12 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
       frame.setReferenceArgument(0, objRef, frame);
       finalizerTi.pushFrame(frame);
     
-      removeElement(env, tiRef, objRef);
+      removeElement(env, tiRef, objRef, ctx);
     }
   }
   
   // removes the very first element in the list, which is the last finalizable objects processed
-  void removeElement(MJIEnv env, int tiRef, int objRef) {
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  void removeElement(MJIEnv env, int tiRef, int objRef, FeatureExpr ctx) {
     int queueRef = env.getReferenceField(ctx, tiRef, "finalizeQueue").getValue();
     ThreadInfo ti = env.getThreadInfo();
     Conditional<Integer>[] oldValues = env.getReferenceArrayObject(queueRef);
@@ -82,7 +80,7 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
   }
   
   @MJI
-  public void manageState____V (MJIEnv env, int objref){
+  public void manageState____V (MJIEnv env, int objref, FeatureExpr ctx){
     ApplicationContext appCtx = env.getVM().getApplicationContext(objref);
     FinalizerThreadInfo finalizerTi = appCtx.getFinalizerThread();
     VM vm = env.getVM();
@@ -90,7 +88,7 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
     // check for termination - Note that the finalizer thread has to be the last alive thread
     // of the process
     if(!vm.getThreadList().hasAnyMatching(getAppAliveUserPredicate(finalizerTi))) {
-      shutdown(env, objref);
+      shutdown(env, objref, ctx);
     }
     // make the thread wait until more objects are added to finalizerQueue
     else {
@@ -103,7 +101,7 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
     }
   }
   
-  protected void shutdown(MJIEnv env, int objRef) {
-    env.getModifiableElementInfo(objRef).setBooleanField(NativeMethodInfo.CTX, "done", new One<>(true));
+  protected void shutdown(MJIEnv env, int objRef, FeatureExpr ctx) {
+    env.getModifiableElementInfo(objRef).setBooleanField(ctx, "done", new One<>(true));
   }
 }

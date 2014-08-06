@@ -49,7 +49,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
   @MJI
   public int encode___3CII_3B__I (MJIEnv env, int objref,
                                          int cref, int off, int len,
-                                         int bref){
+                                         int bref, FeatureExpr ctx){
     if (len > BUF_SIZE){ // check for buffer overflow
       len = BUF_SIZE;
     }
@@ -67,7 +67,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     
     int n = out.position();
     for (int i=0; i<n; i++){
-      env.setByteArrayElement(NativeMethodInfo.CTX,bref,i, new One<>(out.get(i)));
+      env.setByteArrayElement(ctx,bref,i, new One<>(out.get(i)));
     }
     
     return n;
@@ -76,15 +76,14 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
   @MJI
   public int encode__Ljava_lang_String_2II_3B__I (MJIEnv env, int objref,
                                          int sref, int off, int len,
-                                         int bref){
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+                                         int bref, FeatureExpr ctx){
     int cref = env.getReferenceField(ctx, sref, "value").getValue();
     
-    return encode___3CII_3B__I(env,objref,cref,off,len,bref);
+    return encode___3CII_3B__I(env,objref,cref,off,len,bref, ctx);
   }
   
   @MJI
-  public int encode__C_3B__I (MJIEnv env, int objref, char c, int bufref) {
+  public int encode__C_3B__I (MJIEnv env, int objref, char c, int bufref, FeatureExpr ctx) {
     out.clear();
     
     in.clear();
@@ -95,7 +94,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     
     int n = out.position();
     for (int i=0; i<n; i++){
-      env.setByteArrayElement(NativeMethodInfo.CTX,bufref,i, new One<>(out.get(i)));
+      env.setByteArrayElement(ctx,bufref,i, new One<>(out.get(i)));
     }
     
     return n;

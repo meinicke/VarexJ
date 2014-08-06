@@ -48,8 +48,8 @@ public class JPF_java_util_TimeZone extends NativePeer {
     getHostDefaultValues();
   }
   
-  private static TimeZone getTimeZone (MJIEnv env, int objRef){
-    int rawOffset = env.getIntField(objRef, "rawOffset").simplify(NativeMethodInfo.CTX).getValue().intValue();
+  private static TimeZone getTimeZone (MJIEnv env, int objRef, FeatureExpr ctx){
+    int rawOffset = env.getIntField(objRef, "rawOffset").simplify(ctx).getValue().intValue();
     tz.setRawOffset(rawOffset);
     return tz;
   }
@@ -58,13 +58,13 @@ public class JPF_java_util_TimeZone extends NativePeer {
   
   //--- the factory methods
   @MJI
-  public int getTimeZone__Ljava_lang_String_2__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int idRef){
+  public int getTimeZone__Ljava_lang_String_2__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int idRef, FeatureExpr ctx){
     String id = env.getStringObject(null, idRef);
     TimeZone tz = TimeZone.getTimeZone(id);
     
     int rawOffset = tz.getRawOffset();
     String realId = tz.getID(); // could have been changed if id was unknown
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
 	if (!realId.equals(id)){
       idRef = env.newString(ctx, realId);
     }
@@ -83,8 +83,8 @@ public class JPF_java_util_TimeZone extends NativePeer {
   }
   
   @MJI
-  public int createDefaultZone____Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef){
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+  public int createDefaultZone____Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
+    
 	int idRef = env.newString(ctx, defaultID);
 
     int tzRef = env.newObject(ctx, "java.util.TimeZone");
@@ -95,56 +95,56 @@ public class JPF_java_util_TimeZone extends NativePeer {
   }
 
   @MJI
-  public void setDefaultValues__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int tzRef){
+  public void setDefaultValues__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int tzRef, FeatureExpr ctx){
     defaultID = env.getStringField(tzRef, "ID");
     defaultRawOffset = env.getIntField( tzRef, "rawOffset").getValue().intValue();
   }
   
   //--- the ID queries
   @MJI
-  public int getAvailableIDs_____3Ljava_lang_String_2 (MJIEnv env, int clsObjRef){
+  public int getAvailableIDs_____3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     String[] ids = TimeZone.getAvailableIDs();
-    return env.newStringArray(NativeMethodInfo.CTX, ids);
+    return env.newStringArray(ctx, ids);
   }
   
   @MJI
-  public int getAvailableIDs__I___3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int rawOffset){
+  public int getAvailableIDs__I___3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int rawOffset, FeatureExpr ctx){
     String[] ids = TimeZone.getAvailableIDs(rawOffset);
-    return env.newStringArray(NativeMethodInfo.CTX, ids);    
+    return env.newStringArray(ctx, ids);    
   }
 
   @MJI
-  public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef){
+  public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef, FeatureExpr ctx){
     String id = env.getStringObject(null, idRef);
     TimeZone tz = TimeZone.getTimeZone(id);
     
     int rawOffset = tz.getRawOffset();
     String realId = tz.getID(); // could have been changed if id was unknown
     if (!realId.equals(id)){
-      idRef = env.newString(NativeMethodInfo.CTX, realId);
+      idRef = env.newString(ctx, realId);
     }
     
-    env.setReferenceField(NativeMethodInfo.CTX, objRef, "ID", idRef);
-    env.setIntField(NativeMethodInfo.CTX, objRef, "rawOffset", new One<>(rawOffset));
+    env.setReferenceField(ctx, objRef, "ID", idRef);
+    env.setIntField(ctx, objRef, "rawOffset", new One<>(rawOffset));
   }
   
   @MJI
   public int getOffset__IIIIII__I (MJIEnv env, int objRef,
-      int era, int year, int month, int day, int dayOfWeek, int milliseconds){
-    TimeZone tz = getTimeZone( env, objRef);
+      int era, int year, int month, int day, int dayOfWeek, int milliseconds, FeatureExpr ctx){
+    TimeZone tz = getTimeZone( env, objRef, ctx);
     return tz.getOffset(era, year, month, day, dayOfWeek, milliseconds);
   }
 
   @MJI
-  public int getOffset__J__I (MJIEnv env, int objRef, long date){
-    TimeZone tz = getTimeZone( env, objRef);
+  public int getOffset__J__I (MJIEnv env, int objRef, long date, FeatureExpr ctx){
+    TimeZone tz = getTimeZone( env, objRef, ctx);
     return tz.getOffset(date);
   }
   
   // unfortunately, this is not public in Java 1.7, so we can't delegate w/o reflection
   @MJI
-  public int getOffsets__J_3I__I (MJIEnv env, int objRef, long date, int offsetsRef){
-    TimeZone tz = getTimeZone( env, objRef);
+  public int getOffsets__J_3I__I (MJIEnv env, int objRef, long date, int offsetsRef, FeatureExpr ctx){
+    TimeZone tz = getTimeZone( env, objRef, ctx);
     
     int rawOffset = tz.getRawOffset();
     int dstOffset = 0;
@@ -153,40 +153,40 @@ public class JPF_java_util_TimeZone extends NativePeer {
     }
     
     if (offsetsRef != MJIEnv.NULL) {
-      env.setIntArrayElement( NativeMethodInfo.CTX, offsetsRef, 0, new One<>(rawOffset));
-      env.setIntArrayElement( NativeMethodInfo.CTX, offsetsRef, 1, new One<>(dstOffset));
+      env.setIntArrayElement( ctx, offsetsRef, 0, new One<>(rawOffset));
+      env.setIntArrayElement( ctx, offsetsRef, 1, new One<>(dstOffset));
     }
     
     return (rawOffset + dstOffset);
   }
 
   @MJI
-  public boolean inDaylightTime__J__Z (MJIEnv env, int objRef, long time){
+  public boolean inDaylightTime__J__Z (MJIEnv env, int objRef, long time, FeatureExpr ctx){
     Date date = new Date(time);
-    TimeZone tz = getTimeZone( env, objRef);
+    TimeZone tz = getTimeZone( env, objRef, ctx);
     return tz.inDaylightTime(date);
   }
   
   @MJI
-  public boolean useDaylightTime____Z (MJIEnv env, int objRef){
-    TimeZone tz = getTimeZone( env, objRef);
+  public boolean useDaylightTime____Z (MJIEnv env, int objRef, FeatureExpr ctx){
+    TimeZone tz = getTimeZone( env, objRef, ctx);
     return tz.useDaylightTime();
   }
 
   @MJI
-  public int getDSTSavings____I (MJIEnv env, int objRef){
-    TimeZone tz = getTimeZone( env, objRef);
+  public int getDSTSavings____I (MJIEnv env, int objRef, FeatureExpr ctx){
+    TimeZone tz = getTimeZone( env, objRef, ctx);
     return tz.getDSTSavings();    
   }
 
   @MJI
   public int getDisplayName__ZILjava_util_Locale_2__Ljava_lang_String_2 (MJIEnv env, int objRef,
-                                       boolean daylight, int style, int localeRef) {
-    TimeZone tz = getTimeZone(env, objRef);
-    Locale displayLocale = JPF_java_util_Locale.getLocale(env, localeRef);
+                                       boolean daylight, int style, int localeRef, FeatureExpr ctx) {
+    TimeZone tz = getTimeZone(env, objRef, ctx);
+    Locale displayLocale = JPF_java_util_Locale.getLocale(env, localeRef, ctx);
     String s = tz.getDisplayName(daylight, style, displayLocale);
     
-    int sref = env.newString(NativeMethodInfo.CTX, s);
+    int sref = env.newString(ctx, s);
     return sref;
   }
   

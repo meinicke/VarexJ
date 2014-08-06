@@ -52,8 +52,8 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   }
   
   @MJI
-  public void register____V (MJIEnv env, int objref) {
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  public void register____V (MJIEnv env, int objref, FeatureExpr ctx) {
+	  
     int patRef = env.getReferenceField(ctx, objref, "pattern").getValue();
     
     int regexRef = env.getReferenceField(ctx, patRef, "regex").getValue();
@@ -70,49 +70,49 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   }
   
   @MJI
-  public boolean matches____Z (MJIEnv env, int objref) {
+  public boolean matches____Z (MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance( env, objref);
     return matcher.matches();
   }
   
   @MJI
-  public boolean find____Z (MJIEnv env, int objref) {
+  public boolean find____Z (MJIEnv env, int objref, FeatureExpr ctx) {
 	Matcher matcher = getInstance( env, objref);
     return matcher.find();
   }
 
   @MJI
-  public boolean lookingAt____Z(MJIEnv env, int objref) {
+  public boolean lookingAt____Z(MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     return matcher.lookingAt();
   }
 
   @MJI
-  public int start__I__I(MJIEnv env, int objref, int group) {
+  public int start__I__I(MJIEnv env, int objref, int group, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     return matcher.start(group);
   }
 
   @MJI
-  public int end__I__I(MJIEnv env, int objref, int group) {
+  public int end__I__I(MJIEnv env, int objref, int group, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     return matcher.end(group);
   }
 
   @MJI
-  public int regionStart____I(MJIEnv env, int objref) {
+  public int regionStart____I(MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     return matcher.regionStart();
   }
 
   @MJI
-  public int regionEnd____I(MJIEnv env, int objref) {
+  public int regionEnd____I(MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     return matcher.regionEnd();
   }
 
   @MJI
-  public int region__II__Ljava_util_regex_Matcher_2(MJIEnv env, int objref, int start, int end) {
+  public int region__II__Ljava_util_regex_Matcher_2(MJIEnv env, int objref, int start, int end, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     matcher = matcher.region(start, end);
     putInstance(env, objref, matcher);
@@ -121,9 +121,9 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   }
 
   @MJI
-  public int reset____Ljava_util_regex_Matcher_2 (MJIEnv env, int objref) {
+  public int reset____Ljava_util_regex_Matcher_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance( env, objref);
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     int inputRef = env.getReferenceField(ctx, objref, "input").getValue();
     String input = env.getStringObject(null, inputRef);
     
@@ -134,54 +134,54 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   }
   
   @MJI
-  public int groupCount____I (MJIEnv env, int objref) {
+  public int groupCount____I (MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     return matcher.groupCount();
   }
   
   @MJI
-  public int group__I__Ljava_lang_String_2 (MJIEnv env, int objref, int i) {
+  public int group__I__Ljava_lang_String_2 (MJIEnv env, int objref, int i, FeatureExpr ctx) {
     Matcher matcher = getInstance( env, objref);
     String grp = matcher.group(i);
     
-    return env.newString(NativeMethodInfo.CTX, grp);
+    return env.newString(ctx, grp);
   }
 
   @MJI
-  public int quoteReplacement__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjref, int string) {
+  public int quoteReplacement__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjref, int string, FeatureExpr ctx) {
     String parm = env.getStringObject(null, string);
     String result = Matcher.quoteReplacement(parm);
-    return env.newString(NativeMethodInfo.CTX, result);
+    return env.newString(ctx, result);
   }
 
   @MJI
-  public int replaceAll__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objref, int string) {
+  public int replaceAll__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objref, int string, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     String replacement = env.getStringObject(null, string);
     String result = matcher.replaceAll(replacement);
 
-    int resultref = env.newString(NativeMethodInfo.CTX, result);
+    int resultref = env.newString(ctx, result);
     return resultref;
   }
   
   @MJI
-  public int replaceFirst__Ljava_lang_String_2__Ljava_lang_String_2(MJIEnv env, int objref, int string) {
+  public int replaceFirst__Ljava_lang_String_2__Ljava_lang_String_2(MJIEnv env, int objref, int string, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     String replacement = env.getStringObject(null, string);
     String result = matcher.replaceFirst(replacement);
 
-    int resultref = env.newString(NativeMethodInfo.CTX, result);
+    int resultref = env.newString(ctx, result);
     return resultref;
   }
 
   @MJI
-  public boolean hasTransparentBounds____Z(MJIEnv env, int objref) {
+  public boolean hasTransparentBounds____Z(MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     return matcher.hasTransparentBounds();
   }
 
   @MJI
-  public int useTransparentBounds__Z__Ljava_util_regex_Matcher_2(MJIEnv env, int objref, boolean b) {
+  public int useTransparentBounds__Z__Ljava_util_regex_Matcher_2(MJIEnv env, int objref, boolean b, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     matcher = matcher.useTransparentBounds(b);
     putInstance(env, objref, matcher);
@@ -190,13 +190,13 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   }
 
   @MJI
-  public boolean hasAnchoringBounds____Z(MJIEnv env, int objref) {
+  public boolean hasAnchoringBounds____Z(MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     return matcher.hasTransparentBounds();
   }
 
   @MJI
-  public int useAnchoringBounds__Z__Ljava_util_regex_Matcher_2(MJIEnv env, int objref, boolean b) {
+  public int useAnchoringBounds__Z__Ljava_util_regex_Matcher_2(MJIEnv env, int objref, boolean b, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     matcher = matcher.useAnchoringBounds(b);
     putInstance(env, objref, matcher);
@@ -205,21 +205,21 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   }
 
   @MJI
-  public int toString____Ljava_lang_String_2 (MJIEnv env, int objref) {
+  public int toString____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
     String str = matcher.toString();
 
-    return env.newString(NativeMethodInfo.CTX, str);
+    return env.newString(ctx, str);
   }
 
   @MJI
-  public boolean hitEnd____Z (MJIEnv env, int objref) {
+  public boolean hitEnd____Z (MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance( env, objref);
     return matcher.hitEnd();
   }
 
   @MJI
-  public boolean requireEnd____Z (MJIEnv env, int objref) {
+  public boolean requireEnd____Z (MJIEnv env, int objref, FeatureExpr ctx) {
     Matcher matcher = getInstance( env, objref);
     return matcher.requireEnd();
   }

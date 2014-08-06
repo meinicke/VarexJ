@@ -27,15 +27,15 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_java_util_concurrent_atomic_AtomicLongArray extends NativePeer {
 
   @MJI
-  public long getNative__I__J (MJIEnv env, int objRef, int index) {
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  public long getNative__I__J (MJIEnv env, int objRef, int index, FeatureExpr ctx) {
+	  
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     return env.getLongArrayElement(arrayRef, index).getValue();
   }
 
   @MJI
-  public boolean compareAndSetNative__IJJ__Z (MJIEnv env, int objRef, int index, long expect, long update) {
-	  FeatureExpr ctx = NativeMethodInfo.CTX;
+  public boolean compareAndSetNative__IJJ__Z (MJIEnv env, int objRef, int index, long expect, long update, FeatureExpr ctx) {
+	  
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     long value = env.getLongArrayElement(arrayRef, index).getValue();
     if (value == expect) {

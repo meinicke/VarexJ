@@ -21,12 +21,14 @@ import gov.nasa.jpf.annotation.MJI;
 
 import java.util.logging.Level;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * this is only a skeleton to make basic logging work under JPF
  */
 public class JPF_java_util_logging_Level extends NativePeer {
   @MJI
-  public int getLocalizedName____Ljava_lang_String_2 (MJIEnv env, int objRef){
+  public int getLocalizedName____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     Level level = null;    
     int val = env.getIntField(objRef, "value").getValue().intValue();
     
@@ -52,6 +54,6 @@ public class JPF_java_util_logging_Level extends NativePeer {
     }
     
     String localizedName = (level != null) ? level.getLocalizedName() : "UNKNOWN";    
-    return env.newString(NativeMethodInfo.CTX, localizedName); 
+    return env.newString(ctx, localizedName); 
   }
 }

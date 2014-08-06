@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -28,26 +29,26 @@ import gov.nasa.jpf.annotation.MJI;
 public class JPF_java_lang_Object extends NativePeer {
   
   @MJI
-  public int getClass____Ljava_lang_Class_2 (MJIEnv env, int objref) {
+  public int getClass____Ljava_lang_Class_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     ClassInfo oci = env.getClassInfo(objref);
 
     return oci.getClassObjectRef();
   }
 
   @MJI
-  public int clone____Ljava_lang_Object_2 (MJIEnv env, int objref) {
+  public int clone____Ljava_lang_Object_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     Heap heap = env.getHeap();
     ElementInfo ei = heap.get(objref);
     ClassInfo ci = ei.getClassInfo();
     ElementInfo eiClone = null;
     
     if (!ci.isInstanceOf("java.lang.Cloneable")) {
-      env.throwException(NativeMethodInfo.CTX,
+      env.throwException(ctx,
           "java.lang.CloneNotSupportedException", ci.getName() + " does not implement java.lang.Cloneable.");
       return MJIEnv.NULL;  // meaningless
       
     } else {
-      int newref;
+//      int newref;
       if (ci.isArray()) {
         ClassInfo cci = ci.getComponentClassInfo();
         
@@ -58,10 +59,10 @@ public class JPF_java_lang_Object extends NativePeer {
           componentType = cci.getType();
         }
 
-        eiClone = heap.newArray(NativeMethodInfo.CTX, componentType, ei.arrayLength(), env.getThreadInfo());
+        eiClone = heap.newArray(ctx, componentType, ei.arrayLength(), env.getThreadInfo());
         
       } else {
-        eiClone = heap.newObject(NativeMethodInfo.CTX, ci, env.getThreadInfo());
+        eiClone = heap.newObject(ctx, ci, env.getThreadInfo());
       }
       
       // Ok, this is nasty but efficient
@@ -72,11 +73,11 @@ public class JPF_java_lang_Object extends NativePeer {
   }
 
   @MJI
-  public int hashCode____I (MJIEnv env, int objref) {
+  public int hashCode____I (MJIEnv env, int objref, FeatureExpr ctx) {
     return (objref ^ 0xABCD);
   }
 
-  static void wait0(MJIEnv env, int objref, long timeout) {
+  static void wait0(MJIEnv env, int objref, long timeout, FeatureExpr ctx) {
     // IllegalMonitorStateExceptions are checked in the MJIEnv methods
     ThreadInfo ti = env.getThreadInfo();
     SystemState ss = env.getSystemState();
@@ -96,8 +97,8 @@ public class JPF_java_lang_Object extends NativePeer {
           // thread status set by explicit notify() call
           env.lockNotified(objref);
 
-          if (ti.isInterrupted(NativeMethodInfo.CTX, true)) {
-            env.throwException(NativeMethodInfo.CTX, "java.lang.InterruptedException");
+          if (ti.isInterrupted(ctx, true)) {
+            env.throwException(ctx, "java.lang.InterruptedException");
           }
           break;
 
@@ -108,12 +109,12 @@ public class JPF_java_lang_Object extends NativePeer {
     } else { // first time, break the transition (if we don't have a pending interrupt)
 
       // no need for a CG if we got interrupted - don't give up locks, throw InterruptedException
-      if (ti.isInterrupted(NativeMethodInfo.CTX, true)) {
-        env.throwException(NativeMethodInfo.CTX, "java.lang.InterruptedException");
+      if (ti.isInterrupted(ctx, true)) {
+        env.throwException(ctx, "java.lang.InterruptedException");
 
       } else {
         if (!ei.isLockedBy(ti)){
-          env.throwException(NativeMethodInfo.CTX,
+          env.throwException(ctx,
                              "java.lang.IllegalMonitorStateException", "un-synchronized wait");
           return;
         }
@@ -131,23 +132,23 @@ public class JPF_java_lang_Object extends NativePeer {
   // we intercept them both so that we don't get the java.lang.Object.wait() location
   // as the blocking insn
   @MJI
-  public void wait____V (MJIEnv env, int objref){
-    wait0(env,objref,0);
+  public void wait____V (MJIEnv env, int objref, FeatureExpr ctx){
+    wait0(env,objref,0, ctx);
   }
   
   @MJI
-  public void wait__J__V (MJIEnv env, int objref, long timeout) {
-    wait0(env,objref,timeout);
+  public void wait__J__V (MJIEnv env, int objref, long timeout, FeatureExpr ctx) {
+    wait0(env,objref,timeout, ctx);
   }
 
   @MJI
-  public void wait__JI__V (MJIEnv env, int objref, long timeout, int nanos) {
-    wait0(env,objref,timeout);
+  public void wait__JI__V (MJIEnv env, int objref, long timeout, int nanos, FeatureExpr ctx) {
+    wait0(env,objref,timeout, ctx);
   }
 
   
   @MJI
-  public void notify____V (MJIEnv env, int objref) {
+  public void notify____V (MJIEnv env, int objref, FeatureExpr ctx) {
     // IllegalMonitorStateExceptions are checked in the MJIEnv methods
 
     ThreadInfo ti = env.getThreadInfo();
@@ -166,11 +167,11 @@ public class JPF_java_lang_Object extends NativePeer {
         
     // this is a bit cluttered throughout the whole system, with the actual thread
     // notification (status change) taking place in the ElementInfo
-    env.notify(NativeMethodInfo.CTX, ei);
+    env.notify(ctx, ei);
   }
 
   @MJI
-  public void notifyAll____V (MJIEnv env, int objref) {
+  public void notifyAll____V (MJIEnv env, int objref, FeatureExpr ctx) {
     // IllegalMonitorStateExceptions are checked in the MJIEnv methods
 
     // usually, there is no non-determinism involved here, but
@@ -181,7 +182,7 @@ public class JPF_java_lang_Object extends NativePeer {
     
     if (!ti.isFirstStepInsn()) { // first time around
       ElementInfo ei = env.getModifiableElementInfo(objref);
-      env.notifyAll(NativeMethodInfo.CTX, ei); // do that before we create a CG
+      env.notifyAll(ctx, ei); // do that before we create a CG
       
       ChoiceGenerator<?> cg = ss.getSchedulerFactory().createNotifyAllCG(ei, ti);
       if (ss.setNextChoiceGenerator(cg)){
@@ -193,12 +194,12 @@ public class JPF_java_lang_Object extends NativePeer {
   }
 
   @MJI
-  public int toString____Ljava_lang_String_2 (MJIEnv env, int objref) {
+  public int toString____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     ClassInfo ci = env.getClassInfo(objref);
-    int hc = hashCode____I(env,objref);
+    int hc = hashCode____I(env,objref, ctx);
     
     String s = ci.getName() + '@' + hc;
-    int sref = env.newString(NativeMethodInfo.CTX, s);
+    int sref = env.newString(ctx, s);
     return sref;
   }
 }

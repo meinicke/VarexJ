@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.UncaughtException;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -36,25 +37,25 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
 
   // intercept <clinit>
   @MJI
-  public void $clinit (MJIEnv env, int rcls) {
+  public void $clinit (MJIEnv env, int rcls, FeatureExpr ctx) {
     System.out.println("# entering native <clinit>");
-    env.setStaticIntField(NativeMethodInfo.CTX, rcls, "sdata", new One<>(42));
+    env.setStaticIntField(ctx, rcls, "sdata", new One<>(42));
   }
 
   // intercept MJITest(int i) ctor
   @MJI
-  public void $init__I__V (MJIEnv env, int robj, int i) {
+  public void $init__I__V (MJIEnv env, int robj, int i, FeatureExpr ctx) {
     // NOTE : if we directly intercept the ctor, then we also have
     // to take care of calling the proper superclass ctors
     // better approach is to refactor this into a separate native method
     // (say init0(..))
     System.out.println("# entering native <init>(I)");
-    env.setIntField(NativeMethodInfo.CTX, robj, "idata", new One<>(i));
+    env.setIntField(ctx, robj, "idata", new One<>(i));
   }
 
   @MJI
   public int nativeCreate2DimIntArray__II___3_3I (MJIEnv env, int robj, int size1,
-                                              int size2) {
+                                              int size2, FeatureExpr ctx) {
     System.out.println("# entering nativeCreate2DimIntArray()");
     int ar = env.newObjectArray("[I", size1);
 
@@ -62,10 +63,10 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       int ea = env.newIntArray(size2);
 
       if (i == 1) {
-        env.setIntArrayElement(NativeMethodInfo.CTX, ea, 1, new One<>(42));
+        env.setIntArrayElement(ctx, ea, 1, new One<>(42));
       }
 
-      env.setReferenceArrayElement(NativeMethodInfo.CTX, ar, i, new One<>(ea));
+      env.setReferenceArrayElement(ctx, ar, i, new One<>(ea));
     }
 
     return ar;
@@ -73,35 +74,35 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
 
   // check if the non-mangled name lookup works
   @MJI
-  public int nativeCreateIntArray (MJIEnv env, int robj, int size) {
+  public int nativeCreateIntArray (MJIEnv env, int robj, int size, FeatureExpr ctx) {
     System.out.println("# entering nativeCreateIntArray()");
 
     int ar = env.newIntArray(size);
 
-    env.setIntArrayElement(NativeMethodInfo.CTX, ar, 1, new One<>(1));
+    env.setIntArrayElement(ctx, ar, 1, new One<>(1));
 
     return ar;
   }
 
   @MJI
-  public int nativeCreateStringArray (MJIEnv env, int robj, int size) {
+  public int nativeCreateStringArray (MJIEnv env, int robj, int size, FeatureExpr ctx) {
     System.out.println("# entering nativeCreateStringArray()");
 
     int ar = env.newObjectArray("Ljava/lang/String;", size);
-    env.setReferenceArrayElement(NativeMethodInfo.CTX, ar, 1, new One<>(env.newString(FeatureExprFactory.True(), "one")));
+    env.setReferenceArrayElement(ctx, ar, 1, new One<>(env.newString(FeatureExprFactory.True(), "one")));
 
     return ar;
   }
 
   @MJI
-  public void nativeException____V (MJIEnv env, int robj) {
+  public void nativeException____V (MJIEnv env, int robj, FeatureExpr ctx) {
     System.out.println("# entering nativeException()");
-    env.throwException(NativeMethodInfo.CTX, "java.lang.UnsupportedOperationException", "caught me");
+    env.throwException(ctx, "java.lang.UnsupportedOperationException", "caught me");
   }
 
   @SuppressWarnings("null")
   @MJI
-  public int nativeCrash (MJIEnv env, int robj) {
+  public int nativeCrash (MJIEnv env, int robj, FeatureExpr ctx) {
     System.out.println("# entering nativeCrash()");
     String s = null;
     return s.length();
@@ -109,7 +110,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
 
   @MJI
   public int nativeInstanceMethod (MJIEnv env, int robj, double d,
-                                          char c, boolean b, int i) {
+                                          char c, boolean b, int i, FeatureExpr ctx) {
     System.out.println("# entering nativeInstanceMethod() d=" + d +
             ", c=" + c + ", b=" + b + ", i=" + i);
 
@@ -122,7 +123,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
 
   @MJI
   public long nativeStaticMethod__JLjava_lang_String_2__J (MJIEnv env, int rcls, long l,
-                                                                  int stringRef) {
+                                                                  int stringRef, FeatureExpr ctx) {
     System.out.println("# entering nativeStaticMethod()");
 
     String s = env.getStringObject(null, stringRef);
@@ -152,14 +153,14 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
    */
 
   @MJI
-  public int nativeInnerRoundtrip__I__I (MJIEnv env, int robj, int a){
+  public int nativeInnerRoundtrip__I__I (MJIEnv env, int robj, int a, FeatureExpr ctx){
     System.out.println("# entering nativeInnerRoundtrip()");
 
     return a+2;
   }
 
   @MJI
-  public int nativeRoundtripLoop__I__I (MJIEnv env, int robj, int a) {
+  public int nativeRoundtripLoop__I__I (MJIEnv env, int robj, int a, FeatureExpr ctx) {
     System.out.println("# entering nativeRoundtripLoop(): " + a);
 
     MethodInfo mi = env.getClassInfo(robj).getMethod("roundtrip(I)I",false);
@@ -167,8 +168,8 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     DirectCallStackFrame frame = ti.getReturnedDirectCall();
 
     if (frame == null){ // first time
-      frame = mi.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 1);
-      frame.setLocalVariable(NativeMethodInfo.CTX, 0, 0);
+      frame = mi.createDirectCallStackFrame(ctx, ti, 1);
+      frame.setLocalVariable(ctx, 0, 0);
       
       int argOffset = frame.setReferenceArgument(0, robj, null);
       frame.setArgument( argOffset, a+1, null);
@@ -187,12 +188,12 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       // this shows how to get information back from the JPF roundtrip into
       // the native method
       int r = frame.getResult(); // the return value of the direct call above
-      int i = frame.getLocalVariable(NativeMethodInfo.CTX, 0).getValue();
+      int i = frame.getLocalVariable(ctx, 0).getValue();
 
       if (i < 3) { // repeat the round trip
         // we have to reset so that the PC is re-initialized
         frame.reset();
-        frame.setLocalVariable(NativeMethodInfo.CTX, 0, i + 1);
+        frame.setLocalVariable(ctx, 0, i + 1);
         
         int argOffset = frame.setReferenceArgument( 0, robj, null);
         frame.setArgument( argOffset, r+1, null);
@@ -211,13 +212,13 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
    * listener code
    */
   @MJI
-  public int nativeHiddenRoundtrip__I__I (MJIEnv env, int robj, int a){
+  public int nativeHiddenRoundtrip__I__I (MJIEnv env, int robj, int a, FeatureExpr ctx){
     ThreadInfo ti = env.getThreadInfo();
     
     System.out.println("# entering nativeHiddenRoundtrip: " + a);
     MethodInfo mi = env.getClassInfo(robj).getMethod("atomicStuff(I)I",false);
 
-    DirectCallStackFrame frame = mi.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 0);
+    DirectCallStackFrame frame = mi.createDirectCallStackFrame(ctx, ti, 0);
     
     int argOffset = frame.setReferenceArgument( 0, robj, null);
     frame.setArgument( argOffset, a, null);
@@ -230,7 +231,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     } catch (UncaughtException ux) {  // frame's method is firewalled
       System.out.println("# hidden method execution failed, leaving nativeHiddenRoundtrip: " + ux);
       ti.clearPendingException();
-      ti.popFrame(NativeMethodInfo.CTX); // this is still the DirectCallStackFrame, and we want to continue execution
+      ti.popFrame(ctx); // this is still the DirectCallStackFrame, and we want to continue execution
       return -1;
     }
 

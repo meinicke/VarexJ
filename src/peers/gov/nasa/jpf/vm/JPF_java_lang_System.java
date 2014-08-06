@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * MJI NativePeer class for java.lang.System library abstraction
@@ -37,9 +38,9 @@ public class JPF_java_lang_System extends NativePeer {
   public void arraycopy__Ljava_lang_Object_2ILjava_lang_Object_2II__V (MJIEnv env, int clsObjRef,
                                                                               int srcArrayRef, int srcIdx, 
                                                                               int dstArrayRef, int dstIdx,
-                                                                              int length) {
+                                                                              int length, FeatureExpr ctx) {
     if ((srcArrayRef == MJIEnv.NULL) || (dstArrayRef == MJIEnv.NULL)) {
-      env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException");
+      env.throwException(ctx, "java.lang.NullPointerException");
       return;
     }
 
@@ -47,29 +48,29 @@ public class JPF_java_lang_System extends NativePeer {
     ElementInfo eiDst = env.getModifiableElementInfo(dstArrayRef);
     
     try {
-      eiDst.copyElements( NativeMethodInfo.CTX, env.getThreadInfo() ,eiSrc, srcIdx, dstIdx, length);
+      eiDst.copyElements( ctx, env.getThreadInfo() ,eiSrc, srcIdx, dstIdx, length);
     } catch (IndexOutOfBoundsException iobx){
-      env.throwException(NativeMethodInfo.CTX, "java.lang.IndexOutOfBoundsException", iobx.getMessage());
+      env.throwException(ctx, "java.lang.IndexOutOfBoundsException", iobx.getMessage());
     } catch (ArrayStoreException asx){
-      env.throwException(NativeMethodInfo.CTX, "java.lang.ArrayStoreException", asx.getMessage());      
+      env.throwException(ctx, "java.lang.ArrayStoreException", asx.getMessage());      
     }
   }
 
   @MJI
   public int getenv__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef,
-                                                                         int keyRef){
+                                                                         int keyRef, FeatureExpr ctx){
     String k = env.getStringObject(null, keyRef);
     String v = System.getenv(k);
     
     if (v == null){
       return MJIEnv.NULL;
     } else {
-      return env.newString(NativeMethodInfo.CTX, v);
+      return env.newString(ctx, v);
     }
   }
 
   
-  int createPrintStream (MJIEnv env, int clsObjRef){
+  int createPrintStream (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     ThreadInfo ti = env.getThreadInfo();
 //    Instruction insn = ti.getPC().getValue();
 //    StackFrame frame = ti.getTopFrame();
@@ -78,49 +79,49 @@ public class JPF_java_lang_System extends NativePeer {
     // it's not really used, but it would be hack'ish to use a class whose
     // super class hasn't been initialized yet
     if (!ci.isRegistered()) {
-      ci.registerClass(NativeMethodInfo.CTX, ti);
+      ci.registerClass(ctx, ti);
     }
 
     if (!ci.isInitialized()) {
-      if (ci.initializeClass(NativeMethodInfo.CTX, ti)) {
+      if (ci.initializeClass(ctx, ti)) {
         env.repeatInvocation();
         return MJIEnv.NULL;
       }
     }
 
-    return env.newObject(NativeMethodInfo.CTX, ci);
+    return env.newObject(ctx, ci);
   }
   
   @MJI
-  public int createSystemOut____Ljava_io_PrintStream_2 (MJIEnv env, int clsObjRef){
-    return createPrintStream(env,clsObjRef);
+  public int createSystemOut____Ljava_io_PrintStream_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
+    return createPrintStream(env,clsObjRef, ctx);
   }
   
   @MJI
-  public int createSystemErr____Ljava_io_PrintStream_2 (MJIEnv env, int clsObjRef){
-    return createPrintStream(env,clsObjRef);
+  public int createSystemErr____Ljava_io_PrintStream_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
+    return createPrintStream(env,clsObjRef, ctx);
   }
   
-  int getProperties (MJIEnv env, Properties p){
+  int getProperties (MJIEnv env, Properties p, FeatureExpr ctx){
     int n = p.size() * 2;
     int aref = env.newObjectArray("Ljava/lang/String;", n);
     int i=0;
     
     for (Map.Entry<Object,Object> e : p.entrySet() ){
-      env.setReferenceArrayElement(NativeMethodInfo.CTX,aref, 
-                                   i++, new One<>(env.newString(NativeMethodInfo.CTX, e.getKey().toString())));
-      env.setReferenceArrayElement(NativeMethodInfo.CTX,aref,
-                                   i++, new One<>(env.newString(NativeMethodInfo.CTX, e.getValue().toString())));
+      env.setReferenceArrayElement(ctx,aref, 
+                                   i++, new One<>(env.newString(ctx, e.getKey().toString())));
+      env.setReferenceArrayElement(ctx,aref,
+                                   i++, new One<>(env.newString(ctx, e.getValue().toString())));
     }
     
     return aref;
   }
 
-  int getSysPropsFromHost (MJIEnv env){
-    return getProperties(env, System.getProperties());
+  int getSysPropsFromHost (MJIEnv env, FeatureExpr ctx){
+    return getProperties(env, System.getProperties(), ctx);
   }
   
-  int getSysPropsFromFile (MJIEnv env){
+  int getSysPropsFromFile (MJIEnv env, FeatureExpr ctx){
     Config conf = env.getConfig();
     
     String cf = conf.getString("vm.sysprop.file", "system.properties");
@@ -130,7 +131,7 @@ public class JPF_java_lang_System extends NativePeer {
         FileInputStream fis = new FileInputStream(cf);
         p.load(fis);
         
-        return getProperties(env, p);
+        return getProperties(env, p, ctx);
         
       } catch (IOException iox){
         return MJIEnv.NULL;
@@ -143,15 +144,15 @@ public class JPF_java_lang_System extends NativePeer {
   static String JAVA_CLASS_PATH = "java.class.path";
   
   @MJI
-  public String getSUTJavaClassPath(VM vm) {
+  public String getSUTJavaClassPath(VM vm, FeatureExpr ctx) {
     ClassInfo system = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.System");
     
     ThreadInfo ti = vm.getCurrentThread();
     Heap heap = vm.getHeap();
-    ElementInfo eiClassPath = heap.newString(NativeMethodInfo.CTX, JAVA_CLASS_PATH, ti);
+    ElementInfo eiClassPath = heap.newString(ctx, JAVA_CLASS_PATH, ti);
     
     MethodInfo miGetProperty = system.getMethod("getProperty(Ljava/lang/String;)Ljava/lang/String;", true);
-    DirectCallStackFrame frame = miGetProperty.createDirectCallStackFrame(NativeMethodInfo.CTX, ti, 0);
+    DirectCallStackFrame frame = miGetProperty.createDirectCallStackFrame(ctx, ti, 0);
     frame.setReferenceArgument( 0, eiClassPath.getObjectRef(), null);
     frame.setFireWall(); // we don't want exceptions to escape into the SUT
     
@@ -161,19 +162,19 @@ public class JPF_java_lang_System extends NativePeer {
       
     } catch (UncaughtException e) {
        ti.clearPendingException();
-       StackFrame caller = ti.popAndGetModifiableTopFrame(NativeMethodInfo.CTX);
+       StackFrame caller = ti.popAndGetModifiableTopFrame(ctx);
        caller.advancePC();
        return null;
     }
     
-    int ref = frame.peek(NativeMethodInfo.CTX).getValue();
+    int ref = frame.peek(ctx).getValue();
     ElementInfo metaResult = heap.get(ref);
     String result = metaResult.asString().getValue();
     
     return result;
   }
   
-  int getSelectedSysPropsFromHost (MJIEnv env){
+  int getSelectedSysPropsFromHost (MJIEnv env, FeatureExpr ctx){
     Config conf = env.getConfig();
     String keys[] = conf.getStringArray("vm.sysprop.keys");
 
@@ -222,8 +223,8 @@ public class JPF_java_lang_System extends NativePeer {
       }
             
       if (v != null){
-        env.setReferenceArrayElement(NativeMethodInfo.CTX,aref, i++, new One<>(env.newString(NativeMethodInfo.CTX, s)));
-        env.setReferenceArrayElement(NativeMethodInfo.CTX,aref, i++, new One<>(env.newString(NativeMethodInfo.CTX, v)));
+        env.setReferenceArrayElement(ctx,aref, i++, new One<>(env.newString(ctx, s)));
+        env.setReferenceArrayElement(ctx,aref, i++, new One<>(env.newString(ctx, v)));
       }
     }
         
@@ -240,16 +241,16 @@ public class JPF_java_lang_System extends NativePeer {
   };
 
   @MJI
-  public int getKeyValuePairs_____3Ljava_lang_String_2 (MJIEnv env, int clsObjRef){
+  public int getKeyValuePairs_____3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     Config conf = env.getConfig();
     SystemPropertyPolicy sysPropSrc = conf.getEnum( "vm.sysprop.source", SystemPropertyPolicy.values(), SystemPropertyPolicy.SELECTED);
 
     if (sysPropSrc == SystemPropertyPolicy.FILE){
-      return getSysPropsFromFile(env);
+      return getSysPropsFromFile(env, ctx);
     } else if (sysPropSrc == SystemPropertyPolicy.HOST){
-      return getSysPropsFromHost(env);
+      return getSysPropsFromHost(env, ctx);
     } else if (sysPropSrc == SystemPropertyPolicy.SELECTED){
-      return getSelectedSysPropsFromHost(env);
+      return getSelectedSysPropsFromHost(env, ctx);
     }
     
     return 0;
@@ -260,31 +261,31 @@ public class JPF_java_lang_System extends NativePeer {
   // real time, but we could at least give some SystemState dependent
   // increment
   @MJI
-  public long currentTimeMillis____J (MJIEnv env, int clsObjRef) {
+  public long currentTimeMillis____J (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     return env.currentTimeMillis();
   }
 
   // <2do> - likewise. Java 1.5's way to measure relative time
   @MJI
-  public long nanoTime____J (MJIEnv env, int clsObjRef) {
+  public long nanoTime____J (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     return env.nanoTime();
   }  
   
   // this works on the assumption that we sure break the transition, and
   // then the search determines that it is an end state (all terminated)
   @MJI
-  public void exit__I__V (MJIEnv env, int clsObjRef, int ret) {
+  public void exit__I__V (MJIEnv env, int clsObjRef, int ret, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     env.getVM().terminateProcess(ti);
   }
 
   @MJI
-  public void gc____V (MJIEnv env, int clsObjRef) {
+  public void gc____V (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     env.getSystemState().activateGC();
   }
 
   @MJI
-  public int identityHashCode__Ljava_lang_Object_2__I (MJIEnv env, int clsObjRef, int objref) {
+  public int identityHashCode__Ljava_lang_Object_2__I (MJIEnv env, int clsObjRef, int objref, FeatureExpr ctx) {
     return (objref ^ 0xABCD);
   }
   

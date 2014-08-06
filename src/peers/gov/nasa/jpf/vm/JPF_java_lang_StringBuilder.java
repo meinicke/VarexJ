@@ -95,24 +95,24 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	// we skip the AbstractStringBuilder ctor here, which is a bit dangerous
 	// This is only justified because StringBuilders are used everywhere (implicitly)
 	@MJI
-	public void $init____V(MJIEnv env, int objref) {
-		int aref = env.newCharArray(NativeMethodInfo.CTX, 16);
-		env.setReferenceField(NativeMethodInfo.CTX, objref, "value", aref);
+	public void $init____V(MJIEnv env, int objref, FeatureExpr ctx) {
+		int aref = env.newCharArray(ctx, 16);
+		env.setReferenceField(ctx, objref, "value", aref);
 	}
 
 	@MJI
-	public void $init__I__V(MJIEnv env, int objref, int len) {
-		int aref = env.newCharArray(NativeMethodInfo.CTX, len);
-		env.setReferenceField(NativeMethodInfo.CTX, objref, "value", aref);
+	public void $init__I__V(MJIEnv env, int objref, int len, FeatureExpr ctx) {
+		int aref = env.newCharArray(ctx, len);
+		env.setReferenceField(ctx, objref, "value", aref);
 	}
 
 	@MJI
-	public void $init__Ljava_lang_String_2__V(final MJIEnv env, final int objref, int sRef) {
+	public void $init__Ljava_lang_String_2__V(final MJIEnv env, final int objref, int sRef, FeatureExpr ctx) {
 		if (sRef == MJIEnv.NULL) {
-			env.throwException(NativeMethodInfo.CTX, "java.lang.NullPointerException");
+			env.throwException(ctx, "java.lang.NullPointerException");
 			return;
 		}
-		FeatureExpr ctx = NativeMethodInfo.CTX;
+		
 		Conditional<char[]> src = env.getStringChars(sRef);
 
 		src.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Object>>() {
@@ -137,14 +137,13 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int sref) {
+	public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int sref, FeatureExpr ctx) {
 		Conditional<String> s = env.getConditionalStringObject(sref);
-		FeatureExpr ctx = NativeMethodInfo.CTX;
-		s = s.simplify(ctx).map(new Append()).simplifyValues();
+		s = s.simplify(ctx).map(new ReplaceNull()).simplifyValues();
 		return appendString(ctx, env, objref, s);
 	}
 
-	private static final class Append implements Function<String, String> {
+	private static final class ReplaceNull implements Function<String, String> {
 		@Override
 		public String apply(final String s) {
 			if (s == null) {
@@ -155,43 +154,43 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int append__I__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int i) {
+	public int append__I__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int i, FeatureExpr ctx) {
 		String s = Integer.toString(i);
 
-		return appendString(NativeMethodInfo.CTX, env, objref, s);
+		return appendString(ctx, env, objref, s);
 	}
 
 	@MJI
-	public int append__F__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, float f) {
+	public int append__F__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, float f, FeatureExpr ctx) {
 		String s = Float.toString(f);
 
-		return appendString(NativeMethodInfo.CTX, env, objref, s);
+		return appendString(ctx, env, objref, s);
 	}
 
 	@MJI
-	public int append__D__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, double d) {
+	public int append__D__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, double d, FeatureExpr ctx) {
 		String s = Double.toString(d);
 
-		return appendString(NativeMethodInfo.CTX, env, objref, s);
+		return appendString(ctx, env, objref, s);
 	}
 
 	@MJI
-	public int append__J__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, long l) {
+	public int append__J__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, long l, FeatureExpr ctx) {
 		String s = Long.toString(l);
 
-		return appendString(NativeMethodInfo.CTX, env, objref, s);
+		return appendString(ctx, env, objref, s);
 	}
 
 	@MJI
-	public int append__Z__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, boolean b) {
+	public int append__Z__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, boolean b, FeatureExpr ctx) {
 		String s = b ? "true" : "false";
-		return appendString(NativeMethodInfo.CTX, env, objref, s);
+		return appendString(ctx, env, objref, s);
 	}
 
 	@MJI
-	public int append__C__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, char c) {
-		return appendString(NativeMethodInfo.CTX, env, objref, c + "");
-		// FeatureExpr ctx = NativeMethodInfo.CTX;
+	public int append__C__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, char c, FeatureExpr ctx) {
+		return appendString(ctx, env, objref, c + "");
+		// 
 		// int aref = env.getReferenceField(ctx, objref, "value").getValue();
 		// int alen = env.getArrayLength(aref);
 		//
@@ -218,8 +217,8 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int toString____Ljava_lang_String_2(final MJIEnv env, final int objref) {
-		FeatureExpr ctx = NativeMethodInfo.CTX;
+	public int toString____Ljava_lang_String_2(final MJIEnv env, final int objref, FeatureExpr ctx) {
+		
 
 		Conditional<Integer> aref = env.getReferenceField(ctx, objref, "value");
 		Conditional<String> s = aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<String>>() {

@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.Function;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * we are not really interested in model checking this, so we intercept
@@ -33,12 +34,12 @@ public class JPF_java_lang_StringCoding extends NativePeer {
 
   @MJI
   public int decode___3BII___3C (MJIEnv env, int clsObjRef,
-      int bref, int off, int len) {
+      int bref, int off, int len, FeatureExpr ctx) {
 
     
-    int cref = env.newCharArray(NativeMethodInfo.CTX, len);
+    int cref = env.newCharArray(ctx, len);
     for (int i=0,j=off; i<len; i++,j++) {
-      env.setCharArrayElement(NativeMethodInfo.CTX, cref, i, env.getByteArrayElement(bref,j).map(new Function<Byte, Character>() {
+      env.setCharArrayElement(ctx, cref, i, env.getByteArrayElement(bref,j).map(new Function<Byte, Character>() {
 
 		@Override
 		public Character apply(Byte b) {
@@ -53,11 +54,11 @@ public class JPF_java_lang_StringCoding extends NativePeer {
   
   @MJI
   public int encode___3CII___3B (MJIEnv env, int clsObjRef,
-      int cref, int off, int len) {
+      int cref, int off, int len, FeatureExpr ctx) {
 
     int bref = env.newByteArray(len);
     for (int i=0,j=off; i<len; i++,j++) {
-      env.setByteArrayElement(NativeMethodInfo.CTX, bref, i, env.getCharArrayElement(cref,j).map(new Function<Character, Byte>() {
+      env.setByteArrayElement(ctx, bref, i, env.getCharArrayElement(cref,j).map(new Function<Character, Byte>() {
 
 		@Override
 		public Byte apply(Character c) {

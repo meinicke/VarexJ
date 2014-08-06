@@ -28,14 +28,14 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JPF_java_util_concurrent_atomic_AtomicLong extends NativePeer {
   @MJI
-  public void $clinit____V (MJIEnv env, int rcls) {
+  public void $clinit____V (MJIEnv env, int rcls, FeatureExpr ctx) {
     // don't let this one pass, it calls native methods from non-public Sun classes
   }
 
   @MJI
-  public boolean compareAndSet__JJ__Z (MJIEnv env, int objRef, long expect, long update){
+  public boolean compareAndSet__JJ__Z (MJIEnv env, int objRef, long expect, long update, FeatureExpr ctx){
     long value = env.getLongField(objRef, "value").getValue();
-    FeatureExpr ctx = NativeMethodInfo.CTX;
+    
     if (value == expect){
       env.setLongField(ctx, objRef, "value", new One<>(update));
       return true;

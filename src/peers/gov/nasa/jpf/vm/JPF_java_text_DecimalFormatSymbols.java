@@ -23,6 +23,7 @@ import gov.nasa.jpf.annotation.MJI;
 import java.text.DecimalFormatSymbols;
 
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * MJI NativePeer class for java.text.DecimalFormatSymbols library abstraction
@@ -32,22 +33,22 @@ import cmu.conditional.One;
  */
 public class JPF_java_text_DecimalFormatSymbols extends NativePeer {
   @MJI
-  public void initialize__Ljava_util_Locale_2__V (MJIEnv env, int objRef, int localeRef) {
+  public void initialize__Ljava_util_Locale_2__V (MJIEnv env, int objRef, int localeRef, FeatureExpr ctx) {
     DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     
-    env.setCharField(NativeMethodInfo.CTX,objRef, "patternSeparator", new One<>(dfs.getPatternSeparator()));
-    env.setCharField(NativeMethodInfo.CTX,objRef, "percent", new One<>(dfs.getPercent()));
-    env.setCharField(NativeMethodInfo.CTX,objRef, "digit", new One<>(dfs.getDigit()));
-    env.setCharField(NativeMethodInfo.CTX,objRef, "minusSign", new One<>(dfs.getMinusSign()));
-    env.setCharField(NativeMethodInfo.CTX,objRef, "perMill", new One<>(dfs.getPerMill()));
-    env.setReferenceField(NativeMethodInfo.CTX, objRef,"infinity", env.newString(NativeMethodInfo.CTX, dfs.getInfinity()));
-    env.setReferenceField(NativeMethodInfo.CTX, objRef,"NaN", env.newString(NativeMethodInfo.CTX, dfs.getNaN()));
-    env.setReferenceField(NativeMethodInfo.CTX, objRef,"currencySymbol", env.newString(NativeMethodInfo.CTX, dfs.getCurrencySymbol()));
-    env.setCharField(NativeMethodInfo.CTX,objRef, "monetarySeparator", new One<>(dfs.getMonetaryDecimalSeparator()));
+    env.setCharField(ctx,objRef, "patternSeparator", new One<>(dfs.getPatternSeparator()));
+    env.setCharField(ctx,objRef, "percent", new One<>(dfs.getPercent()));
+    env.setCharField(ctx,objRef, "digit", new One<>(dfs.getDigit()));
+    env.setCharField(ctx,objRef, "minusSign", new One<>(dfs.getMinusSign()));
+    env.setCharField(ctx,objRef, "perMill", new One<>(dfs.getPerMill()));
+    env.setReferenceField(ctx, objRef,"infinity", env.newString(ctx, dfs.getInfinity()));
+    env.setReferenceField(ctx, objRef,"NaN", env.newString(ctx, dfs.getNaN()));
+    env.setReferenceField(ctx, objRef,"currencySymbol", env.newString(ctx, dfs.getCurrencySymbol()));
+    env.setCharField(ctx,objRef, "monetarySeparator", new One<>(dfs.getMonetaryDecimalSeparator()));
 
-    env.setCharField(NativeMethodInfo.CTX,objRef, "decimalSeparator", new One<>(dfs.getDecimalSeparator()));
-    env.setCharField(NativeMethodInfo.CTX,objRef, "groupingSeparator", new One<>(dfs.getGroupingSeparator()));
-    env.setCharField(NativeMethodInfo.CTX,objRef, "exponential", new One<>('E')); // getExponentialSymbol() is not public
+    env.setCharField(ctx,objRef, "decimalSeparator", new One<>(dfs.getDecimalSeparator()));
+    env.setCharField(ctx,objRef, "groupingSeparator", new One<>(dfs.getGroupingSeparator()));
+    env.setCharField(ctx,objRef, "exponential", new One<>('E')); // getExponentialSymbol() is not public
   }
 }
 

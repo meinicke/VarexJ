@@ -25,6 +25,9 @@ import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.Random;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 
 /**
  * Verify is the programmatic interface of JPF that can be used from inside of
@@ -64,13 +67,17 @@ public class Verify {
     peer = cls;
   }
 
+  public static int getCounter (int id) {
+	  return getCounter(id, FeatureExprFactory.True());
+  }
+  
   // note this is NOT marked native because we might also call it from host VM code
   // (beware that Verify is a different class there!). When executed by JPF,
   // this is an MJI method
-  public static int getCounter (int id) {
+  public static int getCounter (int id, FeatureExpr ctx) {
     if (peer != null) {
       // this is executed if we are in a JPF context
-      return JPF_gov_nasa_jpf_vm_Verify.getCounter__I__I(null, 0, id);
+      return JPF_gov_nasa_jpf_vm_Verify.getCounter__I__I(null, 0, id, ctx);
     } else {
       if (counter == null) {
         counter = new int[id >= MAX_COUNTERS ? (id+1) : MAX_COUNTERS];
@@ -84,8 +91,12 @@ public class Verify {
   }
 
   public static void resetCounter (int id) {
+	  resetCounter(id, FeatureExprFactory.True());
+  }
+  
+  public static void resetCounter (int id, FeatureExpr ctx) {
     if (peer != null){
-      JPF_gov_nasa_jpf_vm_Verify.resetCounter__I__V(null, 0, id);
+      JPF_gov_nasa_jpf_vm_Verify.resetCounter__I__V(null, 0, id, ctx);
     } else {
       if ((counter != null) && (id >= 0) && (id < counter.length)) {
         counter[id] = 0;
@@ -94,8 +105,12 @@ public class Verify {
   }
 
   public static void setCounter (int id, int val) {
+	  setCounter(id, val, FeatureExprFactory.True());
+  }
+  
+  public static void setCounter (int id, int val, FeatureExpr ctx) {
     if (peer != null){
-      JPF_gov_nasa_jpf_vm_Verify.setCounter__II__V(null, 0, id, val);
+      JPF_gov_nasa_jpf_vm_Verify.setCounter__II__V(null, 0, id, val, ctx);
     } else {
       if ((counter != null) && (id >= 0) && (id < counter.length)) {
         counter[id] = val;
@@ -103,10 +118,13 @@ public class Verify {
     }
   }
 
-  
   public static int incrementCounter (int id) {
+	  return incrementCounter(id, FeatureExprFactory.True());
+  }
+  
+  public static int incrementCounter (int id, FeatureExpr ctx) {
     if (peer != null){
-      return JPF_gov_nasa_jpf_vm_Verify.incrementCounter__I__I(null, 0, id);
+      return JPF_gov_nasa_jpf_vm_Verify.incrementCounter__I__I(null, 0, id, ctx);
     } else {
       if (counter == null) {
         counter = new int[(id >= MAX_COUNTERS) ? id+1 : MAX_COUNTERS];
@@ -153,11 +171,14 @@ public class Verify {
     }
   }
 
-
   public static void setBitInBitSet(int id, int bit, boolean value) {
+	  setBitInBitSet(id, bit, value, FeatureExprFactory.True());
+  }
+
+  public static void setBitInBitSet(int id, int bit, boolean value, FeatureExpr ctx) {
     if (peer != null){
       // this is executed if we did run JPF
-      JPF_gov_nasa_jpf_vm_Verify.setBitInBitSet__IIZ__V(null, 0, id, bit, value);
+      JPF_gov_nasa_jpf_vm_Verify.setBitInBitSet__IIZ__V(null, 0, id, bit, value, ctx);
     } else {
       // this is executed if we run this without previously executing JPF
       checkBitSetId(id);
@@ -166,9 +187,13 @@ public class Verify {
   }
 
   public static boolean getBitInBitSet(int id, int bit) {
+	  return getBitInBitSet(id, bit, FeatureExprFactory.True());
+  }
+  
+  public static boolean getBitInBitSet(int id, int bit, FeatureExpr ctx) {
     if (peer != null){
       // this is executed if we did run JPF
-      return JPF_gov_nasa_jpf_vm_Verify.getBitInBitSet__II__Z(null, 0, id, bit);
+      return JPF_gov_nasa_jpf_vm_Verify.getBitInBitSet__II__Z(null, 0, id, bit, ctx);
 
     } else {
       // this is executed if we run this without previously executing JPF

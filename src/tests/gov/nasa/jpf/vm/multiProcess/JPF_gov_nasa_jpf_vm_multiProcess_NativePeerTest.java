@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.NativePeer;
@@ -31,13 +32,13 @@ public class JPF_gov_nasa_jpf_vm_multiProcess_NativePeerTest extends NativePeer 
   private int counter = 0;
 
   @MJI
-  public void incNativeCounters____V(MJIEnv env, int objRef) {
+  public void incNativeCounters____V(MJIEnv env, int objRef, FeatureExpr ctx) {
     staticCounter++;
     counter++;
   }
 
   @MJI
-  public int getNativeCounter____I(MJIEnv env, int objRef) {
+  public int getNativeCounter____I(MJIEnv env, int objRef, FeatureExpr ctx) {
     return counter;
   }
 
