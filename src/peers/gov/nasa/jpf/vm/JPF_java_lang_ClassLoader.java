@@ -58,7 +58,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     //  parentRef = MJIEnv.NULL;
     // }
 
-    ei.setReferenceField(ctx, "parent", parentRef);
+    ei.setReferenceField(ctx, "parent", new One<>(parentRef));
   }
 
   @MJI
@@ -249,15 +249,15 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 	int pkgRef = env.newObject(ctx, pkgClass);
     ElementInfo ei = env.getModifiableElementInfo(pkgRef);
 
-    ei.setReferenceField(ctx, "pkgName", env.newString(ctx, pkgName));
-    ei.setReferenceField(ctx, "loader", cl.getClassLoaderObjectRef());
+    ei.setReferenceField(ctx, "pkgName", new One<>(env.newString(ctx, pkgName)));
+    ei.setReferenceField(ctx, "loader", new One<>(cl.getClassLoaderObjectRef()));
     // the rest of the fields set to some dummy value
-    ei.setReferenceField(ctx, "specTitle", env.newString(ctx, "spectitle"));
-    ei.setReferenceField(ctx, "specVersion", env.newString(ctx, "specversion"));
-    ei.setReferenceField(ctx, "specVendor", env.newString(ctx, "specvendor"));
-    ei.setReferenceField(ctx, "implTitle", env.newString(ctx, "impltitle"));
-    ei.setReferenceField(ctx, "implVersion", env.newString(ctx, "implversion"));
-    ei.setReferenceField(ctx, "sealBase", MJIEnv.NULL);
+    ei.setReferenceField(ctx, "specTitle", new One<>(env.newString(ctx, "spectitle")));
+    ei.setReferenceField(ctx, "specVersion", new One<>(env.newString(ctx, "specversion")));
+    ei.setReferenceField(ctx, "specVendor", new One<>(env.newString(ctx, "specvendor")));
+    ei.setReferenceField(ctx, "implTitle", new One<>(env.newString(ctx, "impltitle")));
+    ei.setReferenceField(ctx, "implVersion", new One<>(env.newString(ctx, "implversion")));
+    ei.setReferenceField(ctx, "sealBase", new One<>(MJIEnv.NULL));
 
     return pkgRef;
   }

@@ -829,7 +829,7 @@ public class ThreadInfo extends InfoObject
       // time this gets scheduled, and make sure the exception object does
       // not get GCed prematurely
       ElementInfo eit = getModifiableElementInfo(objRef);
-      eit.setReferenceField(FeatureExprFactory.True(), "stopException", throwableRef);
+      eit.setReferenceField(FeatureExprFactory.True(), "stopException", new One<>(throwableRef));
     }
   }
 
@@ -1694,9 +1694,9 @@ public class ThreadInfo extends InfoObject
         ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.StackTraceElement");
         ElementInfo ei = heap.newObject(ctx, ci, ThreadInfo.this);
 
-        ei.setReferenceField(ctx, "clsName", heap.newString(ctx, clsName, ThreadInfo.this).getObjectRef());
-        ei.setReferenceField(ctx, "mthName", heap.newString(ctx, mthName, ThreadInfo.this).getObjectRef());
-        ei.setReferenceField(ctx, "fileName", heap.newString(ctx, fileName, ThreadInfo.this).getObjectRef());
+        ei.setReferenceField(ctx, "clsName", new One<>(heap.newString(ctx, clsName, ThreadInfo.this).getObjectRef()));
+        ei.setReferenceField(ctx, "mthName", new One<>(heap.newString(ctx, mthName, ThreadInfo.this).getObjectRef()));
+        ei.setReferenceField(ctx, "fileName", new One<>(heap.newString(ctx, fileName, ThreadInfo.this).getObjectRef()));
         ei.setIntField(ctx, "line", new One<>(line));
 
         return ei.getObjectRef();
@@ -2426,10 +2426,10 @@ public class ThreadInfo extends InfoObject
     int grpRef = ei.getReferenceField("group").getValue();
     cleanupThreadGroup(ctx, grpRef, ei.getObjectRef());
 
-    ei.setReferenceField(ctx, "group", MJIEnv.NULL);
-    ei.setReferenceField(ctx, "threadLocals", MJIEnv.NULL);
-    ei.setReferenceField(ctx, "inheritableThreadLocals", MJIEnv.NULL);
-    ei.setReferenceField(ctx, "uncaughtExceptionHandler", MJIEnv.NULL);
+    ei.setReferenceField(ctx, "group", new One<>(MJIEnv.NULL));
+    ei.setReferenceField(ctx, "threadLocals", new One<>(MJIEnv.NULL));
+    ei.setReferenceField(ctx, "inheritableThreadLocals", new One<>(MJIEnv.NULL));
+    ei.setReferenceField(ctx, "uncaughtExceptionHandler", new One<>(MJIEnv.NULL));
   }
 
   /**
@@ -2490,19 +2490,19 @@ public class ThreadInfo extends InfoObject
     ElementInfo eiThread = heap.newObject(ctx, ciThread, this);
     objRef = eiThread.getObjectRef();
      
-    ElementInfo eiName = heap.newString(FeatureExprFactory.True(), MAIN_NAME, this);
+    ElementInfo eiName = heap.newString(FeatureExprFactory.True(), MAIN_NAME, this);// TODO jens TRUE?
     int nameRef = eiName.getObjectRef();
-    eiThread.setReferenceField(ctx, "name", nameRef);
+    eiThread.setReferenceField(ctx, "name", new One<>(nameRef));
     
     ElementInfo eiGroup = createMainThreadGroup(ctx, sysCl);
-    eiThread.setReferenceField(ctx, "group", eiGroup.getObjectRef());
+    eiThread.setReferenceField(ctx, "group", new One<>(eiGroup.getObjectRef()));
     
     eiThread.setIntField(ctx, "priority", new One<>(Thread.NORM_PRIORITY));
 
     ClassInfo ciPermit = sysCl.getResolvedClassInfo(ctx, "java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( ctx, ciPermit, this);
     eiPermit.setBooleanField(ctx, "blockPark", new One<>(true));
-    eiThread.setReferenceField(ctx, "permit", eiPermit.getObjectRef());
+    eiThread.setReferenceField(ctx, "permit", new One<>(eiPermit.getObjectRef()));
 
     addToThreadGroup(NativeMethodInfo.CTX, eiGroup);
     
@@ -2524,7 +2524,7 @@ public class ThreadInfo extends InfoObject
     ElementInfo eiThreadGrp = heap.newObject(ctx, ciGroup, this);
 
     ElementInfo eiGrpName = heap.newString(ctx, "main", this);
-    eiThreadGrp.setReferenceField(ctx, "name", eiGrpName.getObjectRef());
+    eiThreadGrp.setReferenceField(ctx, "name", new One<>(eiGrpName.getObjectRef()));
 
     eiThreadGrp.setIntField(ctx, "maxPriority", new One<>(java.lang.Thread.MAX_PRIORITY));
 
@@ -2806,7 +2806,7 @@ public class ThreadInfo extends InfoObject
     ElementInfo ei = getModifiableThreadObject();
 
     int xRef = ei.getReferenceField("stopException").getValue();
-    ei.setReferenceField(FeatureExprFactory.True(), "stopException", MJIEnv.NULL);
+    ei.setReferenceField(FeatureExprFactory.True(), "stopException", new One<>(MJIEnv.NULL));
 
     Instruction insn = getPC().getValue();
     if (insn instanceof EXECUTENATIVE){

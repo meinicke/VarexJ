@@ -473,7 +473,7 @@ public class MJIEnv {
 
   public void setReferenceField (FeatureExpr ctx, int objref, String fname, int ref) {// TODO jens
      ElementInfo ei = heap.getModifiable(objref);
-     ei.setReferenceField(ctx, fname, ref);
+     ei.setReferenceField(ctx, fname, new One<>(ref));
   }
 
   public Conditional<Integer> getReferenceField (FeatureExpr ctx, int objref, String fname) {
@@ -719,14 +719,14 @@ public class MJIEnv {
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
 
     // <2do> - we should REALLY check for type compatibility here
-    ci.getModifiableStaticElementInfo().setReferenceField(ctx, fname, objref);
+    ci.getModifiableStaticElementInfo().setReferenceField(ctx, fname, new One<>(objref));
   }
 
   public void setStaticReferenceField (int clsObjRef, String fname, int objref) {
     ElementInfo cei = getModifiableStaticElementInfo(clsObjRef);
 
     // <2do> - we should REALLY check for type compatibility here
-    cei.setReferenceField(null, fname, objref);// TODO jens
+    cei.setReferenceField(null, fname, new One<>(objref));// TODO jens
   }
 
   public int getStaticReferenceField (String clsName, String fname) {

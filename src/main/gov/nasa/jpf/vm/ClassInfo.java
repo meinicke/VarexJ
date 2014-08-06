@@ -1895,14 +1895,14 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     int clsObjRef = ei.getObjectRef();
     
     ElementInfo eiClsName = heap.newSystemString(name, ti, clsObjRef);
-    ei.setReferenceField(FeatureExprFactory.True(), "name", eiClsName.getObjectRef());
+    ei.setReferenceField(FeatureExprFactory.True(), "name", new One<>(eiClsName.getObjectRef()));
 
     ei.setBooleanField(ctx, "isPrimitive", new One<>(isPrimitive()));
     
     // setting the ID_FIELD is done in registerClass once we have a StaticElementInfo
 
     // link the SUT class object to the classloader 
-    ei.setReferenceField(FeatureExprFactory.True(), "classLoader", classLoader.getClassLoaderObjectRef());
+    ei.setReferenceField(FeatureExprFactory.True(), "classLoader", new One<>(classLoader.getClassLoaderObjectRef()));
     
     return ei;
   }

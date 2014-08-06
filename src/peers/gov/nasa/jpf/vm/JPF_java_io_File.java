@@ -49,7 +49,7 @@ public class JPF_java_io_File extends NativePeer {
     ElementInfo fileEI = env.getModifiableElementInfo(newFileRef);
 
     int fileNameRef = env.newString(ctx, file.getPath());
-    fileEI.setReferenceField(ctx, "filename", fileNameRef);
+    fileEI.setReferenceField(ctx, "filename", new One<>(fileNameRef));
 
     return newFileRef;
   }

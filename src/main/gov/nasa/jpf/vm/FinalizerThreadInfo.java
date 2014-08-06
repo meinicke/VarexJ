@@ -83,19 +83,19 @@ public class FinalizerThreadInfo extends ThreadInfo {
     
     ElementInfo eiName = heap.newString(ctx, new One<>(FINALIZER_NAME), this);
     int nameRef = eiName.getObjectRef();
-    eiThread.setReferenceField(ctx, "name", nameRef);
+    eiThread.setReferenceField(ctx, "name", new One<>(nameRef));
     
     // Since we create FinalizerThread upon VM initialization, they are assigned to the
     // same group as the main thread
     int grpRef = ThreadInfo.getCurrentThread().getThreadGroupRef();
-    eiThread.setReferenceField(ctx, "group", grpRef);
+    eiThread.setReferenceField(ctx, "group", new One<>(grpRef));
     
     eiThread.setIntField(ctx, "priority", new One<>(Thread.MAX_PRIORITY-2));
 
     ClassInfo ciPermit = sysCl.getResolvedClassInfo(ctx, "java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( ctx, ciPermit, this);
     eiPermit.setBooleanField(ctx, "blockPark", new One<>(true));
-    eiThread.setReferenceField(ctx, "permit", eiPermit.getObjectRef());
+    eiThread.setReferenceField(ctx, "permit", new One<>(eiPermit.getObjectRef()));
 
     addToThreadGroup(ctx, getElementInfo(grpRef));
     
@@ -108,11 +108,11 @@ public class FinalizerThreadInfo extends ThreadInfo {
     
     eiThread.setBooleanField(ctx, "done", new One<>(false));
     ElementInfo finalizeQueue = getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", 0, this);
-    eiThread.setReferenceField(ctx, "finalizeQueue", finalizeQueue.getObjectRef());
+    eiThread.setReferenceField(ctx, "finalizeQueue", new One<>(finalizeQueue.getObjectRef()));
     
     // create an internal private lock used for lock-free wait
     ElementInfo lock = getHeap().newObject(ctx, appCtx.getSystemClassLoader().objectClassInfo, this);
-    eiThread.setReferenceField(ctx, "semaphore", lock.getObjectRef());
+    eiThread.setReferenceField(ctx, "semaphore", new One<>(lock.getObjectRef()));
     
     // make it wait on the internal private lock until its finalizeQueue is populated. This way,
     // we avoid scheduling points from including FinalizerThreads
@@ -190,7 +190,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
         newValues[len++] = new One<>(ei.getObjectRef());
       }
       
-      vm.getModifiableElementInfo(objRef).setReferenceField(FeatureExprFactory.True(), "finalizeQueue", newQueue.getObjectRef());
+      vm.getModifiableElementInfo(objRef).setReferenceField(FeatureExprFactory.True(), "finalizeQueue", new One<>(newQueue.getObjectRef()));
       tempFinalizeQueue.clear();
       
       assert hasQueuedFinalizers();

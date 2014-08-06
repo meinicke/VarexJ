@@ -827,8 +827,8 @@ public abstract class ElementInfo implements Cloneable {
     setDoubleField( ctx, getFieldInfo(fname), value);
   }
   
-  public void setReferenceField(FeatureExpr ctx, String fname, int value) {// TODO jens
-    setReferenceField( ctx, getFieldInfo(fname), new One<>(value));
+  public void setReferenceField(FeatureExpr ctx, String fname, Conditional<Integer> value) {
+    setReferenceField( ctx, getFieldInfo(fname), value);
   }
 
 

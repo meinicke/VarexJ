@@ -198,7 +198,7 @@ public class JSONObject{
           if (jsonObj != null) {
             fieldRef = jsonObj.fillObject(ctx, env, ciField, cgs, prefix + fieldName);
           }
-          ei.setReferenceField(ctx, fi.getName(), fieldRef);
+          ei.setReferenceField(ctx, fi.getName(), new One<>(fieldRef));
         }
       }
     }

@@ -345,7 +345,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   
   protected ElementInfo initializeStringObject( FeatureExpr ctx, String str, int index, int vref) {
     ElementInfo ei = getModifiable(index);
-    ei.setReferenceField(FeatureExprFactory.True(), "value", vref);
+    ei.setReferenceField(FeatureExprFactory.True(), "value", new One<>(vref));
 
     ElementInfo eVal = getModifiable(vref);
     CharArrayFields cf = (CharArrayFields)eVal.getFields();
@@ -501,7 +501,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     if (details != null) {
       AllocationContext ctxString = ctx.extend( ciString, xRef);
       ElementInfo eiMsg = newString(fexpr, ciString, ciChars, details, ti, ctxString);
-      eiThrowable.setReferenceField(fexpr, "detailMessage", eiMsg.getObjectRef());
+      eiThrowable.setReferenceField(fexpr, "detailMessage", new One<>(eiMsg.getObjectRef()));
     }
 
     //--- the stack snapshot field
@@ -518,10 +518,10 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     	eiSnap.setIntElement(fexpr, i, new One<>(stackSnapshot[i]));
     }
 //    System.arraycopy( stackSnapshot, 0, snap, 0, stackSnapshot.length);
-    eiThrowable.setReferenceField(fexpr, "snapshot", snapRef);
+    eiThrowable.setReferenceField(fexpr, "snapshot", new One<>(snapRef));
 
     //--- the cause field
-    eiThrowable.setReferenceField(fexpr, "cause", (causeRef != MJIEnv.NULL)? causeRef : xRef);
+    eiThrowable.setReferenceField(fexpr, "cause", new One<>((causeRef != MJIEnv.NULL)? causeRef : xRef));
 
     return eiThrowable;
   }

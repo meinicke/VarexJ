@@ -82,7 +82,7 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "byteCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "byteCache", new One<>(arrayRef));
     return arrayRef;
   }
 
@@ -121,7 +121,7 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "charCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "charCache", new One<>(arrayRef));
     return arrayRef;
   }
 
@@ -164,7 +164,7 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "shortCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "shortCache", new One<>(arrayRef));
     return arrayRef;
   }
 
@@ -205,7 +205,7 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "intCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "intCache", new One<>(arrayRef));
     return arrayRef;
   }
 
@@ -246,7 +246,7 @@ public class BoxObjectCacheManager {
     }
 
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "longCache", arrayRef);
+    cacheClass.getModifiableStaticElementInfo().setReferenceField(ctx, "longCache", new One<>(arrayRef));
     return arrayRef;
   }
 
