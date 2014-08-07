@@ -36,10 +36,6 @@ public class Choice<T> extends IChoice<T> implements Cloneable {
 
 	@Override
 	public Conditional<T> simplify(FeatureExpr ctx) {
-		if (ctx == null) {
-			throw new RuntimeException("ctx == null");
-		}
-
 		FeatureExpr and = ctx.and(featureExpr);
 		if (isContradiction(and)) {
 			return elseBranch.simplify(ctx.andNot(featureExpr));
