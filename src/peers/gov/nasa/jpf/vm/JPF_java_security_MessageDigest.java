@@ -55,7 +55,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
   
   @MJI
   public int init0__Ljava_lang_String_2__I (MJIEnv env, int objRef, int algRef, FeatureExpr ctx) {
-    String algorithm = env.getStringObject(null, algRef);
+    String algorithm = env.getStringObject(ctx, algRef);
     
     try {
       MessageDigest md = MessageDigest.getInstance(algorithm);

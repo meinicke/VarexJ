@@ -18,9 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * just a dummy for now, to avoid UnsatisfiedLinkErrors
@@ -74,7 +75,7 @@ public class JPF_java_lang_Runtime extends NativePeer {
     if (maxProcessors == 1) {
       return 1;
     } else {
-      return JPF_gov_nasa_jpf_vm_Verify.getInt__II__I(env,-1, 1,maxProcessors, ctx);
+      return JPF_gov_nasa_jpf_vm_Verify.getInt__II__I(env,-1, new One<>(1), new One<>(maxProcessors), ctx);
     }
   }
 }

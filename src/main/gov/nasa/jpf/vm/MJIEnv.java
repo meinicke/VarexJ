@@ -26,6 +26,7 @@ import gov.nasa.jpf.JPFListener;
 import java.util.Date;
 import java.util.Locale;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
@@ -491,9 +492,9 @@ public VM getVM () {
     return ei.getReferenceField(fi).simplify(null).getValue();// TODO jens
   }
 
-  public String getStringField (int objref, String fname){// TODO jens
-    int ref = getReferenceField(null, objref, fname).getValue();
-    return getStringObject(null, ref);
+  public String getStringField (FeatureExpr ctx, int objref, String fname){// TODO jens
+    int ref = getReferenceField(ctx, objref, fname).getValue();
+    return getStringObject(ctx, ref);
   }
 
   // the box object accessors (should probably test for the appropriate class)
@@ -772,9 +773,6 @@ public VM getVM () {
       ElementInfo ei = getElementInfo(objRef);
       
       Conditional<String> str = ei.asString();
-      if (str instanceof One) {// TODO jens remove this
-    	  return str.getValue();
-      }
       return str.simplify(ctx).getValue();
       
     } else {
@@ -854,7 +852,7 @@ public VM getVM () {
       } else if (clsName.equals("java.lang.Double")){
         args[i] = Double.valueOf(getDoubleField(aref,"value").getValue());
       } else if (clsName.equals("java.lang.String")){
-        args[i] = getStringObject(null, aref);
+        args[i] = getStringObject(ctx, aref);
       }
     }
 
@@ -1112,6 +1110,7 @@ public VM getVM () {
     }
   }
   
+  @Deprecated
   public int newString (FeatureExpr ctx, String s) {// TODO jens remove
 	  return newString(ctx, new One<>(s));
   }
@@ -1154,7 +1153,7 @@ public VM getVM () {
   }
 
   public String format (FeatureExpr ctx, int fmtRef, int argRef){
-    String format = getStringObject(null, fmtRef);
+    String format = getStringObject(ctx, fmtRef);
     int len = getArrayLength(ctx, argRef);
     Object[] arg = new Object[len];
 
@@ -1163,7 +1162,7 @@ public VM getVM () {
       if (ref != NULL) {
         String clsName = getClassName(ref);
         if (clsName.equals("java.lang.String")) {
-          arg[i] = getStringObject(null, ref);
+          arg[i] = getStringObject(ctx, ref);
         } else if (clsName.equals("java.lang.Byte")) {
           arg[i] = getByteObject(ref);
         } else if (clsName.equals("java.lang.Char")) {
@@ -1189,7 +1188,7 @@ public VM getVM () {
   }
 
   public String format (FeatureExpr ctx,Locale l, int fmtRef, int argRef){
-	    String format = getStringObject(null, fmtRef);
+	    String format = getStringObject(ctx, fmtRef);
 	    int len = getArrayLength(ctx, argRef);
 	    Object[] arg = new Object[len];
 
@@ -1198,7 +1197,7 @@ public VM getVM () {
 	      if (ref != NULL) {
 	        String clsName = getClassName(ref);
 	        if (clsName.equals("java.lang.String")) {
-	          arg[i] = getStringObject(null, ref);
+	          arg[i] = getStringObject(ctx, ref);
 	        } else if (clsName.equals("java.lang.Byte")) {
 	          arg[i] = getByteObject(ref);
 	        } else if (clsName.equals("java.lang.Char")) {
@@ -1557,7 +1556,7 @@ public VM getVM () {
       return null;
     }
 
-    int cliId = heap.get(clObjRef).getIntField(ClassLoaderInfo.ID_FIELD).simplify(null).getValue();
+    int cliId = heap.get(clObjRef).getIntField(ClassLoaderInfo.ID_FIELD).getValue();
     return getVM().getClassLoader(cliId);
   }
 
@@ -1805,6 +1804,18 @@ public VM getVM () {
   public int valueOfInteger(FeatureExpr ctx, int i) {
     return BoxObjectCacheManager.valueOfInteger(ctx, ti, i);
   }
+  
+  public Conditional<Integer> valueOfInteger(FeatureExpr ctx, Conditional<Integer> i) {
+	  return i.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(FeatureExpr ctx, Integer i) {
+			return new One<>(BoxObjectCacheManager.valueOfInteger(ctx, ti, i));
+		}
+		  
+	  });
+	    
+	  }
 
   public int valueOfLong(FeatureExpr ctx, long l) {
     return BoxObjectCacheManager.valueOfLong(ctx, ti, l);

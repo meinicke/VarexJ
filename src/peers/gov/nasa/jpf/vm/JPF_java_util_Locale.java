@@ -49,14 +49,14 @@ public class JPF_java_util_Locale extends NativePeer {
     
     if (fiBase != null){ // Java >= 1.7
       int baseLocref = env.getReferenceField(locref, fiBase);
-      country = env.getStringObject(null, env.getReferenceField(ctx,baseLocref, "region").getValue());
-      language = env.getStringObject(null, env.getReferenceField(ctx, baseLocref, "language").getValue());
-      variant = env.getStringObject(null, env.getReferenceField(ctx, baseLocref, "variant").getValue());
+      country = env.getStringObject(ctx, env.getReferenceField(ctx,baseLocref, "region").getValue());
+      language = env.getStringObject(ctx, env.getReferenceField(ctx, baseLocref, "language").getValue());
+      variant = env.getStringObject(ctx, env.getReferenceField(ctx, baseLocref, "variant").getValue());
             
     } else {  // Java < 1.7
-      country = env.getStringObject(null, env.getReferenceField(ctx,locref, "country").getValue());
-      language = env.getStringObject(null, env.getReferenceField(ctx, locref, "language").getValue());
-      variant = env.getStringObject(null, env.getReferenceField(ctx, locref, "variant").getValue());
+      country = env.getStringObject(ctx, env.getReferenceField(ctx,locref, "country").getValue());
+      language = env.getStringObject(ctx, env.getReferenceField(ctx, locref, "language").getValue());
+      variant = env.getStringObject(ctx, env.getReferenceField(ctx, locref, "variant").getValue());
     }
     
     Locale locale = new Locale(language,country,variant); 

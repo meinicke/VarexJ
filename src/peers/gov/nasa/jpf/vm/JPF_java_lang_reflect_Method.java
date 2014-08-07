@@ -27,6 +27,7 @@ import gov.nasa.jpf.util.RunRegistry;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -425,7 +426,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   }
 
   @MJI
-  public int invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, int objRef, int argsRef, FeatureExpr ctx) {
+  public int invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, Conditional<Integer> objRef, Conditional<Integer> argsRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     MethodInfo miCallee = getMethodInfo(env, mthRef);
     ClassInfo calleeClass = miCallee.getClassInfo();
@@ -435,12 +436,12 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
       //--- check the instance we are calling on
       if (!miCallee.isStatic()) {
-        if (objRef == MJIEnv.NULL){
+        if (objRef.getValue().intValue() == MJIEnv.NULL){
           env.throwException(ctx, "java.lang.NullPointerException");
           return MJIEnv.NULL;
           
         } else {
-          ElementInfo eiObj = ti.getElementInfo(objRef);
+          ElementInfo eiObj = ti.getElementInfo(objRef.getValue());
           ClassInfo objClass = eiObj.getClassInfo();
         
           if (!objClass.isInstanceOf(calleeClass)) {
@@ -470,9 +471,9 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       
       int argOffset = 0;
       if (!miCallee.isStatic()) {
-        frame.setReferenceArgument( argOffset++, objRef, null);
+        frame.setReferenceArgument( argOffset++, objRef.getValue(), null);
       }
-      if (!pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef, ctx)) {
+      if (!pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef.getValue(), ctx)) {
         // we've got a IllegalArgumentException
         return MJIEnv.NULL;  
       }

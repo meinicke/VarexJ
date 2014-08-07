@@ -1679,9 +1679,9 @@ public class ThreadInfo extends InfoObject
 
     StackTraceElement (int sRef){
       FeatureExpr ctx = FeatureExprFactory.True();
-      clsName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "clsName").getValue());
-      mthName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "mthName").getValue());
-      fileName = env.getStringObject(null, env.getReferenceField(ctx, sRef, "fileName").getValue());
+      clsName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "clsName").getValue());
+      mthName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "mthName").getValue());
+      fileName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "fileName").getValue());
       line = env.getIntField(sRef, "line").getValue().intValue();
     }
 

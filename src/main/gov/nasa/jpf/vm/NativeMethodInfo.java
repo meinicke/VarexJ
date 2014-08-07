@@ -23,11 +23,11 @@ import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFNativePeerException;
 import gov.nasa.jpf.util.JPFLogger;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import cmu.conditional.BiFunction;
+import cmu.conditional.Choice;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -131,8 +131,39 @@ public class NativeMethodInfo extends MethodInfo {
 			}
 
 			// this is the reflection call into the native peer
-			ret = mth.invoke(peer, args);
-
+			
+			boolean supportsConditional = false;
+			for (Class<?> t : mth.getParameterTypes()) {
+				if (t.equals(Conditional.class)) {
+					supportsConditional = true;
+				}
+			}
+			if (!supportsConditional) {
+				int i = 0;
+				for (Object a : args) {
+					if (a instanceof One) {
+						args[i++] = ((One) a).getValue();
+					} else if (a instanceof Choice) {
+						System.err.println(mth);
+						for (Object a2 : args) {
+							System.err.println(a2.toString());
+						}
+						throw new RuntimeException("Signature of method " + mth + " incorrect!");	
+					} else {
+						args[i++] = a;
+					}
+				}
+			}
+			try {
+				ret = mth.invoke(peer, args);
+			} catch (IllegalAccessException e) {
+				System.err.println(mth);
+				for (Object a : args) {
+					System.err.println(a.toString());
+				}
+				throw e;
+			}
+			
 			if (env.hasException()) {
 				// even though we should prefer throwing normal exceptionHandlers,
 				// sometimes it might be better/required to explicitly throw

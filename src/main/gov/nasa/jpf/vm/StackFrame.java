@@ -1034,8 +1034,8 @@ public int nLocals;
     }
     attrs[i] = a;
   }
-  public void setThis (int objRef){
-    thisRef = objRef;
+  public void setThis (int thisRef2){
+    thisRef = thisRef2;
   }
   
 

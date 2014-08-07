@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -34,32 +36,58 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JPF_java_lang_System extends NativePeer {
   
-  @MJI
-  public void arraycopy__Ljava_lang_Object_2ILjava_lang_Object_2II__V (MJIEnv env, int clsObjRef,
-                                                                              int srcArrayRef, int srcIdx, 
-                                                                              int dstArrayRef, int dstIdx,
-                                                                              int length, FeatureExpr ctx) {
-    if ((srcArrayRef == MJIEnv.NULL) || (dstArrayRef == MJIEnv.NULL)) {
-      env.throwException(ctx, "java.lang.NullPointerException");
-      return;
-    }
+	@MJI
+	public void arraycopy__Ljava_lang_Object_2ILjava_lang_Object_2II__V(final MJIEnv env, int clsObjRef, Conditional<Integer> srcArrayRef, final Conditional<Integer> srcIdx,
+			final Conditional<Integer> dstArrayRef, final Conditional<Integer> dstIdx, final Conditional<Integer> length, FeatureExpr ctx) {
+		srcArrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-    ElementInfo eiSrc = env.getElementInfo(srcArrayRef);
-    ElementInfo eiDst = env.getModifiableElementInfo(dstArrayRef);
-    
-    try {
-      eiDst.copyElements( ctx, env.getThreadInfo() ,eiSrc, srcIdx, dstIdx, length);
-    } catch (IndexOutOfBoundsException iobx){
-      env.throwException(ctx, "java.lang.IndexOutOfBoundsException", iobx.getMessage());
-    } catch (ArrayStoreException asx){
-      env.throwException(ctx, "java.lang.ArrayStoreException", asx.getMessage());      
-    }
-  }
+			@Override
+			public Conditional<Integer> apply(FeatureExpr ctx, final Integer srcArrayRef) {
+				dstArrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+					@Override
+					public Conditional<Integer> apply(FeatureExpr ctx, final Integer dstArrayRef) {
+						length.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+							@Override
+							public Conditional<Integer> apply(FeatureExpr ctx, final Integer length) {
+								if (ctx.isContradiction()) {
+									return null;
+								}
+								if ((srcArrayRef.intValue() == MJIEnv.NULL) || (dstArrayRef.intValue() == MJIEnv.NULL)) {
+									env.throwException(ctx, "java.lang.NullPointerException");
+									return null;
+								}
+
+								ElementInfo eiSrc = env.getElementInfo(srcArrayRef);
+								ElementInfo eiDst = env.getModifiableElementInfo(dstArrayRef);
+								try {
+									eiDst.copyElements(ctx, env.getThreadInfo(), eiSrc, srcIdx.getValue(), dstIdx.getValue(), length);
+								} catch (IndexOutOfBoundsException iobx) {
+									env.throwException(ctx, "java.lang.IndexOutOfBoundsException", iobx.getMessage());
+								} catch (ArrayStoreException asx) {
+									env.throwException(ctx, "java.lang.ArrayStoreException", asx.getMessage());
+								}
+								return null;
+							}
+						});
+						
+						return null;
+						
+					}
+				});
+				
+				return null;
+			}
+
+		});
+
+	}
 
   @MJI
   public int getenv__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef,
                                                                          int keyRef, FeatureExpr ctx){
-    String k = env.getStringObject(null, keyRef);
+    String k = env.getStringObject(ctx, keyRef);
     String v = System.getenv(k);
     
     if (v == null){

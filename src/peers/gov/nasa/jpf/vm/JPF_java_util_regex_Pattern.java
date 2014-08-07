@@ -29,8 +29,8 @@ public class JPF_java_util_regex_Pattern extends NativePeer {
 
   @MJI
   public int split0__Ljava_lang_String_2I___3Ljava_lang_String_2(MJIEnv env,int patRef,int strRef,int limit, FeatureExpr ctx){
-    String s = env.getStringObject(null, strRef);
-    String patSpec = env.getStringField(patRef,"regex");
+    String s = env.getStringObject(ctx, strRef);
+    String patSpec = env.getStringField(ctx,patRef, "regex");
     int patFlags = env.getIntField(patRef, "flags").getValue().intValue();
 
     // <2do> this is not very efficient - it should use a pattern cache

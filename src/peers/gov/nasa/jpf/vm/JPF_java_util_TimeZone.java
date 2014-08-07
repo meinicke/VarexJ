@@ -59,7 +59,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
   //--- the factory methods
   @MJI
   public int getTimeZone__Ljava_lang_String_2__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int idRef, FeatureExpr ctx){
-    String id = env.getStringObject(null, idRef);
+    String id = env.getStringObject(ctx, idRef);
     TimeZone tz = TimeZone.getTimeZone(id);
     
     int rawOffset = tz.getRawOffset();
@@ -96,7 +96,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
 
   @MJI
   public void setDefaultValues__Ljava_util_TimeZone_2 (MJIEnv env, int clsObjRef, int tzRef, FeatureExpr ctx){
-    defaultID = env.getStringField(tzRef, "ID");
+    defaultID = env.getStringField(ctx, tzRef, "ID");
     defaultRawOffset = env.getIntField( tzRef, "rawOffset").getValue().intValue();
   }
   
@@ -115,7 +115,7 @@ public class JPF_java_util_TimeZone extends NativePeer {
 
   @MJI
   public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef, FeatureExpr ctx){
-    String id = env.getStringObject(null, idRef);
+    String id = env.getStringObject(ctx, idRef);
     TimeZone tz = TimeZone.getTimeZone(id);
     
     int rawOffset = tz.getRawOffset();

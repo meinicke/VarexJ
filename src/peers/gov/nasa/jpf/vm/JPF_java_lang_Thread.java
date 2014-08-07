@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -42,12 +43,12 @@ public class JPF_java_lang_Thread extends NativePeer {
    */
   @MJI
   public void init0__Ljava_lang_ThreadGroup_2Ljava_lang_Runnable_2Ljava_lang_String_2J__V (MJIEnv env,
-                         int objRef, int groupRef, int runnableRef, int nameRef, long stackSize, FeatureExpr ctx) {
+                         int objRef, Conditional<Integer> groupRef, Conditional<Integer> runnableRef, Conditional<Integer> nameRef, Conditional<Long> stackSize, FeatureExpr ctx) {
     VM vm = env.getVM();
     
     // we only need to create the ThreadInfo - its initialization will take care
     // of proper linkage to the java.lang.Thread object (objRef)
-    vm.createThreadInfo( objRef, groupRef, runnableRef, nameRef);
+    vm.createThreadInfo( objRef, groupRef.getValue(), runnableRef.getValue(), nameRef.getValue());
   }
 
   @MJI
@@ -86,7 +87,7 @@ public class JPF_java_lang_Thread extends NativePeer {
     // if this method is called (just works because the 'name' field is only
     // directly accessed from within the Thread ctors)
     ThreadInfo ti = env.getThreadInfoForObjRef(objref);
-    ti.setName(env.getStringObject(null, nameRef));
+    ti.setName(env.getStringObject(ctx, nameRef));
   }
 
   @MJI

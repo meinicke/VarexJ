@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -31,7 +32,7 @@ public class JPF_java_lang_Integer extends NativePeer {
   public int parseInt__Ljava_lang_String_2__I (MJIEnv env, int clsObjRef, 
                                                    int strRef, FeatureExpr ctx) {
     try {
-      return Integer.parseInt(env.getStringObject(null, strRef));
+      return Integer.parseInt(env.getStringObject(ctx, strRef));
     } catch (NumberFormatException e) {
       env.throwException(ctx, "java.lang.NumberFormatException");
 
@@ -43,7 +44,7 @@ public class JPF_java_lang_Integer extends NativePeer {
   public int parseInt__Ljava_lang_String_2I__I (MJIEnv env, int clsObjRef, 
                                                     int strRef, int radix, FeatureExpr ctx) {
     try {
-      return Integer.parseInt(env.getStringObject(null, strRef), radix);
+      return Integer.parseInt(env.getStringObject(ctx, strRef), radix);
     } catch (NumberFormatException e) {
       env.throwException(ctx, "java.lang.NumberFormatException");
 
@@ -77,7 +78,7 @@ public class JPF_java_lang_Integer extends NativePeer {
   }
 
   @MJI
-  public int valueOf__I__Ljava_lang_Integer_2 (MJIEnv env, int clsRef, int val, FeatureExpr ctx) {
+  public Conditional<Integer> valueOf__I__Ljava_lang_Integer_2 (MJIEnv env, int clsRef, Conditional<Integer> val, FeatureExpr ctx) {
     return env.valueOfInteger(ctx, val);
   }
 }

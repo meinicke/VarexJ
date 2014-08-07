@@ -51,6 +51,9 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Conditional<T> simplify(FeatureExpr ctx) {
+		if (ctx == null) {
+			throw new RuntimeException("ctx == null");
+		}
 		if (value instanceof Conditional) {// TODO jens invalid
 			((Conditional<?>) value).simplify(ctx);
 		}

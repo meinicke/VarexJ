@@ -68,7 +68,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int getResource0__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef, FeatureExpr ctx){
-    String rname = env.getStringObject(null, resRef);
+    String rname = env.getStringObject(ctx, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
@@ -79,7 +79,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int getResources0__Ljava_lang_String_2___3Ljava_lang_String_2 (MJIEnv env, int objRef, int resRef, FeatureExpr ctx) {
-    String rname = env.getStringObject(null, resRef);
+    String rname = env.getStringObject(ctx, resRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
@@ -90,7 +90,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int findLoadedClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef, FeatureExpr ctx) {
-    String cname = env.getStringObject(null, nameRef);
+    String cname = env.getStringObject(ctx, nameRef);
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
@@ -104,7 +104,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI
   public int findSystemClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef, FeatureExpr ctx) {
-    String cname = env.getStringObject(null, nameRef);
+    String cname = env.getStringObject(ctx, nameRef);
 
     checkForIllegalName(env, cname, ctx);
     if(env.hasException()) {
@@ -125,7 +125,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   @MJI
   public int defineClass0__Ljava_lang_String_2_3BII__Ljava_lang_Class_2 
                                       (MJIEnv env, int objRef, int nameRef, int bufferRef, int offset, int length, FeatureExpr ctx) {
-    String cname = env.getStringObject(null, nameRef);
+    String cname = env.getStringObject(ctx, nameRef);
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
 
     // determine whether that the corresponding class is already defined by this 
@@ -236,7 +236,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     }
 
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
-    String pkgName = env.getStringObject(null, nameRef);
+    String pkgName = env.getStringObject(ctx, nameRef);
     if(cl.getPackages().get(pkgName)!=null) {
       return createPackageObject(env, pkgClass, pkgName, cl, ctx);
     } else {
@@ -271,14 +271,14 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
   @MJI
   public void setPackageAssertionStatus__Ljava_lang_String_2Z__V (MJIEnv env, int objRef, int strRef, boolean enabled, FeatureExpr ctx) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
-    String pkgName = env.getStringObject(null, strRef);
+    String pkgName = env.getStringObject(ctx, strRef);
     cl.setPackageAssertionStatus(pkgName, enabled);
   }
 
   @MJI
   public void setClassAssertionStatus__Ljava_lang_String_2Z__V (MJIEnv env, int objRef, int strRef, boolean enabled, FeatureExpr ctx) {
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
-    String clsName = env.getStringObject(null, strRef);
+    String clsName = env.getStringObject(ctx, strRef);
     cl.setClassAssertionStatus(clsName, enabled);
   }
 

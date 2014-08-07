@@ -199,7 +199,7 @@ public class JPF_java_util_Random extends NativePeer {
   @MJI
   public int nextInt__I__I (MJIEnv env, int objRef, int n, FeatureExpr ctx){
     if (enumerateRandom){
-      return JPF_gov_nasa_jpf_vm_Verify.getInt__II__I(env,-1,0,n-1, ctx);
+      return JPF_gov_nasa_jpf_vm_Verify.getInt__II__I(env,-1,new One<>(0), new One<>(n-1), ctx);
       
     } else {
       restoreRandomState(env, objRef, delegatee);

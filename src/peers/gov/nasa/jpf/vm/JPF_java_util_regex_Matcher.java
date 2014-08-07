@@ -57,13 +57,13 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     int patRef = env.getReferenceField(ctx, objref, "pattern").getValue();
     
     int regexRef = env.getReferenceField(ctx, patRef, "regex").getValue();
-    String regex = env.getStringObject(null, regexRef);
+    String regex = env.getStringObject(ctx, regexRef);
     int flags = env.getIntField(patRef, "flags").getValue().intValue();
     
     Pattern pat = Pattern.compile(regex, flags);
 
     int inputRef = env.getReferenceField(ctx, objref, "input").getValue();
-    String input = env.getStringObject(null, inputRef);
+    String input = env.getStringObject(ctx, inputRef);
     
     Matcher matcher = pat.matcher(input);
     putInstance(env, objref, matcher);
@@ -125,7 +125,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
     Matcher matcher = getInstance( env, objref);
     
     int inputRef = env.getReferenceField(ctx, objref, "input").getValue();
-    String input = env.getStringObject(null, inputRef);
+    String input = env.getStringObject(ctx, inputRef);
     
     matcher = matcher.reset(input);
     putInstance(env, objref, matcher);
@@ -149,7 +149,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
 
   @MJI
   public int quoteReplacement__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjref, int string, FeatureExpr ctx) {
-    String parm = env.getStringObject(null, string);
+    String parm = env.getStringObject(ctx, string);
     String result = Matcher.quoteReplacement(parm);
     return env.newString(ctx, result);
   }
@@ -157,7 +157,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   @MJI
   public int replaceAll__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int objref, int string, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
-    String replacement = env.getStringObject(null, string);
+    String replacement = env.getStringObject(ctx, string);
     String result = matcher.replaceAll(replacement);
 
     int resultref = env.newString(ctx, result);
@@ -167,7 +167,7 @@ public class JPF_java_util_regex_Matcher extends NativePeer {
   @MJI
   public int replaceFirst__Ljava_lang_String_2__Ljava_lang_String_2(MJIEnv env, int objref, int string, FeatureExpr ctx) {
     Matcher matcher = getInstance(env, objref);
-    String replacement = env.getStringObject(null, string);
+    String replacement = env.getStringObject(ctx, string);
     String result = matcher.replaceFirst(replacement);
 
     int resultref = env.newString(ctx, result);

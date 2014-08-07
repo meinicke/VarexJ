@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -26,8 +27,8 @@ import gov.nasa.jpf.annotation.MJI;
  */
 public class JPF_java_lang_Float extends NativePeer {
   @MJI
-  public int floatToIntBits__F__I (MJIEnv env, int rcls, float v0, FeatureExpr ctx) {
-    return Float.floatToIntBits(v0);
+  public int floatToIntBits__F__I (MJIEnv env, int rcls, Conditional<Float> v0, FeatureExpr ctx) {
+    return Float.floatToIntBits(v0.getValue());
   }
 
   @MJI
@@ -51,7 +52,7 @@ public class JPF_java_lang_Float extends NativePeer {
   
   // ditto (see isInfinite)
   @MJI
-  public boolean isNaN__F__Z (MJIEnv env, int rcls, float v, FeatureExpr ctx) {
-    return Float.isNaN(v);
+  public boolean isNaN__F__Z (MJIEnv env, int rcls, Conditional<Float> v, FeatureExpr ctx) {
+    return Float.isNaN(v.getValue());
   }
 }

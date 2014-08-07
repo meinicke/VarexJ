@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -26,23 +27,23 @@ import gov.nasa.jpf.annotation.MJI;
  */
 public class JPF_java_lang_Double extends NativePeer {
   @MJI
-  public long doubleToLongBits__D__J (MJIEnv env, int rcls, double v0, FeatureExpr ctx) {
-    return Double.doubleToLongBits(v0);
+  public long doubleToLongBits__D__J (MJIEnv env, int rcls, Conditional<Double> v0, FeatureExpr ctx) {
+    return Double.doubleToLongBits(v0.getValue());
   }
 
   @MJI
-  public long doubleToRawLongBits__D__J (MJIEnv env, int rcls, double v0, FeatureExpr ctx) {
-    return Double.doubleToRawLongBits(v0);
+  public long doubleToRawLongBits__D__J (MJIEnv env, int rcls, Conditional<Double> v0, FeatureExpr ctx) {
+    return Double.doubleToRawLongBits(v0.getValue());
   }
 
   @MJI
-  public double longBitsToDouble__J__D (MJIEnv env, int rcls, long v0, FeatureExpr ctx) {
-    return Double.longBitsToDouble(v0);
+  public double longBitsToDouble__J__D (MJIEnv env, int rcls, Conditional<Long> v0, FeatureExpr ctx) {
+    return Double.longBitsToDouble(v0.getValue());
   }
 
   @MJI
-  public int toString__D__Ljava_lang_String_2 (MJIEnv env, int objref, double d, FeatureExpr ctx) {
-    return env.newString(ctx, Double.toString(d));
+  public int toString__D__Ljava_lang_String_2 (MJIEnv env, int objref, Conditional<Double> d, FeatureExpr ctx) {
+    return env.newString(ctx, Double.toString(d.getValue()));
   }
   
   // we need to intercept this because it compares double values, which might
@@ -50,13 +51,13 @@ public class JPF_java_lang_Double extends NativePeer {
   // but -check-fp isn't, and Double.isInfinit is used to handle the cases
   // explicitly in the program (which is supposed to be the right way)
   @MJI
-  public boolean isInfinite__D__Z (MJIEnv env, int rcls, double v, FeatureExpr ctx) {
-    return Double.isInfinite(v);
+  public boolean isInfinite__D__Z (MJIEnv env, int rcls, Conditional<Double> v, FeatureExpr ctx) {
+    return Double.isInfinite(v.getValue());
   }
   
   // ditto (see isInfinite)
   @MJI
-  public boolean isNaN__D__Z (MJIEnv env, int rcls, double v, FeatureExpr ctx) {
-    return Double.isNaN(v);
+  public boolean isNaN__D__Z (MJIEnv env, int rcls, Conditional<Double> v, FeatureExpr ctx) {
+    return Double.isNaN(v.getValue());
   }
 }

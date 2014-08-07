@@ -27,6 +27,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_lang_StringBuilder extends NativePeer {
 
+	@Deprecated
 	int appendString(FeatureExpr ctx, MJIEnv env, int objref, String s) {
 		return appendString(ctx, env, objref, new One<>(s));
 	}
@@ -106,30 +107,38 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 		env.setReferenceField(ctx, objref, "value", aref);
 	}
 
-	@MJI
-	public void $init__Ljava_lang_String_2__V(final MJIEnv env, final int objref, int sRef, FeatureExpr ctx) {
-		if (sRef == MJIEnv.NULL) {
-			env.throwException(ctx, "java.lang.NullPointerException");
-			return;
-		}
-		
-		Conditional<char[]> src = env.getStringChars(sRef);
-
-		src.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Object>>() {
+	@MJI// TODO can be improved
+	public void $init__Ljava_lang_String_2__V(final MJIEnv env, final int objref, Conditional<Integer> sRef, FeatureExpr ctx) {
+		sRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
 
 			@Override
-			public Conditional<Object> apply(final FeatureExpr ctx, final char[] src) {
-				if (Conditional.isContradiction(ctx)) {
+			public Conditional<Object> apply(FeatureExpr ctx, Integer sRef) {
+				if (sRef.intValue() == MJIEnv.NULL) {
+					env.throwException(ctx, "java.lang.NullPointerException");
 					return null;
 				}
-				int aref = env.newCharArray(ctx, src.length + 16);
-				// char[] dst = env.getCharArrayObject(aref).getValue();
-				for (int i = 0; i < src.length; i++) {
-					env.setCharArrayElement(ctx, aref, i, new One<>(src[i]));
-				}
-				// System.arraycopy(src, 0, dst, 0, src.length);
-				env.setReferenceField(ctx, objref, "value", aref);
-				env.setIntField(ctx, objref, "count", new One<>(src.length));
+
+				Conditional<char[]> src = env.getStringChars(sRef);
+
+				src.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Object>>() {
+
+					@Override
+					public Conditional<Object> apply(final FeatureExpr ctx, final char[] src) {
+						if (Conditional.isContradiction(ctx)) {
+							return null;
+						}
+						int aref = env.newCharArray(ctx, src.length + 16);
+						// char[] dst = env.getCharArrayObject(aref).getValue();
+						for (int i = 0; i < src.length; i++) {
+							env.setCharArrayElement(ctx, aref, i, new One<>(src[i]));
+						}
+						// System.arraycopy(src, 0, dst, 0, src.length);
+						env.setReferenceField(ctx, objref, "value", aref);
+						env.setIntField(ctx, objref, "count", new One<>(src.length));
+						return null;
+					}
+
+				});
 				return null;
 			}
 
@@ -137,8 +146,15 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int sref, FeatureExpr ctx) {
-		Conditional<String> s = env.getConditionalStringObject(sref);
+	public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(final MJIEnv env, int objref, Conditional<Integer> sref, FeatureExpr ctx) {
+		Conditional<String> s = sref.mapr(new Function<Integer, Conditional<String>>() {
+
+			@Override
+			public Conditional<String> apply(Integer sref) {
+				return env.getConditionalStringObject(sref);
+			}
+
+		});
 		s = s.simplify(ctx).map(new ReplaceNull()).simplifyValues();
 		return appendString(ctx, env, objref, s);
 	}
@@ -154,8 +170,15 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int append__I__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, int i, FeatureExpr ctx) {
-		String s = Integer.toString(i);
+	public int append__I__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, Conditional<Integer> i, FeatureExpr ctx) {
+		Conditional<String> s = i.map(new Function<Integer, String>() {
+
+			@Override
+			public String apply(Integer i) {
+				return Integer.toString(i);
+			}
+
+		});
 
 		return appendString(ctx, env, objref, s);
 	}
@@ -168,8 +191,15 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int append__D__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, double d, FeatureExpr ctx) {
-		String s = Double.toString(d);
+	public int append__D__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, Conditional<Double> d, FeatureExpr ctx) {
+		Conditional<String> s = d.map(new Function<Double, String>() {
+
+			@Override
+			public String apply(Double d) {
+				return Double.toString(d);
+			}
+
+		});
 
 		return appendString(ctx, env, objref, s);
 	}
@@ -182,15 +212,23 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int append__Z__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, boolean b, FeatureExpr ctx) {
-		String s = b ? "true" : "false";
+	public int append__Z__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, Conditional<Boolean> b, FeatureExpr ctx) {
+		Conditional<String> s = b.map(new Function<Boolean, String>() {
+
+			@Override
+			public String apply(Boolean b) {
+				return b ? "true" : "false";
+			}
+
+		});
+
 		return appendString(ctx, env, objref, s);
 	}
 
 	@MJI
 	public int append__C__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, char c, FeatureExpr ctx) {
 		return appendString(ctx, env, objref, c + "");
-		// 
+		//
 		// int aref = env.getReferenceField(ctx, objref, "value").getValue();
 		// int alen = env.getArrayLength(aref);
 		//
@@ -218,7 +256,6 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 
 	@MJI
 	public int toString____Ljava_lang_String_2(final MJIEnv env, final int objref, FeatureExpr ctx) {
-		
 
 		Conditional<Integer> aref = env.getReferenceField(ctx, objref, "value");
 		Conditional<String> s = aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<String>>() {

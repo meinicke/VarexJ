@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -137,7 +138,7 @@ public class JPF_java_lang_Class extends NativePeer {
   
   @MJI
   public int getPrimitiveClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env,
-                                                            int rcls, int stringRef, FeatureExpr ctx) {
+                                                            int rcls, Conditional<Integer> stringRef, FeatureExpr ctx) {
     // we don't really have to check for a valid class name here, since
     // this is a package default method that just gets called from
     // the clinit of box classes
@@ -146,7 +147,7 @@ public class JPF_java_lang_Class extends NativePeer {
     // is rather a strange beast (not even Object derived)
     
     ClassLoaderInfo scli = env.getSystemClassLoaderInfo(); // this is the one responsible for builtin classes
-    String primClsName = env.getStringObject(null, stringRef); // always initialized
+    String primClsName = env.getStringObject(ctx, stringRef.getValue()); // always initialized
     
     ClassInfo ci = scli.getResolvedClassInfo(ctx, primClsName);
     return ci.getClassObjectRef();
@@ -176,13 +177,13 @@ public class JPF_java_lang_Class extends NativePeer {
   @MJI
   public int forName__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env,
                                                                        int rcls,
-                                                                       int clsNameRef, FeatureExpr ctx) {
-    if (clsNameRef == MJIEnv.NULL){
+                                                                       Conditional<Integer> clsNameRef, FeatureExpr ctx) {
+    if (clsNameRef.getValue().intValue() == MJIEnv.NULL){
       env.throwException(ctx, "java.lang.NullPointerException", "no class name provided");
       return MJIEnv.NULL;
     }
     
-    String clsName = env.getStringObject(null, clsNameRef);
+    String clsName = env.getStringObject(ctx, clsNameRef.getValue());
     
     if (clsName.isEmpty()){
       env.throwException(ctx, "java.lang.ClassNotFoundException", "empty class name");
@@ -323,7 +324,7 @@ public class JPF_java_lang_Class extends NativePeer {
       return MJIEnv.NULL;
     }
     
-    String mname = env.getStringObject(null, nameRef);
+    String mname = env.getStringObject(ctx, nameRef);
     return getMethod(env, clsRef, mci, mname, argTypesRef, false, false, ctx);
   }
 
@@ -343,15 +344,15 @@ public class JPF_java_lang_Class extends NativePeer {
   
   @MJI
   public int getMethod__Ljava_lang_String_2_3Ljava_lang_Class_2__Ljava_lang_reflect_Method_2 (MJIEnv env, int clsRef,
-                                                                                                     int nameRef, int argTypesRef, FeatureExpr ctx) {
+		  Conditional<Integer> nameRef, Conditional<Integer> argTypesRef, FeatureExpr ctx) {
     ClassInfo mci = getInitializedClassInfo(env, METHOD_CLASSNAME, ctx);
     if (mci == null) {
       env.repeatInvocation();
       return MJIEnv.NULL;
     }
     
-    String mname = env.getStringObject(null, nameRef);
-    return getMethod( env, clsRef, mci, mname, argTypesRef, true, true, ctx);
+    String mname = env.getStringObject(ctx, nameRef.getValue());
+    return getMethod( env, clsRef, mci, mname, argTypesRef.getValue(), true, true, ctx);
   }
 
   private void addDeclaredMethodsRec (HashMap<String,MethodInfo>methods, ClassInfo ci, FeatureExpr ctx){
@@ -611,7 +612,7 @@ public class JPF_java_lang_Class extends NativePeer {
     
   int getField (MJIEnv env, int clsRef, int nameRef, boolean isRecursiveLookup, FeatureExpr ctx) {    
     ClassInfo ci = env.getReferredClassInfo( ctx, clsRef);
-    String fname = env.getStringObject(null, nameRef);
+    String fname = env.getStringObject(ctx, nameRef);
     FieldInfo fi = null;
     
     if (isRecursiveLookup) {
@@ -718,7 +719,7 @@ public class JPF_java_lang_Class extends NativePeer {
    */
   @MJI
   public int getByteArrayFromResourceStream__Ljava_lang_String_2___3B(MJIEnv env, int clsRef, int nameRef, FeatureExpr ctx) {
-    String name = env.getStringObject(null, nameRef);
+    String name = env.getStringObject(ctx, nameRef);
 
     // <2do> this is not loading from the classfile location! fix it
     InputStream is = env.getClass().getResourceAsStream(name);
@@ -933,7 +934,7 @@ public class JPF_java_lang_Class extends NativePeer {
    */
   @MJI
   public int getResolvedName__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int robj, int resRef, FeatureExpr ctx){
-    String rname = env.getStringObject(null, resRef);
+    String rname = env.getStringObject(ctx, resRef);
     ClassInfo ci = env.getReferredClassInfo(ctx, robj);
     if (rname == null) {
       return MJIEnv.NULL;

@@ -96,28 +96,28 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			
 
 			// set ctx for native method calls
-			if (callee.isMJI()) {
-				 IStackHandler stack = ti.getTopFrame().stack;
-				 if (stack.getStackWidth() > 1) {
-					 boolean split = false;
-					 for (int i = 0; i < callee.getArgumentsSize(); i++) {
-						 if (stack.peek(ctx, i) instanceof IChoice) {
-							 split = true;
-							 splitRef = true;
-							 break;
-						 }
-					 }
-					 
-					 if (split) {
-						 
-						 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
-						 for (FeatureExpr c : stacks.values()) {
-							 ctx = ctx.and(c);
-							 break;
-						 }
-					 }
-				 }
-			}
+//			if (callee.isMJI()) {
+//				 IStackHandler stack = ti.getTopFrame().stack;
+//				 if (stack.getStackWidth() > 1) {
+//					 boolean split = false;
+//					 for (int i = 0; i < callee.getArgumentsSize(); i++) {
+//						 if (stack.peek(ctx, i) instanceof IChoice) {
+//							 split = true;
+//							 splitRef = true;
+//							 break;
+//						 }
+//					 }
+//					 
+//					 if (split) {
+//						 
+//						 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
+//						 for (FeatureExpr c : stacks.values()) {
+//							 ctx = ctx.and(c);
+//							 break;
+//						 }
+//					 }
+//				 }
+//			}
 			setupCallee(ctx, ti, callee); // this creates, initializes and
 											// pushes the callee StackFrame
 			if (!splitRef) {

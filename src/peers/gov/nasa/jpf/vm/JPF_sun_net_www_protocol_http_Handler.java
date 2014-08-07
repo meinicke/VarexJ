@@ -88,7 +88,7 @@ public class JPF_sun_net_www_protocol_http_Handler extends NativePeer {
 
   @MJI
   public int getConnectionClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objref, int surlRef, FeatureExpr ctx){
-    String url = env.getStringObject(null, surlRef);
+    String url = env.getStringObject(ctx, surlRef);
 
     if (map != null){
       for (int i = 0; i < map.length; i++) {

@@ -18,8 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * MJI NativePeer class for java.lang.Math library abstraction
@@ -85,13 +89,29 @@ public class JPF_java_lang_Math extends NativePeer {
   }
 
   @MJI
-  public float min__FF__F (MJIEnv env, int clsObjRef, float a, float b, FeatureExpr ctx) {
-    return Math.min(a, b);
+  public float min__FF__F (MJIEnv env, int clsObjRef, Conditional<Float> a, Conditional<Float> b, FeatureExpr ctx) {
+    return Math.min(a.getValue(), b.getValue());
   }
 
   @MJI
-  public int min__II__I (MJIEnv env, int clsObjRef, int a, int b, FeatureExpr ctx) {
-    return Math.min(a, b);
+  public Conditional<Integer> min__II__I (MJIEnv env, int clsObjRef, Conditional<Integer> a, final Conditional<Integer> b, FeatureExpr ctx) {
+	  return a.mapr(new Function<Integer, Conditional<Integer>>() {
+
+		@Override
+		public Conditional<Integer> apply(final Integer a) {
+			return b.mapr(new Function<Integer, Conditional<Integer>>() {
+
+				@Override
+				public Conditional<Integer> apply(Integer b) {
+				    return new One<>(Math.min(a, b));
+				}
+				
+			});
+		}
+	  }).simplify();
+	  
+
+	  
   }
 
   @MJI

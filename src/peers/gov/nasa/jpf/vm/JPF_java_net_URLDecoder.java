@@ -34,8 +34,8 @@ public class JPF_java_net_URLDecoder extends NativePeer {
   @MJI
   public int decode__Ljava_lang_String_2Ljava_lang_String_2__Ljava_lang_String_2(MJIEnv env, int clsObjRef,
           int sRef, int encRef, FeatureExpr ctx){
-    String s = env.getStringObject(null, sRef);
-    String enc = env.getStringObject(null, encRef);
+    String s = env.getStringObject(ctx, sRef);
+    String enc = env.getStringObject(ctx, encRef);
 
     try {
       String e = URLDecoder.decode(s, enc);

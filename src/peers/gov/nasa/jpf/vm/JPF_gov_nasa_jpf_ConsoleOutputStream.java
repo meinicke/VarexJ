@@ -23,7 +23,9 @@ import gov.nasa.jpf.annotation.MJI;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -32,116 +34,160 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
-	  private static String getCTXString(FeatureExpr ctx) {
-		  return ("" + ctx).replaceAll("CONFIG_", "");
-	  }
+	private static String getCTXString(FeatureExpr ctx) {
+		return ("" + ctx).replaceAll("CONFIG_", "");
+	}
 
-	
-  /****************************************************************************
-   * these are the native methods we intercept
-   */
-
-  @MJI
-  public void $init____V (MJIEnv env, int objref, FeatureExpr ctx) {
-    // that's just a dummy because we have no OutputStream, which would cause
-    // an exception in the PrintStream ctor
-  }
-  
-  @MJI
-  public void print__C__V (MJIEnv env, int objref, char c, FeatureExpr ctx) {
-    env.getVM().print(c);
-  }
-
-  @MJI
-  public void print__D__V (MJIEnv env, int objref, double d, FeatureExpr ctx) {
-    env.getVM().print(d);
-  }
-
-  @MJI
-  public void print__F__V (MJIEnv env, int objref, float f, FeatureExpr ctx) {
-    env.getVM().print(f);
-  }
-
-  @MJI
-  public void print__I__V (MJIEnv env, int objref, int i, FeatureExpr ctx) {
-    env.getVM().print(i);
-  }
-
-  @MJI
-  public void print__J__V (MJIEnv env, int objref, long j, FeatureExpr ctx) {
-    env.getVM().print(j);
-  }
-
-  @MJI
-  public void print__Ljava_lang_String_2__V (MJIEnv env, int objRef,
-                                                 int strRef, FeatureExpr ctx) {
-    env.getVM().print(env.getStringObject(null, strRef));
-  }
-
-  @MJI
-  public void print__Z__V (MJIEnv env, int objref, boolean z, FeatureExpr ctx) {
-    env.getVM().print(z);
-  }
-
-  @MJI
-  public void println____V (MJIEnv env, int objRef, FeatureExpr ctx) {
-	  if (ThreadInfo.ctxOutput) {
-		  env.getVM().println("<> : " + getCTXString(ctx));
-	  } else {
-		  env.getVM().println();
-	  }
-  }
-
-  @MJI
-  public void println__C__V (MJIEnv env, int objref, char c, FeatureExpr ctx) {
-    env.getVM().print(c);
-    env.getVM().println();
-  }
-
-  @MJI
-  public void println__D__V (MJIEnv env, int objref, double d, FeatureExpr ctx) {
-	  if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<" + d + "> : " + getCTXString(ctx));
-		} else {
-			env.getVM().print(d);
-			env.getVM().println();
-		}
-  }
-  
-
-  @MJI
-  public void println__F__V (MJIEnv env, int objref, float f, FeatureExpr ctx) {
-	  if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<" + f + "> : " + getCTXString(ctx));
-		} else {
-			env.getVM().print(f);
-			env.getVM().println();
-		}
-  }
-
-  @MJI
-  public void println__I__V (MJIEnv env, int objref, int i, FeatureExpr ctx) {
-	  if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<" + i + "> : " + getCTXString(ctx));
-		} else {
-			env.getVM().print(i);
-			env.getVM().println();
-		}
-  }
-
-  @MJI
-  public void println__J__V (MJIEnv env, int objref, long j, FeatureExpr ctx) {
-	  if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<" + j + "> : " + getCTXString(ctx));
-		} else {
-			env.getVM().print(j);
-			env.getVM().println();
-		}
-  }
+	/****************************************************************************
+	 * these are the native methods we intercept
+	 */
 
 	@MJI
-	public void println__Ljava_lang_String_2__V(MJIEnv env, int objRef, int strRef, FeatureExpr ctx) {
-		Conditional<String> strings = env.getConditionalStringObject(strRef).simplify(ctx);
+	public void $init____V(MJIEnv env, int objref, FeatureExpr ctx) {
+		// that's just a dummy because we have no OutputStream, which would cause
+		// an exception in the PrintStream ctor
+	}
+
+	@MJI
+	public void print__C__V(MJIEnv env, int objref, char c, FeatureExpr ctx) {
+		env.getVM().print(c);
+	}
+
+	@MJI
+	public void print__D__V(MJIEnv env, int objref, double d, FeatureExpr ctx) {
+		env.getVM().print(d);
+	}
+
+	@MJI
+	public void print__F__V(MJIEnv env, int objref, float f, FeatureExpr ctx) {
+		env.getVM().print(f);
+	}
+
+	@MJI
+	public void print__I__V(MJIEnv env, int objref, int i, FeatureExpr ctx) {
+		env.getVM().print(i);
+	}
+
+	@MJI
+	public void print__J__V(MJIEnv env, int objref, long j, FeatureExpr ctx) {
+		env.getVM().print(j);
+	}
+
+	@MJI
+	public void print__Ljava_lang_String_2__V(MJIEnv env, int objRef, int strRef, FeatureExpr ctx) {
+		env.getVM().print(env.getStringObject(ctx, strRef));
+	}
+
+	@MJI
+	public void print__Z__V(MJIEnv env, int objref, boolean z, FeatureExpr ctx) {
+		env.getVM().print(z);
+	}
+
+	@MJI
+	public void println____V(MJIEnv env, int objRef, FeatureExpr ctx) {
+		if (ThreadInfo.ctxOutput) {
+			env.getVM().println("<> : " + getCTXString(ctx));
+		} else {
+			env.getVM().println();
+		}
+	}
+
+	@MJI
+	public void println__C__V(MJIEnv env, int objref, char c, FeatureExpr ctx) {
+		env.getVM().print(c);
+		env.getVM().println();
+	}
+
+	@MJI
+	public void println__D__V(final MJIEnv env, int objref, Conditional<Double> d, FeatureExpr ctx) {
+		d.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Double d) {
+				if (ThreadInfo.ctxOutput) {
+					env.getVM().println("<" + d + "> : " + getCTXString(ctx));
+				} else {
+					env.getVM().print(d);
+					env.getVM().println();
+
+				}
+
+				return null;
+			}
+
+		});
+	}
+
+	@MJI
+	public void println__F__V(final MJIEnv env, int objref, Conditional<Float> f, FeatureExpr ctx) {
+		f.mapf(ctx, new BiFunction<FeatureExpr, Float, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Float f) {
+				if (ThreadInfo.ctxOutput) {
+					env.getVM().println("<" + f + "> : " + getCTXString(ctx));
+				} else {
+					env.getVM().print(f);
+					env.getVM().println();
+
+				}
+
+				return null;
+			}
+
+		});
+	}
+
+	@MJI
+	public void println__I__V(final MJIEnv env, int objref, Conditional<Integer> i, FeatureExpr ctx) {
+		i.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Integer i) {
+				if (ThreadInfo.ctxOutput) {
+					env.getVM().println("<" + i + "> : " + getCTXString(ctx));
+				} else {
+					env.getVM().print(i);
+					env.getVM().println();
+
+				}
+
+				return null;
+			}
+
+		});
+	}
+
+	@MJI
+	public void println__J__V(final MJIEnv env, int objref, Conditional<Long> l, FeatureExpr ctx) {
+		l.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Long l) {
+				if (ThreadInfo.ctxOutput) {
+					env.getVM().println("<" + l + "> : " + getCTXString(ctx));
+				} else {
+					env.getVM().print(l);
+					env.getVM().println();
+
+				}
+
+				return null;
+			}
+
+		});
+	}
+
+	@MJI
+	public void println__Ljava_lang_String_2__V(final MJIEnv env, int objRef, Conditional<Integer> strRef, FeatureExpr ctx) {
+		Conditional<String> strings = strRef.mapr(new Function<Integer, Conditional<String>>() {
+
+			@Override
+			public Conditional<String> apply(Integer strRef) {
+				return env.getConditionalStringObject(strRef);
+			}
+			
+		});
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
 			if (ThreadInfo.ctxOutput) {
@@ -150,31 +196,43 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 				env.getVM().println(s.getKey());
 			}
 		}
-		
+
 	}
 
-  @MJI
-  public void write__I__V (MJIEnv env, int objRef, int b, FeatureExpr ctx){
-    env.getVM().print((char)(byte)b);
-  }
-  
-  @MJI
-  public void write___3BII__V (MJIEnv env, int objRef,
-                                      int bufRef, int off, int len, FeatureExpr ctx){
-    
-  }
+	@MJI
+	public void write__I__V(MJIEnv env, int objRef, int b, FeatureExpr ctx) {
+		env.getVM().print((char) (byte) b);
+	}
 
-  @MJI
-  public void println__Z__V (MJIEnv env, int objref, boolean z, FeatureExpr ctx) {
-    env.getVM().print(z);
-    env.getVM().println();
-  }
+	@MJI
+	public void write___3BII__V(MJIEnv env, int objRef, int bufRef, int off, int len, FeatureExpr ctx) {
 
-  @MJI
-  public int printf__Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_io_PrintStream_2
-                   (MJIEnv env, int objref, int fmtRef, int argRef, FeatureExpr ctx) {
-    env.getVM().print(env.format(ctx, fmtRef, argRef));
-    return objref;
-  }
-  
+	}
+
+	@MJI
+	public void println__Z__V(final MJIEnv env, int objref, Conditional<Boolean> z, FeatureExpr ctx) {
+		z.mapf(ctx, new BiFunction<FeatureExpr, Boolean, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Boolean z) {
+				if (ThreadInfo.ctxOutput) {
+					env.getVM().println("<" + z + "> : " + getCTXString(ctx));
+				} else {
+					env.getVM().print(z);
+					env.getVM().println();
+
+				}
+
+				return null;
+			}
+
+		});
+	}
+
+	@MJI
+	public int printf__Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_io_PrintStream_2(MJIEnv env, int objref, int fmtRef, int argRef, FeatureExpr ctx) {
+		env.getVM().print(env.format(ctx, fmtRef, argRef));
+		return objref;
+	}
+
 }

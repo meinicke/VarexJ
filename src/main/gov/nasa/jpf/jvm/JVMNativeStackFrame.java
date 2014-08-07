@@ -25,6 +25,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -47,7 +48,7 @@ public class JVMNativeStackFrame extends NativeStackFrame {
     int      stackOffset;
     int      i, j, k;
     Conditional<Integer>      ival;
-    long     lval;
+    Conditional<Long>     lval;
 
     for (i = 0, stackOffset = 0, j = nArgs + 1, k = nArgs - 1;
          i < nArgs;
@@ -55,59 +56,93 @@ public class JVMNativeStackFrame extends NativeStackFrame {
       switch (argTypes[k]) {
       case Types.T_BOOLEAN:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = Boolean.valueOf(Types.intToBoolean(ival.getValue()));
+        a[j] = ival.map(new Function<Integer, Boolean>() {
 
+			@Override
+			public Boolean apply(Integer ival) {
+				return Types.intToBoolean(ival);
+			}
+        	
+        });
         break;
 
       case Types.T_BYTE:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = Byte.valueOf((byte) ival.getValue().intValue());
+        a[j] = ival.map(new Function<Integer, Byte>() {
 
+			@Override
+			public Byte apply(Integer ival) {
+				return (byte) ival.intValue();
+			}
+        	
+        });
         break;
 
       case Types.T_CHAR:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = Character.valueOf((char) ival.getValue().intValue());
+        a[j] = ival.map(new Function<Integer, Character>() {
 
+			@Override
+			public Character apply(Integer ival) {
+				return (char) ival.intValue();
+			}
+        	
+        });
         break;
 
       case Types.T_SHORT:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = new Short((short) ival.getValue().intValue());
+        a[j] = ival.map(new Function<Integer, Short>() {
 
+			@Override
+			public Short apply(Integer ival) {
+				return (short) ival.intValue();
+			}
+        	
+        });
         break;
 
       case Types.T_INT:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.getValue();
-
+        a[j] = ival;
         break;
 
       case Types.T_LONG:
-        lval = callerFrame.peekLong(ctx, stackOffset).getValue();
+        lval = callerFrame.peekLong(ctx, stackOffset);
         stackOffset++; // 2 stack words
-        a[j] = new Long(lval);
-
+        a[j] = lval;
         break;
 
       case Types.T_FLOAT:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = new Float(Types.intToFloat(ival.getValue()));
+        a[j] = ival.map(new Function<Integer, Float>() {
 
+			@Override
+			public Float apply(Integer ival) {
+				return Types.intToFloat(ival);
+			}
+        	
+        });
         break;
 
       case Types.T_DOUBLE:
-        lval = callerFrame.peekLong(ctx, stackOffset).getValue();
+        lval = callerFrame.peekLong(ctx, stackOffset);
         stackOffset++; // 2 stack words
-        a[j] = Double.valueOf(Types.longToDouble(lval));
+        a[j] = lval.map(new Function<Long, Double>() {
 
+			@Override
+			public Double apply(Long lval) {
+				return Double.valueOf(Types.longToDouble(lval));
+			}
+        	
+        });
         break;
 
       default:
         // NOTE - we have to store T_REFERENCE as an Integer, because
         // it shows up in our native method as an 'int'
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.getValue();
+        a[j] = ival;
       }
 
       stackOffset++;

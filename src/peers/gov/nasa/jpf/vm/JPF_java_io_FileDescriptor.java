@@ -64,7 +64,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   @MJI
   public int open__Ljava_lang_String_2I__I (MJIEnv env, int objref,
                                                    int fnameRef, int mode, FeatureExpr ctx){
-    String fname = env.getStringObject(null, fnameRef);
+    String fname = env.getStringObject(ctx, fnameRef);
     if (mode == FD_READ){
       return openRead(fname, ctx);
     } else if (mode == FD_WRITE){
@@ -158,7 +158,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
     if (content.get(fd) == null){
       int mode = env.getIntField(objref, "mode").getValue().intValue();
       int fnRef = env.getReferenceField(ctx, objref, "fileName").getValue();
-      String fname = env.getStringObject(null, fnRef);
+      String fname = env.getStringObject(ctx, fnRef);
       
       if (mode == FD_READ){
         FileInputStream fis = new FileInputStream(fname);

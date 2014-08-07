@@ -58,7 +58,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
   
   @MJI
   public void init0__Ljava_lang_String_2__V (MJIEnv env, int objref, int patternref, FeatureExpr ctx) {
-    String pattern = env.getStringObject(null, patternref);
+    String pattern = env.getStringObject(ctx, patternref);
     
     DecimalFormat fmt = new DecimalFormat(pattern);
     JPF_java_text_Format.putInstance(env,objref,fmt);    
@@ -171,7 +171,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public int parse__Ljava_lang_String_2Ljava_text_ParsePosition_2__Ljava_lang_Number_2(MJIEnv env, int objref,int sourceRef,int parsePositionRef, FeatureExpr ctx) {
-    String source = env.getStringObject(null, sourceRef);
+    String source = env.getStringObject(ctx, sourceRef);
     ParsePosition parsePosition = createParsePositionFromRef(env,parsePositionRef);
     NumberFormat fmt = getInstance(env,objref);
     Number number = null;

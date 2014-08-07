@@ -129,7 +129,8 @@ public class NATIVERETURN extends ReturnInstruction {
 
   // <2do> this should use the getResult..() methods of NativeStackFrame
   
-  @Override
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+@Override
   protected void pushReturnValue (FeatureExpr ctx, StackFrame fr) {
     int  ival;
     long lval;
@@ -158,7 +159,11 @@ public class NATIVERETURN extends ReturnInstruction {
         break;
 
       case Types.T_INT:
-        fr.push(ctx, new One<>((Integer) ret));
+    	  if (ret instanceof Conditional) {
+    		  fr.push(ctx, (Conditional)ret); 
+    	  } else {
+    		  fr.push(ctx, new One<>(((Integer) ret)));
+    	  }
         break;
 
       case Types.T_LONG:
@@ -179,7 +184,11 @@ public class NATIVERETURN extends ReturnInstruction {
 
       default:
         // everything else is supposed to be a reference
-        fr.push(ctx, ((Integer) ret).intValue(), true);
+    	  if (ret instanceof Conditional) {
+    		  fr.push(ctx, (Conditional)ret, true); 
+    	  } else {
+    		  fr.push(ctx, ((Integer) ret).intValue(), true);
+    	  }
       }
 
       if (retAttr != null) {

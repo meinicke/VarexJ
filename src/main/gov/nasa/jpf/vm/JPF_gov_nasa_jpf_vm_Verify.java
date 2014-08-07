@@ -45,6 +45,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -111,7 +112,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (map == null) {
       return NO_VALUE;
     } else {
-      String key = env.getStringObject(null, keyRef);
+      String key = env.getStringObject(ctx, keyRef);
       IntTable.Entry<String> e = map.get(key);
       if (e != null) {
         return e.val;
@@ -127,7 +128,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
       map = new IntTable<String>();
     }
     
-    String key = env.getStringObject(null, keyRef);
+    String key = env.getStringObject(ctx, keyRef);
     map.put(key, val);
   }
   
@@ -217,7 +218,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void addComment__Ljava_lang_String_2__V (MJIEnv env, int clsObjRef, int stringRef, FeatureExpr ctx) {
     SystemState ss = env.getSystemState();
-    String      cmt = env.getStringObject(null, stringRef);
+    String      cmt = env.getStringObject(ctx, stringRef);
     ss.getTrail().setAnnotation(cmt);
   }
 
@@ -285,14 +286,14 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void breakTransition__Ljava_lang_String_2__V (MJIEnv env, int clsObjRef, int reasonRef, FeatureExpr ctx){
     ThreadInfo ti = env.getThreadInfo();
-    String reason = env.getStringObject(null, reasonRef);
+    String reason = env.getStringObject(ctx, reasonRef);
     ti.breakTransition(reason);
   }
 
   @MJI
   public static boolean isCalledFromClass__Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef,
                                            int clsNameRef, FeatureExpr ctx) {
-    String refClassName = env.getStringObject(null, clsNameRef);
+    String refClassName = env.getStringObject(ctx, clsNameRef);
     ThreadInfo ti = env.getThreadInfo();
 
     StackFrame caller = ti.getLastInvokedStackFrame();
@@ -382,19 +383,19 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   }
 
   @MJI
-  public static int getInt__II__I (MJIEnv env, int clsObjRef, int min, int max, FeatureExpr ctx) {
+  public static int getInt__II__I (MJIEnv env, int clsObjRef, Conditional<Integer> min, Conditional<Integer> max, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     SystemState ss = env.getSystemState();
 
     if (!ti.isFirstStepInsn()) { // first time around
 
-      if (min > max){
-        int t = max;
+      if (min.getValue() > max.getValue()){
+        Conditional<Integer> t = max;
         max = min;
         min = t;
       }
 
-      IntChoiceGenerator cg = new IntIntervalGenerator( "verifyGetInt(II)", min,max);
+      IntChoiceGenerator cg = new IntIntervalGenerator( "verifyGetInt(II)", min.getValue(),max.getValue());
       return registerChoiceGenerator(env,ss,ti,cg,0);
 
     } else {
@@ -428,12 +429,12 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
 
     if (!ti.isFirstStepInsn()) { // first time around
-      String id = env.getStringObject(null, idRef);
+      String id = env.getStringObject(ctx, idRef);
       IntChoiceGenerator cg = createChoiceGenerator( IntChoiceGenerator.class, ss, id);
       return registerChoiceGenerator(env,ss,ti,cg, 0);
 
     } else {
-      String id = env.getStringObject(null, idRef);
+      String id = env.getStringObject(ctx, idRef);
       return getNextChoice(ss, id, IntChoiceGenerator.class,Integer.class);
     }
   }
@@ -469,12 +470,12 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     SystemState ss = env.getSystemState();
 
     if (!ti.isFirstStepInsn()) { // first time around
-      String id = env.getStringObject(null, idRef);
+      String id = env.getStringObject(ctx, idRef);
       ReferenceChoiceGenerator cg = createChoiceGenerator( ReferenceChoiceGenerator.class, ss, id);
       return registerChoiceGenerator(env,ss,ti,cg, 0);
 
     } else {
-      String id = env.getStringObject(null, idRef);
+      String id = env.getStringObject(ctx, idRef);
       return getNextChoice(ss, id, ReferenceChoiceGenerator.class,Integer.class);
     }
   }
@@ -485,12 +486,12 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     SystemState ss = env.getSystemState();
 
     if (!ti.isFirstStepInsn()) { // first time around
-      String id = env.getStringObject(null, idRef);
+      String id = env.getStringObject(ctx, idRef);
       DoubleChoiceGenerator cg = createChoiceGenerator( DoubleChoiceGenerator.class, ss, id);
       return registerChoiceGenerator(env,ss,ti,cg, 0.0);
 
     } else {
-      String id = env.getStringObject(null, idRef);
+      String id = env.getStringObject(ctx, idRef);
       return getNextChoice(ss, id, DoubleChoiceGenerator.class,Double.class);
     }
   }
@@ -510,8 +511,8 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   }
   
   @MJI
-  public static double getDoubleFromList___3D__D (MJIEnv env, int clsObjRef, int valArrayRef, FeatureExpr ctx){
-	  	Conditional<Double>[] values = env.getDoubleArrayObject(valArrayRef);
+  public static double getDoubleFromList___3D__D (MJIEnv env, int clsObjRef, Conditional<Integer> valArrayRef, FeatureExpr ctx){
+	  	Conditional<Double>[] values = env.getDoubleArrayObject(valArrayRef.getValue());
 	  	double [] a = new double[values.length];
 		for (int i = 0; i < values.length; i++) {
 				a[i] = values[i].getValue();
@@ -546,13 +547,13 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
   @MJI
   public static void print__Ljava_lang_String_2I__V (MJIEnv env, int clsRef, int sRef, int val, FeatureExpr ctx){
-    String s = env.getStringObject(null, sRef);
+    String s = env.getStringObject(ctx, sRef);
     System.out.println(s + " : " + val);
   }
 
   @MJI
   public static void print__Ljava_lang_String_2Z__V (MJIEnv env, int clsRef, int sRef, boolean val, FeatureExpr ctx){
-    String s = env.getStringObject(null, sRef);
+    String s = env.getStringObject(ctx, sRef);
     System.out.println(s + " : " + val);
   }
 
@@ -561,20 +562,20 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     int n = env.getArrayLength(ctx, argsRef);
     for (int i=0; i<n; i++){
       int aref = env.getReferenceArrayElement(argsRef, i);
-      String s = env.getStringObject(null, aref);
+      String s = env.getStringObject(ctx, aref);
       System.out.print(s);
     }
   }
   
   @MJI
   public static void print__Ljava_lang_String_2__V (MJIEnv env, int clsRef, int sRef, FeatureExpr ctx){
-    String s = env.getStringObject(null, sRef);
+    String s = env.getStringObject(ctx, sRef);
     System.out.print(s);
   }
 
   @MJI
   public static void println__Ljava_lang_String_2__V (MJIEnv env, int clsRef, int sRef, FeatureExpr ctx){
-    String s = env.getStringObject(null, sRef);
+    String s = env.getStringObject(ctx, sRef);
     System.out.println(s);
   }
 
@@ -660,7 +661,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (oRef != MJIEnv.NULL){
       ElementInfo ei = env.getElementInfo(oRef);
       if (ei != null){
-        String fname = env.getStringObject(null, fnRef);
+        String fname = env.getStringObject(ctx, fnRef);
         FieldInfo fi = ei.getFieldInfo(fname);
 
         if (fi != null) {
@@ -681,7 +682,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (oRef != MJIEnv.NULL){
       ElementInfo ei = env.getElementInfo(oRef);
       if (ei != null){
-        String fname = env.getStringObject(null, fnRef);
+        String fname = env.getStringObject(ctx, fnRef);
         FieldInfo fi = ei.getFieldInfo(fname);
 
         if (fi != null) {
@@ -704,7 +705,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (oRef != MJIEnv.NULL){
       ElementInfo ei = env.getElementInfo(oRef);
       if (ei != null){
-        String fname = env.getStringObject(null, fnRef);
+        String fname = env.getStringObject(ctx, fnRef);
         FieldInfo fi = ei.getFieldInfo(fname);
 
         if (fi != null) {
@@ -725,7 +726,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (oRef != MJIEnv.NULL){
       ElementInfo ei = env.getElementInfo(oRef);
       if (ei != null){
-        String fname = env.getStringObject(null, fnRef);
+        String fname = env.getStringObject(ctx, fnRef);
         FieldInfo fi = ei.getFieldInfo(fname);
 
         if (fi != null) {
@@ -744,7 +745,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
   @MJI
   public static void setLocalAttribute__Ljava_lang_String_2I__V (MJIEnv env, int clsRef, int varRef, int attr, FeatureExpr ctx) {
-    String slotName = env.getStringObject(null, varRef);
+    String slotName = env.getStringObject(ctx, varRef);
     StackFrame frame = env.getModifiableCallerStackFrame(); // we are executing in a NativeStackFrame
 
     if (!frame.getMethodInfo().isStatic() &&  slotName.equals("this")) {
@@ -762,7 +763,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
   @MJI
   public static int getLocalAttribute__Ljava_lang_String_2__I (MJIEnv env, int clsRef, int varRef, FeatureExpr ctx) {
-    String slotName = env.getStringObject(null, varRef);
+    String slotName = env.getStringObject(ctx, varRef);
     ThreadInfo ti = env.getThreadInfo();
     StackFrame frame = env.getCallerStackFrame();
 
@@ -777,7 +778,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
   @MJI
   public static void addLocalAttribute__Ljava_lang_String_2I__V (MJIEnv env, int clsRef, int varRef, int attr, FeatureExpr ctx) {
-    String slotName = env.getStringObject(null, varRef);
+    String slotName = env.getStringObject(ctx, varRef);
     StackFrame frame = env.getModifiableCallerStackFrame(); // we are executing in a NativeStackFrame
 
     if (!frame.getMethodInfo().isStatic() &&  slotName.equals("this")) {
@@ -795,7 +796,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   
   @MJI
   public static int getLocalAttributes__Ljava_lang_String_2___3I (MJIEnv env, int clsRef, int varRef, FeatureExpr ctx) {
-    String slotName = env.getStringObject(null, varRef);
+    String slotName = env.getStringObject(ctx, varRef);
     ThreadInfo ti = env.getThreadInfo();
     StackFrame frame = env.getCallerStackFrame();
 
@@ -926,8 +927,8 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
    * deprecated, use getInt
    */
   @MJI
-  public static int random__I__I (MJIEnv env, int clsObjRef, int x, FeatureExpr ctx) {
-   return getInt__II__I( env, clsObjRef, 0, x, ctx);
+  public static int random__I__I (MJIEnv env, int clsObjRef, Conditional<Integer> x, FeatureExpr ctx) {
+   return getInt__II__I( env, clsObjRef, new One<>(0), x, ctx);
   }
 
   static void boring__Z__V (MJIEnv env, int clsObjRef, boolean b, FeatureExpr ctx) {
@@ -947,8 +948,8 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void storeTrace__Ljava_lang_String_2Ljava_lang_String_2__V (MJIEnv env, int clsObjRef,
                                       int filenameRef, int commentRef, FeatureExpr ctx) {
-    String fileName = env.getStringObject(null, filenameRef);
-    String comment = env.getStringObject(null, commentRef);
+    String fileName = env.getStringObject(ctx, filenameRef);
+    String comment = env.getStringObject(ctx, commentRef);
     env.getVM().storeTrace(fileName, comment, config.getBoolean("trace.verbose", false));
   }
 
@@ -1032,7 +1033,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     if (keyRef != MJIEnv.NULL){
       Config conf = env.getConfig();
 
-      String key = env.getStringObject(null, keyRef);
+      String key = env.getStringObject(ctx, keyRef);
       String val = config.getString(key);
 
       if (val != null){
@@ -1059,7 +1060,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
     System.out.println();
     if (msgRef != MJIEnv.NULL){
-      String msg = env.getStringObject(null, msgRef);
+      String msg = env.getStringObject(ctx, msgRef);
       System.out.println("~~~~~~~~~~~~~~~~~~~~~~~ begin program output at: " + msg);
     } else {
       System.out.println("~~~~~~~~~~~~~~~~~~~~~~~ begin path output");
@@ -1089,7 +1090,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     ThreadInfo ti = env.getThreadInfo();
     SystemState ss = env.getSystemState();
     
-    String jsonString = env.getStringObject(null, jsonStringRef);    
+    String jsonString = env.getStringObject(ctx, jsonStringRef);    
     JSONLexer lexer = new JSONLexer(jsonString);
     JSONParser parser = new JSONParser(lexer);
     JSONObject jsonObject = parser.parse();
@@ -1133,10 +1134,10 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   
   @MJI
   public static int readObjectFromFile__Ljava_lang_Class_2Ljava_lang_String_2__Ljava_lang_Object_2(
-          MJIEnv env, int clsObjRef, int newObjClsRef, int fileNameRef, FeatureExpr ctx) {
-    int typeNameRef = env.getReferenceField(ctx, newObjClsRef, "name").getValue();
-    String typeName = env.getStringObject(null, typeNameRef);
-    String fileName = env.getStringObject(null, fileNameRef);
+          MJIEnv env, int clsObjRef, Conditional<Integer> newObjClsRef, Conditional<Integer> fileNameRef, FeatureExpr ctx) {
+    int typeNameRef = env.getReferenceField(ctx, newObjClsRef.getValue(), "name").getValue();
+    String typeName = env.getStringObject(ctx, typeNameRef);
+    String fileName = env.getStringObject(ctx, fileNameRef.getValue());
 
     try {
 
@@ -1197,8 +1198,8 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void log__Ljava_lang_String_2ILjava_lang_String_2__V (MJIEnv env, int clsObjRef,
       int loggerIdRef, int logLevel, int msgRef, FeatureExpr ctx){
-    String loggerId = env.getStringObject(null, loggerIdRef);
-    String msg = env.getStringObject(null, msgRef);
+    String loggerId = env.getStringObject(ctx, loggerIdRef);
+    String msg = env.getStringObject(ctx, msgRef);
     JPFLogger logger = JPF.getLogger(loggerId);
     
     log( logger, logLevel, msg);
@@ -1207,8 +1208,8 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void log__Ljava_lang_String_2ILjava_lang_String_2Ljava_lang_String_2__V (MJIEnv env, int clsObjRef,
       int loggerIdRef, int logLevel, int arg1Ref, int arg2Ref, FeatureExpr ctx){
-    String loggerId = env.getStringObject(null, loggerIdRef);
-    String msg = env.getStringObject(null, arg1Ref) + env.getStringObject(null, arg2Ref);
+    String loggerId = env.getStringObject(ctx, loggerIdRef);
+    String msg = env.getStringObject(ctx, arg1Ref) + env.getStringObject(ctx, arg2Ref);
     JPFLogger logger = JPF.getLogger(loggerId);
     
     log( logger, logLevel, msg);
@@ -1217,8 +1218,8 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void log__Ljava_lang_String_2ILjava_lang_String_2_3Ljava_lang_Object_2__V (MJIEnv env, int clsObjRef,
       int loggerIdRef, int logLevel, int fmtRef, int argsRef, FeatureExpr ctx){
-    String loggerId = env.getStringObject(null, loggerIdRef);
-    String fmt = env.getStringObject(null, fmtRef);
+    String loggerId = env.getStringObject(ctx, loggerIdRef);
+    String fmt = env.getStringObject(ctx, fmtRef);
     JPFLogger logger = JPF.getLogger(loggerId);
 
     Conditional<Integer>[] argRefs = env.getReferenceArrayObject( argsRef);
@@ -1226,7 +1227,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     for (int i=0; i<args.length; i++){
       ElementInfo eiArg = env.getElementInfo(argRefs[i].getValue());
       if (eiArg.isStringObject()){
-        args[i] = env.getStringObject(null, argRefs[i].getValue());
+        args[i] = env.getStringObject(ctx, argRefs[i].getValue());
       } else if (eiArg.isBoxObject()){
         args[i] = eiArg.asBoxObject(); 
       } else {

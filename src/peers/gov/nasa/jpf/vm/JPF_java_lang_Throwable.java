@@ -82,7 +82,7 @@ public class JPF_java_lang_Throwable extends NativePeer {
     
     String s = ci.getName();
     if (msgRef != MJIEnv.NULL){
-      s += ": " + env.getStringObject(null, msgRef);
+      s += ": " + env.getStringObject(ctx, msgRef);
     }
     
     return env.newString(ctx, s);

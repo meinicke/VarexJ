@@ -83,35 +83,35 @@ public class INVOKESPECIAL extends InstanceInvocation {
       }
     }
 
-    boolean splitRef = false;
-	if (callee.isMJI()) {
-		 IStackHandler stack = ti.getTopFrame().stack;
-		 if (stack.getStackWidth() > 1) {
-			 boolean split = false;
-			 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
-				 if (stack.peek(ctx, i) instanceof IChoice) {
-					 split = true;
-					 splitRef = true;
-					 break;
-				 }
-			 }
-			 
-			 if (split) {
-				 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
-				 for (FeatureExpr c : stacks.values()) {
-					 ctx = ctx.and(c);
-					 break;
-				 }
-			 }
-		 }
-	}
+//    boolean splitRef = false;
+//	if (callee.isMJI()) {
+//		 IStackHandler stack = ti.getTopFrame().stack;
+//		 if (stack.getStackWidth() > 1) {
+//			 boolean split = false;
+//			 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
+//				 if (stack.peek(ctx, i) instanceof IChoice) {
+//					 split = true;
+//					 splitRef = true;
+//					 break;
+//				 }
+//			 }
+//			 
+//			 if (split) {
+//				 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
+//				 for (FeatureExpr c : stacks.values()) {
+//					 ctx = ctx.and(c);
+//					 break;
+//				 }
+//			 }
+//		 }
+//	}
 	
 	setupCallee(ctx, ti, callee); // this creates, initializes and
 									// pushes the callee StackFrame
 
-	if (!splitRef) {
-		return ti.getPC();
-	}
+//	if (!splitRef) {
+//		return ti.getPC();
+//	}
 	
 	return ChoiceFactory.create(ctx, ti.getPC(), new One<Instruction>(this)).simplify();
   }

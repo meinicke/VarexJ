@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 import java.util.ArrayList;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -151,8 +152,8 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
   }
 
   @MJI
-  public int getProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int keyRef, FeatureExpr ctx){
-    String key = env.getStringObject(null, keyRef);
+  public int getProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, Conditional<Integer> keyRef, FeatureExpr ctx){
+    String key = env.getStringObject(ctx, keyRef.getValue());
     String val = env.getConfig().getString(key);
     
     if (val != null){
@@ -189,7 +190,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
   }
 
   @MJI
-  public boolean verifyNoPropertyViolation___3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef, int jpfArgsRef, FeatureExpr ctx){
+  public boolean verifyNoPropertyViolation___3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef, Conditional<Integer> jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 
@@ -212,7 +213,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
 
   @MJI
   public boolean verifyUnhandledException__Ljava_lang_String_2_3Ljava_lang_String_2__Z (MJIEnv env, int clsObjRef,
-                                  int xClassNameRef, int jpfArgsRef, FeatureExpr ctx){
+		  Conditional<Integer> xClassNameRef, Conditional<Integer> jpfArgsRef, FeatureExpr ctx){
     return true;
   }
 

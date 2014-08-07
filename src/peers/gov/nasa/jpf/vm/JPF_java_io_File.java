@@ -38,7 +38,7 @@ public class JPF_java_io_File extends NativePeer {
 
   static File getFile(MJIEnv env, int objref, FeatureExpr ctx) {
     int fnref = env.getReferenceField(ctx, objref, "filename").getValue();
-    String fname = env.getStringObject(null, fnref);
+    String fname = env.getStringObject(ctx, fnref);
     return new File(fname);
   }
 

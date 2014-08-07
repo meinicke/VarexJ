@@ -29,13 +29,13 @@ public class JPF_gov_nasa_jpf_tools_MethodTester extends NativePeer {
 
   @MJI
   public void log__Ljava_lang_String_2__V (MJIEnv env, int objRef, int msgRef, FeatureExpr ctx){
-    String msg = env.getStringObject(null, msgRef);
+    String msg = env.getStringObject(ctx, msgRef);
     System.out.println("@ " + msg);
   }
   
   @MJI
   public void error__Ljava_lang_String_2__V (MJIEnv env, int objRef, int msgRef, FeatureExpr ctx){
-    String msg = env.getStringObject(null, msgRef);
+    String msg = env.getStringObject(ctx, msgRef);
     System.err.println(msg);    
   }
 

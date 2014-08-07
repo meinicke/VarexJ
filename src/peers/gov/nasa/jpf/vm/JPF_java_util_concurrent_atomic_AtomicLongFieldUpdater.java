@@ -36,7 +36,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     // direct Object subclass, so we don't have to call a super ctor
 
     ClassInfo ci = env.getReferredClassInfo(ctx, tClsObjRef);
-    String fname = env.getStringObject(null, fNameRef);
+    String fname = env.getStringObject(ctx, fNameRef);
     FieldInfo fi = ci.getInstanceField(fname);
 
     ClassInfo fci = fi.getTypeClassInfo();

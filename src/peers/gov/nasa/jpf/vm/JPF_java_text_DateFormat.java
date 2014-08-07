@@ -45,7 +45,7 @@ public class JPF_java_text_DateFormat extends NativePeer {
 
   @MJI
   public void setTimeZone__Ljava_util_TimeZone_2__V(MJIEnv env, int objref,int timeZoneRef, FeatureExpr ctx) {
-    String timeZoneId = env.getStringField(timeZoneRef, "ID");
+    String timeZoneId = env.getStringField(ctx, timeZoneRef, "ID");
     TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
     DateFormat fmt = getInstance(env,objref);
     fmt.setTimeZone(timeZone);
@@ -57,7 +57,7 @@ public class JPF_java_text_DateFormat extends NativePeer {
   @MJI
   public int parse__Ljava_lang_String_2__Ljava_util_Date_2 (MJIEnv env, int objref, int strRef, FeatureExpr ctx) {
     DateFormat f = getInstance(env,objref);
-    String s = env.getStringObject(null, strRef);
+    String s = env.getStringObject(ctx, strRef);
     try {
       Date d = f.parse(s);
       long t = d.getTime();
