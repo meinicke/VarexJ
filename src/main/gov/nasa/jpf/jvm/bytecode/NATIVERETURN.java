@@ -25,6 +25,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -35,200 +36,225 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class NATIVERETURN extends ReturnInstruction {
 
-  Object ret;
-  Object retAttr;
-  Byte retType;
+	Object ret;
+	Object retAttr;
+	Byte retType;
 
-  // this is more simple than a normal ReturnInstruction because NativeMethodInfos
-  // are not synchronized, and NativeStackFrames are never the first frame in a thread
-  @Override
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    if (!ti.isFirstStepInsn()) {
-      ti.leave();  // takes care of unlocking before potentially creating a CG
-      // NativeMethodInfo is never synchronized, so no thread CG here
-    }
+	// this is more simple than a normal ReturnInstruction because NativeMethodInfos
+	// are not synchronized, and NativeStackFrames are never the first frame in a thread
+	@Override
+	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		if (!ti.isFirstStepInsn()) {
+			ti.leave(); // takes care of unlocking before potentially creating a CG
+			// NativeMethodInfo is never synchronized, so no thread CG here
+		}
 
-    StackFrame frame = ti.getModifiableTopFrame();    
-    getAndSaveReturnValue(frame, ctx);
+		StackFrame frame = ti.getModifiableTopFrame();
+		getAndSaveReturnValue(frame, ctx);
 
-    // NativeStackFrame can never can be the first stack frame, so no thread CG
+		// NativeStackFrame can never can be the first stack frame, so no thread CG
 
-    frame = ti.popAndGetModifiableTopFrame(ctx);
+		frame = ti.popAndGetModifiableTopFrame(ctx);
 
-    // remove args, push return value and continue with next insn
+		// remove args, push return value and continue with next insn
 
-    frame.removeArguments(ctx, mi);
-    pushReturnValue(ctx, frame);
+		frame.removeArguments(ctx, mi);
+		pushReturnValue(ctx, frame);
 
-    if (retAttr != null) {
-      setReturnAttr(ti, retAttr);
-    }
+		if (retAttr != null) {
+			setReturnAttr(ti, retAttr);
+		}
 
-    return getNext(ctx, ti);
-  }
+		return getNext(ctx, ti);
+	}
 
-  @Override
-  public void cleanupTransients(){
-    ret = null;
-    retAttr = null;
-    returnFrame = null;
-  }
-  
-  @Override
-  public boolean isExtendedInstruction() {
-    return true;
-  }
+	@Override
+	public void cleanupTransients() {
+		ret = null;
+		retAttr = null;
+		returnFrame = null;
+	}
 
-  public static final int OPCODE = 260;
+	@Override
+	public boolean isExtendedInstruction() {
+		return true;
+	}
 
-  @Override
-  public int getByteCode () {
-    return OPCODE;
-  }
+	public static final int OPCODE = 260;
 
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+	@Override
+	public int getByteCode() {
+		return OPCODE;
+	}
 
-  @Override
-  protected void getAndSaveReturnValue (StackFrame frame, FeatureExpr ctx) {
-    // it's got to be a NativeStackFrame since this insn is created by JPF
-	  NativeStackFrame nativeFrame = (NativeStackFrame)frame;
+	@Override
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 
-    returnFrame = nativeFrame;
+	@Override
+	protected void getAndSaveReturnValue(StackFrame frame, FeatureExpr ctx) {
+		// it's got to be a NativeStackFrame since this insn is created by JPF
+		NativeStackFrame nativeFrame = (NativeStackFrame) frame;
 
-    ret = nativeFrame.getReturnValue();
-    retAttr = nativeFrame.getReturnAttr();
-    retType = nativeFrame.getMethodInfo().getReturnTypeCode();
-  }
+		returnFrame = nativeFrame;
 
-  public int getReturnTypeSize() {
-    switch (retType) {
-    case Types.T_BOOLEAN:
-    case Types.T_BYTE:
-    case Types.T_CHAR:
-    case Types.T_SHORT:
-    case Types.T_INT:
-    case Types.T_FLOAT:
-      return 1;
-      
-    case Types.T_LONG:
-    case Types.T_DOUBLE:
-      return 2;
+		ret = nativeFrame.getReturnValue();
+		retAttr = nativeFrame.getReturnAttr();
+		retType = nativeFrame.getMethodInfo().getReturnTypeCode();
+	}
 
-    default:
-      return 1;
-    }
-  }
+	public int getReturnTypeSize() {
+		switch (retType) {
+		case Types.T_BOOLEAN:
+		case Types.T_BYTE:
+		case Types.T_CHAR:
+		case Types.T_SHORT:
+		case Types.T_INT:
+		case Types.T_FLOAT:
+			return 1;
 
-  // this is only called internally right before we return
-  protected Object getReturnedOperandAttr (FeatureExpr ctx, StackFrame frame) {
-    return retAttr;
-  }
+		case Types.T_LONG:
+		case Types.T_DOUBLE:
+			return 2;
 
-  // <2do> this should use the getResult..() methods of NativeStackFrame
-  
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-@Override
-  protected void pushReturnValue (FeatureExpr ctx, StackFrame fr) {
-    int  ival;
-    long lval;
-    int  retSize = 1;
+		default:
+			return 1;
+		}
+	}
 
-    // in case of a return type mismatch, we get a ClassCastException, which
-    // is handled in executeMethod() and reported as a InvocationTargetException
-    // (not completely accurate, but we rather go with safety)
-    if (ret != null) {
-      switch (retType) {
-      case Types.T_BOOLEAN:
-        ival = Types.booleanToInt(((Boolean) ret).booleanValue());
-        fr.push(ctx, new One<>(ival));
-        break;
+	// this is only called internally right before we return
+	protected Object getReturnedOperandAttr(FeatureExpr ctx, StackFrame frame) {
+		return retAttr;
+	}
 
-      case Types.T_BYTE:
-        fr.push(ctx, new One<>((int)(((Byte) ret).byteValue())));
-        break;
+	// <2do> this should use the getResult..() methods of NativeStackFrame
 
-      case Types.T_CHAR:
-        fr.push(ctx, new One<>((int)((Character) ret).charValue()));
-        break;
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void pushReturnValue(FeatureExpr ctx, StackFrame fr) {
+		int retSize = 1;
 
-      case Types.T_SHORT:
-        fr.push(ctx, new One<>((int)((Short) ret).shortValue()));
-        break;
+		// in case of a return type mismatch, we get a ClassCastException, which
+		// is handled in executeMethod() and reported as a InvocationTargetException
+		// (not completely accurate, but we rather go with safety)
+		if (ret != null) {
+			switch (retType) {
+			case Types.T_BOOLEAN:
+				int ival = Types.booleanToInt(((Boolean) ret).booleanValue());
+				fr.push(ctx, new One<>(ival));
+				break;
 
-      case Types.T_INT:
-    	  if (ret instanceof Conditional) {
-    		  fr.push(ctx, (Conditional)ret); 
-    	  } else {
-    		  fr.push(ctx, new One<>(((Integer) ret)));
-    	  }
-        break;
+			case Types.T_BYTE:
+				fr.push(ctx, new One<>((int) (((Byte) ret).byteValue())));
+				break;
 
-      case Types.T_LONG:
-        fr.push(ctx, new One<>(((Long)ret).longValue()));
-        retSize=2;
-        break;
+			case Types.T_CHAR:
+				fr.push(ctx, new One<>((int) ((Character) ret).charValue()));
+				break;
 
-      case Types.T_FLOAT:
-        ival = Types.floatToInt(((Float) ret).floatValue());
-        fr.push(ctx, new One<>(ival));
-        break;
+			case Types.T_SHORT:
+				fr.push(ctx, new One<>((int) ((Short) ret).shortValue()));
+				break;
 
-      case Types.T_DOUBLE:
-        lval = Types.doubleToLong(((Double) ret).doubleValue());
-        fr.push(ctx, new One<>(lval));
-        retSize=2;
-        break;
+			case Types.T_INT:
+				if (ret instanceof Conditional) {
+					fr.push(ctx, (Conditional) ret);
+				} else {
+					fr.push(ctx, new One<>(((Integer) ret)));
+				}
+				break;
 
-      default:
-        // everything else is supposed to be a reference
-    	  if (ret instanceof Conditional) {
-    		  fr.push(ctx, (Conditional)ret, true); 
-    	  } else {
-    		  fr.push(ctx, ((Integer) ret).intValue(), true);
-    	  }
-      }
+			case Types.T_LONG:
+				if (ret instanceof Conditional) {
+					fr.push(ctx, ((Conditional) ret));
+				} else {
+					fr.push(ctx, new One<>(((Long) ret).longValue()));
+					retSize = 2;
+				}
+				retSize = 2;
+				break;
 
-      if (retAttr != null) {
-        if (retSize == 1) {
-          fr.setOperandAttr(retAttr);
-        } else {
-          fr.setLongOperandAttr(retAttr);
-        }
-      }
-    }
-  }
+			case Types.T_FLOAT:
+				if (ret instanceof Conditional) {
+					fr.push(ctx, ((Conditional) ret).map(new Function<Float, Integer>() {
 
-  @Override
-  public Object getReturnAttr (ThreadInfo ti) {
-    if (isCompleted(ti)){
-      return retAttr;
-    } else {
-      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
-      return nativeFrame.getReturnAttr();
-    }
-  }
+						@Override
+						public Integer apply(Float x) {
+							return Types.floatToInt(x);
+						}
 
+					}));
 
-  @Override
-  public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
-    if (isCompleted(ti)){
-      return ret;
-    } else {
-      NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
-      return nativeFrame.getReturnValue();
-    }
-  }
+				} else {
+					fr.push(ctx, new One<>(Types.floatToInt((Float) ret)));
+				}
+				break;
 
-//  public String toString(){
-//    StringBuilder sb = new StringBuilder();
-//    sb.append(super.toString());
-//    sb.append(" ");
-//    sb.append(mi.getFullName());
-//
-//    return sb.toString();
-//  }
+			case Types.T_DOUBLE:
+				if (ret instanceof Conditional) {
+					fr.push(ctx, ((Conditional) ret).map(new Function<Double, Long>() {
+
+						@Override
+						public Long apply(Double x) {
+							return Types.doubleToLong(x);
+						}
+
+					}));
+				} else {
+					long lval = Types.doubleToLong(((Double) ret).doubleValue());
+					fr.push(ctx, new One<>(lval));
+					
+				}
+				retSize = 2;
+				break;
+
+			default:
+				// everything else is supposed to be a reference
+				if (ret instanceof Conditional) {
+					fr.push(ctx, (Conditional) ret, true);
+				} else {
+					fr.push(ctx, ((Integer) ret).intValue(), true);
+				}
+			}
+
+			if (retAttr != null) {
+				if (retSize == 1) {
+					fr.setOperandAttr(retAttr);
+				} else {
+					fr.setLongOperandAttr(retAttr);
+				}
+			}
+		}
+	}
+
+	@Override
+	public Object getReturnAttr(ThreadInfo ti) {
+		if (isCompleted(ti)) {
+			return retAttr;
+		} else {
+			NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
+			return nativeFrame.getReturnAttr();
+		}
+	}
+
+	@Override
+	public Object getReturnValue(FeatureExpr ctx, ThreadInfo ti) {
+		if (isCompleted(ti)) {
+			return ret;
+		} else {
+			NativeStackFrame nativeFrame = (NativeStackFrame) ti.getTopFrame();
+			return nativeFrame.getReturnValue();
+		}
+	}
+
+	// public String toString(){
+	// StringBuilder sb = new StringBuilder();
+	// sb.append(super.toString());
+	// sb.append(" ");
+	// sb.append(mi.getFullName());
+	//
+	// return sb.toString();
+	// }
 
 }
