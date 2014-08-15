@@ -8,7 +8,7 @@ import org.junit.Test;
 @SuppressWarnings("unused")
 public class VariabilityAwareTest extends TestJPF {
 
-	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
+	static String[] JPF_CONFIGURATION = new String[]{"+search.class= .search.RandomSearch"};
 
 	static boolean RUN_WITH_JPF = true;
 

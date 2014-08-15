@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import cmu.conditional.ChoiceFactory;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class ConsolePublisher extends Publisher {
@@ -129,7 +130,7 @@ public class ConsolePublisher extends Publisher {
   protected void publishJPF() {
     out.println(reporter.getJPFBanner());
     out.println();
-    out.println("    Variability-Aware Interpreter v0.4 (" + FeatureExprFactory.dflt().getClass().getSimpleName().substring(0, 3) + ")");
+    out.println("    Variability-Aware Interpreter v0.4 (" + FeatureExprFactory.dflt().getClass().getSimpleName().substring(0, 3) + ", " + ChoiceFactory.getCurrent() + ")");
     out.println();
   }
 

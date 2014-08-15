@@ -2,28 +2,61 @@ package cmu;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
+import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.AbstractFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 @SuppressWarnings("unused")
+@RunWith(Parameterized.class)
 public class ConditionalTest {
-	private static final FeatureExpr fa = FeatureExprFactory.createDefinedExternal("A");
-	private static final FeatureExpr fb = FeatureExprFactory.createDefinedExternal("B");
-	private static final FeatureExpr fc = FeatureExprFactory.createDefinedExternal("C");
-	private static final FeatureExpr fd = FeatureExprFactory.createDefinedExternal("D");
-	private static final FeatureExpr fe = FeatureExprFactory.createDefinedExternal("E");
-	private static final FeatureExpr ff = FeatureExprFactory.createDefinedExternal("F");
-	
-	private static final FeatureExpr fg = FeatureExprFactory.createDefinedExternal("G");
+	private final FeatureExpr fa;
+	private final FeatureExpr fb;
+	private final FeatureExpr fc;
+	private final FeatureExpr fd;
+	private final FeatureExpr fe;
+	private final FeatureExpr ff;
+	private final FeatureExpr fg;
 
+	@Parameters(name = "{0} : {1}")
+	public static List<Object[]> configurations() {
+		List<Object[]> params = new LinkedList<>(); 
+		for (Object[] choice : ChoiceFactory.asParameter()) {
+			params.add(new Object[]{choice[0], FeatureExprFactory.bdd()});
+			params.add(new Object[]{choice[0], FeatureExprFactory.sat()});
+		}
+		return params;
+	}
+	
+	public ConditionalTest(Factory factory, AbstractFeatureExprFactory fexprFeactory) {
+		ChoiceFactory.setDefault(factory);
+		FeatureExprFactory.setDefault(fexprFeactory);
+		
+		fa = FeatureExprFactory.createDefinedExternal("A");
+		fb = FeatureExprFactory.createDefinedExternal("B");
+		fc = FeatureExprFactory.createDefinedExternal("C");
+		fd = FeatureExprFactory.createDefinedExternal("D");
+		fe = FeatureExprFactory.createDefinedExternal("E");
+		ff = FeatureExprFactory.createDefinedExternal("F");
+		fg = FeatureExprFactory.createDefinedExternal("G");
+	}
+	
+	
 	@Test
 	public void testEqualsOne() throws Exception {
 		Conditional<Integer> v1 = One(1);

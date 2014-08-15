@@ -202,4 +202,9 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
 		}
 		return false;
 	}
+  
+  	@Override
+	public int hashCode() {
+		return getMethodInfo().hashCode() + getClass().hashCode();
+	}
 }

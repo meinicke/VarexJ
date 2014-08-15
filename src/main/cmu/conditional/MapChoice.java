@@ -8,6 +8,13 @@ import java.util.Map.Entry;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
+/**
+ * Choice implementation using a map from value to {@link FeatureExpr}.
+ * 
+ * @author Jens Meinicke
+ *
+ * @param <T>
+ */
 public class MapChoice<T> extends IChoice<T> implements Cloneable {
 
 	Map<T, FeatureExpr> map = new HashMap<>();

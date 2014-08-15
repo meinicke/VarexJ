@@ -37,7 +37,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
+import cmu.utils.TraceComparator;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
@@ -46,13 +49,15 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  * instantiates the Search and VM objects, and kicks off the Search
  */
 public class JPF implements Runnable {
-	
-
-  public static String fmfile = "";
-  
+	  
   public static String VERSION = "7.0"; // the major version number
 
   static Logger logger     = null; // initially
+
+	/**
+	 * Defines the method from which the trace strats.
+	 */
+	public static String traceMethod = null;
 
   public enum Status { NEW, RUNNING, DONE };
 
@@ -298,20 +303,21 @@ public class JPF implements Runnable {
       } else {
     	  FeatureExprFactory.setDefault(FeatureExprFactory.sat());
       }
+      
+      // set the trace method
+      traceMethod = config.getString("trace", null);
+      
       // Set StackHandlerFactory
 //      if (factory.equals("X")) {
 //      StackHandlerFactory.setStackHandler(); // TODO
 //    } else { }
       
-      // Set ChoiceFactory
-//    if (factory.equals("Y")) {
-//    ChoiceFactory.setFactory(); // TODO
-//  } else { }
-      
+      // Set the ChoiceFactory
+      String choice = config.getString("choice", Factory.TreeChoice.toString());
+      ChoiceFactory.setDefault(Factory.valueOf(choice));
       
       // Set the feature model
-      fmfile = config.getString("featuremodel", "");
-      Conditional.setFM();
+      Conditional.setFM(config.getString("featuremodel", ""));
       
       addListeners();
       
@@ -685,6 +691,10 @@ public class JPF implements Runnable {
         config.jpfRunTerminated();
         cleanUp();        
       }
+    }
+    
+    if (traceMethod != null) {
+    	TraceComparator.compare();
     }
   }
   

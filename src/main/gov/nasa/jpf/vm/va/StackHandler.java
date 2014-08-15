@@ -13,6 +13,14 @@ import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
+/**
+ * Stack implementation where locals are separated from stack.<br>
+ * Locals: Conditional[]<br>
+ * Stack: Conditional -Stack-
+ * 
+ * @author Jens Meinicke
+ *
+ */
 public class StackHandler implements Cloneable, IStackHandler {
 
 	enum Type {

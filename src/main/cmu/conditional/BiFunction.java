@@ -1,5 +1,6 @@
 package cmu.conditional;
 /**
+ * Representation of a function that takes two parameter.
  * 
  * @author Jens Meinicke
  *

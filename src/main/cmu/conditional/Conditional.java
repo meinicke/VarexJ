@@ -1,6 +1,4 @@
 package cmu.conditional;
-import gov.nasa.jpf.JPF;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +7,18 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureModel;
 
+/**
+ * Representation of a values that depend on {@link FeatureExpr}.
+ * 
+ * @author Jens Meinicke
+ *
+ */
 public abstract class Conditional<T> {
 	
 	public static FeatureModel fm = null;
 	
-	public static void setFM() {
-		fm = JPF.fmfile.isEmpty() ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(JPF.fmfile);
+	public static void setFM(String fmfile) {
+		fm = fmfile.isEmpty() ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(fmfile);
 		map.clear();
 	}
  	
@@ -27,8 +31,10 @@ public abstract class Conditional<T> {
 				map.put(f, Boolean.TRUE);
 			} else if (f.isTautology()) {
 				map.put(f, Boolean.FALSE);
-			} else {
+			} else if (fm != null) {
 				map.put(f, f.isContradiction(fm));
+			} else {
+				map.put(f, Boolean.FALSE);
 			}
 		}
 		return map.get(f);
@@ -41,7 +47,7 @@ public abstract class Conditional<T> {
 	public abstract T getValue();
 	public abstract T getValue(boolean ignore);
 	
-	protected static final FeatureExpr True = FeatureExprFactory.True();
+//	protected static final FeatureExpr True = FeatureExprFactory.True();
 	
 //  def map[U](f: T => U): Conditional[U] = mapr(x => One(f(x)))
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -57,7 +63,7 @@ public abstract class Conditional<T> {
 	
 //  def mapr[U](f: T => Conditional[U]): Conditional[U] = mapfr(True, (c, x) => f(x))
 	public<U, C> Conditional<U> mapr(final Function<T, Conditional<U>> f) {
-		return mapfr(True, new BiFunction<FeatureExpr, T, Conditional<U>>() {
+		return mapfr(FeatureExprFactory.True(), new BiFunction<FeatureExpr, T, Conditional<U>>() {
 
 			public Conditional<U> apply(FeatureExpr c, T x) {
 				return f.apply(x);
@@ -84,7 +90,7 @@ public abstract class Conditional<T> {
 	public abstract Conditional<T> simplifyValues();
 	
 	public Conditional<T> simplify(){
-		return simplify(True);
+		return simplify(FeatureExprFactory.True());
 	}
 		
 	public abstract Conditional<T> simplify(FeatureExpr ctx);
@@ -93,7 +99,7 @@ public abstract class Conditional<T> {
 	
 	public Map<T, FeatureExpr> toMap() {
 		Map<T,FeatureExpr> map = new HashMap<>();
-		toMap(True, map);
+		toMap(FeatureExprFactory.True(), map);
 		return map;
 	}
     

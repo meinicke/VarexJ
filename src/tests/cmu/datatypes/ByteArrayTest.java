@@ -11,12 +11,6 @@ public class ByteArrayTest extends TestJPF {
 	
 	@Conditional
 	static boolean a = true;
-	@Conditional
-	static boolean b = true;
-	@Conditional
-	static boolean c = true;
-	@Conditional
-	static boolean d = true;
 
 	@Test
 	public void byteArrayTest() throws Exception {

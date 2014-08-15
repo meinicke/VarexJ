@@ -7,6 +7,13 @@ import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
+/**
+ * Non conditional value.  
+ * 
+ * @author Jens Meinicke
+ *
+ * @param <T>
+ */
 public class One<T> extends Conditional<T> implements Cloneable {
 
 	private T value;

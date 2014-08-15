@@ -6,6 +6,13 @@ import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
+/**
+ * Choice implementation as tree. 
+ * Each node represents a decision as {@link FeatureExpr} between two conditionals. 
+ * 
+ * @author Jens Meinicke
+ *
+ */
 public class Choice<T> extends IChoice<T> implements Cloneable {
 
 	private Conditional<T> thenBranch;

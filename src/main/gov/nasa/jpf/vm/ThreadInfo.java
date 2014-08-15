@@ -50,6 +50,7 @@ import java.util.logging.Level;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.TraceComparator;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -248,7 +249,6 @@ public class ThreadInfo extends InfoObject
   int lockRef = MJIEnv.NULL;
 
   Memento<ThreadInfo> cachedMemento; // cache for unchanged ThreadInfos
-
 
   static class TiMemento implements Memento<ThreadInfo> {
     // note that we don't have to store the invariants (id, oref, runnableRef, ciException)
@@ -1888,7 +1888,9 @@ public class ThreadInfo extends InfoObject
   static int count = 0;
   static int count2 = 0;
   static long time = 0;
-
+  
+  private static boolean logtrace = false;
+  
   /**
    * Execute next instruction.
    */
@@ -1913,7 +1915,7 @@ public class ThreadInfo extends InfoObject
     // on-the-fly instrumentation or even replace the instruction alltogether
     vm.notifyExecuteInstruction(this, pc.getValue(true));// TODO revise
 
-    boolean throwInstruction = false;
+    int throwInstruction = 0;
     StackFrame oldStack = top;
     
     if (!skipInstruction) {
@@ -1923,9 +1925,9 @@ public class ThreadInfo extends InfoObject
         		time = System.currentTimeMillis();
         	}
         	count++;
-//    		if (count > 1915000) {
+//    		if (count > 3380) {
 //    			debug = true;
-//    			if (debug) System.out.print(count + ": ");
+//    			System.out.print(count + ": ");
 //    		}
         	if (System.currentTimeMillis() - time > 1000) {
         		int instructions = (count - count2);
@@ -1938,9 +1940,10 @@ public class ThreadInfo extends InfoObject
         	if (pc instanceof One) {
         		i = pc.getValue();
         	} else {
-	    		Map<Instruction, FeatureExpr> map = pc.simplify(ctx).toMap();// TODO jens why simplify (see AJSTATS)
+	    		Map<Instruction, FeatureExpr> map = pc.simplify(ctx).toMap();// jens why simplify (see AJSTATS)
 	    		int minPos = Integer.MAX_VALUE;
 	    		MethodInfo m = top.getMethodInfo();
+	    		
 	    		if (map.size() == 1) {
 	    			for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
 	    				i = e.getKey();
@@ -1968,6 +1971,21 @@ public class ThreadInfo extends InfoObject
     			}
 				System.out.println(" " + i + " if " + ctx);
 			}
+    		
+    		// log trace for trace compasion
+    		if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
+    			logtrace = true;
+    		}
+    		if (logtrace) {
+    			if (!(i instanceof InvokeInstruction)) {
+    				if (i.getMethodInfo().getFullName().contains("clinit")) {
+    					// ignore class initializations 
+    				} else {
+    					TraceComparator.putInstruction(ctx, i.getMethodInfo().getFullName() + " " + i.getMnemonic().toString() +  " " + i.getFileLocation());
+    				}
+    			}
+    		}
+    		
     		int currentStackDepth = stackDepth;
     		Conditional<Instruction> next = i.execute(ctx, this);
     		if (i instanceof InvokeInstruction) {
@@ -1976,16 +1994,21 @@ public class ThreadInfo extends InfoObject
     			next = ChoiceFactory.create(ctx, next, getPC());
     			if (top != null) {
     				nextPc = next.simplify(top.stack.getCtx());
-    				
     			} else {
     				nextPc = next;
     			}
     		} else if (i instanceof ATHROW) {
     			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
-    			if (!(pc instanceof One) && currentStackDepth < stackDepth) {
-    				oldStack.stack.setCtx(oldStack.stack.getCtx().andNot(ctx));
-					throwInstruction = true;
-    				oldStack.setPC(pc.simplify(oldStack.stack.getCtx()));
+    			if (!(pc instanceof One) && currentStackDepth > stackDepth) {
+    				
+					throwInstruction = currentStackDepth - stackDepth;
+					int k = 0;
+					StackFrame stackPointer = oldStack;
+					while (k < throwInstruction) {
+						stackPointer.stack.setCtx(oldStack.stack.getCtx().andNot(ctx));
+						stackPointer = stackPointer.prev;
+						k++;
+					}
     			}
     		} else {
     			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
@@ -2022,8 +2045,8 @@ public class ThreadInfo extends InfoObject
     if (top != null) {
       // <2do> this is where we would have to handle general insn repeat
       setPC(nextPc);
-  		if (throwInstruction) {
-  			pushFrame(oldStack);
+  		if (throwInstruction > 0) {
+  			pushFrames(oldStack, throwInstruction);
   		}
       return nextPc;
     } else {
@@ -2675,6 +2698,16 @@ public class ThreadInfo extends InfoObject
     stackDepth = n;
   }
 
+  public void pushFrames(StackFrame frame, int nrFrames) {
+	  if (nrFrames < 1) {
+		  return;
+	  }
+	  
+	  pushFrames(frame.prev, nrFrames - 1);
+	  
+	  pushFrame(frame);
+  }
+  
   /**
    * Adds a new stack frame for a new called method.
    */

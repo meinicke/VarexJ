@@ -4,6 +4,12 @@ import gov.nasa.jpf.vm.va.StackHandler.Type;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
+/**
+ * Interface for variability-aware implementations of a method stack.
+ * 
+ * @author Jens Meinicke
+ *
+ */
 public interface IStackHandler {
 	
 	public abstract FeatureExpr getCtx();

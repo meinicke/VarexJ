@@ -8,13 +8,17 @@ public class BankAccountTest extends TestJPF {
 //	private static String file = "C:\\Users\\Loaner\\workspace\\BankAccount-FH-JML_new\\BAmodel.dimacs";
 	private static String file = "BAmodel.dimacs";
 	
-	private final static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file};
+	private static final String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file, "+choice=" + getChoiceFactory()};
 	
 	@Test
 	public void runBankAccount() {
 		if (verifyNoPropertyViolation(config)) {
 			BankAccount.Main.main(null);
 		}
+	}
+
+	private static String getChoiceFactory() {
+		return "TreeChoice";
 	}
 
 	@Test
