@@ -27,9 +27,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import cmu.conditional.BiFunction;
-import cmu.conditional.Choice;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
+import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -143,7 +143,7 @@ public class NativeMethodInfo extends MethodInfo {
 				for (Object a : args) {
 					if (a instanceof One) {
 						args[i++] = ((One) a).getValue();
-					} else if (a instanceof Choice) {
+					} else if (a instanceof IChoice) {
 						System.err.println(mth);
 						for (Object a2 : args) {
 							System.err.println(a2.toString());

@@ -57,7 +57,7 @@ class TreeChoiceFactory implements IChoiceFactory {
 
 	@Override
 	public <T> IChoice<T> create(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
-		return new Choice<>(featureExpr, thenBranch, elseBranch);
+		return new TreeChoice<>(featureExpr, thenBranch, elseBranch);
 	}
 	
 	@Override

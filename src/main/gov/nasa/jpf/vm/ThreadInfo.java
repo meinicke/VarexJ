@@ -1889,7 +1889,7 @@ public class ThreadInfo extends InfoObject
   static int count2 = 0;
   static long time = 0;
   
-  private static boolean logtrace = false;
+  public static boolean logtrace = false;
   
   /**
    * Execute next instruction.
@@ -1915,7 +1915,7 @@ public class ThreadInfo extends InfoObject
     // on-the-fly instrumentation or even replace the instruction alltogether
     vm.notifyExecuteInstruction(this, pc.getValue(true));// TODO revise
 
-    int throwInstruction = 0;
+    int popedFrames = 0;
     StackFrame oldStack = top;
     
     if (!skipInstruction) {
@@ -1925,7 +1925,7 @@ public class ThreadInfo extends InfoObject
         		time = System.currentTimeMillis();
         	}
         	count++;
-//    		if (count > 3380) {
+//    		if (count > 46327) {
 //    			debug = true;
 //    			System.out.print(count + ": ");
 //    		}
@@ -1999,17 +1999,16 @@ public class ThreadInfo extends InfoObject
     			}
     		} else if (i instanceof ATHROW) {
     			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
-    			if (!(pc instanceof One) && currentStackDepth > stackDepth) {
-    				
-					throwInstruction = currentStackDepth - stackDepth;
-					int k = 0;
-					StackFrame stackPointer = oldStack;
-					while (k < throwInstruction) {
-						stackPointer.stack.setCtx(oldStack.stack.getCtx().andNot(ctx));
-						stackPointer = stackPointer.prev;
-						k++;
-					}
-    			}
+				popedFrames = currentStackDepth - stackDepth;
+				int k = 0;
+				StackFrame stackPointer = oldStack;
+				// set the ctx of poped frames
+				while (k < popedFrames) {
+					FeatureExpr newCtx = stackPointer.stack.getCtx().andNot(ctx);
+					stackPointer.stack.setCtx(newCtx);
+					stackPointer = stackPointer.prev;
+					k++;
+				}
     		} else {
     			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
     		}
@@ -2045,8 +2044,8 @@ public class ThreadInfo extends InfoObject
     if (top != null) {
       // <2do> this is where we would have to handle general insn repeat
       setPC(nextPc);
-  		if (throwInstruction > 0) {
-  			pushFrames(oldStack, throwInstruction);
+  		if (popedFrames > 0) {
+  			pushFrames(oldStack, popedFrames);
   		}
       return nextPc;
     } else {
@@ -2698,6 +2697,11 @@ public class ThreadInfo extends InfoObject
     stackDepth = n;
   }
 
+  /**
+   * Pushes the top frames to the current stack. 
+   * @param frame Number of frames to push. Only pushes stacks with satisfiable context.
+   * @param nrFrames Number of frames to push.
+   */
   public void pushFrames(StackFrame frame, int nrFrames) {
 	  if (nrFrames < 1) {
 		  return;
@@ -2705,6 +2709,9 @@ public class ThreadInfo extends InfoObject
 	  
 	  pushFrames(frame.prev, nrFrames - 1);
 	  
+	  if (Conditional.isContradiction(frame.stack.getCtx())) {
+		  return;
+	  }
 	  pushFrame(frame);
   }
   

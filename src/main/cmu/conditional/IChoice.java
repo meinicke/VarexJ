@@ -8,7 +8,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  * Abstract class for choices.
  * 
  * @author Jens Meinicke
- *
+ * 
  * @param <T>
  */
 public abstract class IChoice<T> extends Conditional<T> {
@@ -18,6 +18,7 @@ public abstract class IChoice<T> extends Conditional<T> {
 			throw new RuntimeException("ctx = null");
 		}
 	}
-	
-	IChoice(Map<T, FeatureExpr> m) {};
+
+	IChoice(Map<T, FeatureExpr> m) {
+	};
 }

@@ -2,6 +2,7 @@ package cmu.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,7 +86,16 @@ public class TraceComparator {
 						String nomalizedVA = removeLine(va);
 						String normalizedExpected = removeLine(expected);
 						if (!nomalizedVA.equals(normalizedExpected)) {
-
+							if (nomalizedVA.startsWith("SET FILED") && normalizedExpected.startsWith("SET FILED")) {
+								System.out.println();
+								System.out.println("================WARNING==================");
+								System.out.println(lastInstruction);
+								System.out.println(bfIndex + " Expected: " + expected + "\tBut was:  " + va + " " + trace.get(vaIndex).x);
+								System.out.println("=========================================");
+								System.out.println();
+								break;
+							}
+							
 							if (!error) {
 								System.out.println(lastInstruction);
 								System.out.println();
@@ -93,7 +103,10 @@ public class TraceComparator {
 								System.out.println();
 							}
 
+							
+							
 							System.out.println(bfIndex + " Expected: " + expected + "\tBut was:  " + va + " " + trace.get(vaIndex).x);
+							
 							error = true;
 							System.out.println("Traces do NOT match!");
 							System.out.println("===================================");
@@ -119,6 +132,7 @@ public class TraceComparator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		trace.clear();
 	}
 
 	private static String toSeparatedNumber(int bfIndex) {

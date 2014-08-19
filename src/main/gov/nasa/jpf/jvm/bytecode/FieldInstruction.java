@@ -30,9 +30,11 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.VM;
+import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.TraceComparator;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -142,6 +144,20 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     	}
     }
     lastValue = val;
+    
+  	  if (ThreadInfo.logtrace) {
+  		  if (!fi.isReference()) {
+    	  val.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Integer val) {
+				TraceComparator.putInstruction(ctx, "SET FILED " + fi.getFullName() + " " + val);
+				return null;
+			}
+    		  
+    	  });
+  	  }
+    }
 
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter
@@ -197,6 +213,20 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     Object attr = frame.getLongOperandAttr(ctx);
     Conditional<Long> val = frame.peekLong(ctx);
     lastValue = val;
+    
+	  if (ThreadInfo.logtrace) {
+		  if (!fi.isReference()) {
+      	  val.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Object>>() {
+
+  			@Override
+  			public Conditional<Object> apply(FeatureExpr ctx, Long val) {
+  				TraceComparator.putInstruction(ctx, "SET FILED " + fi.getFullName() + " " + val);
+  				return null;
+  			}
+      		  
+      	  });
+    	  }
+      }
 
     if ((!eiFieldOwner.get2SlotField(fi).simplify(ctx).equals(val)) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
