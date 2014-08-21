@@ -93,28 +93,24 @@ public class TraceComparator {
 								System.out.println(bfIndex + " Expected: " + expected + "\tBut was:  " + va + " " + trace.get(vaIndex).x);
 								System.out.println("=========================================");
 								System.out.println();
-								break;
-							}
+								
+							} else {
 							
-							if (!error) {
 								System.out.println(lastInstruction);
 								System.out.println();
 								System.out.println("================ERROR==================");
 								System.out.println();
+							
+								System.out.println(bfIndex + " Expected: " + expected + "\tBut was:  " + va + " " + trace.get(vaIndex).x);
+								
+								error = true;
+								System.out.println("Traces do NOT match!");
+								System.out.println("===================================");
+								System.out.println();
+								break;
 							}
-
-							
-							
-							System.out.println(bfIndex + " Expected: " + expected + "\tBut was:  " + va + " " + trace.get(vaIndex).x);
-							
-							error = true;
-							System.out.println("Traces do NOT match!");
-							System.out.println("===================================");
-							System.out.println();
-							break;
 						} else {
-							lastInstruction = bfIndex + " " + va;
-							error = false;
+							lastInstruction = bfIndex + " " + expected + " | " + va + " " + trace.get(vaIndex).x;
 						}
 						vaIndex++;
 						bfIndex++;

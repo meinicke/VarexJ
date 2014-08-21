@@ -19,159 +19,165 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.annotation.MJI;
+import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-
 
 /**
  * MJI NativePeer class for java.lang.StringBuffer library abstraction
  */
 public class JPF_java_lang_StringBuffer extends NativePeer {
-  
-  boolean hasSharedField = false; // Java 1.4 has, 1.5 doesn't
 
-  @MJI
-  public void $clinit____V (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
-    // apparently, Java 1.5 has changed the implementation of class
-    // StringBuffer so that it doesn't use the 'shared' state anymore
-    // (which was a performance hack to avoid copying the char array
-    // data when creating String objects from subsequently unmodified
-    // StringBuffers
-    // adding this little extra logic here also serves the purpose of
-    // avoiding a native ObjectStreamClass method which is called during
-    // the static StringBuffer init
-    ClassInfo ci = env.getClassInfo();
-    if (ci.getInstanceField("shared") != null) {
-      hasSharedField = true;
-    }
-  }
-  
-  int appendString (MJIEnv env, int objref, String s, FeatureExpr ctx) {
-    int slen = s.length();
-    
-    int aref = env.getReferenceField(ctx, objref, "value").getValue();
-    int alen = env.getArrayLength(ctx, aref);
-    int count = env.getIntField(objref, "count").getValue().intValue();
-    int i, j;
-    int n = count + slen;
-    
-    if (n < alen) {
-      for (i=count, j=0; i<n; i++, j++) {
-        env.setCharArrayElement(ctx, aref, i, new One<>(s.charAt(j)));
-      }
-    } else {
-      int m = 3 * alen / 2;
-      if (m < n) {
-        m = n;
-      }
-      int arefNew = env.newCharArray(ctx, m);
-      for (i=0; i<count; i++) {
-        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
-      }
-      for (j=0; i<n; i++, j++) {
-        env.setCharArrayElement(ctx, arefNew, i, new One<>(s.charAt(j)));
-      }
-      env.setReferenceField(ctx, objref, "value", arefNew);
-    }
-    
-    if (hasSharedField) {
-      env.setBooleanField(ctx, objref, "shared", new One<>(false));
-    }
-    env.setIntField(ctx, objref, "count", new One<>(n));
-    
-    return objref;
-  }
+	boolean hasSharedField = false; // Java 1.4 has, 1.5 doesn't
 
-/*
-  public static int append__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int sbref) {
-    int vref = env.getReferenceField(sbref, "value");
-    int sbCount = env.getIntField(sbref, "count");
+	@MJI
+	public void $clinit____V(MJIEnv env, int clsObjRef, FeatureExpr ctx) {
+		// apparently, Java 1.5 has changed the implementation of class
+		// StringBuffer so that it doesn't use the 'shared' state anymore
+		// (which was a performance hack to avoid copying the char array
+		// data when creating String objects from subsequently unmodified
+		// StringBuffers
+		// adding this little extra logic here also serves the purpose of
+		// avoiding a native ObjectStreamClass method which is called during
+		// the static StringBuffer init
+		ClassInfo ci = env.getClassInfo();
+		if (ci.getInstanceField("shared") != null) {
+			hasSharedField = true;
+		}
+	}
 
-    // how braindead, how lazy
-    char[] b = env.getCharArrayObject(vref);
-    String s = new String(b, 0, sbCount);
-    
-    return appendString(env, objref, s);
-  }
-*/
+	int appendString(final MJIEnv env, final int objref, final String s, FeatureExpr ctx) {
+		final int slen = s.length();
 
-  @MJI
-  public int append__Ljava_lang_String_2__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int sref, FeatureExpr ctx) {
-    String s = env.getStringObject(ctx, sref);    
-    if (s == null) s = "null";
-    
-    return appendString(env, objref, s, ctx);
-  }
-  
-  @MJI
-  public int append__I__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int i, FeatureExpr ctx) {
-    String s = Integer.toString(i);
-    
-    return appendString(env, objref, s, ctx);
-  }
+		final int aref = env.getReferenceField(ctx, objref, "value").getValue();
+		final int alen = env.getArrayLength(ctx, aref);
+		Conditional<Integer> count = env.getIntField(objref, "count");
+		count.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
 
-  @MJI
-  public int append__F__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, float f, FeatureExpr ctx) {
-    String s = Float.toString(f);
-    
-    return appendString(env, objref, s, ctx);
-  }
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Integer count) {
+				int i, j;
+				int n = count + slen;
 
-  @MJI
-  public int append__D__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, double d, FeatureExpr ctx) {
-    String s = Double.toString(d);
-    
-    return appendString(env, objref, s, ctx);
-  }
-  
-  @MJI
-  public int append__J__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, long l, FeatureExpr ctx) {
-    String s = Long.toString(l);
-    
-    return appendString(env, objref, s, ctx);
-  }
+				if (n < alen) {
+					for (i = count, j = 0; i < n; i++, j++) {
+						env.setCharArrayElement(ctx, aref, i, new One<>(s.charAt(j)));
+					}
+				} else {
+					int m = 3 * alen / 2;
+					if (m < n) {
+						m = n;
+					}
+					int arefNew = env.newCharArray(ctx, m);
+					for (i = 0; i < count; i++) {
+						env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
+					}
+					for (j = 0; i < n; i++, j++) {
+						env.setCharArrayElement(ctx, arefNew, i, new One<>(s.charAt(j)));
+					}
+					env.setReferenceField(ctx, objref, "value", arefNew);
+				}
 
-  @MJI
-  public int append__Z__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, boolean b, FeatureExpr ctx) {
-    String s = b ? "true" : "false";
-    
-    return appendString(env, objref, s, ctx);
-  }
- 
-/*
-  public static int append__B__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, byte b) {
-    return append__C__Ljava_lang_StringBuffer_2(env, objref, (char)b);
-  }
-*/
- 
-  @MJI
-  public int append__C__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, char c, FeatureExpr ctx) {
-	  
-    int aref = env.getReferenceField(ctx, objref, "value").getValue();
-    int alen = env.getArrayLength(ctx, aref);
-    
-	int count = env.getIntField(objref, "count").getValue().intValue();
-    int n = count +1;
-    
-    if (n < alen) {
-      env.setCharArrayElement(ctx, aref, count, new One<>(c));
-    } else {
-      int m = 3 * alen / 2;
-      int arefNew = env.newCharArray(ctx, m);
-      for (int i=0; i<count; i++) {
-        env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
-      }
-      env.setCharArrayElement(ctx, arefNew, count, new One<>(c));
-      env.setReferenceField(ctx, objref, "value", arefNew);
-    }
-    
-    if (hasSharedField) {
-      env.setBooleanField(ctx, objref, "shared", new One<>(false));
-    }
-    env.setIntField(ctx, objref, "count", new One<>(n));
-    
-    return objref;
-    
-  }
+				if (hasSharedField) {
+					env.setBooleanField(ctx, objref, "shared", new One<>(false));
+				}
+				env.setIntField(ctx, objref, "count", new One<>(n));
+				return null;
+			}
+
+		});
+		return objref;
+	}
+
+	/*
+	 * public static int append__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, int sbref) {
+	 * int vref = env.getReferenceField(sbref, "value");
+	 * int sbCount = env.getIntField(sbref, "count");
+	 * // how braindead, how lazy
+	 * char[] b = env.getCharArrayObject(vref);
+	 * String s = new String(b, 0, sbCount);
+	 * return appendString(env, objref, s);
+	 * }
+	 */
+
+	@MJI
+	public int append__Ljava_lang_String_2__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, Conditional<Integer> sref, FeatureExpr ctx) {
+		String s = env.getStringObject(ctx, sref.getValue());
+		if (s == null)
+			s = "null";
+
+		return appendString(env, objref, s, ctx);
+	}
+
+	@MJI
+	public int append__I__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, int i, FeatureExpr ctx) {
+		String s = Integer.toString(i);
+
+		return appendString(env, objref, s, ctx);
+	}
+
+	@MJI
+	public int append__F__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, float f, FeatureExpr ctx) {
+		String s = Float.toString(f);
+
+		return appendString(env, objref, s, ctx);
+	}
+
+	@MJI
+	public int append__D__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, double d, FeatureExpr ctx) {
+		String s = Double.toString(d);
+
+		return appendString(env, objref, s, ctx);
+	}
+
+	@MJI
+	public int append__J__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, long l, FeatureExpr ctx) {
+		String s = Long.toString(l);
+
+		return appendString(env, objref, s, ctx);
+	}
+
+	@MJI
+	public int append__Z__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, boolean b, FeatureExpr ctx) {
+		String s = b ? "true" : "false";
+
+		return appendString(env, objref, s, ctx);
+	}
+
+	/*
+	 * public static int append__B__Ljava_lang_StringBuffer_2 (MJIEnv env, int objref, byte b) {
+	 * return append__C__Ljava_lang_StringBuffer_2(env, objref, (char)b);
+	 * }
+	 */
+
+	@MJI
+	public int append__C__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, char c, FeatureExpr ctx) {
+
+		int aref = env.getReferenceField(ctx, objref, "value").getValue();
+		int alen = env.getArrayLength(ctx, aref);
+
+		int count = env.getIntField(objref, "count").getValue().intValue();
+		int n = count + 1;
+
+		if (n < alen) {
+			env.setCharArrayElement(ctx, aref, count, new One<>(c));
+		} else {
+			int m = 3 * alen / 2;
+			int arefNew = env.newCharArray(ctx, m);
+			for (int i = 0; i < count; i++) {
+				env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
+			}
+			env.setCharArrayElement(ctx, arefNew, count, new One<>(c));
+			env.setReferenceField(ctx, objref, "value", arefNew);
+		}
+
+		if (hasSharedField) {
+			env.setBooleanField(ctx, objref, "shared", new One<>(false));
+		}
+		env.setIntField(ctx, objref, "count", new One<>(n));
+
+		return objref;
+
+	}
 }
-

@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.JPFException;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 
 /**
  * A specialized version of ElementInfo that represents heap objects
@@ -123,15 +124,21 @@ public class DynamicElementInfo extends ElementInfo {
     if (!ClassInfo.isStringClassInfo(ci)) {
       throw new JPFException("object is not of type java.lang.String");
     }
+    Conditional<Integer> vref = getDeclaredReferenceField("value", "java.lang.String");
+    return vref.mapr(new Function<Integer, Conditional<char[]>>() {
 
-    int vref = getDeclaredReferenceField("value", "java.lang.String").getValue();    
-    if (vref != MJIEnv.NULL){
-      ElementInfo eVal = VM.getVM().getHeap().get(vref);
-      return eVal.asCharArray();
-      
-    } else {
-      return null;
-    }    
+		@Override
+		public Conditional<char[]> apply(Integer vref) {
+		    if (vref != MJIEnv.NULL){
+		        ElementInfo eVal = VM.getVM().getHeap().get(vref);
+		        return eVal.asCharArray();
+		        
+		      } else {
+		        return new One<>(null);
+		      }    
+		}
+    	
+    });
   }
   
   /**

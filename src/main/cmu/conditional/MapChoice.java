@@ -18,7 +18,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class MapChoice<T> extends IChoice<T> implements Cloneable {
 
 	Map<T, FeatureExpr> map = new HashMap<>();
-
+	
 	MapChoice(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
 		super(featureExpr, thenBranch, elseBranch);
 		for (Entry<T, FeatureExpr> e : thenBranch.toMap().entrySet()) {

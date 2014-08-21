@@ -107,7 +107,8 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 		env.setReferenceField(ctx, objref, "value", aref);
 	}
 
-	@MJI// TODO can be improved
+	@MJI
+	// TODO can be improved
 	public void $init__Ljava_lang_String_2__V(final MJIEnv env, final int objref, Conditional<Integer> sRef, FeatureExpr ctx) {
 		sRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
 
@@ -155,18 +156,17 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 			}
 
 		});
-		s = s.simplify(ctx).map(new ReplaceNull()).simplifyValues();
-		return appendString(ctx, env, objref, s);
-	}
+		s = s.simplify(ctx).map(new Function<String, String>() {
 
-	private static final class ReplaceNull implements Function<String, String> {
-		@Override
-		public String apply(final String s) {
-			if (s == null) {
-				return "null";
+			@Override
+			public String apply(final String s) {
+				if (s == null) {
+					return "null";
+				}
+				return s;
 			}
-			return s;
-		}
+		}).simplifyValues();
+		return appendString(ctx, env, objref, s);
 	}
 
 	@MJI
@@ -290,5 +290,73 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 		}).simplify();
 
 		return env.newString(ctx, s);
+	}
+
+	@MJI
+	public Conditional<Integer> indexOf__Ljava_lang_String_2I__I(final MJIEnv env, int objref, final int str, final int fromIndex, FeatureExpr ctx) {
+		Integer aref = env.getReferenceField(ctx, objref, "value").getValue();
+		Conditional<char[]> buf = env.getCharArrayObject(aref);
+		return buf.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Integer>>() {
+
+			@Override
+			public Conditional<Integer> apply(FeatureExpr ctx, char[] buf) {
+				String indexStr = env.getStringObject(ctx, str);
+				return new One<>(new String(buf).indexOf(indexStr, fromIndex));
+			}
+			
+		});
+		
+	}
+
+	@MJI
+	public int substring__I__Ljava_lang_String_2(MJIEnv env, int objRef, int beginIndex, FeatureExpr ctx) {
+		Integer aref = env.getReferenceField(ctx, objRef, "value").getValue();
+		char[] buf = env.getCharArrayObject(aref).getValue();
+		String obj = new String(buf);
+		String result = obj.substring(beginIndex);
+		return env.newString(ctx, result);
+	}
+
+	@MJI
+	public int substring__II__Ljava_lang_String_2(MJIEnv env, int objRef, final Conditional<Integer> beginIndex, final Conditional<Integer> endIndex, FeatureExpr ctx) {
+		Integer aref = env.getReferenceField(ctx, objRef, "value").getValue();
+		Conditional<char[]> buf = env.getCharArrayObject(aref);
+		Conditional<String> result = buf.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<String>>() {
+
+			@Override
+			public Conditional<String> apply(FeatureExpr ctx, char[] buf) {
+				String obj = new String(buf);
+				return new One<>(obj.substring(beginIndex.getValue(), endIndex.getValue()));
+			}
+			
+		});
+		return env.newString(ctx, result);
+
+	}
+
+	@MJI
+	public int delete__II__Ljava_lang_StringBuilder_2(final MJIEnv env, final int objref, final Integer beginIndex, final Integer endIndex, FeatureExpr ctx) {
+		final Integer aref = env.getReferenceField(ctx, objref, "value").getValue();
+		Conditional<Integer> count = env.getIntField(objref, "count");
+		final int diff = endIndex - beginIndex;
+		count.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Integer count) {
+				for (int i = beginIndex, j = endIndex; i < count; i++, j++) {
+					if (j < count) {
+						env.setCharArrayElement(ctx, aref, i, env.getCharArrayElement(aref, j));
+					} else {
+						env.setCharArrayElement(ctx, aref, i, new One<>(' '));
+					}
+				}
+
+				env.setIntField(ctx, objref, "count", new One<>(count - diff));
+				return null;
+			}
+
+		});
+		return objref;
+
 	}
 }
