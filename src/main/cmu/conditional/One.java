@@ -26,7 +26,7 @@ public class One<T> extends Conditional<T> implements Cloneable {
 		return value;
 	}
 	
-	public T getValue(boolean ignore) {
+	public T getValue(final boolean ignore) {
 		return getValue();
 	}
 
@@ -101,7 +101,7 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	}
 
 	@Override
-	public Conditional<T> clone() throws CloneNotSupportedException {
+	public Conditional<T> clone() {
 		return new One<>(value);
 	}
 

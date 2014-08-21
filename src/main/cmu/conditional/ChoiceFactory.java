@@ -23,7 +23,7 @@ public class ChoiceFactory {
 		return f;
 	}
 	
-	public static <T> IChoice<T> create(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
+	public static <T> IChoice<T> create(final FeatureExpr featureExpr, final Conditional<T> thenBranch, final Conditional<T> elseBranch) {
 		return f.create(featureExpr, thenBranch, elseBranch);
 	}
 	
@@ -56,7 +56,7 @@ interface IChoiceFactory {
 class TreeChoiceFactory implements IChoiceFactory {
 
 	@Override
-	public <T> IChoice<T> create(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
+	public <T> IChoice<T> create(final FeatureExpr featureExpr, final Conditional<T> thenBranch, final Conditional<T> elseBranch) {
 		return new TreeChoice<>(featureExpr, thenBranch, elseBranch);
 	}
 	
@@ -69,7 +69,7 @@ class TreeChoiceFactory implements IChoiceFactory {
 class MapChoiceFactory implements IChoiceFactory {
 
 	@Override
-	public <T> IChoice<T> create(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
+	public <T> IChoice<T> create(final FeatureExpr featureExpr, final Conditional<T> thenBranch, final Conditional<T> elseBranch) {
 		return new MapChoice<>(featureExpr, thenBranch, elseBranch);
 	}
 	

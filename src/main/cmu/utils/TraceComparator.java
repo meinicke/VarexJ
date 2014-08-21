@@ -2,7 +2,6 @@ package cmu.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -138,8 +137,7 @@ public class TraceComparator {
 			number = "." + addZeros(bfIndex % 1000) + number;
 			bfIndex = bfIndex / 1000;
 		}
-		number = bfIndex + number;		
-		return number;
+		return bfIndex + number;		
 	}
 	
 	private static String addZeros(int number) {

@@ -17,7 +17,7 @@ public abstract class Conditional<T> {
 	
 	public static FeatureModel fm = null;
 	
-	public static void setFM(String fmfile) {
+	public static void setFM(final String fmfile) {
 		fm = fmfile.isEmpty() ? null : FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(fmfile);
 		map.clear();
 	}
@@ -25,7 +25,7 @@ public abstract class Conditional<T> {
 	private static Map<FeatureExpr, Boolean> map = new HashMap<>();
 	
 	
-	public static boolean isContradiction(FeatureExpr f) {
+	public static boolean isContradiction(final FeatureExpr f) {
 		if (!map.containsKey(f)) {
 			if (f.isContradiction()) {
 				map.put(f, Boolean.TRUE);
@@ -40,7 +40,7 @@ public abstract class Conditional<T> {
 		return map.get(f);
 	}
 	
-	public static boolean isTautology(FeatureExpr f) {
+	public static boolean isTautology(final FeatureExpr f) {
 		return isContradiction(f.not());
 	}
 	
@@ -54,7 +54,7 @@ public abstract class Conditional<T> {
 	public <U> Conditional<U> map(final Function<T,U> f) {
 		return mapfr(null, new BiFunction<FeatureExpr, T, Conditional<U>>() {
 
-			public Conditional<U> apply(FeatureExpr c, T x) {
+			public Conditional<U> apply(final FeatureExpr c, T x) {
 				return new One(f.apply(x));
 			}
 			
@@ -62,10 +62,10 @@ public abstract class Conditional<T> {
 	}
 	
 //  def mapr[U](f: T => Conditional[U]): Conditional[U] = mapfr(True, (c, x) => f(x))
-	public<U, C> Conditional<U> mapr(final Function<T, Conditional<U>> f) {
+	public<U> Conditional<U> mapr(final Function<T, Conditional<U>> f) {
 		return mapfr(FeatureExprFactory.True(), new BiFunction<FeatureExpr, T, Conditional<U>>() {
 
-			public Conditional<U> apply(FeatureExpr c, T x) {
+			public Conditional<U> apply(final FeatureExpr c, final T x) {
 				return f.apply(x);
 			}
 			
@@ -77,7 +77,7 @@ public abstract class Conditional<T> {
 	public <U> Conditional<U> mapf(FeatureExpr inFeature, final BiFunction<FeatureExpr, T, Conditional<U>> f) {
 		return mapfr(inFeature, new BiFunction<FeatureExpr, T, Conditional<U>>() {
 
-			public Conditional<U> apply(FeatureExpr c, T x) {
+			public Conditional<U> apply(final FeatureExpr c, final T x) {
 				return f.apply(c, x);
 			}
 			

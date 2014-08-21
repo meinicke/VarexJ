@@ -58,7 +58,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	}
 
 	@Override
-	public T getValue(boolean ignore) {
+	public T getValue(final boolean ignore) {
 		if (map.isEmpty()) {
 			return null;
 		}
@@ -76,11 +76,12 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 			}
 			for (Entry<U, FeatureExpr> r : result.toMap().entrySet()) {// ??
 				FeatureExpr and = r.getValue().and(e.getValue());
-				if (newMap.containsKey(r.getKey())) {
-					newMap.put(r.getKey(), newMap.get(r.getKey()).or(and));
+				final U key = r.getKey();
+				if (newMap.containsKey(key)) {
+					newMap.put(key, newMap.get(key).or(and));
 				} else {
 					if (!isContradiction(and)) {
-						newMap.put(r.getKey(), and);
+						newMap.put(key, and);
 					}
 				}
 			}
@@ -108,11 +109,12 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 
 		Map<T, FeatureExpr> newMap = new HashMap<>();
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
-			if (!isContradiction(e.getValue().and(ctx))) {
-				if (ctx.equals(e.getValue())) {
+			final FeatureExpr value = e.getValue();
+			if (!isContradiction(value.and(ctx))) {
+				if (ctx.equals(value)) {
 					return new One<>(e.getKey());
 				} else {
-					newMap.put(e.getKey(), e.getValue());
+					newMap.put(e.getKey(), value);
 				}
 			}
 		}
@@ -135,12 +137,17 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	public Conditional<T> clone() throws CloneNotSupportedException {
 		throw new RuntimeException("not yet implemented");
 	}
+	
+	@Override
+	public int hashCode() {
+		throw new RuntimeException("not yet implemented");
+	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o instanceof MapChoice) {
-			MapChoice<T> other = (MapChoice<T>) o;
-
+			@SuppressWarnings("rawtypes")
+			MapChoice other = (MapChoice) o;
 			return other.map.equals(map);
 		}
 		return false;
