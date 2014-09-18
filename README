@@ -1,1 +1,48 @@
-This is a variability aware implementation of an Intepreter based on Java Pathfinder http://javapathfinder.sourceforge.net/.
+VarexJ is a variability-aware interpreter for Java(7) bytecode based on Java Pathfinder see: http://javapathfinder.sourceforge.net/.
+
+Usage:
+
+======================================================================
+# JPF site configuration @ ../home/.jpf/site.properties
+jpf-core=C:/Users/Loaner/workspace/jpf-core-vai (path to the project)
+
+tc-home=${jpf-core}/lib
+native_classpath = ${tc-home}/featureexprlib_2.10-0.3.4.jar;${tc-home}/scala-library-2.10.3.jar;${tc-home}/org.sat4j.core-2.3.1.jar
+=======================================================================
+
+It is required to disable path search (e.g., BFS)! Set search class:  
+search.class=.search.RandomSearch
+
+Variability-Aware options:
+
+# set feature expression [SAT, BDD]
+factory=BDD
+
+# set choice type [TreeChoice, MapChoice]
+choice=TreeChoice
+
+# define constrints of the application with a dimacs file can be created with FeatureIDE (http://fosd.net/fide):
+featuremodel="path"\model.dimacs 
+
+# set method frame [StackHandler] (currently only one type supported)
+--
+
+=======================================================================
+specify conditional boolean fields:
+
+@Conditional
+static FEATURE = true;
+
+FEATURE is used as if it has both values true and false. 
+
+=======================================================================
+
+run VarexJ:
+
+a) as test: see test package "cmu*", it contains several examples for variability-aware execution
+
+b) es JVM via command line:
+
+java -version:1.7 -jar ..\RunJPF.jar +native_classpath=.."path to VarexJ"\lib\* +search.class=.search.RandomSearch +featuremodel="path to the feature model"\model.dimacs +choice=TreeChoice +factory=BDD +classpath="path to the application"\bin\ Main args 
+
+
