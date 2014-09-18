@@ -1,8 +1,19 @@
 VarexJ is a variability-aware interpreter for Java(7) bytecode based on Java Pathfinder v7.0 (rev 1155+) see: http://javapathfinder.sourceforge.net/.
 
-JDK 7 or lower is required.
+JDK 7 is required.
 
-Usage:
+======================================================================
+
+Build:
+
+Import the project into eclipse.
+
+If it does not build automatically, right-click on the build.xml \ run as \ Ant BUild
+The build process has to be run with JDK 7, JRE will not work.
+
+======================================================================
+
+Configuration:
 
 ======================================================================
 # create site.properties @ ../home/.jpf/site.properties
@@ -34,6 +45,7 @@ featuremodel="path"\model.dimacs
 --
 
 =======================================================================
+
 specify conditional boolean fields:
 
 import gov.nasa.jpf.annotation.Conditional;
