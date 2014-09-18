@@ -76,8 +76,16 @@ public class CGCreatorFactory {
   public static CGCreatorFactory getFactory() {
     if (factory == null) {
       factory = new CGCreatorFactory();
+    } else {
+    	// workaround for CGCreatorFactoryTest, because the specified CGCreator is not added
+    	// is another thers already initialized CGCreatorFactory
+    	// might depend on the order of tests
+    	 Config config = VM.getVM().getConfig();
+    	 String[] cgCreators = config.getStringArray("cg-creators");
+    	 if (cgCreators != null) {
+    		 factory = new CGCreatorFactory(); 
+    	 }
     }
-
     return factory;
   }
 

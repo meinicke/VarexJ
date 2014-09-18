@@ -1134,10 +1134,10 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   
   @MJI
   public static int readObjectFromFile__Ljava_lang_Class_2Ljava_lang_String_2__Ljava_lang_Object_2(
-          MJIEnv env, int clsObjRef, Conditional<Integer> newObjClsRef, Conditional<Integer> fileNameRef, FeatureExpr ctx) {
-    int typeNameRef = env.getReferenceField(ctx, newObjClsRef.getValue(), "name").getValue();
+          MJIEnv env, int clsObjRef, int newObjClsRef, int fileNameRef, FeatureExpr ctx) {
+    int typeNameRef = env.getReferenceField(ctx, newObjClsRef, "name").getValue();
     String typeName = env.getStringObject(ctx, typeNameRef);
-    String fileName = env.getStringObject(ctx, fileNameRef.getValue());
+    String fileName = env.getStringObject(ctx, fileNameRef);
 
     try {
 

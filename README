@@ -16,8 +16,8 @@ The build process has to be run with JDK 7, JRE will not work.
 Configuration:
 
 ======================================================================
-# create site.properties @ ../home/.jpf/site.properties
-contents:
+define global options with site.properties @ ../home/.jpf/site.properties
+content:
 
 	jpf-core=C:/Users/Loaner/workspace/jpf-core-vai (path to the project)
 	tc-home=${jpf-core}/lib
