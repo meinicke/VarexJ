@@ -86,7 +86,9 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
 			if (ThreadInfo.ctxOutput) {
-				env.getVM().print("(<" + s.getKey() + "> : " + getCTXString(s.getValue().and(ctx)) + ')');
+				if (s.getValue().and(ctx).isSatisfiable()) {
+					env.getVM().print("(<" + s.getKey() + "> : " + getCTXString(s.getValue().and(ctx)) + ')');
+				}
 			} else {
 				env.getVM().print(s.getKey());
 			}
@@ -207,7 +209,9 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
 			if (ThreadInfo.ctxOutput) {
-				env.getVM().println('<' + s.getKey() + "> : " + getCTXString(s.getValue().and(ctx)));
+				if (s.getValue().and(ctx).isSatisfiable()) {
+					env.getVM().println('<' + s.getKey() + "> : " + getCTXString(s.getValue().and(ctx)));
+				}
 			} else {
 				env.getVM().println(s.getKey());
 			}
