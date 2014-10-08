@@ -74,8 +74,24 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 	}
 
 	@MJI
-	public void print__Ljava_lang_String_2__V(MJIEnv env, int objRef, int strRef, FeatureExpr ctx) {
-		env.getVM().print(env.getStringObject(ctx, strRef));
+	public void print__Ljava_lang_String_2__V(final MJIEnv env, int objRef, Conditional<Integer> strRef, FeatureExpr ctx) {
+		Conditional<String> strings = strRef.mapr(new Function<Integer, Conditional<String>>() {
+
+			@Override
+			public Conditional<String> apply(Integer strRef) {
+				return env.getConditionalStringObject(strRef);
+			}
+			
+		});
+		Map<String, FeatureExpr> map = strings.toMap();
+		for (Entry<String, FeatureExpr> s : map.entrySet()) {
+			if (ThreadInfo.ctxOutput) {
+				env.getVM().print("(<" + s.getKey() + "> : " + getCTXString(s.getValue().and(ctx)) + ')');
+			} else {
+				env.getVM().print(s.getKey());
+			}
+		}
+		
 	}
 
 	@MJI
