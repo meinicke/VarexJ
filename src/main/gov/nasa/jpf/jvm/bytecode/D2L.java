@@ -38,11 +38,11 @@ public class D2L extends JVMInstruction {
     
 	Conditional<Double> v = frame.popDouble(ctx);
 
-	frame.push(ctx, v.map(new Function<Double, Integer>() {
+	frame.push(ctx, v.map(new Function<Double, Long>() {
 
 		@Override
-		public Integer apply(Double l) {
-			return (int) l.floatValue();
+		public Long apply(Double d) {
+			return (long)d.doubleValue();
 		}
 
 	}));

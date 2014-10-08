@@ -184,8 +184,10 @@ public class StringTest extends TestJPF {
 			double d = 1;
 			if (x) {
 				d += 100;
+				if (y) { 
+					d++; 
+				}
 			}
-
 			System.out.println(d);
 		}
 	}
