@@ -329,7 +329,14 @@ public class StackHandler implements Cloneable, IStackHandler {
 			if (locals[index] == null) {
 				return false;
 			}
-			return locals[index].simplify(ctx).map(new IsRefLocal()).simplifyValues().getValue();
+			// TODO check calls of isRefLocal
+			for (boolean b : locals[index].simplify(ctx).map(new IsRefLocal()).toList()) {
+				if (b) {
+					return true;
+				}
+			}
+			return false;
+//			return locals[index].simplify(ctx).map(new IsRefLocal()).simplifyValues().getValue();
 		} else {
 			final int i = index - locals.length;
 			return stack.simplify(ctx).map(new Function<Stack, Boolean>() {

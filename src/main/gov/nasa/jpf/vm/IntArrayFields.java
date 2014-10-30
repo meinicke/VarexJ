@@ -62,8 +62,8 @@ public class IntArrayFields extends ArrayFields {
 		return new One<>(values);
 	}
 
-	public int arrayLength() {
-		return values.length;
+	public Conditional<Integer> arrayLength() {
+		return new One<>(values.length);
 	}
 
 	public int getHeapSize() { // in bytes

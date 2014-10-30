@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class StringTest extends TestJPF {
 
-	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
+	static String[] JPF_CONFIGURATION = new String[]{"+search.class= .search.RandomSearch", "+choice=TreeChoice"};
 
 	@Conditional
 	static boolean x = true;
@@ -175,6 +175,25 @@ public class StringTest extends TestJPF {
 			}
 			String s = "BBBBBBBBBBBBBBB" + s1;
 			System.out.println(s);
+		}
+	}
+	
+	@Test
+	public void test() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s1 = "A";
+			if (x) {
+				s1 = s1 + "XXXX";
+			}
+			String s = s1 + "1234567890";			
+			if (x) {
+				assertEquals(15, s.length());
+			} else {
+				assertEquals(11, s.length());
+			}
+			for (int i = 0; i < s.length(); i++) {
+				System.out.println(s.charAt(i) + "");
+			}
 		}
 	}
 

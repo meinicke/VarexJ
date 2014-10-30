@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -47,46 +48,82 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 		}
 	}
 
-	int appendString(final MJIEnv env, final int objref, final String s, FeatureExpr ctx) {
-		final int slen = s.length();
+	@Deprecated
+	int appendString(MJIEnv env, int objref, String s, FeatureExpr ctx) {
+		return appendString(env, objref, new One<>(s), ctx);
+	}
 
-		final int aref = env.getReferenceField(ctx, objref, "value").getValue();
-		final int alen = env.getArrayLength(ctx, aref);
-		Conditional<Integer> count = env.getIntField(objref, "count");
-		count.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
-
-			@Override
-			public Conditional<Object> apply(FeatureExpr ctx, Integer count) {
-				int i, j;
-				int n = count + slen;
-
-				if (n < alen) {
-					for (i = count, j = 0; i < n; i++, j++) {
-						env.setCharArrayElement(ctx, aref, i, new One<>(s.charAt(j)));
-					}
-				} else {
-					int m = 3 * alen / 2;
-					if (m < n) {
-						m = n;
-					}
-					int arefNew = env.newCharArray(ctx, m);
-					for (i = 0; i < count; i++) {
-						env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
-					}
-					for (j = 0; i < n; i++, j++) {
-						env.setCharArrayElement(ctx, arefNew, i, new One<>(s.charAt(j)));
-					}
-					env.setReferenceField(ctx, objref, "value", arefNew);
+	int appendString(final MJIEnv env, final int objref, final Conditional<String> s, FeatureExpr ctx) {
+		try {
+			final Conditional<Integer> aref = env.getReferenceField(ctx, objref, "value");
+			aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+	
+				@Override
+				public Conditional<Object> apply(FeatureExpr ctx, final Integer aref) {
+					final int alen = env.getArrayLength(ctx, aref);
+	
+					s.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<Object>>() {
+	
+						@Override
+						public Conditional<Object> apply(FeatureExpr ctx, final String s) {
+							final int slen = s.length();
+							Conditional<Integer> count = env.getIntField(objref, "count");
+							count.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+	
+								@Override
+								public Conditional<Object> apply(FeatureExpr ctx, Integer count) {
+									if (Conditional.isContradiction(ctx)) {
+										return null;
+									}
+									int i, j;
+									int n = count + slen;
+	
+									if (n < alen) {
+										for (i = count, j = 0; i < n; i++, j++) {
+											env.setCharArrayElement(ctx, aref, i, new One<>(s.charAt(j)));
+										}
+									} else {
+										int m = 3 * alen / 2;
+										if (m < n) {
+											m = n;
+										}
+										int arefNew = env.newCharArray(ctx, m);
+										for (i = 0; i < count; i++) {
+											env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
+										}
+										for (j = 0; i < n; i++, j++) {
+											env.setCharArrayElement(ctx, arefNew, i, new One<>(s.charAt(j)));
+										}
+										env.setReferenceField(ctx, objref, "value", arefNew);
+									}
+	
+									if (hasSharedField) {
+										env.setBooleanField(ctx, objref, "shared", new One<>(false));
+									}
+									env.setIntField(ctx, objref, "count", new One<>(n));
+									return null;
+								}
+	
+							});
+	
+							return null;
+						}
+	
+					});
+	
+					return null;
 				}
-
-				if (hasSharedField) {
-					env.setBooleanField(ctx, objref, "shared", new One<>(false));
-				}
-				env.setIntField(ctx, objref, "count", new One<>(n));
-				return null;
+	
+			});
+		} catch (Exception e) {
+			System.out.println("JPF_java_lang_StringBuffer.appendString()");
+			System.out.println(e);
+			for (StackTraceElement t : e.getStackTrace()) {
+				System.out.println(t);
 			}
+			
+		}
 
-		});
 		return objref;
 	}
 
@@ -102,11 +139,25 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 	 */
 
 	@MJI
-	public int append__Ljava_lang_String_2__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, Conditional<Integer> sref, FeatureExpr ctx) {
-		String s = env.getStringObject(ctx, sref.getValue());
-		if (s == null)
-			s = "null";
+	public int append__Ljava_lang_String_2__Ljava_lang_StringBuffer_2(final MJIEnv env, int objref, Conditional<Integer> sref, FeatureExpr ctx) {
+		Conditional<String> s = sref.mapr(new Function<Integer, Conditional<String>>() {
 
+			@Override
+			public Conditional<String> apply(Integer sref) {
+				return env.getConditionalStringObject(sref);
+			}
+
+		});
+		s = s.simplify(ctx).map(new Function<String, String>() {
+
+			@Override
+			public String apply(final String s) {
+				if (s == null) {
+					return "null";
+				}
+				return s;
+			}
+		}).simplifyValues();
 		return appendString(env, objref, s, ctx);
 	}
 
@@ -153,31 +204,31 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 
 	@MJI
 	public int append__C__Ljava_lang_StringBuffer_2(MJIEnv env, int objref, char c, FeatureExpr ctx) {
-
-		int aref = env.getReferenceField(ctx, objref, "value").getValue();
-		int alen = env.getArrayLength(ctx, aref);
-
-		int count = env.getIntField(objref, "count").getValue().intValue();
-		int n = count + 1;
-
-		if (n < alen) {
-			env.setCharArrayElement(ctx, aref, count, new One<>(c));
-		} else {
-			int m = 3 * alen / 2;
-			int arefNew = env.newCharArray(ctx, m);
-			for (int i = 0; i < count; i++) {
-				env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
-			}
-			env.setCharArrayElement(ctx, arefNew, count, new One<>(c));
-			env.setReferenceField(ctx, objref, "value", arefNew);
-		}
-
-		if (hasSharedField) {
-			env.setBooleanField(ctx, objref, "shared", new One<>(false));
-		}
-		env.setIntField(ctx, objref, "count", new One<>(n));
-
-		return objref;
+		return appendString(env, objref, "" + c, ctx);
+		// int aref = env.getReferenceField(ctx, objref, "value").getValue();
+		// int alen = env.getArrayLength(ctx, aref);
+		//
+		// int count = env.getIntField(objref, "count").getValue().intValue();
+		// int n = count + 1;
+		//
+		// if (n < alen) {
+		// env.setCharArrayElement(ctx, aref, count, new One<>(c));
+		// } else {
+		// int m = 3 * alen / 2;
+		// int arefNew = env.newCharArray(ctx, m);
+		// for (int i = 0; i < count; i++) {
+		// env.setCharArrayElement(ctx, arefNew, i, env.getCharArrayElement(aref, i));
+		// }
+		// env.setCharArrayElement(ctx, arefNew, count, new One<>(c));
+		// env.setReferenceField(ctx, objref, "value", arefNew);
+		// }
+		//
+		// if (hasSharedField) {
+		// env.setBooleanField(ctx, objref, "shared", new One<>(false));
+		// }
+		// env.setIntField(ctx, objref, "count", new One<>(n));
+		//
+		// return objref;
 
 	}
 }

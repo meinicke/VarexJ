@@ -59,7 +59,7 @@ public class JPF_java_lang_Object extends NativePeer {
           componentType = cci.getType();
         }
 
-        eiClone = heap.newArray(ctx, componentType, ei.arrayLength(), env.getThreadInfo());
+        eiClone = heap.newArray(ctx, componentType, ei.arrayLength().getValue(), env.getThreadInfo());
         
       } else {
         eiClone = heap.newObject(ctx, ci, env.getThreadInfo());

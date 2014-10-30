@@ -66,8 +66,8 @@ public ReferenceArrayFields (int length) {
   }
 
   @Override
-  public int arrayLength() {
-    return values.length;
+  public Conditional<Integer> arrayLength() {
+    return new One<>(values.length);
   }
 
   @Override

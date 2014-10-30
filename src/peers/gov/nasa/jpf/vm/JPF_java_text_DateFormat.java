@@ -36,8 +36,8 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JPF_java_text_DateFormat extends NativePeer {
 
-  DateFormat getInstance (MJIEnv env, int objref) {
-    Format fmt = JPF_java_text_Format.getInstance(env,objref);
+  DateFormat getInstance (FeatureExpr ctx, MJIEnv env, int objref) {
+    Format fmt = JPF_java_text_Format.getInstance(ctx,env, objref);
     assert fmt instanceof SimpleDateFormat;
 
     return (DateFormat)fmt;
@@ -47,7 +47,7 @@ public class JPF_java_text_DateFormat extends NativePeer {
   public void setTimeZone__Ljava_util_TimeZone_2__V(MJIEnv env, int objref,int timeZoneRef, FeatureExpr ctx) {
     String timeZoneId = env.getStringField(ctx, timeZoneRef, "ID");
     TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-    DateFormat fmt = getInstance(env,objref);
+    DateFormat fmt = getInstance(ctx,env, objref);
     fmt.setTimeZone(timeZone);
     
     int calendarRef = env.getReferenceField(ctx, objref, "calendar").getValue();
@@ -56,7 +56,7 @@ public class JPF_java_text_DateFormat extends NativePeer {
 
   @MJI
   public int parse__Ljava_lang_String_2__Ljava_util_Date_2 (MJIEnv env, int objref, int strRef, FeatureExpr ctx) {
-    DateFormat f = getInstance(env,objref);
+    DateFormat f = getInstance(ctx,env, objref);
     String s = env.getStringObject(ctx, strRef);
     try {
       Date d = f.parse(s);
@@ -74,13 +74,13 @@ public class JPF_java_text_DateFormat extends NativePeer {
   
   @MJI
   public void setLenient__Z__V (MJIEnv env, int objref, boolean isLenient, FeatureExpr ctx) {
-    DateFormat f = getInstance(env,objref);
+    DateFormat f = getInstance(ctx,env, objref);
     f.setLenient(isLenient);
   }
   
   @MJI
   public int format__Ljava_util_Date_2__Ljava_lang_String_2 (MJIEnv env, int objref, int dateRef, FeatureExpr ctx) {
-    DateFormat fmt = getInstance(env,objref);
+    DateFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       Date d = env.getDateObject(dateRef);
       

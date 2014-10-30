@@ -694,7 +694,7 @@ public class JPF implements Runnable {
     }
     
     if (traceMethod != null) {
-    	TraceComparator.compare();
+//    	TraceComparator.compare();
     }
   }
   

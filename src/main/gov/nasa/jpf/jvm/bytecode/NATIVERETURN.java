@@ -141,8 +141,20 @@ public class NATIVERETURN extends ReturnInstruction {
 		if (ret != null) {
 			switch (retType) {
 			case Types.T_BOOLEAN:
-				int ival = Types.booleanToInt(((Boolean) ret).booleanValue());
-				fr.push(ctx, new One<>(ival));
+				if (ret instanceof Conditional) {
+					Conditional<Integer> ival = ((Conditional) ret).map(new Function<Object, Integer>() {
+
+						@Override
+						public Integer apply(Object ret) {
+							return Types.booleanToInt(((Boolean) ret).booleanValue());
+						}
+						
+					});
+					fr.push(ctx, ival);
+				} else {
+					int ival = Types.booleanToInt(((Boolean) ret).booleanValue());
+					fr.push(ctx, new One<>(ival));
+				}
 				break;
 
 			case Types.T_BYTE:
@@ -150,7 +162,19 @@ public class NATIVERETURN extends ReturnInstruction {
 				break;
 
 			case Types.T_CHAR:
-				fr.push(ctx, new One<>((int) ((Character) ret).charValue()));
+				if (ret instanceof Conditional) {
+					Conditional<Integer> ival = ((Conditional) ret).map(new Function<Object, Integer>() {
+
+						@Override
+						public Integer apply(Object ret) {
+							return (int) ((Character) ret).charValue();
+						}
+						
+					});
+					fr.push(ctx, ival);
+				} else {
+					fr.push(ctx, new One<>((int) ((Character) ret).charValue()));
+				}
 				break;
 
 			case Types.T_SHORT:

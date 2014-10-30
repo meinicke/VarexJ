@@ -295,7 +295,7 @@ public abstract class ElementInfo implements Cloneable {
 
     if (isArray()) {
       if (fields.isReferenceArray()) {
-        n = ((ArrayFields)fields).arrayLength();
+        n = ((ArrayFields)fields).arrayLength().getValue();
         for (i = 0; i < n; i++) {
           Conditional<Integer> objref = fields.getReferenceValue(i);
           for (Integer ref : objref.toList()) {
@@ -1183,7 +1183,7 @@ public abstract class ElementInfo implements Cloneable {
 
   protected void checkArray(int index) {
     if (fields instanceof ArrayFields) { // <2do> should check for !long array
-      if ((index < 0) || (index >= ((ArrayFields)fields).arrayLength())) {
+      if ((index < 0) || (index >= ((ArrayFields)fields).arrayLength().getValue())) {
         throw new JPFException("illegal array offset: " + index);
       }
     } else {
@@ -1588,7 +1588,7 @@ public abstract class ElementInfo implements Cloneable {
     return monitor.getBlockedOrWaitingThreads();
   }
     
-  public int arrayLength() {
+  public Conditional<Integer> arrayLength() {
     if (fields instanceof ArrayFields){
       return ((ArrayFields)fields).arrayLength();
     } else {
@@ -1667,7 +1667,7 @@ public abstract class ElementInfo implements Cloneable {
 
   public void checkArrayBounds(FeatureExpr ctx, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     if (fields instanceof ArrayFields) {
-      if (index < 0 || index >= ((ArrayFields)fields).arrayLength()){
+      if (index < 0 || index >= ((ArrayFields)fields).arrayLength().getValue()){
         throw new ArrayIndexOutOfBoundsExecutiveException(
               ThreadInfo.getCurrentThread().createAndThrowException(
               ctx, "java.lang.ArrayIndexOutOfBoundsException", Integer.toString(index)));

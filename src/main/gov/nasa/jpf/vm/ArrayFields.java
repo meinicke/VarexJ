@@ -31,10 +31,10 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public abstract class ArrayFields extends Fields {
 
 	int getNumberOfFieldsOrElements() {
-		return arrayLength(); // we have no fields
+		return arrayLength().getValue(); // we have no fields
 	}
 
-	public abstract int arrayLength();
+	public abstract Conditional<Integer> arrayLength();
 
 	public abstract int getHeapSize();
 
@@ -48,7 +48,7 @@ public abstract class ArrayFields extends Fields {
 	}
 
 	public void printElements(PrintStream ps, int max) {
-		int len = arrayLength();
+		int len = arrayLength().getValue();
 		if (max < 0)
 			max = len;
 		int i;

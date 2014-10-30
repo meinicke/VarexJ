@@ -818,7 +818,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
       if (ei != null){
         if (ei.isArray()) {
-          if (idx < ei.arrayLength()) {
+          if (idx < ei.arrayLength().getValue()) {
             ei.setElementAttr(idx, Integer.valueOf(attr));
           } else {
             env.throwException(ctx,
@@ -842,7 +842,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
       if (ei != null) {
         if (ei.isArray()) {
-          if (idx < ei.arrayLength()) {
+          if (idx < ei.arrayLength().getValue()) {
             return getAttribute( env, ei.getElementAttr( idx), ctx);
           } else {
             env.throwException(ctx,
@@ -868,7 +868,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
       if (ei != null){
         if (ei.isArray()) {
-          if (idx < ei.arrayLength()) {
+          if (idx < ei.arrayLength().getValue()) {
             ei.addElementAttr(idx, Integer.valueOf(attr));
           } else {
             env.throwException(ctx,
@@ -891,7 +891,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
       ElementInfo ei = env.getElementInfo(oRef);
       if (ei != null) {
         if (ei.isArray()) {
-          if (idx < ei.arrayLength()) {
+          if (idx < ei.arrayLength().getValue()) {
             return getAttributeList( env, ei.getElementAttr( idx), ctx);
           } else {
             env.throwException(ctx,

@@ -38,8 +38,8 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
   static final int INTEGER_STYLE=0;
   static final int NUMBER_STYLE=1;
 
-  NumberFormat getInstance (MJIEnv env, int objref) {
-    Format fmt = JPF_java_text_Format.getInstance(env,objref);
+  NumberFormat getInstance (FeatureExpr ctx, MJIEnv env, int objref) {
+    Format fmt = JPF_java_text_Format.getInstance(ctx,env, objref);
     assert fmt instanceof NumberFormat;
     
     return (NumberFormat)fmt;
@@ -53,7 +53,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
   @MJI
   public void init0____V (MJIEnv env, int objref, FeatureExpr ctx) {
     DecimalFormat fmt = new DecimalFormat();
-    JPF_java_text_Format.putInstance(env,objref,fmt);    
+    JPF_java_text_Format.putInstance(ctx,env,objref, fmt);    
   }
   
   @MJI
@@ -61,7 +61,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
     String pattern = env.getStringObject(ctx, patternref);
     
     DecimalFormat fmt = new DecimalFormat(pattern);
-    JPF_java_text_Format.putInstance(env,objref,fmt);    
+    JPF_java_text_Format.putInstance(ctx,env,objref, fmt);    
   }
   
   @MJI
@@ -76,12 +76,12 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
       fmt = new DecimalFormat();
     }
     
-    JPF_java_text_Format.putInstance(env,objref,fmt);    
+    JPF_java_text_Format.putInstance(ctx,env,objref, fmt);    
   }
   
   @MJI
   public void setMaximumFractionDigits__I__V (MJIEnv env, int objref, int newValue, FeatureExpr ctx){
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       fmt.setMaximumFractionDigits(newValue);
     }
@@ -89,7 +89,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public void setMaximumIntegerDigits__I__V (MJIEnv env, int objref, int newValue, FeatureExpr ctx){
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       fmt.setMaximumIntegerDigits(newValue);
     }
@@ -97,7 +97,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public void setMinimumFractionDigits__I__V (MJIEnv env, int objref, int newValue, FeatureExpr ctx){
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       fmt.setMinimumFractionDigits(newValue);
     }
@@ -105,7 +105,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public void setMinimumIntegerDigits__I__V (MJIEnv env, int objref, int newValue, FeatureExpr ctx){
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       fmt.setMinimumIntegerDigits(newValue);
     }
@@ -113,7 +113,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
   
   @MJI
   public int format__J__Ljava_lang_String_2 (MJIEnv env, int objref, long number, FeatureExpr ctx) {
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       String s = fmt.format(number);
       int sref = env.newString(ctx, s);
@@ -125,7 +125,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
   
   @MJI
   public int format__D__Ljava_lang_String_2 (MJIEnv env, int objref, double number, FeatureExpr ctx) {
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       String s = fmt.format(number);
       int sref = env.newString(ctx, s);
@@ -137,7 +137,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public void setParseIntegerOnly__Z__V(MJIEnv env, int objref, boolean value, FeatureExpr ctx) {
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       fmt.setParseIntegerOnly(value);
     }
@@ -145,7 +145,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public boolean isParseIntegerOnly____Z(MJIEnv env, int objref, FeatureExpr ctx) {
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       return fmt.isParseIntegerOnly();
     }
@@ -154,7 +154,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public void setGroupingUsed__Z__V(MJIEnv env, int objref, boolean newValue, FeatureExpr ctx) {
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       fmt.setGroupingUsed(newValue);
     }
@@ -162,7 +162,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
 
   @MJI
   public boolean isGroupingUsed____Z(MJIEnv env, int objref, FeatureExpr ctx) {
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     if (fmt != null) {
       return fmt.isGroupingUsed();
     }
@@ -173,7 +173,7 @@ public class JPF_java_text_DecimalFormat extends NativePeer {
   public int parse__Ljava_lang_String_2Ljava_text_ParsePosition_2__Ljava_lang_Number_2(MJIEnv env, int objref,int sourceRef,int parsePositionRef, FeatureExpr ctx) {
     String source = env.getStringObject(ctx, sourceRef);
     ParsePosition parsePosition = createParsePositionFromRef(env,parsePositionRef);
-    NumberFormat fmt = getInstance(env,objref);
+    NumberFormat fmt = getInstance(ctx,env, objref);
     Number number = null;
     if (fmt != null) {
       number = fmt.parse(source,parsePosition);

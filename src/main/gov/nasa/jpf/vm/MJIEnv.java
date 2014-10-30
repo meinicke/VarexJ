@@ -131,7 +131,7 @@ public VM getVM () {
 
   public int getArrayLength (FeatureExpr ctx, int objref) {
     if (isArray(objref)) {
-      return heap.get(objref).arrayLength();
+      return heap.get(objref).arrayLength().getValue();
     } else {
       throwException(ctx, "java.lang.IllegalArgumentException");
 
@@ -764,16 +764,29 @@ public VM getVM () {
     
   }
   
+  @Deprecated
+  public String getStringObject (FeatureExpr ctx, int objRef) {
+	    if (objRef != MJIEnv.NULL) {
+	      ElementInfo ei = getElementInfo(objRef);
+	      
+	      Conditional<String> str = ei.asString();
+	      return str.simplify(ctx).getValue();
+	      
+	    } else {
+	      return null;
+	    }
+	  }
+  
   /**
    * turn JPF String object into a VM String object
    * (this is a method available for non gov..jvm NativePeer classes)
    */
-  public String getStringObject (FeatureExpr ctx, int objRef) {
+  public Conditional<String> getStringObjectNew (FeatureExpr ctx, int objRef) {
     if (objRef != MJIEnv.NULL) {
       ElementInfo ei = getElementInfo(objRef);
       
       Conditional<String> str = ei.asString();
-      return str.simplify(ctx).getValue();
+      return str.simplify(ctx);
       
     } else {
       return null;

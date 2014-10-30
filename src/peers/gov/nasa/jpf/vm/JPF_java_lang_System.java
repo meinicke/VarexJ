@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -313,8 +314,16 @@ public class JPF_java_lang_System extends NativePeer {
   }
 
   @MJI
-  public int identityHashCode__Ljava_lang_Object_2__I (MJIEnv env, int clsObjRef, int objref, FeatureExpr ctx) {
-    return (objref ^ 0xABCD);
+  public Conditional<Integer> identityHashCode__Ljava_lang_Object_2__I (MJIEnv env, int clsObjRef, Conditional<Integer> objref, FeatureExpr ctx) {
+	return objref.map(new Function<Integer, Integer>() {
+
+		@Override
+		public Integer apply(Integer objref) {
+			return (objref ^ 0xABCD);
+		}
+		
+	}); 
+    
   }
   
 }

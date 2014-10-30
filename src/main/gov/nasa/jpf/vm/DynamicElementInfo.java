@@ -71,7 +71,7 @@ public class DynamicElementInfo extends ElementInfo {
   @Override
   protected int getNumberOfFieldsOrElements(){
     if (fields instanceof ArrayFields){
-      return ((ArrayFields)fields).arrayLength();
+      return ((ArrayFields)fields).arrayLength().getValue();
     } else {
       return ci.getNumberOfInstanceFields();
     }

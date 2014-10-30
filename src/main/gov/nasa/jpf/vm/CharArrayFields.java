@@ -68,8 +68,8 @@ public class CharArrayFields extends ArrayFields {
 		return values;
 	}
 
-	public int arrayLength() {
-		return values.map(new ArrayLength()).simplifyValues().getValue(true);// TODO jens remove true
+	public Conditional<Integer> arrayLength() {
+		return values.map(new ArrayLength()).simplifyValues();
 	}
 	
 	private static final class ArrayLength implements Function<char[], Integer> {

@@ -34,8 +34,8 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JPF_java_text_SimpleDateFormat extends NativePeer {
 
-  SimpleDateFormat getInstance (MJIEnv env, int objref) {
-    Format fmt = JPF_java_text_Format.getInstance(env,objref);
+  SimpleDateFormat getInstance (FeatureExpr ctx, MJIEnv env, int objref) {
+    Format fmt = JPF_java_text_Format.getInstance(ctx,env, objref);
     assert fmt instanceof SimpleDateFormat;
 
     return (SimpleDateFormat)fmt;
@@ -44,7 +44,7 @@ public class JPF_java_text_SimpleDateFormat extends NativePeer {
   @MJI
   public void init0____V (MJIEnv env, int objref, FeatureExpr ctx) {
     SimpleDateFormat fmt = new SimpleDateFormat();
-    JPF_java_text_Format.putInstance(env,objref,fmt);
+    JPF_java_text_Format.putInstance(ctx,env,objref, fmt);
   }
 
   @MJI
@@ -52,7 +52,7 @@ public class JPF_java_text_SimpleDateFormat extends NativePeer {
     String pattern = env.getStringObject(ctx, patternref);
 
     SimpleDateFormat fmt = new SimpleDateFormat(pattern);
-    JPF_java_text_Format.putInstance(env,objref,fmt);
+    JPF_java_text_Format.putInstance(ctx,env,objref, fmt);
   }
 
   @MJI
@@ -70,13 +70,13 @@ public class JPF_java_text_SimpleDateFormat extends NativePeer {
       fmt = DateFormat.getDateTimeInstance(dateStyle, timeStyle);
     }
 
-    JPF_java_text_Format.putInstance(env,objref,fmt);
+    JPF_java_text_Format.putInstance(ctx,env,objref, fmt);
   }
 
   @MJI
   public int format0 (MJIEnv env, int objref, long dateTime, FeatureExpr ctx) {
     Date date = new Date(dateTime);
-    SimpleDateFormat f = getInstance(env,objref);
+    SimpleDateFormat f = getInstance(ctx,env, objref);
     String s = f.format(date);
     return env.newString(ctx, s);
   }

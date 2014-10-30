@@ -24,6 +24,8 @@ import gov.nasa.jpf.Config;
 import java.text.Format;
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * native peer for java.text.Format delegation. This is the place where
  * we keep a map between real formatters and their JPF counterparts
@@ -38,15 +40,15 @@ public class JPF_java_text_Format extends NativePeer {
     return true;
   }
   
-  static void putInstance (MJIEnv env, int objref, Format fmt) {
-    int id = env.getIntField(objref,  "id").getValue().intValue();
+  static void putInstance (FeatureExpr ctx, MJIEnv env, int objref, Format fmt) {
+    int id = env.getIntField(objref,  "id").simplify(ctx).getValue().intValue();
     formatters.put(new Integer(id), fmt);
   }
 
-  static Format getInstance (MJIEnv env, int objref) {
+  static Format getInstance (FeatureExpr ctx, MJIEnv env, int objref) {
     // <2do> that's braindead
     
-    int id = env.getIntField(objref,  "id").getValue().intValue();
+    int id = env.getIntField(objref,  "id").simplify(ctx).getValue().intValue();
     return formatters.get(id);
   }
 
