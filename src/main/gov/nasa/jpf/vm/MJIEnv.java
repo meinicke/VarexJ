@@ -487,9 +487,9 @@ public VM getVM () {
   }
 
   // we need this in case of a masked field
-  public int getReferenceField (int objref, FieldInfo fi) {
+  public int getReferenceField (FeatureExpr ctx, int objref, FieldInfo fi) {
     ElementInfo ei = heap.get(objref);
-    return ei.getReferenceField(fi).simplify(null).getValue();// TODO jens
+    return ei.getReferenceField(fi).simplify(ctx).getValue();// TODO jens
   }
 
   public String getStringField (FeatureExpr ctx, int objref, String fname){// TODO jens

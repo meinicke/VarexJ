@@ -48,7 +48,7 @@ public class JPF_java_util_Locale extends NativePeer {
     FieldInfo fiBase = ci.getInstanceField("baseLocale");
     
     if (fiBase != null){ // Java >= 1.7
-      int baseLocref = env.getReferenceField(locref, fiBase);
+      int baseLocref = env.getReferenceField(ctx, locref, fiBase);
       country = env.getStringObject(ctx, env.getReferenceField(ctx,baseLocref, "region").getValue());
       language = env.getStringObject(ctx, env.getReferenceField(ctx, baseLocref, "language").getValue());
       variant = env.getStringObject(ctx, env.getReferenceField(ctx, baseLocref, "variant").getValue());
