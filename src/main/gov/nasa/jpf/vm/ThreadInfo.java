@@ -1912,11 +1912,11 @@ public class ThreadInfo extends InfoObject
     }
     
     // this is the pre-execution notification, during which a listener can perform
-    // on-the-fly instrumentation or even replace the instruction alltogether
+    // on-the-fly instrumentation or even replace the instruction all together
     vm.notifyExecuteInstruction(this, pc.getValue(true));// TODO revise
 
     int popedFrames = 0;
-    StackFrame oldStack = top;
+    final StackFrame oldStack = top;
     
     if (!skipInstruction) {
         // enter the next bytecode
@@ -1972,7 +1972,7 @@ public class ThreadInfo extends InfoObject
 				System.out.println(" " + i + " if " + ctx);
 			}
     		
-    		// log trace for trace compasion
+    		// log trace for trace comparison
     		if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
     			logtrace = true;
     		}
@@ -1986,8 +1986,9 @@ public class ThreadInfo extends InfoObject
     			}
     		}
     		
-    		int currentStackDepth = stackDepth;
+    		final int currentStackDepth = stackDepth;
     		Conditional<Instruction> next = i.execute(ctx, this);
+    		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
     		} else if (i instanceof ReturnInstruction) {
@@ -1997,9 +1998,10 @@ public class ThreadInfo extends InfoObject
     			} else {
     				nextPc = next;
     			}
-    		} else if (i instanceof ATHROW) {
+    		} else if (i instanceof ATHROW || (poped > 0 && stackTraceMember(oldStack, top))) {
+    			// some instruction (e.g., IDIV with div by zero) just pop frames but do not throw exceptions
     			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
-				popedFrames = currentStackDepth - stackDepth;
+    			popedFrames = poped;
 				int k = 0;
 				StackFrame stackPointer = oldStack;
 				// set the ctx of poped frames
@@ -2012,7 +2014,6 @@ public class ThreadInfo extends InfoObject
     		} else {
     			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
     		}
-    		
         } catch (ClassInfoException cie) {
           nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
@@ -2045,6 +2046,7 @@ public class ThreadInfo extends InfoObject
       // <2do> this is where we would have to handle general insn repeat
       setPC(nextPc);
   		if (popedFrames > 0) {
+  			// return to the current method after the chatch clause is set after an exception
   			pushFrames(oldStack, popedFrames);
   		}
       return nextPc;
@@ -2053,7 +2055,21 @@ public class ThreadInfo extends InfoObject
     }
   }
 
-  /**
+  	/**
+  	 * Checks whether the the new top stack is part of the trace of the current stack.
+  	 */
+	private boolean stackTraceMember(final StackFrame current, final StackFrame newTop) {
+		if (current == newTop) {
+			return true;
+		}
+		final StackFrame prev = current.prev;
+		if (prev != null) {
+			return stackTraceMember(prev, newTop);
+		}
+		return false;
+	}
+
+/**
    * enter instruction hidden from any listeners, and do not
    * record it in the path
    */
@@ -2712,6 +2728,7 @@ public class ThreadInfo extends InfoObject
 	  if (Conditional.isContradiction(frame.stack.getCtx())) {
 		  return;
 	  }
+	  System.out.println("PUSH FRAME");
 	  pushFrame(frame);
   }
   

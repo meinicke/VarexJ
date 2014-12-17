@@ -500,6 +500,39 @@ public class VariabilityAwareTest extends TestJPF {
 			check(x == 0);
 		}
 	}
+	
+	/**
+	 * Checks that the executions are joined again after a div by zero exception
+	 * TODO how to test this property? (i.e., fail if the instructions are not joined)
+	 */
+	@Test
+	public void testNullPointer() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			try {
+				System.out.println(nullMethod1(0));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("JOINED");
+		}
+	}
+	
+	
+
+	private int nullMethod1(int i) {
+		return nullMethod(i);
+	}
+
+	private int nullMethod(int i) {
+		int k = 3;
+		if (a) {
+			k = k / i;
+		} else {
+			k = k +i;
+		}
+		k++;
+		return k;
+	}
 
 	private static boolean valid() {
 		return a;
