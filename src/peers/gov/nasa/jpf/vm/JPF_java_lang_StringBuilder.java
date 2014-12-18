@@ -233,8 +233,18 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int append__C__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, char c, FeatureExpr ctx) {
-		return appendString(ctx, env, objref, c + "");
+	public int append__C__Ljava_lang_StringBuilder_2(MJIEnv env, int objref, Conditional<Character> c, FeatureExpr ctx) {
+		Conditional<String> s = c.map(new Function<Character, String>() {
+
+			@Override
+			public String apply(Character c) {
+				return c + "";
+			}
+			
+		});
+		
+		
+		return appendString(ctx, env, objref, s);
 		//
 		// int aref = env.getReferenceField(ctx, objref, "value").getValue();
 		// int alen = env.getArrayLength(aref);

@@ -190,9 +190,14 @@ public class JPF_java_lang_String extends NativePeer {
 				if (Conditional.isContradiction(ctx)) {
 					return new One<>(null);
 				}
-
-				return new One<>(data[index.getValue()]);// currently not lifted
-			}
+				
+				try {
+					return new One<>(data[index.getValue()]);// currently not lifted
+				} catch (Exception e) {
+					NativeMethodInfo.exceptions.put(e, ctx);
+				}
+				return new One<>(null);
+			} 
 
 		}).simplify();
 

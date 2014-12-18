@@ -2728,7 +2728,6 @@ public class ThreadInfo extends InfoObject
 	  if (Conditional.isContradiction(frame.stack.getCtx())) {
 		  return;
 	  }
-	  System.out.println("PUSH FRAME");
 	  pushFrame(frame);
   }
   

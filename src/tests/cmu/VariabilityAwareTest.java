@@ -533,6 +533,92 @@ public class VariabilityAwareTest extends TestJPF {
 		k++;
 		return k;
 	}
+	
+	@Test
+	public void peerExceptionTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			try {
+				char[] c = new char[10];
+				System.out.println(a);
+				if (!a) {
+					c[1] = 'A';
+				} else {
+					c[20] = 'B';
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("JOIN");
+		}
+	}
+	
+	@Test
+	public void charAtExceptionTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			try {
+				String s = "TEST";
+				if (a) {
+					System.out.println(s.charAt(5));
+				} else {
+					System.out.println(s.charAt(1));
+				}
+				if (b) {
+					System.out.println(s.charAt(-1));
+				} else {
+					System.out.println(s.charAt(3));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("JOIN");
+		}
+	}
+	
+	@Conditional
+	private static boolean REVERSE = true;
+	@Conditional
+	private static boolean LETTERS = true;
+	
+	/**
+	 * An example of my presentation to show how features causing exceptions can be found with VarexJ.
+	 */
+	@Test
+	public void exampleExceptions() {
+		if (!RUN_WITH_JPF || verifyAssertionError(JPF_CONFIGURATION)) {
+			try {
+				char[] chars = exampleMethod();
+				System.out.println(new String(chars));
+				char prev = chars[0];
+				for (int i = 1; i < chars.length; i++) {
+					if (REVERSE) {
+						check(prev > chars[i]);
+					} else {
+						check(prev < chars[i]);
+					}
+					prev = chars[i];
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("JOIN");
+		}
+	}
+
+	private char[] exampleMethod() {
+		char[] chars = new char[10];
+		String s = LETTERS ? "ABCDEFGHI" : "0123456789";
+		for (int i = 0; i < chars.length; i++) {
+			chars[i] = s.charAt(i);
+		}
+		if (REVERSE) {
+			char[] old = chars;
+			for (int i = 0; i < chars.length; i++) {
+				chars[i] = old[chars.length - 1 - i];
+			}
+		}
+		return chars;
+	}
 
 	private static boolean valid() {
 		return a;
