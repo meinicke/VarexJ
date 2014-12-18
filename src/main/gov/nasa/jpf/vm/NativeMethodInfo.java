@@ -109,8 +109,6 @@ public class NativeMethodInfo extends MethodInfo {
 		return -1; // we have no line numbers
 	}
 	
-	public static HashMap<Exception, FeatureExpr> exceptions = new HashMap<>();
-
 	public Conditional<Instruction> executeNative(final FeatureExpr ctx, ThreadInfo ti) {
 		Object ret = null;
 		Object[] args = null;
@@ -160,13 +158,6 @@ public class NativeMethodInfo extends MethodInfo {
 			}
 			try {
 				ret = mth.invoke(peer, args);
-				for (Entry<Exception, FeatureExpr> e : exceptions.entrySet()) {
-					Exception ex = e.getKey(); 
-					String exceptionClass = ex.toString();
-					exceptionClass = exceptionClass.substring(0, exceptionClass.indexOf(":"));
-					ti.createAndThrowException(e.getValue(), exceptionClass, ex.getMessage());
-				}
-				exceptions.clear();
 			} catch (IllegalAccessException e) {
 				System.err.println(mth);
 				for (Object a : args) {
