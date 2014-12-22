@@ -13,7 +13,7 @@ public class ZipMeTest extends TestJPF {
 	private static final String FM = "+featuremodel=zipme.dimacs";
 	private static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\ZipMe.jar", FM};
 
-	@Test(timeout = 20000)
+	@Test//(timeout = 20000)
 	public void runZipMe() {
 		if (verifyNoPropertyViolation(config)) {
 			try {

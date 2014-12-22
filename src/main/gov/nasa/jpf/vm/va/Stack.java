@@ -1,5 +1,9 @@
 package gov.nasa.jpf.vm.va;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import gov.nasa.jpf.vm.MJIEnv;
 
 
@@ -269,6 +273,17 @@ public class Stack {
 			}
 		}
 		return hash;
+	}
+
+	public Collection<Integer> getReferences() {
+		List<Integer> references = new LinkedList<>();
+		for (int i = 0; i <= top; i++) {
+			Entry e = slots[i];
+			if (e.isRef) {
+				references.add(e.value);
+			}
+		}
+		return references;
 	}
 
 }

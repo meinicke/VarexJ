@@ -9,7 +9,7 @@ import org.junit.Test;
 public class LongTest extends TestJPF {
 
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
-	
+
 	@Conditional
 	static boolean a = true;
 	@Conditional
@@ -18,7 +18,7 @@ public class LongTest extends TestJPF {
 	static boolean c = true;
 	@Conditional
 	static boolean d = true;
-	
+
 	@Conditional
 	static boolean x = true;
 	@Conditional
@@ -26,9 +26,8 @@ public class LongTest extends TestJPF {
 	@Conditional
 	static boolean z = true;
 
-	
 	@Test
-	public void testFloat() throws Exception {
+	public void testLong() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			long i = 13;
 			long j = 36;
@@ -38,7 +37,7 @@ public class LongTest extends TestJPF {
 			if (y) {
 				j = 4;
 			}
-			
+
 			long k = 0;
 			k = i + j;
 			k = i - j;
@@ -48,5 +47,18 @@ public class LongTest extends TestJPF {
 		}
 	}
 
+	@Test
+	public void testLongReturn() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			long i = method();
+		}
+	}
 
+	private long method() {
+		if (c) {
+			return 1;
+		}
+		long g = 1;
+		return 0;
+	}
 }

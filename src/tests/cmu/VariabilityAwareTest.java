@@ -619,6 +619,20 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 		return chars;
 	}
+	
+	@Test
+	public void testRuntimeException() {
+		if (!RUN_WITH_JPF || verifyUnhandledException(RuntimeException.class.getName(), JPF_CONFIGURATION)) {
+			Integer i = null;
+			if (a) {
+				i = 1;
+			}
+			if (i == null) {
+				throw new RuntimeException("i == null");
+			}
+			System.out.println(i);
+		}
+	}
 
 	private static boolean valid() {
 		return a;
