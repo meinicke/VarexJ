@@ -1891,6 +1891,8 @@ public class ThreadInfo extends InfoObject
   
   public static boolean logtrace = false;
   
+  
+  private int rounds = 0;
   /**
    * Execute next instruction.
    */
@@ -1934,6 +1936,12 @@ public class ThreadInfo extends InfoObject
         		System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s");
         		count2 = count;
         		time = System.currentTimeMillis();
+        		
+        		rounds++;
+        		if (rounds > 10) {
+        			rounds = 0;
+        			ss.gcIfNeeded();
+        		}
         	}
         	Instruction i = null;
         	FeatureExpr ctx = top.stack.getCtx();

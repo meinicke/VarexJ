@@ -1542,14 +1542,19 @@ public int nLocals;
       }
     }
     **/
-    for (int i = 0; i <= top(); i++) {
-      if (stack.isRefLocal(TRUE, i)) {
-        int objref = stack.getLocal(TRUE, i).getValue();
-        if (objref != MJIEnv.NULL) {
-          heap.markThreadRoot(objref, tid);
-        }
-      }
-    }
+//    for (int i = 0; i <= top(); i++) {
+//      if (stack.isRefLocal(TRUE, i)) {
+//        int objref = stack.getLocal(TRUE, i).getValue();
+//        if (objref != MJIEnv.NULL) {
+//          heap.markThreadRoot(objref, tid);
+//        }
+//      }
+//    }
+		for (Integer ref : stack.getAllReferences()) {
+			if (ref != MJIEnv.NULL) {
+				heap.markThreadRoot(ref, tid);
+			}
+		}
   }
 
   //--- debugging methods
