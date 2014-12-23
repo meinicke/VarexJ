@@ -28,14 +28,8 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StaticElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
-import gov.nasa.jpf.vm.va.IStackHandler;
-import gov.nasa.jpf.vm.va.Stack;
-
-import java.util.Map;
-
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;

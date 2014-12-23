@@ -19,8 +19,8 @@
 
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_sun_reflect_Reflection extends NativePeer {
 

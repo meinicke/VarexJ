@@ -60,10 +60,28 @@ public class JPF_java_lang_System extends NativePeer {
 									return null;
 								}
 
-								ElementInfo eiSrc = env.getElementInfo(srcArrayRef);
-								ElementInfo eiDst = env.getModifiableElementInfo(dstArrayRef);
+								final ElementInfo eiSrc = env.getElementInfo(srcArrayRef);
+								final ElementInfo eiDst = env.getModifiableElementInfo(dstArrayRef);
 								try {
-									eiDst.copyElements(ctx, env.getThreadInfo(), eiSrc, srcIdx.getValue(), dstIdx.getValue(), length);
+									srcIdx.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+
+										@Override
+										public Conditional<Object> apply(FeatureExpr ctx, final Integer srcIdx) {
+											dstIdx.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+
+												@Override
+												public Conditional<Object> apply(FeatureExpr ctx, Integer dstIdx) {
+													eiDst.copyElements(ctx, env.getThreadInfo(), eiSrc, srcIdx, dstIdx, length);
+													return null;
+												}
+											});
+											
+											return null;
+										}
+										
+									});
+									
+									
 								} catch (IndexOutOfBoundsException iobx) {
 									env.throwException(ctx, "java.lang.IndexOutOfBoundsException", iobx.getMessage());
 								} catch (ArrayStoreException asx) {

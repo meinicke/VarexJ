@@ -1,10 +1,10 @@
 package gov.nasa.jpf.vm.va;
 
+import gov.nasa.jpf.vm.MJIEnv;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import gov.nasa.jpf.vm.MJIEnv;
 
 
 /**

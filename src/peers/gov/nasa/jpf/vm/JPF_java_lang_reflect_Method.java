@@ -210,7 +210,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     } else if (rt == Types.T_INT) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfInteger(ctx, v);
+      ret = env.valueOfInteger(ctx, v).getValue();
     } else if (rt == Types.T_BOOLEAN) {
       attr = frame.getResultAttr();
       int v = frame.getResult();

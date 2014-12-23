@@ -47,6 +47,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -1599,18 +1600,21 @@ public class ThreadInfo extends InfoObject
    * is created. At the time printStackTrace() is called, the StackFrames in question
    * are most likely already be unwinded
    */
-  public void printStackTrace (FeatureExpr ctx, PrintWriter pw, int objRef) {
+  public void printStackTrace (FeatureExpr ctx, final PrintWriter pw, int objRef) {
+	  // TODO revise output
     // 'env' usage is not ideal, since we don't know from what context we are called, and
     // hence the MJIEnv calling context might not be set (no Method or ClassInfo)
     // on the other hand, we don't want to re-implement all the MJIEnv accessor methods
 	  print(pw, "if " +  getCTXString(ctx) + ":\n");
     print(pw, env.getClassInfo(objRef).getName());
-    int msgRef = env.getReferenceField(ctx,objRef, "detailMessage").getValue();
-    if (msgRef != MJIEnv.NULL) {
-      print(pw, ": ");
-      print(pw, env.getStringObject(ctx, msgRef));
-    }
-    print(pw, "\n");
+    Conditional<Integer> msgRef = env.getReferenceField(ctx,objRef, "detailMessage");
+    for (Entry<Integer, FeatureExpr> e : msgRef.toMap().entrySet()) {
+	    if (e.getKey() != MJIEnv.NULL) {
+	      print(pw, ": ");
+	      print(pw, env.getStringObjectNew(e.getValue(), e.getKey()).toString());
+	    }
+	    print(pw, "\n");
+	}
 
     // try the 'stackTrace' field first, it might have been set explicitly
     int aRef = env.getReferenceField(ctx, objRef, "stackTrace").getValue(); // StackTrace[]
@@ -1625,16 +1629,25 @@ public class ThreadInfo extends InfoObject
       }
 
     } else { // fall back to use the snapshot stored in the exception object
-      aRef = env.getReferenceField(ctx, objRef, "snapshot").getValue();
-      int[] snapshot = env.getIntArrayObject(ctx, aRef);
-      int len = snapshot.length/2;
+      Conditional<Integer> VAaRef = env.getReferenceField(ctx, objRef, "snapshot");
+      VAaRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
 
-      for (int i=0, j=0; i<len; i++){
-        int methodId = snapshot[j++];
-        int pcOffset = snapshot[j++];
-        StackTraceElement ste = new StackTraceElement( methodId, pcOffset);
-        ste.printOn( pw);
-      }
+		@Override
+		public Conditional<Object> apply(FeatureExpr ctx, Integer aRef) {
+			 int[] snapshot = env.getIntArrayObject(ctx, aRef);
+		      int len = snapshot.length/2;
+
+		      for (int i=0, j=0; i<len; i++){
+		        int methodId = snapshot[j++];
+		        int pcOffset = snapshot[j++];
+		        StackTraceElement ste = new StackTraceElement( methodId, pcOffset);
+		        ste.printOn( pw);
+		      }
+		      return null;
+		}
+    	  
+	});
+     
     }
 
     int causeRef = env.getReferenceField(ctx, objRef, "cause").getValue();
@@ -1661,6 +1674,7 @@ public class ThreadInfo extends InfoObject
           mthName = mi.getName();
 
           fileName = mi.getStackTraceSource();
+          fileName = fileName.substring(fileName.lastIndexOf('/') + 1);
           if (pcOffset < 0){
             // See ThreadStopTest.threadDeathWhileRunstart
             // <2do> remove when RUNSTART is gone
@@ -1999,6 +2013,10 @@ public class ThreadInfo extends InfoObject
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
+    			if (top.getDepth() > 1000) {// TODO
+    				throw new StackOverflowError(ctx + " Too many frames (> 1000)");
+//            		nextPc = ChoiceFactory.create(ctx, new One<>(createAndThrowException(ctx, "java.lang.StackOverflowError", "too many frames")), next).simplify();
+            	}
     		} else if (i instanceof ReturnInstruction) {
     			next = ChoiceFactory.create(ctx, next, getPC());
     			if (top != null) {

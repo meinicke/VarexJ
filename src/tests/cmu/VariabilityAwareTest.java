@@ -3,6 +3,7 @@ package cmu;
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("unused")
@@ -632,6 +633,22 @@ public class VariabilityAwareTest extends TestJPF {
 			}
 			System.out.println(i);
 		}
+	}
+	
+	@Ignore @Test
+	public void testStackOverFlow() {
+		if (!RUN_WITH_JPF || verifyUnhandledException(StackOverflowError.class.getName(), JPF_CONFIGURATION)) {
+				int i = a ? 10 :100;
+				i = recursive(i);
+				System.out.println(i);
+		}
+	}
+
+	private int recursive(int i) {
+		if (i == 0) {
+			return 0;
+		}
+		return i + recursive(i - 1);
 	}
 
 	private static boolean valid() {

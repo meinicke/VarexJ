@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.annotation.MJI;
 
 /**
  * MJI NativePeer class for java.lang.Integer library abstraction
@@ -79,6 +79,6 @@ public class JPF_java_lang_Integer extends NativePeer {
 
   @MJI
   public Conditional<Integer> valueOf__I__Ljava_lang_Integer_2 (MJIEnv env, int clsRef, Conditional<Integer> val, FeatureExpr ctx) {
-    return env.valueOfInteger(ctx, val);
+	  return env.valueOfInteger(ctx, val);
   }
 }

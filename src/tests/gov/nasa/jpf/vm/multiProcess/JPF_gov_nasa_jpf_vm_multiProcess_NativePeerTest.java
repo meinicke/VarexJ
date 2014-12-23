@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.NativePeer;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

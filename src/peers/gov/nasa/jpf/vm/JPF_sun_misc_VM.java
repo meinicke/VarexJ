@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * this is just a placeholder for now, we don't support its functionality

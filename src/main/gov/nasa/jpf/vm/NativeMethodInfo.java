@@ -25,8 +25,6 @@ import gov.nasa.jpf.util.JPFLogger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;

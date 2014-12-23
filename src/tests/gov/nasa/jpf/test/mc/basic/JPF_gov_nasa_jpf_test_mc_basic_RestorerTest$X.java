@@ -22,7 +22,6 @@ import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.ClosedMemento;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;

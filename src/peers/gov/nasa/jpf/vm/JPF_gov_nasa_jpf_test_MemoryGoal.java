@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.jvm.bytecode.ReturnInstruction;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * native peer for MemoryGoal tests

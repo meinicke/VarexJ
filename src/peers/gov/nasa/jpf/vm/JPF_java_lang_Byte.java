@@ -1,7 +1,7 @@
 package gov.nasa.jpf.vm;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_lang_Byte extends NativePeer {
   // <2do> at this point we deliberately do not override clinit

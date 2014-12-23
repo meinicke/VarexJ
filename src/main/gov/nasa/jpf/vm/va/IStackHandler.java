@@ -1,8 +1,9 @@
 package gov.nasa.jpf.vm.va;
 
+import gov.nasa.jpf.vm.va.StackHandler.Type;
+
 import java.util.Collection;
 
-import gov.nasa.jpf.vm.va.StackHandler.Type;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 

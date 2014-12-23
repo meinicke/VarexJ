@@ -22,7 +22,6 @@ import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.UncaughtException;

@@ -1,6 +1,5 @@
 package cmu.datatypes;
 
-import static org.junit.Assert.*;
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 

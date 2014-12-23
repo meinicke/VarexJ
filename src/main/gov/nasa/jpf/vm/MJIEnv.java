@@ -1814,7 +1814,7 @@ public VM getVM () {
     return BoxObjectCacheManager.valueOfShort(ctx, ti, s);
   }
 
-  public int valueOfInteger(FeatureExpr ctx, int i) {
+  public Conditional<Integer> valueOfInteger(FeatureExpr ctx, int i) {
     return BoxObjectCacheManager.valueOfInteger(ctx, ti, i);
   }
   
@@ -1823,7 +1823,7 @@ public VM getVM () {
 
 		@Override
 		public Conditional<Integer> apply(FeatureExpr ctx, Integer i) {
-			return new One<>(BoxObjectCacheManager.valueOfInteger(ctx, ti, i));
+			return BoxObjectCacheManager.valueOfInteger(ctx, ti, i);
 		}
 		  
 	  });

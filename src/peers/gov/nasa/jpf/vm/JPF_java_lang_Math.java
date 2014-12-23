@@ -207,8 +207,16 @@ public class JPF_java_lang_Math extends NativePeer {
 	}
 
 	@MJI
-	public double sqrt__D__D(MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
-		return Math.sqrt(a);
+	public Conditional<Double> sqrt__D__D(MJIEnv env, int clsObjRef, Conditional<Double> a, FeatureExpr ctx) {
+		return a.map(new Function<Double, Double>() {
+
+			@Override
+			public Double apply(Double a) {
+				return Math.sqrt(a);
+			}
+			
+		});
+		
 	}
 
 	@MJI
