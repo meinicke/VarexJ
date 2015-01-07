@@ -71,6 +71,9 @@ public class JPF_java_lang_System extends NativePeer {
 
 												@Override
 												public Conditional<Object> apply(FeatureExpr ctx, Integer dstIdx) {
+													if (ctx.isContradiction()) {
+														return null;
+													}
 													eiDst.copyElements(ctx, env.getThreadInfo(), eiSrc, srcIdx, dstIdx, length);
 													return null;
 												}
