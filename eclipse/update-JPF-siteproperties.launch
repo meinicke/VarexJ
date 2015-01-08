@@ -8,6 +8,6 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="gov.nasa.jpf.tool.RunJPF"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-addproject"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jpf-core"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="VarexJ"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc}"/>
 </launchConfiguration>

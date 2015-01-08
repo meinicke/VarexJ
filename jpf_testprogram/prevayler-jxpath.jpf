@@ -1,0 +1,7 @@
+target = JXPathTest
+
+nhandler.delegateUnhandledNative = true
+
+nhandler.clean = true
+
+classpath=${jpf-core}/build/;${jpf-core}/lib/prevayler-jxpath-2.5.jar;${jpf-core}/lib/prevayler-factory-2.5.jar;${jpf-core}/lib/prevayler-core-2.5.jar;${jpf-core}/lib/commons-jxpath-1.3.jar;

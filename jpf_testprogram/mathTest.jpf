@@ -1,0 +1,7 @@
+target = mathTest
+
+nhandler.delegateUnhandledNative = true
+
+nhandler.clean = true
+
+classpath = ${jpf-core}/build/;${classpath}

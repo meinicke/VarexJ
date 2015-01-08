@@ -8,10 +8,13 @@ import net.sf.zipme.ZipTest;
 
 import org.junit.Test;
 
+//import org.prevayler.demos.scalability.Main;
+
+
 public class ZipMeTest extends TestJPF {
 	
 	private static final String FM = "+featuremodel=zipme.dimacs";
-	private static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\ZipMe.jar", FM};
+	private static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\ZipMe.jar,lib\\prevayler-scalability-2.5.jar,lib\\prevayler-factory-2.5.jar,lib\\prevayler-core-2.5.jar", FM};
 
 	@Test(timeout = 20000)
 	public void runZipMe() {
@@ -37,5 +40,16 @@ public class ZipMeTest extends TestJPF {
 			}
 		}
 	}
+
+//	@Test
+//	public void runPravaylerTest(){
+//		if (verifyNoPropertyViolation(config)) {
+//			try {
+//				Main.main(null);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 }

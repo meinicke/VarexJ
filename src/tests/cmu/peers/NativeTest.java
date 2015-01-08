@@ -5,10 +5,14 @@ import gov.nasa.jpf.util.test.TestJPF;
 
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+
 public class NativeTest extends TestJPF {
 
 	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
-	
+
 	@Conditional
 	static boolean a = true;
 	@Conditional
@@ -93,6 +97,16 @@ public class NativeTest extends TestJPF {
 			}
 		}
 	}
-	
 
+	@Test
+	public void sinTest() throws Exception{
+		if (verifyNoPropertyViolation("+nhandler.delegateUnhandledNative")) {
+			double a = Math.PI/2;
+			double b = StrictMath.sin(a);
+			assertEquals(b, 1.0);
+			System.out.println("hello world");
+			double c = Math.sin(a);
+			assertEquals(c, 1.0);
+		}
+	}
 }

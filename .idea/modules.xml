@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/src/jpf-core.iml" filepath="$PROJECT_DIR$/src/jpf-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/VarexJ.iml" filepath="$PROJECT_DIR$/VarexJ.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../jpf-nhandler/jpf-nhandler.iml" filepath="$PROJECT_DIR$/../jpf-nhandler/jpf-nhandler.iml" />
     </modules>
   </component>
 </project>
-
