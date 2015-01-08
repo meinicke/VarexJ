@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# unix shell script to compile on-the-fly native peers
+#
+
+NHANDLER_HOME=`dirname "$0"`/..
+JPF_HOME=`dirname "$0"`/../../jpf-core
+
+javac -cp "$JPF_HOME/build/jpf.jar:$NHANDLER_HOME/build/jpf-nhandler.jar" $NHANDLER_HOME/onthefly/*.java
+

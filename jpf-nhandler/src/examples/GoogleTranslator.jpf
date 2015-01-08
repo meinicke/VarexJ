@@ -1,0 +1,19 @@
+# Note: In GoogleTranslator.java,
+#          1. Replace "link" with the HTTP referrer to your website address
+#          2. Replace "key" with the Google Translate API key
+
+@using = jpf-nhandler
+
+target = GoogleTranslator
+
+classpath =\
+ ${jpf-nhandler}/lib/examples-lib/google-api-translate-java-0.97.jar;\
+ ${jpf-nhandler}/lib/examples-lib/json-20090211.jar;\
+
+native_classpath =\
+ ${jpf-nhandler}/lib/examples-lib/google-api-translate-java-0.97.jar;\
+ ${jpf-nhandler}/lib/examples-lib/json-20090211.jar;\
+
+# retrieveJSON Forms an HTTP request, sends it using GET method and 
+# returns the result of the request as a JSONObject.
+nhandler.spec.delegate = com.google.api.GoogleAPI.retrieveJSON

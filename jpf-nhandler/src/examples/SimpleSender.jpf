@@ -1,0 +1,31 @@
+# Note: the Random model class in JPF is not consistent with Random from 
+# Java Standard Library. To make this work, the type of the fields "seed"
+# in model class should change from "long" to "AtomicLong"
+
+# How to run - as JPF model checks SimpleSender, SimpleReciever runs on the
+# host JVM
+
+@using = jpf-nhandler
+
+target = SimpleSender
+
+nhandler.clean = true
+
+nhandler.resetVMState = false
+
+nhandler.delegateUnhandledNative = true
+
+nhandler.spec.delegate =\
+ org.jgroups.JChannel.<init>,\
+ org.jgroups.JChannel.connect,\
+ org.jgroups.Message.<clinit>,\
+ org.jgroups.Message.<init>,\
+ org.jgroups.JChannel.send,\
+ org.jgroups.JChannel.close\
+
+classpath =\
+ ${jpf-nhandler}/lib/examples-lib/jgroups-3.2.5.jar;\
+
+native_classpath =\
+ ${jpf-nhandler}/lib/examples-lib/jgroups-3.2.5.jar;\
+ ${jpf-nhandler}/build/examples 
