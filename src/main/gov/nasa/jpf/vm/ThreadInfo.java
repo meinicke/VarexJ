@@ -23,6 +23,7 @@ import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.SystemAttribute;
 import gov.nasa.jpf.jvm.bytecode.ATHROW;
+import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
@@ -1611,7 +1612,13 @@ public class ThreadInfo extends InfoObject
     for (Entry<Integer, FeatureExpr> e : msgRef.toMap().entrySet()) {
 	    if (e.getKey() != MJIEnv.NULL) {
 	      print(pw, ": ");
-	      print(pw, env.getStringObjectNew(e.getValue(), e.getKey()).toString());
+	      Conditional<String> message = env.getStringObjectNew(e.getValue().and(ctx), e.getKey());
+	      if (message instanceof One) {
+	    	  print(pw, message.getValue());
+	      } else {
+	    	  print(pw, message.toString());
+	      }
+	      
 	    }
 	    print(pw, "\n");
 	}
@@ -1903,8 +1910,13 @@ public class ThreadInfo extends InfoObject
   static int count2 = 0;
   static long time = 0;
   
-  public static boolean logtrace = false;
+  /**
+   * Maximal number of frames the VM can create before throwing a StackOverflowError.
+   */
+  // TODO create parameter
+  private static final int MAX_FRAMES = 1000;
   
+  public static boolean logtrace = false;
   
   private int rounds = 0;
   /**
@@ -1941,13 +1953,13 @@ public class ThreadInfo extends InfoObject
         		time = System.currentTimeMillis();
         	}
         	count++;
-//    		if (count > 445000) {
+//    		if (count > 1000000) {
 //    			debug = true;
 //    			System.out.print(count + ": ");
 //    		}
         	if (System.currentTimeMillis() - time > 1000) {
-        		int instructions = (count - count2);
-        		System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s");
+//        		int instructions = (count - count2);
+//        		System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s");
         		count2 = count;
         		time = System.currentTimeMillis();
         		
@@ -2013,9 +2025,10 @@ public class ThreadInfo extends InfoObject
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
-    			if (top.getDepth() > 1000) {// TODO
-    				throw new StackOverflowError(ctx + " Too many frames (> 1000)");
-//            		nextPc = ChoiceFactory.create(ctx, new One<>(createAndThrowException(ctx, "java.lang.StackOverflowError", "too many frames")), next).simplify();
+    			if (top.getDepth() > MAX_FRAMES) {
+            		nextPc = ChoiceFactory.create(ctx, 
+            				new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + MAX_FRAMES + ")")), 
+            				next).simplify();
             	}
     		} else if (i instanceof ReturnInstruction) {
     			next = ChoiceFactory.create(ctx, next, getPC());

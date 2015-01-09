@@ -245,6 +245,9 @@ public abstract class Instruction implements Cloneable {
 	public String getFilePos() {
 		String file = null;
 		int line = -1;
+		if (mi == null) {
+			return "";
+		}
 		ClassInfo ci = mi.getClassInfo();
 
 		if (ci != null) {

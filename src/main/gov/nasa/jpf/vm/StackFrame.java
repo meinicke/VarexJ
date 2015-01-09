@@ -113,6 +113,11 @@ public abstract class StackFrame implements Cloneable {
 
 public int nLocals;
 
+	/**
+	 * Buffer for the stack depth.
+	 */
+	private int depth = 0;
+
   protected int top() {// TODO remove
 	  return stack.getTop().getValue() + nLocals;	
   }
@@ -130,7 +135,6 @@ public int nLocals;
 //    int top() = nLocals-1;
 
     stack = StackHandlerFactory.createStack(ctx, nLocals, nOperands);
-    
 //    int nSlots = nLocals + nOperands;
 //    if (nSlots > 0){
 //      slots = new int[nLocals + nOperands];
@@ -1693,13 +1697,15 @@ pw.print(stack);
   }
 
   public int getDepth(){
-    int depth = 0;
-    
-    for (StackFrame frame = prev; frame != null; frame = frame.prev){
-      depth++;
-    }
-    
-    return depth;
+	  if (depth != 0) {
+		  return depth;
+	  }
+	  
+	  if (prev == null) {
+		  return 0;
+	  }
+	  depth = prev.getDepth() + 1;
+	  return depth;
   }
   
   protected int objectHashCode() {

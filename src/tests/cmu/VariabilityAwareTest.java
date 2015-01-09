@@ -635,12 +635,33 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 	
-	@Ignore @Test
+	/**
+	 * Tests that stack overflow is found. 
+	 */
+	@Test
 	public void testStackOverFlow() {
 		if (!RUN_WITH_JPF || verifyUnhandledException(StackOverflowError.class.getName(), JPF_CONFIGURATION)) {
-				int i = a ? 10 :100;
+			int i = a ? 10 : 10000;
+			i = recursive(i);
+			System.out.println(i);
+		}
+	}
+	
+	/**
+	 * Tests that stack overflow is found, but the other path is still executed.
+	 */
+	@Test
+	public void testStackOverFlow2() {
+		if (!RUN_WITH_JPF || verifyAssertionError(JPF_CONFIGURATION)) {
+			int i = a ? 10 : 10000;
+			try {
 				i = recursive(i);
 				System.out.println(i);
+			} catch (StackOverflowError e) {
+				// ignore the stack overflow error
+				e.printStackTrace();
+			}
+			check(i == 1);
 		}
 	}
 
@@ -649,6 +670,22 @@ public class VariabilityAwareTest extends TestJPF {
 			return 0;
 		}
 		return i + recursive(i - 1);
+	}
+	
+	@Test
+	public void testMultipleExceptions() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			try {
+				int i = a ? 3 : 2;
+				int[] array = new int[2];
+				
+				System.out.println(array[i]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	
 	}
 
 	private static boolean valid() {
