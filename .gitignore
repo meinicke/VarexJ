@@ -50,3 +50,8 @@ crashlytics-build.properties
 
 build/
 demoJXPath/
+
+
+# For the jpf-nhandler extension
+jpf-nhandler/build
+jpf-nhandler/onthefly
