@@ -100,7 +100,7 @@ public class NativeTest extends TestJPF {
 
 	@Test
 	public void sinTest() throws Exception{
-		if (verifyNoPropertyViolation("+nhandler.delegateUnhandledNative")) {
+		if (verifyNoPropertyViolation("-show", "+nhandler.delegateUnhandledNative")) {
 			double a = Math.PI/2;
 			double b = StrictMath.sin(a);
 			assertEquals(b, 1.0);
