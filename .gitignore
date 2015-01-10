@@ -54,3 +54,5 @@ demoJXPath/
 
 # For the jpf-nhandler extension
 jpf-nhandler/build
+jpf-nhandler/onthefly/*.class
+jpf-nhandler/onthefly/*.java
