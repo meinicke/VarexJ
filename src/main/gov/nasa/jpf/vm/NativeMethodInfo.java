@@ -25,10 +25,15 @@ import gov.nasa.jpf.util.JPFLogger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -138,24 +143,43 @@ public class NativeMethodInfo extends MethodInfo {
 					supportsConditional = true;
 				}
 			}
+			
+			boolean handled = false;
 			if (!supportsConditional) {
 				int i = 0;
 				for (Object a : args) {
 					if (a instanceof One) {
 						args[i++] = ((One) a).getValue();
 					} else if (a instanceof IChoice) {
-						System.err.println(mth);
-						for (Object a2 : args) {
-							System.err.println(a2.toString());
-						}
-						throw new RuntimeException("Signature of method " + mth + " incorrect!");	
+						// Entry for n-handler with conditional arguments
+						Conditional<Object[]> unconditionalArgs = getUnconditionalArgs(args);
+						ret = unconditionalArgs.map(new Function<Object[], Object>() {
+
+							@Override
+							public Object apply(Object[] args) {
+								try {
+									return mth.invoke(peer, args);
+								} catch (IllegalAccessException | InvocationTargetException e) {
+									System.err.println(mth);
+									for (Object a : args) {
+										System.err.println(a.toString());
+									}
+									throw new RuntimeException(e);
+								}
+							}
+							
+						});
+						handled = true;
+						break;	
 					} else {
 						args[i++] = a;
 					}
 				}
 			}
 			try {
-				ret = mth.invoke(peer, args);
+				if (!handled) {
+					ret = mth.invoke(peer, args);
+				}
 			} catch (IllegalAccessException e) {
 				System.err.println(mth);
 				for (Object a : args) {
@@ -235,6 +259,75 @@ public class NativeMethodInfo extends MethodInfo {
 			// we don't try to hand them back to the application
 			throw new JPFNativePeerException("exception in native method " + ci.getName() + '.' + getName(), itx.getTargetException());
 		}
+	}
+	
+	/**
+	 * Transforms arguments with conditional values to unconditional values.
+	 */
+	public static Conditional<Object[]> getUnconditionalArgs(Object[] args) {
+		List<Object[]> unconditionalArgs = new LinkedList<>();
+		Object[] initialObject = new Object[args.length];
+		initialObject[args.length - 1] = args[args.length - 1]; 
+		unconditionalArgs.add(initialObject);
+		
+		int index = 0;
+		for (Object arg : args) {
+			unconditionalArgs = insertArgs(unconditionalArgs, arg, index++);
+		}
+		return toChoice(unconditionalArgs);
+	}
+
+	/**
+	 * Inserts all entries of the probably conditional argument arg at the given index position.
+	 * 
+	 */
+	private static List<Object[]> insertArgs(List<Object[]> unconditionalArgs, Object arg, int index) {
+		final List<Object[]> newArgs = new LinkedList<>();
+		if (arg instanceof Conditional) {
+			Map<Object, FeatureExpr> map = ((Conditional) arg).toMap();
+			for (Entry<Object, FeatureExpr> e : map.entrySet()) {
+				for (Object[] args : unconditionalArgs) {
+					FeatureExpr ctx = ((FeatureExpr)args[args.length - 1]).and(e.getValue());
+					if (!Conditional.isContradiction(ctx)) {
+						Object[] copy = copy(args);
+						copy[index] = e.getKey();
+						copy[copy.length -1] = ctx;
+						newArgs.add(copy);
+					}
+				}
+			}
+		} else if (arg instanceof FeatureExpr) {
+			return unconditionalArgs;
+		} else {
+			for (Object[] args : unconditionalArgs) {
+				Object[] copy = copy(args);
+				copy[index] = arg;
+				newArgs.add(copy);
+			}
+		}
+		return newArgs;
+	}
+	
+	/**
+	 * Transforms the list of arguments to a choice of unconditional arguments.<br>
+	 * The last argument is used as context.
+	 */
+	private static Conditional<Object[]> toChoice(final List<Object[]> unconditionalArgs) {
+		Conditional<Object[]> result = null;
+		for (Object[] args : unconditionalArgs) {
+			if (result == null) {
+				result = new One<>(args);
+			} else {
+				result = ChoiceFactory.create((FeatureExpr)args[args.length - 1], new One<>(args), result);
+			}
+		}
+		return result;
+	}
+
+	private static Object[] copy(Object[] args) {
+		Object[] copy = new Object[args.length];
+		System.arraycopy(args, 0, copy, 0, args.length);
+		return copy;
 	}
 
 	protected boolean isUnsatisfiedLinkError(MJIEnv env) {
