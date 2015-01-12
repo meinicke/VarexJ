@@ -42,63 +42,63 @@ public class File
   public static final char pathSeparatorChar = pathSeparator.charAt(0);
 
   @FilterField int id; // link to the real File object
-  private String filename;
+  private String path;
 
-  public File(String filename) {
-    if (filename == null){
+  public File(String path) {
+    if (path == null){
       throw new NullPointerException();
     }
     
-    this.filename = filename;
+    this.path = path;
   }
 
   public File (String parent, String child) {
-  	filename = parent + separator + child;
+  	path = parent + separator + child;
   }
   
   public File (File parent, String child) {
-    filename = parent.filename + separator + child;
+    path = parent.path + separator + child;
   }
   
   public File(java.net.URI uri) { throw new UnsupportedOperationException(); }
   
   public String getName() {
-    int idx = filename.lastIndexOf(separatorChar);
+    int idx = path.lastIndexOf(separatorChar);
     if (idx >= 0){
-      return filename.substring(idx+1);
+      return path.substring(idx+1);
     } else {
-      return filename;
+      return path;
     }
   }
 
   public String getParent() {
-    int idx = filename.lastIndexOf(separatorChar);
+    int idx = path.lastIndexOf(separatorChar);
     if (idx >= 0){
-      return filename.substring(0,idx);
+      return path.substring(0,idx);
     } else {
       return null;
     }
   }
   
   public int compareTo(File that) {
-    return this.filename.compareTo(that.filename);
+    return this.path.compareTo(that.path);
   }
   
   public boolean equals(Object o) {
     if (o instanceof File){
       File otherFile = (File) o;
-      return filename.equals(otherFile.filename);
+      return path.equals(otherFile.path);
     } else {
       return false;
     }
   }
   
   public int hashCode() {
-    return filename.hashCode();
+    return path.hashCode();
   }
   
   public String toString()  {
-    return filename;
+    return path;
   }
   
   
@@ -108,7 +108,7 @@ public class File
   public native File getParentFile();
   
   public String getPath() {
-    return filename;
+    return path;
   }
 
   public native boolean isAbsolute();
@@ -145,7 +145,8 @@ public class File
   public void deleteOnExit() {}
   public String[] list()  { return null; }
   public String[] list(FilenameFilter fnf)  { return null; }
-  public File[] listFiles()  { return null; }
+//  public File[] listFiles()  { return null; }
+  public native File[] listFiles();
   public File[] listFiles(FilenameFilter fnf)  { return null; }
   public File[] listFiles(FileFilter ff)  { return null; }
   public boolean mkdir()  { return false; }

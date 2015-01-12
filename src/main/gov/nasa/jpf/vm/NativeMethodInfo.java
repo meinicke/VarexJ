@@ -233,6 +233,8 @@ public class NativeMethodInfo extends MethodInfo {
 
 			// this will catch all exceptionHandlers thrown by the native method execution
 			// we don't try to hand them back to the application
+			System.out.println("The following is the InvocationTargetException stackTrace:");
+			itx.printStackTrace();
 			throw new JPFNativePeerException("exception in native method " + ci.getName() + '.' + getName(), itx.getTargetException());
 		}
 	}
