@@ -2,7 +2,7 @@ package cmu.testprograms;
 
 import org.junit.Test;
 
-public class GPLTest extends AExampleTest {
+public class GPLTest extends ATestExample {
 	
 	private static final String SEP = System.getProperty("file.separator");
 	

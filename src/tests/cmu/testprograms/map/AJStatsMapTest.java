@@ -1,10 +1,11 @@
 package cmu.testprograms.map;
 
 import cmu.conditional.MapChoice;
-import cmu.testprograms.EmailTest;
+import cmu.testprograms.AJStatsTest;
 
-public class EmailTestMap extends EmailTest {
-	
+
+public class AJStatsMapTest extends AJStatsTest {
+
 	@Override
 	protected String getChoiceFactory() {
 		return MapChoice.class.getSimpleName();

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import MinePumpSystem.PL_Interface_impl;
 
-public class MineTest extends AExampleTest {
+public class MineTest extends ATestExample {
 	
 	@Test
 	public void mineTest1() {

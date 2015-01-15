@@ -4,7 +4,7 @@ import cmu.conditional.MapChoice;
 import cmu.testprograms.MineTest;
 
 
-public class MineTestMap extends MineTest {
+public class MineMapTest extends MineTest {
 	
 	@Override
 	protected String getChoiceFactory() {

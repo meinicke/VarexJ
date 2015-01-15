@@ -1,9 +1,9 @@
 package cmu.testprograms.map;
 
 import cmu.conditional.MapChoice;
-import cmu.testprograms.GPLTest;
+import cmu.testprograms.ZipMeTest;
 
-public class GPLTestMap extends GPLTest {
+public class ZipMeMapTest extends ZipMeTest {
 	
 	@Override
 	protected String getChoiceFactory() {

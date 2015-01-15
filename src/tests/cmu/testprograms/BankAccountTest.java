@@ -2,7 +2,7 @@ package cmu.testprograms;
 
 import org.junit.Test;
 
-public class BankAccountTest extends AExampleTest {
+public class BankAccountTest extends ATestExample {
 //	private static String file = "C:\\Users\\Loaner\\workspace\\BankAccount-FH-JML_new\\BAmodel.dimacs";
 	private static String file = "BAmodel.dimacs";
 	

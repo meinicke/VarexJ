@@ -2,7 +2,7 @@ package cmu.testprograms;
 
 import org.junit.Test;
 
-public class AJStatsTest extends AExampleTest {
+public class AJStatsTest extends ATestExample {
 
  	@Test
 	public void ajStats1Test() {

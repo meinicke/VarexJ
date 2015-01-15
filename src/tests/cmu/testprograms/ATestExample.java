@@ -8,7 +8,7 @@ import gov.nasa.jpf.util.test.TestJPF;
  * 
  * @author Meinicke
  */
-public abstract class AExampleTest extends TestJPF {
+public abstract class ATestExample extends TestJPF {
 
 	protected final String[] config = {"+search.class= .search.RandomSearch", "+classpath=" + getClassPath(), "+featuremodel=" + getModelFile(), "+choice=" + getChoiceFactory()};
 	

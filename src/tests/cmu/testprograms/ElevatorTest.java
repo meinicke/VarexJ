@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ElevatorSystem.PL_Interface_impl;
 
-public class ElevatorTest extends AExampleTest {
+public class ElevatorTest extends ATestExample {
 	
 	
 	@Test

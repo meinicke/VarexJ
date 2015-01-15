@@ -1,9 +1,9 @@
 package cmu.testprograms.map;
 
 import cmu.conditional.MapChoice;
-import cmu.testprograms.ZipMeTest;
+import cmu.testprograms.ElevatorTest;
 
-public class ZipMeTestMap extends ZipMeTest {
+public class ElevatorMapTest extends ElevatorTest {
 	
 	@Override
 	protected String getChoiceFactory() {

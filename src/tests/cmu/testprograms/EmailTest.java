@@ -7,7 +7,7 @@ import org.junit.Test;
 import EmailSystem.Scenario;
 import EmailSystem.Test_Actions;
 
-public class EmailTest extends AExampleTest {
+public class EmailTest extends ATestExample {
 	
 	
 	@Test

@@ -8,7 +8,7 @@ import cmu.testprograms.BankAccountTest;
  * @author Meinicke
  *
  */
-public class BankAccountTestMap extends BankAccountTest {
+public class BankAccountMapTest extends BankAccountTest {
 
 	@Override
 	protected String getChoiceFactory() {

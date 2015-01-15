@@ -6,7 +6,7 @@ import net.sf.zipme.ZipTest;
 
 import org.junit.Test;
 
-public class ZipMeTest extends AExampleTest {
+public class ZipMeTest extends ATestExample {
 	
 	@Test(timeout = 20000)
 	public void runZipMe() {
