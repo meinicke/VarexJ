@@ -454,6 +454,7 @@
 					<exclude name="**/JPF_*.class" />
 					<include name="**cmu/*Test.class" />
 					<include name="**cmu/*/*Test.class" />
+					<include name="**cmu/*/*/*Test.class" />
 				</fileset>
 			</batchtest>
 
