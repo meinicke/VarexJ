@@ -7,11 +7,9 @@ import org.junit.Test;
 import EmailSystem.Scenario;
 import EmailSystem.Test_Actions;
 
-public class EmailTest extends TestJPF {
+public class EmailTest extends AExampleTest {
 	
-	private static final String FM = "+featuremodel=email.dimacs";
-	private static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\Email.jar", FM};
-
+	
 	@Test
 	public void emailTest() {
 		if (verifyNoPropertyViolation(config)) {
@@ -43,5 +41,15 @@ public class EmailTest extends TestJPF {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected String getClassPath() {
+		return "lib\\Email.jar";
+	}
+
+	@Override
+	protected String getModelFile() {
+		return "email.dimacs";
 	}
 }

@@ -6,11 +6,8 @@ import org.junit.Test;
 
 import MinePumpSystem.PL_Interface_impl;
 
-public class MineTest extends TestJPF {
+public class MineTest extends AExampleTest {
 	
-	private static final String FM = "+featuremodel=mine.dimacs";
-	private static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\Mine.jar,lib\\aspectjrt.jar", FM};
-
 	@Test
 	public void mineTest1() {
 		if (verifyNoPropertyViolation(config)) {
@@ -44,5 +41,15 @@ public class MineTest extends TestJPF {
 		if (verifyNoPropertyViolation(config)) {
 			PL_Interface_impl.main(new String[]{"5"});
 		}
+	}
+
+	@Override
+	protected String getClassPath() {
+		return "lib\\Mine.jar,lib\\aspectjrt.jar";
+	}
+
+	@Override
+	protected String getModelFile() {
+		return "mine.dimacs";
 	}
 }

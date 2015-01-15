@@ -1123,8 +1123,7 @@ public VM getVM () {
     }
   }
   
-  @Deprecated
-  public int newString (FeatureExpr ctx, String s) {// TODO jens remove
+  public int newString (FeatureExpr ctx, String s) {
 	  return newString(ctx, new One<>(s));
   }
   
