@@ -51,7 +51,7 @@ crashlytics-build.properties
 build/
 demoJXPath/
 trace
-demo1/
+/demo1
 QueryTest/
 ScalabilityTest.properties
 
