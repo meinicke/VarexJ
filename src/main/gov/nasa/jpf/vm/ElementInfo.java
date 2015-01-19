@@ -1208,6 +1208,9 @@ public abstract class ElementInfo implements Cloneable {
    * @throws java.lang.ArrayStoreException
    */
   public void copyElements( FeatureExpr ctx, ThreadInfo ti, ElementInfo eiSrc, int srcIdx, int dstIdx, int length){
+	if (ctx.isContradiction()) {
+		return;
+	}
 
     if (!isArray()){
       throw new ArrayStoreException("destination object not an array: " + ci.getName());

@@ -40,7 +40,6 @@ import java.util.logging.Logger;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
-import cmu.utils.TraceComparator;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 

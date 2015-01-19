@@ -1,24 +1,16 @@
 package cmu.testprograms;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
 
-public class BankAccountTest extends TestJPF {
+public class BankAccountTest extends ATestExample {
 //	private static String file = "C:\\Users\\Loaner\\workspace\\BankAccount-FH-JML_new\\BAmodel.dimacs";
 	private static String file = "BAmodel.dimacs";
-	
-	private static final String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\BankAccount.jar", "+featuremodel=" + file, "+choice=" + getChoiceFactory()};
 	
 	@Test
 	public void runBankAccount() {
 		if (verifyNoPropertyViolation(config)) {
 			BankAccount.Main.main(null);
 		}
-	}
-
-	private static String getChoiceFactory() {
-		return "TreeChoice";
 	}
 
 	@Test
@@ -72,4 +64,15 @@ public class BankAccountTest extends TestJPF {
 			}
 		}
 	}
+
+	@Override
+	protected String getClassPath() {
+		return "lib\\BankAccount.jar";
+	}
+
+	@Override
+	protected String getModelFile() {
+		return file;
+	}
+	
 }

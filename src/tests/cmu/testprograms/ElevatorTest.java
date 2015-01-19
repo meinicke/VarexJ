@@ -6,11 +6,9 @@ import org.junit.Test;
 
 import ElevatorSystem.PL_Interface_impl;
 
-public class ElevatorTest extends TestJPF {
+public class ElevatorTest extends ATestExample {
 	
-	private static final String FM = "+featuremodel=elevator.dimacs";
-	private static String[] config = {"+search.class= .search.RandomSearch", "+classpath=lib\\Elevator.jar,lib\\aspectjrt.jar", FM};
-
+	
 	@Test
 	public void elevatorTest1() {
 		if (verifyNoPropertyViolation(config)) {
@@ -114,6 +112,16 @@ public class ElevatorTest extends TestJPF {
 		if (verifyNoPropertyViolation(config)) {
 			PL_Interface_impl.main(new String[]{"14", "4"});
 		}
+	}
+
+	@Override
+	protected String getClassPath() {
+		 return "lib\\Elevator.jar,lib\\aspectjrt.jar";
+	}
+
+	@Override
+	protected String getModelFile() {
+		return "elevator.dimacs";
 	}
 
 	

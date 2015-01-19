@@ -18,78 +18,84 @@
 //
 package gov.nasa.jpf.search;
 
-
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.RestorableVMState;
+import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 
-
 /**
- * this is a straight execution pseudo-search - it doesn't search at
- * all (i.e. it doesn't backtrack), but just behaves like a 'normal' VM,
- * going forward() until there is no next state then it restarts the search 
- * until it hits a certain number of paths executed
+ * this is a straight execution pseudo-search - it doesn't search at all (i.e.
+ * it doesn't backtrack), but just behaves like a 'normal' VM, going forward()
+ * until there is no next state then it restarts the search until it hits a
+ * certain number of paths executed
  *
  * <2do> this needs to be updated & tested
  */
 public class RandomSearch extends Search {
-  int path_limit = 0;
-  
-  public RandomSearch (Config config, VM vm) {
-    super(config, vm);
-    
-    path_limit = config.getInt("search.RandomSearch.path_limit", 0);
-  }
-  
-  public void search () {
-    int    depth = 0;
-    int paths = 0;
-    depth++;
-    
-    if (hasPropertyTermination()) {
-      return;
-    }
-    
-    //vm.forward();
-    RestorableVMState init_state = vm.getRestorableState();
-   
-    notifySearchStarted();
-    
-    System.out.println("====================================================== Random Search");
-    
-    while (!done) {
-      if ((depth < depthLimit) && forward()) {
-        notifyStateAdvanced();
+	int path_limit = 0;
 
-        if (currentError != null){
-          notifyPropertyViolated();
+	public RandomSearch(Config config, VM vm) {
+		super(config, vm);
 
-          if (hasPropertyTermination()) {
-            break;
-          }
-        }
+		path_limit = config.getInt("search.RandomSearch.path_limit", 0);
+	}
 
-        if (isEndState()){
-          break;
-        }
+	public void search() {
+		try {
+			ThreadInfo.RUN_SIMPLE = true;
+			int depth = 0;
+			int paths = 0;
+			depth++;
 
-        depth++;
+			if (hasPropertyTermination()) {
+				return;
+			}
 
-      } else { // no next state or reached depth limit
-        // <2do> we could check for more things here. If the last insn wasn't
-        // the main return, or a System.exit() call, we could flag a JPFException
-        if (depth >= depthLimit) {
-          notifySearchConstraintHit("depth limit reached: " + depthLimit);
-        }
-        checkPropertyViolation();
-        done = (paths >= path_limit);
-        paths++;
-        System.out.println("paths = " + paths);
-        depth = 1;
-        vm.restoreState(init_state);
-        vm.resetNextCG();
-      }
-    }
-    notifySearchFinished();
-  }
+			// vm.forward();
+			RestorableVMState init_state = vm.getRestorableState();
+
+			notifySearchStarted();
+
+			System.out.println("====================================================== Random Search");
+
+			while (!done) {
+				if ((depth < depthLimit) && forward()) {
+					notifyStateAdvanced();
+
+					if (currentError != null) {
+						notifyPropertyViolated();
+
+						if (hasPropertyTermination()) {
+							break;
+						}
+					}
+
+					if (isEndState()) {
+						break;
+					}
+
+					depth++;
+
+				} else { // no next state or reached depth limit
+					// <2do> we could check for more things here. If the last
+					// insn wasn't
+					// the main return, or a System.exit() call, we could flag a
+					// JPFException
+					if (depth >= depthLimit) {
+						notifySearchConstraintHit("depth limit reached: " + depthLimit);
+					}
+					checkPropertyViolation();
+					done = (paths >= path_limit);
+					paths++;
+					System.out.println("paths = " + paths);
+					depth = 1;
+					vm.restoreState(init_state);
+					vm.resetNextCG();
+				}
+			}
+			notifySearchFinished();
+		} finally {
+			ThreadInfo.RUN_SIMPLE = false;
+		}
+	}
 }

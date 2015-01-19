@@ -181,7 +181,7 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public Conditional<Character> charAt__I__C(MJIEnv env, int objRef, final Conditional<Integer> index, FeatureExpr ctx) {
+	public Conditional<Character> charAt__I__C(final MJIEnv env, int objRef, final Conditional<Integer> index, FeatureExpr ctx) {
 		Conditional<char[]> data = env.getStringChars(objRef).simplify(ctx);
 		return data.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Character>>() {
 
@@ -190,9 +190,16 @@ public class JPF_java_lang_String extends NativePeer {
 				if (Conditional.isContradiction(ctx)) {
 					return new One<>(null);
 				}
-
-				return new One<>(data[index.getValue()]);// currently not lifted
-			}
+				
+				try {
+					return new One<>(data[index.getValue()]);// currently not lifted
+				} catch (ArrayIndexOutOfBoundsException e) {
+					String exceptionClass = e.toString();
+					exceptionClass = exceptionClass.substring(0, exceptionClass.indexOf(":"));
+					env.ti.createAndThrowException(ctx, exceptionClass, e.getMessage());
+				}
+				return new One<>(null);
+			} 
 
 		}).simplify();
 

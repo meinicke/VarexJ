@@ -487,9 +487,9 @@ public VM getVM () {
   }
 
   // we need this in case of a masked field
-  public int getReferenceField (int objref, FieldInfo fi) {
+  public int getReferenceField (FeatureExpr ctx, int objref, FieldInfo fi) {
     ElementInfo ei = heap.get(objref);
-    return ei.getReferenceField(fi).getValue();// TODO jens
+    return ei.getReferenceField(fi).simplify(ctx).getValue();// TODO jens
   }
 
   public String getStringField (FeatureExpr ctx, int objref, String fname){// TODO jens
@@ -1123,8 +1123,7 @@ public VM getVM () {
     }
   }
   
-  @Deprecated
-  public int newString (FeatureExpr ctx, String s) {// TODO jens remove
+  public int newString (FeatureExpr ctx, String s) {
 	  return newString(ctx, new One<>(s));
   }
   
@@ -1814,7 +1813,7 @@ public VM getVM () {
     return BoxObjectCacheManager.valueOfShort(ctx, ti, s);
   }
 
-  public int valueOfInteger(FeatureExpr ctx, int i) {
+  public Conditional<Integer> valueOfInteger(FeatureExpr ctx, int i) {
     return BoxObjectCacheManager.valueOfInteger(ctx, ti, i);
   }
   
@@ -1823,7 +1822,7 @@ public VM getVM () {
 
 		@Override
 		public Conditional<Integer> apply(FeatureExpr ctx, Integer i) {
-			return new One<>(BoxObjectCacheManager.valueOfInteger(ctx, ti, i));
+			return BoxObjectCacheManager.valueOfInteger(ctx, ti, i);
 		}
 		  
 	  });

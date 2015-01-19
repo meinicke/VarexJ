@@ -1,18 +1,8 @@
 package cmu.testprograms;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
 
-public class GPLTest extends TestJPF {
-	
-	public static String file = "GPLmodel.dimacs";
-
-	private static final String GPL_JAR = "+classpath=lib\\GPL.jar";
-	private static final String RANDOM_SEARCH = "+search.class=.search.RandomSearch";
-	private static final String FM = "+featuremodel=" + file;
-	
-	private static String[] config = {GPL_JAR, RANDOM_SEARCH, FM};
+public class GPLTest extends ATestExample {
 	
 	private static final String SEP = System.getProperty("file.separator");
 	
@@ -39,6 +29,16 @@ public class GPLTest extends TestJPF {
 	
 	private void run(String graph) {
 		GPL.Main.main(new String[]{"lib" + SEP + "GPL" + SEP + graph, "v0"});
+	}
+
+	@Override
+	protected String getClassPath() {
+		return "lib\\GPL.jar";
+	}
+
+	@Override
+	protected String getModelFile() {
+		return "GPLmodel.dimacs";
 	}
 	
 }

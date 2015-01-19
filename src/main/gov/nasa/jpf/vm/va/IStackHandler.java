@@ -1,6 +1,9 @@
 package gov.nasa.jpf.vm.va;
 
 import gov.nasa.jpf.vm.va.StackHandler.Type;
+
+import java.util.Collection;
+
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -142,5 +145,7 @@ public interface IStackHandler {
 	public abstract void swap(FeatureExpr ctx);
 
 	public abstract void setCtx(FeatureExpr ctx);
+	
+	public abstract Collection<Integer> getAllReferences();
 
 }

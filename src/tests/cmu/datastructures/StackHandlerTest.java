@@ -802,5 +802,37 @@ public class StackHandlerTest {
 		stack.storeOperand(f1, 0);
 		assertEquals(new One<>(42), stack.pop(f1.not()));
 	}
+	
+	/**
+	 * Checks that only values for the context are stored for long values.
+	 * 
+	 */
+	@Test
+	public void storeLongTest() throws Exception {
+		long value = 42;
+		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
+		stack.push(f1, new One<>(value), true);
+		stack.push(f1.not(), new One<>(value), true);
+		stack.storeLongOperand(f1.not(), 0);
+		assertEquals(new One<>(value), stack.popLong(f1));
+		assertFalse(stack.isRefLocal(f1.not(), 0));
+	}
+	
+	/**
+	 * Checks that only values for the context are stored for double values.
+	 * 
+	 */
+	@Test
+	public void storeDoubleTest() throws Exception {
+		double value = 42;
+		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
+		stack.push(f1, new One<>(value), true);
+		stack.push(f1.not(), new One<>(value), true);
+		stack.storeLongOperand(f1.not(), 0);
+		assertEquals(new One<>(value), stack.popDouble(f1));
+		assertFalse(stack.isRefLocal(f1.not(), 0));
+	}
 
 }

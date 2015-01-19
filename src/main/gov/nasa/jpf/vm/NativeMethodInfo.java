@@ -111,7 +111,7 @@ public class NativeMethodInfo extends MethodInfo {
 	public int getLineNumber(Instruction pc) {
 		return -1; // we have no line numbers
 	}
-
+	
 	public Conditional<Instruction> executeNative(final FeatureExpr ctx, ThreadInfo ti) {
 		Object ret = null;
 		Object[] args = null;

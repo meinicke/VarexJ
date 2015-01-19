@@ -108,4 +108,8 @@ public abstract class Conditional<T> {
     @Override
 	public abstract Conditional<T> clone() throws CloneNotSupportedException;
     
+    public static String getCTXString(FeatureExpr ctx) {
+  	  return ("" + ctx).replaceAll("CONFIG_", "").replaceAll("__SELECTED_FEATURE_", "").replaceAll("def\\(", "").replaceAll("\\)", "").replaceAll("\\(", "");
+    }
+    
 }

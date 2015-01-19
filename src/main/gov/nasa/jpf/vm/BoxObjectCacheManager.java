@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -209,20 +211,26 @@ public class BoxObjectCacheManager {
     return arrayRef;
   }
 
-  public static int valueOfInteger (FeatureExpr ctx, ThreadInfo ti, int i) {
+  public static Conditional<Integer> valueOfInteger (FeatureExpr ctx, final ThreadInfo ti, final int i) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    int intCache = cacheClass.getStaticElementInfo().getReferenceField("intCache").simplify(ctx).getValue();
+    Conditional<Integer> intCache = cacheClass.getStaticElementInfo().getReferenceField("intCache").simplify(ctx);
+    return intCache.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-    if (intCache == MJIEnv.NULL) { // initializing the cache on demand
-      intCache = initIntCache(ctx, ti);
-    }
+		@Override
+		public Conditional<Integer> apply(FeatureExpr ctx, Integer intCache) {
+			if (intCache == MJIEnv.NULL) { // initializing the cache on demand
+		      intCache = initIntCache(ctx, ti);
+		    }
+		    
+		    if (i >= intLow && i <= intHigh) { return new One<>(ti.getElementInfo(intCache).getReferenceElement(i - intLow).simplify(ctx).getValue()); }
+		
+		    ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
+		    ElementInfo eiInteger = ti.getHeap().newObject(ctx, ci, ti);
+		    eiInteger.setIntField(ctx, "value", new One<>(i));
+		    return new One<>(eiInteger.getObjectRef());
+		}
 
-    if (i >= intLow && i <= intHigh) { return ti.getElementInfo(intCache).getReferenceElement(i - intLow).simplify(ctx).getValue(); }
-
-    ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
-    ElementInfo eiInteger = ti.getHeap().newObject(ctx, ci, ti);
-    eiInteger.setIntField(ctx, "value", new One<>(i));
-    return eiInteger.getObjectRef();
+    });
   }
 
   // Long cache bounds

@@ -34,10 +34,6 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
-	private static String getCTXString(FeatureExpr ctx) {
-		return ("" + ctx).replaceAll("CONFIG_", "");
-	}
-
 	/****************************************************************************
 	 * these are the native methods we intercept
 	 */
@@ -49,8 +45,21 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 	}
 
 	@MJI
-	public void print__C__V(MJIEnv env, int objref, char c, FeatureExpr ctx) {
-		env.getVM().print(c);
+	public void print__C__V(final MJIEnv env, final int objref, Conditional<Character> c, FeatureExpr ctx) {
+		c.mapf(ctx, new BiFunction<FeatureExpr, Character, Conditional<Object>>() {
+
+			@Override
+			public Conditional<Object> apply(FeatureExpr ctx, Character c) {
+				if (ThreadInfo.ctxOutput) {
+					env.getVM().print("(<" + c + "> : " + Conditional.getCTXString(ctx) + ")");
+				} else {
+					env.getVM().print(c);
+				}
+
+				return null;
+			}
+
+		});
 	}
 
 	@MJI
@@ -87,7 +96,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
 			if (ThreadInfo.ctxOutput) {
 				if (s.getValue().and(ctx).isSatisfiable()) {
-					env.getVM().print("(<" + s.getKey() + "> : " + getCTXString(s.getValue().and(ctx)) + ')');
+					env.getVM().print("(<" + s.getKey() + "> : " + Conditional.getCTXString(s.getValue().and(ctx)) + ')');
 				}
 			} else {
 				env.getVM().print(s.getKey());
@@ -104,7 +113,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 	@MJI
 	public void println____V(MJIEnv env, int objRef, FeatureExpr ctx) {
 		if (ThreadInfo.ctxOutput) {
-			env.getVM().println("<> : " + getCTXString(ctx));
+			env.getVM().println("<> : " + Conditional.getCTXString(ctx));
 		} else {
 			env.getVM().println();
 		}
@@ -123,7 +132,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, Double d) {
 				if (ThreadInfo.ctxOutput) {
-					env.getVM().println("<" + d + "> : " + getCTXString(ctx));
+					env.getVM().println("<" + d + "> : " + Conditional.getCTXString(ctx));
 				} else {
 					env.getVM().print(d);
 					env.getVM().println();
@@ -143,7 +152,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, Float f) {
 				if (ThreadInfo.ctxOutput) {
-					env.getVM().println("<" + f + "> : " + getCTXString(ctx));
+					env.getVM().println("<" + f + "> : " + Conditional.getCTXString(ctx));
 				} else {
 					env.getVM().print(f);
 					env.getVM().println();
@@ -163,7 +172,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, Integer i) {
 				if (ThreadInfo.ctxOutput) {
-					env.getVM().println("<" + i + "> : " + getCTXString(ctx));
+					env.getVM().println("<" + i + "> : " + Conditional.getCTXString(ctx));
 				} else {
 					env.getVM().print(i);
 					env.getVM().println();
@@ -183,7 +192,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, Long l) {
 				if (ThreadInfo.ctxOutput) {
-					env.getVM().println("<" + l + "> : " + getCTXString(ctx));
+					env.getVM().println("<" + l + "> : " + Conditional.getCTXString(ctx));
 				} else {
 					env.getVM().print(l);
 					env.getVM().println();
@@ -198,24 +207,18 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void println__Ljava_lang_String_2__V(final MJIEnv env, int objRef, Conditional<Integer> strRef, FeatureExpr ctx) {
-//		System.out.println("IGNORED: JPF_gov_nasa_jpf_ConsoleOutputStream.println__Ljava_lang_String_2__V()");
 		Conditional<String> strings = strRef.mapr(new Function<Integer, Conditional<String>>() {
 
 			@Override
 			public Conditional<String> apply(Integer strRef) {
 				return env.getConditionalStringObject(strRef);
 			}
-<<<<<<< HEAD
-
-=======
-			
->>>>>>> da2a6d8842905dee29615d2014dbc808e28e8f1d
 		});
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
 			if (ThreadInfo.ctxOutput) {
 				if (s.getValue().and(ctx).isSatisfiable()) {
-					env.getVM().println('<' + s.getKey() + "> : " + getCTXString(s.getValue().and(ctx)));
+					env.getVM().println('<' + s.getKey() + "> : " + Conditional.getCTXString(s.getValue().and(ctx)));
 				}
 			} else {
 				env.getVM().println(s.getKey());
@@ -241,7 +244,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, Boolean z) {
 				if (ThreadInfo.ctxOutput) {
-					env.getVM().println("<" + z + "> : " + getCTXString(ctx));
+					env.getVM().println("<" + z + "> : " + Conditional.getCTXString(ctx));
 				} else {
 					env.getVM().print(z);
 					env.getVM().println();

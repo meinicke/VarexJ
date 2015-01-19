@@ -647,7 +647,6 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     if(vm.finalizersEnabled()) {
       markFinalizableObjects();
     }
-    
     // now go over all objects, purge the ones that are not live and reset attrs for rest
     for (ElementInfo ei : this){
       
@@ -665,7 +664,6 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
         remove(ei.getObjectRef());
       }
     }
-    
     nLiveObjects = n;
   }
   

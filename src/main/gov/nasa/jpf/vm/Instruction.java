@@ -170,7 +170,7 @@ public abstract class Instruction implements Cloneable {
 	public abstract Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti);
 
 	public String toString() {
-		return mi.getFullName();// + " " + getMnemonic() + " " + getFilePos();//getPosition();
+		return mi.getFullName() + " " + getMnemonic() + " " + getFilePos();//getPosition();
 	}
 
 	public String getMnemonic() {
@@ -245,6 +245,9 @@ public abstract class Instruction implements Cloneable {
 	public String getFilePos() {
 		String file = null;
 		int line = -1;
+		if (mi == null) {
+			return "";
+		}
 		ClassInfo ci = mi.getClassInfo();
 
 		if (ci != null) {

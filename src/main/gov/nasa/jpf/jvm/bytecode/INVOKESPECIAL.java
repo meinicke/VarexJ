@@ -25,14 +25,12 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
-import gov.nasa.jpf.vm.va.IStackHandler;
-import gov.nasa.jpf.vm.va.Stack;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -57,63 +55,75 @@ public class INVOKESPECIAL extends InstanceInvocation {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     int argSize = getArgSize();
-    int objRef = ti.getCalleeThis( ctx, argSize).getValue();
-    lastObj = objRef;
-
-    // we don't have to check for NULL objects since this is either a ctor, a 
-    // private method, or a super method
-
-    MethodInfo callee;
+    Conditional<Integer> allRefs = ti.getCalleeThis( ctx, argSize);
+    Map<Integer, FeatureExpr> map = allRefs.toMap();
+	boolean splitRef = false;
+	if (map.size() > 1) {
+		splitRef = true;
+	}
+	for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
+		if (splitRef) {
+			ctx = ctx.and(objRefEntry.getValue());
+		}
+		Integer objRef = objRefEntry.getKey();
     
-    try {
-      callee = getInvokedMethod(ctx, ti);
-    } catch(LoadOnJPFRequired rre) {
-      return ti.getPC();
-    }      
+		lastObj = objRef;
 
-    if (callee == null){
-      return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodException", "Calling " + cname + '.' + mname));
-    }
-
-    ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
-
-    if (callee.isSynchronized()){
-      if (checkSyncCG(ei, ti)){
-        return new One<Instruction>(this);
-      }
-    }
-
-//    boolean splitRef = false;
-//	if (callee.isMJI()) {
-//		 IStackHandler stack = ti.getTopFrame().stack;
-//		 if (stack.getStackWidth() > 1) {
-//			 boolean split = false;
-//			 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
-//				 if (stack.peek(ctx, i) instanceof IChoice) {
-//					 split = true;
-//					 splitRef = true;
-//					 break;
-//				 }
-//			 }
-//			 
-//			 if (split) {
-//				 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
-//				 for (FeatureExpr c : stacks.values()) {
-//					 ctx = ctx.and(c);
-//					 break;
-//				 }
-//			 }
-//		 }
-//	}
+	    // we don't have to check for NULL objects since this is either a ctor, a 
+	    // private method, or a super method
 	
-	setupCallee(ctx, ti, callee); // this creates, initializes and
-									// pushes the callee StackFrame
-
-//	if (!splitRef) {
-//		return ti.getPC();
-//	}
+	    MethodInfo callee;
+	    
+	    try {
+	      callee = getInvokedMethod(ctx, ti);
+	    } catch(LoadOnJPFRequired rre) {
+	      return ti.getPC();
+	    }      
 	
-	return ChoiceFactory.create(ctx, ti.getPC(), new One<Instruction>(this)).simplify();
+	    if (callee == null){
+	      return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodException", "Calling " + cname + '.' + mname));
+	    }
+	
+	    ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
+	
+	    if (callee.isSynchronized()){
+	      if (checkSyncCG(ei, ti)){
+	        return new One<Instruction>(this);
+	      }
+	    }
+	
+	//    boolean splitRef = false;
+	//	if (callee.isMJI()) {
+	//		 IStackHandler stack = ti.getTopFrame().stack;
+	//		 if (stack.getStackWidth() > 1) {
+	//			 boolean split = false;
+	//			 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
+	//				 if (stack.peek(ctx, i) instanceof IChoice) {
+	//					 split = true;
+	//					 splitRef = true;
+	//					 break;
+	//				 }
+	//			 }
+	//			 
+	//			 if (split) {
+	//				 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
+	//				 for (FeatureExpr c : stacks.values()) {
+	//					 ctx = ctx.and(c);
+	//					 break;
+	//				 }
+	//			 }
+	//		 }
+	//	}
+		
+		setupCallee(ctx, ti, callee); // this creates, initializes and
+										// pushes the callee StackFrame
+	
+		if (!splitRef) {
+			return ti.getPC();
+		}
+		return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify();
+	}
+	throw new RuntimeException("Something went wrong");
   }
 
   /**

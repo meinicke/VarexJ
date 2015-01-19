@@ -23,6 +23,7 @@ import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.SystemAttribute;
 import gov.nasa.jpf.jvm.bytecode.ATHROW;
+import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
@@ -47,6 +48,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -1588,10 +1590,6 @@ public class ThreadInfo extends InfoObject
       printStackTrace( null, pw, pendingException.getExceptionReference());
     }
   }
-  
-  private static String getCTXString(FeatureExpr ctx) {
-	  return ("" + ctx).replaceAll("CONFIG_", "");
-  }
 
   /**
    * the reason why this is kind of duplicated (there is also a StackFrame.getPositionInfo)
@@ -1599,18 +1597,27 @@ public class ThreadInfo extends InfoObject
    * is created. At the time printStackTrace() is called, the StackFrames in question
    * are most likely already be unwinded
    */
-  public void printStackTrace (FeatureExpr ctx, PrintWriter pw, int objRef) {
+  public void printStackTrace (FeatureExpr ctx, final PrintWriter pw, int objRef) {
+	  // TODO revise output
     // 'env' usage is not ideal, since we don't know from what context we are called, and
     // hence the MJIEnv calling context might not be set (no Method or ClassInfo)
     // on the other hand, we don't want to re-implement all the MJIEnv accessor methods
-	  print(pw, "if " +  getCTXString(ctx) + ":\n");
+	  print(pw, "if " +  Conditional.getCTXString(ctx) + ":\n");
     print(pw, env.getClassInfo(objRef).getName());
-    int msgRef = env.getReferenceField(ctx,objRef, "detailMessage").getValue();
-    if (msgRef != MJIEnv.NULL) {
-      print(pw, ": ");
-      print(pw, env.getStringObject(ctx, msgRef));
-    }
-    print(pw, "\n");
+    Conditional<Integer> msgRef = env.getReferenceField(ctx,objRef, "detailMessage");
+    for (Entry<Integer, FeatureExpr> e : msgRef.toMap().entrySet()) {
+	    if (e.getKey() != MJIEnv.NULL) {
+	      print(pw, ": ");
+	      Conditional<String> message = env.getStringObjectNew(e.getValue().and(ctx), e.getKey());
+	      if (message instanceof One) {
+	    	  print(pw, message.getValue());
+	      } else {
+	    	  print(pw, message.toString());
+	      }
+	      
+	    }
+	    print(pw, "\n");
+	}
 
     // try the 'stackTrace' field first, it might have been set explicitly
     int aRef = env.getReferenceField(ctx, objRef, "stackTrace").getValue(); // StackTrace[]
@@ -1625,16 +1632,25 @@ public class ThreadInfo extends InfoObject
       }
 
     } else { // fall back to use the snapshot stored in the exception object
-      aRef = env.getReferenceField(ctx, objRef, "snapshot").getValue();
-      int[] snapshot = env.getIntArrayObject(ctx, aRef);
-      int len = snapshot.length/2;
+      Conditional<Integer> VAaRef = env.getReferenceField(ctx, objRef, "snapshot");
+      VAaRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
 
-      for (int i=0, j=0; i<len; i++){
-        int methodId = snapshot[j++];
-        int pcOffset = snapshot[j++];
-        StackTraceElement ste = new StackTraceElement( methodId, pcOffset);
-        ste.printOn( pw);
-      }
+		@Override
+		public Conditional<Object> apply(FeatureExpr ctx, Integer aRef) {
+			 int[] snapshot = env.getIntArrayObject(ctx, aRef);
+		      int len = snapshot.length/2;
+
+		      for (int i=0, j=0; i<len; i++){
+		        int methodId = snapshot[j++];
+		        int pcOffset = snapshot[j++];
+		        StackTraceElement ste = new StackTraceElement( methodId, pcOffset);
+		        ste.printOn( pw);
+		      }
+		      return null;
+		}
+    	  
+	});
+     
     }
 
     int causeRef = env.getReferenceField(ctx, objRef, "cause").getValue();
@@ -1661,6 +1677,9 @@ public class ThreadInfo extends InfoObject
           mthName = mi.getName();
 
           fileName = mi.getStackTraceSource();
+          if (fileName != null) {
+        	  fileName = fileName.substring(fileName.lastIndexOf('/') + 1);        	  
+          }
           if (pcOffset < 0){
             // See ThreadStopTest.threadDeathWhileRunstart
             // <2do> remove when RUNSTART is gone
@@ -1847,7 +1866,7 @@ public class ThreadInfo extends InfoObject
    * this is the inner interpreter loop of JPF
    */
   protected void executeTransition (SystemState ss) throws JPFException {
-    Conditional<Instruction> pc = getPC();
+	Conditional<Instruction> pc = getPC();
     Conditional<Instruction> nextPc = new One<>(null);
 
     currentThread = this;
@@ -1858,6 +1877,16 @@ public class ThreadInfo extends InfoObject
       pc = new One<>(throwStopException());
       setPC(pc);
     }
+    
+    
+    if (RUN_SIMPLE) {
+		  while (!executeInstructionSimple().equals(new One<>(null))) {
+			  if (ss.breakTransition()) {
+			        break;
+			  }
+		  }
+		  return;
+	  }
     
     // this constitutes the main transition loop. It gobbles up
     // insns until someone registered a ChoiceGenerator, there are no insns left,
@@ -1889,7 +1918,147 @@ public class ThreadInfo extends InfoObject
   static int count2 = 0;
   static long time = 0;
   
+  /**
+   * Maximal number of frames the VM can create before throwing a StackOverflowError.
+   */
+  // TODO create parameter
+  private static final int MAX_FRAMES = 1000;
+  
   public static boolean logtrace = false;
+  public static boolean RUN_SIMPLE = false;
+  
+  private int rounds = 0;
+  
+  /**
+   * Execute next instruction.<br>
+   * Simplified version of {@link ThreadInfo#executeInstruction()}.
+   */
+  public Conditional<Instruction> executeInstructionSimple() {
+	  Conditional<Instruction> pc = getPC();
+	    int popedFrames = 0;
+	    final StackFrame oldStack = top;
+	    try {
+	    	if (time == 0) {
+	    		time = System.currentTimeMillis();
+	        }
+	        count++;
+	        if (System.currentTimeMillis() - time > 10000) {
+	        	int instructions = (count - count2) / 10;
+	        	System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s");
+	        	count2 = count;
+	        	time = System.currentTimeMillis();
+//	        	rounds++;
+//	        	if (rounds > 10) {
+//	        		rounds = 0;
+	        		vm.getSystemState().gcIfNeeded();
+//	        	}
+	        }
+	        Instruction i = null;
+	        FeatureExpr ctx = top.stack.getCtx();
+	        if (pc instanceof One) {
+	        	i = pc.getValue();
+	        } else {
+		    	Map<Instruction, FeatureExpr> map = pc.simplify(ctx).toMap();// jens why simplify (see AJSTATS)
+		    	int minPos = Integer.MAX_VALUE;
+		    	MethodInfo m = top.getMethodInfo();
+		    	
+		    	if (map.size() == 1) {
+		    		for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
+		    			i = e.getKey();
+		    		}
+		    	} else {
+			   		for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
+			   			final Instruction key = e.getKey();
+						if (!(key instanceof ReturnInstruction)){
+			    			if (key.position < minPos && key.mi == m) {
+			    				minPos = key.position;
+			    				i = key;
+			    			}
+			   			} else if (i == null && key.mi == m) {
+			   				i = key;
+			   			}
+			   		}
+			   		ctx = map.get(i).and(ctx);
+		    	}
+	        }	
+	        	
+//    		if (debug) {
+//    			System.out.print(top.getDepth());
+//    			if (top.getDepth() < 10) {
+//    				System.out.print(" ");
+//    			}
+//				System.out.println(" " + i + " if " + ctx);
+//			}
+	    		
+	    		// log trace for trace comparison
+//	    		if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
+//	    			logtrace = true;
+//	    		}
+//	    		if (logtrace) {
+//	    			if (!(i instanceof InvokeInstruction)) {
+//	    				if (i.getMethodInfo().getFullName().contains("clinit")) {
+//	    					// ignore class initializations 
+//	    				} else {
+//	    					TraceComparator.putInstruction(ctx, i.getMethodInfo().getFullName() + " " + i.getMnemonic().toString() +  " " + i.getFileLocation());
+//	    				}
+//	    			}
+//	    		}
+	    		
+    		final int currentStackDepth = stackDepth;
+	    		
+//	    		long startOfInstruction = System.currentTimeMillis();
+    		Conditional<Instruction> next = i.execute(ctx, this);
+//	    		long endOfInstruction = System.currentTimeMillis();
+//	    		long duration = endOfInstruction - startOfInstruction;
+//	    		if (duration > 0) {
+//	    			InstructionLogger.log(i.getMnemonic(), endOfInstruction - startOfInstruction, i.toString());
+//	    		}
+    		final int poped = currentStackDepth - stackDepth;
+    		if (i instanceof InvokeInstruction) {
+    			nextPc = next;
+	    		if (stackDepth/*top.getDepth()*/ > MAX_FRAMES) {
+	            	nextPc = ChoiceFactory.create(ctx, 
+	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + MAX_FRAMES + ")")), 
+	            			next).simplify();
+            	}
+    		} else if (i instanceof ReturnInstruction) {
+    			next = ChoiceFactory.create(ctx, next, getPC());
+    			if (top != null) {
+    				nextPc = next.simplify(top.stack.getCtx());
+    			} else {
+    				nextPc = next;
+    			}
+    		} else if (i instanceof ATHROW || (poped > 0 && stackTraceMember(oldStack, top))) {
+    			// some instruction (e.g., IDIV with div by zero) just pop frames but do not throw exceptions
+    			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
+    			popedFrames = poped;
+				int k = 0;
+				StackFrame stackPointer = oldStack;
+				// set the ctx of poped frames
+				while (k < popedFrames) {
+					FeatureExpr newCtx = stackPointer.stack.getCtx().andNot(ctx);
+					stackPointer.stack.setCtx(newCtx);
+					stackPointer = stackPointer.prev;
+					k++;
+				}
+    		} else {
+    			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
+    		}
+        } catch (ClassInfoException cie) {
+          nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
+        }
+	    executedInstructions++;
+	    
+	    if (top != null) {
+	      setPC(nextPc);
+	  		if (popedFrames > 0) {
+	  			pushFrames(oldStack, popedFrames);
+	  		}
+	      return nextPc;
+	    } else {
+	      return new One<>(null);
+	    }
+  }
   
   /**
    * Execute next instruction.
@@ -1912,11 +2081,11 @@ public class ThreadInfo extends InfoObject
     }
     
     // this is the pre-execution notification, during which a listener can perform
-    // on-the-fly instrumentation or even replace the instruction alltogether
+    // on-the-fly instrumentation or even replace the instruction all together
     vm.notifyExecuteInstruction(this, pc.getValue(true));// TODO revise
 
     int popedFrames = 0;
-    StackFrame oldStack = top;
+    final StackFrame oldStack = top;
     
     if (!skipInstruction) {
         // enter the next bytecode
@@ -1925,7 +2094,7 @@ public class ThreadInfo extends InfoObject
         		time = System.currentTimeMillis();
         	}
         	count++;
-//    		if (count > 445000) {
+//    		if (count > 1000000) {
 //    			debug = true;
 //    			System.out.print(count + ": ");
 //    		}
@@ -1934,6 +2103,12 @@ public class ThreadInfo extends InfoObject
         		System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s");
         		count2 = count;
         		time = System.currentTimeMillis();
+        		
+        		rounds++;
+        		if (rounds > 10) {
+        			rounds = 0;
+        			ss.gcIfNeeded();
+        		}
         	}
         	Instruction i = null;
         	FeatureExpr ctx = top.stack.getCtx();
@@ -1972,7 +2147,7 @@ public class ThreadInfo extends InfoObject
 				System.out.println(" " + i + " if " + ctx);
 			}
     		
-    		// log trace for trace compasion
+    		// log trace for trace comparison
     		if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
     			logtrace = true;
     		}
@@ -1986,10 +2161,23 @@ public class ThreadInfo extends InfoObject
     			}
     		}
     		
-    		int currentStackDepth = stackDepth;
+    		final int currentStackDepth = stackDepth;
+    		
+//    		long startOfInstruction = System.currentTimeMillis();
     		Conditional<Instruction> next = i.execute(ctx, this);
+//    		long endOfInstruction = System.currentTimeMillis();
+//    		long duration = endOfInstruction - startOfInstruction;
+//    		if (duration > 0) {
+//    			InstructionLogger.log(i.getMnemonic(), endOfInstruction - startOfInstruction, i.toString());
+//    		}
+    		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
+    			if (top.getDepth() > MAX_FRAMES) {
+            		nextPc = ChoiceFactory.create(ctx, 
+            				new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + MAX_FRAMES + ")")), 
+            				next).simplify();
+            	}
     		} else if (i instanceof ReturnInstruction) {
     			next = ChoiceFactory.create(ctx, next, getPC());
     			if (top != null) {
@@ -1997,9 +2185,10 @@ public class ThreadInfo extends InfoObject
     			} else {
     				nextPc = next;
     			}
-    		} else if (i instanceof ATHROW) {
+    		} else if (i instanceof ATHROW || (poped > 0 && stackTraceMember(oldStack, top))) {
+    			// some instruction (e.g., IDIV with div by zero) just pop frames but do not throw exceptions
     			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
-				popedFrames = currentStackDepth - stackDepth;
+    			popedFrames = poped;
 				int k = 0;
 				StackFrame stackPointer = oldStack;
 				// set the ctx of poped frames
@@ -2012,7 +2201,6 @@ public class ThreadInfo extends InfoObject
     		} else {
     			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
     		}
-    		
         } catch (ClassInfoException cie) {
           nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
@@ -2045,6 +2233,7 @@ public class ThreadInfo extends InfoObject
       // <2do> this is where we would have to handle general insn repeat
       setPC(nextPc);
   		if (popedFrames > 0) {
+  			// return to the current method after the chatch clause is set after an exception
   			pushFrames(oldStack, popedFrames);
   		}
       return nextPc;
@@ -2053,7 +2242,21 @@ public class ThreadInfo extends InfoObject
     }
   }
 
-  /**
+  	/**
+  	 * Checks whether the the new top stack is part of the trace of the current stack.
+  	 */
+	private boolean stackTraceMember(final StackFrame current, final StackFrame newTop) {
+		if (current == newTop) {
+			return true;
+		}
+		final StackFrame prev = current.prev;
+		if (prev != null) {
+			return stackTraceMember(prev, newTop);
+		}
+		return false;
+	}
+
+/**
    * enter instruction hidden from any listeners, and do not
    * record it in the path
    */

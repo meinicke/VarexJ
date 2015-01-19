@@ -3,6 +3,7 @@ package cmu;
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("unused")
@@ -499,6 +500,192 @@ public class VariabilityAwareTest extends TestJPF {
 			}
 			check(x == 0);
 		}
+	}
+	
+	/**
+	 * Checks that the executions are joined again after a div by zero exception
+	 * TODO how to test this property? (i.e., fail if the instructions are not joined)
+	 */
+	@Test
+	public void testNullPointer() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			try {
+				System.out.println(nullMethod1(0));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("JOINED");
+		}
+	}
+	
+	
+
+	private int nullMethod1(int i) {
+		return nullMethod(i);
+	}
+
+	private int nullMethod(int i) {
+		int k = 3;
+		if (a) {
+			k = k / i;
+		} else {
+			k = k +i;
+		}
+		k++;
+		return k;
+	}
+	
+	@Test
+	public void peerExceptionTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			try {
+				char[] c = new char[10];
+				System.out.println(a);
+				if (!a) {
+					c[1] = 'A';
+				} else {
+					c[20] = 'B';
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("JOIN");
+		}
+	}
+	
+	@Test
+	public void charAtExceptionTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			try {
+				String s = "TEST";
+				if (a) {
+					System.out.println(s.charAt(5));
+				} else {
+					System.out.println(s.charAt(1));
+				}
+				if (b) {
+					System.out.println(s.charAt(-1));
+				} else {
+					System.out.println(s.charAt(3));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("JOIN");
+		}
+	}
+	
+	@Conditional
+	private static boolean REVERSE = true;
+	@Conditional
+	private static boolean LETTERS = true;
+	
+	/**
+	 * An example of my presentation to show how features causing exceptions can be found with VarexJ.
+	 */
+	@Test
+	public void exampleExceptions() {
+		if (!RUN_WITH_JPF || verifyAssertionError(JPF_CONFIGURATION)) {
+			try {
+				char[] chars = exampleMethod();
+				System.out.println(new String(chars));
+				char prev = chars[0];
+				for (int i = 1; i < chars.length; i++) {
+					if (REVERSE) {
+						check(prev > chars[i]);
+					} else {
+						check(prev < chars[i]);
+					}
+					prev = chars[i];
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("JOIN");
+		}
+	}
+
+	private char[] exampleMethod() {
+		char[] chars = new char[10];
+		String s = LETTERS ? "ABCDEFGHI" : "0123456789";
+		for (int i = 0; i < chars.length; i++) {
+			chars[i] = s.charAt(i);
+		}
+		if (REVERSE) {
+			char[] old = chars;
+			for (int i = 0; i < chars.length; i++) {
+				chars[i] = old[chars.length - 1 - i];
+			}
+		}
+		return chars;
+	}
+	
+	@Test
+	public void testRuntimeException() {
+		if (!RUN_WITH_JPF || verifyUnhandledException(RuntimeException.class.getName(), JPF_CONFIGURATION)) {
+			Integer i = null;
+			if (a) {
+				i = 1;
+			}
+			if (i == null) {
+				throw new RuntimeException("i == null");
+			}
+			System.out.println(i);
+		}
+	}
+	
+	/**
+	 * Tests that stack overflow is found. 
+	 */
+	@Test
+	public void testStackOverFlow() {
+		if (!RUN_WITH_JPF || verifyUnhandledException(StackOverflowError.class.getName(), JPF_CONFIGURATION)) {
+			int i = a ? 10 : 10000;
+			i = recursive(i);
+			System.out.println(i);
+		}
+	}
+	
+	/**
+	 * Tests that stack overflow is found, but the other path is still executed.
+	 */
+	@Test
+	public void testStackOverFlow2() {
+		if (!RUN_WITH_JPF || verifyAssertionError(JPF_CONFIGURATION)) {
+			int i = a ? 10 : 10000;
+			try {
+				i = recursive(i);
+				System.out.println(i);
+			} catch (StackOverflowError e) {
+				// ignore the stack overflow error
+				e.printStackTrace();
+			}
+			check(i == 1);
+		}
+	}
+
+	private int recursive(int i) {
+		if (i == 0) {
+			return 0;
+		}
+		return i + recursive(i - 1);
+	}
+	
+	@Test
+	public void testMultipleExceptions() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			try {
+				int i = a ? 3 : 2;
+				int[] array = new int[2];
+				
+				System.out.println(array[i]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	
 	}
 
 	private static boolean valid() {

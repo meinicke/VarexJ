@@ -136,8 +136,8 @@ public class CFSerializer extends FilteringSerializer {
 		public Conditional<Object> apply(FeatureExpr f, Instruction x) {
 			if (x == finalPC) {
 				buf.add( finalPC != null ? finalPC.getInstructionIndex() : -1);
-	
-			    int len = frame.getTopPos(f) + 1;
+				
+			    int len = frame.nLocals;//frame.getTopPos(f) + 1;TODO
 			    buf.add(len);
 	
 			    // unfortunately we can't do this as a block operation because that

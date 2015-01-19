@@ -48,5 +48,18 @@ public class DoubleTest extends TestJPF {
 		}
 	}
 
+	@Test
+	public void testDoubleReturn() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			double d = method();
+		}
+	}
 
+	private double method() {
+		if (c) {
+			return 1;
+		}
+		double d = 1;
+		return 0;
+	}
 }

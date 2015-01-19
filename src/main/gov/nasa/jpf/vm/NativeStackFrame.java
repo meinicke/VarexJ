@@ -27,6 +27,7 @@ import gov.nasa.jpf.util.Misc;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import cmu.conditional.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -120,18 +121,26 @@ public abstract class NativeStackFrame extends StackFrame {
     return args;
   }
 
-  public void markThreadRoots (Heap heap, int tid) {
+  public void markThreadRoots (final Heap heap, final int tid) {
     // what if some listener creates a CG post-EXECUTENATIVE or pre-NATIVERETURN?
     // and the native method returned an object?
     // on the other hand, we have to make sure we don't mark a return value from
     // a previous transition
 
-    if (pc.getValue() instanceof NATIVERETURN){
-      if (ret != null && ret instanceof Integer && mi.isReferenceReturnType()) {
-        int ref = ((Integer) ret).intValue();
-        heap.markThreadRoot(ref, tid);
-      }
-    }
+	  pc.map(new Function<Instruction, Object>() {
+
+		@Override
+		public Object apply(Instruction pc) {
+			if (pc instanceof NATIVERETURN){
+				if (ret != null && ret instanceof Integer && mi.isReferenceReturnType()) {
+					int ref = ((Integer) ret).intValue();
+					heap.markThreadRoot(ref, tid);
+				}
+			}
+			return null;
+		}
+		  
+	  });
   }
 
   protected void hash (HashData hd) {

@@ -5,16 +5,16 @@ import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
 
 public class NoVariationTest extends TestJPF{
-    @Test
-    public void demo1Test() {
-        if (verifyNoPropertyViolation("jpf_testprogram/prevayler_demo1.jpf")) {
-            try {
-                org.prevayler.demos.demo1.Main.main(null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    @Test
+//    public void demo1Test() {
+//        if (verifyNoPropertyViolation("jpf_testprogram/prevayler_demo1.jpf")) {
+//            try {
+//                org.prevayler.demos.demo1.Main.main(null);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
 
 //    @Test

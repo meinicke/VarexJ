@@ -113,6 +113,11 @@ public abstract class StackFrame implements Cloneable {
 
 public int nLocals;
 
+	/**
+	 * Buffer for the stack depth.
+	 */
+	private int depth = 0;
+
   protected int top() {// TODO remove
 	  return stack.getTop().getValue() + nLocals;	
   }
@@ -130,7 +135,6 @@ public int nLocals;
 //    int top() = nLocals-1;
 
     stack = StackHandlerFactory.createStack(ctx, nLocals, nOperands);
-    
 //    int nSlots = nLocals + nOperands;
 //    if (nSlots > 0){
 //      slots = new int[nLocals + nOperands];
@@ -1542,14 +1546,19 @@ public int nLocals;
       }
     }
     **/
-    for (int i = 0; i <= top(); i++) {
-      if (stack.isRefLocal(TRUE, i)) {
-        int objref = stack.getLocal(TRUE, i).getValue();
-        if (objref != MJIEnv.NULL) {
-          heap.markThreadRoot(objref, tid);
-        }
-      }
-    }
+//    for (int i = 0; i <= top(); i++) {
+//      if (stack.isRefLocal(TRUE, i)) {
+//        int objref = stack.getLocal(TRUE, i).getValue();
+//        if (objref != MJIEnv.NULL) {
+//          heap.markThreadRoot(objref, tid);
+//        }
+//      }
+//    }
+		for (Integer ref : stack.getAllReferences()) {
+			if (ref != MJIEnv.NULL) {
+				heap.markThreadRoot(ref, tid);
+			}
+		}
   }
 
   //--- debugging methods
@@ -1688,13 +1697,15 @@ pw.print(stack);
   }
 
   public int getDepth(){
-    int depth = 0;
-    
-    for (StackFrame frame = prev; frame != null; frame = frame.prev){
-      depth++;
-    }
-    
-    return depth;
+	  if (depth != 0) {
+		  return depth;
+	  }
+	  
+	  if (prev == null) {
+		  return 0;
+	  }
+	  depth = prev.getDepth() + 1;
+	  return depth;
   }
   
   protected int objectHashCode() {
