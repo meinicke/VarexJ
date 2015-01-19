@@ -1,12 +1,15 @@
-import org.prevayler.demos.demo1.*;
 
-public class Demo1Test {
+/**
+ *
+* @author: chupanw
+*/
+import org.prevayler.tutorial.Main;
+public class TutorialTest {
     public static void main(String[] args) {
         try {
-            org.prevayler.demos.demo1.Main.main(null);
+            Main.main(args);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
-

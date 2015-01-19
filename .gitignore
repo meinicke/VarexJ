@@ -50,6 +50,10 @@ crashlytics-build.properties
 
 build/
 demoJXPath/
+trace
+demo1/
+QueryTest/
+ScalabilityTest.properties
 
 
 # For the jpf-nhandler extension

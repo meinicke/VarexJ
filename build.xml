@@ -37,6 +37,7 @@
 		<fileset dir=".">
 			<include name="lib/*.jar" />
 		</fileset>
+		<pathelement location="build/" />
 	</path>
 
 
@@ -79,7 +80,7 @@
 	<!-- ======================= COMPILE SECTION ============================= -->
 
 	<!-- public compile -->
-	<target name="compile" depends="-init,-compile-annotations,-compile-main,-compile-peers,-compile-classes,-compile-tests,-compile-examples" description="compile all JPF core sources">
+	<target name="compile" depends="-init,-compile-programs,-compile-annotations,-compile-main,-compile-peers,-compile-classes,-compile-tests,-compile-examples" description="compile all JPF core sources">
 		<copy file="build.properties" todir="build/main/gov/nasa/jpf" failonerror="false" />
 	</target>
 
@@ -135,6 +136,10 @@
 	<target name="-compile-examples" if="have_examples" depends="-compile-annotations,-compile-main">
 		<mkdir dir="build/examples" />
 		<javac srcdir="src/examples" destdir="build/examples" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" classpathref="lib.path" />
+	</target>
+
+	<target name="-compile-programs">
+		<javac srcdir="jpf_testprogram/" destdir="build/" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" classpathref="lib.path" />
 	</target>
 
 
@@ -499,7 +504,7 @@
 				<fileset dir="build/tests">
 					<exclude name="**/JPF_*.class" />
 					<!--<include name="**cmu/*/ZipMeTest.class" />-->
-					<include name="**cmu/*/NativeTest.class" />
+					<include name="**cmu/**/NoVariationTest.class" />
 				</fileset>
 			</batchtest>
 

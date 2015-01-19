@@ -147,11 +147,16 @@ public class File
   public String[] list(FilenameFilter fnf)  { return null; }
 //  public File[] listFiles()  { return null; }
   public native File[] listFiles();
-  public File[] listFiles(FilenameFilter fnf)  { return null; }
-  public File[] listFiles(FileFilter ff)  { return null; }
-  public boolean mkdir()  { return false; }
-  public boolean mkdirs() { return false; }
-  public boolean renameTo(File f)  { return false; }
+//  public File[] listFiles(FilenameFilter fnf)  { return null; }
+  public native File[] listFiles(FilenameFilter fnf);
+//  public File[] listFiles(FileFilter ff)  { return null; }
+  public native File[] listFiles(FileFilter ff);
+//  public boolean mkdir()  { return false; }
+  public native boolean mkdir();
+//  public boolean mkdirs() { return false; }
+  public native boolean mkdirs();
+//  public boolean renameTo(File f)  { return false; }
+  public native boolean renameTo(File f);
   public boolean setLastModified(long t)  { return false; }
   public boolean setReadOnly()  { return false; }
   
