@@ -213,7 +213,6 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 			public Conditional<String> apply(Integer strRef) {
 				return env.getConditionalStringObject(strRef);
 			}
-			
 		});
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {

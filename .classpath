@@ -5,14 +5,16 @@
 	<classpathentry kind="src" output="build/classes" path="src/classes"/>
 	<classpathentry kind="src" output="build/annotations" path="src/annotations"/>
 	<classpathentry kind="src" output="build/examples" path="src/examples"/>
-	<classpathentry kind="src" output="build/tests" path="src/tests"/>
-	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"/>
-	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
+	<classpathentry kind="src" path="jpf_testprogram"/>
+	<classpathentry kind="src" path="src/tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/build"/>
 	<classpathentry kind="lib" path="lib/conditionallib_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/cparser_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/crewrite_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/ctypechecker_2.10-0.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/featureexprlib_2.10-0.3.4.jar" sourcepath="C:/Users/Loaner/git/TypeChef"/>
 	<classpathentry kind="lib" path="lib/frontend_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/org.sat4j.core-2.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/scala-library-2.10.3.jar"/>
@@ -24,7 +26,6 @@
 	<classpathentry kind="lib" path="lib/Elevator.jar"/>
 	<classpathentry kind="lib" path="lib/Mine.jar"/>
 	<classpathentry kind="lib" path="lib/AJStats.jar"/>
-	<classpathentry kind="lib" path="lib/featureexprlib_2.11-0.3.7.jar" sourcepath="/FeatureExprLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_55"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

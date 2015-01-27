@@ -227,7 +227,8 @@ public class NativePeer implements Cloneable {
     return peerClass.getName();
   }
 
-  protected void initialize (Class<?> peerClass, ClassInfo ci, boolean cacheMethods) {
+  //@TODO: protected -> public
+  public void initialize (Class<?> peerClass, ClassInfo ci, boolean cacheMethods) {
     if ((this.ci != null) || (this.peerClass != null)) {
       throw new RuntimeException("cannot re-initialize NativePeer: " +
                                  peerClass.getName());

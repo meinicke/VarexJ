@@ -1,0 +1,9 @@
+@using=jpf-nhandler
+
+target=Jar
+
+nhandler.delegateUnhandledNative=true
+
+nhandler.resetVMState=false
+
+nhandler.spec.delegate=java.util.zip.ZipFile.*,java.util.jar.JarFile.*

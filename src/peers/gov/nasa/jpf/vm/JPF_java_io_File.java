@@ -37,7 +37,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_java_io_File extends NativePeer {
 
   static File getFile(MJIEnv env, int objref, FeatureExpr ctx) {
-    int fnref = env.getReferenceField(ctx, objref, "filename").getValue();
+    int fnref = env.getReferenceField(ctx, objref, "path").getValue();
     String fname = env.getStringObject(ctx, fnref);
     return new File(fname);
   }
@@ -47,7 +47,7 @@ public class JPF_java_io_File extends NativePeer {
     ElementInfo fileEI = env.getModifiableElementInfo(newFileRef);
 
     int fileNameRef = env.newString(ctx, file.getPath());
-    fileEI.setReferenceField(ctx, "filename", new One<>(fileNameRef));
+    fileEI.setReferenceField(ctx, "path", new One<>(fileNameRef));
 
     return newFileRef;
   }

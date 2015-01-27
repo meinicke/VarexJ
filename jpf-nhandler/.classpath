@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="build/main" path="src/main"/>
+	<classpathentry kind="src" output="build/peers" path="src/peers"/>
+	<classpathentry kind="src" output="build/classes" path="src/classes"/>
+	<classpathentry kind="src" output="build/examples" path="src/examples"/>
+	<classpathentry kind="src" output="build/tests" path="src/tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/bcel-5.2.jar" sourcepath="/Users/Nastaran/Java/bcel-5.2/src"/>
+	<classpathentry kind="lib" path="lib/examples-lib/google-api-translate-java-0.97.jar"/>
+	<classpathentry kind="lib" path="lib/examples-lib/commons-math3-3.1.jar" sourcepath="/Users/Nastaran/Desktop/commons-math3-3.1/commons-math3-3.1-sources.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jpf-core"/>
+	<classpathentry kind="lib" path="lib/examples-lib/jgroups-3.2.5.jar"/>
+	<classpathentry kind="lib" path="lib/examples-lib/json-20090211.jar"/>
+	<classpathentry kind="lib" path="lib/examples-lib/db-derby-10.9.1.0/lib/derby.jar"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>
