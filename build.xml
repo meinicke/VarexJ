@@ -37,6 +37,7 @@
 		<fileset dir=".">
 			<include name="lib/*.jar" />
 		</fileset>
+		<pathelement location="build/" />
 	</path>
 
 
@@ -68,7 +69,6 @@
 		<fail unless="have_classes">no src/classes</fail>
 		<fail unless="have_tests">no src/tests</fail>
 		<fail unless="have_examples">no src/examples</fail>
-
 
 	</target>
 
