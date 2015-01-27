@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.annotation.MJI;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -192,5 +193,30 @@ public class JPF_java_io_File extends NativePeer {
 
     return rootResultRef;
   }
+  
+  @MJI
+  public boolean mkdir____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).mkdir();
+  }
+  
+  @MJI
+  public boolean mkdirs____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+    return getFile(env,objref, ctx).mkdirs();
+  }
+  
+  @MJI
+  public int listFiles_____3Ljava_io_File_2(MJIEnv env, int objref, FeatureExpr ctx) {
+	  File file = getFile(env,objref, ctx);
+	    File[] files = file.listFiles(); 
+	    int filesRef = env.newObjectArray("java.io.File", files.length);
+	    ElementInfo rootsEI = env.getModifiableElementInfo(filesRef);
+	
+	    for (int i = 0; i < files.length; i++) {
+	      int rootFileRef = createJPFFile(env, files[i], ctx);
+	      rootsEI.setReferenceElement(ctx, i, new One<>(rootFileRef));
+	    }
+	    return filesRef;  
+  }
+  
   // <2do> ..and lots more
 }
