@@ -6,25 +6,25 @@ import org.prevayler.Prevayler;
 /**
  * This is client code to the prevalent system. It does not need to be persisted.
  */
-class PrimeCalculator {
+public class PrimeCalculator {
 
 	private final Prevayler _prevayler;
 	private final NumberKeeper _numberKeeper;
 
 
-	PrimeCalculator(Prevayler prevayler) {
+	public PrimeCalculator(Prevayler prevayler) {
 		_prevayler = prevayler;
 		_numberKeeper = (NumberKeeper)prevayler.prevalentSystem();
 	}
 
 
-	void start() throws Exception {
+	public void start() throws Exception {
 		int largestPrime = 0;
 		int primesFound = 0;
-		int primeCandidate = _numberKeeper.lastNumber() == 0
-			? 2
-			: _numberKeeper.lastNumber() + 1;
+		final int lastNumber = _numberKeeper.lastNumber();
+		int primeCandidate = lastNumber == 0 ? 2 : lastNumber + 1;
 
+		int newPrimes = 0;
 		while (primeCandidate <= Integer.MAX_VALUE) {
 			if (isPrime(primeCandidate)) {
 
@@ -36,8 +36,8 @@ class PrimeCalculator {
 			}
 
 			primeCandidate++;
-
-			if (primeCandidate > 10000){
+			newPrimes++;
+			if (newPrimes > 1000){
 				break;
 			}
 		}

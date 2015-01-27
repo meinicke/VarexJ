@@ -23,6 +23,9 @@ import gov.nasa.jpf.annotation.FilterField;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -150,7 +153,16 @@ public class File
 //  public File[] listFiles(FilenameFilter fnf)  { return null; }
   public native File[] listFiles(FilenameFilter fnf);
 //  public File[] listFiles(FileFilter ff)  { return null; }
-  public native File[] listFiles(FileFilter ff);
+  public File[] listFiles(FileFilter ff) {
+	  File[] files = listFiles();
+	  List<Object> matchingFiles = new ArrayList<>();
+	  for (File f: files) {
+		  if (ff.accept(f)) {
+			matchingFiles.add(f);  
+		  }
+	  }
+	  return matchingFiles.toArray(new File[matchingFiles.size()]);
+  }
 //  public boolean mkdir()  { return false; }
   public native boolean mkdir();
 //  public boolean mkdirs() { return false; }

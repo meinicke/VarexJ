@@ -23,6 +23,7 @@ import gov.nasa.jpf.util.test.TestJPF;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -155,7 +156,7 @@ public class BoxObjectCacheTest extends TestJPF {
     }
   }
 
-  @Test
+  @Ignore/* getValue no longer handled with peer class */ @Test
   public void testByteCacheBoxObject() throws SecurityException, NoSuchMethodException, IllegalAccessException, InvocationTargetException{
     if (verifyNoPropertyViolation(JPF_ARGS)){
       Byte b1 = Byte.valueOf( (byte)1);        // should be cached

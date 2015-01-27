@@ -37,7 +37,6 @@
 		<fileset dir=".">
 			<include name="lib/*.jar" />
 		</fileset>
-		<pathelement location="build/" />
 	</path>
 
 
@@ -70,9 +69,6 @@
 		<fail unless="have_tests">no src/tests</fail>
 		<fail unless="have_examples">no src/examples</fail>
 
-		<condition property="have_java8">
-			<equals arg1="${ant.java.version}" arg2="1.8"/>
-		</condition>
 
 	</target>
 
@@ -80,7 +76,7 @@
 	<!-- ======================= COMPILE SECTION ============================= -->
 
 	<!-- public compile -->
-	<target name="compile" depends="-init,-compile-programs,-compile-annotations,-compile-main,-compile-peers,-compile-classes,-compile-tests,-compile-examples" description="compile all JPF core sources">
+	<target name="compile" depends="-init,-compile-annotations,-compile-main,-compile-peers,-compile-classes,-compile-tests,-compile-examples" description="compile all JPF core sources">
 		<copy file="build.properties" todir="build/main/gov/nasa/jpf" failonerror="false" />
 	</target>
 
@@ -138,10 +134,10 @@
 		<javac srcdir="src/examples" destdir="build/examples" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" classpathref="lib.path" />
 	</target>
 
-	<target name="-compile-programs">
+<!--	<target name="-compile-programs">
 		<javac srcdir="jpf_testprogram/" destdir="build/" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" classpathref="lib.path" />
 	</target>
-
+-->
 
 	<!-- ======================= MISC SECTION ================================ -->
 
