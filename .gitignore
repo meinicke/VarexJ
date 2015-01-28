@@ -62,3 +62,8 @@ jpf-nhandler/build
 jpf-nhandler/onthefly/*.class
 jpf-nhandler/onthefly/*.java
 /.idea
+/NumberKeeper/
+/NumberKeeper_MAP/
+/Tutorial/
+/Tutorial_MAP/
+/file
