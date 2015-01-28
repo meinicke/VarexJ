@@ -125,7 +125,12 @@
   	<mkdir dir="build/converter"/>    
     <javac target="1.7" srcdir="src/main" destdir="build/main" includeantruntime="false"
            debug="${debug}" source="${src_level}" deprecation="${deprecation}"
-           classpathref="lib.path"/>
+           >
+  		<classpath>
+			<path refid="lib.path" />
+			<pathelement location="../lib/featureexprlib_2.10-0.3.4.jar"/>
+		</classpath>
+    	</javac>
   </target>
 
   <target name="-compile-peers" if="have_peers" depends="-compile-main" >
@@ -158,7 +163,7 @@
         <pathelement location="build/classes"/>
         <pathelement location="../VarexJ/build/main" />
         <pathelement location="../VarexJ/lib/*" />
-
+      	<pathelement location="../lib/featureexprlib_2.10-0.3.4.jar"/>
       </classpath>
     </javac>
   </target>
