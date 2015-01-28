@@ -21,7 +21,7 @@ public class NumberKeeper implements java.io.Serializable {
     return numbers;
   }
 
-  int lastNumber() {
+  public int lastNumber() {
     return numbers.isEmpty()
       ? 0
       : ((Integer)numbers.get(numbers.size() - 1)).intValue();

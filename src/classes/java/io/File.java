@@ -144,7 +144,7 @@ public class File
   public long lastModified() { return -1L; }
   public long length() { return -1; }
   public native boolean createNewFile() throws java.io.IOException;
-  public boolean delete()  { return false; }
+  public native boolean delete(); 
   public void deleteOnExit() {}
   public String[] list()  { return null; }
   public String[] list(FilenameFilter fnf)  { return null; }

@@ -19,10 +19,13 @@ import org.prevayler.PrevaylerFactory;
  */
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String... args) throws Exception {
+    	if (args.length == 0) {
+    		throw new IllegalArgumentException("The first argument has to be a path for prevayler");
+    	}
         // START SNIPPET: creating
         // Create a new prevayler. /tasklist-base is the tx-journal directory.
-        Prevayler prevayler = PrevaylerFactory.createPrevayler(new TaskList(), "/Users/chupanw/Desktop/tasklist-base");
+        Prevayler prevayler = PrevaylerFactory.createPrevayler(new TaskList(), args[0]);
         TaskList list = (TaskList) prevayler.prevalentSystem();
         // END SNIPPET: creating
 

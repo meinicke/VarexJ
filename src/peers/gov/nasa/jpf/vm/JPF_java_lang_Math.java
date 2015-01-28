@@ -284,7 +284,7 @@ public class JPF_java_lang_Math extends NativePeer {
 		return Math.rint(a);
 	}
 
-	@MJI
+//	@MJI
 	public double sin__D__D(MJIEnv env, int clsObjRef, double a, FeatureExpr ctx) {
 		return Math.sin(a);
 	}
