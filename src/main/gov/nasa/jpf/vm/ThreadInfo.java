@@ -48,6 +48,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
+import coverage.Coverage;
 import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
@@ -2008,6 +2009,17 @@ public class ThreadInfo extends InfoObject
 	    		
 //	    		long startOfInstruction = System.currentTimeMillis();
     		Conditional<Instruction> next = i.execute(ctx, this);
+    		MethodInfo methodInfo = i.getMethodInfo();
+    		if (methodInfo != null) {
+	    		ClassInfo classInfo = methodInfo.getClassInfo();
+	    		String file = classInfo.getSourceFileName();
+	    		if (file != null) {
+		    		file = file.substring(file.lastIndexOf('/') + 1);
+		    		gov.nasa.jpf.JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), ctx.collectDistinctFeatures().size());
+	    		} else {
+	//    			System.out.println("Not covered:" + classInfo.getName());
+	    		}    	
+    		}
 //	    		long endOfInstruction = System.currentTimeMillis();
 //	    		long duration = endOfInstruction - startOfInstruction;
 //	    		if (duration > 0) {

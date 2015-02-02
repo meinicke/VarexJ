@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import coverage.Coverage;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
@@ -48,6 +49,8 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  * instantiates the Search and VM objects, and kicks off the Search
  */
 public class JPF implements Runnable {
+	
+	public static final Coverage COVERAGE = new Coverage();
 	  
   public static String VERSION = "7.0"; // the major version number
 

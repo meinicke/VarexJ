@@ -18,6 +18,12 @@
 //
 package gov.nasa.jpf.search;
 
+import java.io.File;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import coverage.XMLWriter;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.RestorableVMState;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -96,6 +102,22 @@ public class RandomSearch extends Search {
 			notifySearchFinished();
 		} finally {
 			ThreadInfo.RUN_SIMPLE = false;
+		
+		
+//		System.out.println(gov.nasa.jpf.JPF.COVERAGE);
+
+			File file = new File("coverage.xml");
+			System.out.println("Create file: " + file.getAbsolutePath());
+			XMLWriter writer = new XMLWriter(gov.nasa.jpf.JPF.COVERAGE);
+			try {
+				writer.writeToFile(file);
+			} catch (ParserConfigurationException | TransformerException e) {
+				System.out.println(e.getMessage());
+				for (StackTraceElement element : e.getStackTrace()) {
+					System.out.println(element);
+				}
+				e.printStackTrace();
+			}
 		}
 	}
 }
