@@ -1,0 +1,1057 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<root>
+		<File name="ATestExample.java">
+			<coverage>
+				<line interaction="0" this="11"/>
+				<line interaction="0" this="13"/>
+				<line interaction="0" this="16"/>
+			</coverage>
+		</File>
+		<File name="AbstractCollection.java">
+			<coverage>
+				<line interaction="0" this="66"/>
+				<line interaction="0" this="67"/>
+			</coverage>
+		</File>
+		<File name="AbstractList.java">
+			<coverage>
+				<line interaction="0" this="76"/>
+				<line interaction="0" this="77"/>
+				<line interaction="0" this="601"/>
+			</coverage>
+		</File>
+		<File name="AbstractMap.java">
+			<coverage>
+				<line interaction="1" this="73"/>
+				<line interaction="1" this="74"/>
+				<line interaction="1" this="299"/>
+				<line interaction="1" this="300"/>
+			</coverage>
+		</File>
+		<File name="AbstractSet.java">
+			<coverage>
+				<line interaction="1" this="63"/>
+				<line interaction="1" this="64"/>
+			</coverage>
+		</File>
+		<File name="ArrayList.java">
+			<coverage>
+				<line interaction="1" this="102"/>
+				<line interaction="0" this="128"/>
+				<line interaction="0" this="129"/>
+				<line interaction="0" this="132"/>
+				<line interaction="0" this="133"/>
+				<line interaction="0" this="139"/>
+				<line interaction="0" this="140"/>
+				<line interaction="0" this="184"/>
+				<line interaction="0" this="186"/>
+				<line interaction="1" this="187"/>
+				<line interaction="0" this="188"/>
+				<line interaction="1" this="206"/>
+				<line interaction="1" this="207"/>
+				<line interaction="1" this="208"/>
+				<line interaction="1" this="210"/>
+				<line interaction="1" this="213"/>
+				<line interaction="1" this="214"/>
+				<line interaction="2" this="230"/>
+				<line interaction="1" this="239"/>
+				<line interaction="2" this="371"/>
+				<line interaction="2" this="382"/>
+				<line interaction="2" this="384"/>
+				<line interaction="0" this="411"/>
+				<line interaction="0" this="412"/>
+				<line interaction="0" this="413"/>
+				<line interaction="2" this="603"/>
+				<line interaction="2" this="605"/>
+				<line interaction="1" this="774"/>
+				<line interaction="1" this="780"/>
+				<line interaction="1" this="782"/>
+				<line interaction="1" this="783"/>
+				<line interaction="1" this="786"/>
+				<line interaction="1" this="791"/>
+				<line interaction="1" this="792"/>
+				<line interaction="1" this="793"/>
+				<line interaction="1" this="795"/>
+				<line interaction="1" this="796"/>
+				<line interaction="1" this="798"/>
+				<line interaction="1" this="799"/>
+				<line interaction="1" this="818"/>
+				<line interaction="1" this="820"/>
+			</coverage>
+		</File>
+		<File name="Arrays.java">
+			<coverage>
+				<line interaction="1" this="0"/>
+				<line interaction="1" this="1"/>
+				<line interaction="0" this="55"/>
+				<line interaction="1" this="2219"/>
+				<line interaction="1" this="2245"/>
+				<line interaction="1" this="2248"/>
+				<line interaction="1" this="2250"/>
+			</coverage>
+		</File>
+		<File name="Boolean.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="50"/>
+				<line interaction="0" this="56"/>
+				<line interaction="0" this="63"/>
+				<line interaction="0" this="86"/>
+				<line interaction="0" this="87"/>
+				<line interaction="0" this="88"/>
+			</coverage>
+		</File>
+		<File name="Byte.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="62"/>
+			</coverage>
+		</File>
+		<File name="Character.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+			</coverage>
+		</File>
+		<File name="Class.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+			</coverage>
+		</File>
+		<File name="Client.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="19"/>
+				<line interaction="5" this="27"/>
+				<line interaction="5" this="28"/>
+				<line interaction="5" this="34"/>
+				<line interaction="5" this="35"/>
+				<line interaction="5" this="41"/>
+				<line interaction="5" this="42"/>
+				<line interaction="5" this="43"/>
+				<line interaction="5" this="45"/>
+				<line interaction="4" this="52"/>
+				<line interaction="5" this="53"/>
+				<line interaction="5" this="54"/>
+				<line interaction="5" this="55"/>
+				<line interaction="4" this="57"/>
+				<line interaction="4" this="65"/>
+				<line interaction="4" this="66"/>
+				<line interaction="4" this="67"/>
+				<line interaction="4" this="68"/>
+				<line interaction="4" this="69"/>
+				<line interaction="4" this="70"/>
+				<line interaction="4" this="72"/>
+				<line interaction="3" this="78"/>
+				<line interaction="4" this="79"/>
+				<line interaction="4" this="80"/>
+				<line interaction="4" this="81"/>
+				<line interaction="3" this="83"/>
+				<line interaction="3" this="90"/>
+				<line interaction="3" this="91"/>
+				<line interaction="3" this="92"/>
+				<line interaction="3" this="99"/>
+				<line interaction="3" this="100"/>
+				<line interaction="3" this="101"/>
+				<line interaction="3" this="102"/>
+				<line interaction="3" this="104"/>
+				<line interaction="3" this="114"/>
+				<line interaction="3" this="115"/>
+				<line interaction="3" this="116"/>
+				<line interaction="3" this="117"/>
+				<line interaction="3" this="118"/>
+				<line interaction="3" this="119"/>
+				<line interaction="3" this="124"/>
+				<line interaction="3" this="125"/>
+				<line interaction="2" this="130"/>
+				<line interaction="3" this="131"/>
+				<line interaction="3" this="132"/>
+				<line interaction="3" this="133"/>
+				<line interaction="2" this="135"/>
+				<line interaction="3" this="144"/>
+				<line interaction="3" this="145"/>
+				<line interaction="3" this="152"/>
+				<line interaction="3" this="153"/>
+				<line interaction="3" this="154"/>
+				<line interaction="3" this="163"/>
+				<line interaction="3" this="164"/>
+				<line interaction="3" this="165"/>
+				<line interaction="3" this="166"/>
+				<line interaction="3" this="167"/>
+				<line interaction="3" this="168"/>
+				<line interaction="3" this="175"/>
+				<line interaction="3" this="176"/>
+				<line interaction="2" this="182"/>
+				<line interaction="3" this="183"/>
+				<line interaction="3" this="184"/>
+				<line interaction="3" this="185"/>
+				<line interaction="2" this="187"/>
+				<line interaction="2" this="194"/>
+				<line interaction="2" this="195"/>
+				<line interaction="2" this="196"/>
+				<line interaction="2" this="199"/>
+				<line interaction="2" this="200"/>
+				<line interaction="2" this="201"/>
+				<line interaction="2" this="202"/>
+				<line interaction="2" this="203"/>
+				<line interaction="2" this="205"/>
+				<line interaction="2" this="206"/>
+				<line interaction="2" this="207"/>
+				<line interaction="2" this="209"/>
+				<line interaction="2" this="211"/>
+				<line interaction="2" this="219"/>
+				<line interaction="2" this="220"/>
+				<line interaction="2" this="221"/>
+				<line interaction="2" this="222"/>
+				<line interaction="2" this="224"/>
+				<line interaction="2" this="233"/>
+				<line interaction="2" this="234"/>
+				<line interaction="2" this="235"/>
+				<line interaction="1" this="240"/>
+				<line interaction="2" this="241"/>
+				<line interaction="2" this="242"/>
+				<line interaction="2" this="243"/>
+				<line interaction="2" this="245"/>
+				<line interaction="1" this="253"/>
+				<line interaction="1" this="254"/>
+				<line interaction="1" this="255"/>
+				<line interaction="1" this="256"/>
+				<line interaction="1" this="257"/>
+				<line interaction="1" this="258"/>
+				<line interaction="1" this="259"/>
+				<line interaction="1" this="262"/>
+				<line interaction="0" this="267"/>
+				<line interaction="0" this="268"/>
+				<line interaction="0" this="269"/>
+				<line interaction="0" this="270"/>
+				<line interaction="0" this="275"/>
+				<line interaction="0" this="280"/>
+				<line interaction="0" this="285"/>
+				<line interaction="0" this="286"/>
+				<line interaction="0" this="287"/>
+				<line interaction="0" this="292"/>
+				<line interaction="3" this="309"/>
+				<line interaction="3" this="310"/>
+				<line interaction="3" this="311"/>
+				<line interaction="0" this="320"/>
+				<line interaction="0" this="321"/>
+				<line interaction="0" this="322"/>
+				<line interaction="0" this="324"/>
+				<line interaction="0" this="337"/>
+				<line interaction="1" this="346"/>
+				<line interaction="1" this="347"/>
+				<line interaction="1" this="352"/>
+				<line interaction="1" this="361"/>
+				<line interaction="1" this="362"/>
+				<line interaction="1" this="367"/>
+				<line interaction="1" this="368"/>
+				<line interaction="3" this="377"/>
+				<line interaction="3" this="378"/>
+				<line interaction="3" this="379"/>
+				<line interaction="4" this="382"/>
+				<line interaction="3" this="388"/>
+				<line interaction="3" this="389"/>
+				<line interaction="3" this="391"/>
+				<line interaction="1" this="407"/>
+				<line interaction="1" this="408"/>
+				<line interaction="1" this="409"/>
+				<line interaction="1" this="410"/>
+				<line interaction="3" this="415"/>
+				<line interaction="3" this="421"/>
+				<line interaction="1" this="432"/>
+				<line interaction="1" this="433"/>
+				<line interaction="5" this="438"/>
+				<line interaction="5" this="443"/>
+				<line interaction="5" this="444"/>
+				<line interaction="5" this="445"/>
+				<line interaction="5" this="446"/>
+				<line interaction="5" this="447"/>
+				<line interaction="5" this="448"/>
+				<line interaction="0" this="455"/>
+				<line interaction="1" this="463"/>
+				<line interaction="1" this="464"/>
+				<line interaction="1" this="465"/>
+				<line interaction="2" this="468"/>
+				<line interaction="1" this="478"/>
+				<line interaction="1" this="479"/>
+				<line interaction="1" this="480"/>
+				<line interaction="1" this="481"/>
+				<line interaction="1" this="484"/>
+				<line interaction="1" this="485"/>
+				<line interaction="1" this="486"/>
+				<line interaction="1" this="487"/>
+				<line interaction="1" this="501"/>
+				<line interaction="1" this="502"/>
+				<line interaction="1" this="503"/>
+				<line interaction="1" this="504"/>
+				<line interaction="1" this="509"/>
+				<line interaction="1" this="510"/>
+				<line interaction="1" this="515"/>
+				<line interaction="1" this="521"/>
+				<line interaction="2" this="531"/>
+				<line interaction="2" this="532"/>
+				<line interaction="2" this="534"/>
+				<line interaction="2" this="535"/>
+				<line interaction="2" this="536"/>
+				<line interaction="1" this="544"/>
+				<line interaction="1" this="545"/>
+				<line interaction="4" this="550"/>
+				<line interaction="4" this="556"/>
+				<line interaction="4" this="557"/>
+				<line interaction="4" this="558"/>
+				<line interaction="4" this="559"/>
+				<line interaction="3" this="567"/>
+				<line interaction="3" this="568"/>
+				<line interaction="3" this="569"/>
+				<line interaction="3" this="571"/>
+			</coverage>
+		</File>
+		<File name="Collections.java">
+			<coverage>
+				<line interaction="2" this="0"/>
+				<line interaction="2" this="1"/>
+				<line interaction="0" this="3100"/>
+				<line interaction="0" this="3126"/>
+				<line interaction="0" this="3160"/>
+				<line interaction="2" this="3179"/>
+				<line interaction="0" this="3185"/>
+				<line interaction="2" this="3198"/>
+				<line interaction="0" this="3234"/>
+				<line interaction="0" this="3259"/>
+			</coverage>
+		</File>
+		<File name="ConsoleOutputStream.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+			</coverage>
+		</File>
+		<File name="Dictionary.java">
+			<coverage>
+				<line interaction="0" this="55"/>
+				<line interaction="0" this="56"/>
+			</coverage>
+		</File>
+		<File name="Double.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="131"/>
+			</coverage>
+		</File>
+		<File name="Email.java">
+			<coverage>
+				<line interaction="1" this="0"/>
+				<line interaction="1" this="1"/>
+				<line interaction="0" this="22"/>
+				<line interaction="1" this="26"/>
+				<line interaction="1" this="27"/>
+				<line interaction="1" this="28"/>
+				<line interaction="1" this="33"/>
+				<line interaction="1" this="34"/>
+				<line interaction="1" this="35"/>
+				<line interaction="1" this="36"/>
+				<line interaction="1" this="37"/>
+				<line interaction="1" this="38"/>
+				<line interaction="6" this="44"/>
+				<line interaction="4" this="50"/>
+				<line interaction="6" this="51"/>
+				<line interaction="6" this="53"/>
+				<line interaction="4" this="60"/>
+				<line interaction="4" this="61"/>
+				<line interaction="4" this="63"/>
+				<line interaction="4" this="72"/>
+				<line interaction="4" this="73"/>
+				<line interaction="4" this="74"/>
+				<line interaction="4" this="75"/>
+				<line interaction="4" this="76"/>
+				<line interaction="4" this="77"/>
+				<line interaction="4" this="78"/>
+				<line interaction="4" this="83"/>
+				<line interaction="4" this="84"/>
+				<line interaction="4" this="86"/>
+				<line interaction="4" this="92"/>
+				<line interaction="4" this="93"/>
+				<line interaction="4" this="94"/>
+				<line interaction="4" this="95"/>
+				<line interaction="4" this="97"/>
+				<line interaction="4" this="104"/>
+				<line interaction="4" this="105"/>
+				<line interaction="4" this="106"/>
+				<line interaction="4" this="107"/>
+				<line interaction="4" this="113"/>
+				<line interaction="4" this="114"/>
+				<line interaction="4" this="115"/>
+				<line interaction="4" this="116"/>
+				<line interaction="4" this="118"/>
+				<line interaction="4" this="125"/>
+				<line interaction="4" this="126"/>
+				<line interaction="4" this="127"/>
+				<line interaction="4" this="133"/>
+				<line interaction="4" this="134"/>
+				<line interaction="4" this="135"/>
+				<line interaction="4" this="136"/>
+				<line interaction="4" this="138"/>
+				<line interaction="3" this="155"/>
+				<line interaction="1" this="161"/>
+				<line interaction="4" this="167"/>
+				<line interaction="2" this="173"/>
+				<line interaction="1" this="179"/>
+				<line interaction="1" this="180"/>
+				<line interaction="1" this="185"/>
+				<line interaction="1" this="186"/>
+				<line interaction="1" this="191"/>
+				<line interaction="1" this="192"/>
+				<line interaction="1" this="197"/>
+				<line interaction="1" this="198"/>
+				<line interaction="4" this="203"/>
+				<line interaction="3" this="215"/>
+				<line interaction="3" this="222"/>
+				<line interaction="3" this="223"/>
+				<line interaction="3" this="228"/>
+				<line interaction="3" this="229"/>
+				<line interaction="3" this="234"/>
+				<line interaction="2" this="246"/>
+				<line interaction="2" this="247"/>
+				<line interaction="2" this="252"/>
+				<line interaction="2" this="253"/>
+				<line interaction="4" this="258"/>
+				<line interaction="3" this="264"/>
+				<line interaction="4" this="273"/>
+				<line interaction="3" this="279"/>
+				<line interaction="3" this="280"/>
+			</coverage>
+		</File>
+		<File name="EmailTest.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="3"/>
+				<line interaction="0" this="10"/>
+				<line interaction="0" this="15"/>
+				<line interaction="0" this="16"/>
+				<line interaction="0" this="18"/>
+				<line interaction="0" this="23"/>
+				<line interaction="0" this="24"/>
+				<line interaction="0" this="25"/>
+				<line interaction="0" this="26"/>
+				<line interaction="0" this="27"/>
+				<line interaction="0" this="28"/>
+				<line interaction="0" this="29"/>
+				<line interaction="0" this="30"/>
+				<line interaction="0" this="31"/>
+				<line interaction="0" this="32"/>
+				<line interaction="0" this="33"/>
+				<line interaction="0" this="34"/>
+				<line interaction="0" this="35"/>
+				<line interaction="0" this="36"/>
+				<line interaction="0" this="37"/>
+				<line interaction="0" this="38"/>
+				<line interaction="0" this="39"/>
+				<line interaction="0" this="40"/>
+				<line interaction="0" this="44"/>
+				<line interaction="0" this="48"/>
+				<line interaction="0" this="53"/>
+			</coverage>
+		</File>
+		<File name="Enum.java">
+			<coverage>
+				<line interaction="0" this="117"/>
+				<line interaction="0" this="118"/>
+				<line interaction="0" this="119"/>
+				<line interaction="0" this="120"/>
+			</coverage>
+		</File>
+		<File name="FeatureSwitches.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="11"/>
+				<line interaction="0" this="13"/>
+				<line interaction="0" this="15"/>
+				<line interaction="0" this="17"/>
+				<line interaction="0" this="19"/>
+				<line interaction="0" this="21"/>
+				<line interaction="0" this="23"/>
+				<line interaction="0" this="25"/>
+				<line interaction="0" this="27"/>
+			</coverage>
+		</File>
+		<File name="Float.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="130"/>
+			</coverage>
+		</File>
+		<File name="HashMap.java">
+			<coverage>
+				<line interaction="1" this="255"/>
+				<line interaction="1" this="266"/>
+				<line interaction="1" this="267"/>
+				<line interaction="1" this="270"/>
+				<line interaction="1" this="272"/>
+				<line interaction="1" this="277"/>
+				<line interaction="1" this="278"/>
+				<line interaction="1" this="279"/>
+				<line interaction="1" this="281"/>
+				<line interaction="1" this="282"/>
+				<line interaction="1" this="283"/>
+				<line interaction="1" this="284"/>
+				<line interaction="1" this="286"/>
+				<line interaction="1" this="287"/>
+				<line interaction="1" this="297"/>
+				<line interaction="1" this="298"/>
+				<line interaction="1" this="333"/>
+				<line interaction="1" this="952"/>
+			</coverage>
+		</File>
+		<File name="HashSet.java">
+			<coverage>
+				<line interaction="1" this="0"/>
+				<line interaction="1" this="1"/>
+				<line interaction="0" this="96"/>
+				<line interaction="1" this="141"/>
+				<line interaction="1" this="142"/>
+				<line interaction="1" this="143"/>
+			</coverage>
+		</File>
+		<File name="Hashing.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+			</coverage>
+		</File>
+		<File name="Hashtable.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="161"/>
+				<line interaction="0" this="234"/>
+				<line interaction="0" this="235"/>
+				<line interaction="0" this="239"/>
+				<line interaction="0" this="240"/>
+				<line interaction="0" this="246"/>
+				<line interaction="0" this="249"/>
+				<line interaction="0" this="262"/>
+				<line interaction="0" this="275"/>
+				<line interaction="0" this="276"/>
+				<line interaction="0" this="279"/>
+				<line interaction="0" this="282"/>
+				<line interaction="0" this="284"/>
+				<line interaction="0" this="285"/>
+				<line interaction="0" this="286"/>
+				<line interaction="0" this="287"/>
+				<line interaction="0" this="289"/>
+				<line interaction="0" this="308"/>
+				<line interaction="0" this="309"/>
+				<line interaction="0" this="485"/>
+				<line interaction="0" this="486"/>
+				<line interaction="0" this="489"/>
+				<line interaction="0" this="490"/>
+				<line interaction="0" this="496"/>
+				<line interaction="0" this="498"/>
+				<line interaction="0" this="499"/>
+				<line interaction="0" this="500"/>
+				<line interaction="0" this="501"/>
+				<line interaction="0" this="503"/>
+				<line interaction="0" this="505"/>
+				<line interaction="0" this="507"/>
+				<line interaction="0" this="508"/>
+				<line interaction="0" this="509"/>
+				<line interaction="0" this="510"/>
+				<line interaction="0" this="512"/>
+				<line interaction="0" this="515"/>
+				<line interaction="0" this="516"/>
+				<line interaction="0" this="517"/>
+				<line interaction="0" this="518"/>
+				<line interaction="0" this="520"/>
+				<line interaction="0" this="541"/>
+				<line interaction="0" this="546"/>
+				<line interaction="0" this="547"/>
+				<line interaction="0" this="548"/>
+				<line interaction="0" this="549"/>
+				<line interaction="0" this="550"/>
+				<line interaction="0" this="557"/>
+				<line interaction="0" this="558"/>
+				<line interaction="0" this="560"/>
+				<line interaction="0" this="562"/>
+				<line interaction="0" this="563"/>
+				<line interaction="0" this="564"/>
+				<line interaction="0" this="568"/>
+				<line interaction="0" this="569"/>
+				<line interaction="0" this="570"/>
+				<line interaction="0" this="571"/>
+				<line interaction="0" this="712"/>
+				<line interaction="0" this="713"/>
+				<line interaction="0" this="714"/>
+				<line interaction="0" this="1077"/>
+				<line interaction="0" this="1078"/>
+				<line interaction="0" this="1079"/>
+				<line interaction="0" this="1080"/>
+				<line interaction="0" this="1081"/>
+				<line interaction="0" this="1082"/>
+			</coverage>
+		</File>
+		<File name="Integer.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="52"/>
+				<line interaction="0" this="71"/>
+				<line interaction="0" this="76"/>
+				<line interaction="0" this="272"/>
+				<line interaction="0" this="285"/>
+				<line interaction="0" this="379"/>
+			</coverage>
+		</File>
+		<File name="Long.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="69"/>
+			</coverage>
+		</File>
+		<File name="Math.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="819"/>
+				<line interaction="0" this="820"/>
+			</coverage>
+		</File>
+		<File name="Method.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+			</coverage>
+		</File>
+		<File name="Object.java">
+			<coverage>
+				<line interaction="1" this="-1"/>
+				<line interaction="0" this="28"/>
+				<line interaction="3" this="37"/>
+			</coverage>
+		</File>
+		<File name="Properties.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="135"/>
+				<line interaction="0" this="136"/>
+				<line interaction="0" this="143"/>
+				<line interaction="0" this="144"/>
+				<line interaction="0" this="145"/>
+				<line interaction="0" this="1111"/>
+			</coverage>
+		</File>
+		<File name="Scenario.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="3"/>
+				<line interaction="0" this="6"/>
+				<line interaction="0" this="7"/>
+				<line interaction="0" this="8"/>
+				<line interaction="0" this="10"/>
+				<line interaction="0" this="11"/>
+			</coverage>
+		</File>
+		<File name="SharedSecrets.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="50"/>
+				<line interaction="0" this="67"/>
+				<line interaction="0" this="68"/>
+			</coverage>
+		</File>
+		<File name="Short.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="61"/>
+			</coverage>
+		</File>
+		<File name="Specification11.java">
+			<coverage>
+				<line interaction="2" this="3"/>
+			</coverage>
+		</File>
+		<File name="Specification1_8.java">
+			<coverage>
+				<line interaction="3" this="11"/>
+				<line interaction="3" this="18"/>
+				<line interaction="3" this="26"/>
+			</coverage>
+		</File>
+		<File name="Specification27.java">
+			<coverage>
+				<line interaction="1" this="3"/>
+			</coverage>
+		</File>
+		<File name="Specification3.java">
+			<coverage>
+				<line interaction="1" this="9"/>
+				<line interaction="1" this="12"/>
+			</coverage>
+		</File>
+		<File name="Specification4.java">
+			<coverage>
+				<line interaction="1" this="5"/>
+			</coverage>
+		</File>
+		<File name="Specification6.java">
+			<coverage>
+				<line interaction="3" this="9"/>
+				<line interaction="3" this="12"/>
+			</coverage>
+		</File>
+		<File name="Specification7.java">
+			<coverage>
+				<line interaction="1" this="4"/>
+			</coverage>
+		</File>
+		<File name="Specification9.java">
+			<coverage>
+				<line interaction="3" this="0"/>
+				<line interaction="3" this="1"/>
+				<line interaction="3" this="8"/>
+				<line interaction="0" this="11"/>
+			</coverage>
+		</File>
+		<File name="SpecificationManager.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="3" this="7"/>
+				<line interaction="3" this="12"/>
+				<line interaction="3" this="13"/>
+				<line interaction="3" this="14"/>
+				<line interaction="3" this="15"/>
+				<line interaction="3" this="16"/>
+				<line interaction="2" this="22"/>
+				<line interaction="3" this="23"/>
+				<line interaction="3" this="24"/>
+				<line interaction="3" this="25"/>
+				<line interaction="2" this="27"/>
+				<line interaction="2" this="34"/>
+				<line interaction="2" this="35"/>
+				<line interaction="2" this="36"/>
+				<line interaction="1" this="42"/>
+				<line interaction="2" this="43"/>
+				<line interaction="2" this="44"/>
+				<line interaction="2" this="45"/>
+				<line interaction="1" this="47"/>
+				<line interaction="1" this="54"/>
+				<line interaction="1" this="55"/>
+				<line interaction="1" this="56"/>
+				<line interaction="1" this="57"/>
+				<line interaction="1" this="63"/>
+				<line interaction="1" this="64"/>
+				<line interaction="1" this="65"/>
+				<line interaction="1" this="66"/>
+				<line interaction="1" this="68"/>
+				<line interaction="1" this="75"/>
+				<line interaction="1" this="76"/>
+				<line interaction="1" this="77"/>
+				<line interaction="1" this="78"/>
+				<line interaction="0" this="84"/>
+				<line interaction="1" this="85"/>
+				<line interaction="1" this="86"/>
+				<line interaction="1" this="87"/>
+				<line interaction="0" this="89"/>
+				<line interaction="0" this="113"/>
+				<line interaction="0" this="143"/>
+			</coverage>
+		</File>
+		<File name="String.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="57"/>
+				<line interaction="0" this="245"/>
+				<line interaction="0" this="246"/>
+			</coverage>
+		</File>
+		<File name="StringBuilder.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+			</coverage>
+		</File>
+		<File name="System.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="44"/>
+				<line interaction="0" this="45"/>
+				<line interaction="0" this="47"/>
+				<line interaction="0" this="49"/>
+				<line interaction="0" this="50"/>
+				<line interaction="0" this="51"/>
+				<line interaction="0" this="52"/>
+				<line interaction="0" this="54"/>
+				<line interaction="0" this="55"/>
+				<line interaction="0" this="62"/>
+				<line interaction="0" this="67"/>
+				<line interaction="0" this="70"/>
+			</coverage>
+		</File>
+		<File name="TestJPF.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="3"/>
+				<line interaction="0" this="70"/>
+				<line interaction="0" this="73"/>
+				<line interaction="0" this="134"/>
+				<line interaction="0" this="137"/>
+				<line interaction="0" this="640"/>
+				<line interaction="0" this="641"/>
+				<line interaction="0" this="643"/>
+				<line interaction="0" this="644"/>
+				<line interaction="0" this="646"/>
+				<line interaction="0" this="649"/>
+				<line interaction="0" this="652"/>
+				<line interaction="0" this="653"/>
+			</coverage>
+		</File>
+		<File name="Test_Actions.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="15"/>
+				<line interaction="0" this="25"/>
+				<line interaction="1" this="31"/>
+				<line interaction="1" this="32"/>
+				<line interaction="1" this="33"/>
+				<line interaction="1" this="39"/>
+				<line interaction="1" this="41"/>
+				<line interaction="1" this="42"/>
+				<line interaction="1" this="43"/>
+				<line interaction="0" this="49"/>
+				<line interaction="1" this="50"/>
+				<line interaction="1" this="51"/>
+				<line interaction="1" this="52"/>
+				<line interaction="0" this="54"/>
+				<line interaction="1" this="60"/>
+				<line interaction="1" this="61"/>
+				<line interaction="1" this="62"/>
+				<line interaction="1" this="68"/>
+				<line interaction="1" this="70"/>
+				<line interaction="1" this="71"/>
+				<line interaction="0" this="77"/>
+				<line interaction="1" this="78"/>
+				<line interaction="1" this="79"/>
+				<line interaction="1" this="80"/>
+				<line interaction="0" this="82"/>
+				<line interaction="1" this="85"/>
+				<line interaction="1" this="86"/>
+				<line interaction="1" this="87"/>
+				<line interaction="1" this="90"/>
+				<line interaction="1" this="91"/>
+				<line interaction="1" this="92"/>
+				<line interaction="0" this="95"/>
+				<line interaction="1" this="96"/>
+				<line interaction="1" this="97"/>
+				<line interaction="1" this="98"/>
+				<line interaction="0" this="100"/>
+				<line interaction="1" this="103"/>
+				<line interaction="1" this="104"/>
+				<line interaction="1" this="105"/>
+				<line interaction="1" this="108"/>
+				<line interaction="1" this="109"/>
+				<line interaction="1" this="110"/>
+				<line interaction="1" this="111"/>
+				<line interaction="0" this="114"/>
+				<line interaction="1" this="115"/>
+				<line interaction="1" this="116"/>
+				<line interaction="1" this="117"/>
+				<line interaction="0" this="119"/>
+				<line interaction="1" this="122"/>
+				<line interaction="1" this="123"/>
+				<line interaction="1" this="124"/>
+				<line interaction="1" this="127"/>
+				<line interaction="1" this="131"/>
+				<line interaction="1" this="132"/>
+				<line interaction="1" this="133"/>
+				<line interaction="1" this="134"/>
+				<line interaction="1" this="135"/>
+				<line interaction="0" this="138"/>
+				<line interaction="1" this="139"/>
+				<line interaction="1" this="140"/>
+				<line interaction="1" this="141"/>
+				<line interaction="0" this="143"/>
+				<line interaction="0" this="147"/>
+				<line interaction="0" this="148"/>
+				<line interaction="0" this="149"/>
+				<line interaction="0" this="150"/>
+				<line interaction="0" this="151"/>
+				<line interaction="1" this="157"/>
+				<line interaction="1" this="158"/>
+				<line interaction="1" this="159"/>
+				<line interaction="1" this="165"/>
+				<line interaction="1" this="166"/>
+				<line interaction="1" this="167"/>
+				<line interaction="0" this="173"/>
+				<line interaction="1" this="174"/>
+				<line interaction="1" this="175"/>
+				<line interaction="1" this="176"/>
+				<line interaction="0" this="178"/>
+				<line interaction="1" this="184"/>
+				<line interaction="1" this="185"/>
+				<line interaction="1" this="186"/>
+				<line interaction="1" this="192"/>
+				<line interaction="1" this="193"/>
+				<line interaction="1" this="194"/>
+				<line interaction="0" this="200"/>
+				<line interaction="1" this="201"/>
+				<line interaction="1" this="202"/>
+				<line interaction="1" this="203"/>
+				<line interaction="0" this="205"/>
+				<line interaction="1" this="208"/>
+				<line interaction="1" this="209"/>
+				<line interaction="1" this="210"/>
+				<line interaction="1" this="213"/>
+				<line interaction="1" this="214"/>
+				<line interaction="1" this="215"/>
+				<line interaction="0" this="218"/>
+				<line interaction="1" this="219"/>
+				<line interaction="1" this="220"/>
+				<line interaction="1" this="221"/>
+				<line interaction="0" this="223"/>
+				<line interaction="1" this="229"/>
+				<line interaction="1" this="230"/>
+				<line interaction="1" this="231"/>
+				<line interaction="1" this="237"/>
+				<line interaction="1" this="238"/>
+				<line interaction="1" this="239"/>
+				<line interaction="0" this="245"/>
+				<line interaction="1" this="246"/>
+				<line interaction="1" this="247"/>
+				<line interaction="1" this="248"/>
+				<line interaction="0" this="250"/>
+				<line interaction="1" this="257"/>
+				<line interaction="1" this="258"/>
+				<line interaction="1" this="259"/>
+				<line interaction="1" this="266"/>
+				<line interaction="1" this="267"/>
+				<line interaction="1" this="268"/>
+				<line interaction="0" this="275"/>
+				<line interaction="1" this="276"/>
+				<line interaction="1" this="277"/>
+				<line interaction="1" this="278"/>
+				<line interaction="0" this="280"/>
+				<line interaction="1" this="283"/>
+				<line interaction="1" this="284"/>
+				<line interaction="1" this="285"/>
+				<line interaction="1" this="288"/>
+				<line interaction="1" this="289"/>
+				<line interaction="1" this="290"/>
+				<line interaction="0" this="293"/>
+				<line interaction="1" this="294"/>
+				<line interaction="1" this="295"/>
+				<line interaction="1" this="296"/>
+				<line interaction="0" this="298"/>
+				<line interaction="1" this="301"/>
+				<line interaction="1" this="302"/>
+				<line interaction="1" this="303"/>
+				<line interaction="1" this="306"/>
+				<line interaction="1" this="307"/>
+				<line interaction="1" this="308"/>
+				<line interaction="0" this="311"/>
+				<line interaction="1" this="312"/>
+				<line interaction="1" this="313"/>
+				<line interaction="1" this="314"/>
+				<line interaction="0" this="316"/>
+				<line interaction="0" this="319"/>
+				<line interaction="0" this="320"/>
+				<line interaction="0" this="321"/>
+				<line interaction="0" this="322"/>
+				<line interaction="0" this="323"/>
+				<line interaction="0" this="326"/>
+				<line interaction="0" this="327"/>
+				<line interaction="0" this="328"/>
+				<line interaction="0" this="330"/>
+				<line interaction="0" this="331"/>
+				<line interaction="0" this="332"/>
+				<line interaction="0" this="334"/>
+				<line interaction="0" this="335"/>
+				<line interaction="0" this="336"/>
+				<line interaction="0" this="338"/>
+				<line interaction="0" this="339"/>
+				<line interaction="0" this="340"/>
+				<line interaction="0" this="341"/>
+				<line interaction="1" this="343"/>
+				<line interaction="1" this="346"/>
+				<line interaction="1" this="347"/>
+				<line interaction="0" this="350"/>
+				<line interaction="1" this="351"/>
+				<line interaction="1" this="352"/>
+				<line interaction="1" this="353"/>
+				<line interaction="0" this="355"/>
+				<line interaction="1" this="357"/>
+				<line interaction="1" this="360"/>
+				<line interaction="1" this="361"/>
+				<line interaction="0" this="364"/>
+				<line interaction="1" this="365"/>
+				<line interaction="1" this="366"/>
+				<line interaction="1" this="367"/>
+				<line interaction="0" this="369"/>
+				<line interaction="1" this="371"/>
+				<line interaction="1" this="374"/>
+				<line interaction="1" this="375"/>
+				<line interaction="0" this="378"/>
+				<line interaction="1" this="379"/>
+				<line interaction="1" this="380"/>
+				<line interaction="1" this="381"/>
+				<line interaction="0" this="383"/>
+			</coverage>
+		</File>
+		<File name="Thread.java">
+			<coverage>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="80"/>
+			</coverage>
+		</File>
+		<File name="Unsafe.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="31"/>
+				<line interaction="0" this="32"/>
+			</coverage>
+		</File>
+		<File name="Util.java">
+			<coverage>
+				<line interaction="0" this="7"/>
+				<line interaction="0" this="8"/>
+			</coverage>
+		</File>
+		<File name="VM.java">
+			<coverage>
+				<line interaction="0" this="-1"/>
+				<line interaction="0" this="0"/>
+				<line interaction="0" this="1"/>
+				<line interaction="0" this="43"/>
+				<line interaction="0" this="149"/>
+				<line interaction="0" this="161"/>
+				<line interaction="0" this="172"/>
+				<line interaction="0" this="202"/>
+				<line interaction="0" this="203"/>
+				<line interaction="0" this="241"/>
+				<line interaction="0" this="304"/>
+				<line interaction="0" this="307"/>
+				<line interaction="0" this="375"/>
+				<line interaction="0" this="376"/>
+			</coverage>
+		</File>
+	</root>
