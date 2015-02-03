@@ -35,7 +35,16 @@ public class LangTestGenerator {
 //            if(classname.equals("org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest")){
 //                continue;
 //            }
-            if(classname.equals("org.apache.commons.lang3.concurrent.AbstractConcurrentInitializerTest")) {
+            if(classname.equals("org.apache.commons.lang3.builder.ReflectionToStringBuilderConcurrencyTest")) {
+                continue;
+            }
+            if(classname.equals("org.apache.commons.lang3.builder.ToStringStyleConcurrencyTest")) {
+                continue;
+            }
+            if(classname.equals("org.apache.commons.lang3.builder.ReflectionToStringBuilderMutateInspectConcurrencyTest")) {
+                continue;
+            }
+            if(classname.split("\\.")[classname.split("\\.").length-2].equals("concurrent")){
                 continue;
             }
             if(classname.equals("org.apache.commons.lang3.exception.AbstractExceptionContextTest")){
