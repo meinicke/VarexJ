@@ -36,6 +36,7 @@ import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
+import cmu.utils.RutimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -127,7 +128,7 @@ public class NativeMethodInfo extends MethodInfo {
 
 		try {
 			args = nativeFrame.getArguments();
-			if (ThreadInfo.debug) {
+			if (RutimeConstants.debug) {
 				System.out.print("RUN " + name + " " + mth.toString());
 				for (Object a : args) {
 					System.out.print(" " + a.toString());

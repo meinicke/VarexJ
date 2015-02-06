@@ -52,6 +52,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.RutimeConstants;
 import cmu.utils.TraceComparator;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -1920,17 +1921,9 @@ public class ThreadInfo extends InfoObject
     }
   }
   
-  public static boolean debug = false;
-  public static boolean ctxOutput = true;
-  static int count = 0;
-  static int count2 = 0;
-  static long time = 0;
-  
-  /**
-   * Maximal number of frames the VM can create before throwing a StackOverflowError.
-   */
-  // TODO create parameter
-  private static final int MAX_FRAMES = 1000;
+  private static int count = 0;
+  private static int count2 = 0;
+  private static long time = 0;
   
   public static boolean logtrace = false;
   public static boolean RUN_SIMPLE = false;
@@ -1990,33 +1983,35 @@ public class ThreadInfo extends InfoObject
 		    	}
 	        }	
 	        	
-    		if (debug) {
+    		if (RutimeConstants.debug) {
     			System.out.print(top.getDepth());
     			if (top.getDepth() < 10) {
     				System.out.print(" ");
     			}
 				System.out.println(" " + i + " if " + ctx);
 			}
-	    		
+	    	
+    		if (RutimeConstants.tracing) {
     		// log trace for trace comparison
-    		if (logtrace) {
-    			if (!(i instanceof InvokeInstruction)) {
-    				MethodInfo mi = i.getMethodInfo();
-    				if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
-    					// ignore class initializations 
-    				} else {
-    					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + i.getMnemonic().toString() +  " " + i.getFileLocation());
-    				}
-    			}
-    		} else if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
-    			logtrace = true;
+	    		if (logtrace) {
+	    			if (!(i instanceof InvokeInstruction)) {
+	    				MethodInfo mi = i.getMethodInfo();
+	    				if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
+	    					// ignore class initializations 
+	    				} else {
+	    					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + i.getMnemonic().toString() +  " " + i.getFileLocation());
+	    				}
+	    			}
+	    		} else if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
+	    			logtrace = true;
+	    		}
     		}
-	    		
+//	    		
     		final int currentStackDepth = stackDepth;
-	    		
+//	    		
 //	    	long startOfInstruction = System.currentTimeMillis();
     		Conditional<Instruction> next = i.execute(ctx, this);
-    		if (gov.nasa.jpf.JPF.COVERAGE != null) {
+    		if (JPF.COVERAGE != null) {
 	    		MethodInfo methodInfo = i.getMethodInfo();
 	    		if (methodInfo != null) {
 		    		ClassInfo classInfo = methodInfo.getClassInfo();
@@ -2025,13 +2020,13 @@ public class ThreadInfo extends InfoObject
 			    		file = file.substring(file.lastIndexOf('/') + 1);
 			    		switch (JPF.SELECTED_COVERAGE_TYPE) {
 						case feature:
-				    		gov.nasa.jpf.JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
+				    		JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
 							break;
 						case stack:
-							gov.nasa.jpf.JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
+							JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
 							break;
 						case local:
-							gov.nasa.jpf.JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
+							JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
 							break;
 						default:
 							throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
@@ -2048,9 +2043,9 @@ public class ThreadInfo extends InfoObject
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
-	    		if (stackDepth/*top.getDepth()*/ > MAX_FRAMES) {
+	    		if (stackDepth > RutimeConstants.MAX_FRAMES) {
 	            	nextPc = ChoiceFactory.create(ctx, 
-	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + MAX_FRAMES + ")")), 
+	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RutimeConstants.MAX_FRAMES + ")")), 
 	            			next).simplify();
             	}
     		} else if (i instanceof ReturnInstruction) {
@@ -2167,7 +2162,7 @@ public class ThreadInfo extends InfoObject
 	    		}
         	}	
         		
-    		if (debug) {
+    		if (RutimeConstants.debug) {
     			System.out.print(top.getDepth());
     			if (top.getDepth() < 10) {
     				System.out.print(" ");
@@ -2201,9 +2196,9 @@ public class ThreadInfo extends InfoObject
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
-    			if (top.getDepth() > MAX_FRAMES) {
+    			if (top.getDepth() > RutimeConstants.MAX_FRAMES) {
             		nextPc = ChoiceFactory.create(ctx, 
-            				new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + MAX_FRAMES + ")")), 
+            				new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RutimeConstants.MAX_FRAMES + ")")), 
             				next).simplify();
             	}
     		} else if (i instanceof ReturnInstruction) {
