@@ -23,6 +23,8 @@ import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -78,4 +80,16 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
       return frame.getPC();
     }
   }
+  
+	@Override
+	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
+		return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+
+			@Override
+			public Conditional<Instruction> apply(final FeatureExpr f, final Instruction y) {
+				return ChoiceFactory.create(ctx, new One<>(y.getNext()), new One<>(y));
+			}
+
+		}).simplify();
+	}
 }

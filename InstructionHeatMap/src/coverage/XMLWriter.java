@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.Set;
+import java.util.Collection;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,12 +44,14 @@ public class XMLWriter implements XMLCoverage {
 
 	private String createXMLDocument(Document doc) throws TransformerException {
 		Element root = doc.createElement(ROOT);
+		root.setAttribute(TYPE, coverage.getType());
+		root.setAttribute(BASE, Integer.toString(coverage.getBaseValue()));
 		for (String fileName : coverage.getFiles()) {
 			Element file = doc.createElement(FILE);
 			file.setAttribute(FILE_NAME, fileName);
 			
 			Element coverageElement = doc.createElement(COVERAGE_KEY);
-			Set<Interaction> coveredLines = coverage.getCoverage(fileName);
+			Collection<Interaction> coveredLines = coverage.getCoverage(fileName);
 			
 //			int from = Integer.MIN_VALUE;
 //			int current = Integer.MIN_VALUE;
@@ -73,6 +75,7 @@ public class XMLWriter implements XMLCoverage {
 //					lineElement.setAttribute(TO, Integer.toString(current));
 //				}
 				lineElement.setAttribute(INTERACTION, Integer.toString(interaction.getInteraction()));
+				lineElement.setAttribute(TEXT, interaction.getText());
 				coverageElement.appendChild(lineElement);
 //				
 //				from = line;

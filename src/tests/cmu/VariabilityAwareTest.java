@@ -9,7 +9,7 @@ import org.junit.Test;
 @SuppressWarnings("unused")
 public class VariabilityAwareTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{"+search.class= .search.RandomSearch", "+choice=TreeChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=local",*/ "+search.class= .search.RandomSearch", "+choice=TreeChoice"};
 
 	static boolean RUN_WITH_JPF = true;
 
@@ -129,42 +129,42 @@ public class VariabilityAwareTest extends TestJPF {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 1;
 			if (x) {
-				i *= 2;
+				i += 1;
 			}
 			if (y) {
-				i *= 2;
+				i += 1;
 			}
 			if (z) {
-				i *= 2;
+				i += 1;
 			}
 			if (a) {
-				i *= 2;
+				i += 1;
 			}
 			if (b) {
-				i *= 2;
+				i += 1;
 			}
 			i = 10;// early join
 			if (c) {
-				i *= 2;
+				i += 1;
 			}
 			if (d) {
-				i *= 2;
+				i += 1;
 			}
 			if (e) {
-				i *= 2;
+				i += 1;
 			}
 			if (f) {
-				i *= 2;
+				i += 1;
 			}
 
 			if (g) {
-				i *= 3;
+				i += 1;
 			}
 			if (h) {
-				i *= 3;
+				i += 1;
 			}
 			if (j) {
-				i *= 3;
+				i += 1;
 			}
 
 			i = 1000;// early join

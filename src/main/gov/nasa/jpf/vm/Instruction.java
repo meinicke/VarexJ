@@ -20,8 +20,6 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Source;
-import cmu.conditional.BiFunction;
-import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
@@ -316,14 +314,7 @@ public abstract class Instruction implements Cloneable {
 	 * implemented as ThreadInfo state (TERMINATED), rather than purged stacks
 	 */
 	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
-		return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
-
-			@Override
-			public Conditional<Instruction> apply(final FeatureExpr f, final Instruction y) {
-				return ChoiceFactory.create(ctx, new One<>(y.getNext()), new One<>(y));
-			}
-
-		}).simplify();
+		return new One<>(getNext());
 	}
 
 	// --- the generic attribute API

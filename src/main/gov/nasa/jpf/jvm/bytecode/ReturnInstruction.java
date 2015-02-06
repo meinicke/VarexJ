@@ -28,6 +28,8 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.Iterator;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -206,5 +208,18 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
   	@Override
 	public int hashCode() {
 		return getMethodInfo().hashCode() + getClass().hashCode();
+	}
+  	
+	@Override
+	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
+		// we have to find the corresponding instruction at the callee method
+		return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+
+			@Override
+			public Conditional<Instruction> apply(final FeatureExpr f, final Instruction y) {
+				return ChoiceFactory.create(ctx, new One<>(y.getNext()), new One<>(y));
+			}
+
+		}).simplify();
 	}
 }

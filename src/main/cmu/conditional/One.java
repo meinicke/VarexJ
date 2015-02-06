@@ -109,5 +109,10 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	public Conditional<T> simplifyValues() {
 		return this;
 	}
+	
+	@Override
+	public int size() {
+		return 1;
+	}
 
 }

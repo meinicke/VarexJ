@@ -13,7 +13,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  * @author Jens Meinicke
  *
  */
-public class TreeChoice<T> extends IChoice<T> implements Cloneable {
+class TreeChoice<T> extends IChoice<T> implements Cloneable {
 
 	private Conditional<T> thenBranch;
 	private Conditional<T> elseBranch;
@@ -81,12 +81,12 @@ public class TreeChoice<T> extends IChoice<T> implements Cloneable {
 			}
 		}
 
-		return new TreeChoice<>((featureExpr), tb, eb);
+		return new TreeChoice<>(featureExpr, tb, eb);
 	}
 
 	@Override
 	public String toString() {
-		return "Choice(" + featureExpr + ", " + thenBranch + ", " + elseBranch + ")";
+		return "Choice(" + getCTXString(featureExpr) + ", " + thenBranch + ", " + elseBranch + ")";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -182,6 +182,11 @@ public class TreeChoice<T> extends IChoice<T> implements Cloneable {
 		}
 
 		return new TreeChoice<>(featureExpr, tb, eb);
+	}
+	
+	@Override
+	public int size() {
+		return thenBranch.size() + elseBranch.size();
 	}
 
 }

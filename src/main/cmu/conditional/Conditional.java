@@ -112,4 +112,5 @@ public abstract class Conditional<T> {
   	  return ("" + ctx).replaceAll("CONFIG_", "").replaceAll("__SELECTED_FEATURE_", "").replaceAll("def\\(", "").replaceAll("\\)", "").replaceAll("\\(", "");
     }
     
+    public abstract int size();
 }

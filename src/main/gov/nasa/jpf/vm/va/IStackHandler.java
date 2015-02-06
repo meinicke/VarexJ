@@ -18,6 +18,9 @@ public interface IStackHandler {
 	public abstract FeatureExpr getCtx();
 
 	public abstract int getStackWidth();
+	
+	public abstract int getLocalWidth();
+	public abstract String getMaxLocal();
 
 	public abstract String toString();
 

@@ -43,6 +43,11 @@ public class XMLReader implements XMLCoverage {
 
 	private Coverage getCoverage(Document doc) throws NumberFormatException, UnsupportedCoverageException {
 		Coverage coverage = new Coverage(); 
+		for (Element rootNode : getElements(doc.getElementsByTagName(ROOT))) {
+			coverage.setType(rootNode.getAttribute(TYPE));
+			coverage.setBaseValue(Integer.valueOf(rootNode.getAttribute(BASE)));
+			break;
+		}
 		for (Element fileNode : getElements(doc.getElementsByTagName(FILE))) {
 			getCoverage(coverage, fileNode);
 		}
@@ -57,7 +62,7 @@ public class XMLReader implements XMLCoverage {
 		for (Element line : getElements(coverageNode.getElementsByTagName(COVERED_LINE))) {
 			try {
 				if (line.hasAttribute(THIS)) {
-					coverage.setLineCovered(fileName, Integer.valueOf(line.getAttribute(THIS)), Integer.valueOf(line.getAttribute(INTERACTION)));
+					coverage.setLineCovered(fileName, Integer.valueOf(line.getAttribute(THIS)), Integer.valueOf(line.getAttribute(INTERACTION)), line.getAttribute(TEXT));
 				} else {
 					throwError("Unknown attribute " + line.getNodeName(), line);
 				}

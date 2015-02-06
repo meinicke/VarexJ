@@ -48,7 +48,6 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
-import coverage.Coverage;
 import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
@@ -638,6 +637,14 @@ public class ThreadInfo extends InfoObject
         assert lockRef != MJIEnv.NULL;
         vm.notifyThreadNotified(this);
         break;
+	case SLEEPING:
+		break;
+	case TIMEDOUT:
+		break;
+	case TIMEOUT_WAITING:
+		break;
+	default:
+		break;
       }
 
       if (log.isLoggable(Level.FINE)){
@@ -1983,42 +1990,55 @@ public class ThreadInfo extends InfoObject
 		    	}
 	        }	
 	        	
-//    		if (debug) {
-//    			System.out.print(top.getDepth());
-//    			if (top.getDepth() < 10) {
-//    				System.out.print(" ");
-//    			}
-//				System.out.println(" " + i + " if " + ctx);
-//			}
+    		if (debug) {
+    			System.out.print(top.getDepth());
+    			if (top.getDepth() < 10) {
+    				System.out.print(" ");
+    			}
+				System.out.println(" " + i + " if " + ctx);
+			}
 	    		
-	    		// log trace for trace comparison
-//	    		if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
-//	    			logtrace = true;
-//	    		}
-//	    		if (logtrace) {
-//	    			if (!(i instanceof InvokeInstruction)) {
-//	    				if (i.getMethodInfo().getFullName().contains("clinit")) {
-//	    					// ignore class initializations 
-//	    				} else {
-//	    					TraceComparator.putInstruction(ctx, i.getMethodInfo().getFullName() + " " + i.getMnemonic().toString() +  " " + i.getFileLocation());
-//	    				}
-//	    			}
-//	    		}
+    		// log trace for trace comparison
+    		if (logtrace) {
+    			if (!(i instanceof InvokeInstruction)) {
+    				MethodInfo mi = i.getMethodInfo();
+    				if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
+    					// ignore class initializations 
+    				} else {
+    					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + i.getMnemonic().toString() +  " " + i.getFileLocation());
+    				}
+    			}
+    		} else if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
+    			logtrace = true;
+    		}
 	    		
     		final int currentStackDepth = stackDepth;
 	    		
-//	    		long startOfInstruction = System.currentTimeMillis();
+//	    	long startOfInstruction = System.currentTimeMillis();
     		Conditional<Instruction> next = i.execute(ctx, this);
-    		MethodInfo methodInfo = i.getMethodInfo();
-    		if (methodInfo != null) {
-	    		ClassInfo classInfo = methodInfo.getClassInfo();
-	    		String file = classInfo.getSourceFileName();
-	    		if (file != null) {
-		    		file = file.substring(file.lastIndexOf('/') + 1);
-		    		gov.nasa.jpf.JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), ctx.collectDistinctFeatures().size());
-	    		} else {
-	//    			System.out.println("Not covered:" + classInfo.getName());
-	    		}    	
+    		if (gov.nasa.jpf.JPF.COVERAGE != null) {
+	    		MethodInfo methodInfo = i.getMethodInfo();
+	    		if (methodInfo != null) {
+		    		ClassInfo classInfo = methodInfo.getClassInfo();
+		    		String file = classInfo.getSourceFileName();
+		    		if (file != null && top != null) {
+			    		file = file.substring(file.lastIndexOf('/') + 1);
+			    		switch (JPF.SELECTED_COVERAGE_TYPE) {
+						case feature:
+				    		gov.nasa.jpf.JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
+							break;
+						case stack:
+							gov.nasa.jpf.JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
+							break;
+						case local:
+							gov.nasa.jpf.JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
+							break;
+						default:
+							throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
+			    		}
+			    		
+		    		}
+	    		}
     		}
 //	    		long endOfInstruction = System.currentTimeMillis();
 //	    		long duration = endOfInstruction - startOfInstruction;
@@ -2034,19 +2054,15 @@ public class ThreadInfo extends InfoObject
 	            			next).simplify();
             	}
     		} else if (i instanceof ReturnInstruction) {
-    			next = ChoiceFactory.create(ctx, next, getPC());
-    			if (top != null) {
-    				nextPc = next.simplify(top.stack.getCtx());
-    			} else {
-    				nextPc = next;
-    			}
+    			// instructions already joined at ReturnInstruction#getNext() 
+    			nextPc = next;
     		} else if (i instanceof ATHROW || (poped > 0 && stackTraceMember(oldStack, top))) {
     			// some instruction (e.g., IDIV with div by zero) just pop frames but do not throw exceptions
     			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
     			popedFrames = poped;
 				int k = 0;
 				StackFrame stackPointer = oldStack;
-				// set the ctx of poped frames
+				// set the ctx of popped frames
 				while (k < popedFrames) {
 					FeatureExpr newCtx = stackPointer.stack.getCtx().andNot(ctx);
 					stackPointer.stack.setCtx(newCtx);
@@ -2060,7 +2076,7 @@ public class ThreadInfo extends InfoObject
           nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
 	    executedInstructions++;
-	    
+	    vm.notifyInstructionExecuted(this, pc.getValue(true), nextPc.getValue(true));// TODO replace true
 	    if (top != null) {
 	      setPC(nextPc);
 	  		if (popedFrames > 0) {

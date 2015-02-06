@@ -932,4 +932,30 @@ public class StackHandler implements Cloneable, IStackHandler {
 		return references;
 	}
 
+	@Override
+	public int getLocalWidth() {
+		int maxWidth = 1;
+		for (Conditional<Entry> local : locals) {
+			int size = local.toMap().size();
+			if (size > maxWidth) {
+				maxWidth = size;
+			}
+		}
+		return maxWidth - 1;
+	}
+	
+	@Override
+	public String getMaxLocal() {
+		Conditional<Entry> maxLocal = new One<>(null);
+		int maxWidth = 0;
+		for (Conditional<Entry> local : locals) {
+			int size = local.toMap().size();
+			if (size >= maxWidth) {
+				maxWidth = size;
+				maxLocal = local;
+			}
+		}
+		return maxLocal.toString();
+	}
+
 }

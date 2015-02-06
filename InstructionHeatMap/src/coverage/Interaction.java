@@ -9,14 +9,17 @@ public class Interaction implements Comparable<Interaction> {
 	
 	private int line;
 	private int interaction;
+	private String text = "";
 	
-	public Interaction(int line) {
-		this.line = line;
-	}
+//	public Interaction(int line, int interaction) {
+//		this.line = line;
+//		this.interaction = interaction;
+//	}
 	
-	public Interaction(int line, int interaction) {
+	public Interaction(int line, int interaction, String text) {
 		this.line = line;
 		this.interaction = interaction;
+		this.text = text;
 	}
 
 	public int getLine() {
@@ -62,7 +65,23 @@ public class Interaction implements Comparable<Interaction> {
 			return false;
 		if (line != other.line)
 			return false;
+		if (!text.equals(other.text)) {
+			return false;
+		}
 		return true;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getText() {
+		return text;
+	}
+	
+	@Override
+	public String toString() {
+		return interaction + " @ " + line + " = " + text;
 	}
 
 

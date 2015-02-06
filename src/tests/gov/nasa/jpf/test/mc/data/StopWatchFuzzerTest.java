@@ -36,7 +36,7 @@ public class StopWatchFuzzerTest extends TestJPF {
       Verify.resetCounter(1);
     }
 
-    if (verifyNoPropertyViolation("+listener=.listener.StopWatchFuzzer")){
+    if (verifyNoPropertyViolation("+choice=TreeChoice","+listener=.listener.StopWatchFuzzer")){
       long tStart = System.currentTimeMillis();
       System.out.println("some lengthy computation..");
       long tEnd = System.currentTimeMillis();

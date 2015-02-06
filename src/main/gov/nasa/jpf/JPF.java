@@ -50,7 +50,7 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  */
 public class JPF implements Runnable {
 	
-	public static final Coverage COVERAGE = new Coverage();
+	public static Coverage COVERAGE;
 	  
   public static String VERSION = "7.0"; // the major version number
 
@@ -306,8 +306,10 @@ public class JPF implements Runnable {
     	  FeatureExprFactory.setDefault(FeatureExprFactory.sat());
       }
       
+      processInteractionCommand();
+      
       // set the trace method
-      traceMethod = config.getString("trace", null);
+      traceMethod = config.getString("traceMethod", null);
       
       // Set StackHandlerFactory
 //      if (factory.equals("X")) {
@@ -330,7 +332,57 @@ public class JPF implements Runnable {
       //cx.getCause().printStackTrace();      
       throw new ExitException(false, cx);
     }
-  }  
+  }
+  
+  public enum COVERAGE_TYPE {
+	  feature, stack, local
+  }
+  
+  public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
+
+  private void processInteractionCommand() {
+	String logInteractions = config.getString("interaction", null);
+      if (logInteractions != null) {
+    	  if (COVERAGE == null) {
+    		  // do not override
+    		  COVERAGE = new Coverage();
+    	  }
+    	  
+				for (COVERAGE_TYPE type : COVERAGE_TYPE.values()) {
+					if (type.name().equals(logInteractions)) {
+						SELECTED_COVERAGE_TYPE = type;
+						switch (SELECTED_COVERAGE_TYPE) {
+						case feature:
+							COVERAGE.setType("Max features: ");
+							COVERAGE.setBaseValue(0);
+							break;
+						case local:
+							COVERAGE.setType("Max local: ");
+							COVERAGE.setBaseValue(1);
+							break;
+						case stack:
+							COVERAGE.setType("Stack with: ");
+							COVERAGE.setBaseValue(1);
+							break;
+						default:
+							break;
+						}
+						break;
+					}
+				}
+    	  if (SELECTED_COVERAGE_TYPE == null) {
+    		  StringBuilder message = new StringBuilder();
+    		  message.append("Specified interaction type \"");
+    		  message.append(logInteractions);
+    		  message.append("\" does not exist. Use one of:");
+    		  for (COVERAGE_TYPE type : COVERAGE_TYPE.values()) {
+    			  message.append(type);
+    			  message.append(' ');
+    		  }
+    		  throw new RuntimeException(message.toString());
+    	  }
+      }
+}  
 
   
   public Status getStatus() {

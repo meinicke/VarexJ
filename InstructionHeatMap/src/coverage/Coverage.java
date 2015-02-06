@@ -1,68 +1,61 @@
 package coverage;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * 
- * Data structure to represent line coverage
+ * Data structure to represent the coverage for lines.
  * @author Jens Meinicke
  *
  */
 public class Coverage {
 
-	private final TreeMap<String, Set<Interaction>> coverage;
+	private final TreeMap<String, Map<Integer, Interaction>> coverage;
+	private String type;
+	private int baseValue = 0;
 	
 	public Coverage() {
 		coverage = new TreeMap<>();
 	}
 	
-	public void setLineCovered(String fileName, Integer line, int interaction) {
-		final Set<Interaction> fileCoverage;
+	public void setType(String text) {
+		type = text;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public void setLineCovered(final String fileName, int line, final int interaction, final String text) {
+		final Map<Integer, Interaction> fileCoverage;
 		if (coverage.containsKey(fileName)) {
 			fileCoverage = coverage.get(fileName);
 		} else {
-			fileCoverage = new TreeSet<>();
+			fileCoverage = new TreeMap<>();
 			coverage.put(fileName, fileCoverage);
 		}
 		
-		if (!fileCoverage.contains(new Interaction(line))) {
-			fileCoverage.add(new Interaction(line, interaction));
+		if (!fileCoverage.containsKey(line)) {
+			fileCoverage.put(line, new Interaction(line, interaction, text));
+		} else {
+			final Interaction current = fileCoverage.get(line);
+			if (current.getInteraction() < interaction) {
+				current.setInteraction(interaction);
+				current.setText(text);
+			}
 		}
 	}
 	
-//	public void setLinesCovered(String fileName, Integer from, Integer to) {
-//		final Set<Integer> fileCoverage;
-//		if (coverage.containsKey(fileName)) {
-//			fileCoverage = coverage.get(fileName);
-//		} else {
-//			fileCoverage = new TreeSet<>();
-//			coverage.put(fileName, fileCoverage);
-//		}
-//		for (int line = from; line <= to; line++) {
-////			if (!fileCoverage.contains(line)) {
-//				fileCoverage.add(line);
-////			}
-//		}
-//	}
-	
-//	public boolean isLineCovered(String file, Integer line) {
-//		if (coverage.containsKey(file)) {
-//			final Set<Integer> fileCoverage = coverage.get(file);
-//			return fileCoverage.contains(line);
-//		}
-//		return false;
-//	}
-//	
-	public Set<String> getFiles() {
+	public Collection<String> getFiles() {
 		return coverage.keySet();
 	}
 	
-	public Set<Interaction> getCoverage(String file) {
+	public Collection<Interaction> getCoverage(String file) {
 		if (coverage.containsKey(file)) {
-			return coverage.get(file);
+			return coverage.get(file).values();
 		}
 		return Collections.emptySet();
 	}
@@ -74,45 +67,18 @@ public class Coverage {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		for (Entry<String, Set<Interaction>> fileCoverage : coverage.entrySet()) {
+		for (Entry<String, Map<Integer, Interaction>> fileCoverage : coverage.entrySet()) {
 			builder.append("FILE: ");
 			builder.append(fileCoverage.getKey());
 			builder.append("\n");
-			int from = Integer.MIN_VALUE;
-			int current = Integer.MIN_VALUE;
-			for (Interaction interaction : fileCoverage.getValue()) {
-				int line = interaction.getLine();
-				if (from == Integer.MIN_VALUE) {
-					from = line;
-					current = line;
-					continue;
-				}
-				if (line <= current + 1) {
-					current = line;
-					continue;
-				}
-				if (from == current) {
-					builder.append(current);
-					builder.append("\n");
-				} else {
-					builder.append(from);
-					builder.append('-');
-					builder.append(current);
-					builder.append("\n");
-				}
-				from = line;
-				current = line;
-			}
-			if (from == current) {
-				builder.append(current);
-				builder.append("\n");
-			} else {
-				builder.append(from);
-				builder.append('-');
-				builder.append(current);
+			
+			Map<Integer, Interaction> c = fileCoverage.getValue();
+			for (Interaction interaction : c.values()) {
+				builder.append(interaction);
 				builder.append("\n");
 			}
-			builder.append("---------------------\n");
+			builder.append("---------------------");
+				
 		}
 		
 		return builder.toString();
@@ -130,5 +96,13 @@ public class Coverage {
 	@Override
 	public int hashCode() {
 		return coverage.hashCode();
+	}
+
+	public int getBaseValue() {
+		return baseValue;
+	}
+
+	public void setBaseValue(int baseValue) {
+		this.baseValue = baseValue;
 	}
 }

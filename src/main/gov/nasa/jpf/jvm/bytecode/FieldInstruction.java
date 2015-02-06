@@ -151,7 +151,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
 
 			@Override
 			public Conditional<Object> apply(FeatureExpr ctx, Integer val) {
-				TraceComparator.putInstruction(ctx, "SET FILED " + fi.getFullName() + " " + val);
+//				TraceComparator.putInstruction(ctx, "SET FILED " + fi.getFullName() + " " + val);
 				return null;
 			}
     		  
@@ -220,7 +220,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
 
   			@Override
   			public Conditional<Object> apply(FeatureExpr ctx, Long val) {
-  				TraceComparator.putInstruction(ctx, "SET FILED " + fi.getFullName() + " " + val);
+//  				TraceComparator.putInstruction(ctx, "SET FILED " + fi.getFullName() + " " + val);
   				return null;
   			}
       		  
