@@ -1,7 +1,5 @@
 package gov.nasa.jpf.vm.va;
 
-import gov.nasa.jpf.vm.va.StackHandler.Type;
-
 import java.util.Collection;
 
 import cmu.conditional.Conditional;
@@ -14,6 +12,10 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  *
  */
 public interface IStackHandler {
+
+	enum StackInstruction {
+		DUP_X1, DUP2_X2, DUP2_X1, DUP2, DUP, DUP_X2, SWAP
+	}
 	
 	public abstract FeatureExpr getCtx();
 
@@ -68,7 +70,7 @@ public interface IStackHandler {
 	 * @param value Can be a {@link Conditional}, or an int, double, or long.
 	 * @param isRef Sets the new value to be a reference or not.
 	 */
-	public abstract void push(FeatureExpr ctx, Object value, boolean isRef);
+	public abstract void push(FeatureExpr ctx, Conditional value, boolean isRef);
 
 	public abstract Conditional<Integer> pop(FeatureExpr ctx);
 
@@ -78,9 +80,7 @@ public interface IStackHandler {
 
 	public abstract Conditional<Float> popFloat(FeatureExpr ctx);
 
-	public abstract <T> Conditional<T> pop(FeatureExpr ctx, Type t);
-
-	public abstract void pop(FeatureExpr ctx, int n);
+	public abstract void popN(FeatureExpr ctx, int n);
 
 	public abstract Conditional<Integer> peek(FeatureExpr ctx);
 
@@ -97,8 +97,6 @@ public interface IStackHandler {
 	public abstract void set(FeatureExpr ctx, int offset, int value, boolean isRef);
 
 	public abstract Conditional<Integer> getTop();
-
-	public abstract void setTop(FeatureExpr ctx, int i);
 
 	public abstract void clear(FeatureExpr ctx);
 

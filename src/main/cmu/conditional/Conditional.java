@@ -22,7 +22,7 @@ public abstract class Conditional<T> {
 		map.clear();
 	}
  	
-	private static Map<FeatureExpr, Boolean> map = new HashMap<>();
+	public static Map<FeatureExpr, Boolean> map = new HashMap<>();
 	
 	
 	public static boolean isContradiction(final FeatureExpr f) {

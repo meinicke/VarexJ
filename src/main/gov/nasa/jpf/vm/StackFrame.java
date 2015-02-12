@@ -119,7 +119,7 @@ public int nLocals;
 	private int depth = 0;
 
   protected int top() {// TODO remove
-	  return stack.getTop().getValue() + nLocals;	
+	  return stack.getTop().simplify().getValue() + nLocals;	
   }
 
   static final int[] EMPTY_ARRAY = new int[0];
@@ -1818,7 +1818,7 @@ pw.print(stack);
 				}
 			}
 		}
-    stack.pop(ctx, n);
+    stack.popN(ctx, n);
   }
 
   public Conditional<Float> popFloat(FeatureExpr ctx) {
@@ -1973,7 +1973,7 @@ pw.print(stack);
   }
 
   public void push (FeatureExpr ctx, int v, boolean ref) {
-	  stack.push(ctx, v, ref);
+	  stack.push(ctx, new One<>(v), ref);
 //    top++;
 //    slots[top()] = v;
 //    isRef.set(top, ref);

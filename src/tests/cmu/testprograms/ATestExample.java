@@ -10,7 +10,7 @@ import gov.nasa.jpf.util.test.TestJPF;
  */
 public abstract class ATestExample extends TestJPF {
 
-	protected final String[] config = {/*"+interaction=true",*/ "+search.class= .search.RandomSearch", "+classpath=" + getClassPath(), "+featuremodel=" + getModelFile(), "+choice=" + getChoiceFactory(), "+nhandler.delegateUnhandledNative"};
+	protected final String[] config = {"+stack=BufferedStackHandler",/*"+interaction=true",*/ "+search.class= .search.RandomSearch", "+classpath=" + getClassPath(), "+featuremodel=" + getModelFile(), "+choice=" + getChoiceFactory(), "+nhandler.delegateUnhandledNative"};
 	
 	protected String getChoiceFactory() {
 		return "TreeChoice";

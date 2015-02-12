@@ -52,7 +52,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.utils.RutimeConstants;
+import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -1983,7 +1983,7 @@ public class ThreadInfo extends InfoObject
 		    	}
 	        }	
 	        	
-    		if (RutimeConstants.debug) {
+    		if (RuntimeConstants.debug) {
     			System.out.print(top.getDepth());
     			if (top.getDepth() < 10) {
     				System.out.print(" ");
@@ -1991,21 +1991,20 @@ public class ThreadInfo extends InfoObject
 				System.out.println(" " + i + " if " + ctx);
 			}
 	    	
-    		if (RutimeConstants.tracing) {
     		// log trace for trace comparison
-	    		if (logtrace) {
-	    			if (!(i instanceof InvokeInstruction)) {
-	    				MethodInfo mi = i.getMethodInfo();
-	    				if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
-	    					// ignore class initializations 
-	    				} else {
-	    					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + i.getMnemonic().toString() +  " " + i.getFileLocation());
-	    				}
-	    			}
-	    		} else if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
-	    			logtrace = true;
-	    		}
+    		if (logtrace) {
+    			if (!(i instanceof InvokeInstruction)) {
+    				MethodInfo mi = i.getMethodInfo();
+    				if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
+    					// ignore class initializations 
+    				} else {
+    					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + i.getMnemonic().toString() +  " " + i.getFileLocation());
+    				}
+    			}
+    		} else if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
+    			logtrace = true;
     		}
+
 //	    		
     		final int currentStackDepth = stackDepth;
 //	    		
@@ -2043,9 +2042,9 @@ public class ThreadInfo extends InfoObject
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
-	    		if (stackDepth > RutimeConstants.MAX_FRAMES) {
+	    		if (stackDepth > RuntimeConstants.MAX_FRAMES) {
 	            	nextPc = ChoiceFactory.create(ctx, 
-	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RutimeConstants.MAX_FRAMES + ")")), 
+	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RuntimeConstants.MAX_FRAMES + ")")), 
 	            			next).simplify();
             	}
     		} else if (i instanceof ReturnInstruction) {
@@ -2162,7 +2161,7 @@ public class ThreadInfo extends InfoObject
 	    		}
         	}	
         		
-    		if (RutimeConstants.debug) {
+    		if (RuntimeConstants.debug) {
     			System.out.print(top.getDepth());
     			if (top.getDepth() < 10) {
     				System.out.print(" ");
@@ -2196,9 +2195,9 @@ public class ThreadInfo extends InfoObject
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
-    			if (top.getDepth() > RutimeConstants.MAX_FRAMES) {
+    			if (top.getDepth() > RuntimeConstants.MAX_FRAMES) {
             		nextPc = ChoiceFactory.create(ctx, 
-            				new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RutimeConstants.MAX_FRAMES + ")")), 
+            				new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RuntimeConstants.MAX_FRAMES + ")")), 
             				next).simplify();
             	}
     		} else if (i instanceof ReturnInstruction) {

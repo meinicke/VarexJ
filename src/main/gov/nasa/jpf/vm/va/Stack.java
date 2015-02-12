@@ -45,7 +45,7 @@ public class Stack {
 
 	public int[] getSlots() {
 		int[] clone = new int[slots.length];
-		for (int i = 0; i < slots.length; i++) {
+		for (int i = 0; i < top; i++) {
 			if (slots[i] != null) {
 				clone[i] = slots[i].value;
 			}
@@ -85,7 +85,7 @@ public class Stack {
 	}
 
 	public void push(Integer value, boolean isRef) {
-		slots[++top] = new Entry(value, isRef);
+		slots[++top] = Entry.create(value, isRef);
 	}
 
 	public boolean isRef(int offset) {
@@ -103,11 +103,11 @@ public class Stack {
 	}
 
 	public void set(int offset, int value, boolean isRef) {
-		slots[top - offset] = new Entry(value, isRef);
+		slots[top - offset] = Entry.create(value, isRef);
 	}
 
 	public void setIndex(int index, Integer value, boolean isRef) {
-		slots[index] = new Entry(value, isRef);
+		slots[index] = Entry.create(value, isRef);
 	}
 
 	Stack copy() {
@@ -269,7 +269,7 @@ public class Stack {
 		int hash = 7;
 		for (Entry e : slots) {
 			if (e != null) {
-				hash = hash * 31 + e.value;
+				hash = hash * 31 + e.hashCode();
 			}
 		}
 		return hash;
@@ -315,9 +315,31 @@ class Entry {
 	public boolean equals(Object o) {
 		return ((Entry) o).value == value && ((Entry) o).isRef == isRef;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return value;
+		return (31 * value) + 31 * (isRef ? 1231 : 997);
 	}
+	
+	static Entry[] references = new Entry[128];
+	static Entry[] values = new Entry[128];
+	
+	static {
+		for (int i = 0; i < 128;i++) {
+			references[i] = new Entry(i - 1, true);
+			values[i] = new Entry(i - 1, false);
+		}
+	}
+	
+	static Entry create(int value, boolean isRef) {
+		if (value >= -1 && value < 127) {
+			if (isRef) {
+				return references[value + 1];
+			} else {
+				return values[value + 1];
+			}
+		}
+		return new Entry(value, isRef); 
+	}
+	
 }

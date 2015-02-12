@@ -2,6 +2,7 @@ package cmu.conditional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -143,12 +144,21 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		throw new RuntimeException("not yet implemented");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(final Object o) {
 		if (o instanceof MapChoice) {
-			@SuppressWarnings("rawtypes")
-			MapChoice other = (MapChoice) o;
-			return other.map.equals(map);
+			MapChoice<T> other = (MapChoice<T>) o;
+			if (map.size() != other.map.size()) {
+				return false;
+			}
+			for (Entry<T, FeatureExpr> e: map.entrySet()) {
+				FeatureExpr otherValue = other.map.get(e.getKey());
+				if (!e.getValue().equals(otherValue)) {
+					return false;
+				}
+			}
+			return true;
 		}
 		return false;
 	}
@@ -156,14 +166,13 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	@Override
 	public String toString() {
 		StringBuilder content = new StringBuilder();
-		content.append('{');
+		content.append("MapChoice {");
 		for (Entry<T, FeatureExpr> e: map.entrySet()) {
 			content.append(getCTXString(e.getValue()));
 			content.append(':');
-			content.append(e.getKey());
+			content.append(e.getKey() + " " + e.getKey().hashCode());
 			content.append(" ; ");
 		}
-		content.delete(content.length() - 4, content.length() - 1);
 		content.append('}');
 		return content.toString();
 	}
