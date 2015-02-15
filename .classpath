@@ -7,9 +7,9 @@
 	<classpathentry kind="src" output="build/examples" path="src/examples"/>
 	<classpathentry kind="src" path="jpf_testprogram"/>
 	<classpathentry kind="src" path="src/tests"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/build"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/conditionallib_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/cparser_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/crewrite_2.10-0.3.4.jar"/>

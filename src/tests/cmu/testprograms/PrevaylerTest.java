@@ -2,16 +2,21 @@ package cmu.testprograms;
 
 import java.io.File;
 
+import gov.nasa.jpf.annotation.Conditional;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 import org.prevayler.demos.demo1.NumberKeeper;
 import org.prevayler.demos.demo1.PrimeCalculator;
+import org.prevayler.foundation.monitor.SimpleMonitor;
 
 public class PrevaylerTest extends ATestExample {
 
 	private static String NUMBER_KEEPER = "NumberKeeper";
+
+    @Conditional
+    static boolean a = true;
 
 	@Test
 	public void runNumberKeeper() throws Exception {
@@ -20,7 +25,14 @@ public class PrevaylerTest extends ATestExample {
 			String folderName = clearTempFolder(NUMBER_KEEPER);
 			
 			final NumberKeeper numberKeeper = new NumberKeeper();
-			final Prevayler prevayler = PrevaylerFactory.createPrevayler(numberKeeper, folderName);
+//			final Prevayler prevayler = PrevaylerFactory.createPrevayler(numberKeeper, folderName);
+            PrevaylerFactory factory = new PrevaylerFactory();
+            factory.configurePrevalentSystem(numberKeeper);
+            factory.configurePrevalenceDirectory(folderName);
+            if (a)
+                factory.configureMonitor(new SimpleMonitor());
+            Prevayler prevayler = factory.create();
+
 			final PrimeCalculator primeCalculator = new PrimeCalculator(prevayler);
 			
 			System.out.println("Run the first time");

@@ -117,7 +117,7 @@
 
 	<target name="-compile-tests" if="have_tests" depends="-compile-annotations,-compile-main,-compile-classes">
 		<mkdir dir="build/tests" />
-		<javac srcdir="src/tests" destdir="build/tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" includes="*,gov/nasa/jpf/**, cmu/**,classloader_specific_tests/**">
+		<javac srcdir="src/tests" destdir="build/tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" includes="*,gov/nasa/jpf/**, cmu/**, classloader_specific_tests/**">
 			<compilerarg value="-XDenableSunApiLintControl" />
 			<compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked" />
 			<classpath>
@@ -523,7 +523,7 @@
 			</not>
 		</condition>
 
-		<junit printsummary="on" showoutput="off" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="2048m" outputtoformatters="true">
+		<junit printsummary="on" showoutput="on" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="4096m" outputtoformatters="true">
 			<formatter type="plain" usefile="${junit.usefile}" />
 
 			<assertions>
@@ -538,7 +538,12 @@
 			<formatter type="xml" />
 			<batchtest todir="build/tests">
 				<fileset dir="build/tests">
-					<include name="**cmu/**/LangTest.class" />
+					<!--<include name="**/lang3/**/*Test.class" />-->
+                    <!--<include name="**/lang3/*Test.class" />-->
+                    <include name="**/lang3/math/NumberUtilsTest.class"/>
+                    <exclude name="**/lang3/ArrayUtilsAddTest.class" />
+                    <exclude name="**/lang3/AnnotationUtilsTest.class"/>
+                    <exclude name="**/lang3/**/*$*.class" />
 				</fileset>
 			</batchtest>
 

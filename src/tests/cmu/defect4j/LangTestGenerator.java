@@ -9,8 +9,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * @author: chupanw
- */
+* @author: chupanw
+*/
 public class LangTestGenerator {
     public static FileWriter writer;
     public static Integer counter;

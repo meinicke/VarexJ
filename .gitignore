@@ -70,3 +70,5 @@ jpf-nhandler/onthefly/*.java
 /file
 
 META-INF/
+
+junit*.properties
