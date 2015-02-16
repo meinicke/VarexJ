@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.annotation.MJI;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -39,7 +40,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongArray extends NativePeer 
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
     long value = env.getLongArrayElement(arrayRef, index).getValue();
     if (value == expect) {
-      env.setLongArrayElement(ctx, arrayRef, index, update);
+      env.setLongArrayElement(ctx, arrayRef, index, new One<>(update));
       return true;
     } else {
       return false;

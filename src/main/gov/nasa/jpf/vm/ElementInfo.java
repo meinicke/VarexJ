@@ -1282,6 +1282,18 @@ public abstract class ElementInfo implements Cloneable {
 		    		for (int i = 0; i < length; i++) {
 		    			fields.setReferenceValue(ctx, dstIdx + i, src.getReferenceValue(i + srcIdx));
 		    		}
+	    		} else if (eiSrc.getFields() instanceof BooleanArrayFields) {
+		    		for (int i = 0; i < length; i++) {
+		    			fields.setBooleanValue(ctx, dstIdx + i, src.getBooleanValue(i + srcIdx));
+		    		}
+	    		} else if (eiSrc.getFields() instanceof ShortArrayFields) {
+	    			for (int i = 0; i < length; i++) {
+		    			fields.setShortValue(ctx, dstIdx + i, src.getShortValue(i + srcIdx));
+		    		}
+	    		} else if (eiSrc.getFields() instanceof FloatArrayFields) {
+	    			for (int i = 0; i < length; i++) {
+		    			fields.setFloatValue(ctx, dstIdx + i, src.getFloatValue(i + srcIdx));
+		    		}
 	    		} else {
 	    			throw new RuntimeException("TODO implement array copy for " + src.getClass());
 	    		}

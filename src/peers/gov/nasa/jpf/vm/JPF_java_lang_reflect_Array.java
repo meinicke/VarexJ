@@ -275,7 +275,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setLong__Ljava_lang_Object_2IJ__V (MJIEnv env, int clsRef, int aref, int index, long val, FeatureExpr ctx) {
     if (check(env, aref, index, ctx)) {
-      env.setLongArrayElement(ctx, aref, index, val);
+      env.setLongArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 
@@ -292,4 +292,31 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       env.setDoubleArrayElement(ctx, aref, index, new One<>(val));
     }
   }
+  
+  @MJI
+  public void set__Ljava_lang_Object_2ILjava_lang_Object_2__V(MJIEnv env, int clsRef, int aref, int index, int valRef, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+    	String arrayType = env.getArrayType(aref);
+    	if ("Z".equals(arrayType)) {
+    		env.setBooleanArrayElement(ctx, aref, index, env.getBooleanValue(valRef));
+    	} else if ("C".equals(arrayType)) {
+    		env.setCharArrayElement(ctx, aref, index, env.getCharValue(valRef));
+    	} else if ("S".equals(arrayType)) {
+    		env.setShortArrayElement(ctx, aref, index, env.getShortValue(valRef));
+    	} else if ("B".equals(arrayType)) {
+    		env.setByteArrayElement(ctx, aref, index, env.getByteValue(valRef));
+    	} else if ("I".equals(arrayType)) {
+    		env.setIntArrayElement(ctx, aref, index, env.getIntValue(valRef));
+    	} else if ("J".equals(arrayType)) {
+    		env.setLongArrayElement(ctx, aref, index, env.getLongValue(valRef));
+    	} else if ("F".equals(arrayType)) {
+    		env.setFloatArrayElement(ctx, aref, index, env.getFloatValue(valRef));
+    	} else if ("D".equals(arrayType)) {
+    		env.setDoubleArrayElement(ctx, aref, index, env.getDoubleValue(valRef));
+    	} else {
+	    	env.setReferenceArrayElement(ctx, aref, index, new One<>(valRef));
+    	}
+    }
+  }
+  
 }
