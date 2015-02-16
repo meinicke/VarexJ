@@ -514,12 +514,12 @@ public VM getVM () {
     return getShortField(objref, "value");
   }
 
-  public int getIntValue (int objref) {
-    return getIntField(objref, "value").getValue();// TODO jens
+  public Conditional<Integer> getIntValue (int objref) {
+    return getIntField(objref, "value");
   }
 
-  public long getLongValue (int objref) {
-    return getLongField(objref, "value").getValue();// TODO jens
+  public Conditional<Long> getLongValue (int objref) {
+    return getLongField(objref, "value");
   }
 
   public Conditional<Float> getFloatValue (int objref) {
@@ -531,8 +531,8 @@ public VM getVM () {
   }
 
 
-  public void setLongArrayElement (FeatureExpr ctx, int objref, int index, long value) {// TODO jens
-    heap.getModifiable(objref).setLongElement(ctx, index, new One<>(value));
+  public void setLongArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Long> value) {
+    heap.getModifiable(objref).setLongElement(ctx, index, value);
   }
 
   public Conditional<Long> getLongArrayElement (int objref, int index) {
@@ -579,14 +579,8 @@ public VM getVM () {
   }
 
   public Conditional<Short> getShortField (int objref, String fname) {
-    return getIntField(objref, fname).map(new Function<Integer, Short>() {
-
-		@Override
-		public Short apply(Integer v) {
-			return (short)v.intValue();
-		}
-    	
-    });
+	  ElementInfo ei = heap.get(objref);
+	  return ei.getShortField(fname);
   }
 
   public String getTypeName (int objref) {
@@ -1703,7 +1697,7 @@ public VM getVM () {
       } else if (ftype.equals("long[]")){
         aref = newLongArray(a.length);
         for (int i=0; i<a.length; i++){
-          setLongArrayElement(ctx,aref,i, ((Number)a[i]).longValue());
+          setLongArrayElement(ctx,aref,i, new One<>(((Number)a[i]).longValue()));
         }
       } else if (ftype.equals("double[]")){
         aref = newDoubleArray(a.length);
