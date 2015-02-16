@@ -1912,7 +1912,7 @@ public class ThreadInfo extends InfoObject
     }
   }
   
-  public static boolean debug = true;
+  public static boolean debug = false;
   public static boolean ctxOutput = true;
   static int count = 0;
   static int count2 = 0;

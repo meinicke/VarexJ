@@ -13,13 +13,14 @@ import java.lang.reflect.Method;
  * @author: chupanw
  */
 public class TestGenerator {
-    public static Integer counter;
-    public static String pathPrefix = "/Users/chupanw/IdeaProjects/VarexJ/src/tests/cmu/defect4j/";
+    // Change this choose where to
+    public static String pathPrefix = "/Users/chupanw/IdeaProjects/VarexJ/src/defects4j-tests/cmu/defect4j/";
+
     public static String packageNamePrefix = "cmu.defect4j.";
+
     public static int timeout = 120000;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        counter = 1;
         SearchLangTest();
 //        SearchMathTest();
     }
@@ -254,7 +255,6 @@ public class TestGenerator {
                 "               object." + methodname + "();\n" +
                 "        }\n" +
                 "    }\n\n");
-        counter++;
     }
 
     public static void printHeader(FileWriter writer, String packageNameSuffix, String className) throws IOException {
