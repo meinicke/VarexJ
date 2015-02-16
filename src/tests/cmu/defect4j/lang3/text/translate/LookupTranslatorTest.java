@@ -9,7 +9,7 @@ public class LookupTranslatorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicLookup() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.LookupTranslatorTest object = new org.apache.commons.lang3.text.translate.LookupTranslatorTest();
@@ -17,7 +17,7 @@ public class LookupTranslatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang882() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.LookupTranslatorTest object = new org.apache.commons.lang3.text.translate.LookupTranslatorTest();

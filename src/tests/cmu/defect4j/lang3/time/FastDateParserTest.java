@@ -9,7 +9,7 @@ public class FastDateParserTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_Equality_Hash() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -17,7 +17,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testParseZone() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -25,7 +25,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testParseLongShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -33,7 +33,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAmPm() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -41,7 +41,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testParses() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -49,7 +49,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocales_Long_AD() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -57,7 +57,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocales_Long_BC() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -65,7 +65,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocales_Short_AD() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -73,7 +73,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocales_Short_BC() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -81,7 +81,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocales_LongNoEra_AD() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -89,7 +89,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocales_LongNoEra_BC() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -97,7 +97,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocales_ShortNoEra_AD() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -105,7 +105,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocales_ShortNoEra_BC() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -113,7 +113,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testParseNumerics() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -121,7 +121,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testQuotes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -129,7 +129,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSpecialCharacters() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -137,7 +137,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLANG_832() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -145,7 +145,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLANG_831() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -153,7 +153,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDayOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -161,7 +161,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShortDateStyleWithLocales() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -169,7 +169,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLowYearPadding() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -177,7 +177,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMilleniumBug() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -185,7 +185,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang303() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -193,7 +193,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang538() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -201,7 +201,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToStringContainsName() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -209,7 +209,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPatternMatches() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -217,7 +217,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocaleMatches() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -225,7 +225,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTimeZoneMatches() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();
@@ -233,7 +233,7 @@ public class FastDateParserTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDateParserTest object = new org.apache.commons.lang3.time.FastDateParserTest();

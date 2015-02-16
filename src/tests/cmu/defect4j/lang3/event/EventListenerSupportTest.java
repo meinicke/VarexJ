@@ -9,15 +9,7 @@ public class EventListenerSupportTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testAddNullListener() throws Exception {
-        if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-               org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
-               object.testAddNullListener();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveNullListener() throws Exception {
         if (verifyUnhandledException("java.lang.NullPointerException", config)) {
                org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
@@ -25,15 +17,15 @@ public class EventListenerSupportTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testEventDispatchOrder() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+    @Test(timeout=120000)
+    public void testAddNullListener() throws Exception {
+        if (verifyUnhandledException("java.lang.NullPointerException", config)) {
                org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
-               object.testEventDispatchOrder();
+               object.testAddNullListener();
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCreateWithNonInterfaceParameter() throws Exception {
         if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
                org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
@@ -41,7 +33,7 @@ public class EventListenerSupportTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCreateWithNullParameter() throws Exception {
         if (verifyUnhandledException("java.lang.NullPointerException", config)) {
                org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
@@ -49,7 +41,7 @@ public class EventListenerSupportTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveListenerDuringEvent() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
@@ -57,7 +49,7 @@ public class EventListenerSupportTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetListeners() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
@@ -65,7 +57,7 @@ public class EventListenerSupportTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubclassInvocationHandling() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
@@ -73,7 +65,15 @@ public class EventListenerSupportTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testEventDispatchOrder() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();
+               object.testEventDispatchOrder();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventListenerSupportTest object = new org.apache.commons.lang3.event.EventListenerSupportTest();

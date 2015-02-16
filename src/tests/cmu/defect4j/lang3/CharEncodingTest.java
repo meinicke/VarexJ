@@ -9,7 +9,15 @@ public class CharEncodingTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.CharEncodingTest object = new org.apache.commons.lang3.CharEncodingTest();
+               object.testConstructor();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testSupported() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharEncodingTest object = new org.apache.commons.lang3.CharEncodingTest();
@@ -17,7 +25,7 @@ public class CharEncodingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMustBeSupportedJava1_3_1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharEncodingTest object = new org.apache.commons.lang3.CharEncodingTest();
@@ -25,7 +33,7 @@ public class CharEncodingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNotSupported() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharEncodingTest object = new org.apache.commons.lang3.CharEncodingTest();
@@ -33,7 +41,7 @@ public class CharEncodingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testWorksOnJava1_1_8() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharEncodingTest object = new org.apache.commons.lang3.CharEncodingTest();
@@ -41,19 +49,11 @@ public class CharEncodingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testWorksOnJava1_2_2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharEncodingTest object = new org.apache.commons.lang3.CharEncodingTest();
                object.testWorksOnJava1_2_2();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.CharEncodingTest object = new org.apache.commons.lang3.CharEncodingTest();
-               object.testConstructor();
         }
     }
 

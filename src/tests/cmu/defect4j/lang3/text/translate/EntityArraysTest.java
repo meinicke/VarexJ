@@ -9,15 +9,15 @@ public class EntityArraysTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testISO8859_1_ESCAPE() throws Exception {
+    @Test(timeout=120000)
+    public void testConstructorExists() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.EntityArraysTest object = new org.apache.commons.lang3.text.translate.EntityArraysTest();
-               object.testISO8859_1_ESCAPE();
+               object.testConstructorExists();
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHTML40_EXTENDED_ESCAPE() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.EntityArraysTest object = new org.apache.commons.lang3.text.translate.EntityArraysTest();
@@ -25,11 +25,11 @@ public class EntityArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testConstructorExists() throws Exception {
+    @Test(timeout=120000)
+    public void testISO8859_1_ESCAPE() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.EntityArraysTest object = new org.apache.commons.lang3.text.translate.EntityArraysTest();
-               object.testConstructorExists();
+               object.testISO8859_1_ESCAPE();
         }
     }
 

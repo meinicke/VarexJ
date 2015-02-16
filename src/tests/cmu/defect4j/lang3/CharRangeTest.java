@@ -9,7 +9,7 @@ public class CharRangeTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -17,7 +17,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testClass() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -25,7 +25,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorAccessors_is() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -33,7 +33,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorAccessors_isNot() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -41,7 +41,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorAccessors_isIn_Same() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -49,7 +49,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorAccessors_isIn_Normal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -57,7 +57,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorAccessors_isIn_Reversed() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -65,7 +65,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorAccessors_isNotIn_Same() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -73,7 +73,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorAccessors_isNotIn_Normal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -81,7 +81,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorAccessors_isNotIn_Reversed() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -89,7 +89,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEquals_Object() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -97,7 +97,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContains_Char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -105,7 +105,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContains_Charrange() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -113,7 +113,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsNullArg() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -121,7 +121,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIterator() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();
@@ -129,7 +129,7 @@ public class CharRangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharRangeTest object = new org.apache.commons.lang3.CharRangeTest();

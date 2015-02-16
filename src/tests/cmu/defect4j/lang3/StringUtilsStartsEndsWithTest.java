@@ -9,23 +9,7 @@ public class StringUtilsStartsEndsWithTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testStartsWith() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.StringUtilsStartsEndsWithTest object = new org.apache.commons.lang3.StringUtilsStartsEndsWithTest();
-               object.testStartsWith();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testStartsWithIgnoreCase() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.StringUtilsStartsEndsWithTest object = new org.apache.commons.lang3.StringUtilsStartsEndsWithTest();
-               object.testStartsWithIgnoreCase();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStartsWithAny() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsStartsEndsWithTest object = new org.apache.commons.lang3.StringUtilsStartsEndsWithTest();
@@ -33,7 +17,23 @@ public class StringUtilsStartsEndsWithTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testStartsWith() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.StringUtilsStartsEndsWithTest object = new org.apache.commons.lang3.StringUtilsStartsEndsWithTest();
+               object.testStartsWith();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testStartsWithIgnoreCase() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.StringUtilsStartsEndsWithTest object = new org.apache.commons.lang3.StringUtilsStartsEndsWithTest();
+               object.testStartsWithIgnoreCase();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testEndsWith() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsStartsEndsWithTest object = new org.apache.commons.lang3.StringUtilsStartsEndsWithTest();
@@ -41,7 +41,7 @@ public class StringUtilsStartsEndsWithTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEndsWithIgnoreCase() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsStartsEndsWithTest object = new org.apache.commons.lang3.StringUtilsStartsEndsWithTest();
@@ -49,7 +49,7 @@ public class StringUtilsStartsEndsWithTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEndsWithAny() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsStartsEndsWithTest object = new org.apache.commons.lang3.StringUtilsStartsEndsWithTest();

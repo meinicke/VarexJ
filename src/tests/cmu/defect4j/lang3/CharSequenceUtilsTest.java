@@ -9,7 +9,7 @@ public class CharSequenceUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubSequence() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharSequenceUtilsTest object = new org.apache.commons.lang3.CharSequenceUtilsTest();
@@ -17,7 +17,7 @@ public class CharSequenceUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharSequenceUtilsTest object = new org.apache.commons.lang3.CharSequenceUtilsTest();

@@ -9,7 +9,7 @@ public class ArrayUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -17,7 +17,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -25,7 +25,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -33,7 +33,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -41,7 +41,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testArrayCreation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -49,7 +49,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testArrayCreationWithGeneralReturnType() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -57,7 +57,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testArrayCreationWithDifferentTypes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -65,7 +65,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndirectArrayCreation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -73,7 +73,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEmptyArrayCreation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -81,7 +81,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndirectEmptyArrayCreation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -89,7 +89,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToMap() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -97,7 +97,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testClone() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -105,7 +105,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -113,7 +113,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -121,7 +121,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -129,7 +129,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -137,7 +137,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -145,7 +145,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -153,7 +153,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -161,7 +161,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -169,7 +169,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -177,7 +177,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -185,7 +185,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -193,7 +193,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -201,7 +201,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -209,7 +209,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -217,7 +217,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -225,7 +225,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -233,7 +233,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -241,7 +241,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -249,7 +249,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyBooleanObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -257,7 +257,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyLongObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -265,7 +265,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyIntObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -273,7 +273,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyShortObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -281,7 +281,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyCharObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -289,7 +289,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyByteObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -297,7 +297,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyDoubleObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -305,7 +305,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullToEmptyFloatObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -313,7 +313,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrayObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -321,7 +321,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrayLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -329,7 +329,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrayInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -337,7 +337,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrayShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -345,7 +345,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -353,7 +353,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrayByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -361,7 +361,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrayDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -369,7 +369,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrayFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -377,7 +377,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubarrayBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -385,7 +385,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLength() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -393,7 +393,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLengthBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -401,7 +401,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLengthLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -409,7 +409,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLengthInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -417,7 +417,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLengthShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -425,7 +425,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLengthChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -433,7 +433,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLengthByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -441,7 +441,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLengthDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -449,7 +449,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameLengthFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -457,7 +457,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameType() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -465,7 +465,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverse() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -473,7 +473,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverseLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -481,7 +481,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverseInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -489,7 +489,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverseShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -497,7 +497,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverseChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -505,7 +505,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverseByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -513,7 +513,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverseDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -521,7 +521,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverseFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -529,7 +529,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReverseBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -537,7 +537,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -545,7 +545,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -553,7 +553,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -561,7 +561,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -569,7 +569,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContains() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -577,7 +577,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -585,7 +585,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfLongWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -593,7 +593,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -601,7 +601,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfLongWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -609,7 +609,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -617,7 +617,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -625,7 +625,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfIntWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -633,7 +633,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -641,7 +641,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfIntWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -649,7 +649,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -657,7 +657,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -665,7 +665,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfShortWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -673,7 +673,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -681,7 +681,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfShortWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -689,7 +689,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -697,7 +697,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -705,7 +705,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfCharWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -713,7 +713,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -721,7 +721,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfCharWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -729,7 +729,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -737,7 +737,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -745,7 +745,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfByteWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -753,7 +753,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -761,7 +761,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfByteWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -769,7 +769,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -777,7 +777,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -785,7 +785,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfDoubleTolerance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -793,7 +793,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfDoubleWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -801,7 +801,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfDoubleWithStartIndexTolerance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -809,7 +809,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -817,7 +817,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfDoubleTolerance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -825,7 +825,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfDoubleWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -833,7 +833,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfDoubleWithStartIndexTolerance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -841,7 +841,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -849,7 +849,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsDoubleTolerance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -857,7 +857,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -865,7 +865,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfFloatWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -873,7 +873,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -881,7 +881,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfFloatWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -889,7 +889,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -897,7 +897,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -905,7 +905,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfBooleanWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -913,7 +913,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -921,7 +921,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfBooleanWithStartIndex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -929,7 +929,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -937,7 +937,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_boolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -945,7 +945,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_boolean_boolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -953,7 +953,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToObject_boolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -961,7 +961,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -969,7 +969,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_char_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -977,7 +977,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToObject_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -985,7 +985,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_byte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -993,7 +993,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_byte_byte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1001,7 +1001,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToObject_byte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1009,7 +1009,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_short() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1017,7 +1017,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_short_short() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1025,7 +1025,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToObject_short() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1033,7 +1033,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_int() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1041,7 +1041,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_int_int() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1049,7 +1049,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_intNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1057,7 +1057,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToObject_int() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1065,7 +1065,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_long() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1073,7 +1073,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_long_long() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1081,7 +1081,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToObject_long() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1089,7 +1089,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_float() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1097,7 +1097,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_float_float() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1105,7 +1105,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToObject_float() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1113,7 +1113,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_double() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1121,7 +1121,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToPrimitive_double_double() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1129,7 +1129,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToObject_double() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1137,7 +1137,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsEmptyObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1145,7 +1145,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsEmptyPrimitives() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1153,7 +1153,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsNotEmptyObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1161,7 +1161,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsNotEmptyPrimitives() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();
@@ -1169,7 +1169,7 @@ public class ArrayUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetLength() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsTest object = new org.apache.commons.lang3.ArrayUtilsTest();

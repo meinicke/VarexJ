@@ -9,7 +9,7 @@ public class OctalUnescaperTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBetween() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.OctalUnescaperTest object = new org.apache.commons.lang3.text.translate.OctalUnescaperTest();

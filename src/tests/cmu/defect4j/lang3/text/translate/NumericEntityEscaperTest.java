@@ -9,23 +9,7 @@ public class NumericEntityEscaperTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testAbove() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.text.translate.NumericEntityEscaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityEscaperTest();
-               object.testAbove();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testSupplementary() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.text.translate.NumericEntityEscaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityEscaperTest();
-               object.testSupplementary();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBelow() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.NumericEntityEscaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityEscaperTest();
@@ -33,11 +17,27 @@ public class NumericEntityEscaperTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBetween() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.NumericEntityEscaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityEscaperTest();
                object.testBetween();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testAbove() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.text.translate.NumericEntityEscaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityEscaperTest();
+               object.testAbove();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testSupplementary() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.text.translate.NumericEntityEscaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityEscaperTest();
+               object.testSupplementary();
         }
     }
 

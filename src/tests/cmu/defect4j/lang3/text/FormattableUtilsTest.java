@@ -9,7 +9,7 @@ public class FormattableUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDefaultAppend() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.FormattableUtilsTest object = new org.apache.commons.lang3.text.FormattableUtilsTest();
@@ -17,7 +17,7 @@ public class FormattableUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAlternatePadCharacter() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.FormattableUtilsTest object = new org.apache.commons.lang3.text.FormattableUtilsTest();
@@ -25,7 +25,7 @@ public class FormattableUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEllipsis() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.FormattableUtilsTest object = new org.apache.commons.lang3.text.FormattableUtilsTest();
@@ -33,7 +33,7 @@ public class FormattableUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIllegalEllipsis() throws Exception {
         if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
                org.apache.commons.lang3.text.FormattableUtilsTest object = new org.apache.commons.lang3.text.FormattableUtilsTest();
@@ -41,7 +41,7 @@ public class FormattableUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAlternatePadCharAndEllipsis() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.FormattableUtilsTest object = new org.apache.commons.lang3.text.FormattableUtilsTest();

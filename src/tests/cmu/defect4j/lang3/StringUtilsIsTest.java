@@ -9,7 +9,7 @@ public class StringUtilsIsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAlpha() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsIsTest object = new org.apache.commons.lang3.StringUtilsIsTest();
@@ -17,7 +17,7 @@ public class StringUtilsIsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAlphanumeric() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsIsTest object = new org.apache.commons.lang3.StringUtilsIsTest();
@@ -25,7 +25,7 @@ public class StringUtilsIsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsWhitespace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsIsTest object = new org.apache.commons.lang3.StringUtilsIsTest();
@@ -33,7 +33,7 @@ public class StringUtilsIsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAlphaspace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsIsTest object = new org.apache.commons.lang3.StringUtilsIsTest();
@@ -41,7 +41,7 @@ public class StringUtilsIsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAlphanumericSpace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsIsTest object = new org.apache.commons.lang3.StringUtilsIsTest();
@@ -49,7 +49,7 @@ public class StringUtilsIsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAsciiPrintable_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsIsTest object = new org.apache.commons.lang3.StringUtilsIsTest();
@@ -57,7 +57,7 @@ public class StringUtilsIsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsNumeric() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsIsTest object = new org.apache.commons.lang3.StringUtilsIsTest();
@@ -65,7 +65,7 @@ public class StringUtilsIsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsNumericSpace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsIsTest object = new org.apache.commons.lang3.StringUtilsIsTest();

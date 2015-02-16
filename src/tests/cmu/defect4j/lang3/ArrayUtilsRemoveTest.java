@@ -9,7 +9,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveObjectArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -17,7 +17,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveNumberArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -25,7 +25,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveBooleanArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -33,7 +33,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveByteArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -41,7 +41,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveCharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -49,7 +49,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveDoubleArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -57,7 +57,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveFloatArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -65,7 +65,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveIntArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -73,7 +73,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveLongArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -81,7 +81,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveShortArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -89,7 +89,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementObjectArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -97,7 +97,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementBooleanArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -105,7 +105,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementByteArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -113,7 +113,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementCharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -121,7 +121,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementDoubleArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -129,7 +129,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementFloatArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -137,7 +137,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementIntArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -145,7 +145,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementLongArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();
@@ -153,7 +153,7 @@ public class ArrayUtilsRemoveTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveElementShortArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ArrayUtilsRemoveTest object = new org.apache.commons.lang3.ArrayUtilsRemoveTest();

@@ -9,19 +9,19 @@ public class HashSetvBitSetTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testTimesExtractOrBitset() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.HashSetvBitSetTest object = new org.apache.commons.lang3.HashSetvBitSetTest();
-               object.testTimesExtractOrBitset();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTimes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.HashSetvBitSetTest object = new org.apache.commons.lang3.HashSetvBitSetTest();
                object.testTimes();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testTimesExtractOrBitset() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.HashSetvBitSetTest object = new org.apache.commons.lang3.HashSetvBitSetTest();
+               object.testTimesExtractOrBitset();
         }
     }
 

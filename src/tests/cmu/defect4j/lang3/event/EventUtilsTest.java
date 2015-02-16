@@ -9,7 +9,7 @@ public class EventUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddEventListener() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -17,7 +17,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddEventListenerWithNoAddMethod() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -25,7 +25,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddEventListenerThrowsException() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -33,7 +33,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddEventListenerWithPrivateAddMethod() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -41,7 +41,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBindEventsToMethod() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -49,7 +49,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBindEventsToMethodWithEvent() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -57,7 +57,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBindFilteredEventsToMethod() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -65,7 +65,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();

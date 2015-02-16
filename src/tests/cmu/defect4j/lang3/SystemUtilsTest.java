@@ -9,15 +9,7 @@ public class SystemUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
-               object.testConstructor();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetJavaHome() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -25,7 +17,7 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetJavaIoTmpDir() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -33,7 +25,7 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetUserDir() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -41,7 +33,7 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetUserHome() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -49,7 +41,7 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIS_JAVA() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -57,7 +49,7 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIS_OS() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -65,7 +57,7 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testJavaVersionMatches() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -73,7 +65,7 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testOSMatchesName() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -81,7 +73,7 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testOSMatchesNameAndVersion() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
@@ -89,11 +81,19 @@ public class SystemUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testJavaAwtHeadless() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
                object.testJavaAwtHeadless();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.SystemUtilsTest object = new org.apache.commons.lang3.SystemUtilsTest();
+               object.testConstructor();
         }
     }
 

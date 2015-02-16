@@ -9,7 +9,7 @@ public class DateUtilsRoundingTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundYear() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -18,7 +18,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundMonth() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -27,7 +27,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundSemiMonth() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -36,7 +36,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -45,7 +45,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundDayOfMonth() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -54,7 +54,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundAmPm() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -63,7 +63,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundHourOfDay() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -72,7 +72,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundHour() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -81,7 +81,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundMinute() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -90,7 +90,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundSecond() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -99,7 +99,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundMilliSecond() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -108,7 +108,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateYear() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -117,7 +117,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateMonth() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -126,7 +126,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateSemiMonth() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -135,7 +135,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -144,7 +144,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateDayOfMonth() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -153,7 +153,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateAmPm() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -162,7 +162,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateHour() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -171,7 +171,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateHourOfDay() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -180,7 +180,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateMinute() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -189,7 +189,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateSecond() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();
@@ -198,7 +198,7 @@ public class DateUtilsRoundingTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateMilliSecond() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsRoundingTest object = new org.apache.commons.lang3.time.DateUtilsRoundingTest();

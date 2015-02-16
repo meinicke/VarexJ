@@ -9,7 +9,7 @@ public class ImmutablePairTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.ImmutablePairTest object = new org.apache.commons.lang3.tuple.ImmutablePairTest();
@@ -17,7 +17,7 @@ public class ImmutablePairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.ImmutablePairTest object = new org.apache.commons.lang3.tuple.ImmutablePairTest();
@@ -25,7 +25,15 @@ public class ImmutablePairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testSerialization() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.ImmutablePairTest object = new org.apache.commons.lang3.tuple.ImmutablePairTest();
+               object.testSerialization();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.ImmutablePairTest object = new org.apache.commons.lang3.tuple.ImmutablePairTest();
@@ -33,7 +41,7 @@ public class ImmutablePairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasic() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.ImmutablePairTest object = new org.apache.commons.lang3.tuple.ImmutablePairTest();
@@ -41,19 +49,11 @@ public class ImmutablePairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPairOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.ImmutablePairTest object = new org.apache.commons.lang3.tuple.ImmutablePairTest();
                object.testPairOf();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testSerialization() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.ImmutablePairTest object = new org.apache.commons.lang3.tuple.ImmutablePairTest();
-               object.testSerialization();
         }
     }
 

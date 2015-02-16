@@ -9,15 +9,7 @@ public class EqualsBuilderTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testByte() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
-               object.testByte();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -25,7 +17,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testObjectBuild() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -33,7 +25,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -41,7 +33,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -49,7 +41,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -57,7 +49,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -65,7 +57,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -73,7 +65,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFloat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -81,7 +73,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -89,7 +81,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testObjectArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -97,7 +89,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLongArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -105,7 +97,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -113,7 +105,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShortArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -121,7 +113,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -129,7 +121,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByteArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -137,7 +129,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDoubleArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -145,7 +137,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFloatArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -153,7 +145,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBooleanArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -161,7 +153,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiLongArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -169,7 +161,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiIntArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -177,7 +169,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiShortArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -185,7 +177,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiCharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -193,7 +185,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiByteArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -201,7 +193,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiFloatArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -209,7 +201,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiDoubleArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -217,7 +209,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiBooleanArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -225,7 +217,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRaggedArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -233,7 +225,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMixedArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -241,7 +233,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testObjectArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -249,7 +241,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLongArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -257,7 +249,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -265,7 +257,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShortArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -273,7 +265,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCharArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -281,7 +273,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByteArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -289,7 +281,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDoubleArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -297,7 +289,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFloatArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -305,7 +297,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBooleanArrayHiddenByObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -313,7 +305,15 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testByte() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
+               object.testByte();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testReflectionEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -321,7 +321,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReflectionHierarchyEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -329,7 +329,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSuper() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -337,7 +337,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAccessors() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -345,7 +345,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReset() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -353,7 +353,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnrelatedClasses() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -361,7 +361,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNpeForNullElement() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -369,7 +369,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReflectionEqualsExcludeFields() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();
@@ -377,7 +377,7 @@ public class EqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCyclicalObjectReferences() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.EqualsBuilderTest object = new org.apache.commons.lang3.builder.EqualsBuilderTest();

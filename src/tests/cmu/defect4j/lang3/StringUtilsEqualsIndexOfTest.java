@@ -9,7 +9,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsAny_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -17,7 +17,15 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testContains_Char() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
+               object.testContains_Char();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -25,7 +33,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContains_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -33,7 +41,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContains_StringWithBadSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -41,7 +49,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContains_StringWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -49,7 +57,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsAny_StringCharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -57,7 +65,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsAny_StringCharArrayWithBadSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -65,7 +73,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsAny_StringCharArrayWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -73,7 +81,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsAny_StringWithBadSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -81,7 +89,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsAny_StringWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -89,7 +97,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsIgnoreCase_LocaleIndependence() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -97,7 +105,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsIgnoreCase_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -105,7 +113,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsNone_CharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -113,7 +121,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsNone_CharArrayWithBadSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -121,7 +129,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsNone_CharArrayWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -129,7 +137,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsNone_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -137,7 +145,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsNone_StringWithBadSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -145,7 +153,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsNone_StringWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -153,7 +161,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsOnly_CharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -161,7 +169,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsOnly_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -169,7 +177,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsWhitespace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -177,7 +185,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCustomCharSequence() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -185,7 +193,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEqualsOnStrings() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -193,7 +201,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEqualsIgnoreCase() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -201,7 +209,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOf_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -209,7 +217,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOf_charInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -217,7 +225,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOf_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -225,7 +233,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOf_StringInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -233,7 +241,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAny_StringCharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -241,7 +249,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAny_StringCharArrayWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -249,7 +257,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAny_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -257,7 +265,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAny_StringStringArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -265,7 +273,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAny_StringStringWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -273,7 +281,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAnyBut_StringCharArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -281,7 +289,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAnyBut_StringCharArrayWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -289,7 +297,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAnyBut_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -297,7 +305,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfAnyBut_StringStringWithSupplementaryChars() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -305,7 +313,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfIgnoreCase_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -313,7 +321,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfIgnoreCase_StringInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -321,7 +329,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOf_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -329,7 +337,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOf_charInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -337,7 +345,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOf_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -345,7 +353,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOf_StringInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -353,7 +361,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfAny_StringStringArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -361,7 +369,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfIgnoreCase_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -369,7 +377,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastIndexOfIgnoreCase_StringInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -377,7 +385,7 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLastOrdinalIndexOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
@@ -385,19 +393,11 @@ public class StringUtilsEqualsIndexOfTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testOrdinalIndexOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
                object.testOrdinalIndexOf();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testContains_Char() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.StringUtilsEqualsIndexOfTest object = new org.apache.commons.lang3.StringUtilsEqualsIndexOfTest();
-               object.testContains_Char();
         }
     }
 

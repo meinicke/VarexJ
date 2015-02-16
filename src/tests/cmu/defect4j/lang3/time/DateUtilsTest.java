@@ -9,7 +9,7 @@ public class DateUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -18,7 +18,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsSameDay_Date() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -27,7 +27,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsSameDay_Cal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -36,7 +36,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsSameInstant_Date() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -45,7 +45,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsSameInstant_Cal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -54,7 +54,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsSameLocalTime_Cal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -63,7 +63,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testParseDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -72,7 +72,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testParseDateWithLeniency() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -81,7 +81,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddYears() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -90,7 +90,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddMonths() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -99,7 +99,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddWeeks() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -108,7 +108,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddDays() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -117,7 +117,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddHours() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -126,7 +126,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddMinutes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -135,7 +135,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddSeconds() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -144,7 +144,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddMilliseconds() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -153,7 +153,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetYears() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -162,7 +162,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetMonths() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -171,7 +171,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetDays() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -180,7 +180,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetHours() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -189,7 +189,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetMinutes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -198,7 +198,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetSeconds() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -207,7 +207,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetMilliseconds() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -216,7 +216,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -225,7 +225,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRound() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -234,7 +234,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRoundLang346() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -243,7 +243,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -252,7 +252,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTruncateLang59() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -261,7 +261,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang530() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -270,7 +270,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCeil() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -279,7 +279,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIteratorEx() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -288,7 +288,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testWeekIterator() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -297,7 +297,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMonthIterator() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -306,7 +306,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLANG799_EN_OK() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -315,7 +315,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLANG799_EN_FAIL() throws Exception {
         if (verifyUnhandledException("java.text.ParseException", config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -324,7 +324,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLANG799_DE_OK() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -333,7 +333,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLANG799_DE_FAIL() throws Exception {
         if (verifyUnhandledException("java.text.ParseException", config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();
@@ -342,7 +342,7 @@ public class DateUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLANG799_EN_WITH_DE_LOCALE() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsTest object = new org.apache.commons.lang3.time.DateUtilsTest();

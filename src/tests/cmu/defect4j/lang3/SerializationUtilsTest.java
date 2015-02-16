@@ -9,25 +9,7 @@ public class SerializationUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
-               object.setUp();
-               object.testConstructor();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testClone() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
-               object.setUp();
-               object.testClone();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testException() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -36,7 +18,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeStream() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -45,7 +27,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeStreamUnserializable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -54,7 +36,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeStreamNullObj() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -63,7 +45,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeStreamObjNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -72,7 +54,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeStreamNullNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -81,7 +63,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeIOException() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -90,7 +72,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeStream() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -99,7 +81,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeClassCastException() throws Exception {
         if (verifyUnhandledException("java.lang.ClassCastException", config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -108,7 +90,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeStreamOfNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -117,7 +99,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeStreamNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -126,7 +108,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeStreamBadStream() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -135,7 +117,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeStreamClassNotFound() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -144,7 +126,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeBytes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -153,7 +135,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeBytesUnserializable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -162,7 +144,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializeBytesNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -171,7 +153,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeBytes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -180,7 +162,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeBytesOfNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -189,7 +171,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeBytesNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -198,7 +180,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDeserializeBytesBadStream() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -207,7 +189,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -216,7 +198,7 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneUnserializable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
@@ -225,12 +207,30 @@ public class SerializationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPrimitiveTypeClassSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
                object.setUp();
                object.testPrimitiveTypeClassSerialization();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
+               object.setUp();
+               object.testConstructor();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testClone() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.SerializationUtilsTest object = new org.apache.commons.lang3.SerializationUtilsTest();
+               object.setUp();
+               object.testClone();
         }
     }
 

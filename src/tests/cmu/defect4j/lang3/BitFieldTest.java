@@ -9,7 +9,7 @@ public class BitFieldTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -17,7 +17,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetShortValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -25,7 +25,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetRawValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -33,7 +33,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetShortRawValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -41,7 +41,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsSet() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -49,7 +49,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAllSet() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -57,7 +57,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -65,7 +65,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetShortValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -73,7 +73,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -81,7 +81,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testClear() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -89,7 +89,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testClearShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -97,7 +97,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSet() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -105,7 +105,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -113,7 +113,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();
@@ -121,7 +121,7 @@ public class BitFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetShortBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.BitFieldTest object = new org.apache.commons.lang3.BitFieldTest();

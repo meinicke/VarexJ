@@ -9,7 +9,7 @@ public class DateFormatUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
@@ -17,23 +17,7 @@ public class DateFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testFormatCalendar() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
-               object.testFormatCalendar();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testFormatUTC() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
-               object.testFormatUTC();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDateTimeISO() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
@@ -41,7 +25,7 @@ public class DateFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDateISO() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
@@ -49,7 +33,7 @@ public class DateFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTimeISO() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
@@ -57,7 +41,7 @@ public class DateFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTimeNoTISO() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
@@ -65,7 +49,7 @@ public class DateFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSMTP() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
@@ -73,7 +57,23 @@ public class DateFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testFormatUTC() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
+               object.testFormatUTC();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testFormatCalendar() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();
+               object.testFormatCalendar();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();

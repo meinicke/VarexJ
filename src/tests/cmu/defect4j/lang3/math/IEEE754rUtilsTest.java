@@ -9,7 +9,15 @@ public class IEEE754rUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testConstructorExists() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.math.IEEE754rUtilsTest object = new org.apache.commons.lang3.math.IEEE754rUtilsTest();
+               object.testConstructorExists();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testEnforceExceptions() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.IEEE754rUtilsTest object = new org.apache.commons.lang3.math.IEEE754rUtilsTest();
@@ -17,19 +25,11 @@ public class IEEE754rUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang381() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.IEEE754rUtilsTest object = new org.apache.commons.lang3.math.IEEE754rUtilsTest();
                object.testLang381();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testConstructorExists() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.math.IEEE754rUtilsTest object = new org.apache.commons.lang3.math.IEEE754rUtilsTest();
-               object.testConstructorExists();
         }
     }
 

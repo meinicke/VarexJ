@@ -9,7 +9,7 @@ public class MutableTripleTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
@@ -17,7 +17,7 @@ public class MutableTripleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
@@ -25,7 +25,15 @@ public class MutableTripleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testSerialization() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
+               object.testSerialization();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testTripleOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
@@ -33,23 +41,7 @@ public class MutableTripleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testMutate() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
-               object.testMutate();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testDefault() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
-               object.testDefault();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
@@ -57,19 +49,27 @@ public class MutableTripleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testDefault() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
+               object.testDefault();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testMutate() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
+               object.testMutate();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testBasic() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
                object.testBasic();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testSerialization() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.MutableTripleTest object = new org.apache.commons.lang3.tuple.MutableTripleTest();
-               object.testSerialization();
         }
     }
 

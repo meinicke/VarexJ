@@ -9,15 +9,15 @@ public class RandomStringUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
+    @Test(timeout=120000)
+    public void testLANG805() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
-               object.testConstructor();
+               object.testLANG805();
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRandomStringUtils() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -25,7 +25,7 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLANG807() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -33,7 +33,7 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testExceptions() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -41,7 +41,7 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRandomAlphaNumeric() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -49,7 +49,7 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRandomNumeric() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -57,7 +57,7 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRandomAlphabetic() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -65,7 +65,7 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRandomAscii() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -73,7 +73,7 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRandomStringUtilsHomog() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -81,7 +81,7 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang100() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
@@ -89,11 +89,11 @@ public class RandomStringUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testLANG805() throws Exception {
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RandomStringUtilsTest object = new org.apache.commons.lang3.RandomStringUtilsTest();
-               object.testLANG805();
+               object.testConstructor();
         }
     }
 

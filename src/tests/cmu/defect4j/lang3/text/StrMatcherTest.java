@@ -9,7 +9,7 @@ public class StrMatcherTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCommaMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -17,7 +17,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTabMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -25,7 +25,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSpaceMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -33,7 +33,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSplitMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -41,7 +41,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTrimMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -49,7 +49,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSingleQuoteMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -57,7 +57,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDoubleQuoteMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -65,7 +65,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testQuoteMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -73,7 +73,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNoneMatcher() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -81,7 +81,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCharMatcher_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -89,7 +89,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCharSetMatcher_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -97,7 +97,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCharSetMatcher_charArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -105,7 +105,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStringMatcher_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();
@@ -113,7 +113,7 @@ public class StrMatcherTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMatcherIndices() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrMatcherTest object = new org.apache.commons.lang3.text.StrMatcherTest();

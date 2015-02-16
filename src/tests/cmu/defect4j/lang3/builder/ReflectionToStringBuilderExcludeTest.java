@@ -9,7 +9,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExclude() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -17,7 +17,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -25,7 +25,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeArrayWithNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -33,7 +33,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeArrayWithNulls() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -41,7 +41,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeCollection() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -49,7 +49,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeCollectionWithNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -57,7 +57,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeCollectionWithNulls() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -65,7 +65,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeEmptyArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -73,7 +73,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeEmptyCollection() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -81,7 +81,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeNullArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();
@@ -89,7 +89,7 @@ public class ReflectionToStringBuilderExcludeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_toStringExcludeNullCollection() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest object = new org.apache.commons.lang3.builder.ReflectionToStringBuilderExcludeTest();

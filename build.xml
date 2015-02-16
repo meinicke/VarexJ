@@ -539,10 +539,10 @@
 			<batchtest todir="build/tests">
 				<fileset dir="build/tests">
 					<!--<include name="**/lang3/**/*Test.class" />-->
-                    <!--<include name="**/lang3/*Test.class" />-->
-                    <include name="**/lang3/math/NumberUtilsTest.class"/>
-                    <exclude name="**/lang3/ArrayUtilsAddTest.class" />
-                    <exclude name="**/lang3/AnnotationUtilsTest.class"/>
+                    <include name="**/lang3/**/*Test.class" />
+                    <!--<include name="**/lang3/math/NumberUtilsTest.class"/>-->
+                    <!--<exclude name="**/lang3/ArrayUtilsAddTest.class" />-->
+                    <!--<exclude name="**/lang3/AnnotationUtilsTest.class"/>-->
                     <exclude name="**/lang3/**/*$*.class" />
 				</fileset>
 			</batchtest>

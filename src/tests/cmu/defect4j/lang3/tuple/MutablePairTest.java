@@ -9,7 +9,7 @@ public class MutablePairTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
@@ -17,7 +17,7 @@ public class MutablePairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
@@ -25,23 +25,15 @@ public class MutablePairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testMutate() throws Exception {
+    @Test(timeout=120000)
+    public void testSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
-               object.testMutate();
+               object.testSerialization();
         }
     }
 
-    @Test(timeout=10000)
-    public void testDefault() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
-               object.testDefault();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
@@ -49,7 +41,23 @@ public class MutablePairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testDefault() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
+               object.testDefault();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testMutate() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
+               object.testMutate();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testBasic() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
@@ -57,19 +65,11 @@ public class MutablePairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPairOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
                object.testPairOf();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testSerialization() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.MutablePairTest object = new org.apache.commons.lang3.tuple.MutablePairTest();
-               object.testSerialization();
         }
     }
 

@@ -9,7 +9,7 @@ public class ConversionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHexDigitToInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -17,7 +17,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHexDigitMsb0ToInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -25,7 +25,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHexDigitToBinary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -33,7 +33,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHexDigitMsb0ToBinary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -41,7 +41,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryToHexDigit() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -49,7 +49,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryToHexDigit_2args() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -57,7 +57,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryToHexDigitMsb0_bits() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -65,7 +65,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryToHexDigitMsb0_4bits_2args() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -73,7 +73,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryBeMsb0ToHexDigit() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -81,7 +81,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryBeMsb0ToHexDigit_2args() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -89,7 +89,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntToHexDigit() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -97,7 +97,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntToHexDigitMsb0() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -105,7 +105,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntArrayToLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -113,7 +113,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShortArrayToLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -121,7 +121,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByteArrayToLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -129,7 +129,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShortArrayToInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -137,7 +137,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByteArrayToInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -145,7 +145,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByteArrayToShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -153,7 +153,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHexToLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -161,7 +161,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHexToInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -169,7 +169,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHexToShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -177,7 +177,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHexToByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -185,7 +185,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryToLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -193,7 +193,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryToInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -201,7 +201,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryToShort() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -209,7 +209,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBinaryToByte() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -217,7 +217,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLongToIntArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -225,7 +225,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLongToShortArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -233,7 +233,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntToShortArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -241,7 +241,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLongToByteArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -249,7 +249,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntToByteArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -257,7 +257,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShortToByteArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -265,7 +265,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLongToHex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -273,7 +273,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntToHex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -281,7 +281,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShortToHex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -289,7 +289,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByteToHex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -297,7 +297,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLongToBinary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -305,7 +305,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntToBinary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -313,7 +313,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testShortToBinary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -321,7 +321,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByteToBinary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -329,7 +329,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUuidToByteArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();
@@ -337,7 +337,7 @@ public class ConversionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testByteArrayToUuid() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.ConversionTest object = new org.apache.commons.lang3.ConversionTest();

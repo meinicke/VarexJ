@@ -9,15 +9,7 @@ public class NumericEntityUnescaperTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testSupplementaryUnescaping() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest();
-               object.testSupplementaryUnescaping();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnfinishedEntity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest();
@@ -25,7 +17,15 @@ public class NumericEntityUnescaperTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testSupplementaryUnescaping() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest();
+               object.testSupplementaryUnescaping();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testOutOfBounds() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest object = new org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest();

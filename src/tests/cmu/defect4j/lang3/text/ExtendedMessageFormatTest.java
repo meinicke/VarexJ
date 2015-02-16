@@ -9,7 +9,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testExtendedFormats() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -18,7 +18,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapedQuote_LANG_477() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -27,7 +27,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testExtendedAndBuiltInFormats() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -36,7 +36,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBuiltInChoiceFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -45,7 +45,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBuiltInDateTimeFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -54,7 +54,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testOverriddenBuiltinFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -63,7 +63,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBuiltInNumberFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -72,7 +72,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEqualsHashcode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();

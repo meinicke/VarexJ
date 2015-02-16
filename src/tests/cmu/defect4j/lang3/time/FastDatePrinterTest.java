@@ -9,15 +9,7 @@ public class FastDatePrinterTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testFormat() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
-               object.testFormat();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSimpleDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -25,7 +17,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang645() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -33,7 +25,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCalendarTimezoneRespected() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -41,7 +33,15 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testFormat() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
+               object.testFormat();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testShortDateStyleWithLocales() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -49,7 +49,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLowYearPadding() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -57,7 +57,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMilleniumBug() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -65,7 +65,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang303() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -73,7 +73,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang538() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -81,7 +81,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToStringContainsName() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -89,7 +89,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPatternMatches() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -97,7 +97,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLocaleMatches() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -105,7 +105,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTimeZoneMatches() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -113,7 +113,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();

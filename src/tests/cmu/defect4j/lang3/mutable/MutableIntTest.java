@@ -9,7 +9,7 @@ public class MutableIntTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
@@ -17,7 +17,7 @@ public class MutableIntTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
@@ -25,87 +25,7 @@ public class MutableIntTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testEquals() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testEquals();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testCompareTo() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testCompareTo();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testPrimitiveValues() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testPrimitiveValues();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testIncrement() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testIncrement();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testDecrement() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testDecrement();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testAddValuePrimitive() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testAddValuePrimitive();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testAddValueObject() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testAddValueObject();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testSubtractValuePrimitive() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testSubtractValuePrimitive();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testSubtractValueObject() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testSubtractValueObject();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testCompareToNull() throws Exception {
-        if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
-               object.testCompareToNull();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructors() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
@@ -113,7 +33,7 @@ public class MutableIntTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructorNull() throws Exception {
         if (verifyUnhandledException("java.lang.NullPointerException", config)) {
                org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
@@ -121,7 +41,7 @@ public class MutableIntTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetSet() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
@@ -129,7 +49,7 @@ public class MutableIntTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetNull() throws Exception {
         if (verifyUnhandledException("java.lang.NullPointerException", config)) {
                org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
@@ -137,11 +57,91 @@ public class MutableIntTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testCompareToNull() throws Exception {
+        if (verifyUnhandledException("java.lang.NullPointerException", config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testCompareToNull();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testToInteger() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
                object.testToInteger();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testPrimitiveValues() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testPrimitiveValues();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testIncrement() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testIncrement();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testDecrement() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testDecrement();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testAddValuePrimitive() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testAddValuePrimitive();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testAddValueObject() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testAddValueObject();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testSubtractValuePrimitive() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testSubtractValuePrimitive();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testSubtractValueObject() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testSubtractValueObject();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testEquals() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testEquals();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testCompareTo() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableIntTest object = new org.apache.commons.lang3.mutable.MutableIntTest();
+               object.testCompareTo();
         }
     }
 

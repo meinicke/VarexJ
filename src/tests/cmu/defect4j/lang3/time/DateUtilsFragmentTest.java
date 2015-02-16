@@ -9,7 +9,7 @@ public class DateUtilsFragmentTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -18,7 +18,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -27,7 +27,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testInvalidFragmentWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -36,7 +36,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testInvalidFragmentWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -45,7 +45,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondFragmentInLargerUnitWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -54,7 +54,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondFragmentInLargerUnitWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -63,7 +63,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondFragmentInLargerUnitWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -72,7 +72,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondFragmentInLargerUnitWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -81,7 +81,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinuteFragmentInLargerUnitWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -90,7 +90,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinuteFragmentInLargerUnitWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -99,7 +99,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHourOfDayFragmentInLargerUnitWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -108,7 +108,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHourOfDayFragmentInLargerUnitWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -117,7 +117,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDayOfYearFragmentInLargerUnitWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -126,7 +126,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDayOfYearFragmentInLargerUnitWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -135,7 +135,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDateFragmentInLargerUnitWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -144,7 +144,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDateFragmentInLargerUnitWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -153,7 +153,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfSecondWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -162,7 +162,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfSecondWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -171,7 +171,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfMinuteWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -180,7 +180,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfMinuteWithCalender() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -189,7 +189,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsofMinuteWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -198,7 +198,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsofMinuteWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -207,7 +207,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfHourWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -216,7 +216,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfHourWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -225,7 +225,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsofHourWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -234,7 +234,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsofHourWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -243,7 +243,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinutesOfHourWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -252,7 +252,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinutesOfHourWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -261,7 +261,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfDayWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -270,7 +270,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfDayWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -279,7 +279,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsOfDayWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -288,7 +288,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsOfDayWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -297,7 +297,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinutesOfDayWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -306,7 +306,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinutesOfDayWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -315,7 +315,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHoursOfDayWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -324,7 +324,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHoursOfDayWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -333,7 +333,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfMonthWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -342,7 +342,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfMonthWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -351,7 +351,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsOfMonthWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -360,7 +360,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsOfMonthWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -369,7 +369,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinutesOfMonthWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -378,7 +378,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinutesOfMonthWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -387,7 +387,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHoursOfMonthWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -396,7 +396,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHoursOfMonthWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -405,7 +405,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfYearWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -414,7 +414,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMillisecondsOfYearWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -423,7 +423,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsOfYearWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -432,7 +432,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSecondsOfYearWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -441,7 +441,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinutesOfYearWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -450,7 +450,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMinutesOfYearWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -459,7 +459,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHoursOfYearWithDate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();
@@ -468,7 +468,7 @@ public class DateUtilsFragmentTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHoursOfYearWithCalendar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateUtilsFragmentTest object = new org.apache.commons.lang3.time.DateUtilsFragmentTest();

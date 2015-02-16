@@ -9,7 +9,7 @@ public class RangeTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -18,7 +18,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -27,88 +27,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testContains() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testContains();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testComparableConstructors() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testComparableConstructors();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testIsWithCompare() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testIsWithCompare();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testBetweenWithCompare() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testBetweenWithCompare();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testRangeOfChars() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testRangeOfChars();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testEqualsObject() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testEqualsObject();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testToStringFormat() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testToStringFormat();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testGetMinimum() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testGetMinimum();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testGetMaximum() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
-               object.setUp();
-               object.testGetMaximum();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAfter() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -117,7 +36,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsStartedBy() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -126,7 +45,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsEndedBy() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -135,7 +54,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsBefore() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -144,7 +63,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testElementCompareTo() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -153,7 +72,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContainsRange() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -162,7 +81,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAfterRange() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -171,7 +90,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsOverlappedBy() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -180,7 +99,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsBeforeRange() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -189,7 +108,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntersectionWith() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -198,7 +117,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntersectionWithNull() throws Exception {
         if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -207,7 +126,7 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIntersectionWithNonOverlapping() throws Exception {
         if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
@@ -216,12 +135,93 @@ public class RangeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSerializing() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
                object.setUp();
                object.testSerializing();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testComparableConstructors() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testComparableConstructors();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testIsWithCompare() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testIsWithCompare();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testBetweenWithCompare() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testBetweenWithCompare();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testRangeOfChars() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testRangeOfChars();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testEqualsObject() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testEqualsObject();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testToStringFormat() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testToStringFormat();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testGetMinimum() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testGetMinimum();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testGetMaximum() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testGetMaximum();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testContains() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.RangeTest object = new org.apache.commons.lang3.RangeTest();
+               object.setUp();
+               object.testContains();
         }
     }
 

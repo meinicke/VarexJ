@@ -9,115 +9,16 @@ public class LocaleUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testIsAvailableLocale() throws Exception {
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
                object.setUp();
-               object.testIsAvailableLocale();
+               object.testConstructor();
         }
     }
 
-    @Test(timeout=10000)
-    public void testLanguagesByCountry() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testLanguagesByCountry();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testCountriesByLanguage() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testCountriesByLanguage();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testLang328() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testLang328();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testLang865() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testLang865();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testParseAllLocales() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testParseAllLocales();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testToLocale_1Part() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testToLocale_1Part();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testToLocale_2Part() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testToLocale_2Part();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testToLocale_3Part() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testToLocale_3Part();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testLocaleLookupList_Locale() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testLocaleLookupList_Locale();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testLocaleLookupList_LocaleLocale() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testLocaleLookupList_LocaleLocale();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testAvailableLocaleList() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
-               object.setUp();
-               object.testAvailableLocaleList();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAvailableLocaleSet() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
@@ -126,12 +27,111 @@ public class LocaleUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
+    @Test(timeout=120000)
+    public void testIsAvailableLocale() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
                object.setUp();
-               object.testConstructor();
+               object.testIsAvailableLocale();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testLanguagesByCountry() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testLanguagesByCountry();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testCountriesByLanguage() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testCountriesByLanguage();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testLang328() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testLang328();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testLang865() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testLang865();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testParseAllLocales() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testParseAllLocales();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testToLocale_1Part() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testToLocale_1Part();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testToLocale_2Part() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testToLocale_2Part();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testToLocale_3Part() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testToLocale_3Part();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testLocaleLookupList_Locale() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testLocaleLookupList_Locale();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testLocaleLookupList_LocaleLocale() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testLocaleLookupList_LocaleLocale();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testAvailableLocaleList() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.LocaleUtilsTest object = new org.apache.commons.lang3.LocaleUtilsTest();
+               object.setUp();
+               object.testAvailableLocaleList();
         }
     }
 

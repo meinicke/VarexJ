@@ -9,7 +9,7 @@ public class SimpleToStringStyleTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAppendSuper() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
@@ -18,7 +18,7 @@ public class SimpleToStringStyleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testObject() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
@@ -27,7 +27,7 @@ public class SimpleToStringStyleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLong() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
@@ -36,7 +36,7 @@ public class SimpleToStringStyleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testObjectArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
@@ -45,7 +45,7 @@ public class SimpleToStringStyleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLongArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
@@ -54,16 +54,7 @@ public class SimpleToStringStyleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testLongArrayArray() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
-               object.setUp();
-               object.testLongArrayArray();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBlank() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
@@ -72,12 +63,21 @@ public class SimpleToStringStyleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPerson() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
                object.setUp();
                object.testPerson();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testLongArrayArray() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.builder.SimpleToStringStyleTest object = new org.apache.commons.lang3.builder.SimpleToStringStyleTest();
+               object.setUp();
+               object.testLongArrayArray();
         }
     }
 

@@ -9,7 +9,7 @@ public class AnnotationUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEquivalence() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -18,7 +18,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSameInstance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -27,7 +27,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNonEquivalentAnnotationsOfSameType() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -36,7 +36,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAnnotationsOfDifferingTypes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -45,7 +45,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testOneArgNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -54,7 +54,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBothArgsNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -63,7 +63,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsValidAnnotationMemberType() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -72,7 +72,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGeneratedAnnotationEquivalentToRealAnnotation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -81,7 +81,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
@@ -90,7 +90,7 @@ public class AnnotationUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();

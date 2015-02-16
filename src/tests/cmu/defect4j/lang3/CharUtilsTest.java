@@ -9,15 +9,7 @@ public class CharUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
-               object.testConstructor();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToCharacterObject_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -25,7 +17,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToCharacterObject_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -33,7 +25,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToChar_Character() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -41,7 +33,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToChar_Character_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -49,7 +41,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToChar_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -57,7 +49,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToChar_String_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -65,7 +57,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToIntValue_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -73,7 +65,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToIntValue_char_int() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -81,7 +73,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToIntValue_Character() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -89,7 +81,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToIntValue_Character_int() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -97,7 +89,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -105,7 +97,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString_Character() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -113,7 +105,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToUnicodeEscaped_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -121,7 +113,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToUnicodeEscaped_Character() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -129,7 +121,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAscii_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -137,7 +129,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAsciiPrintable_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -145,7 +137,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAsciiControl_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -153,7 +145,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAsciiAlpha_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -161,7 +153,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAsciiAlphaUpper_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -169,7 +161,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAsciiAlphaLower_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -177,7 +169,7 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAsciiNumeric_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
@@ -185,11 +177,19 @@ public class CharUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAsciiAlphanumeric_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
                object.testIsAsciiAlphanumeric_char();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.CharUtilsTest object = new org.apache.commons.lang3.CharUtilsTest();
+               object.testConstructor();
         }
     }
 

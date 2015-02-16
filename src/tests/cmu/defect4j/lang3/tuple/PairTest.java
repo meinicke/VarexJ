@@ -9,7 +9,7 @@ public class PairTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
@@ -17,31 +17,7 @@ public class PairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testFormattable_simple() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
-               object.testFormattable_simple();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testFormattable_padded() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
-               object.testFormattable_padded();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testCompatibilityBetweenPairs() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
-               object.testCompatibilityBetweenPairs();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMapEntry() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
@@ -49,7 +25,15 @@ public class PairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testCompatibilityBetweenPairs() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
+               object.testCompatibilityBetweenPairs();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testComparable1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
@@ -57,7 +41,7 @@ public class PairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testComparable2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
@@ -65,7 +49,7 @@ public class PairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToStringCustom() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
@@ -73,7 +57,23 @@ public class PairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testFormattable_simple() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
+               object.testFormattable_simple();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testFormattable_padded() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
+               object.testFormattable_padded();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testPairOf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();

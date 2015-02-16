@@ -9,55 +9,7 @@ public class CharSetUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testSqueeze_StringStringarray() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
-               object.testSqueeze_StringStringarray();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testSqueeze_StringString() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
-               object.testSqueeze_StringString();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testContainsAny_StringString() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
-               object.testContainsAny_StringString();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testContainsAny_StringStringarray() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
-               object.testContainsAny_StringStringarray();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testCount_StringString() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
-               object.testCount_StringString();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testCount_StringStringarray() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
-               object.testCount_StringStringarray();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testKeep_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
@@ -65,7 +17,55 @@ public class CharSetUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testSqueeze_StringString() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
+               object.testSqueeze_StringString();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testSqueeze_StringStringarray() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
+               object.testSqueeze_StringStringarray();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testContainsAny_StringString() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
+               object.testContainsAny_StringString();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testContainsAny_StringStringarray() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
+               object.testContainsAny_StringStringarray();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testCount_StringString() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
+               object.testCount_StringString();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testCount_StringStringarray() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
+               object.testCount_StringStringarray();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testKeep_StringStringarray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
@@ -73,7 +73,7 @@ public class CharSetUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDelete_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
@@ -81,7 +81,7 @@ public class CharSetUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDelete_StringStringarray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();
@@ -89,7 +89,7 @@ public class CharSetUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.CharSetUtilsTest object = new org.apache.commons.lang3.CharSetUtilsTest();

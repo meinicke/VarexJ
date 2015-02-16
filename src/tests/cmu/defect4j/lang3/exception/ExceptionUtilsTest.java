@@ -9,16 +9,7 @@ public class ExceptionUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
-               object.setUp();
-               object.testConstructor();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetCause_Throwable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -27,7 +18,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetCause_ThrowableArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -36,7 +27,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetRootCause_Throwable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -45,7 +36,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowableCount_Throwable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -54,7 +45,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowables_Throwable_null() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -63,7 +54,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowables_Throwable_withoutCause() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -72,7 +63,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowables_Throwable_nested() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -81,7 +72,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowables_Throwable_withCause() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -90,7 +81,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowables_Throwable_jdkNoCause() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -99,7 +90,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowables_Throwable_recursiveCause() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -108,7 +99,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowableList_Throwable_null() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -117,7 +108,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowableList_Throwable_withoutCause() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -126,7 +117,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowableList_Throwable_nested() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -135,7 +126,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowableList_Throwable_withCause() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -144,7 +135,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowableList_Throwable_jdkNoCause() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -153,7 +144,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetThrowableList_Throwable_recursiveCause() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -162,7 +153,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOf_ThrowableClass() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -171,7 +162,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOf_ThrowableClassInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -180,7 +171,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfType_ThrowableClass() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -189,7 +180,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIndexOfType_ThrowableClassInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -198,7 +189,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPrintRootCauseStackTrace_Throwable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -207,7 +198,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPrintRootCauseStackTrace_ThrowableStream() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -216,7 +207,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPrintRootCauseStackTrace_ThrowableWriter() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -225,7 +216,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetRootCauseStackTrace_Throwable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -234,7 +225,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testRemoveCommonFrames_ListList() throws Exception {
         if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -243,7 +234,7 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_getMessage_Throwable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
@@ -252,12 +243,21 @@ public class ExceptionUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test_getRootCauseMessage_Throwable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
                object.setUp();
                object.test_getRootCauseMessage_Throwable();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.exception.ExceptionUtilsTest object = new org.apache.commons.lang3.exception.ExceptionUtilsTest();
+               object.setUp();
+               object.testConstructor();
         }
     }
 

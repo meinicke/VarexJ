@@ -9,15 +9,7 @@ public class StringEscapeUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
-               object.testConstructor();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeJava() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -25,7 +17,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeJavaWithSlash() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -33,7 +25,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnescapeJava() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -41,7 +33,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeEcmaScript() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -49,7 +41,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeHtml() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -57,7 +49,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnescapeHtml4() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -65,7 +57,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnescapeHexCharsHtml() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -73,7 +65,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnescapeUnknownEntity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -81,7 +73,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeHtmlVersions() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -89,7 +81,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeXml() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -97,7 +89,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeXmlSupplementaryCharacters() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -105,7 +97,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeXmlAllCharacters() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -113,7 +105,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnescapeXmlSupplementaryCharacters() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -121,7 +113,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStandaloneAmphersand() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -129,7 +121,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang313() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -137,7 +129,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeCsvString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -145,7 +137,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeCsvWriter() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -153,7 +145,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnescapeCsvString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -161,7 +153,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUnescapeCsvWriter() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -169,7 +161,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeHtmlHighUnicode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -177,7 +169,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeHiragana() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -185,7 +177,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang708() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -193,7 +185,7 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang720() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
@@ -201,11 +193,19 @@ public class StringEscapeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEscapeJson() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
                object.testEscapeJson();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.StringEscapeUtilsTest object = new org.apache.commons.lang3.StringEscapeUtilsTest();
+               object.testConstructor();
         }
     }
 

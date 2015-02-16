@@ -9,7 +9,7 @@ public class DefaultExceptionContextTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFormattedExceptionMessageNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.DefaultExceptionContextTest object = new org.apache.commons.lang3.exception.DefaultExceptionContextTest();
@@ -18,7 +18,7 @@ public class DefaultExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAddContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.DefaultExceptionContextTest object = new org.apache.commons.lang3.exception.DefaultExceptionContextTest();
@@ -27,7 +27,7 @@ public class DefaultExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.DefaultExceptionContextTest object = new org.apache.commons.lang3.exception.DefaultExceptionContextTest();
@@ -36,7 +36,7 @@ public class DefaultExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetFirstContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.DefaultExceptionContextTest object = new org.apache.commons.lang3.exception.DefaultExceptionContextTest();
@@ -45,7 +45,7 @@ public class DefaultExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetContextValues() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.DefaultExceptionContextTest object = new org.apache.commons.lang3.exception.DefaultExceptionContextTest();
@@ -54,7 +54,7 @@ public class DefaultExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetContextLabels() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.DefaultExceptionContextTest object = new org.apache.commons.lang3.exception.DefaultExceptionContextTest();
@@ -63,7 +63,7 @@ public class DefaultExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetContextEntries() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.DefaultExceptionContextTest object = new org.apache.commons.lang3.exception.DefaultExceptionContextTest();
@@ -72,7 +72,7 @@ public class DefaultExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testJavaSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.DefaultExceptionContextTest object = new org.apache.commons.lang3.exception.DefaultExceptionContextTest();

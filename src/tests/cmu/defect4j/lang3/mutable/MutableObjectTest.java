@@ -9,7 +9,7 @@ public class MutableObjectTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableObjectTest object = new org.apache.commons.lang3.mutable.MutableObjectTest();
@@ -17,7 +17,7 @@ public class MutableObjectTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableObjectTest object = new org.apache.commons.lang3.mutable.MutableObjectTest();
@@ -25,15 +25,7 @@ public class MutableObjectTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testEquals() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.mutable.MutableObjectTest object = new org.apache.commons.lang3.mutable.MutableObjectTest();
-               object.testEquals();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructors() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableObjectTest object = new org.apache.commons.lang3.mutable.MutableObjectTest();
@@ -41,11 +33,19 @@ public class MutableObjectTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetSet() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.mutable.MutableObjectTest object = new org.apache.commons.lang3.mutable.MutableObjectTest();
                object.testGetSet();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testEquals() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.mutable.MutableObjectTest object = new org.apache.commons.lang3.mutable.MutableObjectTest();
+               object.testEquals();
         }
     }
 

@@ -9,7 +9,7 @@ public class JavaVersionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.JavaVersionTest object = new org.apache.commons.lang3.JavaVersionTest();
@@ -17,19 +17,19 @@ public class JavaVersionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testAtLeast() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.JavaVersionTest object = new org.apache.commons.lang3.JavaVersionTest();
-               object.testAtLeast();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetJavaVersion() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.JavaVersionTest object = new org.apache.commons.lang3.JavaVersionTest();
                object.testGetJavaVersion();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testAtLeast() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.JavaVersionTest object = new org.apache.commons.lang3.JavaVersionTest();
+               object.testAtLeast();
         }
     }
 

@@ -9,7 +9,7 @@ public class StrTokenizerTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -17,39 +17,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void test1() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
-               object.test1();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void test3() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
-               object.test3();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void test2() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
-               object.test2();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testChaining() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
-               object.testChaining();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test4() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -57,7 +25,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test5() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -65,7 +33,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test6() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -73,7 +41,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test7() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -81,7 +49,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void test8() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -89,7 +57,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasic1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -97,7 +65,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasic2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -105,7 +73,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasic3() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -113,7 +81,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasic4() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -121,7 +89,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasic5() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -129,7 +97,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicDelim1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -137,7 +105,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicDelim2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -145,7 +113,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicEmpty1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -153,7 +121,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicEmpty2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -161,7 +129,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicQuoted1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -169,7 +137,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicQuoted2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -177,7 +145,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicQuoted3() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -185,7 +153,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicQuoted4() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -193,7 +161,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicQuoted5() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -201,7 +169,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicQuoted6() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -209,7 +177,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicQuoted7() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -217,7 +185,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicQuotedTrimmed1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -225,7 +193,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicTrimmed1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -233,7 +201,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicTrimmed2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -241,7 +209,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicIgnoreTrimmed1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -249,7 +217,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicIgnoreTrimmed2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -257,7 +225,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicIgnoreTrimmed3() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -265,7 +233,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testBasicIgnoreTrimmed4() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -273,7 +241,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testListArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -281,7 +249,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCSVEmpty() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -289,7 +257,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCSVSimple() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -297,7 +265,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCSVSimpleNeedsTrim() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -305,7 +273,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetContent() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -313,7 +281,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneNotSupportedException() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -321,7 +289,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCloneReset() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -329,7 +297,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -337,7 +305,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor_String_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -345,7 +313,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor_String_char_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -353,7 +321,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor_charArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -361,7 +329,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor_charArray_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -369,7 +337,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConstructor_charArray_char_char() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -377,7 +345,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReset_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -385,7 +353,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReset_charArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -393,7 +361,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTSV() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -401,7 +369,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTSVEmpty() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -409,7 +377,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIteration() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -417,7 +385,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTokenizeSubclassInputChange() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -425,7 +393,7 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTokenizeSubclassOutputChange() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -433,7 +401,31 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void test3() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
+               object.test3();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void test1() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
+               object.test1();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void test2() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
+               object.test2();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testCloneNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
@@ -441,11 +433,19 @@ public class StrTokenizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReset() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
                object.testReset();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testChaining() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.text.StrTokenizerTest object = new org.apache.commons.lang3.text.StrTokenizerTest();
+               object.testChaining();
         }
     }
 

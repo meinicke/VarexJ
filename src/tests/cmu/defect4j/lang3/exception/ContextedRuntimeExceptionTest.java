@@ -9,25 +9,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testRawMessage() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
-               object.setUp();
-               object.testRawMessage();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testContextedException() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
-               object.setUp();
-               object.testContextedException();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContextedExceptionString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -36,7 +18,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContextedExceptionThrowable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -45,7 +27,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContextedExceptionStringThrowable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -54,7 +36,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testContextedExceptionStringThrowableContext() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -63,7 +45,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNullExceptionPassing() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -72,7 +54,25 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testContextedException() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
+               object.setUp();
+               object.testContextedException();
+        }
+    }
+
+    @Test(timeout=120000)
+    public void testRawMessage() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
+               object.setUp();
+               object.testRawMessage();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testAddContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -81,7 +81,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSetContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -90,7 +90,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetFirstContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -99,7 +99,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetContextValues() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -108,7 +108,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetContextLabels() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -117,7 +117,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetContextEntries() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();
@@ -126,7 +126,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testJavaSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();

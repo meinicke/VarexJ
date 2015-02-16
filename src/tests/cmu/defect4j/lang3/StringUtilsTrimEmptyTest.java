@@ -9,15 +9,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testIsEmpty() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
-               object.testIsEmpty();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsNotEmpty() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -25,7 +17,15 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testIsEmpty() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
+               object.testIsEmpty();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testIsBlank() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -33,7 +33,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsNotBlank() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -41,7 +41,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTrim() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -49,7 +49,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTrimToNull() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -57,7 +57,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTrimToEmpty() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -65,7 +65,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStrip_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -73,7 +73,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStripToNull_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -81,7 +81,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStripToEmpty_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -89,7 +89,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStrip_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -97,7 +97,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStripStart_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -105,7 +105,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStripEnd_StringString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -113,7 +113,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStripAll() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
@@ -121,7 +121,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testStripAccents() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();

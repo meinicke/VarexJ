@@ -9,15 +9,15 @@ public class UnicodeUnescaperTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testUPlus() throws Exception {
+    @Test(timeout=120000)
+    public void testUuuuu() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.UnicodeUnescaperTest object = new org.apache.commons.lang3.text.translate.UnicodeUnescaperTest();
-               object.testUPlus();
+               object.testUuuuu();
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLessThanFour() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.UnicodeUnescaperTest object = new org.apache.commons.lang3.text.translate.UnicodeUnescaperTest();
@@ -25,11 +25,11 @@ public class UnicodeUnescaperTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
-    public void testUuuuu() throws Exception {
+    @Test(timeout=120000)
+    public void testUPlus() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.translate.UnicodeUnescaperTest object = new org.apache.commons.lang3.text.translate.UnicodeUnescaperTest();
-               object.testUuuuu();
+               object.testUPlus();
         }
     }
 

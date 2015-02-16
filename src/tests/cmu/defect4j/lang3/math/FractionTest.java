@@ -9,7 +9,7 @@ public class FractionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -17,7 +17,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -25,7 +25,15 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testConstants() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
+               object.testConstants();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testFactory_int_int() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -33,7 +41,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFactory_int_int_int() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -41,7 +49,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReducedFactory_int_int() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -49,7 +57,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFactory_double() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -57,7 +65,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFactory_String() throws Exception {
         if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -65,7 +73,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFactory_String_double() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -73,7 +81,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFactory_String_proper() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -81,7 +89,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testFactory_String_improper() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -89,7 +97,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGets() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -97,7 +105,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testConversions() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -105,7 +113,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testReduce() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -113,7 +121,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testInvert() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -121,7 +129,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testNegate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -129,7 +137,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAbs() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -137,7 +145,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testPow() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -145,7 +153,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testAdd() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -153,7 +161,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSubtract() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -161,7 +169,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testMultiply() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -169,7 +177,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDivide() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -177,7 +185,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -185,7 +193,7 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCompareTo() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
@@ -193,19 +201,11 @@ public class FractionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testToProperString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
                object.testToProperString();
-        }
-    }
-
-    @Test(timeout=10000)
-    public void testConstants() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.math.FractionTest object = new org.apache.commons.lang3.math.FractionTest();
-               object.testConstants();
         }
     }
 

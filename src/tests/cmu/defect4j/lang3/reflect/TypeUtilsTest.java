@@ -9,7 +9,7 @@ public class TypeUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsAssignable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -17,7 +17,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsInstance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -25,7 +25,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetTypeArguments() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -33,7 +33,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testTypesSatisfyVariables() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -41,7 +41,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testDetermineTypeVariableAssignments() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -49,7 +49,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetRawType() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -57,7 +57,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsArrayTypeClasses() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -65,7 +65,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testIsArrayGenericTypes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -73,7 +73,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetPrimitiveArrayComponentType() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -81,7 +81,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testGetArrayComponentType() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();
@@ -89,7 +89,7 @@ public class TypeUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testLang820() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.TypeUtilsTest object = new org.apache.commons.lang3.reflect.TypeUtilsTest();

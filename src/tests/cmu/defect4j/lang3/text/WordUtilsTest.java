@@ -9,15 +9,7 @@ public class WordUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=10000)
-    public void testConstructor() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
-               object.testConstructor();
-        }
-    }
-
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testSwapCase_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -25,7 +17,15 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
+    public void testConstructor() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
+               object.testConstructor();
+        }
+    }
+
+    @Test(timeout=120000)
     public void testWrap_StringInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -33,7 +33,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testWrap_StringIntStringBoolean() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -41,7 +41,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCapitalize_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -49,7 +49,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCapitalizeWithDelimiters_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -57,7 +57,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCapitalizeFully_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -65,7 +65,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testCapitalizeFullyWithDelimiters_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -73,7 +73,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUncapitalize_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -81,7 +81,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testUncapitalizeWithDelimiters_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -89,7 +89,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testInitials_String() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
@@ -97,7 +97,7 @@ public class WordUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=120000)
     public void testInitials_String_charArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.WordUtilsTest object = new org.apache.commons.lang3.text.WordUtilsTest();
