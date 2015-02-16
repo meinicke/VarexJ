@@ -500,7 +500,7 @@
 				<fileset dir="build/tests">
 					<exclude name="**/JPF_*.class" />
 					<!--<include name="**cmu/*/ZipMeTest.class" />-->
-					<include name="**cmu/**/NoVariationTest.class" />
+					<include name="**cmu/**/PrevaylerTest.class" />
 				</fileset>
 			</batchtest>
 

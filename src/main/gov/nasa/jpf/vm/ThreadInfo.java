@@ -1912,7 +1912,7 @@ public class ThreadInfo extends InfoObject
     }
   }
   
-  public static boolean debug = false;
+  public static boolean debug = true;
   public static boolean ctxOutput = true;
   static int count = 0;
   static int count2 = 0;
@@ -1982,13 +1982,13 @@ public class ThreadInfo extends InfoObject
 		    	}
 	        }	
 	        	
-//    		if (debug) {
-//    			System.out.print(top.getDepth());
-//    			if (top.getDepth() < 10) {
-//    				System.out.print(" ");
-//    			}
-//				System.out.println(" " + i + " if " + ctx);
-//			}
+    		if (debug && !ctx.isTautology()) {
+    			System.out.print(top.getDepth());
+    			if (top.getDepth() < 10) {
+    				System.out.print(" ");
+    			}
+				System.out.println(" " + i + " if " + ctx);
+			}
 	    		
 	    		// log trace for trace comparison
 //	    		if (JPF.traceMethod != null && i.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
