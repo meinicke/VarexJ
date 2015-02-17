@@ -101,7 +101,7 @@ public class BoxObjectCacheTest extends TestJPF {
      assertTrue(s1 != s2);
     }
   }
-
+  @Ignore// not native anymore
   @Test
   public void testLongCache(){
    if (verifyNoPropertyViolation(JPF_ARGS)){
@@ -182,6 +182,7 @@ public class BoxObjectCacheTest extends TestJPF {
     }
   }
 
+  @Ignore// not native anymore
   @Test
   public void testLongCacheBoxObject() throws SecurityException, NoSuchMethodException, IllegalAccessException, InvocationTargetException{
     if (verifyNoPropertyViolation(JPF_ARGS)){
