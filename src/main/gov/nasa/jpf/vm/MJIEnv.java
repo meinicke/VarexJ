@@ -568,14 +568,8 @@ public VM getVM () {
   }
 
   public void setShortField (FeatureExpr ctx, int objref, String fname, Conditional<Short> val) {
-    setIntField(ctx, objref, fname, /*(int)*/ val.map(new Function<Short, Integer>() {
-
-		@Override
-		public Integer apply(Short v) {
-			return (int)v.shortValue();
-		}
-    	
-    }));
+	  	ElementInfo ei = heap.getModifiable(objref);
+	    ei.setShortField(ctx, fname, val);
   }
 
   public Conditional<Short> getShortField (int objref, String fname) {
