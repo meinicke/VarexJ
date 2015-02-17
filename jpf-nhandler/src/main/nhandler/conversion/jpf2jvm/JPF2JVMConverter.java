@@ -238,8 +238,8 @@ public abstract class JPF2JVMConverter extends ConverterBase {
     Object value = this.getJVMObj(fieldValueRef, env, ctx);
     // In case that value is of the type One
     Object JVMObj;
-    if (value instanceof One)
-      JVMObj = new String((char[])((One) value).getValue());
+    if (value instanceof Conditional)
+      JVMObj = new String((char[])((Conditional) value).simplify(ctx).getValue());
     else {
       System.out.println("Warning from JPF2JVMConverter.java L244, JVMObj is not One");
       JVMObj = new String((char[])value);

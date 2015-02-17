@@ -31,14 +31,14 @@ public class JPF_java_util_concurrent_atomic_AtomicReferenceArray extends Native
   public int getNative__I__Ljava_lang_Object_2 (MJIEnv env, int objRef, int index, FeatureExpr ctx) {
 	  
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
-    return env.getReferenceArrayElement(arrayRef, index);
+    return env.getReferenceArrayElement(arrayRef, index).getValue();
   }
 
   @MJI
   public boolean compareAndSetNative__ILjava_lang_Object_2Ljava_lang_Object_2__Z (MJIEnv env, int objRef, int index, int fExpect, int fUpdate, FeatureExpr ctx){
 	  
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
-    int value = env.getReferenceArrayElement(arrayRef, index);
+    int value = env.getReferenceArrayElement(arrayRef, index).getValue();
     if (value == fExpect) {
       env.setReferenceArrayElement(ctx, arrayRef, index, new One<>(fUpdate));
       return true;

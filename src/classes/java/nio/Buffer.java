@@ -22,10 +22,29 @@ public abstract class Buffer {
 	protected int position;
 	protected int capacity;
 	protected int limit;
+	protected int mark;
 
 	public final int capacity() {
 		return capacity;
 	}
+	
+	protected Buffer(int i) {
+		
+	}
+	
+	public Buffer(int mark, int pos, int lim, int cap) {       // package-private
+        if (cap < 0)
+            throw new IllegalArgumentException("Negative capacity: " + cap);
+        this.capacity = cap;
+        limit(lim);
+        position(pos);
+        if (mark >= 0) {
+            if (mark > pos) {
+                throw new IllegalArgumentException("mark > position: (" + mark + " > " + pos + ")");
+            }
+            this.mark = mark;
+        }
+    }
 
 	public final Buffer position(int newPosition) {
 		if ((newPosition<0)||(newPosition>limit)) {

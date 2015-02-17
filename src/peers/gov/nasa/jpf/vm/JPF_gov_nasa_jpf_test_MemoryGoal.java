@@ -85,7 +85,7 @@ public class JPF_gov_nasa_jpf_test_MemoryGoal extends NativePeer {
   @MJI
   public boolean preCheck__Lgov_nasa_jpf_test_TestContext_2Ljava_lang_reflect_Method_2__Z
                       (MJIEnv env, int objRef, int testContextRef, int methodRef, FeatureExpr ctx){
-    MethodInfo mi = JPF_java_lang_reflect_Method.getMethodInfo(env, methodRef);
+    MethodInfo mi = JPF_java_lang_reflect_Method.getMethodInfo(ctx, env, methodRef);
     
     listener = new Listener(mi);
     env.addListener(listener);

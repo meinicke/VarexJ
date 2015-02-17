@@ -284,7 +284,7 @@ public class JPF_java_lang_Class extends NativePeer {
 		sb.append('(');
 		int nParams = argTypesRef != MJIEnv.NULL ? env.getArrayLength(ctx, argTypesRef) : 0;
 		for (int i = 0; i < nParams; i++) {
-			int cRef = env.getReferenceArrayElement(argTypesRef, i);
+			int cRef = env.getReferenceArrayElement(argTypesRef, i).simplify(ctx).getValue();
 			ClassInfo cit = env.getReferredClassInfo(ctx, cRef);
 			String tname = cit.getName();
 			String tcode = tname;

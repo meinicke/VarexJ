@@ -260,7 +260,7 @@ public abstract class NativeStackFrame extends StackFrame {
     }
   }
   
-  public int getReferenceResult(){
+  public int getReferenceResult(FeatureExpr ctx){
     if (ret instanceof Integer){
       return (Integer)ret; // MJI requires references to be returned as 'int'
     } else {

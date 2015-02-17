@@ -32,8 +32,24 @@ public class ByteBuffer extends Buffer {
 	public static ByteBuffer allocateDirect(int capacity) {
 		return allocate(capacity);
 	}
+	
+	ByteBuffer(int mark, int pos, int lim, int cap) {       // package-private
+		super(mark, pos, lim, cap);
+        if (cap < 0)
+            throw new IllegalArgumentException("Negative capacity: " + cap);
+        this.capacity = cap;
+        limit(lim);
+        position(pos);
+        if (mark >= 0) {
+            if (mark > pos)
+                throw new IllegalArgumentException("mark > position: ("
+                                                   + mark + " > " + pos + ")");
+            this.mark = mark;
+        }
+    }
 
 	protected ByteBuffer(int i) {
+		super(i);
 		capacity = i;
 		this.clear();
 		array = new byte[i];

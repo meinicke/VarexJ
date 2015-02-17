@@ -48,8 +48,8 @@ public class JPF_java_security_MessageDigest extends NativePeer {
     return n;
   }
   
-  MessageDigest getDigest (MJIEnv env, int objRef){
-    int id = env.getIntField(objRef, "id").getValue().intValue();
+  MessageDigest getDigest (FeatureExpr ctx, MJIEnv env, int objRef){
+    int id = env.getIntField(objRef, "id").simplify(ctx).getValue().intValue();
     return digests[id];
   }
   
@@ -72,7 +72,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
   
   @MJI
   public int digest___3B___3B (MJIEnv env, int objRef, int inputRef, FeatureExpr ctx){
-    MessageDigest md = getDigest(env, objRef);
+    MessageDigest md = getDigest(ctx, env, objRef);
     byte[] input = env.getByteArrayObject(ctx, inputRef);
     
     byte[] res = md.digest(input);
@@ -81,7 +81,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
 
   @MJI
   public int digest_____3B (MJIEnv env, int objRef, FeatureExpr ctx){
-    MessageDigest md = getDigest(env, objRef);    
+    MessageDigest md = getDigest(ctx, env, objRef);    
     byte[] res = md.digest();
     return env.newByteArray(ctx, res);
   }
@@ -94,7 +94,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
 
   @MJI
   public void update___3B__V (MJIEnv env, int objRef, int inputRef, FeatureExpr ctx){
-    MessageDigest md = getDigest(env, objRef);
+    MessageDigest md = getDigest(ctx, env, objRef);
     byte[] input = env.getByteArrayObject(ctx, inputRef);
     md.update(input);
   }

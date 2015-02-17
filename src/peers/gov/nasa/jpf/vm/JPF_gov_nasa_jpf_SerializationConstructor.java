@@ -15,7 +15,7 @@ public class JPF_gov_nasa_jpf_SerializationConstructor extends NativePeer {
     ThreadInfo ti = env.getThreadInfo();
     DirectCallStackFrame frame = ti.getReturnedDirectCall();
     int superCtorRef = env.getReferenceField(ctx, mthRef, "firstNonSerializableCtor").getValue(); 
-    MethodInfo miCtor = JPF_java_lang_reflect_Constructor.getMethodInfo(env,superCtorRef);
+    MethodInfo miCtor = JPF_java_lang_reflect_Constructor.getMethodInfo(ctx,env, superCtorRef);
 
     if (frame == null){ // first time
       int clsRef = env.getReferenceField(ctx, mthRef, "mdc").getValue();

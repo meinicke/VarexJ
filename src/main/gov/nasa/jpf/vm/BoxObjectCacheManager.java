@@ -266,7 +266,7 @@ public class BoxObjectCacheManager {
       longCache = initLongCache(ctx, ti);
     }
 
-    if (l >= longLow && l <= longHigh) { return ti.getElementInfo(longCache).getReferenceElement((int) l - longLow).getValue(); }
+    if (l >= longLow && l <= longHigh) { return ti.getElementInfo(longCache).getReferenceElement((int) l - longLow).simplify(ctx).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long");
     ElementInfo eiLong = ti.getHeap().newObject(ctx, ci, ti);

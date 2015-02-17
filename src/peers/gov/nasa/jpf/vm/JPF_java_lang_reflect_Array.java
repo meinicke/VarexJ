@@ -111,7 +111,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   public int get__Ljava_lang_Object_2I__Ljava_lang_Object_2 (MJIEnv env, int clsRef,
                                                                     int aref, int index, FeatureExpr ctx){
     String at = env.getArrayType(aref);
-    
+    System.out.println(at);
 	if (at.equals("int")){
       int vref = env.newObject(ctx, "java.lang.Integer");
       env.setIntField(ctx, vref, "value", new One<>(env.getIntArrayElement(aref,index)));
@@ -137,7 +137,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       env.setCharField(ctx, vref, "value", env.getCharArrayElement(aref,index));
       return vref;
       
-    } else if (at.equals("byte")){
+    } else if (at.equals("byte") || "B".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Byte");
       env.setByteField(ctx, vref, "value", env.getByteArrayElement(aref,index));
       return vref;
@@ -153,7 +153,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       return vref;
 
     } else {
-      return env.getReferenceArrayElement(aref, index);
+      return env.getReferenceArrayElement(aref, index).getValue();
     }
   }
 
