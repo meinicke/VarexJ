@@ -114,7 +114,13 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     ClassLoaderInfo cl = ClassLoaderInfo.getCurrentSystemClassLoader();
 
     ClassInfo ci = cl.getResolvedClassInfo(ctx, cname);
-
+    {
+    	ClassInfo component = ci;
+    	while (ci.isArray()) {
+    		component = component.getComponentClassInfo();
+    	}
+    }
+    
     if(!ci.isRegistered()) {
       ci.registerClass(ctx, env.getThreadInfo());
     }
@@ -182,8 +188,8 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
       return;
     }
 
-    if((name.indexOf('/') != -1) || (name.charAt(0) == '[')) {
-      env.throwException(ctx, "java.lang.NoClassDefFoundError", "IllegalName: " + name);
+    if((name.indexOf('/') != -1)) {
+      env.throwException(ctx, java.lang.NoClassDefFoundError.class.getName(), "IllegalName: " + name);
     }
   }
 

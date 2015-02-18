@@ -1635,6 +1635,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   }
 
   public static boolean isBuiltinClass (String cname) {
+	  if (cname.isEmpty()) {
+		  return false;
+	  }
     char c = cname.charAt(0);
 
     // array class

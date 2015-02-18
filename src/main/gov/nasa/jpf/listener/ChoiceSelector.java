@@ -35,6 +35,7 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.Random;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -149,7 +150,7 @@ public class ChoiceSelector extends ListenerAdapter {
   }
 
   @Override
-  public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute) {
+  public void executeInstruction(FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute) {
     if (singleChoice && !callSeen && (calls != null)) {
       if (insnToExecute instanceof InvokeInstruction) {
         String mthName = ((InvokeInstruction)insnToExecute).getInvokedMethod(FeatureExprFactory.True(), ti).getBaseName();

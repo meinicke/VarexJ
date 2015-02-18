@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.ClassFile;
 import gov.nasa.jpf.report.Publisher;
 import gov.nasa.jpf.report.PublisherExtension;
@@ -65,7 +66,7 @@ public abstract class PropertyListenerAdapter extends GenericProperty implements
   @Override
   public void instructionExecuted(VM vm, ThreadInfo currentThread, Instruction nextInstruction, Instruction executedInstruction) {}
   @Override
-  public void executeInstruction(VM vm, ThreadInfo currentThread, Instruction instructionToExecute) {}
+  public void executeInstruction(FeatureExpr ctx, VM vm, ThreadInfo currentThread, Instruction instructionToExecute) {}
   @Override
   public void threadStarted(VM vm, ThreadInfo startedThread) {}
   @Override

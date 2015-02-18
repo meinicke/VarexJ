@@ -774,7 +774,7 @@ public abstract class VM {
   protected void notifyExecuteInstruction (ThreadInfo ti, Instruction insn) {
     try {
       for (int i = 0; i < listeners.length; i++) {
-        listeners[i].executeInstruction(this, ti, insn);
+        listeners[i].executeInstruction(FeatureExprFactory.True(), this, ti, insn);
       }
     } catch (UncaughtException x) {
       throw x;

@@ -73,7 +73,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 				return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
 			}
 
-			MethodInfo callee = getInvokedMethod(ti, objRef);
+			MethodInfo callee = getInvokedMethod(ctx, ti, objRef);
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 
 			if (callee == null) {
@@ -152,10 +152,10 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			objRef = lastObj;
 		}
 
-		return getInvokedMethod(ti, objRef);
+		return getInvokedMethod(ctx, ti, objRef);
 	}
 
-	public MethodInfo getInvokedMethod(ThreadInfo ti, int objRef) {
+	public MethodInfo getInvokedMethod(FeatureExpr ctx, ThreadInfo ti, int objRef) {
 
 		if (objRef != MJIEnv.NULL) {
 			lastObj = objRef;
@@ -165,6 +165,8 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 				lastCalleeCi = cci;
 				if (cci == null) {
 					System.out.println("Class not found for " + mname);
+					ti.createAndThrowException(ctx, ClassNotFoundException.class.getName(), mname);
+					return null;
 				}
 				invokedMethod = cci.getMethod(mname, true);
 				// here we could catch the NoSuchMethodError

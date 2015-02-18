@@ -20,8 +20,8 @@ package gov.nasa.jpf.vm;
 import java.io.File;
 import java.lang.reflect.Method;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import nhandler.conversion.ConverterBase;
-
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.PropertyListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
@@ -240,7 +240,7 @@ public class JVMForwarder extends PropertyListenerAdapter {
     ConverterBase.init();
   }
 
-  public void executeInstruction (VM vm, ThreadInfo currentThread, Instruction instructionToExecute) {
+  public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo currentThread, Instruction instructionToExecute) {
     if(instructionToExecute instanceof EXECUTENATIVE) {
       MethodInfo mi = ((EXECUTENATIVE)instructionToExecute).getMethodInfo();
       if(mi.isNative() && (mi instanceof HandledMethodInfo)) {
