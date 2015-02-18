@@ -273,7 +273,7 @@ public class ToStringBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testReflectionDoubleArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ToStringBuilderTest object = new org.apache.commons.lang3.builder.ToStringBuilderTest();
@@ -281,7 +281,7 @@ public class ToStringBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testReflectionFloatArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ToStringBuilderTest object = new org.apache.commons.lang3.builder.ToStringBuilderTest();
@@ -289,7 +289,7 @@ public class ToStringBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testReflectionBooleanArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.ToStringBuilderTest object = new org.apache.commons.lang3.builder.ToStringBuilderTest();

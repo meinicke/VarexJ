@@ -25,7 +25,7 @@ public class HashCodeBuilderAndEqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testFixture() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.HashCodeBuilderAndEqualsBuilderTest object = new org.apache.commons.lang3.builder.HashCodeBuilderAndEqualsBuilderTest();
@@ -33,7 +33,7 @@ public class HashCodeBuilderAndEqualsBuilderTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testFixtureWithTransients() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.builder.HashCodeBuilderAndEqualsBuilderTest object = new org.apache.commons.lang3.builder.HashCodeBuilderAndEqualsBuilderTest();

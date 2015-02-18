@@ -25,7 +25,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testAddEventListenerWithPrivateAddMethod() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -33,7 +33,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testBindEventsToMethod() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -41,7 +41,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testBindEventsToMethodWithEvent() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -49,7 +49,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testBindFilteredEventsToMethod() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -57,7 +57,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testAddEventListener() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();
@@ -65,7 +65,7 @@ public class EventUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testAddEventListenerWithNoAddMethod() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.event.EventUtilsTest object = new org.apache.commons.lang3.event.EventUtilsTest();

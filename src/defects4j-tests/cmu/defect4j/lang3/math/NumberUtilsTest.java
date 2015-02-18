@@ -1,6 +1,8 @@
 package cmu.defect4j.lang3.math;
 
 import gov.nasa.jpf.util.test.TestJPF;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class NumberUtilsTest extends TestJPF {
@@ -137,7 +139,8 @@ public class NumberUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Ignore
+    @Test(timeout=120000)// fails for Java, too
     public void TestLang747() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.math.NumberUtilsTest object = new org.apache.commons.lang3.math.NumberUtilsTest();
