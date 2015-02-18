@@ -29,7 +29,7 @@ public class AnnotationUtilsTest extends TestJPF {
 
     @Test(timeout=120000)
     public void testNonEquivalentAnnotationsOfSameType() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+        if (verifyNoPropertyViolation(config)) {// FIXME
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
                object.setup();
                object.testNonEquivalentAnnotationsOfSameType();
@@ -38,7 +38,7 @@ public class AnnotationUtilsTest extends TestJPF {
 
     @Test(timeout=120000)
     public void testAnnotationsOfDifferingTypes() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+        if (verifyNoPropertyViolation(config)) {// FIXME
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
                object.setup();
                object.testAnnotationsOfDifferingTypes();
@@ -47,7 +47,7 @@ public class AnnotationUtilsTest extends TestJPF {
 
     @Test(timeout=120000)
     public void testOneArgNull() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+        if (verifyNoPropertyViolation(config)) {// FIXME
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
                object.setup();
                object.testOneArgNull();
@@ -74,7 +74,7 @@ public class AnnotationUtilsTest extends TestJPF {
 
     @Test(timeout=120000)
     public void testGeneratedAnnotationEquivalentToRealAnnotation() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+        if (verifyNoPropertyViolation(config)) {// FIXME
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
                object.setup();
                object.testGeneratedAnnotationEquivalentToRealAnnotation();
@@ -83,7 +83,7 @@ public class AnnotationUtilsTest extends TestJPF {
 
     @Test(timeout=120000)
     public void testHashCode() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+        if (verifyNoPropertyViolation(config)) {// FIXME
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
                object.setup();
                object.testHashCode();
@@ -92,7 +92,7 @@ public class AnnotationUtilsTest extends TestJPF {
 
     @Test(timeout=120000)
     public void testToString() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+        if (verifyNoPropertyViolation(config)) {// FIXME
                org.apache.commons.lang3.AnnotationUtilsTest object = new org.apache.commons.lang3.AnnotationUtilsTest();
                object.setup();
                object.testToString();

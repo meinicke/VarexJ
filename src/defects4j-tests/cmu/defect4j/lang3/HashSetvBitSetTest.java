@@ -35,6 +35,7 @@ public class HashSetvBitSetTest extends TestJPF {
 	// (timeout=120000)
 	public void testTimes() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
+			fail();// TODO remove, long-running & failing test
 			timeHashSet(10); // warmup
 			timeBitSet(10); // warmup
 			long timeDiff = printTimes(0);

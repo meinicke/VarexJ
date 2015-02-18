@@ -30,7 +30,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_io_InputStreamReader extends NativePeer {
 
-  static final int BUF_SIZE = 128;
+  static final int BUF_SIZE = (int) Math.pow(2, 12);
   
   // <2do> decoder should be stored on a per-reader basis, since Charsets
   // might differ
