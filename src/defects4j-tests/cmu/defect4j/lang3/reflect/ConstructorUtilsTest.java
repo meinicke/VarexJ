@@ -63,7 +63,7 @@ public class ConstructorUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testNullArgument() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.ConstructorUtilsTest object = new org.apache.commons.lang3.reflect.ConstructorUtilsTest();

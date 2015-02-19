@@ -285,11 +285,16 @@ public class JPF_java_lang_Class extends NativePeer {
 		int nParams = argTypesRef != MJIEnv.NULL ? env.getArrayLength(ctx, argTypesRef) : 0;
 		for (int i = 0; i < nParams; i++) {
 			int cRef = env.getReferenceArrayElement(argTypesRef, i).simplify(ctx).getValue();
-			ClassInfo cit = env.getReferredClassInfo(ctx, cRef);
-			String tname = cit.getName();
-			String tcode = tname;
-			tcode = Types.getTypeSignature(tcode, false);
-			sb.append(tcode);
+			if (cRef == MJIEnv.NULL) {
+				String tcode = "java.lang.Object";
+				tcode = Types.getTypeSignature(tcode, false);
+				sb.append(tcode);
+			} else {
+				ClassInfo cit = env.getReferredClassInfo(ctx, cRef);
+				String tcode = cit.getName();
+				tcode = Types.getTypeSignature(tcode, false);
+				sb.append(tcode);
+			}
 		}
 		sb.append(')');
 		String fullMthName = sb.toString();
