@@ -105,7 +105,7 @@ public class DurationFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// TODO check this/long running 
     public void testLowDurations() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DurationFormatUtilsTest object = new org.apache.commons.lang3.time.DurationFormatUtilsTest();
@@ -121,7 +121,7 @@ public class DurationFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// TODO check this/long running 
     public void testDurationsByBruteForce() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DurationFormatUtilsTest object = new org.apache.commons.lang3.time.DurationFormatUtilsTest();

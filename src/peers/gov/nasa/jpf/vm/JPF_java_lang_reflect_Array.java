@@ -121,12 +121,12 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       env.setLongField(ctx, vref, "value", env.getLongArrayElement(aref,index));
       return vref;
       
-    } else if (at.equals("double")){
+    } else if (at.equals("double") || "D".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Double");
       env.setDoubleField(ctx, vref, "value", env.getDoubleArrayElement(aref,index));
       return vref;
       
-    } else if (at.equals("boolean")){
+    } else if (at.equals("boolean") || "Z".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Boolean");
       env.setBooleanField(ctx, vref, "value", env.getBooleanArrayElement(aref,index));
       return vref;
@@ -146,7 +146,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       env.setShortField(ctx, vref, "value", env.getShortArrayElement(aref,index));
       return vref;
 
-    } else if (at.equals("float")){
+    } else if (at.equals("float") || "F".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Float");
       env.setFloatField(ctx, vref, "value", env.getFloatArrayElement(aref,index));
       return vref;

@@ -289,7 +289,7 @@ public class StrBuilderAppendInsertTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testAppend_FormattedString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.StrBuilderAppendInsertTest object = new org.apache.commons.lang3.text.StrBuilderAppendInsertTest();

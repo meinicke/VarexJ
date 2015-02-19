@@ -1,6 +1,12 @@
 package cmu.defect4j.lang3.tuple;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Calendar;
+
 import gov.nasa.jpf.util.test.TestJPF;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
 public class PairTest extends TestJPF {
@@ -41,7 +47,7 @@ public class PairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME MJIEnv#format()
     public void testToStringCustom() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
@@ -49,7 +55,7 @@ public class PairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME MJIEnv#format()
     public void testFormattable_simple() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();
@@ -57,7 +63,7 @@ public class PairTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME MJIEnv#format()
     public void testFormattable_padded() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.PairTest object = new org.apache.commons.lang3.tuple.PairTest();

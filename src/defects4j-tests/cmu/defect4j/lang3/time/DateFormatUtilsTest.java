@@ -73,7 +73,7 @@ public class DateFormatUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testSMTP() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.DateFormatUtilsTest object = new org.apache.commons.lang3.time.DateFormatUtilsTest();

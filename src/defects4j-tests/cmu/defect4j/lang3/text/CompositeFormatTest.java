@@ -17,7 +17,7 @@ public class CompositeFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testUsage() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.CompositeFormatTest object = new org.apache.commons.lang3.text.CompositeFormatTest();
