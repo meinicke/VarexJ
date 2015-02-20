@@ -17,10 +17,11 @@ public class ContextedExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testRawMessage() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedExceptionTest object = new org.apache.commons.lang3.exception.ContextedExceptionTest();
+               object.setUp();
                object.testRawMessage();
         }
     }
@@ -65,50 +66,56 @@ public class ContextedExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testAddContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedExceptionTest object = new org.apache.commons.lang3.exception.ContextedExceptionTest();
+               object.setUp();
                object.testAddContextValue();
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testSetContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedExceptionTest object = new org.apache.commons.lang3.exception.ContextedExceptionTest();
+               object.setUp();
                object.testSetContextValue();
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testGetFirstContextValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedExceptionTest object = new org.apache.commons.lang3.exception.ContextedExceptionTest();
+               object.setUp();
                object.testGetFirstContextValue();
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testGetContextValues() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedExceptionTest object = new org.apache.commons.lang3.exception.ContextedExceptionTest();
+               object.setUp();
                object.testGetContextValues();
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testGetContextLabels() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedExceptionTest object = new org.apache.commons.lang3.exception.ContextedExceptionTest();
+               object.setUp();
                object.testGetContextLabels();
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testGetContextEntries() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedExceptionTest object = new org.apache.commons.lang3.exception.ContextedExceptionTest();
+               object.setUp();
                object.testGetContextEntries();
         }
     }
@@ -117,6 +124,7 @@ public class ContextedExceptionTest extends TestJPF {
     public void testJavaSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedExceptionTest object = new org.apache.commons.lang3.exception.ContextedExceptionTest();
+               object.setUp();
                object.testJavaSerialization();
         }
     }
