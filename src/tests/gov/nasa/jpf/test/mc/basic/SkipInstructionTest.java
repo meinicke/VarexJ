@@ -34,6 +34,7 @@ import gov.nasa.jpf.vm.choice.IntChoiceFromList;
 import org.junit.Test;
 
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class SkipInstructionTest extends TestJPF {
@@ -45,7 +46,7 @@ public class SkipInstructionTest extends TestJPF {
   public static class GetFieldListener extends ListenerAdapter {
     
     @Override
-    public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute) {
+    public void executeInstruction(FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute) {
       Instruction pc = ti.getPC().getValue();
 
       if (pc instanceof GETFIELD) {

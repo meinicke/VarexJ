@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -78,7 +79,7 @@ public class AssertionProperty extends PropertyListenerAdapter {
   }
 
   @Override
-  public void executeInstruction (VM vm, ThreadInfo ti, Instruction insn){
+  public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insn){
     
     if (insn instanceof ATHROW) {
       

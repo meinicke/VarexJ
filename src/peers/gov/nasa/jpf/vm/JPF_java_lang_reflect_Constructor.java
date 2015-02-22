@@ -68,13 +68,13 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     return eidx;
   }
 
-  static MethodInfo getMethodInfo (MJIEnv env, int objRef){
-    return registry.getMethodInfo(env,objRef, "regIdx");
+  static MethodInfo getMethodInfo (FeatureExpr ctx, MJIEnv env, int objRef){
+    return registry.getMethodInfo(ctx,env, objRef, "regIdx");
   }
   
   @MJI
   public int getName____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
-    MethodInfo mi = getMethodInfo(env, objRef);
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
     
     int nameRef = env.getReferenceField( ctx, objRef, "name").getValue();
     if (nameRef == MJIEnv.NULL) {
@@ -91,7 +91,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
   public int newInstance___3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, int argsRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     DirectCallStackFrame frame = ti.getReturnedDirectCall();
-    MethodInfo miCallee = getMethodInfo(env,mthRef);
+    MethodInfo miCallee = getMethodInfo(ctx,env, mthRef);
 
     
 	if (frame == null) { // first time
@@ -130,39 +130,39 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
   public int getParameterTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     // kind of dangerous, but we don't refer to any fields and the underlying JPF construct
     // (MethodInfo) is the same, so we just delegate to avoid copying non-trivial code
-    return JPF_java_lang_reflect_Method.getParameterTypes (env, getMethodInfo(env,objRef), ctx);
+    return JPF_java_lang_reflect_Method.getParameterTypes (env, getMethodInfo(ctx,env, objRef), ctx);
   }
 
   @MJI
   public int getAnnotations_____3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     // <2do> check if ctor annotations are inherited, which is a bit off
-    return JPF_java_lang_reflect_Method.getAnnotations( env, getMethodInfo(env,objRef), ctx);
+    return JPF_java_lang_reflect_Method.getAnnotations( env, getMethodInfo(ctx,env, objRef), ctx);
   }
   
   @MJI
   public int getDeclaredAnnotations_____3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int objRef, FeatureExpr ctx){
-    return JPF_java_lang_reflect_Method.getDeclaredAnnotations( env, getMethodInfo(env,objRef), ctx);
+    return JPF_java_lang_reflect_Method.getDeclaredAnnotations( env, getMethodInfo(ctx,env, objRef), ctx);
   }
   
   @MJI
   public int getAnnotation__Ljava_lang_Class_2__Ljava_lang_annotation_Annotation_2 (MJIEnv env, int objRef, int annotationClsRef, FeatureExpr ctx) {
-    return JPF_java_lang_reflect_Method.getAnnotation( env, getMethodInfo(env,objRef), annotationClsRef, ctx);
+    return JPF_java_lang_reflect_Method.getAnnotation( env, getMethodInfo(ctx,env, objRef), annotationClsRef, ctx);
   }
   
   @MJI
   public int getParameterAnnotations_____3_3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int objRef, FeatureExpr ctx){
-    return JPF_java_lang_reflect_Method.getParameterAnnotations( env, getMethodInfo(env,objRef), ctx);
+    return JPF_java_lang_reflect_Method.getParameterAnnotations( env, getMethodInfo(ctx,env, objRef), ctx);
   }
 
   @MJI
   public int getModifiers____I (MJIEnv env, int objRef, FeatureExpr ctx){
-    MethodInfo mi = getMethodInfo(env, objRef);
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
     return mi.getModifiers();
   }
 
   @MJI
   public int getDeclaringClass____Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx){
-    MethodInfo mi = getMethodInfo(env, objRef);    
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);    
     ClassInfo ci = mi.getClassInfo();
     // can't get a Constructor object w/o having initialized it's declaring class first
     return ci.getClassObjectRef();
@@ -172,7 +172,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
   public int toString____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     StringBuilder sb = new StringBuilder();
     
-    MethodInfo mi = getMethodInfo(env, objRef);
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
 
     sb.append(Modifier.toString(mi.getModifiers()));
     sb.append(' ');
@@ -198,8 +198,8 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo(JPF_java_lang_Class.CONSTRUCTOR_CLASSNAME);
 
     if (ei.getClassInfo() == ci){
-      MethodInfo mi1 = getMethodInfo(env, objRef);
-      MethodInfo mi2 = getMethodInfo(env, mthRef);
+      MethodInfo mi1 = getMethodInfo(ctx, env, objRef);
+      MethodInfo mi2 = getMethodInfo(ctx, env, mthRef);
       if (mi1.getClassInfo() == mi2.getClassInfo()){
         if (mi1.getName().equals(mi2.getName())){
           if (mi1.getReturnType().equals(mi2.getReturnType())){
@@ -221,7 +221,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
 
   @MJI
   public int hashCode____I (MJIEnv env, int objRef, FeatureExpr ctx){
-    MethodInfo ctor = getMethodInfo(env, objRef);
+    MethodInfo ctor = getMethodInfo(ctx, env, objRef);
     return ctor.getClassName().hashCode();
   }
 }

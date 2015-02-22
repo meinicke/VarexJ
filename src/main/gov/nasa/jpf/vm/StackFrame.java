@@ -2029,8 +2029,8 @@ pw.print(stack);
     return popLong(TRUE).getValue();
   }
 
-  public int getReferenceResult () {
-    return pop(TRUE).getValue();
+  public int getReferenceResult (FeatureExpr ctx) {
+    return pop(ctx).getValue();
   }
   
   public Object getResultAttr () {

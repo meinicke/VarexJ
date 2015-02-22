@@ -57,7 +57,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
   public int fieldOffset__Ljava_lang_reflect_Field_2__I (MJIEnv env, int unsafeRef, int fieldRef, FeatureExpr ctx) {
     //FieldInfo fi = JPF_java_lang_reflect_Field.getFieldInfo(env, fieldRef);
     //return fi.getStorageOffset();
-    return env.getIntField(fieldRef, "regIdx").getValue().intValue();
+    return env.getIntField(fieldRef, "regIdx").simplify(ctx).getValue().intValue();
   }
 
   @MJI

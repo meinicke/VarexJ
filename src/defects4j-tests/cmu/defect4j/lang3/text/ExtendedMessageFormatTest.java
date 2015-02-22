@@ -27,7 +27,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testExtendedAndBuiltInFormats() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -36,7 +36,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testBuiltInChoiceFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -45,7 +45,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testBuiltInDateTimeFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -54,7 +54,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testOverriddenBuiltinFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();
@@ -63,7 +63,7 @@ public class ExtendedMessageFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testBuiltInNumberFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.text.ExtendedMessageFormatTest object = new org.apache.commons.lang3.text.ExtendedMessageFormatTest();

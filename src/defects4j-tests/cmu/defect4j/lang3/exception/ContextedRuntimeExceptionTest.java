@@ -126,7 +126,7 @@ public class ContextedRuntimeExceptionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testJavaSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest object = new org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest();

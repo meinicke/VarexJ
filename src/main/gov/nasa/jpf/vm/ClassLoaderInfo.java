@@ -330,6 +330,9 @@ public class ClassLoaderInfo
    * this is for loading classes from the file system 
    */
   public ClassInfo getResolvedClassInfo (FeatureExpr ctx, String className) throws ClassInfoException {
+	  if (className.isEmpty()) {
+		  throw new ClassInfoException("class not found: " + className, this, "java.lang.ClassNotFoundException", className);
+	  }
     String typeName = Types.getClassNameFromTypeName( className);
     
     ClassInfo ci = resolvedClasses.get( typeName);

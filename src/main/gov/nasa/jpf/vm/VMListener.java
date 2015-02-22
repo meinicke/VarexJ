@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFListener;
 import gov.nasa.jpf.jvm.ClassFile;
 
@@ -42,7 +43,7 @@ public interface VMListener extends JPFListener {
   /**
    * VM is about to execute the next instruction
    */
-  void executeInstruction (VM vm, ThreadInfo currentThread, Instruction instructionToExecute);
+  void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo currentThread, Instruction instructionToExecute);
   
   /**
    * VM has executed the next instruction

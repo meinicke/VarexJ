@@ -9,7 +9,7 @@ public class StopWatchTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testStopWatchSimple() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.StopWatchTest object = new org.apache.commons.lang3.time.StopWatchTest();
@@ -25,7 +25,7 @@ public class StopWatchTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testStopWatchSplit() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.StopWatchTest object = new org.apache.commons.lang3.time.StopWatchTest();
@@ -33,7 +33,7 @@ public class StopWatchTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testStopWatchSuspend() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.StopWatchTest object = new org.apache.commons.lang3.time.StopWatchTest();

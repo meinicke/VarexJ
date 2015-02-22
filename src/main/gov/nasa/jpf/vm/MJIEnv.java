@@ -563,19 +563,13 @@ public VM getVM () {
     heap.getModifiable(objref).setReferenceElement(ctx, index, eRef);
   }
 
-  public int getReferenceArrayElement (int objref, int index) {
-    return heap.get(objref).getReferenceElement(index).getValue();// TODO jens
+  public Conditional<Integer> getReferenceArrayElement (int objref, int index) {
+    return heap.get(objref).getReferenceElement(index);
   }
 
   public void setShortField (FeatureExpr ctx, int objref, String fname, Conditional<Short> val) {
-    setIntField(ctx, objref, fname, /*(int)*/ val.map(new Function<Short, Integer>() {
-
-		@Override
-		public Integer apply(Short v) {
-			return (int)v.shortValue();
-		}
-    	
-    }));
+	  	ElementInfo ei = heap.getModifiable(objref);
+	    ei.setShortField(ctx, fname, val);
   }
 
   public Conditional<Short> getShortField (int objref, String fname) {
@@ -758,6 +752,9 @@ public VM getVM () {
     
   }
   
+  /**
+   * {@link #getStringObjectNew(FeatureExpr, int)}
+   */
   @Deprecated
   public String getStringObject (FeatureExpr ctx, int objRef) {
 	    if (objRef != MJIEnv.NULL) {
@@ -810,7 +807,7 @@ public VM getVM () {
         sa = new String[len];
 
         for (int i=0; i<len; i++){
-          int sRef = getReferenceArrayElement(aRef,i);
+          int sRef = getReferenceArrayElement(aRef,i).getValue();
           sa[i] = getStringObject(ctx, sRef);
         }
 
@@ -849,7 +846,7 @@ public VM getVM () {
     args = new Object[nArgs];
 
     for (int i=0; i<nArgs; i++){
-      int aref = getReferenceArrayElement(argRef,i);
+      int aref = getReferenceArrayElement(argRef,i).getValue();
       ClassInfo ci = getClassInfo(aref);
       String clsName = ci.getName();
       if (clsName.equals("java.lang.Boolean")){
@@ -1164,7 +1161,7 @@ public VM getVM () {
     Object[] arg = new Object[len];
 
     for (int i=0; i<len; i++){
-      int ref = getReferenceArrayElement(argRef,i);
+      int ref = getReferenceArrayElement(argRef,i).getValue();
       if (ref != NULL) {
         String clsName = getClassName(ref);
         if (clsName.equals("java.lang.String")) {
@@ -1199,7 +1196,7 @@ public VM getVM () {
 	    Object[] arg = new Object[len];
 
 	    for (int i=0; i<len; i++){
-	      int ref = getReferenceArrayElement(argRef,i);
+	      int ref = getReferenceArrayElement(argRef,i).getValue();
 	      if (ref != NULL) {
 	        String clsName = getClassName(ref);
 	        if (clsName.equals("java.lang.String")) {

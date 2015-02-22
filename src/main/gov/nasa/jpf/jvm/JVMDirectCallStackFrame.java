@@ -41,8 +41,8 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   }
   
   @Override
-  public int getReferenceResult(){
-    return pop(TRUE).getValue();
+  public int getReferenceResult(FeatureExpr ctx){
+    return pop(ctx).getValue();
   }
   
   @Override

@@ -9,7 +9,7 @@ public class FastDatePrinterTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -17,7 +17,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -33,7 +33,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testLang645() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -41,7 +41,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testShortDateStyleWithLocales() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -65,7 +65,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testLang303() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();
@@ -113,7 +113,7 @@ public class FastDatePrinterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testCalendarTimezoneRespected() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.time.FastDatePrinterTest object = new org.apache.commons.lang3.time.FastDatePrinterTest();

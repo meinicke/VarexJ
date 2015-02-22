@@ -417,6 +417,8 @@ public class StackHandler implements Cloneable, IStackHandler {
 					clone.push(((Byte)value).intValue(), isRef);
 				} else if (value instanceof Short) {
 					clone.push((int)(Short)value, isRef);
+				} else if (value == null) {
+					clone.push(MJIEnv.NULL, isRef);
 				} else {
 					throw new RuntimeException(value + " of type " + value.getClass() + " cannot be pushed to the stack.");
 				}

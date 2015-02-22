@@ -25,7 +25,7 @@ public class TripleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testToStringCustom() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.TripleTest object = new org.apache.commons.lang3.tuple.TripleTest();
@@ -33,7 +33,7 @@ public class TripleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testFormattable_simple() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.TripleTest object = new org.apache.commons.lang3.tuple.TripleTest();
@@ -41,7 +41,7 @@ public class TripleTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=120000)// FIXME
     public void testFormattable_padded() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.tuple.TripleTest object = new org.apache.commons.lang3.tuple.TripleTest();

@@ -123,7 +123,7 @@ public class StringUtilsTrimEmptyTest extends TestJPF {
 
     @Test(timeout=120000)
     public void testStripAccents() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+        if (verifyNoPropertyViolation(config)) {// FIXME
                org.apache.commons.lang3.StringUtilsTrimEmptyTest object = new org.apache.commons.lang3.StringUtilsTrimEmptyTest();
                object.testStripAccents();
         }

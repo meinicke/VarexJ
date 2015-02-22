@@ -59,7 +59,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     in.clear();
     
     for (int i=off; i<imax; i++){
-      in.put(env.getCharArrayElement(cref, i).getValue());
+      in.put(env.getCharArrayElement(cref, i).simplify(ctx).getValue());
     }
 
     in.flip();

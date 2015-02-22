@@ -190,15 +190,13 @@ public class JPF_java_lang_String extends NativePeer {
 				if (Conditional.isContradiction(ctx)) {
 					return new One<>(null);
 				}
+				if ((index.getValue() < 0) || (index.getValue() >= data.length)) {
+					env.ti.createAndThrowException(ctx, StringIndexOutOfBoundsException.class.getName(), index + "");
+					return new One<>(null);
+		        }
 				
-				try {
-					return new One<>(data[index.getValue()]);// currently not lifted
-				} catch (ArrayIndexOutOfBoundsException e) {
-					String exceptionClass = e.toString();
-					exceptionClass = exceptionClass.substring(0, exceptionClass.indexOf(":"));
-					env.ti.createAndThrowException(ctx, exceptionClass, e.getMessage());
-				}
-				return new One<>(null);
+				return new One<>(data[index.getValue()]);// currently not lifted
+				
 			} 
 
 		}).simplify();
@@ -435,7 +433,7 @@ public class JPF_java_lang_String extends NativePeer {
 			fromIndex = len - 1;
 		}
 
-		for (int i = fromIndex; i > 0; i--) {
+		for (int i = fromIndex; i >= 0; i--) {
 			if (values[i] == c) {
 				return i;
 			}
@@ -494,7 +492,7 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int substring__II__Ljava_lang_String_2(MJIEnv env, int objRef, final Conditional<Integer> beginIndex, final Conditional<Integer> endIndex, FeatureExpr ctx) {
+	public int substring__II__Ljava_lang_String_2(final MJIEnv env, int objRef, final Conditional<Integer> beginIndex, final Conditional<Integer> endIndex, FeatureExpr ctx) {
 		Conditional<String> obj = env.getStringObjectNew(ctx, objRef);
 		Conditional<String> result = obj.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<String>>() {
 
@@ -511,8 +509,15 @@ public class JPF_java_lang_String extends NativePeer {
 								if (Conditional.isContradiction(ctx)) {
 									return new One<>("");
 								}
-								String result = obj.substring(beginIndex, endIndex);
-								return new One<>(result);
+								try {
+									String result = obj.substring(beginIndex, endIndex);
+									return new One<>(result);
+								} catch (StringIndexOutOfBoundsException e) {
+									String exceptionClass = e.toString();
+									exceptionClass = exceptionClass.substring(0, exceptionClass.indexOf(":"));
+									env.ti.createAndThrowException(ctx, exceptionClass, e.getMessage());
+								}
+								return new One<>(null);
 							}
 						});
 
