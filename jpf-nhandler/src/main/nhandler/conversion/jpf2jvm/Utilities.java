@@ -77,7 +77,13 @@ public class Utilities {
 
     // byte[]
     if (type.equals("[B")) {
-      JVMObj = ((ArrayFields) ei.getFields()).asByteArray();
+//      JVMObj = ((ArrayFields) ei.getFields()).asByteArrayConcrete();
+      Byte[] ByteArray = ((ArrayFields) ei.getFields()).asByteArrayConcrete();
+        byte[] byteArray = new byte[ByteArray.length];
+        for (int i = 0; i < ByteArray.length; i++) {
+            byteArray[i] = ByteArray[i].byteValue();
+        }
+        JVMObj = byteArray;
     }
     // char[]
     else if (type.equals("[C")) {
@@ -89,7 +95,14 @@ public class Utilities {
     }
     // int[]
     else if (type.equals("[I")) {
-      JVMObj = ((ArrayFields) ei.getFields()).asIntArray();
+//      JVMObj = ((ArrayFields) ei.getFields()).asIntArray();
+        Integer[] IntegerArray = ((ArrayFields) ei.getFields()).asIntArrayConcrete();
+        int[] intArray = new int[IntegerArray.length];
+        for (int i = 0; i < IntegerArray.length; i++) {
+            intArray[i] = IntegerArray[i].intValue();
+        }
+        JVMObj = intArray;
+
     }
     // float[]
     else if (type.equals("[F")) {

@@ -57,6 +57,7 @@ public class SharedSecrets {
   private static JavaIOFileDescriptorAccess javaIOFileDescriptorAccess;
   private static JavaNioAccess javaNioAccess;
   private static JavaAWTAccess javaAWTAccess;
+    private static JavaUtilZipFileAccess javaUtilZipFileAccess;
 
   // (required for EnumSet ops)
   public static JavaLangAccess getJavaLangAccess() {
@@ -143,4 +144,10 @@ public class SharedSecrets {
   public static JavaAWTAccess getJavaAWTAccess(){
     return javaAWTAccess;
   }
+    public static void setJavaUtilZipFileAccess (JavaUtilZipFileAccess juzfa){
+        javaUtilZipFileAccess = juzfa;
+    }
+    public static JavaUtilZipFileAccess getJavaUtilZipFileAccess(){
+        return javaUtilZipFileAccess;
+    }
 }

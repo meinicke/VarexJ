@@ -130,7 +130,8 @@
 
     <target name="-compile-defects4j-tests" if="have_tests" depends="-compile-annotations,-compile-main,-compile-classes">
         <mkdir dir="build/defects4j-tests" />
-        <javac srcdir="src/defects4j-tests" destdir="build/defects4j-tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" >
+        <javac srcdir="src/defects4j-tests" destdir="build/defects4j-tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}">
+            <!--<exclude name="cmu/defect4j/joda/**"/>-->
             <compilerarg value="-XDenableSunApiLintControl" />
             <compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked" />
             <classpath>
@@ -553,12 +554,16 @@
 			<formatter type="xml" />
 			<batchtest todir="build/defects4j-tests">
 				<fileset dir="build/defects4j-tests">
+                    <include name="**/jfree/**/*Tests.class"/>
+                    <include name="**/joda/**/Test*.class"/>
 					<!--<include name="**/lang3/**/*Test.class" />-->
-                    <include name="**/lang3/**/*Test.class" />
+                    <!--<include name="**/jfree/chart/plot/**/*Tests.class" />-->
+                    <!--<include name="**/joda/time/TestSerialization.class" />-->
+                    <!--<include name="**/CategoryLineAnnotationTests.class"/>-->
                     <!--<include name="**/lang3/math/NumberUtilsTest.class"/>-->
                     <!--<exclude name="**/lang3/ArrayUtilsAddTest.class" />-->
                     <!--<exclude name="**/lang3/AnnotationUtilsTest.class"/>-->
-                    <exclude name="**/lang3/**/*$*.class" />
+                    <exclude name="**/*$*.class" />
 				</fileset>
 			</batchtest>
 
