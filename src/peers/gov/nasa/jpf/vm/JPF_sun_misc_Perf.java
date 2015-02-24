@@ -1,5 +1,3 @@
-package gov.nasa.jpf.vm;
-
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;

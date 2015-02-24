@@ -983,8 +983,9 @@ public class PeerMethodGen {
     for (int i = 2; i < mi.getNumberOfArguments() + 2; i++){
       Type type = PeerMethodGen.getType(argTypesName[i - 2]);
       argTypes[i] = (type == Type.OBJECT) ? Type.INT : type;
-      // Assume that only Double type requires more than 4 bytes.
-      if(type == Type.DOUBLE){
+      // Assume that only Double and Long type requires more than 4 bytes.
+        // cpwTODO: may cause java.lang.VerifyError
+      if(type == Type.DOUBLE || type == Type.LONG){
         ctxIndex += 2;
       }
       else{

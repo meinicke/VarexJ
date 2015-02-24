@@ -30,4 +30,12 @@ public class JPF_sun_misc_VM extends NativePeer {
   public void initialize____V (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     // nothing here yet
   }
+
+    @MJI
+    public int getSavedProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int rString0, FeatureExpr ctx) {
+        // used in ZipFile.java, required property: sun.zip.disableMemoryMapping
+        // for now, just return null.
+        int rString = MJIEnv.NULL;
+        return rString;
+    }
 }
