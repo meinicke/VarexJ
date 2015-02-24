@@ -555,11 +555,13 @@
 			<batchtest todir="build/defects4j-tests">
 				<fileset dir="build/defects4j-tests">
                     <!--Full test for projects-->
-                    <include name="**/jfree/**/*Tests.class"/>
-                    <include name="**/joda/**/Test*.class"/>
+                    <!--<include name="**/jfree/**/*Tests.class"/>-->
+                    <!--<include name="**/joda/**/Test*.class"/>-->
 					<!--<include name="**/lang3/**/*Test.class" />-->
+                    <!--<include name="**/google/**/*Test.class" />-->
 
                     <!--Partial test for debugging-->
+                    <include name="**/google/**/graph/*Test.class"/>
                     <!--<include name="**/jfree/chart/plot/**/*Tests.class" />-->
                     <!--<include name="**/joda/time/TestSerialization.class" />-->
                     <!--<include name="**/CategoryLineAnnotationTests.class"/>-->

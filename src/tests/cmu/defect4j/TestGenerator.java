@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.LinkedList;
 
 /**
  * @author: chupanw
@@ -49,6 +51,19 @@ public abstract class TestGenerator {
         writer.write("\tpublic void " + methodname + "() throws Exception {\n");
         writer.write("\t\tif (verifyNoPropertyViolation(config)) {\n");
         writer.write("\t\t\t" + "TestCase" + " testcase = new " + classname + "(\"" + methodname + "\");\n");
+        writer.write("\t\t\ttestcase.run();\n");
+        writer.write("\t\t}\n" + "\t}\n\n");
+    }
+
+    public void printNewTestCaseJunit3Null(FileWriter writer, String classname, String methodname) throws IOException{
+        writer.write("\t@Test(timeout=" + timeout + ")\n");
+        writer.write("\tpublic void " + methodname + "() throws Exception {\n");
+        writer.write("\t\tif (verifyNoPropertyViolation(config)) {\n");
+        writer.write("\t\t\t" + "TestCase" + " testcase = new " + classname + "() {\n");
+        writer.write("\t\t\t\t" + "public void runTest() throws Exception {\n");
+        writer.write("\t\t\t\t\t" + methodname + "();\n");
+        writer.write("\t\t\t\t" + "}\n");
+        writer.write("\t\t\t" + "};\n");
         writer.write("\t\t\ttestcase.run();\n");
         writer.write("\t\t}\n" + "\t}\n\n");
     }
@@ -109,13 +124,14 @@ public abstract class TestGenerator {
         } catch (ClassNotFoundException e){
             e.printStackTrace();
         }
-        Class<?> superClass = c.getSuperclass();
-        if (superClass == TestCase.class){
+        LinkedList<Class> l = new LinkedList<>();
+        getSuperClasses(c, l);
+        if (l.contains(TestCase.class)){
             extendTestCase = true;
         }
 
         if(extendTestCase){
-            Method[] methods = c.getMethods();
+            LinkedList<Method> methods = getDeclaredPublicMethods(c);
             for (Method method : methods){
                 if (method.getName().startsWith("test")){
                     haveTest = true;
@@ -123,6 +139,32 @@ public abstract class TestGenerator {
             }
         }
         return haveTest;
+    }
+
+    public void getSuperClasses(Class<?> c, LinkedList<Class> l){
+        Class<?> ancestor = c.getSuperclass();
+        if (ancestor != null){
+            l.add(ancestor);
+            getSuperClasses(ancestor, l);
+        }
+    }
+
+    public LinkedList<Method> getDeclaredPublicMethods(Class<?> c){
+        LinkedList<Method> l = new LinkedList<>();
+        Method[] methods = c.getDeclaredMethods();
+        for (Method method : methods){
+            if(Modifier.toString(method.getModifiers()).contains("public")){
+                l.add(method);
+            }
+        }
+        return l;
+    }
+
+    public boolean hasParameters(Method m){
+        if(m.getParameterTypes().length!=0){
+            return true;
+        }
+        return false;
     }
 
 }
