@@ -554,15 +554,20 @@
 			<formatter type="xml" />
 			<batchtest todir="build/defects4j-tests">
 				<fileset dir="build/defects4j-tests">
+                    <!--Full test for projects-->
                     <include name="**/jfree/**/*Tests.class"/>
                     <include name="**/joda/**/Test*.class"/>
 					<!--<include name="**/lang3/**/*Test.class" />-->
+
+                    <!--Partial test for debugging-->
                     <!--<include name="**/jfree/chart/plot/**/*Tests.class" />-->
                     <!--<include name="**/joda/time/TestSerialization.class" />-->
                     <!--<include name="**/CategoryLineAnnotationTests.class"/>-->
                     <!--<include name="**/lang3/math/NumberUtilsTest.class"/>-->
                     <!--<exclude name="**/lang3/ArrayUtilsAddTest.class" />-->
                     <!--<exclude name="**/lang3/AnnotationUtilsTest.class"/>-->
+
+
                     <exclude name="**/*$*.class" />
 				</fileset>
 			</batchtest>
