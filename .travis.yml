@@ -1,3 +1,6 @@
 language: java
 
+jdk:
+  - oraclejdk7
+
 srcipt: "./script/test_defects4j.sh"
