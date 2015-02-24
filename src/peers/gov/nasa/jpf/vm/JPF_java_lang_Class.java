@@ -629,17 +629,18 @@ public class JPF_java_lang_Class extends NativePeer {
 		if (fi == null) {
 			env.throwException(ctx, "java.lang.NoSuchFieldException", fname);
 			return MJIEnv.NULL;
-
-		} else {
-			// don't do a Field clinit before we know there is such a field
-			ClassInfo fci = getInitializedClassInfo(env, FIELD_CLASSNAME, ctx);
-			if (fci == null) {
-				env.repeatInvocation();
-				return MJIEnv.NULL;
-			}
-
-			return createFieldObject(env, fi, fci, ctx);
 		}
+//		 if (!fi.isPublic()) {// TODO
+//		    env.throwException(ctx, NoSuchFieldException.class.getName(), fi.getName());
+//		 }
+		// don't do a Field clinit before we know there is such a field
+		ClassInfo fci = getInitializedClassInfo(env, FIELD_CLASSNAME, ctx);
+		if (fci == null) {
+			env.repeatInvocation();
+			return MJIEnv.NULL;
+		}
+
+		return createFieldObject(env, fi, fci, ctx);
 	}
 
 	@MJI

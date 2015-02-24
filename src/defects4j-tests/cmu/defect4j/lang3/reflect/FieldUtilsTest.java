@@ -288,7 +288,7 @@ public class FieldUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testWriteStaticField() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.FieldUtilsTest object = new org.apache.commons.lang3.reflect.FieldUtilsTest();
@@ -342,7 +342,7 @@ public class FieldUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testWriteField() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.FieldUtilsTest object = new org.apache.commons.lang3.reflect.FieldUtilsTest();
@@ -351,7 +351,7 @@ public class FieldUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testWriteFieldForceAccess() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.FieldUtilsTest object = new org.apache.commons.lang3.reflect.FieldUtilsTest();
@@ -369,7 +369,7 @@ public class FieldUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testWriteNamedFieldForceAccess() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.FieldUtilsTest object = new org.apache.commons.lang3.reflect.FieldUtilsTest();
@@ -387,7 +387,7 @@ public class FieldUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)// FIXME
+    @Test(timeout=120000)
     public void testWriteDeclaredNamedFieldForceAccess() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.reflect.FieldUtilsTest object = new org.apache.commons.lang3.reflect.FieldUtilsTest();

@@ -1162,7 +1162,7 @@ public abstract class ElementInfo implements Cloneable {
     if (fi.isReference()){
       return fields.getReferenceValue(fi.getStorageOffset());
     } else {
-      throw new JPFException("not a reference field: " + fi.getName());
+      throw new JPFException(fields.getClass().getSimpleName() + " not a reference field: " + fi.getName());
     }
   }
 

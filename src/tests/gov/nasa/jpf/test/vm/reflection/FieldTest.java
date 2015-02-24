@@ -26,13 +26,13 @@ import org.junit.Test;
 
 public class FieldTest extends TestJPF {
 
-  int instInt = 42;
-  double instDouble = 42.0;
-  double primField = 42.0;
-  Object refField = new Integer(42);
-  int[] arrayField = new int[]{42};
+  public int instInt = 42;
+  public double instDouble = 42.0;
+  public double primField = 42.0;
+  public Object refField = new Integer(42);
+  public int[] arrayField = new int[]{42};
 
-  static int statInt = 43;
+  public static int statInt = 43;
 
   @Test
   public void testInstanceInt() {
@@ -42,13 +42,14 @@ public class FieldTest extends TestJPF {
         Field f = cls.getField("instInt");
 
         int i = f.getInt(this);
-        assert i == 42;
-
+        assertTrue(i == 42);
+        
         f.setInt(this, 43);
-        assert instInt == 43;
+        assertTrue(instInt == 43);
 
       } catch (Throwable t) {
-        assert false : "unexpected exception: " + t;
+    	  t.printStackTrace();
+        fail("unexpected exception: " + t);
       }
     }
   }
@@ -61,14 +62,14 @@ public class FieldTest extends TestJPF {
         Field f = cls.getField("statInt");
 
         int i = f.getInt(this);
-        assert i == 43;
+        assertTrue( i == 43);
         System.out.println("statInt = " + i);
 
         f.setInt(null, 44);
-        assert statInt == 44;
+        assertTrue( statInt == 44);
 
       } catch (Throwable t) {
-        assert false : "unexpected exception: " + t;
+        fail("unexpected exception: " + t);
       }
     }
   }
@@ -82,13 +83,13 @@ public class FieldTest extends TestJPF {
         Field f = cls.getField("instDouble");
 
         double d = f.getDouble(this);
-        assert d == 42.0;
+        assertTrue(d == 42.0);
 
         f.setDouble(this, 43.0);
-        assert instDouble == 43.0;
+        assertTrue(instDouble == 43.0);
 
       } catch (Throwable t) {
-        assert false : "unexpected exception: " + t;
+    	  fail("unexpected exception: " + t);
       }
     }
   }
@@ -101,13 +102,13 @@ public class FieldTest extends TestJPF {
         Field f = cls.getField("primField");
 
         double d = ((Double) f.get(this)).doubleValue();
-        assert d == 42.0;
+        assertTrue(d == 42.0);
 
         f.set(this, new Double(43.0));
-        assert primField == 43.0;
+        assertTrue(primField == 43.0);
 
       } catch (Throwable t) {
-        assert false : "unexpected exception: " + t;
+        fail("unexpected exception: " + t);
       }
     }
   }
@@ -121,14 +122,14 @@ public class FieldTest extends TestJPF {
         Field f = cls.getField("refField");
 
         Object o = f.get(this);
-        assert o == refField;
+        assertTrue( o == refField);
 
         Object ob = new Double(43.0);
         f.set(this, ob);
-        assert ob == refField;
+        assertTrue( ob == refField);
 
       } catch (Throwable t) {
-        assert false : "unexpected exception: " + t;
+        fail("unexpected exception: " + t);
       }
     }
   }
@@ -142,14 +143,14 @@ public class FieldTest extends TestJPF {
         Field f = cls.getField("arrayField");
 
         int[] a = (int[]) f.get(this);
-        assert a == arrayField;
+        assertTrue( a == arrayField);
 
         int[] ar = new int[]{43};
         f.set(this, ar);
-        assert ar == arrayField;
+        assertTrue(ar == arrayField);
 
       } catch (Throwable t) {
-        assert false : "unexpected exception: " + t;
+        fail("unexpected exception: " + t);
       }
     }
   }
