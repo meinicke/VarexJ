@@ -36,7 +36,10 @@
 	<classpathentry kind="lib" path="lib/xstream-1.4.7.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-log4j-2.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-xstream-2.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/compiler.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.2.0-ea1.jar"/>
+	<classpathentry kind="lib" path="lib/joda-convert-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jodatime.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="build/tests"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

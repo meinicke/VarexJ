@@ -53,15 +53,6 @@ public class IntArrayFields extends ArrayFields {
 		return values;
 	}
 
-    @Override
-    public Integer[] asIntArrayConcrete() {
-        Integer[] c_values = new Integer[values.length];
-        for (int i = 0; i < values.length; i++) {
-            c_values[i] = values[i].getValue();
-        }
-        return c_values;
-    }
-
     protected void printValue(PrintStream ps, int idx) {
 		ps.print(values[idx]);
 	}
