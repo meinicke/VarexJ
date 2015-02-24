@@ -52,4 +52,13 @@ public class JPF_sun_reflect_Reflection extends NativePeer {
     ClassInfo ci = mi.getClassInfo();
     return ci.getClassObjectRef();
   }
+
+    @MJI
+    public int getCallerClass____Ljava_lang_Class_2(MJIEnv env, int clsObjRef, FeatureExpr ctx){
+        ThreadInfo ti = env.getThreadInfo();
+        StackFrame frame = ti.getTopFrame();
+        MethodInfo mi = frame.getMethodInfo();
+        ClassInfo ci = mi.getClassInfo();
+        return ci.getClassObjectRef();
+    }
 }
