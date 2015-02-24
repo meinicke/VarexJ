@@ -563,7 +563,7 @@ public class StringUtilsTest extends TestJPF {
 
     @Test(timeout=120000)
     public void testDefaultIfBlank_CharBuffers() throws Exception {
-        if (verifyNoPropertyViolation(config)) {// FIXME
+        if (verifyNoPropertyViolation(config)) {
                org.apache.commons.lang3.StringUtilsTest object = new org.apache.commons.lang3.StringUtilsTest();
                object.testDefaultIfBlank_CharBuffers();
         }
