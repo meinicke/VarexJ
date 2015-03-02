@@ -131,7 +131,7 @@
     <target name="-compile-defects4j-tests" if="have_tests" depends="-compile-annotations,-compile-main,-compile-classes">
         <mkdir dir="build/defects4j-tests" />
         <javac srcdir="src/defects4j-tests" destdir="build/defects4j-tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}">
-            <!--<exclude name="cmu/defect4j/joda/**"/>-->
+            <!--<exclude name="cmu/defect4j/math3/**"/>-->
             <compilerarg value="-XDenableSunApiLintControl" />
             <compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked" />
             <classpath>
@@ -555,12 +555,14 @@
 			<batchtest todir="build/defects4j-tests">
 				<fileset dir="build/defects4j-tests">
                     <!--Full test for projects-->
-                    <include name="**/jfree/**/*Tests.class"/>
-                    <include name="**/joda/**/Test*.class"/>
-					<include name="**/lang3/**/*Test.class" />
-                    <include name="**/google/**/*Test.class" />
+                    <!--<include name="**/jfree/**/*Tests.class"/>-->
+                    <!--<include name="**/joda/**/Test*.class"/>-->
+					<!--<include name="**/lang3/**/*Test.class" />-->
+                    <!--<include name="**/google/**/*Test.class" />-->
+                    <include name="**/math3/**/*Test.class" />
 
                     <!--Partial test for debugging-->
+                    <!--<include name="**/math3/**/differentiation/DSCompilerTest.class"/>-->
                     <!--<include name="**/google/**/graph/*Test.class"/>-->
                     <!--<include name="**/jfree/chart/plot/**/*Tests.class" />-->
                     <!--<include name="**/joda/time/TestSerialization.class" />-->

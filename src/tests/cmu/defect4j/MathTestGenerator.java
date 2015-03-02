@@ -2,18 +2,22 @@ package cmu.defect4j;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runners.Parameterized;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.LinkedList;
 
 /**
  * @author: chupanw
  */
 public class MathTestGenerator extends TestGenerator {
 
-    private String config = "\"+nhandler.delegateUnhandledNative\", \"+classpath+=${jpf-core}/lib/junit-4.11.jar,${jpf-core}/lib/commons-lang3-3.2-SNAPSHOT.jar,${jpf-core}/lib/easymock.jar,${jpf-core}/lib/commons-io.jar\"";
+    private String config = "\"+nhandler.delegateUnhandledNative\", \"+classpath+=${jpf-core}/lib/junit-4.11.jar,lib/commons-math-3.1-SNAPSHOT.jar\"";
 
     public static void main(String[] args) {
         MathTestGenerator generator = new MathTestGenerator();
@@ -43,12 +47,12 @@ public class MathTestGenerator extends TestGenerator {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
             Method[] methods = c.getMethods();
             for (Method method : methods) {
                 Annotation[] annotations = method.getAnnotations();
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof Test) {
-                        System.out.println(full_class_name + ": " + annotation);
                         haveTest = true;
                     }
                 }
@@ -61,14 +65,32 @@ public class MathTestGenerator extends TestGenerator {
                 continue;
             }
 
+            if(Modifier.toString(c.getModifiers()).contains("abstract")){
+                System.out.println(full_class_name + " is abstract");
+                continue;
+            }
+
+            boolean hasParameters = false;
+            methods = c.getMethods();
+            for(Method method : methods){
+                Annotation[] annotations = method.getAnnotations();
+                for (Annotation annotation : annotations){
+                    if(annotation instanceof Parameterized.Parameters){
+                        System.out.println(full_class_name + "has @Parameters, not supported yet");
+                        hasParameters = true;
+                    }
+                }
+            }
+
+            if(hasParameters){
+                continue;
+            }
+
             /*
             * Filter [Optional]:
             *   concurrent related test cases
             */
 
-            if (full_class_name.endsWith("AbstractTest")) {
-                continue;
-            }
 
 
             File newfile = new File(pathPrefix + pathSuffix + ".java");
@@ -103,7 +125,6 @@ public class MathTestGenerator extends TestGenerator {
                             String texpectedName = ((Test) annotation).expected().getName();
                             if (!texpectedName.equals("org.junit.Test$None")) {
                                 expectedName = texpectedName;
-                                System.out.println("\t" + expectedName);
                             }
 
                             printNewTestCaseJunit4(writer, full_class_name, method.getName(), beforeMethodName, expectedName);
@@ -121,5 +142,42 @@ public class MathTestGenerator extends TestGenerator {
 
 
         }
+        System.out.println("Finished");
+    }
+
+    //Override because testMath899Sync throws Throwable instead of Exception
+    @Override
+    public void printNewTestCaseJunit4(FileWriter writer, String classname, String methodname, String before, String expected) throws IOException {
+        writer.write("    @Test(timeout=" + timeout + ")\n" +
+                "    public void " + methodname + "() throws ");
+        if (classname.equals("org.apache.commons.math3.random.SynchronizedRandomGeneratorTest") && methodname.equals("testMath899Sync")){
+            writer.write("Throwable {\n");
+        }
+        else{
+            writer.write("Exception {\n");
+        }
+        if(expected==null) {
+            writer.write(
+                    "        if (verifyNoPropertyViolation(config)) {\n"
+            );
+        }
+        else {
+            writer.write(
+                    "        if (verifyUnhandledException(" + "\"" + expected + "\"" +  ", config)) {\n"
+            );
+        }
+        // create test object
+        writer.write(
+                "               " + classname + " object = new " + classname + "();\n"
+        );
+        if (before != null) {
+            writer.write(
+                    "               object." + before + "();\n"
+            );
+        }
+        writer.write(
+                "               object." + methodname + "();\n" +
+                        "        }\n" +
+                        "    }\n\n");
     }
 }
