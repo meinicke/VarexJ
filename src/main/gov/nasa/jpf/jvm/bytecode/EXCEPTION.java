@@ -39,6 +39,13 @@ public class EXCEPTION extends JVMInstruction {
 		this.details = details;
 	}
 
+	public EXCEPTION(Instruction callee, String cname, String details) {
+		this(cname, details);
+		this.insnIndex = callee.getInstructionIndex();
+		this.mi = callee.getMethodInfo();
+		this.position = callee.getPosition();
+	}
+
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		return new One<>(ti.createAndThrowException(ctx, cname, details));
 	}
@@ -65,7 +72,9 @@ public class EXCEPTION extends JVMInstruction {
 			return true;
 		}
 		if (o instanceof EXCEPTION) {
-			if (((EXCEPTION) o).cname.equals(cname) && ((EXCEPTION) o).details.equals(details)) {
+			if (((EXCEPTION) o).cname.equals(cname) && ((EXCEPTION) o).details.equals(details) 
+//					&& this.position == ((EXCEPTION) o).position
+					) {
 				return true;
 			}
 		}

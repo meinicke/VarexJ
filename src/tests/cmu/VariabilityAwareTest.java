@@ -2,6 +2,7 @@ package cmu;
 
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import org.junit.Test;
 @SuppressWarnings("unused")
 public class VariabilityAwareTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=local",*/ "+search.class= .search.RandomSearch", "+choice=TreeChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=context",*/ "+search.class= .search.RandomSearch", "+choice=TreeChoice"};
 
 	static boolean RUN_WITH_JPF = true;
 
@@ -502,29 +503,31 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 	
-	/**
-	 * Checks that the executions are joined again after a div by zero exception
-	 * TODO how to test this property? (i.e., fail if the instructions are not joined)
-	 */
 	@Test
-	public void testNullPointer() {
+	public void testDivisionByZero() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Verify.setCounter(0, 0);
+			Verify.setCounter(1, 0);
+			Verify.setCounter(2, 0);
 			try {
-				System.out.println(nullMethod1(0));
+				System.out.println(devisionByZeroCall(b ? 0 : 1));
+				Verify.incrementCounter(1);
 			} catch (Exception e) {
+				Verify.incrementCounter(2);
 				e.printStackTrace();
 			}
-			System.out.println("JOINED");
+			Verify.incrementCounter(0);
+			assertEquals(1, Verify.getCounter(0));
+			assertEquals(1, Verify.getCounter(1));
+			assertEquals(1, Verify.getCounter(2));
 		}
 	}
-	
-	
 
-	private int nullMethod1(int i) {
-		return nullMethod(i);
+	private int devisionByZeroCall(int i) {
+		return devisionByZero(i);
 	}
 
-	private int nullMethod(int i) {
+	private int devisionByZero(int i) {
 		int k = 3;
 		if (a) {
 			k = k / i;
@@ -536,20 +539,81 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 	
 	@Test
+	public void testDivisionByZeroMultiple() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Verify.setCounter(0, 0);
+			Verify.setCounter(1, 0);
+			Verify.setCounter(2, 0);
+			try {
+				System.out.println(devisionByZeroCall(b ? 0 : c ? 3 : d ? 1 : 0));
+				Verify.incrementCounter(1);
+			} catch (Exception e) {
+				Verify.incrementCounter(2);
+				e.printStackTrace();
+			}
+			Verify.incrementCounter(0);
+			assertEquals(1, Verify.getCounter(0));
+			assertEquals(1, Verify.getCounter(1));
+			assertEquals(1, Verify.getCounter(2));
+		}
+	}
+	
+	@Test
+	public void testNullPointer() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Verify.setCounter(0, 0);
+			Verify.setCounter(1, 0);
+			Verify.setCounter(2, 0);
+			try {
+				String s = "TEST";
+				nullpointerException(s);
+			} catch (Exception e) {
+				System.out.println(e.getClass().getName());
+				Verify.incrementCounter(1);
+			}
+			Verify.incrementCounter(0);
+			assertEquals(1, Verify.getCounter(0));
+			assertEquals(1, Verify.getCounter(1));
+			assertEquals(1, Verify.getCounter(2));
+		}
+	}
+
+	private void nullpointerException(String s) {
+		Verify.incrementCounter(2);
+		System.out.println(s);
+		Object main = null;
+		if (a) {
+			main = new Object();
+		}
+//		System.out.println("Object " + main + " created");
+		int hash = main.hashCode();
+//		System.out.println("Hash:" + hash);
+	}
+	
+	@Test
 	public void peerExceptionTest() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Verify.setCounter(0, 0);
+			Verify.setCounter(1, 0);
+			Verify.setCounter(2, 0);
 			try {
 				char[] c = new char[10];
 				System.out.println(a);
 				if (!a) {
+					Verify.incrementCounter(0);
 					c[1] = 'A';
 				} else {
+					Verify.incrementCounter(1);
 					c[20] = 'B';
 				}
 			} catch (Exception e) {
+				Verify.incrementCounter(2);
 				e.printStackTrace();
 			}
 			System.out.println("JOIN");
+			assertEquals(1, Verify.getCounter(0));
+			assertEquals(1, Verify.getCounter(1));
+			assertEquals(1, Verify.getCounter(2));
 		}
 	}
 	

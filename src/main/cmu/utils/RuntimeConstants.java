@@ -5,7 +5,7 @@ package cmu.utils;
  * @author Jens Meinicke
  *
  */
-public interface RutimeConstants {
+public interface RuntimeConstants {
 	/**
 	 * Defines the maximal recursion until a {@link StackOverflowError} is thrown.
 	 */

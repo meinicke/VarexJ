@@ -29,7 +29,7 @@ public class Coverage {
 		return type;
 	}
 	
-	public void setLineCovered(final String fileName, int line, final int interaction, final String text) {
+	public void setLineCovered(final String fileName, int line, final int interaction, final Object text) {
 		final Map<Integer, Interaction> fileCoverage;
 		if (coverage.containsKey(fileName)) {
 			fileCoverage = coverage.get(fileName);
@@ -42,7 +42,7 @@ public class Coverage {
 			fileCoverage.put(line, new Interaction(line, interaction, text));
 		} else {
 			final Interaction current = fileCoverage.get(line);
-			if (current.getInteraction() < interaction) {
+			if (current.getInteraction() <= interaction) {
 				current.setInteraction(interaction);
 				current.setText(text);
 			}
@@ -51,6 +51,13 @@ public class Coverage {
 	
 	public Collection<String> getFiles() {
 		return coverage.keySet();
+	}
+	
+	public Interaction getCoverage(String file, Integer line) {
+		if (coverage.containsKey(file)) {
+			return coverage.get(file).get(line);
+		}
+		return null; 
 	}
 	
 	public Collection<Interaction> getCoverage(String file) {

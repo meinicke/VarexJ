@@ -52,8 +52,9 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.utils.RutimeConstants;
+import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
+import coverage.Interaction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -1842,7 +1843,7 @@ public class ThreadInfo extends InfoObject
     return createAndThrowException(ctx, cname, null);
   }
 
-  public Instruction createAndThrowException (FeatureExpr ctx, String cname, String details) {
+  public Instruction createAndThrowException (FeatureExpr ctx, String cname, String details) { 
     try {
       ClassInfo ci = null;
       try {
@@ -1937,7 +1938,7 @@ public class ThreadInfo extends InfoObject
   public Conditional<Instruction> executeInstructionSimple() {
 	  Conditional<Instruction> pc = getPC();
 	    int popedFrames = 0;
-	    final StackFrame oldStack = top;
+	    StackFrame oldStack = top;
 	    try {
 	    	if (time == 0) {
 	    		time = System.currentTimeMillis();
@@ -1983,7 +1984,7 @@ public class ThreadInfo extends InfoObject
 		    	}
 	        }	
 	        	
-    		if (RutimeConstants.debug) {
+    		if (RuntimeConstants.debug) {
     			System.out.print(top.getDepth());
     			if (top.getDepth() < 10) {
     				System.out.print(" ");
@@ -1991,7 +1992,7 @@ public class ThreadInfo extends InfoObject
 				System.out.println(" " + i + " if " + ctx);
 			}
 	    	
-    		if (RutimeConstants.tracing) {
+    		if (RuntimeConstants.tracing) {
     		// log trace for trace comparison
 	    		if (logtrace) {
 	    			if (!(i instanceof InvokeInstruction)) {
@@ -2012,26 +2013,66 @@ public class ThreadInfo extends InfoObject
 //	    	long startOfInstruction = System.currentTimeMillis();
     		Conditional<Instruction> next = i.execute(ctx, this);
     		if (JPF.COVERAGE != null) {
-	    		MethodInfo methodInfo = i.getMethodInfo();
-	    		if (methodInfo != null) {
-		    		ClassInfo classInfo = methodInfo.getClassInfo();
-		    		String file = classInfo.getSourceFileName();
-		    		if (file != null && top != null) {
-			    		file = file.substring(file.lastIndexOf('/') + 1);
-			    		switch (JPF.SELECTED_COVERAGE_TYPE) {
-						case feature:
-				    		JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
-							break;
-						case stack:
-							JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
-							break;
-						case local:
-							JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
-							break;
-						default:
-							throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
+    			if (!(i instanceof InvokeInstruction) && !(i instanceof ReturnInstruction) && !(i instanceof ATHROW)) {
+		    		MethodInfo methodInfo = i.getMethodInfo();
+		    		if (methodInfo != null) {
+			    		ClassInfo classInfo = methodInfo.getClassInfo();
+			    		String file = classInfo.getSourceFileName();
+			    		if (file != null && top != null) {
+				    		file = file.substring(file.lastIndexOf('/') + 1);
+				    		switch (JPF.SELECTED_COVERAGE_TYPE) {
+							case feature:
+					    		JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
+								break;
+							case stack:
+								JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
+								break;
+							case local:
+								JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
+								break;
+							case context:
+								Interaction interaction = JPF.COVERAGE.getCoverage(file, i.getLineNumber());
+								if (interaction != null) {
+									@SuppressWarnings({ "rawtypes", "unchecked" })
+									Map<FeatureExpr, Integer> values = (Map) interaction.getValue();
+									if (!values.containsKey(ctx)) {
+										values.put(ctx, 1);
+										interaction.setInteraction(interaction.getInteraction() + 1);
+									} else {
+										Integer runs = values.get(ctx);
+										values.put(ctx, runs + 1);
+									}
+								} else {
+									Map<FeatureExpr, Integer> values = new HashMap<FeatureExpr, Integer>() {
+										private static final long serialVersionUID = 1L;
+
+										@Override
+										public String toString() {
+											StringBuilder builder = new StringBuilder();
+											for (java.util.Map.Entry<FeatureExpr, Integer> entry : entrySet()) {
+												FeatureExpr ctx = entry.getKey();
+												Integer runs = entry.getValue();
+												builder.append(Conditional.getCTXString(ctx));
+												builder.append(" ");
+												builder.append(runs);
+												if (runs == 1) {
+													builder.append(" instruction executed\n");
+												} else {
+													builder.append(" instructions executed\n");
+												}
+											}
+											return builder.toString();
+										}
+									};
+									values.put(ctx, 1);
+									JPF.COVERAGE.setLineCovered(file, i.getLineNumber(), 1, values);
+								}
+								break;
+							default:
+								throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
+				    		}
+				    		
 			    		}
-			    		
 		    		}
 	    		}
     		}
@@ -2043,16 +2084,16 @@ public class ThreadInfo extends InfoObject
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
-	    		if (stackDepth > RutimeConstants.MAX_FRAMES) {
+	    		if (stackDepth > RuntimeConstants.MAX_FRAMES) {
 	            	nextPc = ChoiceFactory.create(ctx, 
-	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RutimeConstants.MAX_FRAMES + ")")), 
+	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RuntimeConstants.MAX_FRAMES + ")")), 
 	            			next).simplify();
             	}
     		} else if (i instanceof ReturnInstruction) {
     			// instructions already joined at ReturnInstruction#getNext() 
     			nextPc = next;
-    		} else if (i instanceof ATHROW || (poped > 0 && stackTraceMember(oldStack, top))) {
     			// some instruction (e.g., IDIV with div by zero) just pop frames but do not throw exceptions
+    		} else if (i instanceof ATHROW || i instanceof EXCEPTION || (poped > 0 && stackTraceMember(oldStack, top))) {
     			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
     			popedFrames = poped;
 				int k = 0;
@@ -2108,7 +2149,7 @@ public class ThreadInfo extends InfoObject
     vm.notifyExecuteInstruction(this, pc.getValue(true));// TODO revise
 
     int popedFrames = 0;
-    final StackFrame oldStack = top;
+    StackFrame oldStack = top;
     
     if (!skipInstruction) {
         // enter the next bytecode
@@ -2162,7 +2203,7 @@ public class ThreadInfo extends InfoObject
 	    		}
         	}	
         		
-    		if (RutimeConstants.debug) {
+    		if (RuntimeConstants.debug) {
     			System.out.print(top.getDepth());
     			if (top.getDepth() < 10) {
     				System.out.print(" ");
@@ -2196,9 +2237,9 @@ public class ThreadInfo extends InfoObject
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
-    			if (top.getDepth() > RutimeConstants.MAX_FRAMES) {
+    			if (top.getDepth() > RuntimeConstants.MAX_FRAMES) {
             		nextPc = ChoiceFactory.create(ctx, 
-            				new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RutimeConstants.MAX_FRAMES + ")")), 
+            				new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RuntimeConstants.MAX_FRAMES + ")")), 
             				next).simplify();
             	}
     		} else if (i instanceof ReturnInstruction) {

@@ -38,14 +38,14 @@ public class IDIV extends JVMInstruction {
 
 		Conditional<Integer> v1 = frame.pop(ctx);
 		final Conditional<Integer> v2 = frame.pop(ctx);
+		final IDIV thisInstruction = this;
 
 		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 				@Override
 				public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
 				    if (v1 == 0){
-				    	// TODO this error should only be created once, if there are multiple zeros for v1, than the error is thworn multiple times
-				      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
+				      return new One<Instruction>(new EXCEPTION(thisInstruction, "java.lang.ArithmeticException", "division by zero"));
 				    }
 				    
 					frame.push(ctx, v2.map(new Function<Integer, Integer>() {

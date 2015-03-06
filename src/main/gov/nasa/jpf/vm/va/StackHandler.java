@@ -109,6 +109,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@SuppressWarnings("unchecked")
 	public StackHandler clone() {
 		StackHandler clone = new StackHandler();
+//		clone.setCtx(stackCTX); // TODO ThreadStopTest.testStopRunning() fails
 		clone.length = length;
 		clone.locals = new Conditional[locals.length];
 		for (int i = 0; i < locals.length; i++) {
@@ -934,28 +935,24 @@ public class StackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public int getLocalWidth() {
-		int maxWidth = 1;
+		int width = -locals.length;
 		for (Conditional<Entry> local : locals) {
-			int size = local.toMap().size();
-			if (size > maxWidth) {
-				maxWidth = size;
-			}
+			width += local.simplify(getCtx()).toMap().size();
 		}
-		return maxWidth - 1;
+		return width;
 	}
 	
 	@Override
 	public String getMaxLocal() {
-		Conditional<Entry> maxLocal = new One<>(null);
-		int maxWidth = 0;
-		for (Conditional<Entry> local : locals) {
-			int size = local.toMap().size();
-			if (size >= maxWidth) {
-				maxWidth = size;
-				maxLocal = local;
-			}
+		StringBuilder builder = new StringBuilder();
+		for (Conditional<Entry> local : locals) {		
+			int size = local.simplify(getCtx()).toMap().size();
+			builder.append(local.simplify(getCtx()));
+			builder.append(":");
+			builder.append(size);
+			builder.append('\n');
 		}
-		return maxLocal.toString();
+		return builder.toString();
 	}
 
 }

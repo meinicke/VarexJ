@@ -70,7 +70,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
-				return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Calling '" + mname + "' on null object"));
+				return ChoiceFactory.create(ctx, new One<Instruction>(new EXCEPTION(this, "java.lang.NullPointerException", "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
 			}
 
 			MethodInfo callee = getInvokedMethod(ti, objRef);
@@ -78,10 +78,10 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 
 			if (callee == null) {
 				String clsName = ti.getClassInfo(objRef).getName();
-				return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodError", clsName + '.' + mname));
+				return new One<>(ti.createAndThrowException(ctx, java.lang.NoSuchMethodError.class.getName(), clsName + '.' + mname));
 			} else {
 				if (callee.isAbstract()) {
-					return new One<>(ti.createAndThrowException(ctx, "java.lang.AbstractMethodError", callee.getFullName() + ", object: " + ei));
+					return new One<>(ti.createAndThrowException(ctx, java.lang.AbstractMethodError.class.getName(), callee.getFullName() + ", object: " + ei));
 				}
 			}
 
