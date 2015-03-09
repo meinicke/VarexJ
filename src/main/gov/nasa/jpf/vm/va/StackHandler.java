@@ -408,12 +408,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 					clone.push((int) (v >> 32), isRef);
 					clone.push((int) v, isRef);
 				} else if (value instanceof Double) {
-					long l = Double.doubleToLongBits((Double) value);
-					clone.push((int) (l >> 32), isRef);
-					clone.push((int) l, isRef);
+					long v = Double.doubleToLongBits((Double) value);
+					clone.push((int) (v >> 32), isRef);
+					clone.push((int) v, isRef);
 				} else if (value instanceof Float) {
-					float v = (Float) value;
-					clone.push(Float.floatToIntBits(v), isRef);
+					clone.push(Float.floatToIntBits((Float) value), isRef);
 				} else if (value instanceof Byte) {
 					clone.push(((Byte)value).intValue(), isRef);
 				} else if (value instanceof Short) {
@@ -467,33 +466,27 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public <T> Conditional<T> pop(final FeatureExpr ctx, final Type t) {
-//		if (ThreadInfo.debug) {
-//			System.out.println(stack);
-//		}
 		Conditional<T> result = stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<T>>() {
 
 			@SuppressWarnings("unchecked")
 			@Override
 			public Conditional<T> apply(final FeatureExpr f, final Stack s) {
 				Stack clone = s.copy();
-				Number res = null;
+				Number res;
+				final int lo = clone.pop();
+
 				switch (t) {
 				case INT:
-					res = clone.pop();
+					res = Integer.valueOf(lo);
 					break;
 				case DOUBLE:
-					int lo = clone.pop();
-					int hi = clone.pop();
-					res = Types.intsToDouble(lo, hi);
+					res = Types.intsToDouble(lo, clone.pop());
 					break;
 				case FLOAT:
-					int i = clone.pop();
-					res = Types.intToFloat(i);
+					res = Types.intToFloat(lo);
 					break;
 				case LONG:
-					int lo2 = clone.pop();
-					int hi2 = clone.pop();
-					res = Types.intsToLong(lo2, hi2);
+					res = Types.intsToLong(lo, clone.pop());
 					break;
 				default:
 					return null;
@@ -515,7 +508,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 * @see gov.nasa.jpf.vm.IStackHandler#pop(de.fosd.typechef.featureexpr.FeatureExpr, int)
 	 */
 	@Override
-	public void pop(final FeatureExpr ctx, final int n) {
+	public void pop(FeatureExpr ctx, final int n) {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
@@ -525,16 +518,14 @@ public class StackHandler implements Cloneable, IStackHandler {
 				}
 
 				Stack clone = s.copy();
-				int i = n;
-				while (i > 0) {
+				for (int i = n; i > 0; i--) {
 					clone.pop();
-					i--;
 				}
 
 				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
-				return ChoiceFactory.create(ctx, new One<>(clone), new One<>(s));
+				return ChoiceFactory.create(f, new One<>(clone), new One<>(s));
 			}
 		}).simplify();
 	}
