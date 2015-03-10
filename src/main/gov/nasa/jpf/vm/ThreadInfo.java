@@ -2127,7 +2127,8 @@ public class ThreadInfo extends InfoObject
 						case local:
 							JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
 							break;
-						case context:
+						case context:// same as for composedContext 
+						case composedContext:
 							Interaction interaction = JPF.COVERAGE.getCoverage(file, instruction.getLineNumber());
 							if (interaction != null) {
 								@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -2146,11 +2147,18 @@ public class ThreadInfo extends InfoObject
 									@Override
 									public String toString() {
 										StringBuilder builder = new StringBuilder();
+										FeatureExpr composedContext = FeatureExprFactory.False();
+										for (FeatureExpr entry : keySet()) {
+											composedContext = composedContext.or(entry);
+										}
+										builder.append("Composed context: ");
+										builder.append(Conditional.getCTXString(composedContext));
+										builder.append('\n');
 										for (java.util.Map.Entry<FeatureExpr, Integer> entry : entrySet()) {
 											FeatureExpr ctx = entry.getKey();
 											Integer runs = entry.getValue();
 											builder.append(Conditional.getCTXString(ctx));
-											builder.append(" ");
+											builder.append(' ');
 											builder.append(runs);
 											if (runs == 1) {
 												builder.append(" instruction executed\n");

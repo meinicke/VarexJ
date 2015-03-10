@@ -335,7 +335,7 @@ public class JPF implements Runnable {
   }
   
   public enum COVERAGE_TYPE {
-	  feature, stack, local, context
+	  feature, stack, local, context, composedContext
   }
   
   public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
@@ -346,6 +346,7 @@ public class JPF implements Runnable {
     	  if (COVERAGE == null) {
     		  // do not override
     		  COVERAGE = new Coverage();
+    		  COVERAGE.setMinInteraction(config.getInt("minInteraction", -1));
     	  }
     	  
 				for (COVERAGE_TYPE type : COVERAGE_TYPE.values()) {
@@ -365,8 +366,12 @@ public class JPF implements Runnable {
 							COVERAGE.setBaseValue(1);
 							break;
 						case context:
-							COVERAGE.setType("All contexts: ");
+							COVERAGE.setType("Number of different contexts: ");
 							COVERAGE.setBaseValue(1);
+							break;
+						case composedContext:
+							COVERAGE.setType("Size of disjuntion of all contexts: ");
+							COVERAGE.setBaseValue(0);
 							break;
 						default:
 							break;

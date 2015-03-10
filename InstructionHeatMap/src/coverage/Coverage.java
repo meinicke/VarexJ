@@ -1,6 +1,8 @@
 package coverage;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -16,6 +18,7 @@ public class Coverage {
 	private final TreeMap<String, Map<Integer, Interaction>> coverage;
 	private String type;
 	private int baseValue = 0;
+	private int minInteraction;
 	
 	public Coverage() {
 		coverage = new TreeMap<>();
@@ -30,6 +33,10 @@ public class Coverage {
 	}
 	
 	public void setLineCovered(final String fileName, int line, final int interaction, final Object text) {
+		setLineCovered(fileName, line, interaction, text, false);
+	}
+		
+	public void setLineCovered(final String fileName, int line, final int interaction, final Object text, boolean force) {
 		final Map<Integer, Interaction> fileCoverage;
 		if (coverage.containsKey(fileName)) {
 			fileCoverage = coverage.get(fileName);
@@ -42,7 +49,7 @@ public class Coverage {
 			fileCoverage.put(line, new Interaction(line, interaction, text));
 		} else {
 			final Interaction current = fileCoverage.get(line);
-			if (current.getInteraction() <= interaction) {
+			if (force || current.getInteraction() <= interaction) {
 				current.setInteraction(interaction);
 				current.setText(text);
 			}
@@ -65,6 +72,23 @@ public class Coverage {
 			return coverage.get(file).values();
 		}
 		return Collections.emptySet();
+	}
+	
+	public void deleteMinInteraction() {
+		if (minInteraction <= -1) {
+			return;
+		}
+		for (Map<Integer, Interaction> interactions : coverage.values()) {
+			List<Integer> removeThese = new LinkedList<>(); 
+			for (Entry<Integer, Interaction> i : interactions.entrySet()) {
+				if (i.getValue().getInteraction() <= minInteraction) {
+					removeThese.add(i.getKey());
+				}
+			}
+			for (Integer remove : removeThese) {
+				interactions.remove(remove);
+			}
+		}
 	}
 	
 	public void clear() {
@@ -111,5 +135,9 @@ public class Coverage {
 
 	public void setBaseValue(int baseValue) {
 		this.baseValue = baseValue;
+	}
+
+	public void setMinInteraction(int minInteraction) {
+		this.minInteraction = minInteraction;
 	}
 }
