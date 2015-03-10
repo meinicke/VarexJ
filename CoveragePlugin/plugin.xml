@@ -11,107 +11,7 @@
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
             annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.red"
-            colorPreferenceKey="colorAnnotationRed_color"
-            colorPreferenceValue="255, 175, 177"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationRed_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_Red"
-            overviewRulerPreferenceKey="colorAnnotationRed_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationRed_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationRed_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationRed_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.aquamarine2"
-            colorPreferenceKey="colorAnnotationaquamarine2_color"
-            colorPreferenceValue="118,	238,	198"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationaquamarine2_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_aquamarine2"
-            overviewRulerPreferenceKey="colorAnnotationaquamarine2_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationaquamarine2_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationaquamarine2_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationaquamarine2_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.orange"
-            colorPreferenceKey="colorAnnotationOrange_color"
-            colorPreferenceValue="255, 216, 166"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationOrange_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_Orange"
-            overviewRulerPreferenceKey="colorAnnotationOrange_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationOrange_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationOrange_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationOrange_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.yellow"
-            colorPreferenceKey="colorAnnotationYellow_color"
-            colorPreferenceValue="237, 255, 166"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationYellow_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_Yellow"
-            overviewRulerPreferenceKey="colorAnnotationYellow_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationYellow_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationYellow_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationYellow_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.darkgreen"
-            colorPreferenceKey="colorAnnotationDarkGreen_color"
-            colorPreferenceValue="164, 228, 148"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationDarkGreen_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_DarkGreen"
-            overviewRulerPreferenceKey="colorAnnotationDarkGreen_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationDarkGreen_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationDarkGreen_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationDarkGreen_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.lightgreen"
+            annotationType="coverageplugin.lightgreen"
             colorPreferenceKey="colorAnnotationLightGreen_color"
             colorPreferenceValue="166, 255, 201"
             contributesToHeader="false"
@@ -131,190 +31,290 @@
       </specification>
       <specification
             annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.cyan"
-            colorPreferenceKey="colorAnnotationCyan_color"
-            colorPreferenceValue="163, 251, 251"
+            annotationType="coverageplugin.darkgreen"
+            colorPreferenceKey="colorAnnotationDarkGreen_color"
+            colorPreferenceValue="164, 228, 148"
             contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationCyan_higlight"
+            highlightPreferenceKey="colorAnnotationDarkGreen_higlight"
             highlightPreferenceValue="true"
             includeOnPreferencePage="false"
-            label="ColorAnnotation_Cyan"
-            overviewRulerPreferenceKey="colorAnnotationCyan_overviewRuler"
+            label="ColorAnnotation_DarkGreen"
+            overviewRulerPreferenceKey="colorAnnotationDarkGreen_overviewRuler"
             overviewRulerPreferenceValue="true"
             presentationLayer="0"
-            textPreferenceKey="colorAnnotationCyan_text"
+            textPreferenceKey="colorAnnotationDarkGreen_text"
             textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationCyan_textStyle"
+            textStylePreferenceKey="colorAnnotationDarkGreen_textStyle"
             textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationCyan_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.lightgrey"
-            colorPreferenceKey="colorAnnotationLightGrey_color"
-            colorPreferenceValue="228, 228, 228"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationLightGrey_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_LightGrey"
-            overviewRulerPreferenceKey="colorAnnotationLightGrey_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationLightGrey_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationLightGrey_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationLightGrey_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.blue"
-            colorPreferenceKey="colorAnnotationBlue_color"
-            colorPreferenceValue="000	,191,	255	"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationBlue_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_Blue"
-            overviewRulerPreferenceKey="colorAnnotationBlue_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationBlue_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationBlue_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationBlue_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.margenta"
-            colorPreferenceKey="colorAnnotationMargenta_color"
-            colorPreferenceValue="240, 166, 255"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationMargenta_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_Margenta"
-            overviewRulerPreferenceKey="colorAnnotationMargenta_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationMargenta_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationMargenta_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationMargenta_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.pink"
-            colorPreferenceKey="colorAnnotationPink_color"
-            colorPreferenceValue="228, 148, 194"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationPink_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_Pink"
-            overviewRulerPreferenceKey="colorAnnotationPink_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationPink_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationPink_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationPink_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.mediumpurple"
-            colorPreferenceKey="colorAnnotationMediumPurple_color"
-            colorPreferenceValue="180,	150,	255"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationMediumPurple_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_MediumPurple"
-            overviewRulerPreferenceKey="colorAnnotationMediumPurple_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationMediumPurple_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationMediumPurple_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationMediumPurple_verticalRuler"
-            verticalRulerPreferenceValue="false">
-      </specification>
-      <specification
-            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
-            annotationType="coverageplugins.gold1"
-            colorPreferenceKey="colorAnnotationgold1_color"
-            colorPreferenceValue="255,	215,	000"
-            contributesToHeader="false"
-            highlightPreferenceKey="colorAnnotationgold1_higlight"
-            highlightPreferenceValue="true"
-            includeOnPreferencePage="false"
-            label="ColorAnnotation_gold1"
-            overviewRulerPreferenceKey="colorAnnotationgold1_overviewRuler"
-            overviewRulerPreferenceValue="true"
-            presentationLayer="0"
-            textPreferenceKey="colorAnnotationgold1_text"
-            textPreferenceValue="true"
-            textStylePreferenceKey="colorAnnotationgold1_textStyle"
-            textStylePreferenceValue="NONE"
-            verticalRulerPreferenceKey="colorAnnotationgold1_verticalRuler"
+            verticalRulerPreferenceKey="colorAnnotationDarkGreen_verticalRuler"
             verticalRulerPreferenceValue="false">
       </specification>
       
-      
+      % colors for interactions
+      % see: http://webbausteine.de/blog/tools/farbverlauf.php#form
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_0"
+            colorPreferenceKey="colorAnnotationInteraction_0_color"
+            colorPreferenceValue="255, 255, 128"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationInteraction_0_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_Interaction_0"
+            overviewRulerPreferenceKey="colorAnnotationInteraction_=_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationInteraction_0_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationInteraction_0_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationInteraction_0_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_1"
+            colorPreferenceKey="colorAnnotationinteraction_1_color"
+            colorPreferenceValue="255, 246, 131"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_1_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_1"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_1_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_1_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_1_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_1_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_2"
+            colorPreferenceKey="colorAnnotationinteraction_2_color"
+            colorPreferenceValue="255, 236, 134"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_2_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_2"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_2_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_2_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_2_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_2_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_3"
+            colorPreferenceKey="colorAnnotationinteraction_3_color"
+            colorPreferenceValue="255, 227, 138"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_3_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_3"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_3_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_3_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_3_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_3_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_4"
+            colorPreferenceKey="colorAnnotationinteraction_4_color"
+            colorPreferenceValue="255, 217, 141"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_4_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_4"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_4_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_4_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_4_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_4_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_5"
+            colorPreferenceKey="colorAnnotationinteraction_5_color"
+            colorPreferenceValue="255, 208, 144"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_5_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_5"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_5_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_5_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_5_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_5_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_6"
+            colorPreferenceKey="colorAnnotationinteraction_6_color"
+            colorPreferenceValue="255, 198, 147"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_6_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_6"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_6_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_6_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_6_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_6_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_7"
+            colorPreferenceKey="colorAnnotationinteraction_7_color"
+            colorPreferenceValue="255, 189, 150"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_7_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_7"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_7_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_7_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_7_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_7_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_8"
+            colorPreferenceKey="colorAnnotationinteraction_8_color"
+            colorPreferenceValue="255, 179, 154"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_8_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_8"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_8_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_8_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_8_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_8_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_9"
+            colorPreferenceKey="colorAnnotationinteraction_9_color"
+            colorPreferenceValue="255, 170, 157"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_9_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_9"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_9_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_9_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_9_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_9_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_10"
+            colorPreferenceKey="colorAnnotationinteraction_10_color"
+            colorPreferenceValue="255, 160, 160"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_10_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_10"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_10_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_10_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_10_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_10_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
    </extension>
    <extension
          point="org.eclipse.ui.editors.annotationTypes">
       <type
-            name="coverageplugins.red">
+            name="coverageplugin.lightgreen">
       </type>
       <type
-            name="coverageplugins.orange">
+            name="coverageplugin.darkgreen">
+      </type>
+      
+      <type
+            name="coverageplugin.interaction_0">
       </type>
       <type
-            name="coverageplugins.yellow">
+            name="coverageplugin.interaction_1">
       </type>
       <type
-            name="coverageplugins.darkgreen">
+            name="coverageplugin.interaction_2">
       </type>
       <type
-            name="coverageplugins.lightgreen">
+            name="coverageplugin.interaction_3">
       </type>
       <type
-            name="coverageplugins.lightgrey">
+            name="coverageplugin.interaction_4">
       </type>
       <type
-            name="coverageplugins.cyan">
+            name="coverageplugin.interaction_5">
       </type>
       <type
-            name="coverageplugins.blue">
+            name="coverageplugin.interaction_6">
       </type>
       <type
-            name="coverageplugins.orange">
+            name="coverageplugin.interaction_7">
       </type>
       <type
-            name="coverageplugins.margenta">
+            name="coverageplugin.interaction_8">
       </type>
       <type
-            name="coverageplugins.pink">
+            name="coverageplugin.interaction_9">
       </type>
       <type
-            name="coverageplugins.aquamarine2">
+            name="coverageplugin.interaction_10">
       </type>
-       <type
-            name="coverageplugins.mediumpurple">
-      </type>
-      	<type
-            name="coverageplugins.gold1">
-      </type> 
+      
    </extension>
 </plugin>

@@ -31,15 +31,15 @@ import org.eclipse.jface.text.source.Annotation;
 public class ColorAnnotation extends Annotation {
 
 	enum ANNOTATON_COLOR {
-		lightgreen, darkgreen, aquamarine2, blue, mediumpurple, margenta, cyan, yellow, gold1, orange, pink, red;
+		lightgreen, darkgreen;
 	}
 
-	// blue
-	// mediumpurple
-	// margenta
-	// pink
-	// gold1
-	private static final String PREFIX = "coverageplugins.";
+	/**
+	 * The number of defined colors for interactions
+	 */
+	private static final int MAX_INTERACTION = 10; 
+	
+	private static final String PREFIX = "coverageplugin.";
 	public static int base = 0;
 	private final Position position;
 	private final int id;
@@ -56,13 +56,16 @@ public class ColorAnnotation extends Annotation {
 
 	private static String getTypeString(int colorID) {
 		ANNOTATON_COLOR[] values = ANNOTATON_COLOR.values();
-		final ANNOTATON_COLOR color;
-		if (values.length <= (colorID - base)) {
-			color = values[values.length - 1];
-		} else {
-			color = values[colorID - base];
+		if (values.length > (colorID - base)) {
+			return (PREFIX + values[colorID - base].name()).intern();
 		}
-		return (PREFIX + color.name()).intern();
+		
+		int referenceNumber = (colorID - values.length - base);
+		if (referenceNumber > MAX_INTERACTION) {
+			referenceNumber = MAX_INTERACTION;
+		}
+		return (PREFIX  + "interaction_" + referenceNumber).intern();
+		
 	}
 
 	public Position getPosition() {
