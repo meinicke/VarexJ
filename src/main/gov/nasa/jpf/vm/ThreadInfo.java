@@ -2228,10 +2228,10 @@ public class ThreadInfo extends InfoObject
 										sum += value;
 									}
 									long average = sum / times.size();
-									builder.append("Max:\t\t").append(max / 1000).append("탎\n");
-									builder.append("Max2:\t\t").append(max2 / 1000).append("탎\n");
-									builder.append("Average:\t").append(average / 1000).append("탎\n");
-									builder.append("Min: \t\t").append(min / 1000).append("탎\n");
+									builder.append("Max:\t\t").append(max / 1000).append("micro s\n");
+									builder.append("Max2:\t\t").append(max2 / 1000).append("micro s\n");
+									builder.append("Average:\t").append(average / 1000).append("micro s\n");
+									builder.append("Min: \t\t").append(min / 1000).append("micro s\n");
 								}
 								return builder.toString();
 							}
