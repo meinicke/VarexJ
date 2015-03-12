@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -46,12 +47,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.TreeMap;
 import java.util.logging.Level;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
 import coverage.Interaction;
@@ -1643,10 +1645,10 @@ public class ThreadInfo extends InfoObject
 
     } else { // fall back to use the snapshot stored in the exception object
       Conditional<Integer> VAaRef = env.getReferenceField(ctx, objRef, "snapshot");
-      VAaRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+      VAaRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 		@Override
-		public Conditional<Object> apply(FeatureExpr ctx, Integer aRef) {
+		public void apply(FeatureExpr ctx, Integer aRef) {
 			 int[] snapshot = env.getIntArrayObject(ctx, aRef);
 		      int len = snapshot.length/2;
 
@@ -1656,7 +1658,6 @@ public class ThreadInfo extends InfoObject
 		        StackTraceElement ste = new StackTraceElement( methodId, pcOffset);
 		        ste.printOn( pw);
 		      }
-		      return null;
 		}
     	  
 	});
@@ -2010,10 +2011,17 @@ public class ThreadInfo extends InfoObject
      			performTracing(i, ctx);
      		}
 
+     		long time = 0;
      		final int currentStackDepth = stackDepth;
+     		if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {// TODO revise
+     			time = System.nanoTime();
+     		}
      		final Conditional<Instruction> next = i.execute(ctx, this);
      		if (JPF.COVERAGE != null) {
-     			performCoverage(i, ctx);
+     			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {
+     				time = System.nanoTime() - time;
+     			}
+     			performCoverage(i, ctx, time);
      		}
 
     		final int poped = currentStackDepth - stackDepth;
@@ -2108,79 +2116,139 @@ public class ThreadInfo extends InfoObject
   	 * Logs the current instruction / state for coverage.
   	 * @param instruction The instruction to cover.
   	 * @param ctx
+  	 * @param time 
   	 */
-	private void performCoverage(Instruction instruction, FeatureExpr ctx) {
-  		if (!(instruction instanceof InvokeInstruction) && !(instruction instanceof ReturnInstruction) && !(instruction instanceof ATHROW)) {
-	    		MethodInfo methodInfo = instruction.getMethodInfo();
-	    		if (methodInfo != null) {
-		    		ClassInfo classInfo = methodInfo.getClassInfo();
-		    		String file = classInfo.getSourceFileName();
-		    		if (file != null && top != null) {
-			    		file = file.substring(file.lastIndexOf('/') + 1);
-			    		switch (JPF.SELECTED_COVERAGE_TYPE) {
-						case feature:
-				    		JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
-							break;
-						case stack:
-							JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
-							break;
-						case local:
-							JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
-							break;
-						case context:// same as for composedContext 
-						case composedContext:
-							Interaction interaction = JPF.COVERAGE.getCoverage(file, instruction.getLineNumber());
-							if (interaction != null) {
-								@SuppressWarnings({ "rawtypes", "unchecked" })
-								Map<FeatureExpr, Integer> values = (Map) interaction.getValue();
-								if (!values.containsKey(ctx)) {
-									values.put(ctx, 1);
-									interaction.setInteraction(interaction.getInteraction() + 1);
-								} else {
-									Integer runs = values.get(ctx);
-									values.put(ctx, runs + 1);
-								}
-							} else {
-								Map<FeatureExpr, Integer> values = new HashMap<FeatureExpr, Integer>() {
-									private static final long serialVersionUID = 1L;
+	private void performCoverage(Instruction instruction, FeatureExpr ctx, long time) {
+		MethodInfo methodInfo = instruction.getMethodInfo();
+		if (methodInfo != null) {
+			ClassInfo classInfo = methodInfo.getClassInfo();
+			String file = classInfo.getSourceFileName();
+			if (file != null && top != null) {
+				file = file.substring(file.lastIndexOf('/') + 1);
+				switch (JPF.SELECTED_COVERAGE_TYPE) {
+				case feature:
+					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
+					break;
+				case stack:
+					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
+					break;
+				case local:
+					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
+					break;
+				case context:// same as for composedContext
+				case composedContext:
+					Interaction interaction = JPF.COVERAGE.getCoverage(file, instruction.getLineNumber());
+					if (interaction != null) {
+						@SuppressWarnings({ "rawtypes", "unchecked" })
+						Map<FeatureExpr, Integer> values = (Map) interaction.getValue();
+						if (!values.containsKey(ctx)) {
+							values.put(ctx, 1);
+							interaction.setInteraction(interaction.getInteraction() + 1);
+						} else {
+							Integer runs = values.get(ctx);
+							values.put(ctx, runs + 1);
+						}
+					} else {
+						Map<FeatureExpr, Integer> values = new HashMap<FeatureExpr, Integer>() {
+							private static final long serialVersionUID = 1L;
 
-									@Override
-									public String toString() {
-										StringBuilder builder = new StringBuilder();
-										FeatureExpr composedContext = FeatureExprFactory.False();
-										for (FeatureExpr entry : keySet()) {
-											composedContext = composedContext.or(entry);
-										}
-										builder.append("Composed context: ");
-										builder.append(Conditional.getCTXString(composedContext));
-										builder.append('\n');
-										for (java.util.Map.Entry<FeatureExpr, Integer> entry : entrySet()) {
-											FeatureExpr ctx = entry.getKey();
-											Integer runs = entry.getValue();
-											builder.append(Conditional.getCTXString(ctx));
-											builder.append(' ');
-											builder.append(runs);
-											if (runs == 1) {
-												builder.append(" instruction executed\n");
-											} else {
-												builder.append(" instructions executed\n");
-											}
-										}
-										return builder.toString();
+							@Override
+							public String toString() {
+								StringBuilder builder = new StringBuilder();
+								FeatureExpr composedContext = FeatureExprFactory.False();
+								for (FeatureExpr entry : keySet()) {
+									composedContext = composedContext.or(entry);
+								}
+								builder.append("Composed context: ");
+								builder.append(Conditional.getCTXString(composedContext));
+								builder.append('\n');
+								for (java.util.Map.Entry<FeatureExpr, Integer> entry : entrySet()) {
+									FeatureExpr ctx = entry.getKey();
+									Integer runs = entry.getValue();
+									builder.append(Conditional.getCTXString(ctx));
+									builder.append(' ');
+									builder.append(runs);
+									if (runs == 1) {
+										builder.append(" instruction executed\n");
+									} else {
+										builder.append(" instructions executed\n");
 									}
-								};
-								values.put(ctx, 1);
-								JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), 1, values);
+								}
+								return builder.toString();
 							}
-							break;
-						default:
-							throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
-			    		}
-			    		
-		    		}
-	    		}
- 		}
-  	}
+						};
+						values.put(ctx, 1);
+						JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), 1, values);
+					}
+					break;
+				case time:
+					final int modifier = 1_000_000;
+					interaction = JPF.COVERAGE.getCoverage(file, instruction.getLineNumber());
+					if (interaction != null) {
+						@SuppressWarnings({ "rawtypes", "unchecked" })
+						Map<Instruction, LinkedList<Long>> values = (Map) interaction.getValue();
+						if (values.containsKey(instruction)) {
+							LinkedList<Long> times = values.get(instruction);
+							times.add(time);
+						} else {
+							LinkedList<Long> initialValue = new LinkedList<Long>();
+							initialValue.add(time);
+							values.put(instruction, initialValue);
+						}
+						int degree = interaction.getInteraction();
+						if ((time / modifier) > degree) {
+							interaction.setInteraction((int) (time / modifier));
+						}
+					} else {
+						Map<Instruction, LinkedList<Long>> values = new TreeMap<Instruction, LinkedList<Long>>(new Comparator<Instruction>() {
+
+							@Override
+							public int compare(Instruction o1, Instruction o2) {
+								return o1.insnIndex - o2.insnIndex;
+							}
+
+						}) {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public String toString() {
+								StringBuilder builder = new StringBuilder();
+								for (java.util.Map.Entry<Instruction, LinkedList<Long>> entry : entrySet()) {
+									builder.append(entry.getKey()).append('\n');
+									LinkedList<Long> times = entry.getValue();
+									Collections.sort(times);
+									long min = times.getFirst();
+									long max = times.getLast();
+									long max2 = 0;
+									if (times.size() >= 2) {
+										max2 = times.get(times.size() - 2);
+									}
+									long sum = 0;
+									for (long value : times) {
+										sum += value;
+									}
+									long average = sum / times.size();
+									builder.append("Max:\t\t").append(max / 1000).append("탎\n");
+									builder.append("Max2:\t\t").append(max2 / 1000).append("탎\n");
+									builder.append("Average:\t").append(average / 1000).append("탎\n");
+									builder.append("Min: \t\t").append(min / 1000).append("탎\n");
+								}
+								return builder.toString();
+							}
+						};
+						LinkedList<Long> initialValue = new LinkedList<Long>();
+						initialValue.add(time);
+						values.put(instruction, initialValue);
+						JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), (int) (time / modifier), values);
+					}
+					break;
+				default:
+					throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
+				}
+
+			}
+		}
+	}
 
 	/**
   	 * Checks whether the the new top stack is part of the trace of the current stack.

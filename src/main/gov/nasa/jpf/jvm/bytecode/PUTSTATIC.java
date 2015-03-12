@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
+import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -37,6 +38,9 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  * ..., value => ...
  */
 public class PUTSTATIC extends StaticFieldInstruction implements StoreInstruction {
+
+	private static final One<Integer> FALSE = new One<>(0);
+	private static final One<Integer> TRUE = new One<>(1);
 
 	public PUTSTATIC() {}
 
@@ -64,10 +68,12 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			}
 		}
 		if (annotated) {
+			
 			StackFrame frame = ti.getModifiableTopFrame();
 			FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
+			IChoice<Integer> create = ChoiceFactory.create(feature, TRUE, FALSE);
 			frame.pop(ctx);
-			frame.push(ctx, ChoiceFactory.create(feature, new One<>(1), new One<>(0)));
+			frame.push(ctx, create);
 		}
 		
 		if (!ti.isFirstStepInsn()) { // top half

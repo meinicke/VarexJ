@@ -69,15 +69,15 @@ public class CharArrayFields extends ArrayFields {
 	}
 
 	public Conditional<Integer> arrayLength() {
-		return values.map(new ArrayLength()).simplifyValues();
+		return values.map(ArrayLength).simplifyValues();
 	}
 	
-	private static final class ArrayLength implements Function<char[], Integer> {
+	private static final Function<char[], Integer> ArrayLength = new Function<char[], Integer>() {
 		@Override
 		public Integer apply(char[] values) {
 			return values.length;
 		}
-	}
+	};
 
 	public int getHeapSize() { // in bytes
 		return values.getValue().length * 2;

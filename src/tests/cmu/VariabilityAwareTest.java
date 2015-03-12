@@ -10,7 +10,7 @@ import org.junit.Test;
 @SuppressWarnings("unused")
 public class VariabilityAwareTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{"+interaction=local", "+search.class= .search.RandomSearch", "+choice=MapChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=time",*/ "+search.class= .search.RandomSearch", "+choice=MapChoice"};
 
 	static boolean RUN_WITH_JPF = true;
 

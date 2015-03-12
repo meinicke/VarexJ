@@ -68,7 +68,7 @@ public class JVMStackFrame extends StackFrame {
 				}
 			}
 			if (!miCallee.isStatic()) {
-				thisRef = stack.getLocal(ctx, 0).getValue();
+				thisRef = stack.getLocal(ctx, 0).simplify(ctx).getValue();
 			}
 		}
 	}

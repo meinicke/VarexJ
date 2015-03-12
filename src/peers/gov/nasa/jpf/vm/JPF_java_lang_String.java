@@ -741,16 +741,17 @@ public class JPF_java_lang_String extends NativePeer {
 		return ei.getObjectRef();
 	}
 
+	private static final Function<Integer, String> ValueOf = new Function<Integer, String>() {
+		
+		@Override
+		public String apply(Integer i) {
+			return String.valueOf(i);
+		}
+		
+	};
 	@MJI
 	public int valueOf__I__Ljava_lang_String_2(MJIEnv env, int clsref, Conditional<Integer> i, FeatureExpr ctx) {
-		Conditional<String> result = i.map(new Function<Integer, String>() {
-
-			@Override
-			public String apply(Integer i) {
-				return String.valueOf(i);
-			}
-
-		});
+		Conditional<String> result = i.map(ValueOf);
 		return env.newString(ctx, result);
 	}
 

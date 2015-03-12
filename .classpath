@@ -30,6 +30,7 @@
 	<classpathentry kind="lib" path="lib/prevayler-factory-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/Coverage.jar"/>
 	<classpathentry kind="lib" path="lib/ColoredLogger.jar"/>
+	<classpathentry kind="lib" path="lib/annotations.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

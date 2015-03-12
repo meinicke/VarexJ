@@ -38,7 +38,18 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 		Conditional<U> newResultA = thenBranch.mapfr(inFeature.and(featureExpr), f);
 		Conditional<U> newResultB = elseBranch.mapfr(inFeature.and(featureExpr.not()), f);
 		return new TreeChoice<>(featureExpr, newResultA, newResultB);
+	}
+	
+	@Override
+	public void mapfr(final FeatureExpr inFeature, final VoidBiFunction<FeatureExpr, T> f) {
+		if (inFeature == null) {
+			thenBranch.mapfr(null, f);
+			elseBranch.mapfr(null, f);
+			return;
+		}
 
+		thenBranch.mapfr(inFeature.and(featureExpr), f);
+		elseBranch.mapfr(inFeature.and(featureExpr.not()), f);
 	}
 
 	@Override

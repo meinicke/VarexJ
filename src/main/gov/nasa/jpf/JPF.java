@@ -335,7 +335,7 @@ public class JPF implements Runnable {
   }
   
   public enum COVERAGE_TYPE {
-	  feature, stack, local, context, composedContext
+	  feature, stack, local, context, composedContext, time
   }
   
   public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
@@ -371,6 +371,10 @@ public class JPF implements Runnable {
 							break;
 						case composedContext:
 							COVERAGE.setType("Size of disjuntion of all contexts: ");
+							COVERAGE.setBaseValue(0);
+							break;
+						case time:
+							COVERAGE.setType("Max time: ");
 							COVERAGE.setBaseValue(0);
 							break;
 						default:

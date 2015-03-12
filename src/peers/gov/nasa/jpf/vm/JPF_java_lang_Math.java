@@ -206,16 +206,17 @@ public class JPF_java_lang_Math extends NativePeer {
 		return Math.pow(a, b);
 	}
 
+	private final static Function<Double, Double> SQRT = new Function<Double, Double>() {
+		
+		@Override
+		public Double apply(Double a) {
+			return Math.sqrt(a);
+		}
+		
+	};
 	@MJI
 	public Conditional<Double> sqrt__D__D(MJIEnv env, int clsObjRef, Conditional<Double> a, FeatureExpr ctx) {
-		return a.map(new Function<Double, Double>() {
-
-			@Override
-			public Double apply(Double a) {
-				return Math.sqrt(a);
-			}
-			
-		});
+		return a.map(SQRT);
 		
 	}
 

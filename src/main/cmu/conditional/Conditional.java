@@ -83,9 +83,19 @@ public abstract class Conditional<T> {
 			
 		});
 	}
+	public void mapf(FeatureExpr inFeature, final VoidBiFunction<FeatureExpr, T> f) {
+		mapfr(inFeature, new VoidBiFunction<FeatureExpr, T>() {
+
+			public void apply(final FeatureExpr c, final T x) {
+				f.apply(c, x);
+			}
+			
+		});
+	}
 	
 //	def mapfr[U](inFeature: FeatureExpr, f: (FeatureExpr, T) => Conditional[U]): Conditional[U]
 	public abstract <U> Conditional<U> mapfr(FeatureExpr inFeature, BiFunction<FeatureExpr, T, Conditional<U>> f);
+	public abstract void mapfr(FeatureExpr inFeature, VoidBiFunction<FeatureExpr, T> f);
 	
 	public abstract Conditional<T> simplifyValues();
 	

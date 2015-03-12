@@ -151,4 +151,12 @@ public interface IStackHandler {
 	
 	public abstract Collection<Integer> getAllReferences();
 
+	/**
+	 * Increments the local variable at the given index position.
+	 * @param ctx THe context to apply
+	 * @param index The index of the local variable
+	 * @param increment The value to increment
+	 */
+	public abstract void IINC(FeatureExpr ctx, int index, int increment);
+
 }

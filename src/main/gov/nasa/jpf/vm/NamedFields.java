@@ -29,6 +29,7 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -147,15 +148,15 @@ public class NamedFields extends Fields {
 
 	@Override
 	public Conditional<Character> getCharValue(int index) {
-		return values[index].map(new GetCharValue());
+		return values[index].map(GetCharValue);
 	}
 
-	private static final class GetCharValue implements Function<Integer, Character> {
+	private static final Function<Integer, Character> GetCharValue = new Function<Integer, Character>() {
 		@Override
 		public Character apply(final Integer x) {
 			return (char) x.intValue();
 		}
-	}
+	};
 
 	@Override
 	public Conditional<Short> getShortValue(int index) {
@@ -217,15 +218,15 @@ public class NamedFields extends Fields {
 
 	@Override
 	public void setCharValue(FeatureExpr ctx, int index, Conditional<Character> newValue) {
-		values[index] = ChoiceFactory.create(ctx, newValue.map(new SetCharValue()), values[index]).simplify();
+		values[index] = ChoiceFactory.create(ctx, newValue.map(SetCharValue), values[index]).simplify();
 	}
 	
-	private static final class SetCharValue implements Function<Character, Integer> {
+	private static final Function<Character, Integer> SetCharValue = new Function<Character, Integer>() {
 		@Override
 		public Integer apply(final Character newValue) {
 			return (int) newValue.charValue();
 		}
-	}
+	};
 
 	@Override
 	public void setShortValue(FeatureExpr ctx, int index, Conditional<Short> newValue) {
@@ -271,10 +272,10 @@ public class NamedFields extends Fields {
 
 	@Override
 	public void setLongValue(FeatureExpr ctx, final int index, Conditional<Long> newValue) {
-		newValue.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Object>>() {
+		newValue.mapf(ctx, new VoidBiFunction<FeatureExpr, Long>() {
 
 			@Override
-			public Conditional<Object> apply(FeatureExpr ctx, Long newValue) {
+			public void apply(FeatureExpr ctx, Long newValue) {
 				if (Conditional.isTautology(ctx)) {
 					values[index] = new One<>(Types.hiLong(newValue));
 					values[index + 1] = new One<>(Types.loLong(newValue));
@@ -282,7 +283,6 @@ public class NamedFields extends Fields {
 					values[index] = ChoiceFactory.create(ctx, new One<>(Types.hiLong(newValue)), values[index]);
 					values[index + 1] = ChoiceFactory.create(ctx, new One<>(Types.loLong(newValue)), values[index + 1]);
 				}
-				return null;
 			}
 
 		});
@@ -292,10 +292,10 @@ public class NamedFields extends Fields {
 
 	@Override
 	public void setDoubleValue(FeatureExpr ctx, final int index, Conditional<Double> newValue) {
-		newValue.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Object>>() {
+		newValue.mapf(ctx, new VoidBiFunction<FeatureExpr, Double>() {
 
 			@Override
-			public Conditional<Object> apply(FeatureExpr ctx, Double newValue) {
+			public void apply(FeatureExpr ctx, Double newValue) {
 				if (Conditional.isTautology(ctx)) {
 					values[index] = new One<>(Types.hiDouble(newValue));
 					values[index + 1] = new One<>(Types.loDouble(newValue));
@@ -303,7 +303,6 @@ public class NamedFields extends Fields {
 					values[index] = ChoiceFactory.create(ctx, new One<>(Types.hiDouble(newValue)), values[index]);
 					values[index + 1] = ChoiceFactory.create(ctx, new One<>(Types.loDouble(newValue)), values[index + 1]);
 				}
-				return null;
 			}
 
 		});
