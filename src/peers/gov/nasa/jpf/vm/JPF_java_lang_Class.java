@@ -284,12 +284,17 @@ public class JPF_java_lang_Class extends NativePeer {
 		sb.append('(');
 		int nParams = argTypesRef != MJIEnv.NULL ? env.getArrayLength(ctx, argTypesRef) : 0;
 		for (int i = 0; i < nParams; i++) {
-			int cRef = env.getReferenceArrayElement(argTypesRef, i);
-			ClassInfo cit = env.getReferredClassInfo(ctx, cRef);
-			String tname = cit.getName();
-			String tcode = tname;
-			tcode = Types.getTypeSignature(tcode, false);
-			sb.append(tcode);
+			int cRef = env.getReferenceArrayElement(argTypesRef, i).simplify(ctx).getValue();
+			if (cRef == MJIEnv.NULL) {
+				String tcode = "java.lang.Object";
+				tcode = Types.getTypeSignature(tcode, false);
+				sb.append(tcode);
+			} else {
+				ClassInfo cit = env.getReferredClassInfo(ctx, cRef);
+				String tcode = cit.getName();
+				tcode = Types.getTypeSignature(tcode, false);
+				sb.append(tcode);
+			}
 		}
 		sb.append(')');
 		String fullMthName = sb.toString();
@@ -624,17 +629,18 @@ public class JPF_java_lang_Class extends NativePeer {
 		if (fi == null) {
 			env.throwException(ctx, "java.lang.NoSuchFieldException", fname);
 			return MJIEnv.NULL;
-
-		} else {
-			// don't do a Field clinit before we know there is such a field
-			ClassInfo fci = getInitializedClassInfo(env, FIELD_CLASSNAME, ctx);
-			if (fci == null) {
-				env.repeatInvocation();
-				return MJIEnv.NULL;
-			}
-
-			return createFieldObject(env, fi, fci, ctx);
 		}
+//		 if (!fi.isPublic()) {// TODO
+//		    env.throwException(ctx, NoSuchFieldException.class.getName(), fi.getName());
+//		 }
+		// don't do a Field clinit before we know there is such a field
+		ClassInfo fci = getInitializedClassInfo(env, FIELD_CLASSNAME, ctx);
+		if (fci == null) {
+			env.repeatInvocation();
+			return MJIEnv.NULL;
+		}
+
+		return createFieldObject(env, fi, fci, ctx);
 	}
 
 	@MJI

@@ -195,17 +195,49 @@ public final class Class<T> implements Serializable, GenericDeclaration, Type, A
     return name;
   }
 
+  /**
+   * @see JDK
+   */
   public String getSimpleName () {
-    int idx; // <2do> not really - inner classes?
-    Class<?> enclosingClass = getEnclosingClass();
-    
-    if(enclosingClass!=null){
-      idx = enclosingClass.getName().length();
-    } else{
-      idx = name.lastIndexOf('.');
-    }
-    
-    return name.substring(idx+1);
+	  if (isArray()) {
+	    	return getComponentType().getSimpleName() + "[]";
+	   }
+	  String simpleName = getSimpleBinaryName();
+      if (simpleName == null) { // top level class
+          simpleName = getName();
+          return simpleName.substring(simpleName.lastIndexOf(".")+1); // strip the package name
+      }
+	  
+	  
+      int length = simpleName.length();
+      if (length < 1 || simpleName.charAt(0) != '$')
+          throw new InternalError("Malformed class name");
+      int index = 1;
+      while (index < length && isAsciiDigit(simpleName.charAt(index)))
+          index++;
+      return simpleName.substring(index);
+  }
+  
+  /**
+   * @see JDK
+   */
+  private static boolean isAsciiDigit(char c) {
+      return '0' <= c && c <= '9';
+  }
+  
+  /**
+   * @see JDK
+   */
+  private String getSimpleBinaryName() {
+      Class<?> enclosingClass = getEnclosingClass();
+      if (enclosingClass == null) // top level class
+          return null;
+      // Otherwise, strip the enclosing class' name
+      try {
+          return getName().substring(enclosingClass.getName().length());
+      } catch (IndexOutOfBoundsException ex) {
+          throw new InternalError("Malformed class name");
+      }
   }
 
   static native Class<?> getPrimitiveClass (String clsName);

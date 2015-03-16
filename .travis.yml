@@ -1,0 +1,6 @@
+language: java
+
+jdk:
+  - oraclejdk7
+
+script: ./script/test_defects4j.sh

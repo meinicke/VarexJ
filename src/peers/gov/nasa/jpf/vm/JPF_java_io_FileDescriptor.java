@@ -29,9 +29,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.Map.Entry;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer for file descriptors, which are our basic interface to
@@ -120,17 +124,20 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
     
     return -1;    
   }
+  
+  private static Object CLOSED_OBJECT = new Object(); 
 
   @MJI
   public void close0 (MJIEnv env, int objref, FeatureExpr ctx) {
-    int fd = env.getIntField(objref, "fd").getValue().intValue();
+    int fd = env.getIntField(objref, "fd").simplify(ctx).getValue().intValue();
     
     try {
       Object fs = content.get(fd);
       
       if (fs != null){
-        logger.info("closing ", fd);
-
+    	  if (fs == CLOSED_OBJECT) {
+    		  return;
+    	  }
         if (fs instanceof FileInputStream){
           ((FileInputStream)fs).close();
         } else {
@@ -139,7 +146,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
       } else {
         logger.warning("cannot close ", fd, " : no such stream");
       }
-      content.set(fd, null);
+      content.set(fd, CLOSED_OBJECT);
       
     } catch (ArrayIndexOutOfBoundsException aobx){
       env.throwException(ctx, "java.io.IOException", "file not open");      
@@ -213,11 +220,13 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
     }    
   }
   
+  private static FeatureExpr bufferCTX = FeatureExprFactory.True();
+  
   @MJI
   public void write___3BII__ (MJIEnv env, int objref,
                                      int bref, int offset, int len, FeatureExpr ctx){
-	int fd = env.getIntField(objref, "fd").getValue();
-    long off = env.getLongField(objref,"off").getValue();
+	int fd = env.getIntField(objref, "fd").simplify(ctx).getValue();
+    long off = env.getLongField(objref,"off").simplify(ctx).getValue();
     
     try {
       // this is terrible overhead
@@ -228,9 +237,22 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           FileChannel fc = fos.getChannel();
           fc.position(off);
           
+          
           byte[] buf = new byte[len]; // <2do> make this a permanent buffer
           for (int i=0, j=offset; i<len; i++, j++){
-            buf[i] = env.getByteArrayElement(bref, j).getValue();
+        	   Conditional<Byte> value = env.getByteArrayElement(bref, j).simplify(ctx).simplify(bufferCTX);
+        	   if (value instanceof IChoice) {
+        		   for (Entry<Byte, FeatureExpr> entry : value.toMap().entrySet()) {
+        			   System.err.println("JPF_java_io_FileDescriptor.write___3BII__()");
+        			   System.err.println("Conditional write"+ value);
+        			   bufferCTX = entry.getValue();
+        			   System.err.println("Set write ctx to: " + bufferCTX);
+        			   buf[i] = entry.getKey();   
+        			   break;
+        		   }
+        	   } else {
+        		   buf[i] = value.getValue();
+        	   }
           }
           fos.write(buf);
           
@@ -377,7 +399,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public void sync____ (MJIEnv env, int objref, FeatureExpr ctx){
-    int fd = env.getIntField(objref, "fd").getValue().intValue();
+    int fd = env.getIntField(objref, "fd").simplify(ctx).getValue().intValue();
 
     try {
       Object fs = content.get(fd);

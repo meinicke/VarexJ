@@ -29,6 +29,7 @@ import gov.nasa.jpf.util.Processor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -219,14 +220,16 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     if (weakRefs != null) {
       for (ElementInfo ei : weakRefs) {
         Fields f = ei.getFields();
-        int    ref = f.getIntValue(0).getValue(); // watch out, the 0 only works with our own WeakReference impl
-        if (ref != MJIEnv.NULL) {
-          ElementInfo refEi = get(ref);
-          if ((refEi == null) || (refEi.isNull())) {
-            ei = ei.getModifiableInstance();
-            // we need to make sure the Fields are properly state managed
-            ei.setReferenceField(FeatureExprFactory.True(), ei.getFieldInfo(0), One.MJIEnvNULL);
-          }
+        List<Integer> refs = f.getIntValue(0).toList(); // watch out, the 0 only works with our own WeakReference impl
+        for (int ref: refs) {
+	        if (ref != MJIEnv.NULL) {
+	          ElementInfo refEi = get(ref);
+	          if ((refEi == null) || (refEi.isNull())) {
+	            ei = ei.getModifiableInstance();
+	            // we need to make sure the Fields are properly state managed
+	            ei.setReferenceField(FeatureExprFactory.True(), ei.getFieldInfo(0), One.MJIEnvNULL);
+	          }
+	        }
         }
       }
 

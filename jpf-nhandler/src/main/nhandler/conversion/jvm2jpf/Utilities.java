@@ -166,7 +166,7 @@ public class Utilities {
     else if (type.equals("[J")){
       long[] JVMArr = (long[]) JVMObj;
       for (int i = 0; i < JVMArr.length; i++){
-        env.setLongArrayElement(ctx, ei.getObjectRef(), i, JVMArr[i]);
+        env.setLongArrayElement(ctx, ei.getObjectRef(), i, new One<>(JVMArr[i]));
       }
     }
     // double[]

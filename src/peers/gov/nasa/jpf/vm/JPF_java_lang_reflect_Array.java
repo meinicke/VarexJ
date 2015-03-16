@@ -111,49 +111,48 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   public int get__Ljava_lang_Object_2I__Ljava_lang_Object_2 (MJIEnv env, int clsRef,
                                                                     int aref, int index, FeatureExpr ctx){
     String at = env.getArrayType(aref);
-    
-	if (at.equals("int")){
+	if (at.equals("int") || "I".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Integer");
       env.setIntField(ctx, vref, "value", new One<>(env.getIntArrayElement(aref,index)));
       return vref;
       
-    } else if (at.equals("long")){
+    } else if (at.equals("long") || "J".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Long");
       env.setLongField(ctx, vref, "value", env.getLongArrayElement(aref,index));
       return vref;
       
-    } else if (at.equals("double")){
+    } else if (at.equals("double") || "D".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Double");
       env.setDoubleField(ctx, vref, "value", env.getDoubleArrayElement(aref,index));
       return vref;
       
-    } else if (at.equals("boolean")){
+    } else if (at.equals("boolean") || "Z".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Boolean");
       env.setBooleanField(ctx, vref, "value", env.getBooleanArrayElement(aref,index));
       return vref;
       
-    } else if (at.equals("char")){
+    } else if (at.equals("char") || "C".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Character");
       env.setCharField(ctx, vref, "value", env.getCharArrayElement(aref,index));
       return vref;
       
-    } else if (at.equals("byte")){
+    } else if (at.equals("byte") || "B".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Byte");
       env.setByteField(ctx, vref, "value", env.getByteArrayElement(aref,index));
       return vref;
       
-    } else if (at.equals("short")){
+    } else if (at.equals("short") || "S".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Short");
       env.setShortField(ctx, vref, "value", env.getShortArrayElement(aref,index));
       return vref;
 
-    } else if (at.equals("float")){
+    } else if (at.equals("float") || "F".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Float");
       env.setFloatField(ctx, vref, "value", env.getFloatArrayElement(aref,index));
       return vref;
 
     } else {
-      return env.getReferenceArrayElement(aref, index);
+      return env.getReferenceArrayElement(aref, index).getValue();
     }
   }
 
@@ -275,7 +274,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setLong__Ljava_lang_Object_2IJ__V (MJIEnv env, int clsRef, int aref, int index, long val, FeatureExpr ctx) {
     if (check(env, aref, index, ctx)) {
-      env.setLongArrayElement(ctx, aref, index, val);
+      env.setLongArrayElement(ctx, aref, index, new One<>(val));
     }
   }
 
@@ -292,4 +291,31 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       env.setDoubleArrayElement(ctx, aref, index, new One<>(val));
     }
   }
+  
+  @MJI
+  public void set__Ljava_lang_Object_2ILjava_lang_Object_2__V(MJIEnv env, int clsRef, int aref, int index, int valRef, FeatureExpr ctx) {
+    if (check(env, aref, index, ctx)) {
+    	String arrayType = env.getArrayType(aref);
+    	if ("Z".equals(arrayType)) {
+    		env.setBooleanArrayElement(ctx, aref, index, env.getBooleanValue(valRef));
+    	} else if ("C".equals(arrayType)) {
+    		env.setCharArrayElement(ctx, aref, index, env.getCharValue(valRef));
+    	} else if ("S".equals(arrayType)) {
+    		env.setShortArrayElement(ctx, aref, index, env.getShortValue(valRef));
+    	} else if ("B".equals(arrayType)) {
+    		env.setByteArrayElement(ctx, aref, index, env.getByteValue(valRef));
+    	} else if ("I".equals(arrayType)) {
+    		env.setIntArrayElement(ctx, aref, index, env.getIntValue(valRef));
+    	} else if ("J".equals(arrayType)) {
+    		env.setLongArrayElement(ctx, aref, index, env.getLongValue(valRef));
+    	} else if ("F".equals(arrayType)) {
+    		env.setFloatArrayElement(ctx, aref, index, env.getFloatValue(valRef));
+    	} else if ("D".equals(arrayType)) {
+    		env.setDoubleArrayElement(ctx, aref, index, env.getDoubleValue(valRef));
+    	} else {
+	    	env.setReferenceArrayElement(ctx, aref, index, new One<>(valRef));
+    	}
+    }
+  }
+  
 }

@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.util;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
 
@@ -62,8 +63,8 @@ public class MethodInfoRegistry {
     return registered[idx];
   }
 
-  public MethodInfo getMethodInfo (MJIEnv env, int objRef, String fieldName) {
-    int idx = env.getIntField( objRef, fieldName).getValue().intValue();
+  public MethodInfo getMethodInfo (FeatureExpr ctx, MJIEnv env, int objRef, String fieldName) {
+    int idx = env.getIntField( objRef, fieldName).simplify(ctx).getValue().intValue();
     
     assert ((idx >= 0) || (idx < nRegistered)) : "illegal MethodInfo request: " + idx + ", " + nRegistered;
     

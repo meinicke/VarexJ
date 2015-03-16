@@ -732,6 +732,9 @@ public class Types {
     int n = typeName.length()-1;
     
     if (typeName.charAt(0) == '['){ // the "[<type>" notation
+    	if (typeName.length() == 1) {
+    		return "";
+    	}
       if (typeName.charAt(1) == 'L'){
         if (typeName.charAt(n) != ';'){
           typeName = typeName + ';';

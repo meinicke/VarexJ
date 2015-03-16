@@ -41,6 +41,7 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -70,7 +71,7 @@ public class VarRecorder extends ListenerAdapter {
   }
 
   @Override
-  public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute) {
+  public void executeInstruction(FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute) {
     String name, value;
     byte type;
 

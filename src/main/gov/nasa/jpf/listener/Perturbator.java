@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 /**
  * listener that perturbs GETFIELD/GETSTATIC and InvokeInstruction results
  *
@@ -340,7 +342,7 @@ public class Perturbator extends ListenerAdapter {
   }
 
   @Override
-  public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute){
+  public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute){
     
     if (insnToExecute instanceof GETFIELD){
       FieldInfo fi = ((InstanceFieldInstruction)insnToExecute).getFieldInfo(null);

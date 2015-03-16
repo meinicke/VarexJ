@@ -1128,6 +1128,19 @@ public abstract class TestJPF implements JPFShell  {
       }
     }
   }
+  
+  public static void assertArrayEquals(int[] expected, int[] actual){
+	    if (((expected == null) != (actual == null)) ||
+	        (expected.length != actual.length)){
+	      fail("array sizes different");
+	    }
+
+	    for (int i=0; i<expected.length; i++){
+	      if (expected[i] != actual[i]){
+	        fail("array element" + i + " different, expected " + expected[i] + ", actual " + actual[i]);
+	      }
+	    }
+	  }
 
   public static void assertNotNull(String msg, Object o) {
     if (o == null) {

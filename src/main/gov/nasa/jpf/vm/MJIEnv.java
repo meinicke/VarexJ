@@ -514,12 +514,12 @@ public VM getVM () {
     return getShortField(objref, "value");
   }
 
-  public int getIntValue (int objref) {
-    return getIntField(objref, "value").getValue();// TODO jens
+  public Conditional<Integer> getIntValue (int objref) {
+    return getIntField(objref, "value");
   }
 
-  public long getLongValue (int objref) {
-    return getLongField(objref, "value").getValue();// TODO jens
+  public Conditional<Long> getLongValue (int objref) {
+    return getLongField(objref, "value");
   }
 
   public Conditional<Float> getFloatValue (int objref) {
@@ -531,8 +531,8 @@ public VM getVM () {
   }
 
 
-  public void setLongArrayElement (FeatureExpr ctx, int objref, int index, long value) {// TODO jens
-    heap.getModifiable(objref).setLongElement(ctx, index, new One<>(value));
+  public void setLongArrayElement (FeatureExpr ctx, int objref, int index, Conditional<Long> value) {
+    heap.getModifiable(objref).setLongElement(ctx, index, value);
   }
 
   public Conditional<Long> getLongArrayElement (int objref, int index) {
@@ -563,30 +563,18 @@ public VM getVM () {
     heap.getModifiable(objref).setReferenceElement(ctx, index, eRef);
   }
 
-  public int getReferenceArrayElement (int objref, int index) {
-    return heap.get(objref).getReferenceElement(index).getValue();// TODO jens
+  public Conditional<Integer> getReferenceArrayElement (int objref, int index) {
+    return heap.get(objref).getReferenceElement(index);
   }
 
   public void setShortField (FeatureExpr ctx, int objref, String fname, Conditional<Short> val) {
-    setIntField(ctx, objref, fname, /*(int)*/ val.map(new Function<Short, Integer>() {
-
-		@Override
-		public Integer apply(Short v) {
-			return (int)v.shortValue();
-		}
-    	
-    }));
+	  	ElementInfo ei = heap.getModifiable(objref);
+	    ei.setShortField(ctx, fname, val);
   }
 
   public Conditional<Short> getShortField (int objref, String fname) {
-    return getIntField(objref, fname).map(new Function<Integer, Short>() {
-
-		@Override
-		public Short apply(Integer v) {
-			return (short)v.intValue();
-		}
-    	
-    });
+	  ElementInfo ei = heap.get(objref);
+	  return ei.getShortField(fname);
   }
 
   public String getTypeName (int objref) {
@@ -764,6 +752,9 @@ public VM getVM () {
     
   }
   
+  /**
+   * {@link #getStringObjectNew(FeatureExpr, int)}
+   */
   @Deprecated
   public String getStringObject (FeatureExpr ctx, int objRef) {
 	    if (objRef != MJIEnv.NULL) {
@@ -817,7 +808,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
         sa = new String[len];
 
         for (int i=0; i<len; i++){
-          int sRef = getReferenceArrayElement(aRef,i);
+          int sRef = getReferenceArrayElement(aRef,i).getValue();
           sa[i] = getStringObject(ctx, sRef);
         }
 
@@ -856,7 +847,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     args = new Object[nArgs];
 
     for (int i=0; i<nArgs; i++){
-      int aref = getReferenceArrayElement(argRef,i);
+      int aref = getReferenceArrayElement(argRef,i).getValue();
       ClassInfo ci = getClassInfo(aref);
       String clsName = ci.getName();
       if (clsName.equals("java.lang.Boolean")){
@@ -1171,7 +1162,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     Object[] arg = new Object[len];
 
     for (int i=0; i<len; i++){
-      int ref = getReferenceArrayElement(argRef,i);
+      int ref = getReferenceArrayElement(argRef,i).getValue();
       if (ref != NULL) {
         String clsName = getClassName(ref);
         if (clsName.equals("java.lang.String")) {
@@ -1206,7 +1197,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 	    Object[] arg = new Object[len];
 
 	    for (int i=0; i<len; i++){
-	      int ref = getReferenceArrayElement(argRef,i);
+	      int ref = getReferenceArrayElement(argRef,i).getValue();
 	      if (ref != NULL) {
 	        String clsName = getClassName(ref);
 	        if (clsName.equals("java.lang.String")) {
@@ -1704,7 +1695,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
       } else if (ftype.equals("long[]")){
         aref = newLongArray(a.length);
         for (int i=0; i<a.length; i++){
-          setLongArrayElement(ctx,aref,i, ((Number)a[i]).longValue());
+          setLongArrayElement(ctx,aref,i, new One<>(((Number)a[i]).longValue()));
         }
       } else if (ftype.equals("double[]")){
         aref = newDoubleArray(a.length);

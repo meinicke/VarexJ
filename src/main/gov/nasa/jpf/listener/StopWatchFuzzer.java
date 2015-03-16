@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
@@ -94,7 +95,7 @@ public class StopWatchFuzzer extends ListenerAdapter {
   }
   
   @Override
-  public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute){
+  public void executeInstruction(FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute){
 
     if (insnToExecute instanceof LSUB){  // propagate TimeVal attrs
       StackFrame frame = ti.getTopFrame();

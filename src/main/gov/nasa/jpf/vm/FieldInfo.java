@@ -198,7 +198,18 @@ public abstract class FieldInfo extends InfoObject implements GenericSignatureHo
   public boolean isPublic () {
     return (modifiers & Modifier.PUBLIC) != 0;
   }
+  
+	public boolean isProtected() {
+		return (modifiers & Modifier.PROTECTED) != 0;
+	}
 
+	public boolean isPrivate() {
+		return (modifiers & Modifier.PRIVATE) != 0;
+	}
+	
+	public boolean isPackagePrivate() {
+		return !isPrivate() && ! isPublic() && ! isProtected();
+	}
 
   /**
    * Returns the name of the field.

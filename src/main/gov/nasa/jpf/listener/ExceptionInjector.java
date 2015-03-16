@@ -34,6 +34,7 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -349,7 +350,7 @@ public class ExceptionInjector extends ListenerAdapter {
   }
 
   @Override
-  public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute){
+  public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute){
 
     ExceptionEntry e = insnToExecute.getAttr(ExceptionEntry.class);
     if ((e == null) && insnToExecute instanceof InvokeInstruction){

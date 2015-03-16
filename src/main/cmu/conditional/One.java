@@ -94,7 +94,7 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	}
 
 	public int hashCode() {
-		throw new RuntimeException("hashCode not designed");
+		return value.hashCode();
 	}
 
 	@Override

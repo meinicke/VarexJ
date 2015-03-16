@@ -286,17 +286,17 @@ public class JPF_java_lang_System extends NativePeer {
   @MJI
   public int getKeyValuePairs_____3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     Config conf = env.getConfig();
-    SystemPropertyPolicy sysPropSrc = conf.getEnum( "vm.sysprop.source", SystemPropertyPolicy.values(), SystemPropertyPolicy.SELECTED);
-
-    if (sysPropSrc == SystemPropertyPolicy.FILE){
-      return getSysPropsFromFile(env, ctx);
-    } else if (sysPropSrc == SystemPropertyPolicy.HOST){
-      return getSysPropsFromHost(env, ctx);
-    } else if (sysPropSrc == SystemPropertyPolicy.SELECTED){
-      return getSelectedSysPropsFromHost(env, ctx);
-    }
-    
-    return 0;
+    SystemPropertyPolicy sysPropSrc = conf.getEnum( "vm.sysprop.source", SystemPropertyPolicy.values(), SystemPropertyPolicy.HOST);
+    switch (sysPropSrc) {
+	case FILE:
+		return getSysPropsFromFile(env, ctx);
+	case HOST:
+		return getSysPropsFromHost(env, ctx);
+	case SELECTED:
+		return getSelectedSysPropsFromHost(env, ctx);
+	default:
+		throw new RuntimeException("Unsupported system prperty policy: " + sysPropSrc);
+	}
   }
   
   // <2do> - this break every app which uses time delta thresholds
