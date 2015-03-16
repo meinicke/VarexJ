@@ -1,7 +1,7 @@
-import de.fosd.typechef.featureexpr.FeatureExpr;
+package gov.nasa.jpf.vm;
+
 import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_sun_misc_Perf extends NativePeer {
 

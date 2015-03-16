@@ -161,6 +161,7 @@ public class PrevaylerTest extends ATestExample {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void tutorialTest() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
