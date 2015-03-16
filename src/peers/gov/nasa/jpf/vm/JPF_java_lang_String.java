@@ -58,10 +58,11 @@ public class JPF_java_lang_String extends NativePeer {
 						public Conditional<String> apply(FeatureExpr ctx, final Integer count) {
 							return offset.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<String>>() {
 
+								@SuppressWarnings("unchecked")
 								@Override
 								public Conditional<String> apply(FeatureExpr ctx, Integer offset) {
 									if (ctx.isContradiction()) {
-										return new One<>(null);
+										return (Conditional<String>) One.NULL;
 									}
 									return new One<>(new String(value, offset, count));
 								}
@@ -185,10 +186,11 @@ public class JPF_java_lang_String extends NativePeer {
 		Conditional<char[]> data = env.getStringChars(objRef).simplify(ctx);
 		return data.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Character>>() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public Conditional<Character> apply(FeatureExpr ctx, char[] data) {
 				if (Conditional.isContradiction(ctx)) {
-					return new One<>(null);
+					return (Conditional<Character>) One.NULL;
 				}
 				
 				try {
@@ -198,7 +200,7 @@ public class JPF_java_lang_String extends NativePeer {
 					exceptionClass = exceptionClass.substring(0, exceptionClass.indexOf(":"));
 					env.ti.createAndThrowException(ctx, exceptionClass, e.getMessage());
 				}
-				return new One<>(null);
+				return (Conditional<Character>) One.NULL;
 			} 
 
 		}).simplify();
@@ -235,10 +237,10 @@ public class JPF_java_lang_String extends NativePeer {
 			@Override
 			public Conditional<Boolean> apply(FeatureExpr ctx, Integer argRef) {
 				if (Conditional.isContradiction(ctx)) {
-					return new One<>(true);
+					return One.TRUE;
 				}
 				if (argRef == MJIEnv.NULL) {
-					return new One<>(false);
+					return One.FALSE;
 				}
 
 				Heap heap = env.getHeap();
@@ -246,7 +248,7 @@ public class JPF_java_lang_String extends NativePeer {
 				ElementInfo s2 = heap.get(argRef);
 
 				if (!env.isInstanceOf(argRef, "java.lang.String")) {
-					return new One<>(false);
+					return One.FALSE;
 				}
 
 				Fields f1 = heap.get(s1.getReferenceField("value").simplify(ctx).getValue()).getFields();
@@ -260,16 +262,16 @@ public class JPF_java_lang_String extends NativePeer {
 						char[] c2 = ((CharArrayFields) f2).asCharArray().simplify(ctx).getValue();
 
 						if (c1.length != c2.length) {
-							return new One<>(false);
+							return One.FALSE;
 						}
 
 						for (int i = 0; i < c1.length; i++) {
 							if (c1[i] != c2[i]) {
-								return new One<>(false);
+								return One.FALSE;
 							}
 						}
 
-						return new One<>(true);
+						return One.TRUE;
 
 					}
 

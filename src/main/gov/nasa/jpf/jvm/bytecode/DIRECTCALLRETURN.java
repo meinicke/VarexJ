@@ -62,7 +62,8 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
 	  insVisitor.visit(this);
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
+@Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     // pop the current frame but do not advance the new top frame, and do
     // not touch its operand stack
@@ -72,7 +73,7 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
       if (!ti.exit(ctx)){
         return new One<Instruction>(this); // repeat, we couldn't get the lock
       } else {
-        return new One<>(null);
+        return (Conditional<Instruction>) One.NULL;
       }      
       
     } else {

@@ -288,7 +288,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 		}
 		if (index < locals.length) {
 			if (locals[index] == null) {
-				return new One<>(MJIEnv.NULL);
+				return One.MJIEnvNULL;
 			}
 			return locals[index].simplify(ctx).map(GetLocal).simplifyValues();
 		} else {

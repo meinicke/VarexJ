@@ -94,7 +94,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
 
     ClassInfo ciPermit = sysCl.getResolvedClassInfo(ctx, "java.lang.Thread$Permit");
     ElementInfo eiPermit = heap.newObject( ctx, ciPermit, this);
-    eiPermit.setBooleanField(ctx, "blockPark", new One<>(true));
+    eiPermit.setBooleanField(ctx, "blockPark", One.TRUE);
     eiThread.setReferenceField(ctx, "permit", new One<>(eiPermit.getObjectRef()));
 
     addToThreadGroup(ctx, getElementInfo(grpRef));
@@ -106,7 +106,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     // start the thread by pushing Thread.run()
     startFinalizerThread(ctx);
     
-    eiThread.setBooleanField(ctx, "done", new One<>(false));
+    eiThread.setBooleanField(ctx, "done", One.FALSE);
     ElementInfo finalizeQueue = getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", 0, this);
     eiThread.setReferenceField(ctx, "finalizeQueue", new One<>(finalizeQueue.getObjectRef()));
     

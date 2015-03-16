@@ -793,13 +793,14 @@ public VM getVM () {
     }
   }
   
-  public Conditional<String> getConditionalStringObject (int objRef) {
+  @SuppressWarnings("unchecked")
+public Conditional<String> getConditionalStringObject (int objRef) {
 	  if (objRef != MJIEnv.NULL) {
 	      ElementInfo ei = getElementInfo(objRef);
 	      return ei.asString();
 	      
 	    } else {
-	      return new One<>(null);
+	      return (Conditional<String>) One.NULL;
 	    }  
   }
 

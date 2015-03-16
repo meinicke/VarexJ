@@ -68,13 +68,12 @@ public class INSTANCEOF extends JVMInstruction {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objref) {
-
 				if (objref == MJIEnv.NULL) {
-					frame.push(ctx, new One<>(0));
+					frame.push(ctx, One.valueOf(0));
 				} else if (ti.getElementInfo(objref).instanceOf(type)) {
-					frame.push(ctx, new One<>(1));
+					frame.push(ctx, One.valueOf(1));
 				} else {
-					frame.push(ctx, new One<>(0));
+					frame.push(ctx, One.valueOf(0));
 				}
 
 				return getNext(ctx, ti);

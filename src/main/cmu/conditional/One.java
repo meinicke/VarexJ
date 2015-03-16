@@ -1,5 +1,7 @@
 package cmu.conditional;
 
+import gov.nasa.jpf.vm.MJIEnv;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +18,11 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class One<T> extends Conditional<T> implements Cloneable {
 
+	public static One<?> NULL = new One<>(null);
+	public static One<Boolean> FALSE = new One<>(Boolean.FALSE);
+	public static One<Boolean> TRUE = new One<>(Boolean.TRUE);
+	public static One<Integer> MJIEnvNULL = new One<>(MJIEnv.NULL);
+	
 	private T value;
 
 	public One(T value) {
@@ -69,6 +76,9 @@ public class One<T> extends Conditional<T> implements Cloneable {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
 		if (obj instanceof One) {
 			if (value == ((One<?>) obj).value) {
 				return true;
@@ -118,5 +128,29 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	public int size() {
 		return 1;
 	}
+	
+	public static One<Boolean> valueOf(boolean value) {
+		return value ? TRUE : FALSE;
+	}
+	
+	public static One<Integer> valueOf(int value) {
+		if (value >= IntegerCache.low && value <= IntegerCache.high) {
+			return IntegerCache.cache[value - IntegerCache.low];
+		}
+		return new One<>(value);
+	}
 
+	@SuppressWarnings("unchecked")
+	private static class IntegerCache {
+		static final int low = -128;
+		static final int high = 1024;
+		static final One<Integer>[] cache;
+
+		static {
+			cache = new One[high - low + 1];
+			int j = low;
+			for (int k = 0; k < cache.length; ++k)
+				cache[k] = new One<>(Integer.valueOf(j++));
+		}
+	}
 }

@@ -1102,7 +1102,7 @@ public class ThreadInfo extends InfoObject
 
     if (resetStatus && status.getValue()) {
       ei = ei.getModifiableInstance();
-      ei.setBooleanField(ctx, "interrupted", new One<>(false));
+      ei.setBooleanField(ctx, "interrupted", One.FALSE);
     }
 
     return status.getValue();
@@ -1341,11 +1341,12 @@ public class ThreadInfo extends InfoObject
   /**
    * Returns the program counter of the top stack frame.
    */
-  public Conditional<Instruction> getPC () {
+  @SuppressWarnings("unchecked")
+public Conditional<Instruction> getPC () {
     if (top != null) {
       return top.getPC();
     } else {
-      return new One<>(null);
+      return (Conditional<Instruction>) One.NULL;
     }
   }
 
@@ -1876,9 +1877,10 @@ public class ThreadInfo extends InfoObject
    * 
    * this is the inner interpreter loop of JPF
    */
-  protected void executeTransition (SystemState ss) throws JPFException {
+  @SuppressWarnings("unchecked")
+protected void executeTransition (SystemState ss) throws JPFException {
 	Conditional<Instruction> pc = getPC();
-    Conditional<Instruction> nextPc = new One<>(null);
+    Conditional<Instruction> nextPc = (Conditional<Instruction>) One.NULL;
 
     currentThread = this;
     executedInstructions = 0;
@@ -1891,7 +1893,7 @@ public class ThreadInfo extends InfoObject
     
     
     if (RUN_SIMPLE) {
-		  while (!executeInstruction().equals(new One<>(null))) {
+		  while (executeInstruction() != One.NULL) {
 			  if (ss.breakTransition()) {
 			        break;
 			  }
@@ -1903,7 +1905,7 @@ public class ThreadInfo extends InfoObject
     // insns until someone registered a ChoiceGenerator, there are no insns left,
     // the transition was explicitly marked as ignored, or we have reached a
     // max insn count and preempt the thread upon the next available backjump
-    while (!pc.equals(new One<>(null))) {
+    while (pc != One.NULL) {
       nextPc = executeInstruction();
       
       if (ss.breakTransition()) {
@@ -1932,7 +1934,8 @@ public class ThreadInfo extends InfoObject
   /**
    * Execute next instruction.
    */
-  public Conditional<Instruction> executeInstruction () {
+  @SuppressWarnings("unchecked")
+public Conditional<Instruction> executeInstruction () {
     Conditional<Instruction> pc = getPC();
     SystemState ss = vm.getSystemState();
 
@@ -2088,7 +2091,7 @@ public class ThreadInfo extends InfoObject
   		}
       return nextPc;
     } else {
-      return new One<>(null);
+      return (Conditional<Instruction>) One.NULL;
     }
   }
   
@@ -2228,12 +2231,28 @@ public class ThreadInfo extends InfoObject
 										sum += value;
 									}
 									long average = sum / times.size();
-									builder.append("Max:\t\t").append(max / 1000).append("micro s\n");
-									builder.append("Max2:\t\t").append(max2 / 1000).append("micro s\n");
-									builder.append("Average:\t").append(average / 1000).append("micro s\n");
-									builder.append("Min: \t\t").append(min / 1000).append("micro s\n");
+									builder.append("Max:\t\t");
+									appendTime(builder, max);
+									
+									builder.append("Max2:\t\t");
+									appendTime(builder, max2);
+									
+									builder.append("Average:\t");
+									appendTime(builder, average);
+									
+									builder.append("Min: \t\t");
+									appendTime(builder, min);
 								}
 								return builder.toString();
+							}
+							
+							private void appendTime(final StringBuilder stringBuilder, final long time) {
+								stringBuilder.append("Min: \t\t");
+								if (time < 2000) {
+									stringBuilder.append(time).append("nano s\n");
+								} else {
+									stringBuilder.append(time / 1000).append("micro s\n");
+								}
 							}
 						};
 						LinkedList<Long> initialValue = new LinkedList<Long>();
@@ -2659,10 +2678,10 @@ public class ThreadInfo extends InfoObject
     int grpRef = ei.getReferenceField("group").getValue();
     cleanupThreadGroup(ctx, grpRef, ei.getObjectRef());
 
-    ei.setReferenceField(ctx, "group", new One<>(MJIEnv.NULL));
-    ei.setReferenceField(ctx, "threadLocals", new One<>(MJIEnv.NULL));
-    ei.setReferenceField(ctx, "inheritableThreadLocals", new One<>(MJIEnv.NULL));
-    ei.setReferenceField(ctx, "uncaughtExceptionHandler", new One<>(MJIEnv.NULL));
+    ei.setReferenceField(ctx, "group", One.MJIEnvNULL);
+    ei.setReferenceField(ctx, "threadLocals", One.MJIEnvNULL);
+    ei.setReferenceField(ctx, "inheritableThreadLocals", One.MJIEnvNULL);
+    ei.setReferenceField(ctx, "uncaughtExceptionHandler", One.MJIEnvNULL);
   }
 
   /**
@@ -2690,7 +2709,7 @@ public class ThreadInfo extends InfoObject
               for (int j=i; j<n1; j++) {
                 eiThreads.setReferenceElement(ctx, j, eiThreads.getReferenceElement(j+1));
               }
-              eiThreads.setReferenceElement(ctx, n1, new One<>(MJIEnv.NULL));
+              eiThreads.setReferenceElement(ctx, n1, One.MJIEnvNULL);
 
               eiGrp.setIntField(ctx, "nthreads", new One<>(n1));
               if (n1 == 0) {

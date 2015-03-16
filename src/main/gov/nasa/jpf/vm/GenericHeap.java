@@ -225,7 +225,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
           if ((refEi == null) || (refEi.isNull())) {
             ei = ei.getModifiableInstance();
             // we need to make sure the Fields are properly state managed
-            ei.setReferenceField(FeatureExprFactory.True(), ei.getFieldInfo(0), new One<>(MJIEnv.NULL));
+            ei.setReferenceField(FeatureExprFactory.True(), ei.getFieldInfo(0), One.MJIEnvNULL);
           }
         }
       }

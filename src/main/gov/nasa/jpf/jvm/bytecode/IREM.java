@@ -44,7 +44,7 @@ public class IREM extends JVMInstruction {
 				@Override
 				public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
 				    if (v1 == 0){
-				      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
+				      return new One<>(ti.createAndThrowException(ctx,java.lang.ArithmeticException.class.getName(), "division by zero"));
 				    }
 				    
 					frame.push(ctx, v2.map(new Function<Integer, Integer>() {

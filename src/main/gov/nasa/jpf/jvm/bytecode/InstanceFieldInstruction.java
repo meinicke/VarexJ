@@ -40,7 +40,7 @@ public abstract class InstanceFieldInstruction extends FieldInstruction
    *
    * USE WITH CARE, AND ONLY FROM DERIVED CLASSES
    */
-  protected Conditional<Integer> lastThis = new One<>(MJIEnv.NULL);
+  protected Conditional<Integer> lastThis = One.MJIEnvNULL;
 
   protected InstanceFieldInstruction() {}
 

@@ -40,7 +40,7 @@ public class BooleanArrayFields extends ArrayFields {
 
   Conditional<Boolean>[] values;
 
-  private static One<Boolean> nullValue = new One<>(false);
+  private static One<Boolean> nullValue = One.FALSE;
   
   @SuppressWarnings("unchecked")
 public BooleanArrayFields (int length) {

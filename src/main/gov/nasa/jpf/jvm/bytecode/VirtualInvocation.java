@@ -70,7 +70,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
-				return ChoiceFactory.create(ctx, new One<Instruction>(new EXCEPTION(this, "java.lang.NullPointerException", "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
+				return ChoiceFactory.create(ctx, new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
 			}
 
 			MethodInfo callee = getInvokedMethod(ti, objRef);

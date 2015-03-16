@@ -48,11 +48,11 @@ public class IDIV extends JVMInstruction {
 				      return new One<Instruction>(new EXCEPTION(thisInstruction, "java.lang.ArithmeticException", "division by zero"));
 				    }
 				    
-					frame.push(ctx, v2.map(new Function<Integer, Integer>() {
+					frame.push(ctx, v2.mapr(new Function<Integer, Conditional<Integer>>() {
 
 						@Override
-						public Integer apply(Integer v2) {
-							return v2.intValue() / v1.intValue();
+						public Conditional<Integer> apply(Integer v2) {
+							return One.valueOf(v2.intValue() / v1.intValue());
 						}
 						
 					}));

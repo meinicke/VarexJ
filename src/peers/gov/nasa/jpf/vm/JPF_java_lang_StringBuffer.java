@@ -98,7 +98,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 									}
 	
 									if (hasSharedField) {
-										env.setBooleanField(ctx, objref, "shared", new One<>(false));
+										env.setBooleanField(ctx, objref, "shared", One.FALSE);
 									}
 									env.setIntField(ctx, objref, "count", new One<>(n));
 								}

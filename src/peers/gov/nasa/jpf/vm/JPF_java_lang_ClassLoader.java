@@ -257,7 +257,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     ei.setReferenceField(ctx, "specVendor", new One<>(env.newString(ctx, "specvendor")));
     ei.setReferenceField(ctx, "implTitle", new One<>(env.newString(ctx, "impltitle")));
     ei.setReferenceField(ctx, "implVersion", new One<>(env.newString(ctx, "implversion")));
-    ei.setReferenceField(ctx, "sealBase", new One<>(MJIEnv.NULL));
+    ei.setReferenceField(ctx, "sealBase", One.MJIEnvNULL);
 
     return pkgRef;
   }

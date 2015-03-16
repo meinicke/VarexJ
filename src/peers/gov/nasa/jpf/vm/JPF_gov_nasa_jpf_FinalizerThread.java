@@ -102,6 +102,6 @@ public class JPF_gov_nasa_jpf_FinalizerThread extends NativePeer {
   }
   
   protected void shutdown(MJIEnv env, int objRef, FeatureExpr ctx) {
-    env.getModifiableElementInfo(objRef).setBooleanField(ctx, "done", new One<>(true));
+    env.getModifiableElementInfo(objRef).setBooleanField(ctx, "done", One.TRUE);
   }
 }
