@@ -32,6 +32,7 @@ import gov.nasa.jpf.vm.VM;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
@@ -101,7 +102,7 @@ public class InvokeListenerTest extends TestJPF {
     }
 
     @Override
-    public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute){
+    public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute){
       checkArgs(ti, insnToExecute, false);
     }
 

@@ -20,6 +20,8 @@
 package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.JPFException;
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -53,8 +55,16 @@ public class BooleanFieldInfo extends SingleSlotFieldInfo {
   }
 
   public Object getValueObject (Fields f){
-    int i = f.getIntValue(storageOffset).getValue();
-    return Boolean.valueOf(i != 0);
+    Conditional<Integer> i = f.getIntValue(storageOffset);
+    return i.map(new Function<Integer, Object>() {
+
+		@Override
+		public Object apply(Integer i) {
+			return Boolean.valueOf(i != 0);
+		}
+    	
+	});
+    
   }
 
   public String valueToString (Fields f) {

@@ -21,12 +21,15 @@ package gov.nasa.jpf.vm;
 import gov.nasa.jpf.annotation.MJI;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
+
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -37,10 +40,17 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class JPF_java_io_File extends NativePeer {
 
-  static File getFile(MJIEnv env, int objref, FeatureExpr ctx) {
+  static Conditional<File> getFile(MJIEnv env, int objref, FeatureExpr ctx) {
     int fnref = env.getReferenceField(ctx, objref, "path").getValue();
-    String fname = env.getStringObject(ctx, fnref);
-    return new File(fname);
+    Conditional<String> fname = env.getStringObjectNew(ctx, fnref);
+    return fname.map(new Function<String, File>() {
+
+		@Override
+		public File apply(String fname) {
+			return new File(fname);
+		}
+	});
+    
   }
 
   static int createJPFFile(MJIEnv env, File file, FeatureExpr ctx) {
@@ -55,7 +65,7 @@ public class JPF_java_io_File extends NativePeer {
 
   @MJI
   public int getParentFile____Ljava_io_File_2(MJIEnv env, int objref, FeatureExpr ctx) {
-    File thisFile = getFile(env, objref, ctx);
+    File thisFile = getFile(env, objref, ctx).getValue();
     File parent = thisFile.getParentFile();
 
     return createJPFFile(env, parent, ctx);
@@ -63,20 +73,27 @@ public class JPF_java_io_File extends NativePeer {
   
   @MJI
   public int getAbsolutePath____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx) {
-    String pn = getFile(env,objref, ctx).getAbsolutePath();
+    Conditional<String> pn = getFile(env,objref, ctx).map(new Function<File, String>() {
+
+		@Override
+		public String apply(File file) {
+			return file.getAbsolutePath();
+		}
+	});
+    
     return env.newString(ctx, pn);
   }
 
   @MJI
   public int getAbsoluteFile____Ljava_io_File_2 (MJIEnv env, int objref, FeatureExpr ctx) {
-    File absoluteFile = getFile(env, objref, ctx).getAbsoluteFile();
+    File absoluteFile = getFile(env, objref, ctx).getValue().getAbsoluteFile();
     return createJPFFile(env, absoluteFile, ctx);
   }
 
   @MJI
   public int getCanonicalPath____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx) {
     try {
-      String pn = getFile(env,objref, ctx).getCanonicalPath();
+      String pn = getFile(env,objref, ctx).getValue().getCanonicalPath();
       return env.newString(ctx, pn);
     } catch (IOException iox) {
       env.throwException(ctx, "java.io.IOException", iox.getMessage());
@@ -87,7 +104,7 @@ public class JPF_java_io_File extends NativePeer {
   @MJI
   public int getCanonicalFile____Ljava_io_File_2(MJIEnv env, int objref, FeatureExpr ctx) {
     try {
-      File file = getFile(env, objref, ctx);
+      File file = getFile(env, objref, ctx).getValue();
       File canonicalFile = file.getCanonicalFile();
       return createJPFFile(env, canonicalFile, ctx);
     } catch (IOException iox) {
@@ -101,7 +118,7 @@ public class JPF_java_io_File extends NativePeer {
   @MJI
   public int getURLSpec____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx){
     try {
-      File f = getFile(env,objref, ctx);
+      File f = getFile(env,objref, ctx).getValue();
       URL url = f.toURL();
       return env.newString(ctx, url.toString());
     } catch (MalformedURLException mfux) {
@@ -112,54 +129,62 @@ public class JPF_java_io_File extends NativePeer {
 
   @MJI
   public int getURISpec____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx){
-    File f = getFile(env, objref, ctx);
+    File f = getFile(env, objref, ctx).getValue();
     URI uri = f.toURI();
     return env.newString(ctx, uri.toString());
   }
 
   @MJI
   public boolean isAbsolute____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env, objref, ctx).isAbsolute();
+    return getFile(env, objref, ctx).getValue().isAbsolute();
   }
 
   @MJI
   public boolean isDirectory____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).isDirectory();
+    return getFile(env,objref, ctx).getValue().isDirectory();
   }
 
   @MJI
   public boolean isFile____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).isFile();
+    return getFile(env,objref, ctx).getValue().isFile();
   }
   
   @MJI
-  public boolean delete____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).delete();
+  public Conditional<Boolean> delete____Z (MJIEnv env, int objref, FeatureExpr ctx) {
+	  Conditional<File> file = getFile(env,objref, ctx).simplify(ctx);
+	  return file.map(new Function<File, Boolean>() {
+
+		@Override
+		public Boolean apply(File file) {
+			return file.delete();
+		}
+		  
+	  });
   }
   
   @MJI
   public long length____J (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).length();
+    return getFile(env,objref, ctx).getValue().length();
   }
   
   @MJI
   public boolean canRead____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).canRead();
+    return getFile(env,objref, ctx).getValue().canRead();
   }
 
   @MJI
   public boolean canWrite____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).canWrite();
+    return getFile(env,objref, ctx).getValue().canWrite();
   }
 
   @MJI
   public boolean exists____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).exists();
+    return getFile(env,objref, ctx).getValue().exists();
   }
 
   @MJI
   public boolean createNewFile____Z(MJIEnv env, int objref, FeatureExpr ctx) {
-    File fileToCreate = getFile(env, objref, ctx);
+    File fileToCreate = getFile(env, objref, ctx).getValue();
     try {
       return fileToCreate.createNewFile();
 
@@ -171,7 +196,7 @@ public class JPF_java_io_File extends NativePeer {
 
   @MJI
   public int list_____3Ljava_lang_String_2(MJIEnv env, int objref, FeatureExpr ctx){
-	  File f=getFile(env,objref, ctx);
+	  File f=getFile(env,objref, ctx).getValue();
     if (f.isDirectory()){
       String[] farr=f.list();
       return env.newStringArray(ctx, farr);
@@ -196,17 +221,17 @@ public class JPF_java_io_File extends NativePeer {
   
   @MJI
   public boolean mkdir____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).mkdir();
+    return getFile(env,objref, ctx).getValue().mkdir();
   }
   
   @MJI
   public boolean mkdirs____Z (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).mkdirs();
+    return getFile(env,objref, ctx).getValue().mkdirs();
   }
   
   @MJI
   public int listFiles_____3Ljava_io_File_2(MJIEnv env, int objref, FeatureExpr ctx) {
-	  File file = getFile(env,objref, ctx);
+	  File file = getFile(env,objref, ctx).getValue();
 	    File[] files = file.listFiles(); 
 	    int filesRef = env.newObjectArray("java.io.File", files.length);
 	    ElementInfo rootsEI = env.getModifiableElementInfo(filesRef);
@@ -218,6 +243,34 @@ public class JPF_java_io_File extends NativePeer {
 	    return filesRef;  
   }
 
+  @MJI
+  public Conditional<Boolean> renameTo__Ljava_io_File_2__Z(MJIEnv env, int objref, int toRef, FeatureExpr ctx) {
+	  // TODO implement variability-aware io
+	  final File file = getFile(env,objref, ctx).getValue();
+	  Conditional<File> toFile = getFile(env,toRef, ctx).simplify(ctx);
+	  if (toFile instanceof One) {
+		  return new One<>(file.renameTo(toFile.getValue()));  
+	  }
+	  
+	  Conditional<Boolean> returnValue = toFile.map(new Function<File, Boolean>() {
+
+		@Override
+		public Boolean apply(File toFile) {
+			try {
+				FileUtils.copyFile(file, toFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+		  
+	  });
+	  if (ctx.isTautology()) {
+		  file.delete();
+	  }
+	  return returnValue;
+  }
   
   // <2do> ..and lots more
 }

@@ -37,6 +37,7 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class AnnotationTest extends TestJPF {
 
@@ -306,7 +307,7 @@ public class AnnotationTest extends TestJPF {
   public static class DataListener extends ListenerAdapter {
 
     @Override
-    public void executeInstruction(VM vm, ThreadInfo ti, Instruction insnToExecute){
+    public void executeInstruction(FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute){
       if (insnToExecute instanceof GETFIELD){
         FieldInfo fi = ((GETFIELD)insnToExecute).getFieldInfo(null);
         if (fi.getName().equals("data")){
@@ -340,7 +341,7 @@ public class AnnotationTest extends TestJPF {
   public static class ArgListener extends ListenerAdapter {
 
     @Override
-    public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute){
+    public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute){
       if (insnToExecute instanceof InvokeInstruction){
         MethodInfo mi = ((InvokeInstruction)insnToExecute).getInvokedMethod();
         if (mi.getName().equals("foo")){

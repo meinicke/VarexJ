@@ -69,13 +69,13 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   
   // this is NOT an MJI method, but it is used outside this package, so
   // we have to add 'final'
-  public static final MethodInfo getMethodInfo (MJIEnv env, int objRef){
-    return registry.getMethodInfo(env,objRef, "regIdx");
+  public static final MethodInfo getMethodInfo (FeatureExpr ctx, MJIEnv env, int objRef){
+    return registry.getMethodInfo(ctx,env, objRef, "regIdx");
   }
   
   @MJI
   public int getName____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
-    MethodInfo mi = getMethodInfo(env, objRef);
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
     
     int nameRef = env.getReferenceField( ctx, objRef, "name").getValue();
     if (nameRef == MJIEnv.NULL) {
@@ -89,7 +89,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
   @MJI
   public int getModifiers____I (MJIEnv env, int objRef, FeatureExpr ctx){
-    MethodInfo mi = getMethodInfo(env, objRef);
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
     return mi.getModifiers();
   }
   
@@ -117,7 +117,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   
   @MJI
   public int getParameterTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx){
-    return getParameterTypes(env, getMethodInfo(env, objRef), ctx);
+    return getParameterTypes(env, getMethodInfo(ctx, env, objRef), ctx);
   }
   
   int getExceptionTypes(MJIEnv env, MethodInfo mi, FeatureExpr ctx) {
@@ -149,12 +149,12 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   
   @MJI
   public int getExceptionTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
-    return getExceptionTypes(env, getMethodInfo(env, objRef), ctx);
+    return getExceptionTypes(env, getMethodInfo(ctx, env, objRef), ctx);
   }
   
   @MJI
   public int getReturnType____Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx){
-    MethodInfo mi = getMethodInfo(env, objRef);
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
     ThreadInfo ti = env.getThreadInfo();
 
     ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(mi.getReturnTypeName());
@@ -167,7 +167,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   
   @MJI
   public int getDeclaringClass____Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx){
-    MethodInfo mi = getMethodInfo(env, objRef);    
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);    
     ClassInfo ci = mi.getClassInfo();
     // it's got to be registered, otherwise we wouldn't be able to acquire the Method object
     return ci.getClassObjectRef();
@@ -217,7 +217,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       ret = env.valueOfBoolean((v == 1)? true: false);
     } else if (mi.isReferenceReturnType()){ 
       attr = frame.getResultAttr();
-      ret = frame.getReferenceResult();
+      ret = frame.getReferenceResult(ctx);
     }
 
     env.setReturnAttribute(attr);
@@ -244,7 +244,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     
     for (int i = 0; i < nArgs; i++) {
-      sourceRef = env.getReferenceArrayElement(argsRef, i);
+      sourceRef = env.getReferenceArrayElement(argsRef, i).simplify(ctx).getValue();
 
       // we have to handle null references explicitly
       if (sourceRef == MJIEnv.NULL) {
@@ -428,7 +428,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   @MJI
   public int invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, Conditional<Integer> objRef, Conditional<Integer> argsRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
-    MethodInfo miCallee = getMethodInfo(env, mthRef);
+    MethodInfo miCallee = getMethodInfo(ctx, env, mthRef);
     ClassInfo calleeClass = miCallee.getClassInfo();
     DirectCallStackFrame frame = ti.getReturnedDirectCall();
     
@@ -453,7 +453,11 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
       //--- check accessibility
       ElementInfo eiMth = ti.getElementInfo(mthRef);
-      if (! (Boolean) eiMth.getFieldValueObject("isAccessible")) {
+      Object object = eiMth.getFieldValueObject("isAccessible");
+      if (object instanceof Conditional) {
+    	  object = ((Conditional)object).simplify(ctx).getValue();
+      }
+      if (! (Boolean) object) {
         StackFrame caller = ti.getTopFrame().getPrevious();
         ClassInfo callerClass = caller.getClassInfo();
 
@@ -526,7 +530,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
   @MJI
   public int getAnnotations_____3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, FeatureExpr ctx){
-    return getAnnotations( env, getMethodInfo(env,mthRef), ctx);
+    return getAnnotations( env, getMethodInfo(ctx,env, mthRef), ctx);
   }
   
   // the following ones consist of a package default implementation that is shared with
@@ -551,7 +555,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
   @MJI
   public int getAnnotation__Ljava_lang_Class_2__Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, int annotationClsRef, FeatureExpr ctx) {
-    return getAnnotation(env, getMethodInfo(env,mthRef), annotationClsRef, ctx);
+    return getAnnotation(env, getMethodInfo(ctx,env, mthRef), annotationClsRef, ctx);
   }
   
   static int getDeclaredAnnotations (MJIEnv env, MethodInfo mi, FeatureExpr ctx){
@@ -568,7 +572,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
   @MJI
   public int getDeclaredAnnotations_____3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, FeatureExpr ctx){
-    return getDeclaredAnnotations( env, getMethodInfo(env,mthRef), ctx);
+    return getDeclaredAnnotations( env, getMethodInfo(ctx,env, mthRef), ctx);
   }
   
   static int getParameterAnnotations (MJIEnv env, MethodInfo mi, FeatureExpr ctx){
@@ -593,14 +597,14 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
   @MJI
   public int getParameterAnnotations_____3_3Ljava_lang_annotation_Annotation_2 (MJIEnv env, int mthRef, FeatureExpr ctx){
-    return getParameterAnnotations( env, getMethodInfo(env,mthRef), ctx);
+    return getParameterAnnotations( env, getMethodInfo(ctx,env, mthRef), ctx);
   }
 
   @MJI
   public int toString____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx){
     StringBuilder sb = new StringBuilder();
     
-    MethodInfo mi = getMethodInfo(env, objRef);
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
 
     sb.append(Modifier.toString(mi.getModifiers()));
     sb.append(' ');
@@ -633,8 +637,8 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo(JPF_java_lang_Class.METHOD_CLASSNAME);
 
     if (ei.getClassInfo() == ci){
-      MethodInfo mi1 = getMethodInfo(env, objRef);
-      MethodInfo mi2 = getMethodInfo(env, mthRef);
+      MethodInfo mi1 = getMethodInfo(ctx, env, objRef);
+      MethodInfo mi2 = getMethodInfo(ctx, env, mthRef);
       if (mi1.getClassInfo() == mi2.getClassInfo()){
         if (mi1.getName().equals(mi2.getName())){
           if (mi1.getReturnType().equals(mi2.getReturnType())){
@@ -657,7 +661,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
   @MJI
   public int hashCode____I (MJIEnv env, int objRef, FeatureExpr ctx){
-    MethodInfo mi = getMethodInfo(env, objRef);
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
     return mi.getClassName().hashCode() ^ mi.getName().hashCode();
   }
 }

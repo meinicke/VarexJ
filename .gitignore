@@ -31,6 +31,7 @@ out/
 ## File-based project format:
 *.ipr
 *.iws
+*.eml
 
 ## Plugin-specific files:
 
@@ -67,3 +68,7 @@ jpf-nhandler/onthefly/*.java
 /Tutorial/
 /Tutorial_MAP/
 /file
+
+META-INF/
+
+junit*.properties

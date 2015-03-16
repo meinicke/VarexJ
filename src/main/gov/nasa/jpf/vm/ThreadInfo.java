@@ -1637,7 +1637,7 @@ public Conditional<Instruction> getPC () {
     if (aRef != MJIEnv.NULL) {
       int len = env.getArrayLength(ctx, aRef);
       for (int i=0; i<len; i++) {
-        int steRef = env.getReferenceArrayElement(aRef, i);
+        int steRef = env.getReferenceArrayElement(aRef, i).getValue();
         if (steRef != MJIEnv.NULL){  // might be ignored (e.g. direct call)
           StackTraceElement ste = new StackTraceElement(steRef);
           ste.printOn( pw);

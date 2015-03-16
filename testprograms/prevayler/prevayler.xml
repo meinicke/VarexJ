@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<featureModel chosenLayoutAlgorithm="1">
+		<struct>
+			<and abstract="true" mandatory="true" name="Prevayler">
+				<alt abstract="true" mandatory="true" name="Monitor">
+					<feature mandatory="true" name="USE_LOG4J_MONITOR"/>
+					<feature mandatory="true" name="USE_NULL_MONITOR"/>
+					<feature mandatory="true" name="SimpleMonitor"/>
+				</alt>
+				<alt abstract="true" mandatory="true" name="Clock">
+					<feature mandatory="true" name="USE_BROKEN_CLOCK"/>
+					<feature mandatory="true" name="USE_PAUSABLE_CLOCK"/>
+					<feature mandatory="true" name="MachineClock"/>
+				</alt>
+				<and abstract="true" mandatory="true" name="SnapshotSerializer">
+					<feature name="USE_XSTREAM"/>
+					<feature name="JavaSerializer"/>
+				</and>
+				<feature name="USE_FILTERING"/>
+				<feature name="USE_TRANSIENT_MODE"/>
+				<feature name="USE_JOURNAL_DISK_SYNC"/>
+				<feature name="FILE_AGE_THREASHOLD"/>
+				<feature name="FILE_SIZE_THREASHOLD"/>
+				<feature name="NewLayer1"/>
+				<and abstract="true" mandatory="true" name="JournalSerializer">
+					<feature name="USE_XSTREAM_JOURNAL"/>
+					<feature name="JavaSerializer_Journal"/>
+				</and>
+			</and>
+		</struct>
+		<constraints/>
+		<calculations Auto="true" Constraints="true" Features="true" Redundant="true" Tautology="true"/>
+		<comments/>
+		<featureOrder userDefined="false"/>
+	</featureModel>

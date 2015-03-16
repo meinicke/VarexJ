@@ -180,6 +180,12 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a boolean[]");
 	}
 
+    // cpwTODO
+    public Byte[] asByteArrayConcrete() {
+        // overridden by subclass
+        throw new JPFException("not a byte[]");
+    }
+
 	public Conditional<Byte>[] asByteArray() {
 		// overridden by subclass
 		throw new JPFException("not a byte[]");
@@ -194,6 +200,11 @@ public abstract class ArrayFields extends Fields {
 		// overridden by subclass
 		throw new JPFException("not a short[]");
 	}
+
+    public Integer[] asIntArrayConcrete() {
+        // overridden by subclass
+        throw new JPFException("not a int[]");
+    }
 
 	public Conditional<Integer>[] asIntArray() {
 		// overridden by subclass

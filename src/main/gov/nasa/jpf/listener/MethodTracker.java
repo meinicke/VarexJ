@@ -32,6 +32,7 @@ import gov.nasa.jpf.vm.VM;
 
 import java.io.PrintWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -73,7 +74,7 @@ public class MethodTracker extends ListenerAdapter {
   }
 
   @Override
-  public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute) {
+  public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute) {
     MethodInfo mi = insnToExecute.getMethodInfo();
 
     if (mi != lastMi) {
@@ -90,7 +91,7 @@ public class MethodTracker extends ListenerAdapter {
       if (insnToExecute instanceof VirtualInvocation) {
         VirtualInvocation callInsn = (VirtualInvocation)insnToExecute;
         int objref = callInsn.getCalleeThis(ti);
-        callee = callInsn.getInvokedMethod(ti, objref);
+        callee = callInsn.getInvokedMethod(ctx, ti, objref);
 
       } else if (insnToExecute instanceof INVOKESPECIAL) {
         INVOKESPECIAL callInsn = (INVOKESPECIAL)insnToExecute;

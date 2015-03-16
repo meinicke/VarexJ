@@ -65,6 +65,10 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
             if (fi.isReference()) {
               int fieldValueRef = sei.getFields().getReferenceValue(fi.getStorageOffset()).getValue();
               Object JVMField = obtainJVMObj(fieldValueRef, env, ctx);
+                // Temporary solution cpwTODO
+                if (JVMField != null && JVMField.getClass() == cmu.conditional.One.class){
+                    JVMField = ((cmu.conditional.One<?>)JVMField).getValue();
+                }
               try {
                 fld[i].set(null, JVMField);
               } catch (IllegalArgumentException e) {

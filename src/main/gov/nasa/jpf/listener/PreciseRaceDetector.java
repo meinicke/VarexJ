@@ -36,6 +36,7 @@ import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -268,7 +269,7 @@ public class PreciseRaceDetector extends PropertyListenerAdapter {
   }
 
   @Override
-  public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute) {
+  public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute) {
     if (race != null) {
       // we're done, report as quickly as possible
       //ti.skipInstruction();

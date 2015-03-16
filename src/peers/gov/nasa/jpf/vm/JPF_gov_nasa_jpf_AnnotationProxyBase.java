@@ -100,7 +100,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
           if (ft.equals("java.lang.String[]")){
             for (int j=0; j<n; j++){
               if (j>0) sb.append(',');
-              sb.append(env.getStringObject(ctx, env.getReferenceArrayElement(ar,j)));
+              sb.append(env.getStringObject(ctx, env.getReferenceArrayElement(ar,j).getValue()));
             }
             
           } else if (ft.equals("int[]")){
@@ -130,7 +130,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
             for (int j=0; j<n; j++){
               if (j>0) sb.append(',');
 
-              int cref = env.getReferenceArrayElement(ar,j);
+              int cref = env.getReferenceArrayElement(ar,j).getValue();
               if (cref != MJIEnv.NULL){
                 int nref = env.getReferenceField(ctx, cref, "name").getValue();
                 String cn = env.getStringObject(ctx, nref);

@@ -341,8 +341,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     if (ei == null){
       return 0;
     }
-        
-    
+   
 	if (!(fi instanceof ReferenceFieldInfo)) { // primitive type, we need to box it
       if (fi instanceof DoubleFieldInfo){
         Conditional<Double> d = ei.getDoubleField(fi);
@@ -445,31 +444,52 @@ static FieldInfo getFieldInfo (FeatureExpr ctx, MJIEnv env, int objRef) {
   @MJI
   public void set__Ljava_lang_Object_2Ljava_lang_Object_2__V (MJIEnv env, int objRef, int fobjRef, int val, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    int modifiers = fi.getModifiers();
-
     if (!isAvailable(env, fi, fobjRef, ctx)){
       return;
     }
         
-    if (Modifier.isFinal(modifiers)) {
-      env.throwException(ctx, "java.lang.IllegalAccessException", "field " + fi.getName() + " is final");
-      return;
+    if (fi.isFinal() && fi.isStatic()) {
+        env.throwException(ctx, IllegalAccessException.class.getName(), "Can not set static final " + fi.getType() + " field " 
+        		+ fi.getFullName());
+        return;
+      }
+    if (!env.getBooleanField(objRef, "isAccessible").getValue() && fi.isFinal()) {
+    	env.throwException(ctx, IllegalAccessException.class.getName(), "Can not set final " + fi.getType() + " field " 
+    			+ fi.getFullName());
+    	return;
     }
+
     ClassInfo ci = fi.getClassInfo();
     ClassInfo cio = env.getClassInfo(fobjRef);
-
     if (!fi.isStatic() && !cio.isInstanceOf(ci)) {
-      env.throwException(ctx, 
-                         "java.lang.IllegalArgumentException", fi.getType() + "field " + fi.getName() + " does not belong to this object");
+      env.throwException(ctx, IllegalAccessException.class.getName(), fi.getType() + "field " + fi.getName() + " does not belong to this object");
       return;
+    }
+    
+    
+
+    
+    if (!env.getBooleanField(objRef, "isAccessible").getValue()) {
+		if (!fi.isStatic() && cio.isInstanceOf(ci)) {
+			if (!fi.isPublic()) {
+				env.throwException(ctx, IllegalAccessException.class.getName(),
+						fi.getType() + " field " + fi.getName());
+				return;
+			}
+		} else {
+			if (!fi.isPublic()) {
+				env.throwException(ctx, IllegalAccessException.class.getName(),
+						fi.getType() + " field " + fi.getName());
+				return;
+			}
+		}
     }
     
     Object[] attrs = env.getArgAttributes();
     Object attr = (attrs==null)? null: attrs[2];
     
     if (!setValue(ctx, env, fi, fobjRef, val, attr)) {
-      env.throwException(ctx,  
-                         "java.lang.IllegalArgumentException", "Can not set " + fi.getType() + " field " + fi.getFullName() + " to " + ((MJIEnv.NULL != val) ? env.getClassInfo(val).getName() + " object " : "null"));
+      env.throwException(ctx,  IllegalAccessException.class.getName(), "Can not set " + fi.getType() + " field " + fi.getFullName() + " to " + ((MJIEnv.NULL != val) ? env.getClassInfo(val).getName() + " object " : "null"));
     }
   }
 

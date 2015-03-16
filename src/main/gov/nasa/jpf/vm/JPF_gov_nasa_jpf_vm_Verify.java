@@ -561,7 +561,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   public static void print___3Ljava_lang_String_2__V (MJIEnv env, int clsRef, int argsRef, FeatureExpr ctx){
     int n = env.getArrayLength(ctx, argsRef);
     for (int i=0; i<n; i++){
-      int aref = env.getReferenceArrayElement(argsRef, i);
+      int aref = env.getReferenceArrayElement(argsRef, i).getValue();
       String s = env.getStringObject(ctx, aref);
       System.out.print(s);
     }
@@ -1019,7 +1019,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 
       int n = env.getArrayLength(ctx, argRef);
       for (int i=0; i<n; i++) {
-        int pRef = env.getReferenceArrayElement(argRef, i);
+        int pRef = env.getReferenceArrayElement(argRef, i).getValue();
         if (pRef != MJIEnv.NULL) {
           String p = env.getStringObject(ctx, pRef);
           config.parse(p);

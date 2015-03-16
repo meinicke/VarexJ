@@ -39,6 +39,8 @@ import gov.nasa.jpf.vm.VM;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+
 /**
  * listener that keeps track of all allocations, method calls, field updates
  * and deallocations of instances of a set of types
@@ -245,7 +247,7 @@ public class ObjectTracker extends PropertyListenerAdapter {
         Record rec = getRecord(ref);
         
         if (rec != null){
-          MethodInfo mi = call.getInvokedMethod(ti, ref);
+          MethodInfo mi = call.getInvokedMethod(FeatureExprFactory.True(), ti, ref);
           
           if (logCall){
             log(ti, "invoke %1$s.%2$s", rec.ei, mi.getUniqueName());

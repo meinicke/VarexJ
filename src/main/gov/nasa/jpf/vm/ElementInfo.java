@@ -1162,7 +1162,7 @@ public abstract class ElementInfo implements Cloneable {
     if (fi.isReference()){
       return fields.getReferenceValue(fi.getStorageOffset());
     } else {
-      throw new JPFException("not a reference field: " + fi.getName());
+      throw new JPFException(fields.getClass().getSimpleName() + " not a reference field: " + fi.getName());
     }
   }
 
@@ -1281,6 +1281,18 @@ public abstract class ElementInfo implements Cloneable {
 	    		} else if (eiSrc.getFields() instanceof ReferenceArrayFields) {
 		    		for (int i = 0; i < length; i++) {
 		    			fields.setReferenceValue(ctx, dstIdx + i, src.getReferenceValue(i + srcIdx));
+		    		}
+	    		} else if (eiSrc.getFields() instanceof BooleanArrayFields) {
+		    		for (int i = 0; i < length; i++) {
+		    			fields.setBooleanValue(ctx, dstIdx + i, src.getBooleanValue(i + srcIdx));
+		    		}
+	    		} else if (eiSrc.getFields() instanceof ShortArrayFields) {
+	    			for (int i = 0; i < length; i++) {
+		    			fields.setShortValue(ctx, dstIdx + i, src.getShortValue(i + srcIdx));
+		    		}
+	    		} else if (eiSrc.getFields() instanceof FloatArrayFields) {
+	    			for (int i = 0; i < length; i++) {
+		    			fields.setFloatValue(ctx, dstIdx + i, src.getFloatValue(i + srcIdx));
 		    		}
 	    		} else {
 	    			throw new RuntimeException("TODO implement array copy for " + src.getClass());

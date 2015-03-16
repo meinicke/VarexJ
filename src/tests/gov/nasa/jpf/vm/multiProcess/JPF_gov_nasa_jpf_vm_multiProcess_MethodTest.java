@@ -44,7 +44,7 @@ public class JPF_gov_nasa_jpf_vm_multiProcess_MethodTest extends NativePeer {
 
   @MJI
   public void keepMethod__Ljava_lang_reflect_Method_2I__V(MJIEnv env, int objRef, int mthRef, int prcId, FeatureExpr ctx) {
-    MethodInfo mi = JPF_java_lang_reflect_Method.getMethodInfo(env, mthRef);
+    MethodInfo mi = JPF_java_lang_reflect_Method.getMethodInfo(ctx, env, mthRef);
     if(!prcIds.contains(prcId)) {
       prcIds.add(prcId);
       methods.add(mi);

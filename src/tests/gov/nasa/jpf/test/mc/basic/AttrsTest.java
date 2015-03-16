@@ -35,6 +35,7 @@ import gov.nasa.jpf.vm.Verify;
 
 import org.junit.Test;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
@@ -434,7 +435,7 @@ public class AttrsTest extends TestJPF {
     public MixedAttrTypeListener() {}
     
     @Override
-    public void executeInstruction (VM vm, ThreadInfo ti, Instruction insnToExecute){
+    public void executeInstruction (FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute){
       
       if (insnToExecute instanceof INVOKEVIRTUAL){
         MethodInfo callee = ((INVOKEVIRTUAL)insnToExecute).getInvokedMethod();

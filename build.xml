@@ -75,7 +75,7 @@
 	<!-- ======================= COMPILE SECTION ============================= -->
 
 	<!-- public compile -->
-	<target name="compile" depends="-init,-compile-annotations,-compile-main,-compile-peers,-compile-classes,-compile-tests,-compile-examples" description="compile all JPF core sources">
+	<target name="compile" depends="-init,-compile-annotations,-compile-main,-compile-peers,-compile-classes,-compile-tests, -compile-defects4j-tests, -compile-examples" description="compile all JPF core sources">
 		<copy file="build.properties" todir="build/main/gov/nasa/jpf" failonerror="false" />
 	</target>
 
@@ -117,7 +117,7 @@
 
 	<target name="-compile-tests" if="have_tests" depends="-compile-annotations,-compile-main,-compile-classes">
 		<mkdir dir="build/tests" />
-		<javac srcdir="src/tests" destdir="build/tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" includes="*,gov/nasa/jpf/**, cmu/**,classloader_specific_tests/**">
+		<javac srcdir="src/tests" destdir="build/tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" includes="*,gov/nasa/jpf/**, cmu/**, classloader_specific_tests/**">
 			<compilerarg value="-XDenableSunApiLintControl" />
 			<compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked" />
 			<classpath>
@@ -127,6 +127,20 @@
 			</classpath>
 		</javac>
 	</target>
+
+    <target name="-compile-defects4j-tests" if="have_tests" depends="-compile-annotations,-compile-main,-compile-classes">
+        <mkdir dir="build/defects4j-tests" />
+        <javac srcdir="src/defects4j-tests" destdir="build/defects4j-tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}">
+            <!--<exclude name="cmu/defect4j/math3/**"/>-->
+            <compilerarg value="-XDenableSunApiLintControl" />
+            <compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked" />
+            <classpath>
+                <path refid="lib.path" />
+                <pathelement location="build/annotations" />
+                <pathelement location="build/classes" />
+            </classpath>
+        </javac>
+    </target>
 
 	<target name="-compile-examples" if="have_examples" depends="-compile-annotations,-compile-main">
 		<mkdir dir="build/examples" />
@@ -500,7 +514,7 @@
 				<fileset dir="build/tests">
 					<exclude name="**/JPF_*.class" />
 					<!--<include name="**cmu/*/ZipMeTest.class" />-->
-					<include name="**cmu/**/NoVariationTest.class" />
+					<include name="**cmu/**/PrevaylerTest.class" />
 				</fileset>
 			</batchtest>
 
@@ -509,6 +523,64 @@
 		<junitreport todir="build/tests">
 			<fileset dir="build/tests" includes="TEST-*.xml" />
 			<report todir="build/tests" />
+		</junitreport>
+
+
+	</target>
+
+
+	<target name="test_defects4j" depends="build" description="run core regression tests" if="have_tests">
+		<condition property="junit.usefile">
+			<!-- don't set if this is running from within an IDE that collects output -->
+			<not>
+				<isset property="netbeans.home" />
+			</not>
+		</condition>
+
+		<junit printsummary="on" showoutput="on" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="4096m" outputtoformatters="true">
+			<formatter type="plain" usefile="${junit.usefile}" />
+
+			<assertions>
+				<enable />
+			</assertions>
+
+			<classpath>
+				<path refid="lib.path" />
+                <!--JPF need this to run the test cases using the JPF-->
+                <pathelement location="build/defects4j-tests" />
+				<pathelement location="build/classes" />
+                <pathelement location="build/annotations" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="build/defects4j-tests">
+				<fileset dir="build/defects4j-tests">
+                    <!--Full test for projects-->
+                    <!--<include name="**/jfree/**/*Tests.class"/>-->
+                    <!--<include name="**/joda/**/Test*.class"/>-->
+					<!--<include name="**/lang3/**/*Test.class" />-->
+                    <!--<include name="**/google/**/*Test.class" />-->
+                    <include name="**/math3/**/*Test.class" />
+
+                    <!--Partial test for debugging-->
+                    <!--<include name="**/math3/**/differentiation/DSCompilerTest.class"/>-->
+                    <!--<include name="**/google/**/graph/*Test.class"/>-->
+                    <!--<include name="**/jfree/chart/plot/**/*Tests.class" />-->
+                    <!--<include name="**/joda/time/TestSerialization.class" />-->
+                    <!--<include name="**/CategoryLineAnnotationTests.class"/>-->
+                    <!--<include name="**/lang3/math/NumberUtilsTest.class"/>-->
+                    <!--<exclude name="**/lang3/ArrayUtilsAddTest.class" />-->
+                    <!--<exclude name="**/lang3/AnnotationUtilsTest.class"/>-->
+
+
+                    <exclude name="**/*$*.class" />
+				</fileset>
+			</batchtest>
+
+		</junit>
+
+		<junitreport todir="build/defects4j-tests">
+			<fileset dir="build/defects4j-tests" includes="TEST-*.xml" />
+			<report todir="build/defects4j-tests" />
 		</junitreport>
 
 
