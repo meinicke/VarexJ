@@ -41,11 +41,8 @@ public class IINC extends JVMInstruction {
 	@Override
 	public Conditional<Instruction> execute(final FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
-		Conditional<Integer> v = frame.getLocalVariable(ctx, index);
-		v = mapr2(v, increment);
-		frame.setLocalVariable(ctx, index, v, false);
-		Conditional<Instruction> next = getNext(ctx, ti);
-		return next;
+		frame.IINC(ctx, index, increment);
+		return getNext(ctx, ti);
 	}
 	
 	@Override

@@ -20,8 +20,6 @@ package gov.nasa.jpf.vm;
 
 import gov.nasa.jpf.util.ObjectList;
 import gov.nasa.jpf.util.Source;
-import cmu.conditional.BiFunction;
-import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
@@ -316,14 +314,7 @@ public abstract class Instruction implements Cloneable {
 	 * implemented as ThreadInfo state (TERMINATED), rather than purged stacks
 	 */
 	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
-		return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
-
-			@Override
-			public Conditional<Instruction> apply(final FeatureExpr f, final Instruction y) {
-				return ChoiceFactory.create(ctx, new One<>(y.getNext()), new One<>(y));
-			}
-
-		}).simplify();
+		return new One<>(getNext());
 	}
 
 	// --- the generic attribute API
@@ -407,6 +398,24 @@ public abstract class Instruction implements Cloneable {
 		return clone;
 	}
 
+	protected Conditional<Integer> maprInt(final Conditional<Integer> v1, final Conditional<Integer> v2) {
+		return v2.mapr(new Function<Integer, Conditional<Integer>>() {
+
+			@Override
+			public Conditional<Integer> apply(final Integer x2) {
+				return v1.mapr(new Function<Integer, Conditional<Integer>>() {
+
+					@Override
+					public Conditional<Integer> apply(final Integer x1) {
+						return One.valueOf((int)instruction((Number)x1, (Number)x2));
+					}
+
+				}).simplify();
+			}
+
+		}).simplify();
+	}
+	
 	protected <T, U> Conditional<T> mapr(final Conditional<T> v1, final Conditional<U> v2) {
 		return v2.mapr(new Function<U, Conditional<T>>() {
 

@@ -23,6 +23,8 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -30,11 +32,18 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class INEG extends JVMInstruction {
 
+	private static final Function<Integer, Conditional<Integer>> NEG = new Function<Integer, Conditional<Integer>>() {
+		
+		@Override
+		public Conditional<Integer> apply(Integer x) {
+			return One.valueOf(-x);
+		}
+	};
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Integer> v = frame.pop(ctx);
-		frame.push(ctx, mapr2(v, null));
+		frame.push(ctx, v.mapr(NEG));
 
 		return getNext(ctx, ti);
 	}

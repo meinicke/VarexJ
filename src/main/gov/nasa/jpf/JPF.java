@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import coverage.Coverage;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
@@ -48,6 +49,8 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  * instantiates the Search and VM objects, and kicks off the Search
  */
 public class JPF implements Runnable {
+	
+	public static Coverage COVERAGE;
 	  
   public static String VERSION = "7.0"; // the major version number
 
@@ -303,8 +306,10 @@ public class JPF implements Runnable {
     	  FeatureExprFactory.setDefault(FeatureExprFactory.sat());
       }
       
+      processInteractionCommand();
+      
       // set the trace method
-      traceMethod = config.getString("trace", null);
+      traceMethod = config.getString("traceMethod", null);
       
       // Set StackHandlerFactory
 //      if (factory.equals("X")) {
@@ -327,7 +332,70 @@ public class JPF implements Runnable {
       //cx.getCause().printStackTrace();      
       throw new ExitException(false, cx);
     }
-  }  
+  }
+  
+  public enum COVERAGE_TYPE {
+	  feature, stack, local, context, composedContext, time
+  }
+  
+  public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
+
+  private void processInteractionCommand() {
+	String logInteractions = config.getString("interaction", null);
+      if (logInteractions != null) {
+    	  if (COVERAGE == null) {
+    		  // do not override
+    		  COVERAGE = new Coverage();
+    		  COVERAGE.setMinInteraction(config.getInt("minInteraction", -1));
+    	  }
+    	  
+				for (COVERAGE_TYPE type : COVERAGE_TYPE.values()) {
+					if (type.name().equals(logInteractions)) {
+						SELECTED_COVERAGE_TYPE = type;
+						switch (SELECTED_COVERAGE_TYPE) {
+						case feature:
+							COVERAGE.setType("Max features: ");
+							COVERAGE.setBaseValue(0);
+							break;
+						case local:
+							COVERAGE.setType("Max local: ");
+							COVERAGE.setBaseValue(0);
+							break;
+						case stack:
+							COVERAGE.setType("Stack with: ");
+							COVERAGE.setBaseValue(1);
+							break;
+						case context:
+							COVERAGE.setType("Number of different contexts: ");
+							COVERAGE.setBaseValue(1);
+							break;
+						case composedContext:
+							COVERAGE.setType("Size of disjuntion of all contexts: ");
+							COVERAGE.setBaseValue(0);
+							break;
+						case time:
+							COVERAGE.setType("Max time: ");
+							COVERAGE.setBaseValue(0);
+							break;
+						default:
+							break;
+						}
+						break;
+					}
+				}
+    	  if (SELECTED_COVERAGE_TYPE == null) {
+    		  StringBuilder message = new StringBuilder();
+    		  message.append("Specified interaction type \"");
+    		  message.append(logInteractions);
+    		  message.append("\" does not exist. Use one of:");
+    		  for (COVERAGE_TYPE type : COVERAGE_TYPE.values()) {
+    			  message.append(type);
+    			  message.append(' ');
+    		  }
+    		  throw new RuntimeException(message.toString());
+    	  }
+      }
+}  
 
   
   public Status getStatus() {

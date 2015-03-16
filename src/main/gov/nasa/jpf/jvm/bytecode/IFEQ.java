@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 import gov.nasa.jpf.vm.StackFrame;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -29,20 +30,18 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class IFEQ extends IfInstruction {
 
-	private static final class IFEQ_ implements Function<Integer, Boolean> {
-		public Boolean apply(final Integer x) {
-			return Boolean.valueOf(x.intValue() == 0);
+	private static final Function<Integer, Conditional<Boolean>> IFEQ_ = new Function<Integer, Conditional<Boolean>>() {
+		public Conditional<Boolean> apply(final Integer x) {
+			return One.valueOf(x.intValue() == 0);
 		}
-	}
+	};
 
 	public IFEQ(int targetPc) {
 		super(targetPc);
 	}
 
 	public Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame) {
-		Conditional<Integer> pop = frame.pop(ctx);
-		Conditional<Boolean> res = pop.map(new IFEQ_()).simplifyValues();
-		return res;
+		return frame.pop(ctx).mapr(IFEQ_).simplifyValues();
 	}
 
 	public int getByteCode() {

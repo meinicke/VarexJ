@@ -30,6 +30,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -40,46 +41,43 @@ public class JPF_java_lang_System extends NativePeer {
 	@MJI
 	public void arraycopy__Ljava_lang_Object_2ILjava_lang_Object_2II__V(final MJIEnv env, int clsObjRef, Conditional<Integer> srcArrayRef, final Conditional<Integer> srcIdx,
 			final Conditional<Integer> dstArrayRef, final Conditional<Integer> dstIdx, final Conditional<Integer> length, FeatureExpr ctx) {
-		srcArrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+		srcArrayRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 			@Override
-			public Conditional<Integer> apply(FeatureExpr ctx, final Integer srcArrayRef) {
-				dstArrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+			public void apply(FeatureExpr ctx, final Integer srcArrayRef) {
+				dstArrayRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 					@Override
-					public Conditional<Integer> apply(FeatureExpr ctx, final Integer dstArrayRef) {
-						length.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+					public void apply(FeatureExpr ctx, final Integer dstArrayRef) {
+						length.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 							@Override
-							public Conditional<Integer> apply(FeatureExpr ctx, final Integer length) {
+							public void apply(FeatureExpr ctx, final Integer length) {
 								if (ctx.isContradiction()) {
-									return null;
+									return;
 								}
 								if ((srcArrayRef.intValue() == MJIEnv.NULL) || (dstArrayRef.intValue() == MJIEnv.NULL)) {
 									env.throwException(ctx, "java.lang.NullPointerException");
-									return null;
+									return;
 								}
 
 								final ElementInfo eiSrc = env.getElementInfo(srcArrayRef);
 								final ElementInfo eiDst = env.getModifiableElementInfo(dstArrayRef);
 								try {
-									srcIdx.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+									srcIdx.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 										@Override
-										public Conditional<Object> apply(FeatureExpr ctx, final Integer srcIdx) {
-											dstIdx.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+										public void apply(FeatureExpr ctx, final Integer srcIdx) {
+											dstIdx.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 												@Override
-												public Conditional<Object> apply(FeatureExpr ctx, Integer dstIdx) {
+												public void apply(FeatureExpr ctx, Integer dstIdx) {
 													if (ctx.isContradiction()) {
-														return null;
+														return;
 													}
 													eiDst.copyElements(ctx, env.getThreadInfo(), eiSrc, srcIdx, dstIdx, length);
-													return null;
 												}
 											});
-											
-											return null;
 										}
 										
 									});
@@ -90,16 +88,11 @@ public class JPF_java_lang_System extends NativePeer {
 								} catch (ArrayStoreException asx) {
 									env.throwException(ctx, "java.lang.ArrayStoreException", asx.getMessage());
 								}
-								return null;
 							}
 						});
 						
-						return null;
-						
 					}
 				});
-				
-				return null;
 			}
 
 		});

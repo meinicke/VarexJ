@@ -52,6 +52,7 @@ public class AASTORE extends ArrayStoreInstruction {
 
 		return value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer value) {
 				if (value != MJIEnv.NULL) { // no checks for storing 'null'
@@ -64,7 +65,7 @@ public class AASTORE extends ArrayStoreInstruction {
 					}
 				}
 
-				return new One<>(null);
+				return (Conditional<Instruction>) One.NULL;
 			}
 
 		}).simplify();

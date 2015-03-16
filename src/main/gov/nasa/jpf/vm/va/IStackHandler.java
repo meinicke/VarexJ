@@ -18,6 +18,9 @@ public interface IStackHandler {
 	public abstract FeatureExpr getCtx();
 
 	public abstract int getStackWidth();
+	
+	public abstract int getLocalWidth();
+	public abstract String getMaxLocal();
 
 	public abstract String toString();
 
@@ -147,5 +150,13 @@ public interface IStackHandler {
 	public abstract void setCtx(FeatureExpr ctx);
 	
 	public abstract Collection<Integer> getAllReferences();
+
+	/**
+	 * Increments the local variable at the given index position.
+	 * @param ctx THe context to apply
+	 * @param index The index of the local variable
+	 * @param increment The value to increment
+	 */
+	public abstract void IINC(FeatureExpr ctx, int index, int increment);
 
 }

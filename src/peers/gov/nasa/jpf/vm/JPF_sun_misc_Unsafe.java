@@ -147,7 +147,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
         env.repeatInvocation();
   
       } else {
-        ei.setBooleanField(ctx, "blockPark", new One<>(true)); // next time
+        ei.setBooleanField(ctx, "blockPark", One.TRUE); // next time
       }
     }
   }
@@ -182,7 +182,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
         }
         
       } else {
-        eiPermit.setBooleanField(ctx, "blockPark", new One<>(false));
+        eiPermit.setBooleanField(ctx, "blockPark", One.FALSE);
       }      
     }
   }

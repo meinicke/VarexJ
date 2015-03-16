@@ -127,6 +127,7 @@ public class DynamicElementInfo extends ElementInfo {
     Conditional<Integer> vref = getDeclaredReferenceField("value", "java.lang.String");
     return vref.mapr(new Function<Integer, Conditional<char[]>>() {
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Conditional<char[]> apply(Integer vref) {
 		    if (vref != MJIEnv.NULL){
@@ -134,7 +135,7 @@ public class DynamicElementInfo extends ElementInfo {
 		        return eVal.asCharArray();
 		        
 		      } else {
-		        return new One<>(null);
+		        return (Conditional<char[]>) One.NULL;
 		      }    
 		}
     	

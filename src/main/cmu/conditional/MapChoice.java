@@ -89,6 +89,13 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 
 		return new MapChoice<>(newMap);
 	}
+	
+	@Override
+	public void mapfr(FeatureExpr inFeature, VoidBiFunction<FeatureExpr, T> f) {
+		for (Entry<T, FeatureExpr> e : map.entrySet()) {
+			f.apply(inFeature == null ? e.getValue() : e.getValue().and(inFeature), e.getKey());
+		}
+	}
 
 	@Override
 	public Conditional<T> simplifyValues() {
@@ -155,12 +162,27 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 
 	@Override
 	public String toString() {
-		return map.toString();
+		StringBuilder content = new StringBuilder();
+		content.append('{');
+		for (Entry<T, FeatureExpr> e: map.entrySet()) {
+			content.append(getCTXString(e.getValue()));
+			content.append(':');
+			content.append(e.getKey());
+			content.append(" ; ");
+		}
+		content.delete(content.length() - 4, content.length() - 1);
+		content.append('}');
+		return content.toString();
 	}
 
 	@Override
 	public Map<T, FeatureExpr> toMap() {
 		return map;
+	}
+	
+	@Override
+	public int size() {
+		return map.size();
 	}
 
 }

@@ -12,6 +12,7 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -109,32 +110,33 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@SuppressWarnings("unchecked")
 	public StackHandler clone() {
 		StackHandler clone = new StackHandler();
+//		clone.setCtx(stackCTX); // TODO ThreadStopTest.testStopRunning() fails
 		clone.length = length;
 		clone.locals = new Conditional[locals.length];
 		for (int i = 0; i < locals.length; i++) {
 			Conditional<Entry> local = locals[i];
 			if (local != null) {
-				clone.locals[i] = local.map(new CopyEntry());
+				clone.locals[i] = local.map(CopyEntry);
 			}
 		}
 
-		clone.stack = stack.map(new CopyStack());
+		clone.stack = stack.map(CopyStack);
 		return clone;
 	}
 	
-	private static final class CopyEntry implements Function<Entry, Entry> {
+	private static final Function<Entry, Entry> CopyEntry = new Function<Entry, Entry>() {
 		@Override
 		public Entry apply(final Entry entry) {
 			return entry.copy();
 		}
-	}
+	};
 	
-	private static final class CopyStack implements Function<Stack, Stack> {
+	private static final Function<Stack, Stack> CopyStack = new Function<Stack, Stack>() {
 		@Override
 		public Stack apply(final Stack stack) {
 			return stack.copy();
 		}
-	}
+	};
 
 	/*
 	 * ############################################################
@@ -151,12 +153,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 		if (value == null) {
 			value = new One<>(new Entry(MJIEnv.NULL, false));
 		}
-		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Object>>() {
+		value.mapf(ctx, new VoidBiFunction<FeatureExpr, Entry>() {
 
 			@Override
-			public Conditional<Object> apply(final FeatureExpr ctx, final Entry entry) {
+			public void apply(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, entry.isRef);
-				return null;
 			}
 		});
 	}
@@ -170,24 +171,22 @@ public class StackHandler implements Cloneable, IStackHandler {
 		if (value == null) {
 			value = new One<>(new Entry(0, false));
 		}
-		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Object>>() {
+		value.mapf(ctx, new VoidBiFunction<FeatureExpr, Entry>() {
 
 			@Override
-			public Conditional<Object> apply(final FeatureExpr ctx, final Entry entry) {
+			public void apply(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, false);
-				return null;
 			}
 		});
 		value = locals[index + 1];
 		if (value == null) {
 			value = new One<>(new Entry(0, false));
 		}
-		value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Object>>() {
+		value.mapf(ctx, new VoidBiFunction<FeatureExpr, Entry>() {
 
 			@Override
-			public Conditional<Object> apply(final FeatureExpr ctx, final Entry entry) {
+			public void apply(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, false);
-				return null;
 			}
 		});
 	}
@@ -233,16 +232,15 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public void storeLongOperand(final FeatureExpr ctx, final int index) {
-		stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
+		stack.mapf(ctx, new VoidBiFunction<FeatureExpr, Stack>() {
 
 			@Override
-			public Conditional<Entry> apply(final FeatureExpr f, final Stack stack) {
+			public void apply(final FeatureExpr f, final Stack stack) {
 				if (Conditional.isContradiction(f)) {
-					return null;
+					return;
 				}
 				locals[index + 1] = ChoiceFactory.create(f, popEntry(f, false), locals[index + 1]);
 				locals[index] = ChoiceFactory.create(f, popEntry(f, false), locals[index]);
-				return null;
 			}
 		});
 		locals[index] = locals[index].simplify();
@@ -255,12 +253,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public void setLocal(FeatureExpr ctx, final int index, final Conditional<Integer> value, final boolean isRef) {
-		value.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+		value.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 			@Override
-			public Conditional<Integer> apply(final FeatureExpr x, final Integer value) {
+			public void apply(final FeatureExpr x, final Integer value) {
 				setLocal(x, index, value, isRef);
-				return null;
 			}
 
 		});
@@ -291,9 +288,9 @@ public class StackHandler implements Cloneable, IStackHandler {
 		}
 		if (index < locals.length) {
 			if (locals[index] == null) {
-				return new One<>(MJIEnv.NULL);
+				return One.MJIEnvNULL;
 			}
-			return locals[index].simplify(ctx).map(new GetLocal()).simplifyValues();
+			return locals[index].simplify(ctx).map(GetLocal).simplifyValues();
 		} else {
 			final int i = index - locals.length;
 			return stack.map(new Function<Stack, Integer>() {
@@ -307,7 +304,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 		}
 	}
 	
-	private static final class GetLocal implements Function<Entry, Integer> {
+	private static final Function<Entry, Integer> GetLocal = new Function<Entry, Integer>() {
 		@Override
 		public Integer apply(final Entry x) {
 			if (x == null) {
@@ -315,7 +312,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 			}
 			return x.value;
 		}
-	}
+	};
 
 	// TODO change to conditional
 	/* (non-Javadoc)
@@ -332,7 +329,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				return false;
 			}
 			// TODO check calls of isRefLocal
-			for (boolean b : locals[index].simplify(ctx).map(new IsRefLocal()).toList()) {
+			for (boolean b : locals[index].simplify(ctx).map(IsRefLocal).toList()) {
 				if (b) {
 					return true;
 				}
@@ -352,12 +349,12 @@ public class StackHandler implements Cloneable, IStackHandler {
 		}
 	}
 	
-	private static final class IsRefLocal implements Function<Entry, Boolean> {
+	private static final Function<Entry, Boolean> IsRefLocal = new Function<Entry, Boolean>() {
 		@Override
 		public Boolean apply(final Entry y) {
 			return y.isRef;
 		}
-	}
+	};
 
 	/*
 	 * #######################################################
@@ -380,12 +377,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@SuppressWarnings("unchecked")
 	public void push(final FeatureExpr ctx, final Object value, final boolean isRef) {
 		if (value instanceof Conditional) {
-			((Conditional<Object>) value).mapf(ctx, new BiFunction<FeatureExpr, Object, Conditional<Object>>() {
+			((Conditional<Object>) value).mapf(ctx, new VoidBiFunction<FeatureExpr, Object>() {
 
 				@Override
-				public Conditional<Object> apply(final FeatureExpr ctx, final Object value) {
+				public void apply(final FeatureExpr ctx, final Object value) {
 					push(ctx, value, isRef);
-					return null;
 				}
 
 			});
@@ -407,12 +403,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 					clone.push((int) (v >> 32), isRef);
 					clone.push((int) v, isRef);
 				} else if (value instanceof Double) {
-					long l = Double.doubleToLongBits((Double) value);
-					clone.push((int) (l >> 32), isRef);
-					clone.push((int) l, isRef);
+					long v = Double.doubleToLongBits((Double) value);
+					clone.push((int) (v >> 32), isRef);
+					clone.push((int) v, isRef);
 				} else if (value instanceof Float) {
-					float v = (Float) value;
-					clone.push(Float.floatToIntBits(v), isRef);
+					clone.push(Float.floatToIntBits((Float) value), isRef);
 				} else if (value instanceof Byte) {
 					clone.push(((Byte)value).intValue(), isRef);
 				} else if (value instanceof Short) {
@@ -468,33 +463,27 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public <T> Conditional<T> pop(final FeatureExpr ctx, final Type t) {
-//		if (ThreadInfo.debug) {
-//			System.out.println(stack);
-//		}
 		Conditional<T> result = stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<T>>() {
 
 			@SuppressWarnings("unchecked")
 			@Override
 			public Conditional<T> apply(final FeatureExpr f, final Stack s) {
 				Stack clone = s.copy();
-				Number res = null;
+				Number res;
+				final int lo = clone.pop();
+
 				switch (t) {
 				case INT:
-					res = clone.pop();
+					res = Integer.valueOf(lo);
 					break;
 				case DOUBLE:
-					int lo = clone.pop();
-					int hi = clone.pop();
-					res = Types.intsToDouble(lo, hi);
+					res = Types.intsToDouble(lo, clone.pop());
 					break;
 				case FLOAT:
-					int i = clone.pop();
-					res = Types.intToFloat(i);
+					res = Types.intToFloat(lo);
 					break;
 				case LONG:
-					int lo2 = clone.pop();
-					int hi2 = clone.pop();
-					res = Types.intsToLong(lo2, hi2);
+					res = Types.intsToLong(lo, clone.pop());
 					break;
 				default:
 					return null;
@@ -516,7 +505,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 * @see gov.nasa.jpf.vm.IStackHandler#pop(de.fosd.typechef.featureexpr.FeatureExpr, int)
 	 */
 	@Override
-	public void pop(final FeatureExpr ctx, final int n) {
+	public void pop(FeatureExpr ctx, final int n) {
 		stack = stack.mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Stack>>() {
 
 			@Override
@@ -526,16 +515,14 @@ public class StackHandler implements Cloneable, IStackHandler {
 				}
 
 				Stack clone = s.copy();
-				int i = n;
-				while (i > 0) {
+				for (int i = n; i > 0; i--) {
 					clone.pop();
-					i--;
 				}
 
 				if (Conditional.isTautology(f)) {
 					return new One<>(clone);
 				}
-				return ChoiceFactory.create(ctx, new One<>(clone), new One<>(s));
+				return ChoiceFactory.create(f, new One<>(clone), new One<>(s));
 			}
 		}).simplify();
 	}
@@ -647,15 +634,15 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public Conditional<Integer> getTop() {
-		return stack.map(new GetTop());
+		return stack.map(GetTop);
 	}
 	
-	private static final class GetTop implements Function<Stack, Integer> {
+	private static final Function<Stack, Integer> GetTop = new Function<Stack, Integer>() {
 		@Override
 		public Integer apply(final Stack y) {
 			return y.top;
 		}
-	}
+	};
 
 	/* (non-Javadoc)
 	 * @see gov.nasa.jpf.vm.IStackHandler#setTop(de.fosd.typechef.featureexpr.FeatureExpr, int)
@@ -932,6 +919,48 @@ public class StackHandler implements Cloneable, IStackHandler {
 		}
 		
 		return references;
+	}
+
+	@Override
+	public int getLocalWidth() {
+		int width = -locals.length;
+		for (Conditional<Entry> local : locals) {
+			width += local.simplify(getCtx()).toMap().size();
+		}
+		return width;
+	}
+	
+	@Override
+	public String getMaxLocal() {
+		StringBuilder builder = new StringBuilder();
+		for (Conditional<Entry> local : locals) {		
+			int size = local.simplify(getCtx()).toMap().size();
+			builder.append(local.simplify(getCtx()));
+			builder.append(":");
+			builder.append(size);
+			builder.append('\n');
+		}
+		return builder.toString();
+	}
+
+	@Override
+	public void IINC(FeatureExpr ctx, int index, final int increment) {
+		locals[index] = locals[index].mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Entry>>() {
+
+			@Override
+			public Conditional<Entry> apply(FeatureExpr ctx, Entry y) {
+				if (Conditional.isContradiction(ctx)) {
+					return new One<>(y);
+				}
+				Entry copy = new Entry(y.value + increment, y.isRef);
+				if (Conditional.isTautology(ctx)) {
+					return new One<>(copy);
+				}
+				return ChoiceFactory.create(ctx, new One<>(copy), new One<>(y));
+			}
+			
+			
+		}).simplify();
 	}
 
 }

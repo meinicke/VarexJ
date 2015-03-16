@@ -179,9 +179,8 @@ public class StringTest extends TestJPF {
 		}
 	}
 	
-	// TODO s.length does not work
-	@Ignore @Test
-	public void test() throws Exception {
+	@Test
+	public void lengthTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			String s1 = "A";
 			if (x) {

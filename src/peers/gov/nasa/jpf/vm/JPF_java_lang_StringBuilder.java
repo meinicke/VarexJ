@@ -23,6 +23,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_java_lang_StringBuilder extends NativePeer {
@@ -35,23 +36,23 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	int appendString(FeatureExpr ctx, final MJIEnv env, final int objref, final Conditional<String> conditionalS) {
 		Conditional<Integer> condAref = env.getReferenceField(ctx, objref, "value");
 
-		condAref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+		condAref.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 			@Override
-			public Conditional<Object> apply(FeatureExpr ctx, final Integer aref) {
-				conditionalS.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<Object>>() {
+			public void apply(FeatureExpr ctx, final Integer aref) {
+				conditionalS.mapf(ctx, new VoidBiFunction<FeatureExpr, String>() {
 
 					@Override
-					public Conditional<Object> apply(FeatureExpr ctx, final String s) {
+					public void apply(FeatureExpr ctx, final String s) {
 						final int slen = s.length();
 						final int alen = env.getArrayLength(ctx, aref);
 						Conditional<Integer> count = env.getIntField(objref, "count");
-						count.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+						count.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 							@Override
-							public Conditional<Object> apply(FeatureExpr ctx, Integer count) {
+							public void apply(FeatureExpr ctx, Integer count) {
 								if (Conditional.isContradiction(ctx)) {
-									return null;
+									return;
 								}
 								int i, j;
 								int n = count + slen;
@@ -76,18 +77,12 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 								}
 
 								env.setIntField(ctx, objref, "count", new One<>(n));
-
-								return null;
 							}
 
 						});
-
-						return null;
 					}
 
 				});
-
-				return null;
 			}
 		});
 		return objref;
@@ -110,23 +105,23 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	@MJI
 	// TODO can be improved
 	public void $init__Ljava_lang_String_2__V(final MJIEnv env, final int objref, Conditional<Integer> sRef, FeatureExpr ctx) {
-		sRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+		sRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 			@Override
-			public Conditional<Object> apply(FeatureExpr ctx, Integer sRef) {
+			public void apply(FeatureExpr ctx, Integer sRef) {
 				if (sRef.intValue() == MJIEnv.NULL) {
 					env.throwException(ctx, "java.lang.NullPointerException");
-					return null;
+					return;
 				}
 
 				Conditional<char[]> src = env.getStringChars(sRef);
 
-				src.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Object>>() {
+				src.mapf(ctx, new VoidBiFunction<FeatureExpr, char[]>() {
 
 					@Override
-					public Conditional<Object> apply(final FeatureExpr ctx, final char[] src) {
+					public void apply(final FeatureExpr ctx, final char[] src) {
 						if (Conditional.isContradiction(ctx)) {
-							return null;
+							return;
 						}
 						int aref = env.newCharArray(ctx, src.length + 16);
 						// char[] dst = env.getCharArrayObject(aref).getValue();
@@ -136,11 +131,9 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 						// System.arraycopy(src, 0, dst, 0, src.length);
 						env.setReferenceField(ctx, objref, "value", aref);
 						env.setIntField(ctx, objref, "count", new One<>(src.length));
-						return null;
 					}
 
 				});
-				return null;
 			}
 
 		});
@@ -349,10 +342,10 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 		final Integer aref = env.getReferenceField(ctx, objref, "value").getValue();
 		Conditional<Integer> count = env.getIntField(objref, "count");
 		final int diff = endIndex - beginIndex;
-		count.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+		count.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
 			@Override
-			public Conditional<Object> apply(FeatureExpr ctx, Integer count) {
+			public void apply(FeatureExpr ctx, Integer count) {
 				for (int i = beginIndex, j = endIndex; i < count; i++, j++) {
 					if (j < count) {
 						env.setCharArrayElement(ctx, aref, i, env.getCharArrayElement(aref, j));
@@ -362,7 +355,6 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 				}
 
 				env.setIntField(ctx, objref, "count", new One<>(count - diff));
-				return null;
 			}
 
 		});

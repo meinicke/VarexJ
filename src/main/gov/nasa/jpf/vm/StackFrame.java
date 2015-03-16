@@ -2086,5 +2086,9 @@ pw.print(stack);
     setLongArgumentLocal( idx, Double.doubleToLongBits(value), attr);
   }
 
+	public void IINC(FeatureExpr ctx, int index, int increment) {
+		stack.IINC(ctx, index, increment);
+	}
+
 
 }

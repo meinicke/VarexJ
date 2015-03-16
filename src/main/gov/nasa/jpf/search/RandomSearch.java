@@ -19,9 +19,22 @@
 package gov.nasa.jpf.search;
 
 import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.RestorableVMState;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+
+import java.io.File;
+import java.util.HashMap;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import cmu.utils.TraceComparator;
+import coverage.Interaction;
+import coverage.XMLWriter;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * this is a straight execution pseudo-search - it doesn't search at all (i.e.
@@ -40,6 +53,7 @@ public class RandomSearch extends Search {
 		path_limit = config.getInt("search.RandomSearch.path_limit", 0);
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public void search() {
 		try {
 			ThreadInfo.RUN_SIMPLE = true;
@@ -96,6 +110,44 @@ public class RandomSearch extends Search {
 			notifySearchFinished();
 		} finally {
 			ThreadInfo.RUN_SIMPLE = false;
+			if (gov.nasa.jpf.JPF.COVERAGE != null) {
+				
+				
+				switch (JPF.SELECTED_COVERAGE_TYPE) {
+				case composedContext:
+					for (String file : JPF.COVERAGE.getFiles()) {
+						for (Interaction interaction : JPF.COVERAGE.getCoverage(file)) {
+							@SuppressWarnings({ "rawtypes", "unchecked" })
+							HashMap<FeatureExpr, Integer> values = (HashMap) interaction.getValue();
+							FeatureExpr composedContext = FeatureExprFactory.False();
+							for (FeatureExpr entry : values.keySet()) {
+								composedContext = composedContext.or(entry);
+							}
+							interaction.setInteraction(composedContext.collectDistinctFeatures().size());
+						}
+					}
+					break;
+				}
+				
+				JPF.COVERAGE.deleteMinInteraction();
+				
+				File file = new File("coverage.xml");
+				System.out.println("Create file: " + file.getAbsolutePath());
+				XMLWriter writer = new XMLWriter(gov.nasa.jpf.JPF.COVERAGE);
+				try {
+					writer.writeToFile(file);
+				} catch (ParserConfigurationException | TransformerException e) {
+					System.out.println(e.getMessage());
+					for (StackTraceElement element : e.getStackTrace()) {
+						System.out.println(element);
+					}
+					e.printStackTrace();
+				}
+			}
+			if (JPF.traceMethod != null) {
+				TraceComparator.compare();
+				TraceComparator.clear();
+			}
 		}
 	}
 }

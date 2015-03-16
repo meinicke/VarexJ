@@ -109,8 +109,9 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 		return ti.getTopFrame().peek(ctx, 1);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Conditional<Instruction> checkArrayStoreException(FeatureExpr ctx, ThreadInfo ti, ElementInfo ei) {
-		return new One<>(null);
+		return (Conditional<Instruction>) One.NULL;
 	}
 
 	protected abstract void popValue(FeatureExpr ctx, StackFrame frame);

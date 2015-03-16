@@ -63,10 +63,11 @@ public class ARETURN extends ReturnInstruction {
 
 		return ret.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<ElementInfo>>() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public One<ElementInfo> apply(FeatureExpr ctx, Integer ret) {
 				if (ret == MJIEnv.NULL) {
-					return new One<>(null);
+					return (One<ElementInfo>) One.NULL;
 				} else {
 					return new One<>(ti.getElementInfo(ret));
 				}

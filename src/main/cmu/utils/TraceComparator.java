@@ -12,10 +12,11 @@ import java.util.Set;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import de.ovgu.log.LOGGER;
 
 /**
- * Compares the traces of the variability-aware approach with brute force.
- * Brute force traces have to be at a trace file in /traces  
+ * Compares the traces of the variability-aware approach with brute force. Brute
+ * force traces have to be at a trace file in /traces
  * 
  * @author Jens Meinicke
  *
@@ -26,35 +27,59 @@ public class TraceComparator {
 	private static Set<FeatureExpr> validCtx = new HashSet<>();
 	private static String lastInstruction;
 
-	/** 
+	/**
 	 * Contains all instructions of the variability-aware approach.
 	 */
-	private static List<Tuple<FeatureExpr, String>> trace = new ArrayList<>(100000);
-
-	public static void putInstruction(final FeatureExpr ctx, final String newInstr) {
-		trace.add(new Tuple<>(ctx, newInstr));
-
+	private static final List<Tuple<FeatureExpr, String>> trace = new ArrayList<>(10_000_000);
+	
+	private static final Set<FeatureExpr> buffer = new HashSet<>();
+	
+	public static void putInstruction(final FeatureExpr ctx, final String instr) {
+		FeatureExpr useCtx = ctx;
+		if (buffer.contains(ctx)) {
+			for (FeatureExpr bufferCtx : buffer) {
+				if (bufferCtx.equivalentTo(ctx)) {
+					useCtx = bufferCtx;
+					break;
+				}
+			}
+		} else {
+			buffer.add(ctx);
+		}
+		trace.add(new Tuple<>(useCtx, instr.intern()));		
 	}
-
+	
 	public static void compare() {
+		System.out.println("==============================================");
+		System.out.println("COMPARE");
+		System.out.println("==============================================");
+
 		File traceFolder = new File("traces");
+		if (!traceFolder.exists()) {
+			LOGGER.logError("no trace folder found!");
+			return;
+		}
 		try {
 			for (File child : traceFolder.listFiles()) {
 				String fileName = child.getName();
 				System.out.println("Compare traces of " + fileName);
 				boolean error = false;
-			
+
 				try (BufferedReader reader = new BufferedReader(new FileReader(child))) {
 					final FeatureExpr ctx = createFeatureExpr(reader.readLine());
+					if (ctx == null) {
+						LOGGER.logError("No configuration");
+						continue;
+					}
 					System.out.println("Configuration: " + ctx);
 					System.out.println("===================================");
- 
+
 					int vaIndex = 0;
 					int bfIndex = 0;
 					String expected = "";
 					while (true) {
 						expected = reader.readLine();
-						
+
 						if (expected == null) {
 							break;
 						}
@@ -87,28 +112,30 @@ public class TraceComparator {
 						if (!nomalizedVA.equals(normalizedExpected)) {
 							if (nomalizedVA.startsWith("SET FILED") && normalizedExpected.startsWith("SET FILED")) {
 								System.out.println();
-								System.out.println("================WARNING==================");
-								System.out.println(lastInstruction);
-								System.out.println(bfIndex + " Expected: " + expected + "\tBut was:  " + va + " " + trace.get(vaIndex).x);
-								System.out.println("=========================================");
-								System.out.println();
-								
+								LOGGER.log(LOGGER.COLOR.YELLOW, "================WARNING==================");
+								LOGGER.log(LOGGER.COLOR.YELLOW, lastInstruction);
+								LOGGER.log(LOGGER.COLOR.YELLOW, "Line: " + bfIndex);
+								LOGGER.log(LOGGER.COLOR.YELLOW, "Expected: " + expected);
+								LOGGER.log(LOGGER.COLOR.YELLOW, "But was:  " + va + " " + trace.get(vaIndex).x);
+								LOGGER.log(LOGGER.COLOR.YELLOW, "=========================================");
+
 							} else {
-							
 								System.out.println(lastInstruction);
-								System.out.println();
-								System.out.println("================ERROR==================");
-								System.out.println();
-							
-								System.out.println(bfIndex + " Expected: " + expected + "\tBut was:  " + va + " " + trace.get(vaIndex).x);
-								
+								LOGGER.log(LOGGER.COLOR.YELLOW, "================WARNING==============");
+								LOGGER.log(LOGGER.COLOR.YELLOW, bfIndex);
+								LOGGER.log(LOGGER.COLOR.YELLOW, "Expected: " + expected);
+								LOGGER.log(LOGGER.COLOR.YELLOW, "But was:  " + va + " " + trace.get(vaIndex).x);
+								LOGGER.log(LOGGER.COLOR.YELLOW, "Line does NOT match! Skipped one line for brute force.");
+								LOGGER.log(LOGGER.COLOR.YELLOW, "===================================");
+								if (error) {
+									break;
+								}
 								error = true;
-								System.out.println("Traces do NOT match!");
-								System.out.println("===================================");
-								System.out.println();
-								break;
+								bfIndex++;
+								continue;
 							}
 						} else {
+							error = false;
 							lastInstruction = bfIndex + " " + expected + " | " + va + " " + trace.get(vaIndex).x;
 						}
 						vaIndex++;
@@ -116,9 +143,11 @@ public class TraceComparator {
 					}
 					if (!error) {
 						String instructions = toSeparatedNumber(bfIndex);
-						System.out.println("Traces match! (" + instructions + " instructions)");
+						LOGGER.log(LOGGER.COLOR.GREEN, "Traces match! (" + instructions + " instructions)");
 						System.out.println("===================================");
-						System.out.println();
+					} else {
+						LOGGER.logError("Traces do not match!");
+						System.out.println("===================================");
 					}
 				}
 				falseCtx.clear();
@@ -127,19 +156,18 @@ public class TraceComparator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		trace.clear();
 	}
-
+	
 	private static String toSeparatedNumber(int bfIndex) {
-		String number = ""; 
+		String number = "";
 
 		while (bfIndex > 1000) {
 			number = "." + addZeros(bfIndex % 1000) + number;
 			bfIndex = bfIndex / 1000;
 		}
-		return bfIndex + number;		
+		return bfIndex + number;
 	}
-	
+
 	private static String addZeros(int number) {
 		if (number < 10) {
 			return "00" + number;
@@ -154,8 +182,11 @@ public class TraceComparator {
 		return va.split("[:]")[0];
 	}
 
-	private static FeatureExpr createFeatureExpr(String fileName) {
-		String[] features = fileName.split("[&]");
+	private static FeatureExpr createFeatureExpr(String content) {
+		if (content == null) {
+			return null;
+		}
+		String[] features = content.split("[&]");
 		FeatureExpr ctx = FeatureExprFactory.True();
 		for (String f : features) {
 			boolean selection = !f.startsWith("!");
@@ -169,13 +200,25 @@ public class TraceComparator {
 		}
 		return ctx;
 	}
-	
-	static class Tuple<X, Y> { 
-		  final X x; 
-		  final Y y; 
-		  Tuple(X x, Y y) { 
-		    this.x = x; 
-		    this.y = y; 
-		  } 
+
+	static class Tuple<X, Y> {
+		final X x;
+		final Y y;
+
+		Tuple(X x, Y y) {
+			this.x = x;
+			this.y = y;
 		}
+
+		@Override
+		public String toString() {
+			return x.toString() + " " + y.toString();
+		}
+	}
+
+	public static void clear() {
+		trace.clear();
+		buffer.clear();
+	}
 }
+

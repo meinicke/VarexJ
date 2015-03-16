@@ -22,6 +22,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -35,13 +36,14 @@ public class IFNONNULL extends IfInstruction {
     super(targetPc);
   }
 
+  private final static Function<Integer, Conditional<Boolean>> IFNONNULL_ = new Function<Integer, Conditional<Boolean>>() {
+	  public Conditional<Boolean> apply(Integer x) {
+		  return One.valueOf(x.intValue() != MJIEnv.NULL);
+	  }
+  };
 
   public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
-		return frame.pop(ctx).map(new Function<Integer, Boolean>() {
-			public Boolean apply(Integer x) {
-				return Boolean.valueOf(x.intValue() != MJIEnv.NULL);
-			}
-		}).simplifyValues();
+		return frame.pop(ctx).mapr(IFNONNULL_).simplifyValues();
   }
 
   public int getByteCode () {

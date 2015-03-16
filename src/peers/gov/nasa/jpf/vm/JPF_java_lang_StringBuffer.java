@@ -23,6 +23,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -56,24 +57,23 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 	int appendString(final MJIEnv env, final int objref, final Conditional<String> s, FeatureExpr ctx) {
 		try {
 			final Conditional<Integer> aref = env.getReferenceField(ctx, objref, "value");
-			aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+			aref.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 	
 				@Override
-				public Conditional<Object> apply(FeatureExpr ctx, final Integer aref) {
+				public void apply(FeatureExpr ctx, final Integer aref) {
 					final int alen = env.getArrayLength(ctx, aref);
-	
-					s.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<Object>>() {
+					s.mapf(ctx, new VoidBiFunction<FeatureExpr, String>() {
 	
 						@Override
-						public Conditional<Object> apply(FeatureExpr ctx, final String s) {
+						public void apply(FeatureExpr ctx, final String s) {
 							final int slen = s.length();
 							Conditional<Integer> count = env.getIntField(objref, "count");
-							count.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Object>>() {
+							count.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 	
 								@Override
-								public Conditional<Object> apply(FeatureExpr ctx, Integer count) {
+								public void apply(FeatureExpr ctx, Integer count) {
 									if (Conditional.isContradiction(ctx)) {
-										return null;
+										return;
 									}
 									int i, j;
 									int n = count + slen;
@@ -98,20 +98,15 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 									}
 	
 									if (hasSharedField) {
-										env.setBooleanField(ctx, objref, "shared", new One<>(false));
+										env.setBooleanField(ctx, objref, "shared", One.FALSE);
 									}
 									env.setIntField(ctx, objref, "count", new One<>(n));
-									return null;
 								}
 	
 							});
-	
-							return null;
 						}
 	
 					});
-	
-					return null;
 				}
 	
 			});

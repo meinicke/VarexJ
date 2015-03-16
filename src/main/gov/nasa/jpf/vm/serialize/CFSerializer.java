@@ -30,6 +30,7 @@ import java.util.Iterator;
 
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -131,9 +132,9 @@ public class CFSerializer extends FilteringSerializer {
 		}
 	}
 	final Instruction finalPC = pc;
-	frame.getPC().mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Instruction, Conditional<Object>>() {
+	frame.getPC().mapf(FeatureExprFactory.True(), new VoidBiFunction<FeatureExpr, Instruction>() {
 		@Override
-		public Conditional<Object> apply(FeatureExpr f, Instruction x) {
+		public void apply(FeatureExpr f, Instruction x) {
 			if (x == finalPC) {
 				buf.add( finalPC != null ? finalPC.getInstructionIndex() : -1);
 				
@@ -151,7 +152,6 @@ public class CFSerializer extends FilteringSerializer {
 			      }
 			    }
 			}
-			return null;
 		}
 		
 	});

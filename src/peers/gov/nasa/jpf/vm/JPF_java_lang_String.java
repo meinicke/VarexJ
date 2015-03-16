@@ -58,10 +58,11 @@ public class JPF_java_lang_String extends NativePeer {
 						public Conditional<String> apply(FeatureExpr ctx, final Integer count) {
 							return offset.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<String>>() {
 
+								@SuppressWarnings("unchecked")
 								@Override
 								public Conditional<String> apply(FeatureExpr ctx, Integer offset) {
 									if (ctx.isContradiction()) {
-										return new One<>(null);
+										return (Conditional<String>) One.NULL;
 									}
 									return new One<>(new String(value, offset, count));
 								}
@@ -185,18 +186,18 @@ public class JPF_java_lang_String extends NativePeer {
 		Conditional<char[]> data = env.getStringChars(objRef).simplify(ctx);
 		return data.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Character>>() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public Conditional<Character> apply(FeatureExpr ctx, char[] data) {
 				if (Conditional.isContradiction(ctx)) {
-					return new One<>(null);
+					return (Conditional<Character>) One.NULL;
 				}
 				if ((index.getValue() < 0) || (index.getValue() >= data.length)) {
 					env.ti.createAndThrowException(ctx, StringIndexOutOfBoundsException.class.getName(), index + "");
-					return new One<>(null);
+					return (Conditional<Character>) One.NULL;
 		        }
 				
 				return new One<>(data[index.getValue()]);// currently not lifted
-				
 			} 
 
 		}).simplify();
@@ -233,10 +234,10 @@ public class JPF_java_lang_String extends NativePeer {
 			@Override
 			public Conditional<Boolean> apply(FeatureExpr ctx, Integer argRef) {
 				if (Conditional.isContradiction(ctx)) {
-					return new One<>(true);
+					return One.TRUE;
 				}
 				if (argRef == MJIEnv.NULL) {
-					return new One<>(false);
+					return One.FALSE;
 				}
 
 				Heap heap = env.getHeap();
@@ -244,7 +245,7 @@ public class JPF_java_lang_String extends NativePeer {
 				ElementInfo s2 = heap.get(argRef);
 
 				if (!env.isInstanceOf(argRef, "java.lang.String")) {
-					return new One<>(false);
+					return One.FALSE;
 				}
 
 				Fields f1 = heap.get(s1.getReferenceField("value").simplify(ctx).getValue()).getFields();
@@ -258,16 +259,16 @@ public class JPF_java_lang_String extends NativePeer {
 						char[] c2 = ((CharArrayFields) f2).asCharArray().simplify(ctx).getValue();
 
 						if (c1.length != c2.length) {
-							return new One<>(false);
+							return One.FALSE;
 						}
 
 						for (int i = 0; i < c1.length; i++) {
 							if (c1[i] != c2[i]) {
-								return new One<>(false);
+								return One.FALSE;
 							}
 						}
 
-						return new One<>(true);
+						return One.TRUE;
 
 					}
 
@@ -746,16 +747,17 @@ public class JPF_java_lang_String extends NativePeer {
 		return ei.getObjectRef();
 	}
 
+	private static final Function<Integer, String> ValueOf = new Function<Integer, String>() {
+		
+		@Override
+		public String apply(Integer i) {
+			return String.valueOf(i);
+		}
+		
+	};
 	@MJI
 	public int valueOf__I__Ljava_lang_String_2(MJIEnv env, int clsref, Conditional<Integer> i, FeatureExpr ctx) {
-		Conditional<String> result = i.map(new Function<Integer, String>() {
-
-			@Override
-			public String apply(Integer i) {
-				return String.valueOf(i);
-			}
-
-		});
+		Conditional<String> result = i.map(ValueOf);
 		return env.newString(ctx, result);
 	}
 

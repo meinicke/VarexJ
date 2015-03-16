@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 import gov.nasa.jpf.vm.StackFrame;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -34,13 +35,14 @@ public class IFLT extends IfInstruction {
     super(targetPc);
   }
 
+  private final static Function<Integer, Conditional<Boolean>> IFLT_ = new Function<Integer, Conditional<Boolean>>() {
+	  public Conditional<Boolean> apply(Integer x) {
+		  return One.valueOf(x.intValue() < 0);
+	  }
+  };
 
   public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
-	  return frame.pop(ctx).map(new Function<Integer, Boolean>() {
-			public Boolean apply(Integer x) {
-				return Boolean.valueOf(x.intValue() < 0);
-			}
-		}).simplifyValues();
+	return frame.pop(ctx).mapr(IFLT_).simplifyValues();
   }
 
   public int getByteCode () {

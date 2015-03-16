@@ -82,12 +82,6 @@ public abstract class IfInstruction extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     conditionValue = popConditionValue(ctx, frame);
-//    if (conditionValue) {
-//      return getTarget();
-//    } else {
-//      return getNext(ti);
-//    }
-    
     return conditionValue.mapf(ctx, new BiFunction<FeatureExpr, Boolean, Conditional<Instruction>>() {
 
 		@Override
@@ -179,7 +173,7 @@ public abstract class IfInstruction extends JVMInstruction {
 
 					@Override
 					public Conditional<Boolean> apply(Integer x2) {
-						return new One<>(compare(x1.intValue(), x2.intValue()));
+						return One.valueOf(compare(x1.intValue(), x2.intValue()));
 					}
 					
 				}); 

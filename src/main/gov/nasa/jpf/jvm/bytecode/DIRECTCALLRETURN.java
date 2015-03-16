@@ -23,6 +23,8 @@ import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -60,7 +62,8 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
 	  insVisitor.visit(this);
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
+@Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     // pop the current frame but do not advance the new top frame, and do
     // not touch its operand stack
@@ -70,7 +73,7 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
       if (!ti.exit(ctx)){
         return new One<Instruction>(this); // repeat, we couldn't get the lock
       } else {
-        return new One<>(null);
+        return (Conditional<Instruction>) One.NULL;
       }      
       
     } else {
@@ -78,4 +81,16 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
       return frame.getPC();
     }
   }
+  
+	@Override
+	public Conditional<Instruction> getNext(final FeatureExpr ctx, ThreadInfo ti) {
+		return ti.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+
+			@Override
+			public Conditional<Instruction> apply(final FeatureExpr f, final Instruction y) {
+				return ChoiceFactory.create(ctx, new One<>(y.getNext()), new One<>(y));
+			}
+
+		}).simplify();
+	}
 }

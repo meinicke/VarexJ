@@ -61,8 +61,8 @@ public class StackHandlerTest {
 		Conditional<Integer> peek = stack.peek(FeatureExprFactory.True());
 		assertEquals(n2, peek.simplify(feature));
 		assertEquals(n1, peek.simplify(feature.not()));
-		assertEquals(new One<>(false), new One<>(stack.isRef(feature, 0)));
-		assertEquals(new One<>(true), new One<>(stack.isRef(feature.not(), 0)));
+		assertEquals(One.FALSE, new One<>(stack.isRef(feature, 0)));
+		assertEquals(One.TRUE, new One<>(stack.isRef(feature.not(), 0)));
 
 		assertEquals(2, stack.getStackWidth());
 		Conditional<Integer> pop = stack.pop(feature);
