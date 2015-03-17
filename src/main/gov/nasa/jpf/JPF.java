@@ -335,7 +335,7 @@ public class JPF implements Runnable {
   }
   
   public enum COVERAGE_TYPE {
-	  feature, stack, local, context, composedContext, time
+	  feature, stack, local, context, composedContext, time, local2
   }
   
   public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
@@ -360,6 +360,10 @@ public class JPF implements Runnable {
 						case local:
 							COVERAGE.setType("Max local: ");
 							COVERAGE.setBaseValue(0);
+							break;
+						case local2:
+							COVERAGE.setType("Local change: ");
+							COVERAGE.setBaseValue(-1);
 							break;
 						case stack:
 							COVERAGE.setType("Stack with: ");

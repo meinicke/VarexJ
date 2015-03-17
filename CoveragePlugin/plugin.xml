@@ -272,6 +272,209 @@
             verticalRulerPreferenceKey="colorAnnotationinteraction_10_verticalRuler"
             verticalRulerPreferenceValue="false">
       </specification>
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      % positive colors
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-1"
+            colorPreferenceKey="colorAnnotationinteraction_-1_color"
+            colorPreferenceValue="198, 238, 231"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-1_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-1"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-1_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-1_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-1_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-1_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-2"
+            colorPreferenceKey="colorAnnotationinteraction_-2_color"
+            colorPreferenceValue="180, 232, 229"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-2_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-2"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-2_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-2_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-2_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-2_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-3"
+            colorPreferenceKey="colorAnnotationinteraction_-3_color"
+            colorPreferenceValue="162, 227, 228"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-3_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-3"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-3_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-3_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-3_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-3_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-4"
+            colorPreferenceKey="colorAnnotationinteraction_-4_color"
+            colorPreferenceValue="144, 221, 226"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-4_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-4"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-4_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-4_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-4_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-4_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-5"
+            colorPreferenceKey="colorAnnotationinteraction_-5_color"
+            colorPreferenceValue="126, 216, 225"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-5_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-5"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-5_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-5_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-5_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-5_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-6"
+            colorPreferenceKey="colorAnnotationinteraction_-6_color"
+            colorPreferenceValue="108, 210, 223"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-6_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-6"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-6_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-6_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-6_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-6_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-7"
+            colorPreferenceKey="colorAnnotationinteraction_-7_color"
+            colorPreferenceValue="89, 204, 221"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-7_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-7"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-7_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-7_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-7_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-7_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-8"
+            colorPreferenceKey="colorAnnotationinteraction_-8_color"
+            colorPreferenceValue="71, 199, 220"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-8_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-8"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-8_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-8_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-8_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-8_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-9"
+            colorPreferenceKey="colorAnnotationinteraction_-9_color"
+            colorPreferenceValue="53, 193, 218"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-9_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-9"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-9_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-9_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-9_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-9_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      <specification
+            annotationImageProvider="coverplugin.ColorAnnotationImageProvider"
+            annotationType="coverageplugin.interaction_-10"
+            colorPreferenceKey="colorAnnotationinteraction_-10_color"
+            colorPreferenceValue="35, 188, 217"
+            contributesToHeader="false"
+            highlightPreferenceKey="colorAnnotationinteraction_-10_higlight"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="false"
+            label="ColorAnnotation_interaction_-10"
+            overviewRulerPreferenceKey="colorAnnotationinteraction_-10_overviewRuler"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="0"
+            textPreferenceKey="colorAnnotationinteraction_-10_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="colorAnnotationinteraction_-10_textStyle"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="colorAnnotationinteraction_-10_verticalRuler"
+            verticalRulerPreferenceValue="false">
+      </specification>
+      
    </extension>
    <extension
          point="org.eclipse.ui.editors.annotationTypes">
@@ -315,6 +518,35 @@
       <type
             name="coverageplugin.interaction_10">
       </type>
-      
+      <type
+            name="coverageplugin.interaction_-1">
+      </type>
+      <type
+            name="coverageplugin.interaction_-2">
+      </type>
+      <type
+            name="coverageplugin.interaction_-3">
+      </type>
+      <type
+            name="coverageplugin.interaction_-4">
+      </type>
+      <type
+            name="coverageplugin.interaction_-5">
+      </type>
+      <type
+            name="coverageplugin.interaction_-6">
+      </type>
+      <type
+            name="coverageplugin.interaction_-7">
+      </type>
+      <type
+            name="coverageplugin.interaction_-8">
+      </type>
+      <type
+            name="coverageplugin.interaction_-9">
+      </type>
+      <type
+            name="coverageplugin.interaction_-10">
+      </type>
    </extension>
 </plugin>

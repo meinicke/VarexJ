@@ -27,6 +27,7 @@ import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
+import gov.nasa.jpf.jvm.bytecode.LocalVariableInstruction;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.JPFLogger;
@@ -2013,7 +2014,22 @@ public Conditional<Instruction> executeInstruction () {
      		if (RuntimeConstants.tracing) {
      			performTracing(i, ctx);
      		}
-
+     		
+     		int localSize = 0;
+     		Object oldLocal = null;
+     		if (JPF.COVERAGE != null) {
+     			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.local2) {
+     				int index = -1;
+		     		if (i instanceof LocalVariableInstruction) {
+		     			LocalVariableInstruction li = (LocalVariableInstruction)i;
+		     			index = li.getLocalVariableIndex();
+		     			if (index != -1) {
+		     				oldLocal = top.stack.getLocal(index);
+		     				localSize = top.stack.getLocal(top.stack.getCtx(), index).toMap().size();
+		     			} 
+		     		}
+     			}
+     		}
      		long time = 0;
      		final int currentStackDepth = stackDepth;
      		if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {// TODO revise
@@ -2024,9 +2040,23 @@ public Conditional<Instruction> executeInstruction () {
      			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {
      				time = System.nanoTime() - time;
      			}
-     			performCoverage(i, ctx, time);
+     			
+     			Object newLocal = null;
+     			int newLocalSize = localSize;
+     			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.local2) {
+     				int index = -1;
+     				if (i instanceof LocalVariableInstruction) {
+		     			LocalVariableInstruction li = (LocalVariableInstruction)i;
+		     			index = li.getLocalVariableIndex();
+     				}
+     				if (index != -1) {
+			     		newLocal = top.stack.getLocal(index);
+			     		newLocalSize = top.stack.getLocal(top.stack.getCtx(), index).toMap().size();
+     				}
+     			}
+     			performCoverage(i, ctx, time, localSize, oldLocal, newLocalSize, newLocal);
      		}
-
+     		
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
@@ -2120,8 +2150,11 @@ public Conditional<Instruction> executeInstruction () {
   	 * @param instruction The instruction to cover.
   	 * @param ctx
   	 * @param time 
+  	 * @param localInteractionChange 
+  	 * @param oldLocal 
+  	 * @param newLocal 
   	 */
-	private void performCoverage(Instruction instruction, FeatureExpr ctx, long time) {
+	private void performCoverage(Instruction instruction, FeatureExpr ctx, long time, int oldLocalSize, Object oldLocal, int newLocalSize, Object newLocal) {
 		MethodInfo methodInfo = instruction.getMethodInfo();
 		if (methodInfo != null) {
 			ClassInfo classInfo = methodInfo.getClassInfo();
@@ -2136,7 +2169,52 @@ public Conditional<Instruction> executeInstruction () {
 					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
 					break;
 				case local:
+					// TODO LocalVariableInstruction.getLocalVariableName()
 					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
+					break;
+				case local2:
+					String localVariableName = "UNKNOWN";
+					String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
+					int localInteractionChange = newLocalSize - oldLocalSize;
+					if (instruction instanceof LocalVariableInstruction) {
+						LocalVariableInstruction lvi = ((LocalVariableInstruction)instruction);
+						LocalVarInfo lv = lvi.getLocalVarInfo();
+						localVariableName = lvi.getLocalVariableName();
+						LocalVariableInstruction prev = (LocalVariableInstruction) getPrevLocalInstruction(instruction);
+						if (prev != null) {
+							if (prev.getLocalVarInfo() != lv) {
+								// previous value belongs to another variable
+								localInteractionChange = top.stack.getLocal(top.stack.getCtx(), 
+										((LocalVariableInstruction)instruction).getLocalVariableIndex()).toMap().size() - 1;
+								if (localInteractionChange != 0) {
+									if (newLocal.toString().length() > 800) {
+										content += newLocal.toString().substring(0, 800) + "...";
+									} else {
+										content += newLocal;
+									}
+									JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), localInteractionChange, 
+											content);
+								}
+								break;
+							}
+						}
+					}
+					if (localInteractionChange != 0) {
+						if (oldLocal.toString().length() > 800) {
+							content += oldLocalSize + " : " + oldLocal.toString().substring(0, 800) + "...";
+						} else {
+							content += oldLocalSize + " : " + oldLocal;
+						}
+						content += "\n -> \n";
+						if (newLocal.toString().length() > 800) {
+							content += newLocalSize + " : " + newLocal.toString().substring(0, 800) + "...";
+						} else {
+							content += newLocalSize + " : " + newLocal;
+						}
+						JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), localInteractionChange, 
+							content);
+					}
+					
 					break;
 				case context:// same as for composedContext
 				case composedContext:
@@ -2269,6 +2347,19 @@ public Conditional<Instruction> executeInstruction () {
 		}
 	}
 
+	private Instruction getPrevLocalInstruction(Instruction instruction) {
+		Instruction prev = instruction.getPrev();
+		while (prev != null) {
+			if (prev instanceof LocalVariableInstruction) {
+				if (((LocalVariableInstruction) prev).getLocalVariableIndex() == ((LocalVariableInstruction)instruction).getLocalVariableIndex()) {
+					return prev;
+				}
+			}
+			prev = prev.getPrev();
+		}
+		return instruction;
+	}
+	
 	/**
   	 * Checks whether the the new top stack is part of the trace of the current stack.
   	 */

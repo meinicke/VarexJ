@@ -159,4 +159,6 @@ public interface IStackHandler {
 	 */
 	public abstract void IINC(FeatureExpr ctx, int index, int increment);
 
+	public abstract Object getLocal(int index);
+
 }

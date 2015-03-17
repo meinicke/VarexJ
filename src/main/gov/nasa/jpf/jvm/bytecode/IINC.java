@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -28,13 +27,12 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 /**
  * Increment local variable by constant No change
  */
-public class IINC extends JVMInstruction {
+public class IINC extends LocalVariableInstruction {
 
-	protected int index;
 	protected int increment;
 
 	public IINC(int localVarIndex, int increment) {
-		this.index = localVarIndex;
+		super(localVarIndex);
 		this.increment = increment;
 	}
 
@@ -70,6 +68,11 @@ public class IINC extends JVMInstruction {
 
 	public int getIncrement() {
 		return increment;
+	}
+
+	@Override
+	public String getBaseMnemonic() {
+		return "iinc";
 	}
 
 }
