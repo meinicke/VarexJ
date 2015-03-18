@@ -368,9 +368,9 @@ public class ConsolePublisher extends Publisher {
     pw.println("instructions:       " + stat.insns);
     long elepsedTime = reporter.getElapsedTime()/1000l;
     if (elepsedTime == 0) {
-    	pw.println("instructions/s:     mare than" + (stat.insns));
+    	pw.println("instructions/s:     more than " + (stat.insns));
     } else {
-    	pw.println("instructions/s:     mare than" + (stat.insns/elepsedTime));
+    	pw.println("instructions/s:     " + (stat.insns/elepsedTime));
     }
     pw.println("max memory:         " + (stat.maxUsed >> 20) + "MB");
 
