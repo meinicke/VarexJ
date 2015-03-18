@@ -28,7 +28,6 @@ import java.util.Locale;
 
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;

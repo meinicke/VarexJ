@@ -307,7 +307,7 @@ public final class Class<T> implements Serializable, GenericDeclaration, Type, A
   native AnnotationType getAnnotationType();
   
   public TypeVariable<Class<T>>[] getTypeParameters() {
-    throw new UnsupportedOperationException();
+    return new TypeVariable[0];//throw new UnsupportedOperationException(); TODO implement
   }
   
   public Type getGenericSuperclass() {

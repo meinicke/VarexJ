@@ -23,7 +23,6 @@ import gov.nasa.jpf.annotation.MJI;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.VoidBiFunction;
@@ -220,12 +219,18 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void write__I__V(MJIEnv env, int objRef, int b, FeatureExpr ctx) {
-		env.getVM().print((char) (byte) b);
+		env.getVM().print('<' + ((char) (byte) b) + "> : " + Conditional.getCTXString(ctx));
 	}
 
 	@MJI
 	public void write___3BII__V(MJIEnv env, int objRef, int bufRef, int off, int len, FeatureExpr ctx) {
-
+		final byte[] buffer = env.getByteArrayObject(ctx, bufRef);
+		final StringBuilder sb = new StringBuilder(len);
+		while (len > 0) {
+			sb.append((char)buffer[off++]);
+			len--;
+		}
+		env.getVM().print('<' + sb.toString() + "> : " + Conditional.getCTXString(ctx));
 	}
 
 	@MJI

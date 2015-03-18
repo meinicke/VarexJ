@@ -24,6 +24,7 @@ import gov.nasa.jpf.util.MethodInfoRegistry;
 import gov.nasa.jpf.util.RunListener;
 import gov.nasa.jpf.util.RunRegistry;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
@@ -120,6 +121,30 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     return getParameterTypes(env, getMethodInfo(ctx, env, objRef), ctx);
   }
   
+	@MJI
+	public int getGenericParameterTypes_____3Ljava_lang_reflect_Type_2(MJIEnv env, int objRef, FeatureExpr ctx) {
+		ThreadInfo ti = env.getThreadInfo();
+		String[] argTypeNames = getMethodInfo(ctx, env, objRef).getArgumentTypeNames();
+		int[] ar = new int[argTypeNames.length];
+
+		for (int i = 0; i < argTypeNames.length; i++) {
+			ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(argTypeNames[i]);
+			if (!ci.isRegistered()) {
+				ci.registerClass(ctx, ti);
+			}
+
+			ar[i] = ci.getClassObjectRef();
+		}
+
+		int aRef = env.newObjectArray("Ljava/lang/reflect/Type;", argTypeNames.length);
+		for (int i = 0; i < argTypeNames.length; i++) {
+			env.setReferenceArrayElement(ctx, aRef, i, new One<>(ar[i]));
+		}
+
+		return aRef;
+
+	}
+  
   int getExceptionTypes(MJIEnv env, MethodInfo mi, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     String[] exceptionNames = mi.getThrownExceptionClassNames();
@@ -150,6 +175,19 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   @MJI
   public int getExceptionTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
     return getExceptionTypes(env, getMethodInfo(ctx, env, objRef), ctx);
+  }
+  
+  @MJI
+  public int getGenericReturnType____Ljava_lang_reflect_Type_2 (MJIEnv env, int objRef, FeatureExpr ctx){
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
+    ThreadInfo ti = env.getThreadInfo();
+
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(mi.getReturnTypeName());
+    if (!ci.isRegistered()) {
+      ci.registerClass(ctx, ti);
+    }
+
+    return ci.getClassObjectRef();
   }
   
   @MJI
