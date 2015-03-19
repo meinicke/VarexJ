@@ -1182,7 +1182,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     Object[] arg = new Object[len];
 
     for (int i=0; i<len; i++){
-      int ref = getReferenceArrayElement(argRef,i).getValue();
+      int ref = getReferenceArrayElement(argRef,i).simplify(ctx).getValue();
       if (ref != NULL) {
         String clsName = getClassName(ref);
         if (clsName.equals("java.lang.String")) {
