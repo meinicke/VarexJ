@@ -483,7 +483,7 @@ public abstract class VM {
     sysCl.setClassLoaderObject(ei);
   }  
   
-  protected void pushMainEntryArgs (MethodInfo miMain, String[] args, ThreadInfo tiMain, DirectCallStackFrame frame){
+  protected void pushMainEntryArgs (FeatureExpr ctx, MethodInfo miMain, String[] args, ThreadInfo tiMain, DirectCallStackFrame frame){
     String sig = miMain.getSignature();
     Heap heap = getHeap();
     
@@ -493,14 +493,14 @@ public abstract class VM {
         ElementInfo eiArg = heap.newString(FeatureExprFactory.True(), args[i], tiMain);
         eiArgs.setReferenceElement(FeatureExprFactory.True(), i, new One<>(eiArg.getObjectRef()));
       }
-      frame.setReferenceArgument( 0, eiArgs.getObjectRef(), null);
+      frame.setReferenceArgument( ctx, 0, eiArgs.getObjectRef(), null);
 
     } else if (sig.contains("(Ljava/lang/String;)")){
       if (args.length > 1){
         ElementInfo eiArg = heap.newString(FeatureExprFactory.True(), args[0], tiMain);
-        frame.setReferenceArgument( 0, eiArg.getObjectRef(), null);
+        frame.setReferenceArgument( ctx, 0, eiArg.getObjectRef(), null);
       } else {
-        frame.setReferenceArgument( 0, MJIEnv.NULL, null);
+        frame.setReferenceArgument( ctx, 0, MJIEnv.NULL, null);
       }
       
     } else if (!sig.contains("()")){
@@ -510,7 +510,7 @@ public abstract class VM {
   
   protected void pushMainEntry (FeatureExpr ctx, MethodInfo miMain, String[] args, ThreadInfo tiMain) {
     DirectCallStackFrame frame = miMain.createDirectCallStackFrame(ctx, tiMain, 0);
-    pushMainEntryArgs( miMain, args, tiMain, frame);    
+    pushMainEntryArgs( ctx, miMain, args, tiMain, frame);    
     tiMain.pushFrame(frame);
   }
 

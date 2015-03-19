@@ -117,7 +117,7 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 	@Override
 	public T getValue() {
 		 System.out.println("___________________________________________________");
-		 System.out.println("Get value of choice called: " + toList());
+		 System.out.println("Get value of choice called: " + this);
 		 for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
 		 System.out.println(e);
 		 }

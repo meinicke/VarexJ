@@ -249,7 +249,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
 			frame = miCtor.createDirectCallStackFrame(ctx, ti, 1);
 			// note that we don't set this as a reflection call since it is supposed to propagate exceptions
-			frame.setReferenceArgument(0, objRef, null);
+			frame.setReferenceArgument(ctx, 0, objRef, null);
 			frame.setLocalReferenceVariable(ctx, 0, objRef); // (1) store ref for retrieval during re-exec
 			ti.pushFrame(frame);
 
@@ -343,16 +343,22 @@ public class JPF_java_lang_Class extends NativePeer {
 	}
 
 	@MJI
-	public int getMethod__Ljava_lang_String_2_3Ljava_lang_Class_2__Ljava_lang_reflect_Method_2(MJIEnv env, int clsRef, Conditional<Integer> nameRef,
-			Conditional<Integer> argTypesRef, FeatureExpr ctx) {
-		ClassInfo mci = getInitializedClassInfo(env, METHOD_CLASSNAME, ctx);
+	public Conditional<Integer> getMethod__Ljava_lang_String_2_3Ljava_lang_Class_2__Ljava_lang_reflect_Method_2(final MJIEnv env, final int clsRef, Conditional<Integer> nameRef,
+			final Conditional<Integer> argTypesRef, FeatureExpr ctx) {
+		final ClassInfo mci = getInitializedClassInfo(env, METHOD_CLASSNAME, ctx);
 		if (mci == null) {
 			env.repeatInvocation();
-			return MJIEnv.NULL;
+			return One.MJIEnvNULL;
 		}
 
-		String mname = env.getStringObject(ctx, nameRef.getValue());
-		return getMethod(env, clsRef, mci, mname, argTypesRef.getValue(), true, true, ctx);
+		Conditional<String> mname = env.getStringObject(ctx, nameRef);
+		return mname.mapf(ctx,  new BiFunction<FeatureExpr, String, Conditional<Integer>>() {
+
+			@Override
+			public Conditional<Integer> apply(FeatureExpr ctx, String mname) {
+				return new One<>(getMethod(env, clsRef, mci, mname, argTypesRef.getValue(), true, true, ctx));
+			}
+		});
 	}
 
 	private void addDeclaredMethodsRec(HashMap<String, MethodInfo> methods, ClassInfo ci, FeatureExpr ctx) {

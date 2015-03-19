@@ -767,6 +767,21 @@ public VM getVM () {
 	    }
 	  }
   
+
+  /**
+   * turn JPF String object into a VM String object
+   * (this is a method available for non gov..jvm NativePeer classes)
+   */
+  public Conditional<String> getStringObject (FeatureExpr ctx, Conditional<Integer> objRef) {
+	  return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<String>>() {
+
+		@Override
+		public Conditional<String> apply(FeatureExpr ctx, Integer objRef) {
+			return getStringObjectNew(ctx, objRef);
+		}
+	}).simplify();
+  }
+  
   /**
    * turn JPF String object into a VM String object
    * (this is a method available for non gov..jvm NativePeer classes)

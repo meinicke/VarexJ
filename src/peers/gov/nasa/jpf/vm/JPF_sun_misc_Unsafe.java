@@ -64,7 +64,8 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
   public boolean compareAndSwapObject__Ljava_lang_Object_2JLjava_lang_Object_2Ljava_lang_Object_2__Z (MJIEnv env, int unsafeRef,
                                                                                                              int objRef, long fieldOffset,
                                                                                                              int expectRef, int updateRef, FeatureExpr ctx) {
-    int actual = getObject__Ljava_lang_Object_2J__Ljava_lang_Object_2(env, unsafeRef, objRef, fieldOffset, ctx);
+    int actual = getObject__Ljava_lang_Object_2J__Ljava_lang_Object_2(env, unsafeRef, objRef, fieldOffset, ctx).getValue();
+    
     if (actual == expectRef) {
       putObject__Ljava_lang_Object_2JLjava_lang_Object_2__V(env, unsafeRef, objRef, fieldOffset, updateRef, ctx);
       return true;
@@ -194,19 +195,19 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
   }
 
   @MJI
-  public int getObject__Ljava_lang_Object_2J__Ljava_lang_Object_2 (MJIEnv env, int unsafeRef,
+  public Conditional<Integer> getObject__Ljava_lang_Object_2J__Ljava_lang_Object_2 (MJIEnv env, int unsafeRef,
                                                                           int objRef, long fieldOffset, FeatureExpr ctx) {
     ElementInfo ei = env.getElementInfo(objRef);
     if (!ei.isArray()) {
       FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-      return ei.getReferenceField(fi).simplify(ctx).getValue();
+      return ei.getReferenceField(fi).simplify(ctx);
     } else {
-      return ei.getReferenceElement((int)fieldOffset).simplify(ctx).getValue();
+      return ei.getReferenceElement((int)fieldOffset).simplify(ctx);
     }
   }
   
   @MJI
-  public int getObjectVolatile__Ljava_lang_Object_2J__Ljava_lang_Object_2 (MJIEnv env, int unsafeRef,
+  public Conditional<Integer> getObjectVolatile__Ljava_lang_Object_2J__Ljava_lang_Object_2 (MJIEnv env, int unsafeRef,
       int objRef, long fieldOffset, FeatureExpr ctx) {
     return getObject__Ljava_lang_Object_2J__Ljava_lang_Object_2( env, unsafeRef, objRef, fieldOffset, ctx);
   }  

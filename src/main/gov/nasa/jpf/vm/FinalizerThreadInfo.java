@@ -128,7 +128,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
   protected void startFinalizerThread(FeatureExpr ctx) {
     MethodInfo mi = ci.getMethod("run()V", false);
     DirectCallStackFrame frame = mi.createDirectCallStackFrame(ctx, this, 0);
-    frame.setReferenceArgument(0, objRef, frame);
+    frame.setReferenceArgument(ctx, 0, objRef, frame);
     pushFrame(frame);
   }
   

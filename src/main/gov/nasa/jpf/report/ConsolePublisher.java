@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.Path;
 import gov.nasa.jpf.vm.Step;
+import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Transition;
 import gov.nasa.jpf.vm.VM;
 
@@ -365,12 +366,12 @@ public class ConsolePublisher extends Publisher {
             + ",released=" + stat.nReleasedObjects
             + ",maxLive=" + stat.maxLiveObjects
             + ",gcCycles=" + stat.gcCycles);
-    pw.println("instructions:       " + stat.insns);
+    pw.println("instructions:       " + ThreadInfo.insertDots((int)stat.insns));
     long elepsedTime = reporter.getElapsedTime()/1000l;
     if (elepsedTime == 0) {
-    	pw.println("instructions/s:     more than " + (stat.insns));
+    	pw.println("instructions/s:     more than " + ThreadInfo.insertDots((int)(stat.insns)));
     } else {
-    	pw.println("instructions/s:     " + (stat.insns/elepsedTime));
+    	pw.println("instructions/s:     " + ThreadInfo.insertDots((int)(stat.insns/elepsedTime)));
     }
     pw.println("max memory:         " + (stat.maxUsed >> 20) + "MB");
 

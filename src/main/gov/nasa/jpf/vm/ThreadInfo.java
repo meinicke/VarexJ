@@ -1969,7 +1969,7 @@ public Conditional<Instruction> executeInstruction () {
 	        count++;
 	        if (System.currentTimeMillis() - time > 10000) {
 	        	int instructions = count / 10;
-	        	System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s (" + executedInstructions + ")");
+	        	printSpeedLog(instructions);
 	        	time = System.currentTimeMillis();
 	        	count = 0;
         		vm.getSystemState().gcIfNeeded();
@@ -2140,7 +2140,41 @@ public Conditional<Instruction> executeInstruction () {
     }
   }
   
-  /**
+	private void printSpeedLog(int instructions) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(insertDots(instructions));
+		sb.append(" instructions / s (");
+		
+		sb.append(insertDots(executedInstructions));
+		sb.append(')');
+		System.out.println(sb.toString());
+	}
+
+	public static String insertDots(int instructions) {
+		StringBuilder sb = new StringBuilder();
+		if (instructions >= 1_000_000_000) {
+			sb.append(instructions / 1_000_000_000).append('.');
+			instructions = instructions % 1_000_000_000;
+		}
+		sb.append(instructions / 1_000_000).append('.');
+		instructions = instructions % 1_000_000;
+		sb.append(adjustValue(instructions / 1_000)).append('.');
+		instructions = instructions % 1_000;
+		sb.append(adjustValue(instructions));
+		return sb.toString();
+	}
+  
+  private static String adjustValue(int value) {
+	  if (value < 10) {
+		  return "00" + value;
+	  }
+	  if (value < 100) {
+		  return "0" + value;
+	  }
+	  return String.valueOf(value);
+  }
+
+/**
    * Log trace for trace comparison.
    * @param instruction The instruction to log.
    * @param ctx
@@ -3488,9 +3522,9 @@ public Conditional<Instruction> executeInstruction () {
     pendingException = null;
     
     DirectCallStackFrame frame = miHandler.createDirectCallStackFrame(ctx, this, 0);
-    int argOffset = frame.setReferenceArgument( 0, handlerRef, null);
-    argOffset = frame.setReferenceArgument( argOffset, objRef, null);
-    frame.setReferenceArgument( argOffset, xi.getExceptionReference(), null);
+    int argOffset = frame.setReferenceArgument( ctx, 0, handlerRef, null);
+    argOffset = frame.setReferenceArgument( ctx, argOffset, objRef, null);
+    frame.setReferenceArgument( ctx, argOffset, xi.getExceptionReference(), null);
     
     UncaughtHandlerAttr uchContext = new UncaughtHandlerAttr( xi);
     frame.setFrameAttr( uchContext);
