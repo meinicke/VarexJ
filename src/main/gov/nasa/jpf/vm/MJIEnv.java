@@ -897,7 +897,13 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
   // danger - the returned arrays could be used to modify contents of stored objects
 
-  public byte[] getByteArrayObject (FeatureExpr ctx, int objref) {// TODO jens
+  public Conditional<Byte>[] getByteArrayObject(FeatureExpr ctx, int objref) {
+	    ElementInfo ei = getElementInfo(objref);
+	    return ei.asByteArray();
+  }
+  
+  @Deprecated
+  public byte[] getByteArrayObjectDeprecated(FeatureExpr ctx, int objref) {
     ElementInfo ei = getElementInfo(objref);
     Conditional<Byte>[] ba = ei.asByteArray();
 
@@ -1144,7 +1150,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
       char[] ca = getCharArrayObject(arrayRef).getValue();
       s = new String(ca);
     } else if ("B".equals(t)) {   // byte array
-      byte[] ba = getByteArrayObject(null, arrayRef);
+      byte[] ba = getByteArrayObjectDeprecated(null, arrayRef);
       s = new String(ba);
     }
 

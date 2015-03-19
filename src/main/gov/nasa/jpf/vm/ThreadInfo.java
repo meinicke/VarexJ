@@ -1969,7 +1969,7 @@ public Conditional<Instruction> executeInstruction () {
 	        count++;
 	        if (System.currentTimeMillis() - time > 10000) {
 	        	int instructions = count / 10;
-	        	System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s");
+	        	System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s (" + executedInstructions + ")");
 	        	time = System.currentTimeMillis();
 	        	count = 0;
         		vm.getSystemState().gcIfNeeded();
@@ -2003,12 +2003,14 @@ public Conditional<Instruction> executeInstruction () {
  		    	}
  	        }	
  	        	
-     		if (RuntimeConstants.debug) {
+     		if ((executedInstructions > 97754252 && top.getDepth() < 11 )&& RuntimeConstants.debug) {
+     			System.out.print(executedInstructions + " ");
      			System.out.print(top.getDepth());
      			if (top.getDepth() < 10) {
      				System.out.print(" ");
      			}
  				System.out.println(" " + i + " if " + ctx);
+ 			
  			}
  	    	
      		if (RuntimeConstants.tracing) {
@@ -2036,6 +2038,19 @@ public Conditional<Instruction> executeInstruction () {
      			time = System.nanoTime();
      		}
      		final Conditional<Instruction> next = i.execute(ctx, this);
+     		
+     		if ((executedInstructions > 97754252 && top.getDepth() < 11 ) && RuntimeConstants.debug) {
+//     			System.out.print(executedInstructions + " ");
+//     			System.out.print(top.getDepth());
+//     			if (top.getDepth() < 10) {
+//     				System.out.print(" ");
+//     			}
+// 				System.out.println(" " + i + " if " + ctx);
+     			if (top != null) {
+     				System.out.println(top.stack);
+     			}
+ 			}
+     		
      		if (JPF.COVERAGE != null) {
      			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {
      				time = System.nanoTime() - time;

@@ -97,9 +97,15 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public void $init__I__V(MJIEnv env, int objref, int len, FeatureExpr ctx) {
-		int aref = env.newCharArray(ctx, len);
-		env.setReferenceField(ctx, objref, "value", aref);
+	public void $init__I__V(final MJIEnv env, final int objref, Conditional<Integer> len, FeatureExpr ctx) {
+		len.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+
+			@Override
+			public void apply(FeatureExpr ctx, Integer len) {
+				int aref = env.newCharArray(ctx, len);
+				env.setReferenceField(ctx, objref, "value", aref);
+			}
+		});
 	}
 
 	@MJI

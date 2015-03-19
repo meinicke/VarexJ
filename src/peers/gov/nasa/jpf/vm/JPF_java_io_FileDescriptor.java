@@ -279,10 +279,10 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public int read____I (MJIEnv env, int objref, FeatureExpr ctx) {
+	  try {
 	int fd = env.getIntField(objref, "fd").getValue();
     long off = env.getLongField(objref,"off").simplify(ctx).getValue();
         
-    try {
       // this is terrible overhead
       Object fs = content.get(fd);
       if (fs != null){
@@ -312,16 +312,18 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
       return -1;
     } catch (IOException iox) {
       env.throwException(ctx, "java.io.IOException", iox.getMessage());
-      return -1;
-    }
+		} catch (Exception e) {
+			env.throwException(ctx, Exception.class.getName(), e.getMessage());
+		}
+    return -1;
   }
-  
-  @MJI
-  public int read___3BII__I (MJIEnv env, int objref, int bufref, int offset, int len, FeatureExpr ctx) {
-	int fd = env.getIntField(objref, "fd").getValue().intValue();
-    long off = env.getLongField(objref,"off").getValue();
-        
-    try {
+
+	@MJI
+	public int read___3BII__I(MJIEnv env, int objref, int bufref, int offset, int len, FeatureExpr ctx) {
+		try {
+			int fd = env.getIntField(objref, "fd").simplify(ctx).getValue().intValue();
+			long off = env.getLongField(objref, "off").simplify(ctx).getValue();
+
       Object fs = content.get(fd);
       if (fs != null){
         if (fs instanceof FileInputStream){
@@ -358,6 +360,9 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
     } catch (IOException iox) {
       env.throwException(ctx, "java.io.IOException", iox.getMessage());
       return -1;
+    } catch (Exception e) {
+    	env.throwException(ctx, Exception.class.getName(), e.getMessage());
+    	return -1;
     }
   }
   
@@ -423,10 +428,10 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   
   @MJI
   public int available____I (MJIEnv env, int objref, FeatureExpr ctx) {
-    int fd = env.getIntField(objref, "fd").getValue().intValue();
-    long off = env.getLongField(objref,"off").simplify(ctx).getValue();
+	  try {
+	    int fd = env.getIntField(objref, "fd").simplify(ctx).getValue().intValue();
+	    long off = env.getLongField(objref,"off").simplify(ctx).getValue();
     
-    try {
       Object fs = content.get(fd);
       if (fs != null){
         if (fs instanceof FileInputStream){
@@ -450,8 +455,10 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
       return -1;
     } catch (IOException iox) {
       env.throwException(ctx, "java.io.IOException", iox.getMessage());
-      return -1;
-    }    
+    } catch (Exception e) {
+		System.out.println(e.getMessage());
+	}
+	  return -1;
     
   }
 }

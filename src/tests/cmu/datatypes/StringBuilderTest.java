@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class StringBuilderTest extends TestJPF {
 
-	static String JPF_CONFIGURATION = "+search.class= .search.RandomSearch";
+	static String[] JPF_CONFIGURATION = {"+search.class= .search.RandomSearch" };
 
 	@Conditional
 	static boolean x = true;
@@ -42,7 +42,7 @@ public class StringBuilderTest extends TestJPF {
 		sb.append("BBB");
 		String ss = sb.substring(2, 5);
 		assertEquals("AXB", ss);
-		
+
 		StringBuilder sb2 = new StringBuilder();
 		sb2.append("AAA");
 		sb2.append("BBB");
@@ -68,7 +68,7 @@ public class StringBuilderTest extends TestJPF {
 			}
 		}
 	}
-	
+
 	@Test
 	public void deleteTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -87,7 +87,7 @@ public class StringBuilderTest extends TestJPF {
 			}
 		}
 	}
-	
+
 	@Test
 	public void indexOfTest() throws Exception {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -97,12 +97,26 @@ public class StringBuilderTest extends TestJPF {
 				sb.append("X");
 			}
 			sb.append("B");
-			int index = sb.indexOf("B"); 
+			int index = sb.indexOf("B");
 			if (x) {
 				assertEquals(2, index);
 			} else {
 				assertEquals(1, index);
 			}
+		}
+	}
+
+	@Test
+	public void conditionalLengtTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			int length = 2;
+			if (x) {
+				length = 4;
+			}
+			char[] value = new char[length];
+			System.out.println(value.length);
+			StringBuilder sb = new StringBuilder(length);
+			sb.append("A");
 		}
 	}
 

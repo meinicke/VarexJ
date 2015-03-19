@@ -27,6 +27,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -35,8 +36,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_java_lang_String extends NativePeer {
 
 	@MJI
-	public int init___3CII__Ljava_lang_String_2(final MJIEnv env, int objRef, Conditional<Integer> valueRef, final Conditional<Integer> offset, final Conditional<Integer> count,
-			FeatureExpr ctx) {
+	public int init___3CII__Ljava_lang_String_2(final MJIEnv env, int objRef, Conditional<Integer> valueRef, final Conditional<Integer> offset, final Conditional<Integer> count, FeatureExpr ctx) {
 		try {
 
 			Conditional<char[]> value = valueRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<char[]>>() {
@@ -95,7 +95,7 @@ public class JPF_java_lang_String extends NativePeer {
 	@SuppressWarnings("deprecation")
 	@MJI
 	public int init___3BIII__Ljava_lang_String_2(MJIEnv env, int objRef, int asciiRef, int hibyte, int offset, int count, FeatureExpr ctx) {
-		byte[] ascii = env.getByteArrayObject(ctx, asciiRef);
+		byte[] ascii = env.getByteArrayObjectDeprecated(ctx, asciiRef);
 		String result = new String(ascii, hibyte, offset, count);
 		return env.newString(ctx, result);
 	}
@@ -103,7 +103,7 @@ public class JPF_java_lang_String extends NativePeer {
 	@MJI
 	public int init___3BIILjava_lang_String_2__Ljava_lang_String_2(MJIEnv env, int objRef, int bytesRef, int offset, int length, int charsetNameRef, FeatureExpr ctx)
 			throws UnsupportedEncodingException {
-		byte[] bytes = env.getByteArrayObject(ctx, bytesRef);
+		byte[] bytes = env.getByteArrayObjectDeprecated(ctx, bytesRef);
 		String charsetName = env.getStringObject(ctx, charsetNameRef);
 		String result = new String(bytes, offset, length, charsetName);
 		return env.newString(ctx, result);
@@ -111,7 +111,7 @@ public class JPF_java_lang_String extends NativePeer {
 
 	@MJI
 	public int init___3BII__Ljava_lang_String_2(MJIEnv env, int objRef, int bytesRef, int offset, int length, FeatureExpr ctx) {
-		byte[] bytes = env.getByteArrayObject(ctx, bytesRef);
+		byte[] bytes = env.getByteArrayObjectDeprecated(ctx, bytesRef);
 		String result = new String(bytes, offset, length);
 		return env.newString(ctx, result);
 	}
@@ -141,17 +141,63 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public void getChars__II_3CI__V(MJIEnv env, int objRef, int srcBegin, int srcEnd, int dstRef, int dstBegin, FeatureExpr ctx) {
-		String obj = env.getStringObject(ctx, objRef);
-		char[] dst = env.getCharArrayObject(dstRef).simplify(ctx).getValue();
-		obj.getChars(srcBegin, srcEnd, dst, dstBegin);
+	public void getChars__II_3CI__V(final MJIEnv env, final int objRef, Conditional<Integer> srcBegin, final Conditional<Integer> srcEnd, final Conditional<Integer> dstRef,
+			final Conditional<Integer> dstBegin, FeatureExpr ctx) {
+		srcBegin.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+
+			@Override
+			public void apply(FeatureExpr ctx, final Integer srcBegin) {
+				srcEnd.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+
+					@Override
+					public void apply(FeatureExpr ctx, final Integer srcEnd) {
+						dstRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+
+							@Override
+							public void apply(FeatureExpr ctx, final Integer dstRef) {
+								dstBegin.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+
+									@Override
+									public void apply(FeatureExpr ctx, final Integer dstBegin) {
+										final Conditional<String> obj = env.getStringObjectNew(ctx, objRef);
+										obj.mapf(ctx, new VoidBiFunction<FeatureExpr, String>() {
+
+											@Override
+											public void apply(FeatureExpr ctx, String obj) {
+												if (Conditional.isContradiction(ctx)) {
+													return;
+												}
+												try {
+													for (int index = 0; index < srcEnd - srcBegin; index++) {
+														env.setCharArrayElement(ctx, dstRef, index + dstBegin, new One<>(obj.charAt(srcBegin + index)));
+													}
+												} catch (Exception e) {
+													System.out.println(e);
+													env.throwException(ctx, e.getClass().getName(), e.getMessage());
+												}
+											}
+
+										});
+									}
+
+								});
+							}
+
+						});
+
+					}
+
+				});
+			}
+
+		});
 	}
 
 	@SuppressWarnings("deprecation")
 	@MJI
 	public void getBytes__II_3BI__V(MJIEnv env, int objRef, int srcBegin, int srcEnd, int dstRef, int dstBegin, FeatureExpr ctx) {
 		String obj = env.getStringObject(ctx, objRef);
-		byte[] dst = env.getByteArrayObject(ctx, dstRef);
+		byte[] dst = env.getByteArrayObjectDeprecated(ctx, dstRef);
 		obj.getBytes(srcBegin, srcEnd, dst, dstBegin);
 
 		for (int i = dstBegin; i < srcEnd - srcBegin + dstBegin; i++) {
@@ -188,17 +234,23 @@ public class JPF_java_lang_String extends NativePeer {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public Conditional<Character> apply(FeatureExpr ctx, char[] data) {
+			public Conditional<Character> apply(FeatureExpr ctx, final char[] data) {
 				if (Conditional.isContradiction(ctx)) {
 					return (Conditional<Character>) One.NULL;
 				}
-				if ((index.getValue() < 0) || (index.getValue() >= data.length)) {
-					env.ti.createAndThrowException(ctx, StringIndexOutOfBoundsException.class.getName(), index + "");
-					return (Conditional<Character>) One.NULL;
-		        }
-				
-				return new One<>(data[index.getValue()]);// currently not lifted
-			} 
+				return index.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Character>>() {
+
+					@Override
+					public Conditional<Character> apply(FeatureExpr ctx, Integer index) {
+						if ((index < 0) || (index >= data.length)) {
+							env.ti.createAndThrowException(ctx, StringIndexOutOfBoundsException.class.getName(), index + "");
+							return (Conditional<Character>) One.NULL;
+						}
+						return new One<>(data[index]);// currently not lifted						
+					}
+				});
+
+			}
 
 		}).simplify();
 
@@ -730,8 +782,7 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int format__Ljava_util_Locale_2Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_lang_String_2(MJIEnv env, int clsObjRef, int locRef, int fmtRef, int argRef,
-			FeatureExpr ctx) {
+	public int format__Ljava_util_Locale_2Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_lang_String_2(MJIEnv env, int clsObjRef, int locRef, int fmtRef, int argRef, FeatureExpr ctx) {
 		Locale loc = JPF_java_util_Locale.getLocale(env, locRef, ctx);
 		return env.newString(ctx, env.format(ctx, loc, fmtRef, argRef));
 	}
@@ -748,13 +799,14 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	private static final Function<Integer, String> ValueOf = new Function<Integer, String>() {
-		
+
 		@Override
 		public String apply(Integer i) {
 			return String.valueOf(i);
 		}
-		
+
 	};
+
 	@MJI
 	public int valueOf__I__Ljava_lang_String_2(MJIEnv env, int clsref, Conditional<Integer> i, FeatureExpr ctx) {
 		Conditional<String> result = i.map(ValueOf);

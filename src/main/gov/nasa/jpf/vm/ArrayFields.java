@@ -94,7 +94,7 @@ public abstract class ArrayFields extends Fields {
 	@Override
 	public Conditional<Integer> getIntValue(int pos) {
 		// overridden by subclass
-		throw new JPFException("not an int[]");
+		throw new JPFException(getClass().getName() + " is not an int[]");
 	}
 
 	@Override

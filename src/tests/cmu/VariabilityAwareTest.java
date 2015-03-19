@@ -1,5 +1,7 @@
 package cmu;
 
+import java.util.Arrays;
+
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
@@ -751,6 +753,42 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	
 	}
+	
+	@Test
+	public void testGetChars() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+
+			char[] dst = new char[10];
+			if (a) {
+				dst = new char[11];
+			}
+			int dstBegin = 2;
+			if (b) {
+				dstBegin = 3;
+			}
+			int begin = 0;
+			if (c) {
+				begin = 1;
+			}
+			int length = 4;
+			String obj = "ABCDEFGHIJK";
+			if (d) {
+				obj = "Z" + obj;
+			}
+			obj.getChars(begin, begin + length, dst, dstBegin);
+
+			for (int index = 0;index < length;index++) {
+				char dstValue = dst[dstBegin + index];
+				char srcValue = obj.charAt(begin + index);
+				assertEquals(srcValue, dstValue);
+			}
+			System.out.println(Arrays.toString(dst));
+			
+		}
+	
+	}
+	
+	
 
 	private static boolean valid() {
 		return a;
