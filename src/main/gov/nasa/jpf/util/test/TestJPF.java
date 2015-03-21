@@ -40,6 +40,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -858,10 +859,15 @@ public abstract class TestJPF implements JPFShell  {
       Property errorProperty = error.getProperty();
       if (errorProperty instanceof NoUncaughtExceptionsProperty){ 
         ExceptionInfo xi = ((NoUncaughtExceptionsProperty)errorProperty).getUncaughtExceptionInfo();
-        String xn = xi.getExceptionClassname();
-        if (!xn.equals(xClassName)) {
-          fail("JPF caught wrong exception: " + xn + ", expected: " + xClassName);
-        }
+//        String xn = xi.getExceptionClassname();
+//        if (!xn.equals(xClassName)) {
+//          fail("JPF caught wrong exception: " + xn + ", expected: " + xClassName);
+//        }
+          HashSet<String> exceptionNameSet = xi.getExceptionClassnames();
+          String xn = xi.getExceptionClassname();
+          if (!exceptionNameSet.contains(xClassName)){
+              fail("JPF caught wrong exception: " + xn + ", expected: " + xClassName);
+          }
 
         if (details != null) {
           String gotDetails = xi.getDetails();
