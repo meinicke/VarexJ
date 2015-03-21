@@ -9,7 +9,7 @@ public class FuzzyKMeansClustererTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCluster() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest object = new org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest();
@@ -17,7 +17,7 @@ public class FuzzyKMeansClustererTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNullDataset() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NullArgumentException", config)) {
                org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest object = new org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest();
@@ -25,19 +25,19 @@ public class FuzzyKMeansClustererTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testTooSmallFuzzynessFactor() throws Exception {
-        if (verifyUnhandledException("org.apache.commons.math3.exception.MathIllegalArgumentException", config)) {
-               org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest object = new org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest();
-               object.testTooSmallFuzzynessFactor();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGetters() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest object = new org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest();
                object.testGetters();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testTooSmallFuzzynessFactor() throws Exception {
+        if (verifyUnhandledException("org.apache.commons.math3.exception.MathIllegalArgumentException", config)) {
+               org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest object = new org.apache.commons.math3.ml.clustering.FuzzyKMeansClustererTest();
+               object.testTooSmallFuzzynessFactor();
         }
     }
 

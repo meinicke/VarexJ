@@ -9,7 +9,7 @@ public class EuclideanDistanceTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void test() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.distance.EuclideanDistanceTest object = new org.apache.commons.math3.ml.distance.EuclideanDistanceTest();
@@ -17,7 +17,7 @@ public class EuclideanDistanceTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testZero() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.distance.EuclideanDistanceTest object = new org.apache.commons.math3.ml.distance.EuclideanDistanceTest();

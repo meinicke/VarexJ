@@ -9,7 +9,7 @@ public class EarthMoversDistanceTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void test() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.distance.EarthMoversDistanceTest object = new org.apache.commons.math3.ml.distance.EarthMoversDistanceTest();
@@ -17,19 +17,19 @@ public class EarthMoversDistanceTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testZero2() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.ml.distance.EarthMoversDistanceTest object = new org.apache.commons.math3.ml.distance.EarthMoversDistanceTest();
-               object.testZero2();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testZero() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.distance.EarthMoversDistanceTest object = new org.apache.commons.math3.ml.distance.EarthMoversDistanceTest();
                object.testZero();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testZero2() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.ml.distance.EarthMoversDistanceTest object = new org.apache.commons.math3.ml.distance.EarthMoversDistanceTest();
+               object.testZero2();
         }
     }
 

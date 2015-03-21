@@ -9,7 +9,7 @@ public class AdamsMoultonIntegratorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void dimensionCheck() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest object = new org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest();
@@ -17,7 +17,7 @@ public class AdamsMoultonIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMinStep() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooSmallException", config)) {
                org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest object = new org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest();
@@ -25,7 +25,7 @@ public class AdamsMoultonIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIncreasingTolerance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest object = new org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest();
@@ -33,7 +33,7 @@ public class AdamsMoultonIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void exceedMaxEvaluations() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.MaxCountExceededException", config)) {
                org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest object = new org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest();
@@ -41,7 +41,7 @@ public class AdamsMoultonIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void backward() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest object = new org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest();
@@ -49,7 +49,7 @@ public class AdamsMoultonIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void polynomial() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest object = new org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegratorTest();

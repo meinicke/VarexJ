@@ -9,21 +9,21 @@ public class StepNormalizerTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testBoundaries() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.ode.sampling.StepNormalizerTest object = new org.apache.commons.math3.ode.sampling.StepNormalizerTest();
-               object.setUp();
-               object.testBoundaries();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBeforeEnd() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.sampling.StepNormalizerTest object = new org.apache.commons.math3.ode.sampling.StepNormalizerTest();
                object.setUp();
                object.testBeforeEnd();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testBoundaries() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.ode.sampling.StepNormalizerTest object = new org.apache.commons.math3.ode.sampling.StepNormalizerTest();
+               object.setUp();
+               object.testBoundaries();
         }
     }
 

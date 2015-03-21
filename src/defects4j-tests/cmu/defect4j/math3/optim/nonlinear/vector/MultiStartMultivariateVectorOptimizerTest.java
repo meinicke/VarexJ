@@ -9,15 +9,7 @@ public class MultiStartMultivariateVectorOptimizerTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testTrivial() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest object = new org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest();
-               object.testTrivial();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGetOptimaBeforeOptimize() throws Exception {
         if (verifyUnhandledException("java.lang.NullPointerException", config)) {
                org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest object = new org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest();
@@ -25,7 +17,7 @@ public class MultiStartMultivariateVectorOptimizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIssue914() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest object = new org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest();
@@ -33,11 +25,19 @@ public class MultiStartMultivariateVectorOptimizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNoOptimum() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest$TestException", config)) {
                org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest object = new org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest();
                object.testNoOptimum();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testTrivial() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest object = new org.apache.commons.math3.optim.nonlinear.vector.MultiStartMultivariateVectorOptimizerTest();
+               object.testTrivial();
         }
     }
 

@@ -9,7 +9,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -17,7 +17,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSetterInjection() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -25,7 +25,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testWindowSize() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -33,7 +33,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGetValues() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -41,7 +41,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testShuffledStatistics() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -49,7 +49,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPercentileSetter() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -57,7 +57,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void test20090720() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -65,7 +65,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testRemoval() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -73,7 +73,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSummaryConsistency() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();
@@ -81,7 +81,7 @@ public class DescriptiveStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCopy() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest object = new org.apache.commons.math3.stat.descriptive.DescriptiveStatisticsTest();

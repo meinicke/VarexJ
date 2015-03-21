@@ -9,7 +9,7 @@ public class AbstractLeastSquaresOptimizerTestValidation extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParametersErrorMonteCarloObservations() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTestValidation object = new org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTestValidation();
@@ -17,7 +17,7 @@ public class AbstractLeastSquaresOptimizerTestValidation extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParametersErrorMonteCarloParameters() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTestValidation object = new org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTestValidation();

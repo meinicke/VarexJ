@@ -9,7 +9,7 @@ public class JacobianMatricesTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLowAccuracyExternalDifferentiation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.JacobianMatricesTest object = new org.apache.commons.math3.ode.JacobianMatricesTest();
@@ -17,7 +17,7 @@ public class JacobianMatricesTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testHighAccuracyExternalDifferentiation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.JacobianMatricesTest object = new org.apache.commons.math3.ode.JacobianMatricesTest();
@@ -25,7 +25,7 @@ public class JacobianMatricesTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testInternalDifferentiation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.JacobianMatricesTest object = new org.apache.commons.math3.ode.JacobianMatricesTest();
@@ -33,7 +33,7 @@ public class JacobianMatricesTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAnalyticalDifferentiation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.JacobianMatricesTest object = new org.apache.commons.math3.ode.JacobianMatricesTest();
@@ -41,7 +41,7 @@ public class JacobianMatricesTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testFinalResult() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.JacobianMatricesTest object = new org.apache.commons.math3.ode.JacobianMatricesTest();
@@ -49,7 +49,7 @@ public class JacobianMatricesTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParameterizable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.JacobianMatricesTest object = new org.apache.commons.math3.ode.JacobianMatricesTest();

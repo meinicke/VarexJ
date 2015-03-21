@@ -9,7 +9,7 @@ public class FrenchComplexFormatTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSimpleNoDecimals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -17,7 +17,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testTrimOneImaginary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -25,7 +25,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSimpleWithDecimals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -33,7 +33,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSimpleWithDecimalsTrunc() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -41,7 +41,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNegativeReal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -49,7 +49,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNegativeImaginary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -57,7 +57,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNegativeBoth() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -65,7 +65,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testZeroReal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -73,7 +73,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testZeroImaginary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -81,7 +81,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDifferentImaginaryChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -89,7 +89,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDefaultFormatComplex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -97,7 +97,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNan() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -105,7 +105,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPositiveInfinity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -113,7 +113,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNegativeInfinity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -121,7 +121,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseSimpleNoDecimals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -129,7 +129,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseSimpleWithDecimals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -137,7 +137,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseSimpleWithDecimalsTrunc() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -145,7 +145,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNegativeReal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -153,7 +153,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNegativeImaginary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -161,7 +161,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNegativeBoth() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -169,7 +169,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseZeroReal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -177,7 +177,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseZeroImaginary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -185,7 +185,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseDifferentImaginaryChar() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -193,7 +193,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNan() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -201,7 +201,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParsePositiveInfinity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -209,7 +209,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPaseNegativeInfinity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -217,7 +217,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConstructorSingleFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -225,7 +225,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGetImaginaryFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -233,7 +233,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGetRealFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -241,7 +241,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testFormatNumber() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();
@@ -249,7 +249,7 @@ public class FrenchComplexFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testForgottenImaginaryCharacter() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.FrenchComplexFormatTest object = new org.apache.commons.math3.complex.FrenchComplexFormatTest();

@@ -9,7 +9,15 @@ public class IterativeLegendreGaussIntegratorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testQuinticFunction() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest();
+               object.testQuinticFunction();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testExactIntegration() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest();
@@ -17,23 +25,7 @@ public class IterativeLegendreGaussIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testNormalDistributionWithLargeSigma() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest();
-               object.testNormalDistributionWithLargeSigma();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testIssue464() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest();
-               object.testIssue464();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSinFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest();
@@ -41,11 +33,19 @@ public class IterativeLegendreGaussIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testQuinticFunction() throws Exception {
+    @Test(timeout=1000000)
+    public void testNormalDistributionWithLargeSigma() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest();
-               object.testQuinticFunction();
+               object.testNormalDistributionWithLargeSigma();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testIssue464() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegratorTest();
+               object.testIssue464();
         }
     }
 

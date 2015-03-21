@@ -9,15 +9,7 @@ public class PolynomialFunctionLagrangeFormTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testParameters() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest();
-               object.testParameters();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testQuinticFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest();
@@ -25,7 +17,7 @@ public class PolynomialFunctionLagrangeFormTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLinearFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest();
@@ -33,11 +25,19 @@ public class PolynomialFunctionLagrangeFormTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testQuadraticFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest();
                object.testQuadraticFunction();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testParameters() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeFormTest();
+               object.testParameters();
         }
     }
 

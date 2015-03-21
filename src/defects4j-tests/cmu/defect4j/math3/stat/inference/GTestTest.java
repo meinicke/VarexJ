@@ -9,7 +9,7 @@ public class GTestTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGTestGoodnesOfFit1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -17,7 +17,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGTestGoodnesOfFit2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -25,7 +25,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGTestGoodnesOfFit3() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -33,7 +33,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGTestIndependance1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -41,7 +41,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGTestIndependance2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -49,7 +49,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGTestIndependance3() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -57,7 +57,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGTestSetsComparisonBadCounts() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -65,7 +65,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUnmatchedArrays() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -73,7 +73,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNegativeObservedCounts() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -81,7 +81,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testZeroExpectedCounts() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -89,7 +89,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBadAlpha() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -97,7 +97,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testScaling() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();
@@ -105,7 +105,7 @@ public class GTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testRootLogLikelihood() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.GTestTest object = new org.apache.commons.math3.stat.inference.GTestTest();

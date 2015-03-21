@@ -9,15 +9,7 @@ public class PegasusSolverTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testSinZero() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();
-               object.testSinZero();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testQuinticZero() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();
@@ -25,7 +17,15 @@ public class PegasusSolverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testSinZero() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();
+               object.testSinZero();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testRootEndpoints() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();
@@ -33,7 +33,7 @@ public class PegasusSolverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBadEndpoints() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();
@@ -41,7 +41,7 @@ public class PegasusSolverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSolutionLeftSide() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();
@@ -49,7 +49,7 @@ public class PegasusSolverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSolutionRightSide() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();
@@ -57,7 +57,7 @@ public class PegasusSolverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSolutionBelowSide() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();
@@ -65,7 +65,7 @@ public class PegasusSolverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSolutionAboveSide() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.solvers.PegasusSolverTest object = new org.apache.commons.math3.analysis.solvers.PegasusSolverTest();

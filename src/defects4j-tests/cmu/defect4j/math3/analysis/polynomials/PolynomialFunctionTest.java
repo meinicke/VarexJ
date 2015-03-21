@@ -9,23 +9,7 @@ public class PolynomialFunctionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testQuadratic() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
-               object.testQuadratic();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testLinear() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
-               object.testLinear();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConstants() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
@@ -33,7 +17,7 @@ public class PolynomialFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testQuintic() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
@@ -41,7 +25,7 @@ public class PolynomialFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testfirstDerivativeComparison() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
@@ -49,7 +33,7 @@ public class PolynomialFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
@@ -57,7 +41,7 @@ public class PolynomialFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAddition() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
@@ -65,7 +49,7 @@ public class PolynomialFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSubtraction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
@@ -73,7 +57,7 @@ public class PolynomialFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMultiplication() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
@@ -81,7 +65,7 @@ public class PolynomialFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSerial() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
@@ -89,11 +73,27 @@ public class PolynomialFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMath341() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
                object.testMath341();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testLinear() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
+               object.testLinear();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testQuadratic() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest object = new org.apache.commons.math3.analysis.polynomials.PolynomialFunctionTest();
+               object.testQuadratic();
         }
     }
 

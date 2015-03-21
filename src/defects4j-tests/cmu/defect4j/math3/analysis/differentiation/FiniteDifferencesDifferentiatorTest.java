@@ -9,23 +9,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testConstant() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
-               object.testConstant();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testSerialization() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
-               object.testSerialization();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testWrongNumberOfPoints() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooSmallException", config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -33,7 +17,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testWrongStepSize() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotPositiveException", config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -41,7 +25,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLinear() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -49,7 +33,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGaussian() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -57,7 +41,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testStepSizeUnstability() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -65,7 +49,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testWrongOrder() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -73,7 +57,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testWrongOrderVector() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -81,7 +65,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testWrongOrderMatrix() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -89,7 +73,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testTooLargeStep() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -97,7 +81,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBounds() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -105,7 +89,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBoundedSqrt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -113,7 +97,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testVectorFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -121,7 +105,7 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMatrixFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
@@ -129,11 +113,27 @@ public class FiniteDifferencesDifferentiatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSeveralFreeParameters() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
                object.testSeveralFreeParameters();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testConstant() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
+               object.testConstant();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testSerialization() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest object = new org.apache.commons.math3.analysis.differentiation.FiniteDifferencesDifferentiatorTest();
+               object.testSerialization();
         }
     }
 

@@ -9,7 +9,7 @@ public class KMeansPlusPlusClustererTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPerformClusterAnalysisDegenerate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.clustering.KMeansPlusPlusClustererTest object = new org.apache.commons.math3.ml.clustering.KMeansPlusPlusClustererTest();
@@ -18,7 +18,7 @@ public class KMeansPlusPlusClustererTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCertainSpace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.clustering.KMeansPlusPlusClustererTest object = new org.apache.commons.math3.ml.clustering.KMeansPlusPlusClustererTest();
@@ -27,7 +27,7 @@ public class KMeansPlusPlusClustererTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSmallDistances() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ml.clustering.KMeansPlusPlusClustererTest object = new org.apache.commons.math3.ml.clustering.KMeansPlusPlusClustererTest();
@@ -36,7 +36,7 @@ public class KMeansPlusPlusClustererTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPerformClusterAnalysisToManyClusters() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooSmallException", config)) {
                org.apache.commons.math3.ml.clustering.KMeansPlusPlusClustererTest object = new org.apache.commons.math3.ml.clustering.KMeansPlusPlusClustererTest();

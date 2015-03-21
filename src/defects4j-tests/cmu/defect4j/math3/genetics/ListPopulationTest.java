@@ -9,7 +9,7 @@ public class ListPopulationTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChromosomes() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -17,7 +17,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGetFittestChromosome() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -25,7 +25,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSetPopulationLimit() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotPositiveException", config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -33,7 +33,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConstructorPopulationLimitNotPositive() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotPositiveException", config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -41,7 +41,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChromosomeListConstructorPopulationLimitNotPositive() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotPositiveException", config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -49,7 +49,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConstructorListOfChromosomesBiggerThanPopulationSize() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -57,7 +57,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAddTooManyChromosomes() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -65,7 +65,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAddTooManyChromosomesSingleCall() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -73,7 +73,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIterator() throws Exception {
         if (verifyUnhandledException("java.lang.UnsupportedOperationException", config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();
@@ -81,7 +81,7 @@ public class ListPopulationTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSetPopulationLimitTooSmall() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooSmallException", config)) {
                org.apache.commons.math3.genetics.ListPopulationTest object = new org.apache.commons.math3.genetics.ListPopulationTest();

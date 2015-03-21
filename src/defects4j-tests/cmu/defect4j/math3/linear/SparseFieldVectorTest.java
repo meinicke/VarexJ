@@ -9,15 +9,7 @@ public class SparseFieldVectorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testMisc() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.linear.SparseFieldVectorTest object = new org.apache.commons.math3.linear.SparseFieldVectorTest();
-               object.testMisc();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPredicates() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.SparseFieldVectorTest object = new org.apache.commons.math3.linear.SparseFieldVectorTest();
@@ -25,7 +17,15 @@ public class SparseFieldVectorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testMisc() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.linear.SparseFieldVectorTest object = new org.apache.commons.math3.linear.SparseFieldVectorTest();
+               object.testMisc();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testMapFunctions() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.SparseFieldVectorTest object = new org.apache.commons.math3.linear.SparseFieldVectorTest();
@@ -33,7 +33,7 @@ public class SparseFieldVectorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBasicFunctions() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.SparseFieldVectorTest object = new org.apache.commons.math3.linear.SparseFieldVectorTest();
@@ -41,7 +41,7 @@ public class SparseFieldVectorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOuterProduct() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.SparseFieldVectorTest object = new org.apache.commons.math3.linear.SparseFieldVectorTest();

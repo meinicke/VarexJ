@@ -9,7 +9,7 @@ public class ReappearingEventTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDormandPrince() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.events.ReappearingEventTest object = new org.apache.commons.math3.ode.events.ReappearingEventTest();
@@ -17,7 +17,7 @@ public class ReappearingEventTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGragg() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.events.ReappearingEventTest object = new org.apache.commons.math3.ode.events.ReappearingEventTest();

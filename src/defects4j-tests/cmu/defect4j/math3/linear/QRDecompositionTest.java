@@ -9,15 +9,7 @@ public class QRDecompositionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testNonInvertible() throws Exception {
-        if (verifyUnhandledException("org.apache.commons.math3.linear.SingularMatrixException", config)) {
-               org.apache.commons.math3.linear.QRDecompositionTest object = new org.apache.commons.math3.linear.QRDecompositionTest();
-               object.testNonInvertible();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDimensions() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.QRDecompositionTest object = new org.apache.commons.math3.linear.QRDecompositionTest();
@@ -25,7 +17,15 @@ public class QRDecompositionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testMatricesValues() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.linear.QRDecompositionTest object = new org.apache.commons.math3.linear.QRDecompositionTest();
+               object.testMatricesValues();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testAEqualQR() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.QRDecompositionTest object = new org.apache.commons.math3.linear.QRDecompositionTest();
@@ -33,7 +33,7 @@ public class QRDecompositionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testQOrthogonal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.QRDecompositionTest object = new org.apache.commons.math3.linear.QRDecompositionTest();
@@ -41,7 +41,7 @@ public class QRDecompositionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testRUpperTriangular() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.QRDecompositionTest object = new org.apache.commons.math3.linear.QRDecompositionTest();
@@ -49,7 +49,7 @@ public class QRDecompositionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testHTrapezoidal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.QRDecompositionTest object = new org.apache.commons.math3.linear.QRDecompositionTest();
@@ -57,11 +57,11 @@ public class QRDecompositionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testMatricesValues() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
+    @Test(timeout=1000000)
+    public void testNonInvertible() throws Exception {
+        if (verifyUnhandledException("org.apache.commons.math3.linear.SingularMatrixException", config)) {
                org.apache.commons.math3.linear.QRDecompositionTest object = new org.apache.commons.math3.linear.QRDecompositionTest();
-               object.testMatricesValues();
+               object.testNonInvertible();
         }
     }
 

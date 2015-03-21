@@ -9,7 +9,7 @@ public class BinaryChromosomeTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testInvalidConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.genetics.BinaryChromosomeTest object = new org.apache.commons.math3.genetics.BinaryChromosomeTest();
@@ -17,7 +17,7 @@ public class BinaryChromosomeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testRandomConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.genetics.BinaryChromosomeTest object = new org.apache.commons.math3.genetics.BinaryChromosomeTest();
@@ -25,7 +25,7 @@ public class BinaryChromosomeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIsSame() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.genetics.BinaryChromosomeTest object = new org.apache.commons.math3.genetics.BinaryChromosomeTest();

@@ -9,7 +9,7 @@ public class MathArraysTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testScale() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -17,7 +17,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testScaleInPlace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -25,7 +25,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEbeAddPrecondition() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -33,7 +33,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEbeSubtractPrecondition() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -41,7 +41,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEbeMultiplyPrecondition() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -49,7 +49,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEbeDividePrecondition() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -57,7 +57,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEbeAdd() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -65,7 +65,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEbeSubtract() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -73,7 +73,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEbeMultiply() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -81,7 +81,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEbeDivide() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -89,7 +89,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testL1DistanceDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -97,7 +97,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testL1DistanceInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -105,7 +105,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testL2DistanceDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -113,7 +113,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testL2DistanceInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -121,7 +121,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLInfDistanceDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -129,7 +129,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLInfDistanceInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -137,7 +137,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCheckOrder() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -145,7 +145,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIsMonotonic() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -153,7 +153,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIsMonotonicComparable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -161,7 +161,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCheckRectangular() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -169,7 +169,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCheckPositive() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -177,7 +177,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCheckNonNegative() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -185,7 +185,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCheckNonNegative2D() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -193,7 +193,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSortInPlace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -201,7 +201,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSortInPlaceDecresasingOrder() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -209,7 +209,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSortInPlaceExample() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -217,7 +217,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSortInPlaceFailures() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -225,7 +225,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCopyOfInt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -233,7 +233,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCopyOfInt2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -241,7 +241,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCopyOfInt3() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -249,7 +249,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCopyOfDouble() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -257,7 +257,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCopyOfDouble2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -265,7 +265,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCopyOfDouble3() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -273,7 +273,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLinearCombinationWithSingleElementArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -281,7 +281,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLinearCombination1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -289,7 +289,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLinearCombination2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -297,7 +297,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLinearCombinationInfinite() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -305,7 +305,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testArrayEquals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -313,7 +313,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testArrayEqualsIncludingNaN() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -321,7 +321,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNormalizeArray() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -329,7 +329,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConvolve() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -337,7 +337,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testShuffleTail() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();
@@ -345,7 +345,7 @@ public class MathArraysTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testShuffleHead() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.MathArraysTest object = new org.apache.commons.math3.util.MathArraysTest();

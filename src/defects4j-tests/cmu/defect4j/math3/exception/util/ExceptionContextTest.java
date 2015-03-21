@@ -9,15 +9,7 @@ public class ExceptionContextTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testMessageChain() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.exception.util.ExceptionContextTest object = new org.apache.commons.math3.exception.util.ExceptionContextTest();
-               object.testMessageChain();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNoArgAddMessage() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.exception.util.ExceptionContextTest object = new org.apache.commons.math3.exception.util.ExceptionContextTest();
@@ -25,7 +17,15 @@ public class ExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testMessageChain() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.exception.util.ExceptionContextTest object = new org.apache.commons.math3.exception.util.ExceptionContextTest();
+               object.testMessageChain();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testContext() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.exception.util.ExceptionContextTest object = new org.apache.commons.math3.exception.util.ExceptionContextTest();
@@ -33,7 +33,7 @@ public class ExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSerialize() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.exception.util.ExceptionContextTest object = new org.apache.commons.math3.exception.util.ExceptionContextTest();
@@ -41,7 +41,7 @@ public class ExceptionContextTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSerializeUnserializable() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.exception.util.ExceptionContextTest object = new org.apache.commons.math3.exception.util.ExceptionContextTest();

@@ -9,34 +9,16 @@ public class HaltonSequenceGeneratorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void test3DReference() throws Exception {
+    @Test(timeout=1000000)
+    public void testConstructor2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.random.HaltonSequenceGeneratorTest object = new org.apache.commons.math3.random.HaltonSequenceGeneratorTest();
                object.setUp();
-               object.test3DReference();
+               object.testConstructor2();
         }
     }
 
-    @Test(timeout=120000)
-    public void test2DUnscrambledReference() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.random.HaltonSequenceGeneratorTest object = new org.apache.commons.math3.random.HaltonSequenceGeneratorTest();
-               object.setUp();
-               object.test2DUnscrambledReference();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testSkip() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.random.HaltonSequenceGeneratorTest object = new org.apache.commons.math3.random.HaltonSequenceGeneratorTest();
-               object.setUp();
-               object.testSkip();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.random.HaltonSequenceGeneratorTest object = new org.apache.commons.math3.random.HaltonSequenceGeneratorTest();
@@ -45,12 +27,30 @@ public class HaltonSequenceGeneratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testConstructor2() throws Exception {
+    @Test(timeout=1000000)
+    public void test3DReference() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.random.HaltonSequenceGeneratorTest object = new org.apache.commons.math3.random.HaltonSequenceGeneratorTest();
                object.setUp();
-               object.testConstructor2();
+               object.test3DReference();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void test2DUnscrambledReference() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.random.HaltonSequenceGeneratorTest object = new org.apache.commons.math3.random.HaltonSequenceGeneratorTest();
+               object.setUp();
+               object.test2DUnscrambledReference();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testSkip() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.random.HaltonSequenceGeneratorTest object = new org.apache.commons.math3.random.HaltonSequenceGeneratorTest();
+               object.setUp();
+               object.testSkip();
         }
     }
 

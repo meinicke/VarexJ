@@ -9,7 +9,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void test0Choose0() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -17,7 +17,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBinomialCoefficient() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -25,7 +25,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBinomialCoefficientFail() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -33,7 +33,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBinomialCoefficientLarge() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -41,7 +41,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testFactorial() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -49,7 +49,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testFactorialFail() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -57,7 +57,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testStirlingS2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -65,7 +65,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testStirlingS2NegativeN() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotPositiveException", config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -73,7 +73,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testStirlingS2LargeK() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -81,7 +81,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testStirlingS2Overflow() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.MathArithmeticException", config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -89,7 +89,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCombinationsIterator() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();
@@ -97,7 +97,7 @@ public class CombinatoricsUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCombinationsIteratorFail() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.CombinatoricsUtilsTest object = new org.apache.commons.math3.util.CombinatoricsUtilsTest();

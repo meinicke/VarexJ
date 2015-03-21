@@ -9,7 +9,7 @@ public class SynchronizedMultivariateSummaryStatisticsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testToString() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
@@ -17,47 +17,7 @@ public class SynchronizedMultivariateSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testSerialization() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
-               object.testSerialization();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testSetterInjection() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
-               object.testSetterInjection();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testShuffledStatistics() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
-               object.testShuffledStatistics();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testStats() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
-               object.testStats();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testN0andN1Conditions() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
-               object.testN0andN1Conditions();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEqualsAndHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
@@ -65,15 +25,39 @@ public class SynchronizedMultivariateSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testSetterIllegalState() throws Exception {
+    @Test(timeout=1000000)
+    public void testSetterInjection() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
-               object.testSetterIllegalState();
+               object.testSetterInjection();
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testShuffledStatistics() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
+               object.testShuffledStatistics();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testStats() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
+               object.testStats();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testN0andN1Conditions() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
+               object.testN0andN1Conditions();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testDimension() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
@@ -81,11 +65,27 @@ public class SynchronizedMultivariateSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testSetterIllegalState() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
+               object.testSetterIllegalState();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testNaNContracts() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
                object.testNaNContracts();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testSerialization() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatisticsTest();
+               object.testSerialization();
         }
     }
 

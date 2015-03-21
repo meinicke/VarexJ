@@ -9,7 +9,7 @@ public class AbstractUnivariateStatisticTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testTestPositive() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatisticTest object = new org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatisticTest();
@@ -17,7 +17,7 @@ public class AbstractUnivariateStatisticTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testTestNegative() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatisticTest object = new org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatisticTest();
