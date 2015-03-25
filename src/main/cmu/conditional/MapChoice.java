@@ -147,7 +147,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	
 	@Override
 	public int hashCode() {
-		throw new RuntimeException("not yet implemented");
+		return map.hashCode();//throw new RuntimeException("not yet implemented");
 	}
 
 	@Override

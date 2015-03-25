@@ -143,7 +143,7 @@ public class BoxObjectCacheTest extends TestJPF {
     }
   }
 
-  @Test
+//  @Test // no longer in peers
   public void testCharacterCacheBoxObject() throws SecurityException, NoSuchMethodException, IllegalAccessException, InvocationTargetException{
     if (verifyNoPropertyViolation(JPF_ARGS)){
       Character c1 = Character.valueOf( '?');        // should be cached
