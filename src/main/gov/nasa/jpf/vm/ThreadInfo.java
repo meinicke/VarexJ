@@ -2229,7 +2229,7 @@ public Conditional<Instruction> executeInstruction () {
 				case interaction:	
 				case local2:
 					String localVariableName = "?";
-					String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
+					
 					int localInteractionChange = newLocalSize - oldLocalSize;
 					if (instruction instanceof LocalVariableInstruction) {
 						LocalVariableInstruction lvi = ((LocalVariableInstruction)instruction);
@@ -2242,7 +2242,7 @@ public Conditional<Instruction> executeInstruction () {
 								localInteractionChange = top.stack.getLocal(top.stack.getCtx(), 
 										((LocalVariableInstruction)instruction).getLocalVariableIndex()).toMap().size() - 1;
 								if (localInteractionChange != 0) {
-									content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
+									String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
 									content += top.trace(ctx) + "\n";
 									if (newLocal.toString().length() > 800) {
 										content += newLocal.toString().substring(0, 800) + "...";
@@ -2256,6 +2256,7 @@ public Conditional<Instruction> executeInstruction () {
 						}
 					}
 					if (localInteractionChange != 0) {
+						String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
 						content += top.trace(ctx) + "\n";
 						if (oldLocal.toString().length() > 800) {
 							content += oldLocalSize + " : " + oldLocal.toString().substring(0, 800) + "...";
