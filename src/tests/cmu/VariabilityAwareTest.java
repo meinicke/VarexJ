@@ -12,7 +12,7 @@ import org.junit.Test;
 @SuppressWarnings("unused")
 public class VariabilityAwareTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=time",*/ "+search.class= .search.RandomSearch", "+choice=MapChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=interaction",*/ "+search.class= .search.RandomSearch", "+choice=MapChoice"};
 
 	static boolean RUN_WITH_JPF = true;
 
@@ -128,7 +128,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void earlyJoinTest() {
+	public void earlyJoinTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 1;
 			if (x) {
@@ -146,7 +146,7 @@ public class VariabilityAwareTest extends TestJPF {
 			if (b) {
 				i += 1;
 			}
-			i = 10;// early join
+//			i = 10;// early join
 			if (c) {
 				i += 1;
 			}
@@ -170,12 +170,16 @@ public class VariabilityAwareTest extends TestJPF {
 				i += 1;
 			}
 
-			i = 1000;// early join
+//			i = 1000;// early join
 			int sum = 0;
 			for (int start = 1; start <= i; start++) {
 				sum++;
 			}
+			if (sum > 15) {
+				throw new Exception();
+			}
 			System.out.println(sum);
+			
 		}
 	}
 
@@ -502,6 +506,21 @@ public class VariabilityAwareTest extends TestJPF {
 				x = x - 1;
 			}
 			check(x == 0);
+		}
+	}
+	
+	int field = 1;
+	
+	@Test
+	public void testField() throws Exception {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			if (x) {
+				field = 2;
+			}
+			if (y) {
+				field *= 3;
+			}
+			field = 1;
 		}
 	}
 	

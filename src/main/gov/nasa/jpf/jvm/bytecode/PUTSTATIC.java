@@ -58,6 +58,8 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 		frame.pop(ctx, 2); // .. highVal, lowVal => ..
 	}
 
+	private static int featureNumber = 0;
+	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		AnnotationInfo[] annotations = getFieldInfo(ctx).getAnnotations();
@@ -71,6 +73,8 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			
 			StackFrame frame = ti.getModifiableTopFrame();
 			FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
+			featureNumber++;
+			System.out.println("Found feature #" + featureNumber + " - " + fname);
 			IChoice<Integer> create = ChoiceFactory.create(feature, TRUE, FALSE);
 			frame.pop(ctx);
 			frame.push(ctx, create);

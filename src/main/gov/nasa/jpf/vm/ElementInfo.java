@@ -1569,14 +1569,14 @@ public abstract class ElementInfo implements Cloneable {
     return fields.getHeapSize();
   }
 
-  public String getStringField(FeatureExpr ctx, String fname) {
+  public Conditional<String> getStringField(FeatureExpr ctx, String fname) {
     int ref = getReferenceField(fname).simplify(ctx).getValue();
 
     if (ref != MJIEnv.NULL) {
       ElementInfo ei = VM.getVM().getHeap().get(ref);
-      return ei.asString().simplify(ctx).getValue();
+      return ei.asString();
     } else {
-      return "null";
+      return new One<>("null");
     }
   }
 

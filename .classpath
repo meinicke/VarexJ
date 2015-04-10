@@ -5,7 +5,7 @@
 	<classpathentry kind="src" path="src/classes"/>
 	<classpathentry kind="src" path="src/annotations"/>
 	<classpathentry kind="src" path="src/examples"/>
-	<classpathentry kind="src" path="src/tests"/>
+	<classpathentry excluding="cmu/datatypes/LinkedList.java" kind="src" path="src/tests"/>
 	<classpathentry kind="src" path="src/defects4j-tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/build"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>

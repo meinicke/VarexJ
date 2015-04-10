@@ -73,7 +73,7 @@ public class JPF_java_lang_String extends NativePeer {
 
 				}
 
-			}).simplify();
+			}).simplify(ctx);
 			return env.newString(ctx, result);
 		} catch (Exception e) {
 			System.out.println("JPF_java_lang_String.init___3CII__Ljava_lang_String_2()");

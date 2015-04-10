@@ -22,6 +22,8 @@ import gov.nasa.jpf.util.Printable;
 
 import java.io.PrintWriter;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -41,7 +43,7 @@ public class UncaughtException extends RuntimeException implements Printable {
   int xObjRef;          // the exception object reference (that went uncaught)
 
   String     xClsName;
-  String     details;
+  Conditional<String>     details;
 
   //ArrayList  stackTrace; // unused -pcd
 
@@ -64,7 +66,11 @@ public class UncaughtException extends RuntimeException implements Printable {
               + xClsName;
     
     if (details != null) {
-      s += " : \"" + details + "\"";
+    	if (details instanceof One) {
+    		s += " : \"" + details.getValue() + "\"";
+    	} else {
+    		s += " : \"" + details + "\"";
+    	}
     }
     
     return s;

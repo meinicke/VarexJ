@@ -1388,35 +1388,31 @@ public int nLocals;
     // .. A B C     =>
     // .. C A B C
     //        ^
+		stack.dup_x2(ctx);
+		if (attrs != null) {
+			Object cAnn = null;
+			int ts, td;
+			int t = top();
 
-    Object cAnn = null;
-    int ts, td;
-    int t = top();
+			// duplicate C
+			ts = t;
+			td = t + 1;
+			attrs[td] = cAnn = attrs[ts];
 
-    stack.dup_x2(ctx);
-    // duplicate C
-    ts = t; td = t+1;
-    if (attrs != null){
-      attrs[td] = cAnn = attrs[ts];
-    }
+			// shuffle B
+			td = ts;
+			ts--; // td=top, ts=top-1
+			attrs[td] = attrs[ts];
 
-    // shuffle B
-    td = ts; ts--;               // td=top, ts=top-1
-    if (attrs != null){
-      attrs[td] = attrs[ts];
-    }
+			// shuffle A
+			td = ts;
+			ts--; // td=top-1, ts=top-2
+			attrs[td] = attrs[ts];
 
-    // shuffle A
-    td=ts; ts--;                 // td=top-1, ts=top-2
-    if (attrs != null){
-      attrs[td] = attrs[ts];
-    }
-
-    // shuffle C
-    td = ts;                     // td = top()-2
-    if (attrs != null){
-      attrs[td] = cAnn;
-    }
+			// shuffle C
+			td = ts; // td = top()-2
+			attrs[td] = cAnn;
+		}
   }
 
 
@@ -2090,5 +2086,13 @@ pw.print(stack);
 		stack.IINC(ctx, index, increment);
 	}
 
-
+	/**
+	 * Returns the current stack trace as String.
+	 */
+	public String trace(FeatureExpr ctx) {
+		if (prev == null) {
+			return mi.getFullName();
+		}
+		return mi.getFullName() + "("+pc.simplify(ctx).getValue().getLineNumber() + ")\n" + prev.trace(ctx);
+	}
 }
