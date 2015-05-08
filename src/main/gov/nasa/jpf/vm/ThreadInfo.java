@@ -2004,15 +2004,14 @@ public Conditional<Instruction> executeInstruction () {
  		    	}
  	        }	
  	        	
-//     		if ((executedInstructions > 97754252 && top.getDepth() < 11 )&& RuntimeConstants.debug) {
-//     			System.out.print(executedInstructions + " ");
-//     			System.out.print(top.getDepth());
-//     			if (top.getDepth() < 10) {
-//     				System.out.print(" ");
-//     			}
-// 				System.out.println(" " + i + " if " + ctx);
-// 			
-// 			}
+     		if (RuntimeConstants.debug) {
+     			System.out.print(top.getDepth());
+     			if (top.getDepth() < 10) {
+     				System.out.print(" ");
+     			}
+ 				System.out.println(" " + i + " if " + ctx);
+ 			
+ 			}
  	    	
      		if (RuntimeConstants.tracing) {
      			performTracing(i, ctx);
