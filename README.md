@@ -15,9 +15,6 @@ The build process has to be run with JDK 7, JRE will not work.
 
 # JPF options:
 
-It is required to disable path search (e.g., BFS)! Set search class:  
-`search.class=.search.RandomSearch`
-
 Variability-Aware options:
 
 * set feature expression [SAT, BDD]
