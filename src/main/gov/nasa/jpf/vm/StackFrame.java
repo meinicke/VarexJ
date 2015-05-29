@@ -35,6 +35,7 @@ import java.io.StringWriter;
 import java.util.Iterator;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -2093,6 +2094,15 @@ pw.print(stack);
 		if (prev == null) {
 			return mi.getFullName();
 		}
-		return mi.getFullName() + "("+pc.simplify(ctx).getValue().getLineNumber() + ")\n" + prev.trace(ctx);
+		final Conditional<Integer> lineNumber = pc.simplify(ctx).map(new Function<Instruction, Integer>() {
+
+			@Override
+			public Integer apply(Instruction instruction) {
+				return instruction.getLineNumber();
+			}
+			
+		});
+		
+		return mi.getFullName() + "("+ lineNumber + ")\n" + prev.trace(ctx);
 	}
 }

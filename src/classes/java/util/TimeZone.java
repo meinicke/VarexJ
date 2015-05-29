@@ -38,6 +38,9 @@ public class TimeZone implements Serializable, Cloneable {
   public static final int SHORT = 0;
   public static final int LONG = 1;
   
+  public TimeZone() {
+  }
+  
   // we keep construction on the peer side
   private static native TimeZone createDefaultZone();
   

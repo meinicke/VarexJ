@@ -6,6 +6,7 @@ import java.util.Map;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureModel;
+import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
 
 /**
  * Representation of a values that depend on {@link FeatureExpr}.
@@ -118,9 +119,20 @@ public abstract class Conditional<T> {
     @Override
 	public abstract Conditional<T> clone() throws CloneNotSupportedException;
     
-    public static String getCTXString(FeatureExpr ctx) {
-  	  return ("" + ctx).replaceAll("CONFIG_", "").replaceAll("__SELECTED_FEATURE_", "").replaceAll("def\\(", "").replaceAll("\\)", "").replaceAll("\\(", "");
-    }
-    
+	public static String getCTXString(FeatureExpr ctx) {
+		boolean oneSample = ctx instanceof BDDFeatureExpr && ((BDDFeatureExpr)ctx).bdd().pathCount() > 1000; 
+		if (oneSample) {
+			ctx = new BDDFeatureExpr(((BDDFeatureExpr)ctx).bdd().satOne());
+		}
+		String context = ctx.toString().replaceAll("CONFIG_", "").replaceAll("__SELECTED_FEATURE_", "").replaceAll("def\\(", "").replaceAll("\\)", "").replaceAll("\\(", "");
+		if (oneSample) {
+			context = context + " | ...";
+		} else if ((context.length() > 300 && context.contains("|"))) {
+			context = (context.substring(0, context.indexOf('|')) + " | ...");
+		}
+		
+		return context;
+	}
+
     public abstract int size();
 }

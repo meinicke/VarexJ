@@ -111,7 +111,6 @@ public class JPF_java_lang_System extends NativePeer {
       return env.newString(ctx, v);
     }
   }
-
   
   int createPrintStream (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     ThreadInfo ti = env.getThreadInfo();

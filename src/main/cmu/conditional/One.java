@@ -18,10 +18,10 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class One<T> extends Conditional<T> implements Cloneable {
 
-	public static One<?> NULL = new One<>(null);
-	public static One<Boolean> FALSE = new One<>(Boolean.FALSE);
-	public static One<Boolean> TRUE = new One<>(Boolean.TRUE);
-	public static One<Integer> MJIEnvNULL = new One<>(MJIEnv.NULL);
+	public static final One<?> NULL = new One<>(null);
+	public static final One<Boolean> FALSE = new One<>(Boolean.FALSE);
+	public static final One<Boolean> TRUE = new One<>(Boolean.TRUE);
+	public static final One<Integer> MJIEnvNULL = new One<>(MJIEnv.NULL);
 	
 	private T value;
 

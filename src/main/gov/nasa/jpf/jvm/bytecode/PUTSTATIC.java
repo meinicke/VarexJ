@@ -39,9 +39,6 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  */
 public class PUTSTATIC extends StaticFieldInstruction implements StoreInstruction {
 
-	private static final One<Integer> FALSE = new One<>(0);
-	private static final One<Integer> TRUE = new One<>(1);
-
 	public PUTSTATIC() {}
 
 	public PUTSTATIC(String fieldName, String clsDescriptor, String fieldDescriptor) {
@@ -70,12 +67,11 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			}
 		}
 		if (annotated) {
-			
 			StackFrame frame = ti.getModifiableTopFrame();
 			FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
 			featureNumber++;
 			System.out.println("Found feature #" + featureNumber + " - " + fname);
-			IChoice<Integer> create = ChoiceFactory.create(feature, TRUE, FALSE);
+			IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
 			frame.pop(ctx);
 			frame.push(ctx, create);
 		}
