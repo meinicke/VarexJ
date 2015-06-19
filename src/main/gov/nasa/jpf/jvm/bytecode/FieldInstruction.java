@@ -172,7 +172,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
         // check if this might expose a previously unshared object
         if (ti.useBreakOnExposure()) {
           if (ti.isFirstStepInsn()) { // no use to break for exposure if we didn't break on shared field access
-            ElementInfo eiFieldValue = ti.getElementInfo(val.getValue());
+            ElementInfo eiFieldValue = ti.getElementInfo(val.simplify(ctx).getValue());
             // note there is no point re-exposing if the object already got exposed along the same path. In fact,
             // without state matching this can cause endless-loops
             if ((eiFieldValue != null) && !eiFieldValue.isExposed()
