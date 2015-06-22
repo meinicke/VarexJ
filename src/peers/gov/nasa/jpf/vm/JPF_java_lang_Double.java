@@ -18,17 +18,27 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.Function;
+import cmu.conditional.One;
 import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import org.hamcrest.Condition;
 
 /**
  * MJI NativePeer class for java.lang.Double library abstraction
  */
 public class JPF_java_lang_Double extends NativePeer {
   @MJI
-  public long doubleToLongBits__D__J (MJIEnv env, int rcls, Conditional<Double> v0, FeatureExpr ctx) {
-    return Double.doubleToLongBits(v0.getValue());
+  public Conditional<Long> doubleToLongBits__D__J (MJIEnv env, int rcls, Conditional<Double> v0, FeatureExpr ctx) {
+//    return Double.doubleToLongBits(v0.getValue());
+    return v0.map(new Function<Double, Long>() {
+      @Override
+      public Long apply(Double x) {
+        return Double.doubleToLongBits(x);
+      }
+    });
   }
 
   @MJI
@@ -41,23 +51,47 @@ public class JPF_java_lang_Double extends NativePeer {
     return Double.longBitsToDouble(v0.getValue());
   }
 
+//  @MJI
+//  public int toString__D__Ljava_lang_String_2 (MJIEnv env, int objref, Conditional<Double> d, FeatureExpr ctx) {
+//    return env.newString(ctx, Double.toString(d.getValue()));
+//  }
+
   @MJI
-  public int toString__D__Ljava_lang_String_2 (MJIEnv env, int objref, Conditional<Double> d, FeatureExpr ctx) {
-    return env.newString(ctx, Double.toString(d.getValue()));
+  public Conditional<Integer> toString__D__Ljava_lang_String_2 (final MJIEnv env, int objref, Conditional<Double> d, final FeatureExpr ctx) {
+//    final MJIEnv envFinal = env;
+//    final FeatureExpr ctxFinal = ctx;
+    return d.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Integer>>() {
+      @Override
+      public Conditional<Integer> apply(FeatureExpr ctx, Double x) {
+        return new One(env.newString(ctx, Double.toString(x)));
+      }
+    });
   }
-  
+
   // we need to intercept this because it compares double values, which might
   // cause an ArithmeticException to be raised if -check-fp-compare is set (default)
   // but -check-fp isn't, and Double.isInfinit is used to handle the cases
   // explicitly in the program (which is supposed to be the right way)
   @MJI
-  public boolean isInfinite__D__Z (MJIEnv env, int rcls, Conditional<Double> v, FeatureExpr ctx) {
-    return Double.isInfinite(v.getValue());
+  public Conditional<Boolean> isInfinite__D__Z (MJIEnv env, int rcls, Conditional<Double> v, FeatureExpr ctx) {
+//    return Double.isInfinite(v.getValue());
+    return v.map(new Function<Double, Boolean>() {
+      @Override
+      public Boolean apply(Double x) {
+        return Double.isInfinite(x);
+      }
+    });
   }
   
   // ditto (see isInfinite)
   @MJI
-  public boolean isNaN__D__Z (MJIEnv env, int rcls, Conditional<Double> v, FeatureExpr ctx) {
-    return Double.isNaN(v.getValue());
+  public Conditional<Boolean> isNaN__D__Z (MJIEnv env, int rcls, Conditional<Double> v, FeatureExpr ctx) {
+    return v.map(new Function<Double, Boolean>() {
+      @Override
+      public Boolean apply(Double x) {
+        return Double.isNaN(x);
+      }
+    });
+//    return Double.isNaN(v.getValue());
   }
 }
