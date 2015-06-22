@@ -3,12 +3,11 @@ package cmu.datatypes;
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class StringTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{"+search.class= .search.RandomSearch", "+choice=TreeChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=local",*/ "+search.class= .search.RandomSearch", "+choice=TreeChoice"};
 
 	@Conditional
 	static boolean x = true;
@@ -210,6 +209,28 @@ public class StringTest extends TestJPF {
 			}
 			System.out.println(d);
 		}
+	}
+	
+	@Test
+	public void testChach() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s;
+			if (x) {
+				s = getString(2);
+			} else {
+				s = getString(2);
+				System.out.print("");
+			}
+			System.out.println(s);
+		}
+	}
+	
+	private String getString(int i) {
+		String s = "";
+		while (i-- > 0) {
+			s += i; 
+		}
+		return s.intern();
 	}
 }
 

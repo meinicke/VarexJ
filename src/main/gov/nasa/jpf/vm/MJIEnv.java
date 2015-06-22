@@ -24,6 +24,7 @@ import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.JPFListener;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import cmu.conditional.BiFunction;
@@ -882,8 +883,8 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     return Boolean.valueOf(getBooleanField(objref, "value").getValue());// TODO jens
   }
 
-  public Conditional<Byte> getByteObject (int objref){
-    return getByteField(objref, "value");
+  public Byte getByteObject (int objref){
+    return getByteField(objref, "value").getValue();
   }
 
   public Character getCharObject (int objref){
@@ -962,6 +963,32 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
     return a;
   }
+  
+  @Deprecated
+  public float[] getFloatArrayObjectDeprecated(FeatureExpr ctx, int objref) {
+    ElementInfo ei = getElementInfo(objref);
+    Conditional<Float>[] fa = ei.asFloatArray();
+
+    float[] a = new float[fa.length];
+    for (int i = 0; i < fa.length; i++) {
+    	a[i]= fa[i].simplify(ctx).getValue();
+    }
+    return a;
+  }
+  
+  
+  @Deprecated
+  public double[] getDoubleArrayObjectDeprecated(FeatureExpr ctx, int objref) {
+    ElementInfo ei = getElementInfo(objref);
+    Conditional<Double>[] da = ei.asDoubleArray();
+
+    double[] a = new double[da.length];
+    for (int i = 0; i < da.length; i++) {
+    	a[i]= da[i].simplify(ctx).getValue();
+    }
+    return a;
+  }
+  
 
   public Conditional<Double>[] getDoubleArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
@@ -1178,9 +1205,8 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
   public String format (FeatureExpr ctx, int fmtRef, int argRef){
     String format = getStringObject(ctx, fmtRef);
-    int len = getArrayLength(ctx, argRef);
+    int len = argRef == MJIEnv.NULL ? 0 : getArrayLength(ctx, argRef);
     Object[] arg = new Object[len];
-
     for (int i=0; i<len; i++){
       int ref = getReferenceArrayElement(argRef,i).simplify(ctx).getValue();
       if (ref != NULL) {
@@ -1844,4 +1870,35 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   public int valueOfLong(FeatureExpr ctx, long l) {
     return BoxObjectCacheManager.valueOfLong(ctx, ti, l);
   }
+
+  	/**
+  	 * Contains objects created and handles by the host JVM.
+  	 */
+	private static HashMap<Integer, Object> JVMObjects = new HashMap<>();
+
+	/**
+	 * Add a HostJVM object.
+	 * @param objref The object reference of VarexJ
+	 * @param object The object of the HostJVM
+	 */
+	public void addJVMObject(int objref, Object object) {
+		JVMObjects.put(objref, object);
+	}
+
+	/**
+	 * Get a HostJVM object.
+	 * @param objref The object reference of VarexJ
+	 * @return The object of the HostJVM
+	 */
+	public Object getJVMObject(int objref) {
+		return JVMObjects.get(objref);
+	}
+
+	/**
+	 * Remove a HostJVM object.
+	 * @param objref The object reference of VarexJ
+	 */
+	public void removeJVMObject(int objref) {// TODO add to garbage collection
+		JVMObjects.remove(objref);
+	}
 }
