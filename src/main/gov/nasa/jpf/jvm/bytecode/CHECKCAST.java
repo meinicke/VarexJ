@@ -84,10 +84,19 @@ public class CHECKCAST extends JVMInstruction {
 					ClassInfo eci = e.getClassInfo();
 
 					if (type.charAt(0) == '[') { // cast between array types
-						if (eci.isArray()) {
-							// check if the element types are compatible
-							ClassInfo cci = eci.getComponentClassInfo();
-							isValid = cci.isInstanceOf(type.substring(1));
+						String arrayType = type;
+						ClassInfo cci = eci;
+						while (true) {
+							if (cci.isArray()) {
+								cci = cci.getComponentClassInfo();
+								arrayType = arrayType.substring(1);
+							} else {
+								break;
+							}
+							if (arrayType.charAt(0) != '[') {
+								isValid = cci.isInstanceOf(arrayType);
+								break;
+							}
 						}
 
 					} else { // non-array types
