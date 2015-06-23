@@ -44,8 +44,14 @@ public class JPF_java_lang_Double extends NativePeer {
   }
 
   @MJI
-  public double longBitsToDouble__J__D (MJIEnv env, int rcls, Conditional<Long> v0, FeatureExpr ctx) {
-    return Double.longBitsToDouble(v0.getValue());
+  public Conditional<Double> longBitsToDouble__J__D (MJIEnv env, int rcls, Conditional<Long> v0, FeatureExpr ctx) {
+	  return v0.map(new Function<Long, Double>() {
+
+			@Override
+			public Double apply(Long v0) {
+				return Double.longBitsToDouble(v0);
+			}
+	  });
   }
 
 //  @MJI

@@ -23,6 +23,8 @@ import gov.nasa.jpf.annotation.MJI;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -82,7 +84,13 @@ public class JPF_java_lang_Throwable extends NativePeer {
     
     String s = ci.getName();
     if (msgRef != MJIEnv.NULL){
-      s += ": " + env.getStringObject(ctx, msgRef);
+      s += ": ";
+      Conditional<String> message = env.getStringObjectNew(ctx, msgRef);
+      if (message instanceof One) {
+    	  s += message.getValue();
+      } else {
+    	  s += message;
+      }
     }
     
     return env.newString(ctx, s);
