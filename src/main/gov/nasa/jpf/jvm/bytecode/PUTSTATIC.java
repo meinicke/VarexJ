@@ -39,9 +39,6 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  */
 public class PUTSTATIC extends StaticFieldInstruction implements StoreInstruction {
 
-	private static final One<Integer> FALSE = new One<>(0);
-	private static final One<Integer> TRUE = new One<>(1);
-
 	public PUTSTATIC() {}
 
 	public PUTSTATIC(String fieldName, String clsDescriptor, String fieldDescriptor) {
@@ -58,22 +55,23 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 		frame.pop(ctx, 2); // .. highVal, lowVal => ..
 	}
 
+	static final String ANNOTATION_CONDITIONAL = gov.nasa.jpf.annotation.Conditional.class.getName();
+	static int featureNumber = 0;
+	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		AnnotationInfo[] annotations = getFieldInfo(ctx).getAnnotations();
-		boolean annotated = false;
 		for (AnnotationInfo ai : annotations) {
-			if (ai.getName().equals(gov.nasa.jpf.annotation.Conditional.class.getName())) {
-				annotated = true;
+			if (ANNOTATION_CONDITIONAL.equals(ai.getName())) {
+				StackFrame frame = ti.getModifiableTopFrame();
+				FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
+				featureNumber++;
+				System.out.println("Found feature #" + featureNumber + " - " + fname);
+				IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
+				frame.pop(ctx);
+				frame.push(ctx, create);
+				break;
 			}
-		}
-		if (annotated) {
-			
-			StackFrame frame = ti.getModifiableTopFrame();
-			FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
-			IChoice<Integer> create = ChoiceFactory.create(feature, TRUE, FALSE);
-			frame.pop(ctx);
-			frame.push(ctx, create);
 		}
 		
 		if (!ti.isFirstStepInsn()) { // top half

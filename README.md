@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/chupanw/VarexJ.svg?branch=master)](https://travis-ci.org/chupanw/VarexJ)
-
 # Overview
 
 VarexJ is a variability-aware interpreter for Java(7) bytecode based on Java Pathfinder v7.0 (rev 1155+) see: http://javapathfinder.sourceforge.net/.
@@ -15,20 +13,7 @@ If it does not build automatically, right-click on the build.xml \ run as \ Ant 
 The build process has to be run with JDK 7, JRE will not work.
 
 
-# Configuration:
-
-define global options with site.properties @ ../home/.jpf/site.properties
-content:
-
-	jpf-core=C:/Users/Loaner/workspace/jpf-core-vai (path to the project)
-	tc-home=${jpf-core}/lib
-	native_classpath = ${tc-home}/featureexprlib_2.10-0.3.4.jar;${tc-home}/scala-library-2.10.3.jar;${tc-home}/org.sat4j.core-2.3.1.jar
-
-
 # JPF options:
-
-It is required to disable path search (e.g., BFS)! Set search class:  
-`search.class=.search.RandomSearch`
 
 Variability-Aware options:
 

@@ -24,9 +24,12 @@ import gov.nasa.jpf.util.MethodInfoRegistry;
 import gov.nasa.jpf.util.RunListener;
 import gov.nasa.jpf.util.RunRegistry;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -120,6 +123,30 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     return getParameterTypes(env, getMethodInfo(ctx, env, objRef), ctx);
   }
   
+	@MJI
+	public int getGenericParameterTypes_____3Ljava_lang_reflect_Type_2(MJIEnv env, int objRef, FeatureExpr ctx) {
+		ThreadInfo ti = env.getThreadInfo();
+		String[] argTypeNames = getMethodInfo(ctx, env, objRef).getArgumentTypeNames();
+		int[] ar = new int[argTypeNames.length];
+
+		for (int i = 0; i < argTypeNames.length; i++) {
+			ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(argTypeNames[i]);
+			if (!ci.isRegistered()) {
+				ci.registerClass(ctx, ti);
+			}
+
+			ar[i] = ci.getClassObjectRef();
+		}
+
+		int aRef = env.newObjectArray("Ljava/lang/reflect/Type;", argTypeNames.length);
+		for (int i = 0; i < argTypeNames.length; i++) {
+			env.setReferenceArrayElement(ctx, aRef, i, new One<>(ar[i]));
+		}
+
+		return aRef;
+
+	}
+  
   int getExceptionTypes(MJIEnv env, MethodInfo mi, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     String[] exceptionNames = mi.getThrownExceptionClassNames();
@@ -150,6 +177,19 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   @MJI
   public int getExceptionTypes_____3Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx) {
     return getExceptionTypes(env, getMethodInfo(ctx, env, objRef), ctx);
+  }
+  
+  @MJI
+  public int getGenericReturnType____Ljava_lang_reflect_Type_2 (MJIEnv env, int objRef, FeatureExpr ctx){
+    MethodInfo mi = getMethodInfo(ctx, env, objRef);
+    ThreadInfo ti = env.getThreadInfo();
+
+    ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(mi.getReturnTypeName());
+    if (!ci.isRegistered()) {
+      ci.registerClass(ctx, ti);
+    }
+
+    return ci.getClassObjectRef();
   }
   
   @MJI
@@ -223,16 +263,15 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     env.setReturnAttribute(attr);
     return ret;
   }
+  
+  private static Conditional<Integer> argIndex;
 
-  static boolean pushUnboxedArguments (MJIEnv env, MethodInfo mi, DirectCallStackFrame frame, int argIdx, int argsRef, FeatureExpr ctx) {
-    ElementInfo source;
+  static boolean pushUnboxedArguments (final MJIEnv env, MethodInfo mi, final DirectCallStackFrame frame, int argIdx, final int argsRef, FeatureExpr ctx) {
+	  argIndex = new One<>(argIdx);
     ClassInfo sourceClass;
-    String destTypeNames[];
-    int nArgs, passedCount, sourceRef;
-    byte sourceType, destTypes[];
-
-    destTypes     = mi.getArgumentTypes();
-    destTypeNames = mi.getArgumentTypeNames();
+    final String destTypeNames[] = mi.getArgumentTypeNames();
+    int nArgs, passedCount;
+	final byte destTypes[] = mi.getArgumentTypes();
     nArgs         = destTypeNames.length;
     
     // according to the API docs, passing null instead of an empty array is allowed for no args
@@ -244,28 +283,47 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
     
     for (int i = 0; i < nArgs; i++) {
-      sourceRef = env.getReferenceArrayElement(argsRef, i).simplify(ctx).getValue();
+    	final int index = i;
+    	Conditional<Integer> sourceRef = env.getReferenceArrayElement(argsRef, i).simplify(ctx);
 
-      // we have to handle null references explicitly
-      if (sourceRef == MJIEnv.NULL) {
-        if ((destTypes[i] != Types.T_REFERENCE) && (destTypes[i] != Types.T_ARRAY)) {
-          env.throwException(ctx, IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Actual = (null).  Expected = " + destTypeNames[i]);
-          return false;
-        } 
-         
-        frame.pushRef(ctx, MJIEnv.NULL);
-        continue;
-      }
+    	Conditional<Boolean> loopValue = sourceRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
 
-      source      = env.getElementInfo(sourceRef);
-      sourceClass = source.getClassInfo();   
-      sourceType = getSourceType( sourceClass, destTypes[i], destTypeNames[i]);
-
-      Object attr = env.getElementInfo(argsRef).getFields().getFieldAttr(i);
-      if ((argIdx = pushArg( argIdx, frame, source, sourceType, destTypes[i], attr, ctx)) < 0 ){
-        env.throwException(ctx, IllegalArgumentException.class.getName(), "Wrong argument type at index " + i + ".  Source Class = " + sourceClass.getName() + ".  Dest Class = " + destTypeNames[i]);
-        return false;        
-      }
+			@Override
+			public Conditional<Boolean> apply(FeatureExpr ctx, Integer sourceRef) {
+				// we have to handle null references explicitly
+				if (sourceRef == MJIEnv.NULL) {
+					if ((destTypes[index] != Types.T_REFERENCE) && (destTypes[index] != Types.T_ARRAY)) {
+						env.throwException(ctx, IllegalArgumentException.class.getName(), "Wrong argument type at index " + index + ".  Actual = (null).  Expected = " + destTypeNames[index]);
+						return One.FALSE;
+					} 
+					
+					frame.pushRef(ctx, MJIEnv.NULL);
+					return One.TRUE;
+				}
+				
+				ElementInfo source      = env.getElementInfo(sourceRef);
+				ClassInfo sourceClass = source.getClassInfo();   
+				byte sourceType = getSourceType( sourceClass, destTypes[index], destTypeNames[index]);
+				
+				Object attr = env.getElementInfo(argsRef).getFields().getFieldAttr(index);
+				int pushArg = pushArg( argIndex.simplify(ctx).getValue(), frame, source, sourceType, destTypes[index], attr, ctx);
+				argIndex = ChoiceFactory.create(ctx, new One<>(pushArg), argIndex).simplify();
+				if (pushArg < 0 ){
+					env.throwException(ctx, IllegalArgumentException.class.getName(), "Wrong argument type at index " + index + ".  Source Class = " + sourceClass.getName() + ".  Dest Class = " + destTypeNames[index]);
+					return One.FALSE;        
+				}
+				return One.TRUE;
+			}
+    		
+		});
+    	if (loopValue.simplify().equals(One.TRUE)) {
+    		continue;
+    	} else if (loopValue.simplify().equals(One.FALSE)) {
+    		return false;
+    	} else {
+    		System.out.println(loopValue);
+    		throw new RuntimeException("More lifting required");
+    	}
     }
     
     return true;
@@ -407,7 +465,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     {
       int ref =  eiArg.getObjectRef();
       if (destType == Types.T_ARRAY){
-        return frame.setReferenceArgument( argIdx, ref, attr);
+        return frame.setReferenceArgument( ctx, argIdx, ref, attr);
       }
       return -1;
     }
@@ -415,7 +473,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     {
       int ref =  eiArg.getObjectRef();
       if (destType == Types.T_REFERENCE){
-        return frame.setReferenceArgument( argIdx, ref, attr);
+        return frame.setReferenceArgument( ctx, argIdx, ref, attr);
       }
       return -1;
     }
@@ -475,7 +533,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       
       int argOffset = 0;
       if (!miCallee.isStatic()) {
-        frame.setReferenceArgument( argOffset++, objRef.getValue(), null);
+        frame.setReferenceArgument( ctx, argOffset++, objRef.getValue(), null);
       }
       if (!pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef.getValue(), ctx)) {
         // we've got a IllegalArgumentException

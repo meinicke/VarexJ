@@ -170,7 +170,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       frame = mi.createDirectCallStackFrame(ctx, ti, 1);
       frame.setLocalVariable(ctx, 0, 0);
       
-      int argOffset = frame.setReferenceArgument(0, robj, null);
+      int argOffset = frame.setReferenceArgument(ctx, 0, robj, null);
       frame.setArgument( argOffset, a+1, null);
       
       ti.pushFrame(frame);
@@ -194,7 +194,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
         frame.reset();
         frame.setLocalVariable(ctx, 0, i + 1);
         
-        int argOffset = frame.setReferenceArgument( 0, robj, null);
+        int argOffset = frame.setReferenceArgument( ctx, 0, robj, null);
         frame.setArgument( argOffset, r+1, null);
         
         ti.pushFrame(frame);
@@ -219,7 +219,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
 
     DirectCallStackFrame frame = mi.createDirectCallStackFrame(ctx, ti, 0);
     
-    int argOffset = frame.setReferenceArgument( 0, robj, null);
+    int argOffset = frame.setReferenceArgument( ctx, 0, robj, null);
     frame.setArgument( argOffset, a, null);
     frame.setFireWall();
 

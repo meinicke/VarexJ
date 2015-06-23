@@ -209,7 +209,7 @@ public class JPF_java_lang_Character extends NativePeer {
     return Character.toUpperCase(c);
   }
 
-  @MJI
+//  @MJI
   public int valueOf__C__Ljava_lang_Character_2 (MJIEnv env, int clsRef, char val, FeatureExpr ctx) {
     return env.valueOfCharacter(ctx, val);
   }

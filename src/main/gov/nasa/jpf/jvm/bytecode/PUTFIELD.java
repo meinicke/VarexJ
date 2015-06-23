@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -25,7 +26,9 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
+import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -84,6 +87,20 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 						}
 					}
 
+					AnnotationInfo[] annotations = getFieldInfo(ctx).getAnnotations();
+					for (AnnotationInfo ai : annotations) {
+						if (PUTSTATIC.ANNOTATION_CONDITIONAL.equals(ai.getName())) {
+							StackFrame frame = ti.getModifiableTopFrame();
+							FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + className+ "." + fname + "-" + objRef);
+							PUTSTATIC.featureNumber++;
+							System.out.println("Found feature #" + PUTSTATIC.featureNumber + " - " + className+ "." + fname + "-" + objRef);
+							IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
+							frame.pop(ctx);
+							frame.push(ctx, create);
+							break;
+						}
+					}
+					
 					return put(ctx, ti, frame, ei, false);
 
 				} else { // re-execution

@@ -111,7 +111,6 @@ public class JPF_java_lang_System extends NativePeer {
       return env.newString(ctx, v);
     }
   }
-
   
   int createPrintStream (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     ThreadInfo ti = env.getThreadInfo();
@@ -196,7 +195,7 @@ public class JPF_java_lang_System extends NativePeer {
     
     MethodInfo miGetProperty = system.getMethod("getProperty(Ljava/lang/String;)Ljava/lang/String;", true);
     DirectCallStackFrame frame = miGetProperty.createDirectCallStackFrame(ctx, ti, 0);
-    frame.setReferenceArgument( 0, eiClassPath.getObjectRef(), null);
+    frame.setReferenceArgument( ctx, 0, eiClassPath.getObjectRef(), null);
     frame.setFireWall(); // we don't want exceptions to escape into the SUT
     
     

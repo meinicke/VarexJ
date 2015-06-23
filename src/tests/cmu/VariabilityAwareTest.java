@@ -1,5 +1,7 @@
 package cmu;
 
+import java.util.Arrays;
+
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
@@ -10,7 +12,7 @@ import org.junit.Test;
 @SuppressWarnings("unused")
 public class VariabilityAwareTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=time",*/ "+search.class= .search.RandomSearch", "+choice=MapChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=interaction",*/ "+search.class= .search.RandomSearch", "+choice=MapChoice"};
 
 	static boolean RUN_WITH_JPF = true;
 
@@ -126,7 +128,7 @@ public class VariabilityAwareTest extends TestJPF {
 	}
 
 	@Test
-	public void earlyJoinTest() {
+	public void earlyJoinTest() throws Exception {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			int i = 1;
 			if (x) {
@@ -144,7 +146,7 @@ public class VariabilityAwareTest extends TestJPF {
 			if (b) {
 				i += 1;
 			}
-			i = 10;// early join
+//			i = 10;// early join
 			if (c) {
 				i += 1;
 			}
@@ -168,12 +170,16 @@ public class VariabilityAwareTest extends TestJPF {
 				i += 1;
 			}
 
-			i = 1000;// early join
+//			i = 1000;// early join
 			int sum = 0;
 			for (int start = 1; start <= i; start++) {
 				sum++;
 			}
+			if (sum > 15) {
+				throw new Exception();
+			}
 			System.out.println(sum);
+			
 		}
 	}
 
@@ -503,6 +509,21 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	}
 	
+	int field = 1;
+	
+	@Test
+	public void testField() throws Exception {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			if (x) {
+				field = 2;
+			}
+			if (y) {
+				field *= 3;
+			}
+			field = 1;
+		}
+	}
+	
 	@Test
 	public void testDivisionByZero() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
@@ -751,6 +772,42 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 	
 	}
+	
+	@Test
+	public void testGetChars() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+
+			char[] dst = new char[10];
+			if (a) {
+				dst = new char[11];
+			}
+			int dstBegin = 2;
+			if (b) {
+				dstBegin = 3;
+			}
+			int begin = 0;
+			if (c) {
+				begin = 1;
+			}
+			int length = 4;
+			String obj = "ABCDEFGHIJK";
+			if (d) {
+				obj = "Z" + obj;
+			}
+			obj.getChars(begin, begin + length, dst, dstBegin);
+
+			for (int index = 0;index < length;index++) {
+				char dstValue = dst[dstBegin + index];
+				char srcValue = obj.charAt(begin + index);
+				assertEquals(srcValue, dstValue);
+			}
+			System.out.println(Arrays.toString(dst));
+			
+		}
+	
+	}
+	
+	
 
 	private static boolean valid() {
 		return a;

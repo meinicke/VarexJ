@@ -184,6 +184,9 @@ implements java.io.Serializable, Comparable<String>, CharSequence {
 	native public int codePointBefore(int index);
 	native public int codePointCount(int beginIndex, int endIndex);
 	native public int offsetByCodePoints(int index, int codePointOffset);
+	void getChars(char dst[], int dstBegin) {
+        System.arraycopy(value, 0, dst, dstBegin, value.length);
+    }
 	native public void getChars(int srcBegin, int srcEnd, char dst[], int dstBegin);
 
 	@Deprecated

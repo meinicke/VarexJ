@@ -96,8 +96,8 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   }
   
   @Override
-  public int setReferenceArgument (int slotIdx, int ref, Object attr){
-    pushRef(TRUE, ref);
+  public int setReferenceArgument (FeatureExpr ctx, int slotIdx, int ref, Object attr){
+    pushRef(ctx, ref);
     if (attr != null){
       setOperandAttr(attr);
     }

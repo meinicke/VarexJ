@@ -23,9 +23,9 @@ import gov.nasa.jpf.annotation.MJI;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -209,23 +209,44 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
 			if (RuntimeConstants.ctxOutput) {
 				if (s.getValue().and(ctx).isSatisfiable()) {
-					env.getVM().println('<' + s.getKey() + "> : " + Conditional.getCTXString(s.getValue().and(ctx)));
+					env.getVM().println('{' + s.getKey() + "} : " + Conditional.getCTXString(s.getValue().and(ctx)));
 				}
 			} else {
 				env.getVM().println(s.getKey());
 			}
 		}
-
 	}
 
 	@MJI
 	public void write__I__V(MJIEnv env, int objRef, int b, FeatureExpr ctx) {
-		env.getVM().print((char) (byte) b);
+		try {
+			env.getVM().print('<' + ((char) (byte) b) + "> : " + Conditional.getCTXString(ctx));
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	@MJI
 	public void write___3BII__V(MJIEnv env, int objRef, int bufRef, int off, int len, FeatureExpr ctx) {
+		final Conditional<Byte>[] buffer = env.getByteArrayObject(ctx, bufRef);
 
+		final StringBuilder sb = new StringBuilder(len);
+		while (len > 0) {
+			Conditional<Byte> value = buffer[off++].simplify(ctx);
+			if (value instanceof One) {
+				sb.append((char) value.getValue().byteValue());
+			} else {
+				sb.append(value.map(new Function<Byte, Character>() {
+
+					@Override
+					public Character apply(Byte b) {
+						return Character.valueOf((char) b.byteValue());
+					}
+				}));
+			}
+			len--;
+		}
+		env.getVM().println('<' + sb.toString() + "> : " + Conditional.getCTXString(ctx));
 	}
 
 	@MJI

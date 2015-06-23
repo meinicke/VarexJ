@@ -108,7 +108,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
       
       frame.setLocalReferenceVariable(ctx, 0, objRef);  // (1) store the objRef for retrieval during re-exec
       
-      int argOffset = frame.setReferenceArgument(0, objRef, null);
+      int argOffset = frame.setReferenceArgument(ctx, 0, objRef, null);
       if (!JPF_java_lang_reflect_Method.pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef, ctx)) {
         // we've got a IllegalArgumentException
         return MJIEnv.NULL;

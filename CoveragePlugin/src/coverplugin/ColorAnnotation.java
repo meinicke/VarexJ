@@ -38,6 +38,7 @@ public class ColorAnnotation extends Annotation {
 	 * The number of defined colors for interactions
 	 */
 	private static final int MAX_INTERACTION = 10; 
+	private static final int MIN_INTERACTION = -10; 
 	
 	private static final String PREFIX = "coverageplugin.";
 	public static int base = 0;
@@ -56,6 +57,11 @@ public class ColorAnnotation extends Annotation {
 
 	private static String getTypeString(int colorID) {
 		ANNOTATON_COLOR[] values = ANNOTATON_COLOR.values();
+		if (colorID < 0) {
+			int referenceNumber = colorID < MIN_INTERACTION ? MIN_INTERACTION : colorID;
+			return (PREFIX  + "interaction_" + referenceNumber).intern();
+		}
+
 		if (values.length > (colorID - base)) {
 			return (PREFIX + values[colorID - base].name()).intern();
 		}

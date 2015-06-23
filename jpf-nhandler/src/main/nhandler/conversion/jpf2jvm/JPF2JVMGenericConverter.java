@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DynamicElementInfo;
@@ -119,7 +120,9 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
           if (fi.isReference()) {
             int fieldValueRef = dei.getFields().getReferenceValue(fi.getStorageOffset()).getValue();
             Object JVMField = obtainJVMObj(fieldValueRef, env, ctx);
-
+            if (JVMField instanceof One) {
+            	JVMField = ((One) JVMField).getValue();
+            }
             try {
               fld[i].set(JVMObj, JVMField);
             } catch (IllegalArgumentException e) {

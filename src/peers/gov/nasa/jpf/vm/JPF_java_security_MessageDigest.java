@@ -73,7 +73,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
   @MJI
   public int digest___3B___3B (MJIEnv env, int objRef, int inputRef, FeatureExpr ctx){
     MessageDigest md = getDigest(ctx, env, objRef);
-    byte[] input = env.getByteArrayObject(ctx, inputRef);
+    byte[] input = env.getByteArrayObjectDeprecated(ctx, inputRef);
     
     byte[] res = md.digest(input);
     return env.newByteArray(ctx, res);
@@ -95,7 +95,7 @@ public class JPF_java_security_MessageDigest extends NativePeer {
   @MJI
   public void update___3B__V (MJIEnv env, int objRef, int inputRef, FeatureExpr ctx){
     MessageDigest md = getDigest(ctx, env, objRef);
-    byte[] input = env.getByteArrayObject(ctx, inputRef);
+    byte[] input = env.getByteArrayObjectDeprecated(ctx, inputRef);
     md.update(input);
   }
 }

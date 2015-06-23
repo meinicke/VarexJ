@@ -597,8 +597,8 @@ public class ClassLoaderInfo
 
     String clsName = typeName.replace('/', '.');
     int sRef = ti.getEnv().newString(FeatureExprFactory.True(), clsName);
-    int argOffset = frame.setReferenceArgument( 0, objRef, null);
-    frame.setReferenceArgument( argOffset, sRef, null);
+    int argOffset = frame.setReferenceArgument( ctx, 0, objRef, null);
+    frame.setReferenceArgument( ctx, argOffset, sRef, null);
 
     frame.setFrameAttr( new LoadClassRequest(typeName));
     

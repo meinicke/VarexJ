@@ -205,7 +205,7 @@ public abstract class Publisher {
     tBuf[6] = (char) ('0' + (s / 10));
     tBuf[7] = (char) ('0' + (s % 10));
     
-    return new String(tBuf) + " in ms: " + t;
+    return new String(tBuf);
   }
   
   public String getReportFileName (String key) {

@@ -41,7 +41,7 @@ public class PrevaylerTest extends ATestExample {
 	static boolean USE_XSTREAM = true;
 //	@Conditional // TODO Does not work
 	static boolean USE_XSTREAM_JOURNAL = false;
-	// @Conditional // TODO Does not work conditionally
+//	 @Conditional // TODO Does not work conditionally
 	static boolean USE_FILTERING = false;
 	@Conditional
 	static boolean USE_TRANSIENT_MODE = false;
@@ -161,6 +161,7 @@ public class PrevaylerTest extends ATestExample {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void tutorialTest() throws Exception {
 		if (verifyNoPropertyViolation(config)) {

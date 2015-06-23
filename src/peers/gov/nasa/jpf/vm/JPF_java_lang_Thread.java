@@ -204,7 +204,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       // exit point (DIRECTCALLRETURN) in case the thread is stopped or there is
       // a fail-safe UncaughtExceptionHandler set
       DirectCallStackFrame runFrame = miRun.createRunStartStackFrame(ctx, tiStartee);
-      runFrame.setReferenceArgument(0, runnableRef, null);
+      runFrame.setReferenceArgument(ctx, 0, runnableRef, null);
             
       tiStartee.pushFrame(runFrame);
       tiStartee.setState(ThreadInfo.State.RUNNING);

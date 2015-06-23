@@ -28,7 +28,7 @@ public class JPF_gov_nasa_jpf_SerializationConstructor extends NativePeer {
 
       int objRef = env.newObjectOfUncheckedClass(ctx, ci);
       frame = miCtor.createDirectCallStackFrame(ctx, ti, 1); 
-      frame.setReferenceArgument( 0, objRef, null);
+      frame.setReferenceArgument( ctx, 0, objRef, null);
       frame.setLocalReferenceVariable(ctx, 0, objRef); // (1) we store the reference as a local var for retrieval during reexec      
       ti.pushFrame(frame);
       

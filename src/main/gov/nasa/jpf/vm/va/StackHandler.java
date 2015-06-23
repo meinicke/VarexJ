@@ -303,6 +303,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 			});
 		}
 	}
+
+	@Override
+	public Object getLocal(int index) {
+		return locals[index].simplify(getCtx());
+	}
 	
 	private static final Function<Entry, Integer> GetLocal = new Function<Entry, Integer>() {
 		@Override

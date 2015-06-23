@@ -27,6 +27,7 @@ import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
+import gov.nasa.jpf.jvm.bytecode.LocalVariableInstruction;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.JPFLogger;
@@ -54,6 +55,7 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
+import cmu.utils.CoverageLogger;
 import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
 import coverage.Interaction;
@@ -1968,7 +1970,7 @@ public Conditional<Instruction> executeInstruction () {
 	        count++;
 	        if (System.currentTimeMillis() - time > 10000) {
 	        	int instructions = count / 10;
-	        	System.out.println((instructions < 100000 ? " " : "") + instructions + " instructions / s");
+	        	printSpeedLog(instructions);
 	        	time = System.currentTimeMillis();
 	        	count = 0;
         		vm.getSystemState().gcIfNeeded();
@@ -2008,25 +2010,70 @@ public Conditional<Instruction> executeInstruction () {
      				System.out.print(" ");
      			}
  				System.out.println(" " + i + " if " + ctx);
+ 			
  			}
  	    	
      		if (RuntimeConstants.tracing) {
      			performTracing(i, ctx);
      		}
-
+     		
+     		int localSize = 0;
+     		Object oldLocal = null;
+     		if (JPF.COVERAGE != null) {
+     			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.local2 ||
+     					JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.interaction) {
+     				int index = -1;
+		     		if (i instanceof LocalVariableInstruction) {
+		     			LocalVariableInstruction li = (LocalVariableInstruction)i;
+		     			index = li.getLocalVariableIndex();
+		     			if (index != -1) {
+		     				oldLocal = top.stack.getLocal(index);
+		     				localSize = top.stack.getLocal(top.stack.getCtx(), index).toMap().size();
+		     			} 
+		     		}
+     			}
+     		}
      		long time = 0;
      		final int currentStackDepth = stackDepth;
      		if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {// TODO revise
      			time = System.nanoTime();
      		}
      		final Conditional<Instruction> next = i.execute(ctx, this);
+     		
+//     		if ((executedInstructions > 97754252 && top.getDepth() < 11 ) && RuntimeConstants.debug) {
+////     			System.out.print(executedInstructions + " ");
+////     			System.out.print(top.getDepth());
+////     			if (top.getDepth() < 10) {
+////     				System.out.print(" ");
+////     			}
+//// 				System.out.println(" " + i + " if " + ctx);
+//     			if (top != null) {
+//     				System.out.println(top.stack);
+//     			}
+// 			}
+     		
      		if (JPF.COVERAGE != null) {
      			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {
      				time = System.nanoTime() - time;
      			}
-     			performCoverage(i, ctx, time);
+     			
+     			Object newLocal = null;
+     			int newLocalSize = localSize;
+     			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.local2 ||
+     					JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.interaction) {
+     				int index = -1;
+     				if (i instanceof LocalVariableInstruction) {
+		     			LocalVariableInstruction li = (LocalVariableInstruction)i;
+		     			index = li.getLocalVariableIndex();
+     				}
+     				if (index != -1) {
+			     		newLocal = top.stack.getLocal(index);
+			     		newLocalSize = top.stack.getLocal(top.stack.getCtx(), index).toMap().size();
+     				}
+     			}
+     			performCoverage(i, ctx, time, localSize, oldLocal, newLocalSize, newLocal);
      		}
-
+     		
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
     			nextPc = next;
@@ -2095,7 +2142,43 @@ public Conditional<Instruction> executeInstruction () {
     }
   }
   
-  /**
+	private void printSpeedLog(int instructions) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(insertDots(instructions));
+		sb.append(" instructions / s (");
+		
+		sb.append(insertDots(executedInstructions));
+		sb.append(')');
+		System.out.println(sb.toString());
+	}
+
+	public static String insertDots(int instructions) {
+		StringBuilder sb = new StringBuilder();
+		if (instructions >= 1_000_000_000) {
+			sb.append(instructions / 1_000_000_000).append('.');
+			instructions = instructions % 1_000_000_000;
+			sb.append(adjustValue(instructions / 1_000_000)).append('.');
+		} else {
+			sb.append(instructions / 1_000_000).append('.');
+		}
+		instructions = instructions % 1_000_000;
+		sb.append(adjustValue(instructions / 1_000)).append('.');
+		instructions = instructions % 1_000;
+		sb.append(adjustValue(instructions));
+		return sb.toString();
+	}
+  
+  private static String adjustValue(int value) {
+	  if (value < 10) {
+		  return "00" + value;
+	  }
+	  if (value < 100) {
+		  return "0" + value;
+	  }
+	  return String.valueOf(value);
+  }
+
+/**
    * Log trace for trace comparison.
    * @param instruction The instruction to log.
    * @param ctx
@@ -2120,8 +2203,11 @@ public Conditional<Instruction> executeInstruction () {
   	 * @param instruction The instruction to cover.
   	 * @param ctx
   	 * @param time 
+  	 * @param localInteractionChange 
+  	 * @param oldLocal 
+  	 * @param newLocal 
   	 */
-	private void performCoverage(Instruction instruction, FeatureExpr ctx, long time) {
+	private void performCoverage(Instruction instruction, FeatureExpr ctx, long time, int oldLocalSize, Object oldLocal, int newLocalSize, Object newLocal) {
 		MethodInfo methodInfo = instruction.getMethodInfo();
 		if (methodInfo != null) {
 			ClassInfo classInfo = methodInfo.getClassInfo();
@@ -2136,7 +2222,55 @@ public Conditional<Instruction> executeInstruction () {
 					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
 					break;
 				case local:
+					// TODO LocalVariableInstruction.getLocalVariableName()
 					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
+					break;
+				case interaction:	
+				case local2:
+					String localVariableName = "?";
+					
+					int localInteractionChange = newLocalSize - oldLocalSize;
+					if (instruction instanceof LocalVariableInstruction) {
+						LocalVariableInstruction lvi = ((LocalVariableInstruction)instruction);
+						LocalVarInfo lv = lvi.getLocalVarInfo();
+						localVariableName = lvi.getLocalVariableName();
+						LocalVariableInstruction prev = (LocalVariableInstruction) getPrevLocalInstruction(instruction);
+						if (prev != null) {
+							if (prev.getLocalVarInfo() != lv) {
+								// previous value belongs to another variable
+								localInteractionChange = top.stack.getLocal(top.stack.getCtx(), 
+										((LocalVariableInstruction)instruction).getLocalVariableIndex()).toMap().size() - 1;
+								if (localInteractionChange != 0) {
+									String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
+									content += top.trace(ctx) + "\n";
+									if (newLocal.toString().length() > 800) {
+										content += newLocal.toString().substring(0, 800) + "...";
+									} else {
+										content += newLocal;
+									}
+									CoverageLogger.logInteraction(top, localInteractionChange, content, ctx);
+								}
+								break;
+							}
+						}
+					}
+					if (localInteractionChange != 0) {
+						String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
+						content += top.trace(ctx) + "\n";
+						if (oldLocal.toString().length() > 800) {
+							content += oldLocalSize + " : " + oldLocal.toString().substring(0, 800) + "...";
+						} else {
+							content += oldLocalSize + " : " + oldLocal;
+						}
+						content += "\n -> \n";
+						if (newLocal.toString().length() > 800) {
+							content += newLocalSize + " : " + newLocal.toString().substring(0, 800) + "...";
+						} else {
+							content += newLocalSize + " : " + newLocal;
+						}
+						CoverageLogger.logInteraction(top, localInteractionChange, content, ctx);
+					}
+					
 					break;
 				case context:// same as for composedContext
 				case composedContext:
@@ -2261,6 +2395,9 @@ public Conditional<Instruction> executeInstruction () {
 						JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), (int) (time / modifier), values);
 					}
 					break;
+				case field:
+					// handled at FieldInstruction
+					break;
 				default:
 					throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
 				}
@@ -2269,6 +2406,19 @@ public Conditional<Instruction> executeInstruction () {
 		}
 	}
 
+	private Instruction getPrevLocalInstruction(Instruction instruction) {
+		Instruction prev = instruction.getPrev();
+		while (prev != null) {
+			if (prev instanceof LocalVariableInstruction) {
+				if (((LocalVariableInstruction) prev).getLocalVariableIndex() == ((LocalVariableInstruction)instruction).getLocalVariableIndex()) {
+					return prev;
+				}
+			}
+			prev = prev.getPrev();
+		}
+		return instruction;
+	}
+	
 	/**
   	 * Checks whether the the new top stack is part of the trace of the current stack.
   	 */
@@ -3382,9 +3532,9 @@ public Conditional<Instruction> executeInstruction () {
     pendingException = null;
     
     DirectCallStackFrame frame = miHandler.createDirectCallStackFrame(ctx, this, 0);
-    int argOffset = frame.setReferenceArgument( 0, handlerRef, null);
-    argOffset = frame.setReferenceArgument( argOffset, objRef, null);
-    frame.setReferenceArgument( argOffset, xi.getExceptionReference(), null);
+    int argOffset = frame.setReferenceArgument( ctx, 0, handlerRef, null);
+    argOffset = frame.setReferenceArgument( ctx, argOffset, objRef, null);
+    frame.setReferenceArgument( ctx, argOffset, xi.getExceptionReference(), null);
     
     UncaughtHandlerAttr uchContext = new UncaughtHandlerAttr( xi);
     frame.setFrameAttr( uchContext);

@@ -132,14 +132,14 @@
         <mkdir dir="build/defects4j-tests" />
         <javac srcdir="src/defects4j-tests" destdir="build/defects4j-tests" includes="**/NormalDistributionTest.java" includeantruntime="false" debug="${debug}" deprecation="${deprecation}">
             <!--<exclude name="cmu/defect4j/math3/**"/>-->
-            <compilerarg value="-XDenableSunApiLintControl" />
+            <!--<compilerarg value="-XDenableSunApiLintControl" />
             <compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked" />
             <classpath>
                 <path refid="lib.path" />
                 <pathelement location="build/annotations" />
                 <pathelement location="build/classes" />
             </classpath>
-        </javac>
+        </javac>-->
     </target>
 
 	<target name="-compile-examples" if="have_examples" depends="-compile-annotations,-compile-main">

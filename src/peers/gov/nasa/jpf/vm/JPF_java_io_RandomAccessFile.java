@@ -99,7 +99,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
   @MJI
   public void write___3BII__V (MJIEnv env, int this_ptr, int data_array,
                            int start, int len, FeatureExpr ctx) {
-    byte[] data_values = env.getByteArrayObject(ctx, data_array);
+    byte[] data_values = env.getByteArrayObjectDeprecated(ctx, data_array);
     for(int i=start; i < len; ++i) {
       writeByte__I__V(env, this_ptr, data_values[i], ctx);
     }

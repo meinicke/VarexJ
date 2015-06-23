@@ -29,7 +29,9 @@ import java.lang.reflect.Field;
  */
 
 public class Unsafe {
+	
   private static final Unsafe theUnsafe = new Unsafe();
+  public static final int ARRAY_CHAR_BASE_OFFSET = theUnsafe.arrayBaseOffset(char[].class);
 
   public static final int INVALID_FIELD_OFFSET = -1;
 
@@ -51,7 +53,7 @@ public class Unsafe {
   // that looks like some atomic conditional wait
   public native void park (boolean isAbsolute, long timeout);
   public native void unpark (Object thread);
-
+  
   // various accessors
   public native int getInt(Object obj, long l);
   public native int getIntVolatile(Object obj, long l);
@@ -245,5 +247,7 @@ public class Unsafe {
 
   public native double getDouble (long address);
   public native void putDouble (long address, double val);
-  
+  public native void copyMemory(Object srcBase, long srcOffset,
+          Object destBase, long destOffset,
+          long bytes);
 }

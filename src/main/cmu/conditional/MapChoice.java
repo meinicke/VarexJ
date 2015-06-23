@@ -147,7 +147,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	
 	@Override
 	public int hashCode() {
-		throw new RuntimeException("not yet implemented");
+		return map.hashCode();//throw new RuntimeException("not yet implemented");
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 			content.append(e.getKey());
 			content.append(" ; ");
 		}
-		content.delete(content.length() - 4, content.length() - 1);
+		content.delete(content.length() - 3, content.length() - 1);
 		content.append('}');
 		return content.toString();
 	}
