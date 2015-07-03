@@ -11,9 +11,10 @@ public class JPFCoreRunner {
 	}
 
 	public JPFCoreRunner() {
-		System.out.println("VarexJRunner.VarexJRunner()");
+		System.out.println("JPFCoreRunner.JPFCoreRunner()");
 		LinkedList<String> commands = new LinkedList<>();
-		commands.add("C:\\Program Files\\Java\\jre1.8.0_45\\bin\\java");
+		commands.add("C:\\Program Files\\Java\\jdk1.8.0_31\\bin\\java");
+//		commands.add("C:\\Program Files\\Java\\jdk1.7.0_75\\bin\\java");
 //		commands.add("-Xms7g");
 		commands.add("-Xmx7g");
 //		commands.add("-XX:+UseConcMarkSweepGC");
@@ -21,12 +22,14 @@ public class JPFCoreRunner {
 //		commands.add("-XX:-UseParallelGC");
 		commands.add("-jar");
 		commands.add("C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core\\build\\RunJPF.jar");
-		commands.add("+classpath=C:\\Users\\meinicke\\workspace\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core\\build\\jpf.jar;");
+		
+		commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core\\build\\jpf.jar");
 //		commands.add("+search.class=.search.DFSearch");
-		commands.add("+search.multiple_errors=true");
+//		commands.add("+search.multiple_errors=true");
+//		commands.add("inc.IncJPF_Core");
 		commands.add("phil.DiningPhilosophersCore");
 		commands.add("");
-		for (int complexity = 1; complexity <= 5; complexity++) {
+		for (int complexity = 1; complexity <= 100; complexity++) {
 			commands.removeLast();
 			commands.add("" + complexity);
 			for (int round = 0; round < 2; round++) {
@@ -36,6 +39,11 @@ public class JPFCoreRunner {
 	}
 
 	private void process(List<String> commands) {
+		for (String s : commands) {
+			System.out.print(s);
+			System.out.print(" ");
+		}
+		System.out.println();
 		ProcessBuilder processBuilder = new ProcessBuilder(commands);
 		BufferedReader input = null;
 		BufferedReader error = null;

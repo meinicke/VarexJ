@@ -23,8 +23,8 @@ public class VarexJRunner {
 		commands.add("C:\\Users\\meinicke\\git\\VarexJ\\build\\RunJPF.jar");
 		commands.add("+native_classpath=C:\\Users\\meinicke\\VarexJ\\lib\\*");
 //		commands.add("+search.class=.search.RandomSearch");
-		commands.add("+search.multiple_errors=true");
-		commands.add("+classpath=C:\\Users\\meinicke\\workspace\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\git\\VarexJ\\build\\jpf.jar");
+//		commands.add("+search.multiple_errors=true");
+		commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\git\\VarexJ\\build\\jpf.jar");
 //		commands.add("+featuremodel=C:\\Users\\meinicke\\workspace\\BDDTest\\model.dimacs");
 //		commands.add("+interaction=local");
 //		commands.add("+search.class=.search.DFSearch");
@@ -36,15 +36,13 @@ public class VarexJRunner {
 //		commands.add("+minInteraction=0");
 //		 commands.add("MainVarexJ4");
 //		 commands.add("MainVarexJ2");
-//		commands.add("DiningPhilosophersVarexJ");
-//		commands.add("5000");
 		 
 		 commands.add("phil.DiningPhilosophersVarexJ");
 			commands.add("");
-			for (int complexity = 1; complexity <= 10; complexity++) {
+			for (int complexity = 1000; complexity <= 1000; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
-				for (int round = 0; round < 2; round++) {
+				for (int round = 0; round < 1; round++) {
 					process(commands);
 				}
 			}

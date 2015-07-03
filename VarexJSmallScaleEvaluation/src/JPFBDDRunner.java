@@ -23,14 +23,14 @@ public class JPFBDDRunner {
 		commands.add("C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core\\build\\RunJPF.jar");
 //		commands.add("+search.class=.search.heuristic.BFSHeuristic");
 //		commands.add("+search.class=.search.DFSearch");
-		commands.add("+search.multiple_errors=true");
-		commands.add("+classpath=C:\\Users\\meinicke\\workspace\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core\\build\\jpf.jar;C:\\Users\\meinicke\\workspaceJPFBDD\\build\\jpf-bdd.jar;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-bdd\\build\\jpf-bdd-annotations.jar;");
+//		commands.add("+search.multiple_errors=true");
+		commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core\\build\\jpf.jar;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-bdd\\build\\jpf-bdd.jar;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-bdd\\build\\jpf-bdd-annotations.jar;");
 		commands.add("phil.DiningPhilosophersBDD");
 		commands.add("");
-		for (int complexity = 0; complexity <= 5; complexity++) {
+		for (int complexity = 3; complexity <= 5; complexity++) {
 			commands.removeLast();
 			commands.add("" + complexity);
-			for (int round = 0; round < 2; round++) {
+			for (int round = 0; round < 1; round++) {
 				process(commands);
 			}
 		}
