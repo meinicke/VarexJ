@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -12,29 +13,38 @@ public class JPFCoreRunner {
 
 	public JPFCoreRunner() {
 		System.out.println("JPFCoreRunner.JPFCoreRunner()");
-		LinkedList<String> commands = new LinkedList<>();
-		commands.add("C:\\Program Files\\Java\\jdk1.8.0_31\\bin\\java");
-//		commands.add("C:\\Program Files\\Java\\jdk1.7.0_75\\bin\\java");
-//		commands.add("-Xms7g");
-		commands.add("-Xmx7g");
-//		commands.add("-XX:+UseConcMarkSweepGC");
-//		commands.add("-XX:+UseParNewGC");
-//		commands.add("-XX:-UseParallelGC");
-		commands.add("-jar");
-		commands.add("C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core\\build\\RunJPF.jar");
-		
-		commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core\\build\\jpf.jar");
-//		commands.add("+search.class=.search.DFSearch");
-//		commands.add("+search.multiple_errors=true");
-//		commands.add("inc.IncJPF_Core");
-		commands.add("phil.DiningPhilosophersCore");
-		commands.add("");
-		for (int complexity = 1; complexity <= 100; complexity++) {
-			commands.removeLast();
-			commands.add("" + complexity);
-			for (int round = 0; round < 2; round++) {
-				process(commands);
+		String[] testClasses = new String[] { inc.IncJPF_Core.class.getName(), array.ArrayJPF_Core.class.getName() };
+		for (String test : testClasses) {
+			LinkedList<String> commands = new LinkedList<>();
+			commands.add("java");
+			commands.add("-Xmx7g");
+			commands.add("-jar");
+			commands.add("C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\RunJPF.jar");
+
+			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\jpf.jar");
+			commands.add("+search.class=.search.DFSearch");
+
+			commands.add(test);
+			commands.add("");
+			for (int complexity = 0; complexity <= 100; complexity++) {
+				commands.removeLast();
+				commands.add("" + complexity);
+				boolean maxReached = false;
+				for (int round = 0; round < 3; round++) {
+					long start = System.currentTimeMillis();
+					process(commands);
+					long timeInS = (System.currentTimeMillis() - start) / 1000;
+					if (timeInS > 30) {
+						maxReached = true;
+						break;
+					}
+				}
+				if (maxReached) {
+					break;
+				}
 			}
+			File resultsFile = new File("JPF.csv");
+			resultsFile.renameTo(new File("JPF-" + test + ".csv"));
 		}
 	}
 

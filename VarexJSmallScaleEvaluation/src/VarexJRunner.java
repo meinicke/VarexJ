@@ -12,41 +12,31 @@ public class VarexJRunner {
 
 	public VarexJRunner() {
 		System.out.println("VarexJRunner.VarexJRunner()");
-		LinkedList<String> commands = new LinkedList<>();
-		commands.add("java");
-//		commands.add("-Xms7g");
-		commands.add("-Xmx7g");
-//		commands.add("-XX:+UseConcMarkSweepGC");
-//		commands.add("-XX:+UseParNewGC");
-//		commands.add("-XX:-UseParallelGC");
-		commands.add("-jar");
-		commands.add("C:\\Users\\meinicke\\git\\VarexJ\\build\\RunJPF.jar");
-		commands.add("+native_classpath=C:\\Users\\meinicke\\VarexJ\\lib\\*");
-//		commands.add("+search.class=.search.RandomSearch");
-//		commands.add("+search.multiple_errors=true");
-		commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\git\\VarexJ\\build\\jpf.jar");
-//		commands.add("+featuremodel=C:\\Users\\meinicke\\workspace\\BDDTest\\model.dimacs");
-//		commands.add("+interaction=local");
-//		commands.add("+search.class=.search.DFSearch");
-//		commands.add("+interaction=composedContext");
-		
-//		commands.add("+interaction=time");
-//		commands.add("+interaction=feature");
-//		 commands.add("+choice=MapChoice");
-//		commands.add("+minInteraction=0");
-//		 commands.add("MainVarexJ4");
-//		 commands.add("MainVarexJ2");
-		 
-		 commands.add("phil.DiningPhilosophersVarexJ");
+		String[] testClasses = new String[] {array.ArrayVarexJ.class.getName()};
+		for (String test : testClasses) {
+
+			LinkedList<String> commands = new LinkedList<>();
+			commands.add("java");
+			commands.add("-Xmx7g");
+			commands.add("-jar");
+			commands.add("C:\\Users\\meinicke\\git\\VarexJ\\build\\RunJPF.jar");
+			// JPF conf
+			commands.add("+native_classpath=C:\\Users\\meinicke\\VarexJ\\lib\\*");
+			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\git\\VarexJ\\build\\jpf.jar");
+			// VarexJ conf
+			commands.add("+choice=MapChoice");
+			commands.add(test);
 			commands.add("");
-			for (int complexity = 1000; complexity <= 1000; complexity++) {
+			for (int complexity =  30; complexity <= 30; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
 				for (int round = 0; round < 1; round++) {
 					process(commands);
 				}
 			}
-
+//			File resultsFile = new File("VarexJ.csv");
+//			resultsFile.renameTo(new File("VarexJ" + test + ".csv"));
+		}
 	}
 
 	private void process(List<String> commands) {

@@ -11,10 +11,33 @@ public class JavaBruteForceRunner {
 	}
 
 	public JavaBruteForceRunner() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		for (int complexity = 1; complexity <= 30; complexity++) {
+//		for (int complexity = 0; complexity <= 100; complexity++) {
+//			System.out.println(complexity);
+//			for (int round = 0; round < 3; round++) {
+//				long duration = 0;
+//				for (int i = 0; i < Math.pow(2, complexity); i++) {
+//					setFields(complexity, i);
+//					long start = System.nanoTime(); 
+////					array.ArrayVarexJ.main(new String[] { complexity + "" });
+//					inc.IncVarexJ.main(new String[] { complexity + "" });
+//					long end = System.nanoTime();
+//					duration += end - start;
+//				}
+//				long timeInMs = duration / 1_000_000;
+//				if (timeInMs > 30_000) {
+//					break;
+//				}
+//				
+//				createOutput(timeInMs);
+//			}
+//		}
+//		File resultsFile = new File("JVM.csv");
+//		resultsFile.renameTo(new File("JVM-Inc.csv"));
+		
+		for (int complexity = 0; complexity <= 100; complexity++) {
 			System.out.println(complexity);
-
-			for (int round = 0; round < 2; round++) {
+			boolean maxReached = false;
+			for (int round = 0; round < 3; round++) {
 				long duration = 0;
 				for (int i = 0; i < Math.pow(2, complexity); i++) {
 					setFields(complexity, i);
@@ -23,9 +46,20 @@ public class JavaBruteForceRunner {
 					long end = System.nanoTime();
 					duration += end - start;
 				}
-				createOutput(duration / 1_000_000);
+				long timeInMs = duration / 1_000_000;
+				if (timeInMs > 30_000) {
+					maxReached = true;
+					break;
+				}
+				
+				createOutput(timeInMs);
+			}
+			if (maxReached) {
+				break;
 			}
 		}
+		File resultsFile = new File("JVM.csv");
+		resultsFile.renameTo(new File("JVM-Array.csv"));
 	}
 
 	private void setFields(int complexity, int i) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
