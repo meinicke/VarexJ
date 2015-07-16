@@ -184,5 +184,10 @@ public class Statistics extends ListenerAdapter implements Cloneable {
   public void searchConstraintHit (Search search){
     constraints++;
   }
+  
+  @Override
+	public void resetInstructionCounter() {
+		insns = 0;
+	}
 
 }

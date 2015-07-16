@@ -104,6 +104,19 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     return true;
   }
 
+	private static boolean reset = false;
+
+	@MJI
+	public static void resetInstructionCounter____V(MJIEnv env, int clsObjRef, FeatureExpr ctx) {
+		System.out.println("resetInstructionCounter");
+		if (reset) {
+			System.out.println("counter already reset");
+		} else {
+			env.getVM().resetInstructionCounter();
+			reset = true;
+		}
+	}
+  
   
   public static final int NO_VALUE = -1;
   

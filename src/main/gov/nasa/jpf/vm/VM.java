@@ -784,6 +784,12 @@ public abstract class VM {
       throw new JPFListenerException("exception during executeInstruction() notification", t);
     }
   }
+  
+  public void resetInstructionCounter() {
+		for (int i = 0; i < listeners.length; i++) {
+			listeners[i].resetInstructionCounter();
+		}
+	}
 
   protected void notifyInstructionExecuted (ThreadInfo ti, Instruction insn, Instruction nextInsn) {
     try {

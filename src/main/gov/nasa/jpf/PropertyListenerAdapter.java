@@ -167,4 +167,7 @@ public abstract class PropertyListenerAdapter extends GenericProperty implements
   public void publishFinished (Publisher publisher) {}
   @Override
   public void publishProbe (Publisher publisher) {}
+  
+  @Override
+	public void resetInstructionCounter() {}
 }
