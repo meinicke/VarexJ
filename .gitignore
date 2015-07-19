@@ -74,3 +74,8 @@ META-INF/
 junit*.properties
 /build/
 /build/
+
+.externalToolBuilders/org.eclipse.jdt.core.javabuilder.launch
+GlobalPassing.txt
+Notify.sh
+PassingList.txt
