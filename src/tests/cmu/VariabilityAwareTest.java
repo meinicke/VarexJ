@@ -807,7 +807,40 @@ public class VariabilityAwareTest extends TestJPF {
 	
 	}
 	
+	@Test
+	public void invokationTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Verify.setCounter(0, 0);
+			C o = new C(0);
+			if (a) {
+				o = new C(1);
+			}
+			o.method();
+			check(Verify.getCounter(0) == 1);
+			if (a) {
+				check(o.i == 2);
+			} else {
+				check(o.i == 1);
+			}
+			System.out.println(o);
+		}
+	}
 	
+	class C {
+		int i;
+		public C(int i) {
+			this.i = i;
+		}
+		
+		void method() {
+			i++;
+			Verify.incrementCounter(0);
+		}
+		@Override
+		public String toString() {
+			return "C" + i;
+		}
+	}
 
 	private static boolean valid() {
 		return a;
@@ -822,7 +855,7 @@ public class VariabilityAwareTest extends TestJPF {
 		}
 
 	}
-
+	
 }
 
 class Main {

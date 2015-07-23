@@ -86,7 +86,7 @@ public abstract class StackFrame implements Cloneable {
 //  protected int top();                // top() index of the operand stack (NOT size)
                                     // this points to the last pushed value
 
-  protected int thisRef = MJIEnv.NULL;       // slots[0] can change, but we have to keep 'this'
+  protected Conditional<Integer> thisRef = One.MJIEnvNULL;       // slots[0] can change, but we have to keep 'this'
   protected int stackBase;          // index where the operand stack begins
 
 //  protected int[] slots;            // the combined local and operand slots
@@ -269,8 +269,8 @@ public int nLocals;
 
   public Object getFieldValue (String id) {
     // try instance fields first
-    if (thisRef != MJIEnv.NULL) {  // it's an instance method
-      ElementInfo ei = VM.getVM().getHeap().get(thisRef);
+    if (thisRef.getValue() != MJIEnv.NULL) {  // it's an instance method
+      ElementInfo ei = VM.getVM().getHeap().get(thisRef.getValue());
       Object v = ei.getFieldValueObject(id);
       if (v != null) {
         return v;
@@ -1040,7 +1040,7 @@ public int nLocals;
     attrs[i] = a;
   }
   public void setThis (int thisRef2){
-    thisRef = thisRef2;
+    thisRef = new One<>(thisRef2);
   }
   
 
@@ -1179,7 +1179,7 @@ public int nLocals;
    * (note this only has to be in slot 0 upon entry)
    */
   public int getThis () {
-    return thisRef;
+    return thisRef.getValue();
   }
 
   // stack operations

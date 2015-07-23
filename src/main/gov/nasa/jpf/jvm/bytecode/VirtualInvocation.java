@@ -18,13 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.ThreadInfo;
-
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -33,6 +27,12 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.vm.ClassInfo;
+import gov.nasa.jpf.vm.ElementInfo;
+import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.ThreadInfo;
 
 /**
  * a base class for virtual call instructions
@@ -55,26 +55,43 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 	}
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
-		
+		final FeatureExpr originalCtx = ctx;
 		Conditional<Integer> allRefs = ti.getCalleeThis(ctx, getArgSize());
 		
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
-		boolean splitRef = false;
+		
+		Map<String, FeatureExpr> classes = new HashMap<>();
 		if (map.size() > 1) {
+			for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
+				ClassInfo ci = ti.getClassInfo(e.getKey());
+				String clsName = ci == null ? null : ci.getName();
+				if (classes.containsKey(clsName)) {
+					classes.put(clsName, classes.get(clsName).or(e.getValue()));
+				} else {
+					classes.put(clsName, e.getValue());
+				}
+				
+			}
+		}
+		
+		boolean splitRef = false;
+		if (classes.size() > 1) {
 			splitRef = true;
 		}
 		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
-			if (splitRef) {
-				ctx = ctx.and(objRefEntry.getValue());
-			}
+			
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
-				return ChoiceFactory.create(ctx, new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
+				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
 			}
-
 			MethodInfo callee = getInvokedMethod(ctx, ti, objRef);
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
+			if (!classes.isEmpty() && !callee.isMJI()) {
+				ctx = originalCtx.and(classes.get(ti.getClassInfo(objRef).getName()));
+			} else {
+				ctx = originalCtx.and(objRefEntry.getValue());
+			}
 
 			if (callee == null) {
 				String clsName = ti.getClassInfo(objRef).getName();
@@ -84,45 +101,28 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return new One<>(ti.createAndThrowException(ctx, java.lang.AbstractMethodError.class.getName(), callee.getFullName() + ", object: " + ei));
 				}
 			}
-
+			
 			if (callee.isSynchronized()) {
 				if (checkSyncCG(ei, ti)) {
 					return new One<Instruction>(this);
 				}
 			}
-			
-
-			// set ctx for native method calls
-//			if (callee.isMJI()) {
-//				 IStackHandler stack = ti.getTopFrame().stack;
-//				 if (stack.getStackWidth() > 1) {
-//					 boolean split = false;
-//					 for (int i = 0; i < callee.getArgumentsSize(); i++) {
-//						 if (stack.peek(ctx, i) instanceof IChoice) {
-//							 split = true;
-//							 splitRef = true;
-//							 break;
-//						 }
-//					 }
-//					 
-//					 if (split) {
-//						 
-//						 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
-//						 for (FeatureExpr c : stacks.values()) {
-//							 ctx = ctx.and(c);
-//							 break;
-//						 }
-//					 }
-//				 }
-//			}
-			setupCallee(ctx, ti, callee); // this creates, initializes and
-											// pushes the callee StackFrame
-			if (!splitRef) {
-				return ti.getPC();
+						
+			if (callee.isMJI()) {
+				// TODO Jens fix MJI initialization 
+				setupCallee(ctx, ti, callee); // this creates, initializes and
+				if (!splitRef) {
+					return ti.getPC();
+				}
+				return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify();
+				
+			} else {
+				setupCallee(ctx, ti, callee);
+				if (!splitRef) {
+					return ti.getPC();
+				}
+				return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify();
 			}
-			return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify(); // we can't just return the first callee insn
-								// if a listener throws an exception
-
 		}
 		throw new RuntimeException("Something went wrong");
 	}
