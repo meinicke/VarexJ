@@ -464,4 +464,21 @@ public class JPF_java_lang_Thread extends NativePeer {
 
     tiStop.setStopped(ctx, throwableRef);
   }
+
+  /**
+   * In order to run jetty server
+   * @author: chupanw
+   * @param env
+   * @param objRef
+   * @param rInterruptible0
+   */
+  @MJI
+  public void blockedOn__Lsun_nio_ch_Interruptible_2__V (MJIEnv env, int objRef, int rInterruptible0, FeatureExpr ctx) {
+    ThreadInfo tiCurrent = env.getThreadInfoForObjRef(objRef);
+    // Not sure whether this will work
+//    tiCurrent.setBlockedState(rInterruptible0);
+    System.out.println(tiCurrent + " starts yielding");
+    tiCurrent.yield();
+    System.out.println(tiCurrent + " ends yielding");
+  }
 }
