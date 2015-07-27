@@ -33,6 +33,17 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 		return appendString(ctx, env, objref, new One<>(s));
 	}
 
+	Conditional<Integer> appendString(FeatureExpr ctx, final MJIEnv env, final Conditional<Integer> objref, final Conditional<String> conditionalS) {
+		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+			@Override
+			public Conditional<Integer> apply(FeatureExpr ctx, Integer objref) {
+				return new One<>(appendString(ctx, env, objref, conditionalS));
+			}
+			
+		});
+	}
+	
 	int appendString(FeatureExpr ctx, final MJIEnv env, final int objref, final Conditional<String> conditionalS) {
 		Conditional<Integer> condAref = env.getReferenceField(ctx, objref, "value");
 
@@ -146,7 +157,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	}
 
 	@MJI
-	public int append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(final MJIEnv env, int objref, Conditional<Integer> sref, FeatureExpr ctx) {
+	public Conditional<Integer> append__Ljava_lang_String_2__Ljava_lang_StringBuilder_2(final MJIEnv env, Conditional<Integer> objref, Conditional<Integer> sref, FeatureExpr ctx) {
 		Conditional<String> s = sref.mapr(new Function<Integer, Conditional<String>>() {
 
 			@Override

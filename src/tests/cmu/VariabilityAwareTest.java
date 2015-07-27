@@ -12,7 +12,7 @@ import org.junit.Test;
 @SuppressWarnings("unused")
 public class VariabilityAwareTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=interaction",*/ "+search.class= .search.RandomSearch", "+choice=MapChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=interaction",*/ "+search.class=.search.RandomSearch", "+choice=MapChoice"};
 
 	static boolean RUN_WITH_JPF = true;
 
@@ -841,7 +841,55 @@ public class VariabilityAwareTest extends TestJPF {
 			System.out.println(o);
 		}
 	}
-
+	
+	@Test
+	public void invokationMJITest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation("+invocation=true", "+search.class= .search.RandomSearch", "+choice=MapChoice")) {
+			StringBuilder b = new StringBuilder();
+			if (a) {
+				b = new StringBuilder();
+			}
+			b.append("A");
+			System.out.println(b);
+		}
+	}
+	
+	@Test
+	public void invokationMJITest2() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation("+invocation=true", "+search.class= .search.RandomSearch", "+choice=MapChoice")) {
+			double stop = 2;
+			double start = 3;
+			System.out.println("" + " build "+(stop-start));
+		}
+	}
+	
+	@Test
+	public void invokationClassesTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation("+invocation=true", "+search.class= .search.RandomSearch", "+choice=MapChoice")) {
+			C1 c = new C1();
+			if (a) {
+				c = new C2();
+			}
+			c.method();
+			c.method2().method();
+		}
+	}
+	
+	class C1 {
+		
+		void method() {
+			System.out.println("BLUB");
+		}
+		
+		C1 method2() {
+			return new C1();
+		}
+	}
+	class C2 extends C1 {
+		
+	}
+	
+	
 	private static boolean valid() {
 		return a;
 	}

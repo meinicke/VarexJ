@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import cmu.conditional.Conditional;
+
 
 /**
  * native peer classes are part of MJI and contain the code that is
@@ -274,7 +276,7 @@ public class NativePeer implements Cloneable {
 
     // native method always have a MJIEnv and int as the first parameters
     Class<?>[] argTypes = mth.getParameterTypes();
-    if ((argTypes.length >= 2) && (argTypes[0] == MJIEnv.class) && (argTypes[1] == int.class) ) {
+    if ((argTypes.length >= 2) && (argTypes[0] == MJIEnv.class) && (argTypes[1] == int.class || argTypes[1] == Conditional.class) ) {
       return true;
     } else {
       return false;

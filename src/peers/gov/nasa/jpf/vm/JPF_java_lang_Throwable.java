@@ -25,6 +25,7 @@ import java.io.StringWriter;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -58,8 +59,15 @@ public class JPF_java_lang_Throwable extends NativePeer {
     
   // native because we don't want to waste states
   @MJI
-  public void printStackTrace____V (MJIEnv env, int objRef, FeatureExpr ctx) {
-    env.getThreadInfo().printStackTrace(ctx, objRef);
+  public void printStackTrace____V (final MJIEnv env, Conditional<Integer> objRef, FeatureExpr ctx) {
+	  objRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+
+		@Override
+		public void apply(FeatureExpr ctx, Integer objRef) {
+			env.getThreadInfo().printStackTrace(ctx, objRef);
+		}
+		  
+	  });
   }
   
   // a helper method to get a string representation of the stacktrace

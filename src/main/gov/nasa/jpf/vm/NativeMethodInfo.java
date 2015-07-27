@@ -179,7 +179,14 @@ public class NativeMethodInfo extends MethodInfo {
 			}
 			try {
 				if (!handled) {
-					ret = mth.invoke(peer, args);
+					if (mth.getParameterTypes()[1].isPrimitive()) {
+						if (args[1] instanceof One) {
+							args[1] = ((One)args[1]).getValue();
+						}
+						ret = mth.invoke(peer, args);
+					} else {
+						ret = mth.invoke(peer, args);
+					}
 				}
 			} catch (IllegalAccessException e) {
 				System.err.println(mth);

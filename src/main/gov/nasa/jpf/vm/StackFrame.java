@@ -1039,8 +1039,8 @@ public int nLocals;
     }
     attrs[i] = a;
   }
-  public void setThis (int thisRef2){
-    thisRef = new One<>(thisRef2);
+  public void setThis (Conditional<Integer> thisRef2){
+    thisRef = thisRef2;
   }
   
 

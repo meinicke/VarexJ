@@ -58,7 +58,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 	}
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
-		final FeatureExpr originalCtx = ctx;
 		Conditional<Integer> allRefs = ti.getCalleeThis(ctx, getArgSize());
 		
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
@@ -66,14 +65,14 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		Map<String, List<FeatureExpr>> classes = new TreeMap<>();
 		if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
 			for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
-				ClassInfo ci = ti.getClassInfo(e.getKey());
-				String clsName = ci == null ? null : ci.getName();
-				if (classes.containsKey(clsName)) {
-					classes.get(clsName).add(e.getValue());
+				MethodInfo callee = getInvokedMethod(ctx.and(e.getValue()), ti, e.getKey());
+				String methName = callee.getFullName();
+				if (classes.containsKey(methName)) {
+					classes.get(methName).add(e.getValue());
 				} else {
 					List<FeatureExpr> list = new ArrayList<>(map.size());
 					list.add(e.getValue());
-					classes.put(clsName, list);
+					classes.put(methName, list);
 				}
 			}
 		}
@@ -89,16 +88,16 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 				lastObj = MJIEnv.NULL;
 				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
 			}
-			MethodInfo callee = getInvokedMethod(ctx, ti, objRef);
+			MethodInfo callee = getInvokedMethod(ctx.and(objRefEntry.getValue()), ti, objRef);
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
-			if (!classes.isEmpty() && !callee.isMJI()) {
+			if (!classes.isEmpty()) {
 				FeatureExpr invocationCtx = FeatureExprFactory.False();
-				for (FeatureExpr e : classes.get(ti.getClassInfo(objRef).getName())) {
+				for (FeatureExpr e : classes.get(callee.getFullName())) {
 					invocationCtx = invocationCtx.or(e);
 				}
 				ctx = ctx.and(invocationCtx);					
 			} else {
-				ctx = originalCtx.and(objRefEntry.getValue());
+				ctx = ctx.and(objRefEntry.getValue());
 			}
 
 			if (callee == null) {
@@ -109,6 +108,10 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return new One<>(ti.createAndThrowException(ctx, java.lang.AbstractMethodError.class.getName(), callee.getFullName() + ", object: " + ei));
 				}
 			}
+			
+//			if (!classes.isEmpty() && map.size() > classes.size()) {
+//				System.out.println("VIRTUAL reduce invocations from " + map.size() + " to " + classes.size() + " " + callee);
+//			}
 			
 			if (callee.isSynchronized()) {
 				if (checkSyncCG(ei, ti)) {
