@@ -48,7 +48,7 @@ public class PrevaylerTest extends ATestExample {
 	@Conditional
 	static boolean USE_JOURNAL_DISK_SYNC = false;
 	
-//	@Conditional // TODO Does not work conditionally
+	@Conditional // TODO Does not work conditionally
 	static boolean FILE_AGE_THREASHOLD = true;
 //	@Conditional // TODO Does not work conditionally
 	static boolean FILE_SIZE_THREASHOLD = true;	

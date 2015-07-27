@@ -127,6 +127,8 @@ public class JPF implements Runnable {
   
   /** we use this as safety margin, to be released upon OutOfMemoryErrors */
   byte[] memoryReserve;
+
+  public static boolean SHARE_INVOCATIONS = false;
   
   private static Logger initLogging(Config conf) {
     LogManager.init(conf);
@@ -305,6 +307,9 @@ public class JPF implements Runnable {
       } else {
     	  FeatureExprFactory.setDefault(FeatureExprFactory.sat());
       }
+      
+      SHARE_INVOCATIONS = config.getBoolean("invocation");
+      
       
       processInteractionCommand();
       

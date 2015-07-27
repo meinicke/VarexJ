@@ -807,25 +807,6 @@ public class VariabilityAwareTest extends TestJPF {
 	
 	}
 	
-	@Test
-	public void invokationTest() {
-		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			Verify.setCounter(0, 0);
-			C o = new C(0);
-			if (a) {
-				o = new C(1);
-			}
-			o.method();
-			check(Verify.getCounter(0) == 1);
-			if (a) {
-				check(o.i == 2);
-			} else {
-				check(o.i == 1);
-			}
-			System.out.println(o);
-		}
-	}
-	
 	class C {
 		int i;
 		public C(int i) {
@@ -839,6 +820,25 @@ public class VariabilityAwareTest extends TestJPF {
 		@Override
 		public String toString() {
 			return "C" + i;
+		}
+	}
+	
+	@Test
+	public void invokationTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation("+invocation=true", "+search.class= .search.RandomSearch", "+choice=MapChoice")) {
+			Verify.setCounter(0, 0);
+			C o = new C(0);
+			if (a) {
+				o = new C(1);
+			}
+			o.method();
+			check(Verify.getCounter(0) == 1);
+			if (a) {
+				check(o.i == 2);
+			} else {
+				check(o.i == 1);
+			}
+			System.out.println(o);
 		}
 	}
 

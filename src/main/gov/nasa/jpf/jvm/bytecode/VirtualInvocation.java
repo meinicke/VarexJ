@@ -18,15 +18,18 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -60,22 +63,23 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
 		
-		Map<String, FeatureExpr> classes = new HashMap<>();
-		if (map.size() > 1) {
+		Map<String, List<FeatureExpr>> classes = new TreeMap<>();
+		if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
 			for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
 				ClassInfo ci = ti.getClassInfo(e.getKey());
 				String clsName = ci == null ? null : ci.getName();
 				if (classes.containsKey(clsName)) {
-					classes.put(clsName, classes.get(clsName).or(e.getValue()));
+					classes.get(clsName).add(e.getValue());
 				} else {
-					classes.put(clsName, e.getValue());
+					List<FeatureExpr> list = new ArrayList<>(map.size());
+					list.add(e.getValue());
+					classes.put(clsName, list);
 				}
-				
 			}
 		}
 		
 		boolean splitRef = false;
-		if (classes.size() > 1) {
+		if ((JPF.SHARE_INVOCATIONS && classes.size() > 1) || (!JPF.SHARE_INVOCATIONS && map.size() > 1)) {
 			splitRef = true;
 		}
 		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
@@ -88,7 +92,11 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			MethodInfo callee = getInvokedMethod(ctx, ti, objRef);
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 			if (!classes.isEmpty() && !callee.isMJI()) {
-				ctx = originalCtx.and(classes.get(ti.getClassInfo(objRef).getName()));
+				FeatureExpr invocationCtx = FeatureExprFactory.False();
+				for (FeatureExpr e : classes.get(ti.getClassInfo(objRef).getName())) {
+					invocationCtx = invocationCtx.or(e);
+				}
+				ctx = ctx.and(invocationCtx);					
 			} else {
 				ctx = originalCtx.and(objRefEntry.getValue());
 			}
@@ -107,22 +115,11 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return new One<Instruction>(this);
 				}
 			}
-						
-			if (callee.isMJI()) {
-				// TODO Jens fix MJI initialization 
-				setupCallee(ctx, ti, callee); // this creates, initializes and
-				if (!splitRef) {
-					return ti.getPC();
-				}
-				return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify();
-				
-			} else {
-				setupCallee(ctx, ti, callee);
-				if (!splitRef) {
-					return ti.getPC();
-				}
-				return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify();
+			setupCallee(ctx, ti, callee);
+			if (!splitRef) {
+				return ti.getPC();
 			}
+			return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify();
 		}
 		throw new RuntimeException("Something went wrong");
 	}
