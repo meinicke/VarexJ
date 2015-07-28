@@ -3,7 +3,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * 
+ * Original implementation by 
+ * Kim et al. SPLat: Lightweight dynamic analysis for reducing combinatorics in testing configurable systems
+ * 
+ * @author Jens Meinicke
+ *
+ */
 public class SPLat {
 
 	public static void main(String[] args) {
