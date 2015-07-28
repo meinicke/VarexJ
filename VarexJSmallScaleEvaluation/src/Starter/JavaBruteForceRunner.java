@@ -1,3 +1,4 @@
+package Starter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -42,7 +43,7 @@ public class JavaBruteForceRunner {
 				for (int i = 0; i < Math.pow(2, complexity); i++) {
 					setFields(complexity, i);
 					long start = System.nanoTime(); 
-					array.ArrayVarexJ.main(new String[] { complexity + "" });
+					reference.RefVarexJ.main(new String[] { complexity + "" });
 					long end = System.nanoTime();
 					duration += end - start;
 				}
@@ -65,7 +66,7 @@ public class JavaBruteForceRunner {
 	private void setFields(int complexity, int i) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		int conf = i;
 		for (int j = 1; j <= complexity; j++) {
-			array.ArrayVarexJ.class.getField("a" + j).set(null, conf % 2 == 0);
+			reference.RefVarexJ.class.getField("a" + j).set(null, conf % 2 == 0);
 			conf = conf >> 1;
 		}
 	}

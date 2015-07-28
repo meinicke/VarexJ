@@ -1,3 +1,4 @@
+package Starter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -5,55 +6,60 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JPFCoreRunner {
+public class JPFBDDRunner {
 
 	public static void main(String[] args) {
-		new JPFCoreRunner();
+		new JPFBDDRunner();
 	}
 
-	public JPFCoreRunner() {
-		System.out.println("JPFCoreRunner.JPFCoreRunner()");
-		String[] testClasses = new String[] { inc.IncJPF_Core.class.getName(), array.ArrayJPF_Core.class.getName() };
+	public JPFBDDRunner() {
+		System.out.println("JPFBDDRunner.JPFBDDRunner()");
+		String[] testClasses = new String[]{nesting.NestJPF_BDD.class.getName(), inc.IncJPF_BDD.class.getName(), reference.RefBDD.class.getName()};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
+	//		commands.add("C:\\Program Files\\Java\\jre1.8.0_45\\bin\\java");
 			commands.add("java");
+	//		commands.add("-Xms7g");
 			commands.add("-Xmx7g");
+	//		commands.add("-XX:+UseConcMarkSweepGC");
+	//		commands.add("-XX:+UseParNewGC");
+	//		commands.add("-XX:-UseParallelGC");
 			commands.add("-jar");
 			commands.add("C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\RunJPF.jar");
-
-			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\jpf.jar");
-			commands.add("+search.class=.search.DFSearch");
-
+	//		commands.add("+search.class=.search.heuristic.BFSHeuristic");
+	//		commands.add("+search.class=.search.DFSearch");
+			commands.add("+search.multiple_errors=true");
+			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\jpf.jar;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-bdd\\build\\jpf-bdd.jar;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-bdd\\build\\jpf-bdd-annotations.jar;");
+			commands.add("+vm.insn_factory.class=gov.nasa.jpf.bdd.BddInstructionFactory");
+	//		commands.add("array.ArrayBDD");
 			commands.add(test);
 			commands.add("");
-			for (int complexity = 0; complexity <= 100; complexity++) {
+			for (int complexity = 0; complexity <= 30; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
-				boolean maxReached = false;
-				for (int round = 0; round < 3; round++) {
+				
+				boolean timedOut = false;
+				for (int round = 0; round < 1; round++) {
 					long start = System.currentTimeMillis();
 					process(commands);
 					long timeInS = (System.currentTimeMillis() - start) / 1000;
-					if (timeInS > 30) {
-						maxReached = true;
+					
+					if (timeInS > 10) {
+						timedOut = true;
 						break;
 					}
 				}
-				if (maxReached) {
+				if (timedOut) {
 					break;
 				}
 			}
 			File resultsFile = new File("JPF.csv");
-			resultsFile.renameTo(new File("JPF-" + test + ".csv"));
+			resultsFile.renameTo(new File("BDD-" + test + ".csv"));
 		}
 	}
 
 	private void process(List<String> commands) {
-		for (String s : commands) {
-			System.out.print(s);
-			System.out.print(" ");
-		}
-		System.out.println();
+		
 		ProcessBuilder processBuilder = new ProcessBuilder(commands);
 		BufferedReader input = null;
 		BufferedReader error = null;

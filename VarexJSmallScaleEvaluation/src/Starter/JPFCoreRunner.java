@@ -1,3 +1,4 @@
+package Starter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -5,31 +6,24 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JPFSERunner {
+public class JPFCoreRunner {
 
 	public static void main(String[] args) {
-		new JPFSERunner();
+		new JPFCoreRunner();
 	}
 
-	public JPFSERunner() {
-		System.out.println("JPFSERunner.JPFSERunner()");
-		String[] testClasses = new String[] { inc.IncJPF_SE.class.getName(), array.ArraySE.class.getName() };
+	public JPFCoreRunner() {
+		System.out.println("JPFCoreRunner.JPFCoreRunner()");
+		String[] testClasses = new String[] { inc.IncJPF_Core.class.getName(), reference.RefJPF_Core.class.getName() };
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
-			commands.add("C:\\Program Files\\Java\\jdk1.7.0_75\\bin\\java");
-
+			commands.add("java");
 			commands.add("-Xmx7g");
 			commands.add("-jar");
 			commands.add("C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\RunJPF.jar");
-			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;" + "C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\jpf.jar;"
-					+ "C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-symbc\\build\\jpf-symbc.jar;" + "C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-symbc\\build\\jpf-symbc-annotations.jar;");
 
-			commands.add("+vm.insn_factory.class=gov.nasa.jpf.symbc.SymbolicInstructionFactory");
-			commands.add("+vm.classpath=.");
-			commands.add("+vm.storage.class=");
-			commands.add("+symbolic.method=" + test + ".main(con)");
-			commands.add("+search.multiple_errors=true");
-			commands.add("+jpf.report.console.finished=");
+			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\jpf.jar");
+			commands.add("+search.class=.search.DFSearch");
 
 			commands.add(test);
 			commands.add("");
@@ -51,7 +45,7 @@ public class JPFSERunner {
 				}
 			}
 			File resultsFile = new File("JPF.csv");
-			resultsFile.renameTo(new File("JPFSE-" + test + ".csv"));
+			resultsFile.renameTo(new File("JPF-" + test + ".csv"));
 		}
 	}
 

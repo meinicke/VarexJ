@@ -1,3 +1,4 @@
+package Starter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +13,7 @@ public class VarexJRunner {
 
 	public VarexJRunner() {
 		System.out.println("VarexJRunner.VarexJRunner()");
-		String[] testClasses = new String[] {array.ArrayVarexJ.class.getName()};
+		String[] testClasses = new String[] {reference.RefVarexJ.class.getName()};
 		for (String test : testClasses) {
 
 			LinkedList<String> commands = new LinkedList<>();
