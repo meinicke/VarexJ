@@ -250,6 +250,4 @@ public class Unsafe {
   public native void copyMemory(Object srcBase, long srcOffset,
           Object destBase, long destOffset,
           long bytes);
-  // For JettyHelloWorld.java
-  public native int pageSize();
 }

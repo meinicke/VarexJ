@@ -434,7 +434,7 @@ public class ThreadInfo extends InfoObject
    * the ctor for all explicitly (bytecode) created threads. At this point, there is at least
    * a mainThread and we have a corresponding java.lang.Thread object
    */
-  protected ThreadInfo (VM vm, int objRef, int groupRef, int runnableRef, int nameRef, ThreadInfo parent) {    
+  protected ThreadInfo (VM vm, int objRef, int groupRef, int runnableRef, int nameRef, ThreadInfo parent) {
     id = computeId(objRef);
     this.appCtx = parent.getApplicationContext();
     
@@ -2107,6 +2107,11 @@ public Conditional<Instruction> executeInstruction () {
       }
     // we also count the skipped ones
     executedInstructions++;
+
+    // Simplest round robin
+    if (executedInstructions % 1000 == 0) {
+      mustYield();
+    }
     
     if (logInstruction) {
       ss.recordExecutionStep(pc.getValue(true));
@@ -2685,7 +2690,7 @@ public Conditional<Instruction> executeInstruction () {
     
     if (mi.isSynchronized()){
       int oref = mi.isStatic() ?  mi.getClassInfo().getClassObjectRef() : top.getThis();
-      ElementInfo ei = getModifiableElementInfo( oref);
+      ElementInfo ei = getModifiableElementInfo(oref);
       
       ei.lock(this);
       
@@ -3654,6 +3659,16 @@ public Conditional<Instruction> executeInstruction () {
     // (which will also break executeTransition)
     BreakGenerator cg = new BreakGenerator(reason, this, false);
     ss.setNextChoiceGenerator(cg); // this breaks the transition
+  }
+
+  public boolean mustYield() {
+    SystemState ss = vm.getSystemState();
+
+    if (!ss.isIgnored()) {
+      ChoiceGenerator<ThreadInfo> cg = vm.getSchedulerFactory().createThreadYieldCG(this);
+      return ss.setNextChoiceGenerator(cg);
+    }
+    return false;
   }
 
   /**
