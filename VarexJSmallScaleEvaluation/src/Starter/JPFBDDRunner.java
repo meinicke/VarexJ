@@ -14,7 +14,13 @@ public class JPFBDDRunner {
 
 	public JPFBDDRunner() {
 		System.out.println("JPFBDDRunner.JPFBDDRunner()");
-		String[] testClasses = new String[]{nesting.NestJPF_BDD.class.getName(), inc.IncJPF_BDD.class.getName(), reference.RefBDD.class.getName()};
+		String[] testClasses = new String[]{
+				nointeraction.NoJPF_BDD.class.getName(),
+//				prefix.PrefixJPF_BDD.class.getName(),
+				nesting.NestJPF_BDD.class.getName(), 
+				inc.IncJPF_BDD.class.getName(), 
+//				reference.RefBDD.class.getName()
+				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
 	//		commands.add("C:\\Program Files\\Java\\jre1.8.0_45\\bin\\java");
@@ -34,17 +40,22 @@ public class JPFBDDRunner {
 	//		commands.add("array.ArrayBDD");
 			commands.add(test);
 			commands.add("");
-			for (int complexity = 0; complexity <= 30; complexity++) {
+			int max = 100;
+			if (test.equals(prefix.PrefixJPF_BDD.class.getName())) {
+				max = 10;
+			}
+			
+			for (int complexity = 0; complexity <= max; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
 				
 				boolean timedOut = false;
-				for (int round = 0; round < 1; round++) {
+				for (int round = 0; round < 3; round++) {
 					long start = System.currentTimeMillis();
 					process(commands);
 					long timeInS = (System.currentTimeMillis() - start) / 1000;
 					
-					if (timeInS > 10) {
+					if (timeInS > 120) {
 						timedOut = true;
 						break;
 					}

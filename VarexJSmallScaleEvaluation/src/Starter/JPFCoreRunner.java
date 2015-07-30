@@ -12,9 +12,17 @@ public class JPFCoreRunner {
 		new JPFCoreRunner();
 	}
 
+	private final static int rounds = 3;
+
 	public JPFCoreRunner() {
 		System.out.println("JPFCoreRunner.JPFCoreRunner()");
-		String[] testClasses = new String[] { inc.IncJPF_Core.class.getName(), reference.RefJPF_Core.class.getName() };
+		String[] testClasses = new String[] {
+//				nointeraction.NoJPF_Core.class.getName(),
+//				prefix.PrefixJPF_Core.class.getName(),
+				nesting.NestJPF_Core.class.getName(),
+//				inc.IncJPF_Core.class.getName(), 
+//				reference.RefJPF_Core.class.getName() 
+				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
 			commands.add("java");
@@ -27,15 +35,20 @@ public class JPFCoreRunner {
 
 			commands.add(test);
 			commands.add("");
-			for (int complexity = 0; complexity <= 100; complexity++) {
+			int max = 100;
+			if (test.equals(prefix.PrefixJPF_Core.class.getName())) {
+				max = 10;
+			}
+			
+			for (int complexity =  0; complexity <= max; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
 				boolean maxReached = false;
-				for (int round = 0; round < 3; round++) {
+				for (int round = 0; round < rounds ; round++) {
 					long start = System.currentTimeMillis();
 					process(commands);
 					long timeInS = (System.currentTimeMillis() - start) / 1000;
-					if (timeInS > 30) {
+					if (timeInS > 120) {
 						maxReached = true;
 						break;
 					}

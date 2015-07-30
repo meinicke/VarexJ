@@ -1,5 +1,6 @@
 package Starter;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -7,15 +8,21 @@ import java.util.List;
 
 public class VarexJRunner {
 
+	private static final int rounds = 3;
+
 	public static void main(String[] args) {
 		new VarexJRunner();
 	}
 
 	public VarexJRunner() {
-		System.out.println("VarexJRunner.VarexJRunner()");
-		String[] testClasses = new String[] {reference.RefVarexJ.class.getName()};
+		String[] testClasses = new String[] {
+				inc.IncVarexJ.class.getName(),
+				nesting.NestVarexJ.class.getName(),
+				prefix.PrefixVarexJ.class.getName(),
+				reference.RefVarexJ.class.getName(),
+				nointeraction.NoVarexJ.class.getName()
+				};
 		for (String test : testClasses) {
-
 			LinkedList<String> commands = new LinkedList<>();
 			commands.add("java");
 			commands.add("-Xmx7g");
@@ -24,19 +31,25 @@ public class VarexJRunner {
 			// JPF conf
 			commands.add("+native_classpath=C:\\Users\\meinicke\\VarexJ\\lib\\*");
 			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;C:\\Users\\meinicke\\git\\VarexJ\\build\\jpf.jar");
+			commands.add("+search.class=.search.RandomSearch");
 			// VarexJ conf
 			commands.add("+choice=MapChoice");
 			commands.add(test);
 			commands.add("");
-			for (int complexity =  30; complexity <= 30; complexity++) {
+			int max = 100;
+			if (test.equals(prefix.PrefixVarexJ.class.getName())) {
+				max = 10;
+			}
+			
+			for (int complexity =  0; complexity <= max; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
-				for (int round = 0; round < 1; round++) {
+				for (int round = 0; round < rounds; round++) {
 					process(commands);
 				}
 			}
-//			File resultsFile = new File("VarexJ.csv");
-//			resultsFile.renameTo(new File("VarexJ" + test + ".csv"));
+			File resultsFile = new File("VarexJ.csv");
+			resultsFile.renameTo(new File("VarexJ" + test + ".csv"));
 		}
 	}
 

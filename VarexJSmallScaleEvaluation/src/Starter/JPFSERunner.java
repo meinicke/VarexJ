@@ -14,7 +14,13 @@ public class JPFSERunner {
 
 	public JPFSERunner() {
 		System.out.println("JPFSERunner.JPFSERunner()");
-		String[] testClasses = new String[] { inc.IncJPF_SE.class.getName(), reference.RefSE.class.getName() };
+		String[] testClasses = new String[] {
+//				prefix.PrefixJPF_SE.class.getName(),
+//				inc.IncJPF_SE.class.getName(), 
+//				reference.RefSE.class.getName(),
+//				nointeraction.NoJPF_SE.class.getName(),
+				nesting.NestJPF_SE.class.getName()
+				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
 			commands.add("C:\\Program Files\\Java\\jdk1.7.0_75\\bin\\java");
@@ -34,7 +40,11 @@ public class JPFSERunner {
 
 			commands.add(test);
 			commands.add("");
-			for (int complexity = 0; complexity <= 100; complexity++) {
+			int max = 100;
+			if (test.equals(prefix.PrefixJPF_SE.class.getName())) {
+				max = 10;
+			}
+			for (int complexity = 0; complexity <= max; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
 				boolean maxReached = false;
@@ -42,7 +52,7 @@ public class JPFSERunner {
 					long start = System.currentTimeMillis();
 					process(commands);
 					long timeInS = (System.currentTimeMillis() - start) / 1000;
-					if (timeInS > 30) {
+					if (timeInS > 120) {
 						maxReached = true;
 						break;
 					}

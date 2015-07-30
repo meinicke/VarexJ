@@ -9,6 +9,8 @@ import java.util.LinkedList;
 
 import inc.IncSPLat;
 import nesting.NestSPLat;
+import nointeraction.NoSPLat;
+import prefix.PrefixSPLat;
 import reference.RefSPLat;
 /**
  * 
@@ -20,13 +22,24 @@ import reference.RefSPLat;
  */
 public class SPLat {
 
+	private static long maxUsedMemory = 0;
+
 	public static void main(String[] args) {
-		ISPLatEvaluation[] testClasses = new ISPLatEvaluation[]{new RefSPLat(), new IncSPLat(), new NestSPLat()};
+		ISPLatEvaluation[] testClasses = new ISPLatEvaluation[]{
+				new NoSPLat(),
+				new PrefixSPLat(), 
+				new RefSPLat(), 
+				new IncSPLat(), 
+				new NestSPLat()
+				};
 		for (ISPLatEvaluation testClass : testClasses) {
 			System.out.println("Start " + testClass.getClass().getName());
-			createNewFile();
 			boolean timedOut = false;
-			for (int max = 0; max <= 100; max++) {
+			int maxComplexity = 100;
+			if (testClass.getClass() == PrefixSPLat.class) {
+				maxComplexity = 10;
+			}
+			for (int max = 0; max <= maxComplexity; max++) {
 				if (timedOut) {
 					break;
 				}
@@ -35,10 +48,11 @@ public class SPLat {
 					int runs = runSPLat(testClass, max);
 					long end = System.currentTimeMillis();
 					long time = (end - start);
-					System.out.println(" finished after " + runs + " configurations after " + time + "ms");
+					System.out.println(" finished after " + runs + " configurations after " + time + "ms " + (maxUsedMemory >> 20) + "MB");
 					createOutput(time);
 					missingConfigurations.clear();
-					if (time > 2_000) {
+					Runtime.getRuntime().gc();
+					if (time > 120_000) {
 						timedOut = true;
 						break;
 					}
@@ -48,29 +62,22 @@ public class SPLat {
 			resultsFile.renameTo(new File("SPLat-" + testClass.getClass().getSimpleName() + ".csv"));
 		}
 	}
-	private static void createNewFile() {
-		File results = new File("SPLat.csv");
-		if (!results.exists()) {
-			try {
-				results.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(results, true)))) {
-			out.print("Time");
-			out.println();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	private static int runSPLat(ISPLatEvaluation testClass, int max) {
 		System.out.print("#feature " + max);
 		nrFeatures = max;
+		if (testClass.getClass() == PrefixSPLat.class) {
+			nrFeatures = 10;
+		}
 		int runs = 0;
+		maxUsedMemory = 0;
 		missingConfigurations.add(new Configuration());
 		while (!missingConfigurations.isEmpty()) {
+			Runtime rt = Runtime.getRuntime();
+			final long m = rt.totalMemory() - rt.freeMemory();
+			if (m > maxUsedMemory) {
+				maxUsedMemory  = m;
+			}
 			currentConfiguration = missingConfigurations.remove(0);
 			testClass.run(max);runs++;
 		}
@@ -82,6 +89,8 @@ public class SPLat {
 		System.out.println("write results to " + results + " " + time);
 		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(results, true)))) {
 			out.print(time);
+			out.print(';');
+			out.print(maxUsedMemory >> 20);// MB
 			out.println();
 		} catch (IOException e) {
 			e.printStackTrace();
