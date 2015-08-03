@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import inc.IncSPLat;
 import nesting.NestSPLat;
+import nesting2.NestVoidSPLat;
 import nointeraction.NoSPLat;
 import prefix.PrefixSPLat;
 import reference.RefSPLat;
@@ -26,11 +27,12 @@ public class SPLat {
 
 	public static void main(String[] args) {
 		ISPLatEvaluation[] testClasses = new ISPLatEvaluation[]{
-				new NoSPLat(),
-				new PrefixSPLat(), 
-				new RefSPLat(), 
-				new IncSPLat(), 
-				new NestSPLat()
+//				new NoSPLat(),
+//				new PrefixSPLat(), 
+//				new RefSPLat(), 
+//				new IncSPLat(), 
+//				new NestSPLat(),
+				new NestVoidSPLat()
 				};
 		for (ISPLatEvaluation testClass : testClasses) {
 			System.out.println("Start " + testClass.getClass().getName());
@@ -43,7 +45,7 @@ public class SPLat {
 				if (timedOut) {
 					break;
 				}
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 1; i++) {
 					long start = System.currentTimeMillis();
 					int runs = runSPLat(testClass, max);
 					long end = System.currentTimeMillis();

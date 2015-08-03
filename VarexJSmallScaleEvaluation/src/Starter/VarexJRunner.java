@@ -16,11 +16,12 @@ public class VarexJRunner {
 
 	public VarexJRunner() {
 		String[] testClasses = new String[] {
-				inc.IncVarexJ.class.getName(),
-				nesting.NestVarexJ.class.getName(),
-				prefix.PrefixVarexJ.class.getName(),
-				reference.RefVarexJ.class.getName(),
-				nointeraction.NoVarexJ.class.getName()
+//				inc.IncVarexJ.class.getName(),
+//				nesting.NestVarexJ.class.getName(),
+//				prefix.PrefixVarexJ.class.getName(),
+//				reference.RefVarexJ.class.getName(),
+//				nointeraction.NoVarexJ.class.getName(),
+				nesting2.NestVoidVarexJ.class.getName(),
 				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
