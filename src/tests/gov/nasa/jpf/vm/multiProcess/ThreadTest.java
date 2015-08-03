@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.VM;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -105,6 +106,7 @@ public class ThreadTest extends TestMultiProcessJPF {
   // is the thread termination point & number of choice generators does not 
   // exceed 3
   @Test
+  @Ignore //Ignoring because we don't use multi-process
   public void threadInterleavingTest() {
     if (mpVerifyNoPropertyViolation(2, "+listener=gov.nasa.jpf.vm.multiProcess.ThreadTest$InterleaveCheckListener",
             "+vm.max_transition_length=MAX")) {

@@ -427,6 +427,7 @@
 			<batchtest todir="build/tests">
 				<fileset dir="build/tests">
 					<exclude name="**/JPF_*.class" />
+					<exclude name="**/cmu/jetty/JettyHelloWorldTest.class"/>
 					<include name="**/*Test.class" />
 					<exclude name="**cmu/*" />
 				</fileset>
