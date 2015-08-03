@@ -89,7 +89,7 @@ public class ConverterBase {
                 || obj.getClass().getName().equals("java.util.jar.JarFile")
                 || obj.getClass().getName().equals("sun.net.www.protocol.jar.URLJarFile")
                 || obj.getClass().getName().equals("java.util.zip.Inflater")
-                || obj.getClass().getName().equals("java.util.ResourceBundle")
+//                || obj.getClass().getName().equals("java.util.ResourceBundle")
                 ) {
 
 //          if (!socketObjArray.contains(obj)) {
@@ -120,7 +120,7 @@ public class ConverterBase {
                 || cls.getName().equals("java.util.jar.JarFile")
                 || cls.getName().equals("sun.net.www.protocol.jar.URLJarFile")
                 || cls.getName().equals("java.util.zip.Inflater")
-                || cls.getName().equals("java.util.ResourceBundle")
+//                || cls.getName().equals("java.util.ResourceBundle")
                 ) {
           continue;
         }

@@ -37,7 +37,7 @@ public class PrevaylerTest extends ATestExample {
 	@Conditional
 	static boolean USE_PAUSABLE_CLOCK = false;
 
-	@Conditional
+//	@Conditional
 	static boolean USE_XSTREAM = true;
 //	@Conditional // TODO Does not work
 	static boolean USE_XSTREAM_JOURNAL = false;
@@ -128,7 +128,6 @@ public class PrevaylerTest extends ATestExample {
 		return "";
 	}
 
-	@Ignore
 	@Test
 	public void scalabilityTest() {
 		if (verifyNoPropertyViolation(config)) {
@@ -136,10 +135,9 @@ public class PrevaylerTest extends ATestExample {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void jxpathTest() {
-		if (verifyNoPropertyViolation(config)) {
+		if (true||verifyNoPropertyViolation(config)) {
 			String[] args1 = new String[] { "proj", "100", "learn JXPath" };
 			String[] args2 = new String[] { "task", "50", "read docs",
 					"09/21/02 2:00 PM", "09/21/02 3:00 PM", "100" };
@@ -161,7 +159,6 @@ public class PrevaylerTest extends ATestExample {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void tutorialTest() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
