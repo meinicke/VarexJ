@@ -146,7 +146,7 @@ public class Statistics extends ListenerAdapter implements Cloneable {
   
   @Override
   public void stateAdvanced (Search search){
-    long m = Runtime.getRuntime().totalMemory();
+    long m = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
     if (m > maxUsed) {
       maxUsed = m;
     }
