@@ -22,6 +22,7 @@ import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -33,6 +34,7 @@ public class AALOAD extends ArrayLoadInstruction {
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     Conditional<Integer> value = ei.getReferenceElement(index);
+    ComplexityPrinter.addComplex(value.size(), getClass().getSimpleName());
     frame.pushRef(ctx, value);
   }
 

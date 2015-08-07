@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -44,6 +45,7 @@ public class AASTORE extends ArrayStoreInstruction {
 
 	protected void setField(FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
 		ei.checkArrayBounds(ctx, index);
+		ComplexityPrinter.addComplex(value.size(), getClass().getSimpleName());
 		ei.setReferenceElement(ctx, index, value);
 	}
 

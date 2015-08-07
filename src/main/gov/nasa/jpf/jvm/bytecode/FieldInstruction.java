@@ -39,6 +39,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import cmu.utils.CoverageLogger;
 import cmu.utils.TraceComparator;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -193,6 +194,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
         }
 
       } else { // not a reference, nothing exposed
+    	  ComplexityPrinter.addComplex(val.size(), getClass().getSimpleName());
         eiFieldOwner.set1SlotField(ctx, fi, val);
         eiFieldOwner.setFieldAttr(fi, attr); // see above about overwrite vs. accumulation
       }

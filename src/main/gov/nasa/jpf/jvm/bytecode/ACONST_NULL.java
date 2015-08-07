@@ -24,6 +24,8 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -37,8 +39,8 @@ public class ACONST_NULL extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    frame.pushRef(ctx, MJIEnv.NULL);
-    
+    frame.pushRef(ctx, One.MJIEnvNULL);
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName());
     return getNext(ctx, ti);
   }
 

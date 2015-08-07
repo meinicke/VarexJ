@@ -8,7 +8,7 @@ import java.util.List;
 
 public class VarexJRunner {
 
-	private static final int rounds = 3;
+	private static final int rounds = 1;
 
 	public static void main(String[] args) {
 		new VarexJRunner();
@@ -17,11 +17,10 @@ public class VarexJRunner {
 	public VarexJRunner() {
 		String[] testClasses = new String[] {
 //				inc.IncVarexJ.class.getName(),
-//				nesting.NestVarexJ.class.getName(),
+				nesting.NestVarexJ.class.getName(),
 //				prefix.PrefixVarexJ.class.getName(),
 //				reference.RefVarexJ.class.getName(),
 //				nointeraction.NoVarexJ.class.getName(),
-				nesting2.NestVoidVarexJ.class.getName(),
 				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
@@ -37,12 +36,12 @@ public class VarexJRunner {
 			commands.add("+choice=MapChoice");
 			commands.add(test);
 			commands.add("");
-			int max = 100;
-			if (test.equals(prefix.PrefixVarexJ.class.getName())) {
-				max = 10;
-			}
+			int max = 0;
+//			if (test.equals(prefix.PrefixVarexJ.class.getName())) {
+//				max = 10;
+//			}
 			
-			for (int complexity =  0; complexity <= max; complexity++) {
+			for (int complexity =  0; complexity <= 100; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
 				for (int round = 0; round < rounds; round++) {
@@ -51,6 +50,13 @@ public class VarexJRunner {
 			}
 			File resultsFile = new File("VarexJ.csv");
 			resultsFile.renameTo(new File("VarexJ" + test + ".csv"));
+			
+			File complexityFile = new File("complex.csv");
+			File newFile = new File("complex-" + test + ".csv");
+			if (newFile.exists()) {
+				newFile.delete();
+			}
+			complexityFile.renameTo(newFile);
 		}
 	}
 

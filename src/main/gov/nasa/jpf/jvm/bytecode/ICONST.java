@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -41,7 +42,10 @@ public class ICONST extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
+    int before = frame.stack.getStackWidth();
     frame.push(ctx, One.valueOf(value));
+    int after = frame.stack.getStackWidth();
+    ComplexityPrinter.addComplex(after, getClass().getSimpleName());
     return getNext(ctx, ti);
   }
 

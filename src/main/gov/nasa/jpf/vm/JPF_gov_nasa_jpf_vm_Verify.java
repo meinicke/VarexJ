@@ -46,6 +46,7 @@ import java.util.List;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -112,6 +113,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
 		if (reset) {
 			System.out.println("counter already reset");
 		} else {
+			ComplexityPrinter.reset();
 			env.getVM().resetInstructionCounter();
 			reset = true;
 		}

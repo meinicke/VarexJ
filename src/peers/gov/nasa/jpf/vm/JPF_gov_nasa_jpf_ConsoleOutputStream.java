@@ -95,6 +95,9 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
 			if (RuntimeConstants.ctxOutput) {
+				if (s.getKey().isEmpty()) {
+					continue;
+				}
 				if (s.getValue().and(ctx).isSatisfiable()) {
 					env.getVM().print("(<" + s.getKey() + "> : " + Conditional.getCTXString(s.getValue().and(ctx)) + ')');
 				}

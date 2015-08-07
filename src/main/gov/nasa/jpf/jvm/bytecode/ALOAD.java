@@ -22,6 +22,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -46,6 +47,7 @@ public class ALOAD extends LocalVariableInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushLocal(ctx, index);
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName());
     return getNext(ctx, ti);
   }
 

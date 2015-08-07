@@ -30,6 +30,7 @@ import java.util.HashMap;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import cmu.utils.ComplexityPrinter;
 import cmu.utils.TraceComparator;
 import coverage.Interaction;
 import coverage.XMLWriter;
@@ -148,6 +149,8 @@ public class RandomSearch extends Search {
 				TraceComparator.compare();
 				TraceComparator.clear();
 			}
+			
+			ComplexityPrinter.write();
 		}
 	}
 }

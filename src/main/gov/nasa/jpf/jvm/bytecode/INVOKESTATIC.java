@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.Types;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -119,7 +120,7 @@ public class INVOKESTATIC extends InvokeInstruction {
 //			 }
 //		 }
 //	}
-	
+    ComplexityPrinter.addComplex(1, getClass().getSimpleName());
 	setupCallee(ctx, ti, callee); // this creates, initializes and
 									// pushes the callee StackFrame
 

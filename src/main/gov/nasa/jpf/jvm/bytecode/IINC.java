@@ -22,6 +22,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -39,7 +40,10 @@ public class IINC extends LocalVariableInstruction {
 	@Override
 	public Conditional<Instruction> execute(final FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
+		int before = ((Conditional)frame.stack.getLocal(index)).size();
 		frame.IINC(ctx, index, increment);
+		int after = ((Conditional)frame.stack.getLocal(index)).size();
+		ComplexityPrinter.addComplex(before, getClass().getSimpleName());
 		return getNext(ctx, ti);
 	}
 	

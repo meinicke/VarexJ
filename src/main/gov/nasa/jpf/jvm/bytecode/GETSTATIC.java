@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -93,6 +94,7 @@ public class GETSTATIC extends StaticFieldInstruction {
 
     if (size == 1) {
       Conditional<Integer> ival = ei.get1SlotField(fieldInfo);
+      ComplexityPrinter.addComplex(ival.size(), getClass().getSimpleName());
       lastValue = ival;
 
       if (fieldInfo.isReference()) {
@@ -107,6 +109,7 @@ public class GETSTATIC extends StaticFieldInstruction {
 
     } else {
       Conditional<Long> lval = ei.get2SlotField(fieldInfo);
+      ComplexityPrinter.addComplex(lval.size(), getClass().getSimpleName());
       lastValue = lval;
       
       frame.push(ctx, lval);

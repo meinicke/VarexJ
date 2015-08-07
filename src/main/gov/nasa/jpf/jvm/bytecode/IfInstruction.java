@@ -30,6 +30,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -82,7 +83,8 @@ public abstract class IfInstruction extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     conditionValue = popConditionValue(ctx, frame);
-    return conditionValue.mapf(ctx, new BiFunction<FeatureExpr, Boolean, Conditional<Instruction>>() {
+    
+    Conditional<Instruction> returnValue = conditionValue.mapf(ctx, new BiFunction<FeatureExpr, Boolean, Conditional<Instruction>>() {
 
 		@Override
 		public Conditional<Instruction> apply(FeatureExpr x, Boolean condition) {
@@ -93,6 +95,8 @@ public abstract class IfInstruction extends JVMInstruction {
 		    }
 		}
 	}).simplify();
+    ComplexityPrinter.addComplex(conditionValue.size(), getClass().getSimpleName());
+    return returnValue;
   }
 
   /**
