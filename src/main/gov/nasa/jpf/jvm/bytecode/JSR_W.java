@@ -25,6 +25,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -51,7 +52,7 @@ public class JSR_W extends JVMInstruction {
 		}
     	
     });
-    
+    ComplexityPrinter.addComplex(tgtAdr.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     frame.push(ctx, tgtAdr);
 
     return new One<>(mi.getInstructionAt(target));

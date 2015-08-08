@@ -45,7 +45,7 @@ public class ICONST extends JVMInstruction {
     int before = frame.stack.getStackWidth();
     frame.push(ctx, One.valueOf(value));
     int after = frame.stack.getStackWidth();
-    ComplexityPrinter.addComplex(after, getClass().getSimpleName());
+    ComplexityPrinter.addComplex(after, getClass().getSimpleName(), ctx, frame.getMethodInfo());
     return getNext(ctx, ti);
   }
 

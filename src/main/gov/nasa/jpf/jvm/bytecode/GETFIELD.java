@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -58,7 +59,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 		lastThis = objRef;
 		final GETFIELD thisInstruction = this;
-
+		ComplexityPrinter.addComplex(objRef.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

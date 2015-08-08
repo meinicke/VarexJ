@@ -23,6 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -36,7 +37,7 @@ public class DMUL extends JVMInstruction {
 
 		Conditional<Double> v1 = frame.popDouble(ctx);
 		Conditional<Double> v2 = frame.popDouble(ctx);
-
+		ComplexityPrinter.addComplex(v1.size() * v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		frame.push(ctx, mapr(v1, v2));
 		return getNext(ctx, ti);
 	}

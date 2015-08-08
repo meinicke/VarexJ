@@ -25,6 +25,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -44,7 +45,7 @@ public class INEG extends JVMInstruction {
 
 		Conditional<Integer> v = frame.pop(ctx);
 		frame.push(ctx, v.mapr(NEG));
-
+		ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		return getNext(ctx, ti);
 	}
 

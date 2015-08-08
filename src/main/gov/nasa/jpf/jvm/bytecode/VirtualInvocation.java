@@ -27,6 +27,7 @@ import java.util.TreeMap;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
@@ -118,6 +119,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return new One<Instruction>(this);
 				}
 			}
+			ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 			setupCallee(ctx, ti, callee);
 			if (!splitRef) {
 				return ti.getPC();

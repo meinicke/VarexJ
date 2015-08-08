@@ -42,7 +42,7 @@ public class ILOAD extends LocalVariableInstruction {
     int before = frame.stack.getStackWidth();
     frame.pushLocal(ctx, index);
     int after = frame.stack.getStackWidth();
-    ComplexityPrinter.addComplex(before, getClass().getSimpleName());
+    ComplexityPrinter.addComplex(before, getClass().getSimpleName(), ctx, frame.getMethodInfo());
     return getNext(ctx, ti);
   }
 

@@ -23,6 +23,7 @@ import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -46,6 +47,7 @@ public class WIDE extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
     // nothing, BCEL doesn't even pass this on;
+	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     return getNext(ctx, ti);
   }
 

@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -43,6 +44,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 		// we need to get the object first, to check if it is shared
 		Conditional<Integer> aref = frame.peek(ctx, 1); // ..,arrayRef,idx
 		final ArrayLoadInstruction instruction = this;
+		ComplexityPrinter.addComplex(aref.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
 		return aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

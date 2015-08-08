@@ -34,6 +34,7 @@ import java.util.Arrays;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -102,7 +103,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 		}
 
 		Conditional<Integer> arrayRef = allocateArray(ti.getHeap(), type, arrayLengths, ti, 0);
-
+		ComplexityPrinter.addComplex(arrayRef.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		// put the result (the array reference) on the stack
 		frame.pushRef(ctx, arrayRef);
 

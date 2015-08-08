@@ -26,6 +26,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -38,7 +39,7 @@ public class IREM extends JVMInstruction {
 
 		Conditional<Integer> v1 = frame.pop(ctx);
 		final Conditional<Integer> v2 = frame.pop(ctx);
-
+		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 				@Override

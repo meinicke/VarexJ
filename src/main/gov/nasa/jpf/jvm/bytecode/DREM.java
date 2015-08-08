@@ -26,6 +26,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -41,7 +42,7 @@ public class DREM extends JVMInstruction {
     
     Conditional<Double> v1 = frame.popDouble(ctx);
     final Conditional<Double> v2 = frame.popDouble(ctx);
-    
+    ComplexityPrinter.addComplex(v1.size() * v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     return v1.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Instruction>>() {
 
 		@Override

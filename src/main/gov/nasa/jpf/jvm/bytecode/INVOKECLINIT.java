@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -54,7 +55,7 @@ public class INVOKECLINIT extends INVOKESTATIC {
     MethodInfo callee = getInvokedMethod(ctx, ti);
     ClassInfo ci = callee.getClassInfo();
     ElementInfo ei = ci.getModifiableClassObject();
-
+    ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     if (!ti.isFirstStepInsn()) {
       // if we can't acquire the lock, it means somebody else is initializing concurrently
       if (!ei.canLock(ti)) {

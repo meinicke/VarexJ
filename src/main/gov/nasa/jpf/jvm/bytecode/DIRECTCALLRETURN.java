@@ -27,6 +27,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -67,7 +68,7 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     // pop the current frame but do not advance the new top frame, and do
     // not touch its operand stack
-    
+	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     if (ti.getStackDepth() == 1){ // thread exit point (might be re-executed)
     
       if (!ti.exit(ctx)){

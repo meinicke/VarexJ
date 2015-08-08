@@ -26,6 +26,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -39,7 +40,7 @@ public class LDIV extends JVMInstruction {
 
 		Conditional<Long> v1 = frame.popLong(ctx);
 		final Conditional<Long> v2 = frame.popLong(ctx);
-
+		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Instruction>>() {
 
 				@Override

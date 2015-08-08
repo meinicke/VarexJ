@@ -42,7 +42,7 @@ public class ISTORE extends LocalVariableInstruction implements StoreInstruction
     int before = frame.stack.getStackWidth();
     frame.storeOperand(ctx, index);
     int after = frame.stack.getStackWidth();
-    ComplexityPrinter.addComplex(after, getClass().getSimpleName());
+    ComplexityPrinter.addComplex(after, getClass().getSimpleName(), ctx, frame.getMethodInfo());
     return getNext(ctx, ti);
 
   }

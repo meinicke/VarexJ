@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -42,6 +43,7 @@ public class RET extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
     Conditional<Integer> jumpTgt = frame.getLocalVariable(ctx, index);
+    ComplexityPrinter.addComplex(jumpTgt.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     return jumpTgt.map(new Function<Integer, Instruction>() {
 
 		@Override

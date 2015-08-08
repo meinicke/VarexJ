@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.Types;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -52,7 +53,7 @@ public class CHECKCAST extends JVMInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		StackFrame frame = ti.getTopFrame();
 		Conditional<Integer> objref = frame.peek(ctx);
-
+		ComplexityPrinter.addComplex(objref.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
 		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

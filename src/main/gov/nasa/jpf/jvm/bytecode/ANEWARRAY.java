@@ -30,6 +30,7 @@ import gov.nasa.jpf.vm.Types;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -66,6 +67,7 @@ public class ANEWARRAY extends NewArrayInstruction {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayLength = frame.pop(ctx);
+		ComplexityPrinter.addComplex(arrayLength.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
 		return arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

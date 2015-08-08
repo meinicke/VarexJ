@@ -23,6 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -37,7 +38,7 @@ public class SWAP extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.swap();
-    
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());    
     return getNext(ctx, ti);
   }
 

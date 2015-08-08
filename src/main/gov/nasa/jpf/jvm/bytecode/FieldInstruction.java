@@ -194,7 +194,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
         }
 
       } else { // not a reference, nothing exposed
-    	  ComplexityPrinter.addComplex(val.size(), getClass().getSimpleName());
+    	  ComplexityPrinter.addComplex(val.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
         eiFieldOwner.set1SlotField(ctx, fi, val);
         eiFieldOwner.setFieldAttr(fi, attr); // see above about overwrite vs. accumulation
       }

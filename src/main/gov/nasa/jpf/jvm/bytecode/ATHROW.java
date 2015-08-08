@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -39,6 +40,7 @@ public class ATHROW extends JVMInstruction {
 		StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Integer> objref = frame.pop(ctx);
+		ComplexityPrinter.addComplex(objref.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
 		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

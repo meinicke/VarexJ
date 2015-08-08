@@ -34,6 +34,7 @@ import java.util.List;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -57,7 +58,6 @@ public class INVOKECG extends JVMInstruction {
   }
   
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    
     if (!ti.isFirstStepInsn()) {
       InvocationCG cg = new InvocationCG( "INVOKECG", invokes);
       if (ti.getVM().setNextChoiceGenerator(cg)){
@@ -84,7 +84,7 @@ public class INVOKECG extends JVMInstruction {
       }
       
       pushArguments(ctx, ti, call.getArguments(), call.getAttrs());
-      
+      ComplexityPrinter.addComplex(ti.getModifiableTopFrame().stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
       return new One<>(realInvoke);
     }
 

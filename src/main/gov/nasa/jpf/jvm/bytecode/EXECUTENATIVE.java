@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import java.lang.reflect.Method;
 
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -67,7 +68,7 @@ public class EXECUTENATIVE extends JVMInstruction {
   }
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-
+	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     // we don't have to enter/leave or push/pop a frame, that's all done
     // in NativeMethodInfo.execute()
     // !! don't re-enter if this is reexecuted !!

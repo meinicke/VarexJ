@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -70,7 +71,7 @@ public class LDC extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    
+    ComplexityPrinter.addComplex(1,  getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     switch (type){
       case STRING:
         // too bad we can't cache it, since location might change between different paths

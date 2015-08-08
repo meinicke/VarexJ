@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -38,7 +39,7 @@ public class L2F extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     Conditional<Long> v = frame.popLong(ctx);
-    
+    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     frame.push(ctx, v.map(new Function<Long, Float>() {
 
 		@Override

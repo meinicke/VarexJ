@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -42,6 +43,7 @@ public class GOTO extends JVMInstruction {
   }
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo th) {
+	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, th.getTopFrameMethodInfo());
     return new One<>(getTarget());
   }
 

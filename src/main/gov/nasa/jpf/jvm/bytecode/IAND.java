@@ -23,6 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -37,7 +38,7 @@ public class IAND extends JVMInstruction {
 
     Conditional<Integer> v1 = frame.pop(ctx);
     Conditional<Integer> v2 = frame.pop(ctx);
-
+    ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     frame.push(ctx, mapr(v1, v2));
 
     return getNext(ctx, ti);

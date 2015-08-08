@@ -23,6 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -37,7 +38,7 @@ public class FNEG extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     Conditional<Float> v = frame.popFloat(ctx);
-    
+    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());    
     frame.push(ctx, mapr2(v, null));
     return getNext(ctx, ti);
   }

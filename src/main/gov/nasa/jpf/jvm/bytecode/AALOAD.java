@@ -34,7 +34,7 @@ public class AALOAD extends ArrayLoadInstruction {
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     Conditional<Integer> value = ei.getReferenceElement(index);
-    ComplexityPrinter.addComplex(value.size(), getClass().getSimpleName());
+    ComplexityPrinter.addComplex(value.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
     frame.pushRef(ctx, value);
   }
 

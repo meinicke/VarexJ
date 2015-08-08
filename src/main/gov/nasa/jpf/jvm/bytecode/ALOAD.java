@@ -47,7 +47,7 @@ public class ALOAD extends LocalVariableInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushLocal(ctx, index);
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName());
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
     return getNext(ctx, ti);
   }
 

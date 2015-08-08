@@ -45,7 +45,6 @@ public class AASTORE extends ArrayStoreInstruction {
 
 	protected void setField(FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
 		ei.checkArrayBounds(ctx, index);
-		ComplexityPrinter.addComplex(value.size(), getClass().getSimpleName());
 		ei.setReferenceElement(ctx, index, value);
 	}
 

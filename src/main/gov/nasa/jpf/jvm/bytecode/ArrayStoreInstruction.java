@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -40,6 +41,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		Conditional<Integer> aref = peekArrayRef(ctx, ti); // need to be poly, could be LongArrayStore
 		final ArrayStoreInstruction instruction = this;
+		ComplexityPrinter.addComplex(aref.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		return aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

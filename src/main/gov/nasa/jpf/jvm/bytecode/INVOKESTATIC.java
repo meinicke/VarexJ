@@ -120,7 +120,7 @@ public class INVOKESTATIC extends InvokeInstruction {
 //			 }
 //		 }
 //	}
-    ComplexityPrinter.addComplex(1, getClass().getSimpleName());
+    ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, callee);
 	setupCallee(ctx, ti, callee); // this creates, initializes and
 									// pushes the callee StackFrame
 

@@ -23,6 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -36,7 +37,7 @@ public class DUP extends JVMInstruction {
     StackFrame frame = th.getModifiableTopFrame();
     
     frame.dup(ctx);
-
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, th.getTopFrameMethodInfo());
     return getNext(ctx, th);
   }
 

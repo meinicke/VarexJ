@@ -26,6 +26,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -40,7 +41,7 @@ public class ARRAYLENGTH extends ArrayInstruction {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayRef = frame.pop(ctx);
-
+		ComplexityPrinter.addComplex(arrayRef.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
 		return arrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

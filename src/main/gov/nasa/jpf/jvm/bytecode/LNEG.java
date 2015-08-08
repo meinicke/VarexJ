@@ -23,6 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -37,7 +38,7 @@ public class LNEG extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     Conditional<Long> v1 = frame.popLong(ctx);
-    
+    ComplexityPrinter.addComplex(v1.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());    
     frame.push(ctx, mapr2(v1, null));
     return getNext(ctx, ti);
   }

@@ -32,6 +32,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -177,6 +178,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     // remove args, push return value and continue with next insn
     // (DirectCallStackFrames don't use this)
     frame.removeArguments(ctx, mi);
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
     pushReturnValue(ctx, frame);
     if (attr != null) {
       setReturnAttr(ti, attr);

@@ -30,6 +30,7 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -62,7 +63,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 		lastThis = objRef;
 		
 		final PUTFIELD instruction = this;
-
+		ComplexityPrinter.addComplex(objRef.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

@@ -40,7 +40,7 @@ public class IDIV extends JVMInstruction {
 		Conditional<Integer> v1 = frame.pop(ctx);
 		final Conditional<Integer> v2 = frame.pop(ctx);
 		final IDIV thisInstruction = this;
-		ComplexityPrinter.addComplex(v1.size() * v2.size(), getClass().getSimpleName());
+		ComplexityPrinter.addComplex(v1.size() * v2.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
 		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 				@Override

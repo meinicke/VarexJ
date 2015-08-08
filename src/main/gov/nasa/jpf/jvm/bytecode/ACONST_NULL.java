@@ -40,7 +40,7 @@ public class ACONST_NULL extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.pushRef(ctx, One.MJIEnvNULL);
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName());
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
     return getNext(ctx, ti);
   }
 

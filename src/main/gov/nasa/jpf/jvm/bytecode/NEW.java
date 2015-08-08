@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -85,7 +86,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     // pushes the return value onto the stack
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushRef( ctx, objRef);
-
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
     return getNext(ctx, ti);
   }
   

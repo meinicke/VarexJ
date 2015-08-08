@@ -28,6 +28,7 @@ import gov.nasa.jpf.vm.VM;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -41,6 +42,7 @@ public class MONITOREXIT extends LockInstruction {
 
 		Conditional<Integer> objref = frame.peek(ctx);
 		final MONITOREXIT thisInstruction = this;
+		ComplexityPrinter.addComplex(objref.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

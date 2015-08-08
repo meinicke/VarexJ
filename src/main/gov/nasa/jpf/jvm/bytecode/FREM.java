@@ -26,6 +26,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -39,7 +40,7 @@ public class FREM extends JVMInstruction {
 
 		Conditional<Float> v1 = frame.popFloat(ctx);
 		final Conditional<Float> v2 = frame.popFloat(ctx);
-
+		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		return v1.mapf(ctx, new BiFunction<FeatureExpr, Float, Conditional<Instruction>>() {
 
 			@Override

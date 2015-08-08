@@ -24,6 +24,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -34,7 +35,6 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class RETURN extends ReturnInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-
     // Constructors don't return anything so this is the only instruction that can be used to return from a constructor.
 
     //MethodInfo mi = ti.getMethod();  // Get the current method being executed (e.g. returned from).

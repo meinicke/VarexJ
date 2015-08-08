@@ -36,6 +36,7 @@ import java.util.Map.Entry;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -126,7 +127,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 //		if (!classes.isEmpty() && map.size() > classes.size()) {
 //			System.out.println("SPECIAL reduce invocations from " + map.size() + " to " + classes.size() + " " + callee);
 //		}
-
+	    ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		setupCallee(ctx, ti, callee); // this creates, initializes and
 										// pushes the callee StackFrame
 	

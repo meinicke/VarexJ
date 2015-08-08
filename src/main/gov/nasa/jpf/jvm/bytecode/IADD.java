@@ -43,7 +43,7 @@ public class IADD extends JVMInstruction {
     int complex = v1s * v2s;
     
     Conditional<Integer> result = maprInt(v1, v2);
-    ComplexityPrinter.addComplex(complex, getClass().getSimpleName());
+    ComplexityPrinter.addComplex(complex, getClass().getSimpleName(), ctx, frame.getMethodInfo());
     frame.push(ctx, result);
     return getNext(ctx, ti);
   }

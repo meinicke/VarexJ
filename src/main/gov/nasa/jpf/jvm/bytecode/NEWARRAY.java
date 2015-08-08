@@ -29,6 +29,7 @@ import gov.nasa.jpf.vm.Types;
 import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -46,7 +47,7 @@ public class NEWARRAY extends NewArrayInstruction {
 
 		arrayLength = frame.pop(ctx);
 		final Heap heap = ti.getHeap();
-
+		ComplexityPrinter.addComplex(arrayLength.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		return arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

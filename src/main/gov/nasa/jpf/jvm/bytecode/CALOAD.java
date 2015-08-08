@@ -21,7 +21,9 @@ package gov.nasa.jpf.jvm.bytecode;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
+import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -33,7 +35,9 @@ public class CALOAD extends ArrayLoadInstruction {
 
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     e.checkArrayBounds(ctx, index);
-    frame.push( ctx, e.getCharElement(index).map(new Function<Character, Integer>() {
+    Conditional<Character> charElement = e.getCharElement(index);
+    ComplexityPrinter.addComplex(charElement.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
+	frame.push( ctx, charElement.map(new Function<Character, Integer>() {
 
 		@Override
 		public Integer apply(Character x) {

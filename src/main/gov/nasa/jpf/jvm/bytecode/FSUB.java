@@ -23,6 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -38,7 +39,7 @@ public class FSUB extends JVMInstruction {
     
     Conditional<Float> v1 = frame.popFloat(ctx);
     Conditional<Float> v2 = frame.popFloat(ctx);
-    
+    ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());    
     frame.push(ctx, mapr(v1, v2));
     return getNext(ctx, ti);
   }

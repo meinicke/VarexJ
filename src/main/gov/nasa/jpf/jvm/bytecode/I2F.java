@@ -23,6 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import cmu.conditional.Conditional;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -36,7 +37,7 @@ public class I2F extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     Conditional<Integer> v = frame.pop(ctx);
-    
+    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());    
     frame.push(ctx, mapr2(v, 0));
 
     return getNext(ctx, ti);

@@ -27,6 +27,7 @@ import gov.nasa.jpf.vm.Types;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import cmu.utils.ComplexityPrinter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -60,7 +61,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
 		frame.removeArguments(ctx, mi);
 		pushReturnValue(ctx, frame);
-
+		ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
 		if (retAttr != null) {
 			setReturnAttr(ti, retAttr);
 		}
