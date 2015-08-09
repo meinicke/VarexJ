@@ -80,3 +80,4 @@ GlobalPassing.txt
 Notify.sh
 PassingList.txt
 coverage.xml
+jetty-resources/
