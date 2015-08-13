@@ -33,9 +33,13 @@ public class JettyHelloWorld extends AbstractHandler {
 //    @Conditional //Not working, FIXME: FileOutputStream class def not compatible with JVM
     public static boolean Logging = false;
 //    @Conditional
-//    public static boolean Deploy = true;
-//    @Conditional
-//    public static boolean Contexts = true;
+    public static boolean setDumpAfterStart = false;
+    @Conditional
+    public static boolean setDumpBeforeStop = true;
+    @Conditional
+    public static boolean setUncheckedPrintWriter = true;
+    @Conditional
+    public static boolean setStopAtShutdown = true;
 
     public static void configureServer(Server server) {
         // ========== jetty-server ==========
@@ -51,6 +55,31 @@ public class JettyHelloWorld extends AbstractHandler {
         else{
             server.setSendDateHeader(false);
         }
+        if (setDumpAfterStart) {
+            server.setDumpAfterStart(true);
+        }
+        else {
+            server.setDumpAfterStart(false);
+        }
+        if (setDumpBeforeStop) {
+            server.setDumpBeforeStop(true);
+        }
+        else{
+            server.setDumpBeforeStop(false);
+        }
+        if (setUncheckedPrintWriter) {
+            server.setUncheckedPrintWriter(true);
+        }
+        else {
+            server.setUncheckedPrintWriter(false);
+        }
+        if (setStopAtShutdown) {
+            server.setStopAtShutdown(true);
+        }
+        else{
+            server.setStopAtShutdown(false);
+        }
+
 
         // ========== jetty-logging ==========
         if (Logging) {
@@ -81,7 +110,7 @@ public class JettyHelloWorld extends AbstractHandler {
         // ThreadPool
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setMinThreads(1);
-        threadPool.setMaxThreads(2);
+        threadPool.setMaxThreads(3);
         threadPool.setDetailedDump(false);
         server.setThreadPool(threadPool);
 
@@ -110,8 +139,8 @@ public class JettyHelloWorld extends AbstractHandler {
         HandlerCollection handlers = new HandlerCollection();
         Handler[] handlerArray = {
 //                context,
-                webapp,
-//                new JettyHelloWorld()
+//                webapp,
+                new JettyHelloWorld()
         };
         handlers.setHandlers(handlerArray);
         server.setHandler(handlers);
