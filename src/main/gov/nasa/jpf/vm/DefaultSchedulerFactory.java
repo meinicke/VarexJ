@@ -22,6 +22,8 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.choice.BreakGenerator;
 import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
 
+import java.util.Random;
+
 
 /**
  * the general policy is that we only create Thread CGs here (based on their
@@ -130,11 +132,32 @@ public class DefaultSchedulerFactory implements SchedulerFactory {
           break;
         }
       }
+      randomizeThreadList(list);
       return list;
     }
     else{
       return null;
     }
+  }
+
+  private void randomizeThreadList(ThreadInfo[] list) {
+    int upperBound = list.length-2;  // we don't change the last ThreadInfo
+    // no need to switch the order if upper bound is less than 1
+    if (upperBound < 1) {
+      return;
+    }
+    Random rand = new Random();
+    for (int i = 0; i < 10; i++) {
+      int posA = rand.nextInt(upperBound);
+      int posB = rand.nextInt(upperBound);
+      if (posA == posB) {
+        continue;
+      }
+      ThreadInfo tmp = list[posA];
+      list[posA] = list[posB];
+      list[posB] = tmp;
+    }
+
   }
 
   protected ThreadInfo[] getRunnablesWith (ThreadInfo ti) {

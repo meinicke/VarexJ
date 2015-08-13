@@ -12,7 +12,7 @@ import java.net.Socket;
  * @author: chupanw
  */
 public class JettyHelloWorldTest extends TestJPF{
-    private final String[] config = {"+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+classpath+=${jpf-core}/lib/junit-4.11.jar,lib/jetty-all-7.6.18-SNAPSHOT.jar,lib/servlet-api-2.5.jar"};
+    private final String[] config = {"+nhandler.delegateUnhandledNative", "+interaction=interaction", "+search.class=.search.RandomSearch", "+classpath+=${jpf-core}/lib/junit-4.11.jar,lib/jetty-all-7.6.18-SNAPSHOT.jar,lib/servlet-api-2.5.jar,jetty-resources/classes"};
     @Test(timeout = 6000000)
     public void testHelloWorldServer() throws Exception {
         if (verifyNoPropertyViolation(config)) {

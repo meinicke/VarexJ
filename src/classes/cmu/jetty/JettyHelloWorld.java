@@ -32,10 +32,10 @@ public class JettyHelloWorld extends AbstractHandler {
     public static boolean sendDataHeader = false;
 //    @Conditional //Not working, FIXME: FileOutputStream class def not compatible with JVM
     public static boolean Logging = false;
-    @Conditional
-    public static boolean Deploy = true;
-    @Conditional
-    public static boolean Contexts = true;
+//    @Conditional
+//    public static boolean Deploy = true;
+//    @Conditional
+//    public static boolean Contexts = true;
 
     public static void configureServer(Server server) {
         // ========== jetty-server ==========
@@ -81,7 +81,7 @@ public class JettyHelloWorld extends AbstractHandler {
         // ThreadPool
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setMinThreads(1);
-        threadPool.setMaxThreads(3);
+        threadPool.setMaxThreads(2);
         threadPool.setDetailedDump(false);
         server.setThreadPool(threadPool);
 
@@ -90,13 +90,19 @@ public class JettyHelloWorld extends AbstractHandler {
         connector.setPort(8080);
         server.setConnectors(new Connector[]{connector});
 
-        // Handlers
         // context handler
-        ContextHandler context = new ContextHandler();
-        context.setContextPath("/hello");
-        context.setResourceBase("jetty-resources/contexts");
-        context.setClassLoader(Thread.currentThread().getContextClassLoader());
+//        ContextHandler context = new ContextHandler();
+//        context.setContextPath("/hello");
+//        context.setResourceBase("jetty-resources/contexts");
+//        context.setClassLoader(Thread.currentThread().getContextClassLoader());
         // web app handler
+
+
+//        HashLoginService hashLogin = new HashLoginService();
+//        hashLogin.setName("Test Realm");
+//        hashLogin.setConfig("jetty-resources/realm.properties");
+//        hashLogin.setRefreshInterval(0);
+//        server.addBean(hashLogin);
         WebAppContext webapp = new WebAppContext();
         webapp.setContextPath("/");
         webapp.setWar("jetty-resources/webapps/test.war");
@@ -104,8 +110,8 @@ public class JettyHelloWorld extends AbstractHandler {
         HandlerCollection handlers = new HandlerCollection();
         Handler[] handlerArray = {
 //                context,
-//                webapp
-                new JettyHelloWorld()
+                webapp,
+//                new JettyHelloWorld()
         };
         handlers.setHandlers(handlerArray);
         server.setHandler(handlers);
