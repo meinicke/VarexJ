@@ -20,6 +20,7 @@
 package gov.nasa.jpf.listener;
 
 
+import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.PropertyListenerAdapter;
@@ -70,7 +71,19 @@ public class ErrorTraceGenerator extends PropertyListenerAdapter implements Publ
       int i=0;
       for (ChoiceGenerator<?> cg : trace){
         int tid = cg.getThreadInfo().getId();
-        Instruction insn = cg.getInsn();
+        Instruction insn;
+        if (cg.getInsn() instanceof One)
+        {
+          insn = cg.getInsn().getValue();
+        }
+        else
+        {
+          System.err.println("___________________________________________________");
+          System.err.println("[WARN] Get value of choice called: " + this);
+          System.err.println("---------------------------------------------------");
+          // Let's wait for a NullPointerException
+          insn = null;
+        }
 
         if (!cg.isCascaded()){
           pw.printf("#%2d [tid=%2d] ", i++, tid);

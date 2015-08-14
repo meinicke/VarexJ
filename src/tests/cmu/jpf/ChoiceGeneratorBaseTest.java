@@ -14,8 +14,10 @@ public class ChoiceGeneratorBaseTest extends TestJPF{
 
     /**
      * When accessing static fields from several threads,
-     * a createAndSetSharedFieldAccessCG will be created and the instruction causing
+     * a SharedFieldAccessCG will be created and the instruction causing
      * this CG could be a Choice, but current impl. do not consider this.
+     *
+     * Note: Sometimes this works. Remember to enable mustYield() in ThreadInfo
      */
     @Test
     @Ignore

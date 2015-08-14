@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.util.ObjectList;
 
 import java.util.Comparator;
@@ -96,13 +97,13 @@ public interface ChoiceGenerator<T> extends Cloneable {
 
   ThreadInfo getThreadInfo();
 
-  void setInsn(Instruction insn);
+  void setInsn(Conditional<Instruction> insn);
 
-  Instruction getInsn();
+  Conditional<Instruction> getInsn();
 
   void setContext(ThreadInfo tiCreator);
 
-  String getSourceLocation();
+  Conditional<String> getSourceLocation();
 
   boolean supportsReordering();
   
