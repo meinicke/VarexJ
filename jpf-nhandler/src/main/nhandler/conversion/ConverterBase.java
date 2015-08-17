@@ -94,6 +94,7 @@ public class ConverterBase {
                   || obj.getClass().getName().equals("java.util.zip.CRC32")
                   || obj.getClass().getName().equals("sun.nio.ch.IOUtil")
                   || obj.getClass().getName().equals("sun.nio.ch.KQueueArrayWrapper")
+                  || obj.getClass().getName().equals("java.util.zip.Deflater")
                   ) {
 
 //          if (!socketObjArray.contains(obj)) {
@@ -105,7 +106,7 @@ public class ConverterBase {
 //          objSetJVMBackup.add(entry.getValue());
               map.remove(entry.getKey());
               break;
-          }
+          } //WARNING: these lines were written when I was fighting with my girlfirend. BE CAREFUL!!!!
       }
     }
   }
@@ -129,6 +130,7 @@ public class ConverterBase {
                   || cls.getName().equals("java.util.zip.CRC32")
                   || cls.getName().equals("sun.nio.ch.IOUtil")
                   || cls.getName().equals("sun.nio.ch.KQueueArrayWrapper")
+                  || cls.getName().equals("java.util.zip.Deflater")
                   ) {
 
               continue;

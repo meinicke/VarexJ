@@ -20,7 +20,7 @@ public class ChoiceGeneratorBaseTest extends TestJPF{
      * Note: Sometimes this works. Remember to enable mustYield() in ThreadInfo
      */
     @Test
-    @Ignore
+    @Ignore // Working
     public void testSetContext() {
         if (verifyNoPropertyViolation("+search.class=.search.RandomSearch")) {
             // Create a thread to access the same filed
