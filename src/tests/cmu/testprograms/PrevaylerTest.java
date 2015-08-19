@@ -41,7 +41,7 @@ public class PrevaylerTest extends ATestExample {
 	static boolean USE_XSTREAM = true;
 //	@Conditional // TODO Does not work
 	static boolean USE_XSTREAM_JOURNAL = false;
-//	 @Conditional // TODO Does not work conditionally
+	 @Conditional // TODO Does not work conditionally
 	static boolean USE_FILTERING = false;
 	@Conditional
 	static boolean USE_TRANSIENT_MODE = false;
@@ -55,6 +55,9 @@ public class PrevaylerTest extends ATestExample {
 
 	@Test
 	public void runNumberKeeper() throws Exception {
+		// clean up
+		deleteDirectory("NumberKeeper");
+
 		if (verifyNoPropertyViolation(config)) {
 			// delete old counts
 			String folderName = clearTempFolder(NUMBER_KEEPER);
@@ -130,6 +133,8 @@ public class PrevaylerTest extends ATestExample {
 
 	@Test
 	public void scalabilityTest() {
+		// clean up
+		deleteDirectory("QueryTest");
 		if (verifyNoPropertyViolation(config)) {
 			org.prevayler.demos.scalability.Main.main(null);
 		}
@@ -137,18 +142,21 @@ public class PrevaylerTest extends ATestExample {
 
 	@Test
 	public void jxpathTest() {
-		if (true||verifyNoPropertyViolation(config)) {
-			String[] args1 = new String[] { "proj", "100", "learn JXPath" };
-			String[] args2 = new String[] { "task", "50", "read docs",
-					"09/21/02 2:00 PM", "09/21/02 3:00 PM", "100" };
-			String[] args3 = new String[] { "task", "51", "write code",
-					"09/21/02 3:00 PM", "09/21/02 4:00 PM", "100" };
-			String[] args4 = new String[] { "task", "52", "veg out",
-					"09/21/02 4:00 PM", "09/21/02 5:00 PM", "100" };
-			String[] args5 = new String[] { "list", "projects" };
-			String[] args6 = new String[] { "list", "projects/tasks" };
-			String[] args7 = new String[] { "list",
-					"projects/tasks[name='read docs']" };
+		// clean up
+		deleteDirectory("demoJXPath");
+
+		if (verifyNoPropertyViolation(config)) {
+			String[] args1 = new String[]{"proj", "100", "learn JXPath"};
+			String[] args2 = new String[]{"task", "50", "read docs",
+					"09/21/02 2:00 PM", "09/21/02 3:00 PM", "100"};
+			String[] args3 = new String[]{"task", "51", "write code",
+					"09/21/02 3:00 PM", "09/21/02 4:00 PM", "100"};
+			String[] args4 = new String[]{"task", "52", "veg out",
+					"09/21/02 4:00 PM", "09/21/02 5:00 PM", "100"};
+			String[] args5 = new String[]{"list", "projects"};
+			String[] args6 = new String[]{"list", "projects/tasks"};
+			String[] args7 = new String[]{"list",
+					"projects/tasks[name='read docs']"};
 			org.prevayler.demos.jxpath.Main.main(args1);
 			org.prevayler.demos.jxpath.Main.main(args2);
 			org.prevayler.demos.jxpath.Main.main(args3);
@@ -161,6 +169,9 @@ public class PrevaylerTest extends ATestExample {
 
 	@Test
 	public void tutorialTest() throws Exception {
+		// clean up
+		deleteDirectory("Tutorial");
+
 		if (verifyNoPropertyViolation(config)) {
 			String folderName = clearTempFolder("Tutorial");
 			// org.prevayler.tutorial.Main.main(folderName);
@@ -261,6 +272,22 @@ public class PrevaylerTest extends ATestExample {
 			factory.configureJournalSerializer(new XStreamSerializer());
 		} else {
 			factory.configureJournalSerializer(new JavaSerializer());
+		}
+	}
+
+	void deleteDirectory(String name){
+		File dir = new File(name);
+		if (dir.exists() && dir.isDirectory()) {
+			File[] list = dir.listFiles();
+			assert list != null;
+			for (File file : list) {
+				if (file.isDirectory()) {
+					deleteDirectory(file.getAbsolutePath());
+				}
+				else {
+					file.delete();
+				}
+			}
 		}
 	}
 
