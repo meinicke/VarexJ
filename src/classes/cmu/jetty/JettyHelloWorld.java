@@ -38,28 +38,28 @@ public class JettyHelloWorld extends AbstractHandler {
     public static boolean setDumpBeforeStop = false;
 //    @Conditional // Not working
     public static boolean setUncheckedPrintWriter = false;
-    @Conditional // Working
+//    @Conditional // Working
     public static boolean setStopAtShutdown = false;
     //========== end ==========
 
     //========== WebAppContext ==========
-    @Conditional
+//    @Conditional
     public static boolean setAllowDuplicateFragmentNames = false;
-    @Conditional
+//    @Conditional
     public static boolean setConfigurationDiscovered = true;
-    @Conditional
+//    @Conditional
     public static boolean setCopywebDir = false;
 //    @Conditional // Not working, conditional I/O
     public static boolean setCopyWebInfo = false;
-    @Conditional
+//    @Conditional
     public static boolean setDistributuble = false;
 //    @Conditional // Not working, conditional I/O
     public static boolean setExtractWAR = true;
-    @Conditional
+//    @Conditional
     public static boolean setLogUrlOnStart = false;
 //    @Conditional // Not working
     public static boolean setParentLoaderPriority = false;
-    @Conditional
+//    @Conditional
     public static boolean setThrowUnavailableOnStartupException = false;
     //========== end ==========
 
@@ -219,9 +219,9 @@ public class JettyHelloWorld extends AbstractHandler {
         server.setHandler(handlers);
 
         // Additional configuration
-        configureServer(server);
+//        configureServer(server);
 //        configureLogging();
-        configureWebAppContext(webapp);
+//        configureWebAppContext(webapp);
 
         // Start the server
         server.start();
