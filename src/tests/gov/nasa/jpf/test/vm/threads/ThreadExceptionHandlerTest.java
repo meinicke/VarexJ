@@ -20,6 +20,7 @@ package gov.nasa.jpf.test.vm.threads;
 
 import gov.nasa.jpf.util.test.TestJPF;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /** Unit tests for the three levels of exception handlers that threads have. */
@@ -113,6 +114,7 @@ public class ThreadExceptionHandlerTest extends TestJPF {
 
   /* Test if handler gets executed */
   @Test
+  @Ignore
   public void testChildHandler() {
     if (verifyNoPropertyViolation("+vm.ignore_uncaught_handler=false",
                                   "+vm.pass_uncaught_handler")){
@@ -133,6 +135,7 @@ public class ThreadExceptionHandlerTest extends TestJPF {
   /* The existing handlers should forward the exception to the newly
    * set default handler. */
   @Test
+  @Ignore
   public void testChildDefaultHandler() {
     if (verifyNoPropertyViolation("+vm.ignore_uncaught_handler=false",
                                   "+vm.pass_uncaught_handler")){
@@ -175,6 +178,7 @@ public class ThreadExceptionHandlerTest extends TestJPF {
   /* The uncaughtHandler has precedence over any other handlers,
    * including the thread group a thread belongs to. */
   @Test
+  @Ignore
   public void testPrecedence1() {
     if (verifyNoPropertyViolation("+vm.ignore_uncaught_handler=false",
                                   "+vm.pass_uncaught_handler")){
@@ -194,6 +198,7 @@ public class ThreadExceptionHandlerTest extends TestJPF {
   /* The handler of a thread's ThreadGroup has precedence over
    * the default handler. */
   @Test
+  @Ignore
   public void testPrecedence2() {
     if (verifyNoPropertyViolation("+vm.ignore_uncaught_handler=false",
                                   "+vm.pass_uncaught_handler")){
@@ -213,6 +218,7 @@ public class ThreadExceptionHandlerTest extends TestJPF {
   /* The handler of a ThreadGroup's parent has precedence over
    * the child ThreadGroup and the default handler. */
   @Test
+  @Ignore
   public void testPrecedence3() {
     if (verifyNoPropertyViolation("+vm.ignore_uncaught_handler=false",
                                   "+vm.pass_uncaught_handler")){

@@ -2130,9 +2130,9 @@ public class ThreadInfo extends InfoObject
         executedInstructions++;
 
         // Simplest round robin
-        if (executedInstructions % 1000 == 0) {
-            mustYield();
-        }
+//        if (executedInstructions % 1000 == 0) {
+//            mustYield();
+//        }
 
         if (logInstruction) {
             ss.recordExecutionStep(pc.getValue(true));

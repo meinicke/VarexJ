@@ -1,5 +1,6 @@
 package gov.nasa.jpf.listener;
 
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -168,7 +169,7 @@ public class ChoiceTracker extends ListenerAdapter implements PublisherExtension
           pw.print(line);
 
           if (showLocation) {
-            String loc = cg.getSourceLocation();
+            Conditional<String> loc = cg.getSourceLocation();
             if (loc != null) {
               pw.println();
               pw.print(" \tat ");

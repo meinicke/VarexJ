@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.listener;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.Error;
 import gov.nasa.jpf.JPF;
@@ -287,19 +288,31 @@ public class SimpleDot extends ListenerAdapter {
   // <2do> this doesn't deal well with custom or data CGs yet
   protected String getNextCG(){
     ChoiceGenerator<?> cg = vm.getNextChoiceGenerator(); // that's the next one
-    Instruction insn = cg.getInsn();
+    Instruction insn;
+    if (cg.getInsn() instanceof One)
+    {
+      insn = cg.getInsn().getValue();
+    }
+    else
+    {
+      System.err.println("___________________________________________________");
+      System.err.println("[WARN] Get value of choice called: " + this);
+      System.err.println("---------------------------------------------------");
+      // Let's wait for a NullPointerException
+      insn = null;
+    }
 
     if (insn instanceof EXECUTENATIVE) {
       return getNativeExecCG((EXECUTENATIVE)insn);
 
     } else if (insn instanceof FieldInstruction) { // shared object field access
-      return getFieldAccessCG((FieldInstruction)insn);
+      return getFieldAccessCG((FieldInstruction) insn);
 
     } else if (insn instanceof LockInstruction){ // monitor_enter
-      return getLockCG((LockInstruction)insn);
+      return getLockCG((LockInstruction) insn);
 
     } else if (insn instanceof InvokeInstruction){ // sync method invoke
-      return getInvokeCG((InvokeInstruction)insn);
+      return getInvokeCG((InvokeInstruction) insn);
     }
 
     return insn.getMnemonic(); // our generic fallback

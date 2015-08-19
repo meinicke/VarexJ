@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.ObjectList;
 
@@ -61,7 +64,7 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
   protected ChoiceGenerator<?> prev;
 
   // the instruction that created this CG
-  protected Instruction insn;
+  protected Conditional<Instruction> insn;
 
   // and the thread that executed this insn
   protected ThreadInfo ti;
@@ -149,21 +152,27 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
     return ti;
   }
 
-  public void setInsn(Instruction insn) {
+  public void setInsn(Conditional<Instruction> insn) {
     this.insn = insn;
   }
 
-  public Instruction getInsn() {
+  public Conditional<Instruction> getInsn() {
     return insn;
   }
 
   public void setContext(ThreadInfo tiCreator) {
     ti = tiCreator;
-    insn = tiCreator.getPC().getValue();
+    insn = tiCreator.getPC();
   }
 
-  public String getSourceLocation() {
-    return insn.getSourceLocation();
+  public Conditional<String> getSourceLocation() {
+//    return insn.getSourceLocation();
+    return insn.map(new Function<Instruction, String>() {
+      @Override
+      public String apply(Instruction x) {
+        return x.getSourceLocation();
+      }
+    }).simplify();
   }
 
   public boolean supportsReordering(){

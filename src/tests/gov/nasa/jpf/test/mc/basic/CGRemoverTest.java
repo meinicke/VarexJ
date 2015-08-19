@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.test.mc.basic;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.util.test.TestJPF;
@@ -50,7 +51,17 @@ public class CGRemoverTest extends TestJPF {
 
     @Override
     public void choiceGeneratorSet (VM vm, ChoiceGenerator<?> newCG){
-      Instruction insn = newCG.getInsn();
+      Instruction insn;
+      if (newCG.getInsn() instanceof One) {
+        insn = newCG.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: " + this);
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        insn = null;
+      }
 
       if (insn instanceof InvokeInstruction){
         MethodInfo mi = ((InvokeInstruction)insn).getInvokedMethod();
@@ -67,7 +78,7 @@ public class CGRemoverTest extends TestJPF {
     if (verifyNoPropertyViolation("+listener=.listener.CGRemover,.test.mc.basic.CGRemoverTest$R1Listener",
             "+log.info=gov.nasa.jpf.CGRemover",
             "+cgrm.sync.cg_class=gov.nasa.jpf.vm.ThreadChoiceGenerator",
-            "+cgrm.sync.locations=CGRemoverTest.java:45,CGRemoverTest.java:75")){
+            "+cgrm.sync.locations=CGRemoverTest.java:46,CGRemoverTest.java:86")){
       R1 o = new R1();
       Thread t = new Thread(o);
       t.start();   // from now on 'o' is shared

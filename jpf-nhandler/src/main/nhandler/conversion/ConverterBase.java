@@ -81,27 +81,32 @@ public class ConverterBase {
       changed = false;
       for (Map.Entry<Integer, Object> entry : map.entrySet()) {
         Object obj = entry.getValue();
-        if (obj.getClass().getName().equals("java.net.Socket")
-                || obj.getClass().getName().equals("java.net.SocksSocketImpl")
-                || obj.getClass().getName().equals("java.net.SocketInputStream")
-                || obj.getClass().getName().equals("java.net.SocketOutputStream")
-                || obj.getClass().getName().contains("java.util.zip.ZipFile")
-                || obj.getClass().getName().equals("java.util.jar.JarFile")
-                || obj.getClass().getName().equals("sun.net.www.protocol.jar.URLJarFile")
-                || obj.getClass().getName().equals("java.util.zip.Inflater")
-//                || obj.getClass().getName().equals("java.util.ResourceBundle")
-                ) {
+          if (obj.getClass().getName().equals("java.net.Socket")
+                  || obj.getClass().getName().equals("java.net.SocksSocketImpl")
+                  || obj.getClass().getName().equals("java.net.SocketInputStream")
+                  || obj.getClass().getName().equals("java.net.SocketOutputStream")
+                  || obj.getClass().getName().startsWith("java.util.zip.ZipFile")
+                  || obj.getClass().getName().equals("java.util.jar.JarFile")
+                  || obj.getClass().getName().equals("sun.net.www.protocol.jar.URLJarFile")
+                  || obj.getClass().getName().equals("sun.net.www.protocol.jar.JarURLConnection")
+                  || obj.getClass().getName().equals("java.util.zip.Inflater")
+                  || obj.getClass().getName().equals("java.util.ResourceBundle")
+                  || obj.getClass().getName().equals("java.util.zip.CRC32")
+                  || obj.getClass().getName().equals("sun.nio.ch.IOUtil")
+                  || obj.getClass().getName().equals("sun.nio.ch.KQueueArrayWrapper")
+                  || obj.getClass().getName().equals("java.util.zip.Deflater")
+                  ) {
 
 //          if (!socketObjArray.contains(obj)) {
 //            socketObjArray.add(obj);
 //          }
-          continue;
-        } else {
-          changed = true;
+              continue;
+          } else {
+              changed = true;
 //          objSetJVMBackup.add(entry.getValue());
-          map.remove(entry.getKey());
-          break;
-        }
+              map.remove(entry.getKey());
+              break;
+          } //WARNING: these lines were written when I was fighting with my girlfirend. BE CAREFUL!!!!
       }
     }
   }
@@ -112,23 +117,28 @@ public class ConverterBase {
       changed = false;
       for (Map.Entry<Integer, Class<?>> entry : map.entrySet()) {
         Class<?> cls = entry.getValue();
-        if (cls.getName().equals("java.net.Socket")
-                || cls.getName().equals("java.net.SocksSocketImpl")
-                || cls.getName().equals("java.net.SocketInputStream")
-                || cls.getName().equals("java.net.SocketOutputStream")
-                || cls.getName().contains("java.util.zip.ZipFile")
-                || cls.getName().equals("java.util.jar.JarFile")
-                || cls.getName().equals("sun.net.www.protocol.jar.URLJarFile")
-                || cls.getName().equals("java.util.zip.Inflater")
-//                || cls.getName().equals("java.util.ResourceBundle")
-                ) {
-          continue;
-        }
-        else{
-          changed = true;
-          map.remove(entry.getKey());
-          break;
-        }
+          if (cls.getName().equals("java.net.Socket")
+                  || cls.getName().equals("java.net.SocksSocketImpl") // this one is not in the jpf.properties file, but we need this
+                  || cls.getName().equals("java.net.SocketInputStream")
+                  || cls.getName().equals("java.net.SocketOutputStream")
+                  || cls.getName().startsWith("java.util.zip.ZipFile")
+                  || cls.getName().equals("java.util.jar.JarFile")
+                  || cls.getName().equals("sun.net.www.protocol.jar.URLJarFile")
+                  || cls.getName().equals("sun.net.www.protocol.jar.JarURLConnection")
+                  || cls.getName().equals("java.util.zip.Inflater")
+                  || cls.getName().equals("java.util.ResourceBundle")
+                  || cls.getName().equals("java.util.zip.CRC32")
+                  || cls.getName().equals("sun.nio.ch.IOUtil")
+                  || cls.getName().equals("sun.nio.ch.KQueueArrayWrapper")
+                  || cls.getName().equals("java.util.zip.Deflater")
+                  ) {
+
+              continue;
+          } else {
+              changed = true;
+              map.remove(entry.getKey());
+              break;
+          }
       }
     }
   }

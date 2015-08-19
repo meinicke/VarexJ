@@ -43,6 +43,15 @@ public class JPF_java_io_File extends NativePeer {
   static Conditional<File> getFile(MJIEnv env, int objref, FeatureExpr ctx) {
     int fnref = env.getReferenceField(ctx, objref, "path").getValue();
     Conditional<String> fname = env.getStringObjectNew(ctx, fnref);
+//    final MJIEnv envFinal = env;
+//    final FeatureExpr ctxFinal = ctx;
+//    Conditional<Integer> fnref = env.getReferenceField(ctx, objref, "path");
+//    Conditional<String> fname = fnref.mapr(new Function<Integer, Conditional<String>>() {
+//      @Override
+//      public Conditional<String> apply(Integer x) {
+//        return envFinal.getStringObjectNew(ctxFinal, x);
+//      }
+//    });
     return fname.map(new Function<String, File>() {
 
 		@Override
@@ -142,6 +151,12 @@ public class JPF_java_io_File extends NativePeer {
   @MJI
   public boolean isDirectory____Z (MJIEnv env, int objref, FeatureExpr ctx) {
     return getFile(env,objref, ctx).getValue().isDirectory();
+//    return getFile(env, objref, ctx).map(new Function<File, Boolean>() {
+//      @Override
+//      public Boolean apply(File x) {
+//        return x.isDirectory();
+//      }
+//    });
   }
 
   @MJI

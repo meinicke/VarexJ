@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.report;
 
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.FieldInstruction;
@@ -34,160 +35,166 @@ import gov.nasa.jpf.vm.ThreadChoiceGenerator;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 
+import java.util.List;
+
 /**
  * simple structure to hold statistics info created by Reporters/Publishers
  * this is kind of a second tier SearchListener, which does not
  * explicitly have to be registered
- * 
+ * <p/>
  * <2do> this should get generic and accessible enough to replace all the
  * other statistics collectors, otherwise there is too much redundancy.
  * If users have special requirements, they should subclass Statistics
  * and set jpf.report.statistics.class accordingly
- * 
+ * <p/>
  * Note that Statistics might be accessed by a background thread
  * reporting JPF progress, hence we have to synchronize
  */
 public class Statistics extends ListenerAdapter implements Cloneable {
-    
-  // we make these public since we don't want to add a gazillion of
-  // getters for these purely informal numbers
-  
-  public long maxUsed = 0;
-  public long newStates = 0;
-  public long backtracked = 0;
-  public long restored = 0;
-  public int processed = 0;
-  public int constraints = 0;
-  public long visitedStates = 0;
-  public long endStates = 0;
-  public int maxDepth = 0;
-  
-  public int gcCycles = 0;
-  public long insns = 0;
-  public int threadCGs = 0;
-  public int sharedAccessCGs = 0;
-  public int monitorCGs = 0;
-  public int signalCGs = 0;
-  public int threadApiCGs = 0;
-  public int breakTransitionCGs = 0;
-  public int dataCGs = 0;
-  public long nNewObjects = 0;
-  public long nReleasedObjects = 0;
-  public int maxLiveObjects = 0;
 
-  public Statistics clone() {
-    try {
-      return (Statistics)super.clone();
-    } catch (CloneNotSupportedException e) {
-      return null; // can't happen
-    }
-  }
-  
-  @Override
-  public void gcBegin (VM vm) {
-    int heapSize = vm.getHeap().size();
-    if (heapSize > maxLiveObjects){
-      maxLiveObjects = heapSize;
-    }
+    // we make these public since we don't want to add a gazillion of
+    // getters for these purely informal numbers
 
-    gcCycles++;
-  }
-  
-  @Override
-  public void instructionExecuted (VM vm, ThreadInfo ti, Instruction nextInsn, Instruction executedInsn){
-    insns++;
-  }
+    public long maxUsed = 0;
+    public long newStates = 0;
+    public long backtracked = 0;
+    public long restored = 0;
+    public int processed = 0;
+    public int constraints = 0;
+    public long visitedStates = 0;
+    public long endStates = 0;
+    public int maxDepth = 0;
 
-  @Override
-  public void choiceGeneratorSet (VM vm, ChoiceGenerator<?> newCG){
-    ChoiceGenerator<?> cg = VM.getVM().getChoiceGenerator();
-    if (cg instanceof ThreadChoiceGenerator){
-      threadCGs++;
+    public int gcCycles = 0;
+    public long insns = 0;
+    public int threadCGs = 0;
+    public int sharedAccessCGs = 0;
+    public int monitorCGs = 0;
+    public int signalCGs = 0;
+    public int threadApiCGs = 0;
+    public int breakTransitionCGs = 0;
+    public int dataCGs = 0;
+    public long nNewObjects = 0;
+    public long nReleasedObjects = 0;
+    public int maxLiveObjects = 0;
 
-      Instruction insn = cg.getInsn();
-      if (insn instanceof FieldInstruction) {
-        sharedAccessCGs++;
-      } else if (insn instanceof LockInstruction || insn instanceof InvokeInstruction) {
-        monitorCGs++;
-      } else if (insn instanceof EXECUTENATIVE) {
-        MethodInfo mi = insn.getMethodInfo();
-        if (mi != null) {
-          ClassInfo ci = mi.getClassInfo();
-          if (ci != null) {
-            if (ci.isObjectClassInfo()) {
-              // its got to be either a wait or a notify since we know the java.lang.Object methods
-              signalCGs++;
-            } else if (ci.isThreadClassInfo()) {
-              threadApiCGs++;
-            }
-          } else {
-            // Hmm - a CG from a synthetic method?
-          }
-        } else {
-          // even more Hmmm - a GC from a synthesized instruction 
+    public Statistics clone() {
+        try {
+            return (Statistics) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null; // can't happen
         }
-      } else {
-        breakTransitionCGs++; // e.g. max_transition_length or idleLoop breakers
-      }
-    } else {
-      dataCGs++;
-    }
-  }
-  
-  @Override
-  public void objectCreated (VM vm, ThreadInfo ti, ElementInfo ei){
-    nNewObjects++;
-  }
-  
-  @Override
-  public void objectReleased (VM vm, ThreadInfo ti, ElementInfo ei){
-    nReleasedObjects++;
-  }
-  
-  @Override
-  public void stateAdvanced (Search search){
-    long m = Runtime.getRuntime().totalMemory();
-    if (m > maxUsed) {
-      maxUsed = m;
     }
 
-    if (search.isNewState()){
-      newStates++;
-      int depth = search.getDepth();
-      if (depth > maxDepth){
-        maxDepth = depth;
-      }
-    } else {
-      visitedStates++;
-    }
-    if (search.isEndState()){
-      endStates++;
-    }
-  }
-  
-  @Override
-  public void stateBacktracked (Search search){
-    backtracked++;
-  }
-  
-  @Override
-  public void stateProcessed (Search search){
-    processed++;
-  }
+    @Override
+    public void gcBegin(VM vm) {
+        int heapSize = vm.getHeap().size();
+        if (heapSize > maxLiveObjects) {
+            maxLiveObjects = heapSize;
+        }
 
-  @Override
-  public void stateRestored (Search search){
-    restored++;
-  }
-  
-  @Override
-  public void searchConstraintHit (Search search){
-    constraints++;
-  }
-  
-  @Override
-	public void resetInstructionCounter() {
-		insns = 0;
-	}
+        gcCycles++;
+    }
+
+    @Override
+    public void instructionExecuted(VM vm, ThreadInfo ti, Instruction nextInsn, Instruction executedInsn) {
+        insns++;
+    }
+
+    @Override
+    public void choiceGeneratorSet(VM vm, ChoiceGenerator<?> newCG) {
+        ChoiceGenerator<?> cg = VM.getVM().getChoiceGenerator();
+        if (cg instanceof ThreadChoiceGenerator) {
+            threadCGs++;
+
+            Conditional<Instruction> insnCond = cg.getInsn();
+            List<Instruction> insnList = insnCond.toList();
+            for (Instruction insn : insnList) {
+                if (insn instanceof FieldInstruction) {
+                    sharedAccessCGs++;
+                } else if (insn instanceof LockInstruction || insn instanceof InvokeInstruction) {
+                    monitorCGs++;
+                } else if (insn instanceof EXECUTENATIVE) {
+                    MethodInfo mi = insn.getMethodInfo();
+                    if (mi != null) {
+                        ClassInfo ci = mi.getClassInfo();
+                        if (ci != null) {
+                            if (ci.isObjectClassInfo()) {
+                                // its got to be either a wait or a notify since we know the java.lang.Object methods
+                                signalCGs++;
+                            } else if (ci.isThreadClassInfo()) {
+                                threadApiCGs++;
+                            }
+                        } else {
+                            // Hmm - a CG from a synthetic method?
+                        }
+                    } else {
+                        // even more Hmmm - a GC from a synthesized instruction
+                    }
+                } else {
+                    breakTransitionCGs++; // e.g. max_transition_length or idleLoop breakers
+                }
+            }
+
+        } else {
+            dataCGs++;
+        }
+    }
+
+    @Override
+    public void objectCreated(VM vm, ThreadInfo ti, ElementInfo ei) {
+        nNewObjects++;
+    }
+
+    @Override
+    public void objectReleased(VM vm, ThreadInfo ti, ElementInfo ei) {
+        nReleasedObjects++;
+    }
+
+    @Override
+    public void stateAdvanced(Search search) {
+        long m = Runtime.getRuntime().totalMemory();
+        if (m > maxUsed) {
+            maxUsed = m;
+        }
+
+        if (search.isNewState()) {
+            newStates++;
+            int depth = search.getDepth();
+            if (depth > maxDepth) {
+                maxDepth = depth;
+            }
+        } else {
+            visitedStates++;
+        }
+        if (search.isEndState()) {
+            endStates++;
+        }
+    }
+
+    @Override
+    public void stateBacktracked(Search search) {
+        backtracked++;
+    }
+
+    @Override
+    public void stateProcessed(Search search) {
+        processed++;
+    }
+
+    @Override
+    public void stateRestored(Search search) {
+        restored++;
+    }
+
+    @Override
+    public void searchConstraintHit(Search search) {
+        constraints++;
+    }
+
+    @Override
+    public void resetInstructionCounter() {
+        insns = 0;
+    }
 
 }
