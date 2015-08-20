@@ -93,7 +93,11 @@ public class ComplexityPrinter {
 	}
 
 	public static void reset() {
-		
+		pointer = 0;
+		complMax = 0;
+		complSum = 0;
+		featureMax = 0;
+		featureSum = 0;
 		try {
 			out = new PrintWriter(new BufferedWriter(new FileWriter(results, true)));
 		} catch (IOException e) {

@@ -39,7 +39,7 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
+    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
     frame.storeOperand(ctx, index);
     return getNext(ctx, ti);
   }
