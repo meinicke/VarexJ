@@ -37,20 +37,20 @@ public class PrevaylerTest extends ATestExample {
 	@Conditional
 	static boolean USE_PAUSABLE_CLOCK = false;
 
-//	@Conditional
+	@Conditional
 	static boolean USE_XSTREAM = true;
-//	@Conditional // TODO Does not work
-	static boolean USE_XSTREAM_JOURNAL = false;
-	 @Conditional // TODO Does not work conditionally
+//	@Conditional // TODO not working
+	static boolean USE_XSTREAM_JOURNAL = true;
+//	 @Conditional // TODO not working
 	static boolean USE_FILTERING = false;
 	@Conditional
 	static boolean USE_TRANSIENT_MODE = false;
 	@Conditional
 	static boolean USE_JOURNAL_DISK_SYNC = false;
 	
-//	@Conditional // TODO Does not work conditionally
+//	@Conditional // TODO not working
 	static boolean FILE_AGE_THREASHOLD = true;
-//	@Conditional // TODO Does not work conditionally
+//	@Conditional // TODO not working
 	static boolean FILE_SIZE_THREASHOLD = true;	
 
 	@Test
@@ -123,7 +123,7 @@ public class PrevaylerTest extends ATestExample {
 
 	@Override
 	protected String getClassPath() {
-		return "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-api-2.1.jar;lib/log4j-core-2.1.jar;lib/xstream-1.4.7.jar";
+		return "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-api-2.1.jar;lib/log4j-core-2.1.jar;lib/xstream-1.4.7.jar;lib/kxml2-2.3.0.jar";
 	}
 
 	@Override
