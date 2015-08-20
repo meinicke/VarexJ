@@ -7,9 +7,9 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import explosion.ExplosionSPLat;
 import inc.IncSPLat;
 import nesting.NestSPLat;
-import nesting2.NestVoidSPLat;
 import nointeraction.NoSPLat;
 import prefix.PrefixSPLat;
 import reference.RefSPLat;
@@ -25,14 +25,16 @@ public class SPLat {
 
 	private static long maxUsedMemory = 0;
 
+	private final static int rounds = 3;
+
 	public static void main(String[] args) {
 		ISPLatEvaluation[] testClasses = new ISPLatEvaluation[]{
 //				new NoSPLat(),
 //				new PrefixSPLat(), 
 //				new RefSPLat(), 
 //				new IncSPLat(), 
-//				new NestSPLat(),
-				new NestVoidSPLat()
+//				new NestSPLat()
+				new ExplosionSPLat()
 				};
 		for (ISPLatEvaluation testClass : testClasses) {
 			System.out.println("Start " + testClass.getClass().getName());
@@ -45,7 +47,7 @@ public class SPLat {
 				if (timedOut) {
 					break;
 				}
-				for (int i = 0; i < 1; i++) {
+				for (int i = 0; i < rounds ; i++) {
 					long start = System.currentTimeMillis();
 					int runs = runSPLat(testClass, max);
 					long end = System.currentTimeMillis();
@@ -109,17 +111,17 @@ public class SPLat {
 	static Configuration currentConfiguration = new Configuration();
 	
 	public static boolean get(int i) {
-		Boolean selection = currentConfiguration.get(i - 1);
+		Boolean selection = currentConfiguration.get(i);
 		if (selection == null) {
-			currentConfiguration.set(i - 1, Boolean.TRUE);
+			currentConfiguration.set(i, Boolean.TRUE);
 			Configuration newConfig = currentConfiguration.copy();
-			newConfig.set(i - 1, Boolean.FALSE);
+			newConfig.set(i, Boolean.FALSE);
 //			if (!finishedConfigurations.contains(currentConfiguration)) {
 				missingConfigurations.addFirst(newConfig);
 //			}
 		}
 		
-		return currentConfiguration.get(i - 1);
+		return currentConfiguration.get(i);
 	}
 
 }

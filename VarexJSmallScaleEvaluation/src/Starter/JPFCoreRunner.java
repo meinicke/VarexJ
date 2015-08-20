@@ -19,9 +19,10 @@ public class JPFCoreRunner {
 		String[] testClasses = new String[] {
 //				nointeraction.NoJPF_Core.class.getName(),
 //				prefix.PrefixJPF_Core.class.getName(),
-				nesting.NestJPF_Core.class.getName(),
+//				nesting.NestJPF_Core.class.getName(),
 //				inc.IncJPF_Core.class.getName(), 
-//				reference.RefJPF_Core.class.getName() 
+//				reference.RefJPF_Core.class.getName()
+				explosion.ExplosionJPF_Core.class.getName()
 				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();

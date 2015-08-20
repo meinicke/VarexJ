@@ -15,11 +15,12 @@ public class JPFBDDRunner {
 	public JPFBDDRunner() {
 		System.out.println("JPFBDDRunner.JPFBDDRunner()");
 		String[] testClasses = new String[]{
-				nointeraction.NoJPF_BDD.class.getName(),
+//				nointeraction.NoJPF_BDD.class.getName(),
 //				prefix.PrefixJPF_BDD.class.getName(),
-				nesting.NestJPF_BDD.class.getName(), 
-				inc.IncJPF_BDD.class.getName(), 
-//				reference.RefBDD.class.getName()
+//				nesting.NestJPF_BDD.class.getName(), 
+//				inc.IncJPF_BDD.class.getName(), 
+//				reference.RefBDD.class.getName(),
+				explosion.ExplosionJPF_BDD.class.getName()
 				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();

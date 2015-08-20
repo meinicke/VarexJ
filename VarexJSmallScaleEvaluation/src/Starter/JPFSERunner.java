@@ -19,7 +19,8 @@ public class JPFSERunner {
 //				inc.IncJPF_SE.class.getName(), 
 //				reference.RefSE.class.getName(),
 //				nointeraction.NoJPF_SE.class.getName(),
-				nesting.NestJPF_SE.class.getName()
+//				nesting.NestJPF_SE.class.getName(),
+				explosion.ExplosionJPF_SE.class.getName()
 				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();

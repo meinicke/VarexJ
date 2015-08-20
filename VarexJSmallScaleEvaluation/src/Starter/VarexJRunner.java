@@ -16,12 +16,12 @@ public class VarexJRunner {
 
 	public VarexJRunner() {
 		String[] testClasses = new String[] {
+				explosion.ExplosionVarexJ.class.getName()
 //				inc.IncVarexJ.class.getName(),
 //				nesting.NestVarexJ.class.getName(),
 //				prefix.PrefixVarexJ.class.getName(),
 //				reference.RefVarexJ.class.getName(),
 //				nointeraction.NoVarexJ.class.getName(),
-				nesting2.NestVoidVarexJ.class.getName(),
 				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
@@ -45,8 +45,18 @@ public class VarexJRunner {
 			for (int complexity =  0; complexity <= max; complexity++) {
 				commands.removeLast();
 				commands.add("" + complexity);
+				boolean maxReached = false;
 				for (int round = 0; round < rounds; round++) {
+					long start = System.currentTimeMillis();
 					process(commands);
+					long timeInS = (System.currentTimeMillis() - start) / 1000;
+					if (timeInS > 120) {
+						maxReached = true;
+						break;
+					}
+				}
+				if (maxReached) {
+					break;
 				}
 			}
 			File resultsFile = new File("VarexJ.csv");
