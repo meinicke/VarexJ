@@ -1,68 +1,84 @@
-1;ALOAD
-1;ICONST
-1;AALOAD
-1;INVOKESTATIC
-1;ALOAD
-1;ICONST
-1;ISTORE
-1;ICONST
-1;ISTORE
-1;ILOAD
-1;IINC
-1;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-1;IINC
-2;ICONST
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-2;IINC
-2;ICONST
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-3;IINC
-2;ICONST
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-4;IINC
-2;ICONST
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-5;IINC
-2;ICONST
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-6;IINC
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-7;IINC
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-8;IINC
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-9;IINC
-2;ILOAD
-1;IF_ICMPNE
-2;GETSTATIC
-2;IFEQ
-10;IINC
-2;ILOAD
-1;IF_ICMPNE
+1;NATIVERETURN;main;0;True
+1;NEW;main;0;True
+1;ALOAD;main;0;True
+1;ICONST;main;0;True
+1;AALOAD;main;0;True
+1;AALOAD;main;0;True
+1;INVOKESTATIC;parseInt;0;True
+1;EXECUTENATIVE;parseInt;0;True
+1;NATIVERETURN;main;0;True
+1;INVOKESPECIAL;main;0;True
+1;ALOAD;<init>;0;True
+1;INVOKESPECIAL;<init>;0;True
+1;RETURN;<init>;0;True
+1;ICONST;<init>;0;True
+1;ISTORE;<init>;0;True
+1;ICONST;<init>;0;True
+1;ISTORE;<init>;0;True
+1;ILOAD;<init>;0;True
+1;IINC;<init>;0;True
+1;ILOAD;<init>;0;True
+1;IF_ICMPNE;<init>;0;True
+2;GETSTATIC;<init>;0;True
+2;IFEQ;<init>;0;True
+1;IINC;<init>;1;a1
+2;ICONST;<init>;1;a1
+2;ILOAD;<init>;1;a1
+1;IF_ICMPNE;<init>;1;a1
+2;GETSTATIC;<init>;1;a1
+2;IFEQ;<init>;1;a1
+2;IINC;<init>;2;a1 & a2
+2;ICONST;<init>;2;a1 & a2
+2;ILOAD;<init>;2;a1 & a2
+1;IF_ICMPNE;<init>;2;a1 & a2
+2;GETSTATIC;<init>;2;a1 & a2
+2;IFEQ;<init>;2;a1 & a2
+3;IINC;<init>;3;a1 & a2 & a3
+2;ICONST;<init>;3;a1 & a2 & a3
+2;ILOAD;<init>;3;a1 & a2 & a3
+1;IF_ICMPNE;<init>;3;a1 & a2 & a3
+2;GETSTATIC;<init>;3;a1 & a2 & a3
+2;IFEQ;<init>;3;a1 & a2 & a3
+4;IINC;<init>;4;a1 & a2 & a3 & a4
+2;ICONST;<init>;4;a1 & a2 & a3 & a4
+2;ILOAD;<init>;4;a1 & a2 & a3 & a4
+1;IF_ICMPNE;<init>;4;a1 & a2 & a3 & a4
+2;GETSTATIC;<init>;4;a1 & a2 & a3 & a4
+2;IFEQ;<init>;4;a1 & a2 & a3 & a4
+5;IINC;<init>;5;a1 & a2 & a3 & a4 & a5
+2;ICONST;<init>;5;a1 & a2 & a3 & a4 & a5
+2;ILOAD;<init>;5;a1 & a2 & a3 & a4 & a5
+1;IF_ICMPNE;<init>;5;a1 & a2 & a3 & a4 & a5
+2;GETSTATIC;<init>;5;a1 & a2 & a3 & a4 & a5
+2;IFEQ;<init>;5;a1 & a2 & a3 & a4 & a5
+6;IINC;<init>;6;a1 & a2 & a3 & a4 & a5 & a6
+2;BIPUSH;<init>;6;a1 & a2 & a3 & a4 & a5 & a6
+2;ILOAD;<init>;6;a1 & a2 & a3 & a4 & a5 & a6
+1;IF_ICMPNE;<init>;6;a1 & a2 & a3 & a4 & a5 & a6
+2;GETSTATIC;<init>;6;a1 & a2 & a3 & a4 & a5 & a6
+2;IFEQ;<init>;6;a1 & a2 & a3 & a4 & a5 & a6
+7;IINC;<init>;7;a1 & a2 & a3 & a4 & a5 & a6 & a7
+2;BIPUSH;<init>;7;a1 & a2 & a3 & a4 & a5 & a6 & a7
+2;ILOAD;<init>;7;a1 & a2 & a3 & a4 & a5 & a6 & a7
+1;IF_ICMPNE;<init>;7;a1 & a2 & a3 & a4 & a5 & a6 & a7
+2;GETSTATIC;<init>;7;a1 & a2 & a3 & a4 & a5 & a6 & a7
+2;IFEQ;<init>;7;a1 & a2 & a3 & a4 & a5 & a6 & a7
+8;IINC;<init>;8;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8
+2;BIPUSH;<init>;8;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8
+2;ILOAD;<init>;8;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8
+1;IF_ICMPNE;<init>;8;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8
+2;GETSTATIC;<init>;8;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8
+2;IFEQ;<init>;8;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8
+9;IINC;<init>;9;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9
+2;BIPUSH;<init>;9;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9
+2;ILOAD;<init>;9;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9
+1;IF_ICMPNE;<init>;9;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9
+2;GETSTATIC;<init>;9;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9
+2;IFEQ;<init>;9;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9
+10;IINC;<init>;10;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9 & a10
+2;BIPUSH;<init>;10;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9 & a10
+2;ILOAD;<init>;10;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9 & a10
+1;IF_ICMPNE;<init>;10;a1 & a2 & a3 & a4 & a5 & a6 & a7 & a8 & a9 & a10
+1;RETURN;main;0;True
+1;RETURN;[main];0;True
+1;DIRECTCALLRETURN;[main];0;True
