@@ -381,41 +381,34 @@ public class ConsolePublisher extends Publisher {
 
     pw.println("loaded code:        classes=" + ClassLoaderInfo.getNumberOfLoadedClasses() + ",methods="
             + MethodInfo.getNumberOfLoadedMethods());
-    // createOutput(reporter.getElapsedTime(), stat.visitedStates,(stat.maxUsed >> 20), stat.insns);
+     createOutput(reporter.getElapsedTime(), (stat.maxUsed >> 20), stat.insns);
   }
  
-  /**
-   * TODO add command line option to activate this code
-   * 
-   * Add the result to an output file
-   */
-  private static void createOutput(long time, long visitedStates, long mb, long insns) {
-		File results = new File("VarexJ.csv");
-		if (!results.exists()) {
-			try {
-				results.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println("write results to " + results + " " + time);
-		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(results, true)))) {
-			out.print(time);
-			out.print(';');
-			out.print(visitedStates);
-			out.print(';');
-			out.print(mb);
-			out.print(';');
-			out.print(insns);
-			out.println();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-  
   public void publishStatistics() {
     printStatistics(out);
   }
 
+  private static void createOutput(long time, long mb, long insns) {
+    File results = new File("VarexJ.csv");
+    if (!results.exists()) {
+      try {
+        results.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    System.out.println("write results to " + results + " " + time);
+    try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(results, true)))) {
+      out.print(time);
+      out.print(';');
+      out.print(mb);
+      out.print(';');
+      out.print(insns);
+      out.println();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

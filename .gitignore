@@ -82,3 +82,4 @@ coverage.xml
 jetty-resources/
 # small script to copy the coverage.xml around
 copyCoverage.py
+measurement/
