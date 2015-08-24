@@ -1,15 +1,52 @@
 package cmu;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
 
 /**
  * @author: chupanw
  */
 public class BruteForceRunner {
     public static void main(String[] args) {
-        for (int i = 0; i < 3; i++) {
-            runPrevaylerNumberKeeper();
+//        for (int i = 0; i < 3; i++) {
+//            runPrevaylerNumberKeeper();
+//        }
+        runJetty(1);
+    }
+
+
+    public static void runJetty(int times) {
+        HashSet<Integer> set = new HashSet<>();
+        Integer[] randomArray = new Integer[times];
+        Random rand = new Random(System.nanoTime());
+        while (set.size() != times) {
+            set.add(rand.nextInt(128));
         }
+        set.toArray(randomArray);
+        for (int i = 0; i < times; i++) {
+            String[] args = int2Args(randomArray[i], 7);
+            VarexJRunner.main(args);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String[] int2Args(Integer x, Integer length) {
+        String[] args = new String[length];
+        for (int i = length-1; i >=0 ; i--) {
+            if (x % 2 == 0) {
+                args[i] = "false";
+            }
+            else {
+                args[i] = "true";
+            }
+            x /= 2;
+        }
+        return args;
     }
 
     public static void runPrevaylerNumberKeeper() {

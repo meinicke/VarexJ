@@ -1,6 +1,7 @@
 package cmu;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -11,13 +12,27 @@ import java.util.List;
  */
 public class VarexJRunner{
     public static void main(String[] args) {
-        System.out.println("SUT: cmu.PrevaylerRunner");
+        System.out.println("SUT: cmu.jetty.JettyHelloWorld");
         System.out.println("args: ");
         for (String s : args) {
             System.out.print(s + " ");
         }
         System.out.println("\n");
+        setupClient();
         new VarexJRunner(args);
+    }
+
+    /**
+     * Setup the client to continuously send request
+     */
+    public static void setupClient() {
+        List<String> commands = new LinkedList<>();
+        commands.add("java");
+        commands.add("-cp");
+        commands.add("build/classes:lib/*:");
+        commands.add("cmu.jetty.SimpleClient");
+        System.out.println(commands);
+        processClient(commands);
     }
 
     public VarexJRunner(String[] SUTArgs) {
@@ -40,11 +55,11 @@ public class VarexJRunner{
         commands.add("build/RunJPF.jar");
 //        commands.add("-show");
         commands.add("+nhandler.delegateUnhandledNative");
-        commands.add("+native_classpath=lib/*;build/classes/;build/peers/;");
+        commands.add("+native_classpath=lib/*;");
         commands.add("+search.class=.search.RandomSearch");
-        commands.add("+classpath=build/jpf.jar;"
-                        + "build/tests;"
-                    + "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-1.2.15.jar;lib/xstream-1.4.7.jar;lib/kxml2-2.3.0.jar"
+        commands.add("+vm.por.sync_detection=false");
+        commands.add("+classpath+=build/jpf.jar;" + "build/tests/;"
+                + "${jpf-core}/lib/junit-4.11.jar,lib/jetty-all-7.6.18-SNAPSHOT.jar,lib/servlet-api-2.5.jar,jetty-resources/classes"
         );
 
 //		commands.add("+featuremodel=C:\\Users\\meinicke\\workspace\\ElevatorChanged\\model.dimacs");
@@ -55,7 +70,7 @@ public class VarexJRunner{
 //		commands.add("+interaction=feature");
         commands.add("+choice=TreeChoice");
 //		commands.add("+minInteraction=1");
-        commands.add("cmu.PrevaylerRunner");
+        commands.add("cmu.JettyRunner");
         for (String s : SUTArgs) {
             commands.add(s);
         }
@@ -67,6 +82,18 @@ public class VarexJRunner{
 //        commands.add("E:\\ZeugVon145\\Programs\\Elevator\\src\\ElevatorSystem\\Elevator.java");
 //		commands.add("C:\\Users\\meinicke\\workspace\\CheckStyleRunner\\src\\Main.java");
         process(commands);
+    }
+
+    public static void processClient(List<String> commands) {
+        ProcessBuilder pb = new ProcessBuilder(commands);
+        File clientOut = new File("clientOutput");
+        pb.redirectErrorStream(true);
+        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(clientOut));
+        try {
+            pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void process(List<String> commands) {
