@@ -1,5 +1,8 @@
 package cmu;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -12,25 +15,34 @@ public class BruteForceRunner {
 //        for (int i = 0; i < 3; i++) {
 //            runPrevaylerNumberKeeper();
 //        }
-        runJetty(1);
+        runJetty(30);
     }
 
 
     public static void runJetty(int times) {
         HashSet<Integer> set = new HashSet<>();
-        Integer[] randomArray = new Integer[times];
-        Random rand = new Random(System.nanoTime());
-        while (set.size() != times) {
-            set.add(rand.nextInt(128));
-        }
-        set.toArray(randomArray);
-        for (int i = 0; i < times; i++) {
-            String[] args = int2Args(randomArray[i], 7);
-            VarexJRunner.main(args);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+//        Integer[] randomArray = new Integer[times];
+        Integer[] randomArray = new Integer[]{
+            69, 65, 78, 79, 75, 15, 16, 87, 82, 25,
+            93, 27, 91, 31, 33, 101, 36, 111, 108, 109,
+            107, 44, 51, 117, 52, 126, 56, 122, 62, 60
+        };
+//        Random rand = new Random(System.nanoTime());
+//        while (set.size() != times) {
+//            set.add(rand.nextInt(128));
+//        }
+//        set.toArray(randomArray);
+//        writeSample(randomArray);
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < times; i++) {
+                String[] args = int2Args(randomArray[i], 7);
+//                VarexJRunner.main(args);
+            JVMRunner.main(args);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -94,6 +106,19 @@ public class BruteForceRunner {
         }
         else {
             return "true";
+        }
+    }
+
+    public static void writeSample(Integer[] array) {
+        File f = new File("VarexJSample");
+        try {
+            FileWriter writer = new FileWriter(f);
+            for (int i = 0; i < array.length; i++) {
+                writer.write(array[i] + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -9,13 +9,39 @@ import java.util.List;
  */
 public class JVMRunner {
     public static void main(String[] args) {
-        System.out.println("SUT: cmu.PrevaylerRunner");
+        System.out.println("SUT: cmu.JettyRunner");
         System.out.print("args: ");
         for (String s : args) {
             System.out.print(s + " ");
         }
         System.out.println("\n");
+        setupClient();
         new JVMRunner(args);
+    }
+
+    /**
+     * Setup the client to continuously send request
+     */
+    public static void setupClient() {
+        List<String> commands = new LinkedList<>();
+        commands.add("java");
+        commands.add("-cp");
+        commands.add("build/classes:lib/*:");
+        commands.add("cmu.jetty.SimpleClient");
+        System.out.println(commands);
+        processClient(commands);
+    }
+
+    public static void processClient(List<String> commands) {
+        ProcessBuilder pb = new ProcessBuilder(commands);
+        File clientOut = new File("clientOutput");
+        pb.redirectErrorStream(true);
+        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(clientOut));
+        try {
+            pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public JVMRunner(String[] SUTArgs){
@@ -33,7 +59,7 @@ public class JVMRunner {
 
 
         commands.add("-cp");
-        commands.add("build/tests/:lib/*:");
+        commands.add("build/tests/:build/classes/:lib/*:");
 
 //        commands.add("+native_classpath=lib/*");
 //        commands.add("+search.class=.search.RandomSearch");
@@ -42,7 +68,7 @@ public class JVMRunner {
 //                        + "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-api-2.1.jar;lib/log4j-core-2.1.jar;lib/xstream-1.4.7.jar;lib/kxml2-2.3.0.jar"
 //        );
 
-        commands.add("cmu.PrevaylerRunner");
+        commands.add("cmu.JettyRunner");
         for (String s : SUTArgs) {
             commands.add(s);
         }
