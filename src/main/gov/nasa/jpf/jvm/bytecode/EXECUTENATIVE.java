@@ -68,7 +68,7 @@ public class EXECUTENATIVE extends JVMInstruction {
   }
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     // we don't have to enter/leave or push/pop a frame, that's all done
     // in NativeMethodInfo.execute()
     // !! don't re-enter if this is reexecuted !!

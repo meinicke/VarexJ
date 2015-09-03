@@ -61,7 +61,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
 		frame.removeArguments(ctx, mi);
 		pushReturnValue(ctx, frame);
-		ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+		ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		if (retAttr != null) {
 			setReturnAttr(ti, retAttr);
 		}

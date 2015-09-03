@@ -43,7 +43,7 @@ public class IINC extends LocalVariableInstruction {
 		int before = ((Conditional)frame.stack.getLocal(index)).size();
 		frame.IINC(ctx, index, increment);
 		int after = ((Conditional)frame.stack.getLocal(index)).size();
-		ComplexityPrinter.addComplex(before, getClass().getSimpleName(), ctx, frame.getMethodInfo());
+		ComplexityPrinter.addComplex(before, getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
 		return getNext(ctx, ti);
 	}
 	

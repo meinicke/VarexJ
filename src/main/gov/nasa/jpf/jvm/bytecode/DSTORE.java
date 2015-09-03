@@ -38,7 +38,7 @@ public class DSTORE extends LocalVariableInstruction implements StoreInstruction
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     frame.storeLongOperand(ctx, index);
     return getNext(ctx, ti);
   }

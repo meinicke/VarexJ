@@ -178,7 +178,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     // remove args, push return value and continue with next insn
     // (DirectCallStackFrames don't use this)
     frame.removeArguments(ctx, mi);
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
     pushReturnValue(ctx, frame);
     if (attr != null) {
       setReturnAttr(ti, attr);

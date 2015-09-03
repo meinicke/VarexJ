@@ -47,7 +47,7 @@ public class NEWARRAY extends NewArrayInstruction {
 
 		arrayLength = frame.pop(ctx);
 		final Heap heap = ti.getHeap();
-		ComplexityPrinter.addComplex(arrayLength.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+		ComplexityPrinter.addComplex(arrayLength.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		return arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

@@ -41,7 +41,7 @@ public class FLOAD extends LocalVariableInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.pushLocal(ctx, index);
-    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

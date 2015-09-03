@@ -37,7 +37,7 @@ public class I2S extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     Conditional<Integer> v = frame.pop(ctx);
-    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     frame.push( ctx, mapr2(v, null), false);
 
     return getNext(ctx, ti);

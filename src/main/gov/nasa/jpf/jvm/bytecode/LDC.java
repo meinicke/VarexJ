@@ -71,7 +71,7 @@ public class LDC extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    ComplexityPrinter.addComplex(1,  getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+    ComplexityPrinter.addComplex(1,  getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     switch (type){
       case STRING:
         // too bad we can't cache it, since location might change between different paths

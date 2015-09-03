@@ -41,7 +41,7 @@ public class ARRAYLENGTH extends ArrayInstruction {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayRef = frame.pop(ctx);
-		ComplexityPrinter.addComplex(arrayRef.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
+		ComplexityPrinter.addComplex(arrayRef.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
 		return arrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

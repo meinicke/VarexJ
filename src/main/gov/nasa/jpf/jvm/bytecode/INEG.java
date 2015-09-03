@@ -45,7 +45,7 @@ public class INEG extends JVMInstruction {
 
 		Conditional<Integer> v = frame.pop(ctx);
 		frame.push(ctx, v.mapr(NEG));
-		ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+		ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		return getNext(ctx, ti);
 	}
 

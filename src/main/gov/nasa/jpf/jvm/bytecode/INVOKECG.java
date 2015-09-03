@@ -84,7 +84,7 @@ public class INVOKECG extends JVMInstruction {
       }
       
       pushArguments(ctx, ti, call.getArguments(), call.getAttrs());
-      ComplexityPrinter.addComplex(ti.getModifiableTopFrame().stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+      ComplexityPrinter.addComplex(ti.getModifiableTopFrame().stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
       return new One<>(realInvoke);
     }
 

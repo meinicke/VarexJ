@@ -94,7 +94,7 @@ public class GETSTATIC extends StaticFieldInstruction {
 
     if (size == 1) {
       Conditional<Integer> ival = ei.get1SlotField(fieldInfo);
-      ComplexityPrinter.addComplex(ival.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
+      ComplexityPrinter.addComplex(ival.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
       lastValue = ival;
 
       if (fieldInfo.isReference()) {
@@ -109,7 +109,7 @@ public class GETSTATIC extends StaticFieldInstruction {
 
     } else {
       Conditional<Long> lval = ei.get2SlotField(fieldInfo);
-      ComplexityPrinter.addComplex(lval.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
+      ComplexityPrinter.addComplex(lval.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
       lastValue = lval;
       
       frame.push(ctx, lval);

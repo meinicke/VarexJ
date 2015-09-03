@@ -36,7 +36,7 @@ public class LSHR extends JVMInstruction {
 
 		Conditional<Integer> v1 = frame.pop(ctx);
 		Conditional<Long> v2 = frame.popLong(ctx);
-		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		frame.push(ctx, mapr(v1, v2));
 		return getNext(ctx, ti);
 	}

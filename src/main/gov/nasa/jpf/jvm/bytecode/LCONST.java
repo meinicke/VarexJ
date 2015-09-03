@@ -45,7 +45,7 @@ public class LCONST extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.push(ctx, new One<>(value));
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());    
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
     return getNext(ctx, ti);
   }
 

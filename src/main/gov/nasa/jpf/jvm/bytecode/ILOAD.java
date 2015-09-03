@@ -41,7 +41,7 @@ public class ILOAD extends LocalVariableInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushLocal(ctx, index);
     int size = ((Conditional)frame.stack.getLocal(index)).simplify(ctx).size();
-    ComplexityPrinter.addComplex(size, getClass().getSimpleName(), ctx, frame.getMethodInfo());
+    ComplexityPrinter.addComplex(size, getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

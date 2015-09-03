@@ -37,7 +37,7 @@ public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
      Conditional<Integer> v = frame.pop(ctx);
-     ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());    
+     ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
     frame.push(ctx, mapr2(v, null));
 
     return getNext(ctx, ti);

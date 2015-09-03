@@ -40,7 +40,7 @@ public class LDIV extends JVMInstruction {
 
 		Conditional<Long> v1 = frame.popLong(ctx);
 		final Conditional<Long> v2 = frame.popLong(ctx);
-		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Instruction>>() {
 
 				@Override

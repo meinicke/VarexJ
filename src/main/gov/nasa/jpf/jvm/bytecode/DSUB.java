@@ -37,7 +37,7 @@ public class DSUB extends JVMInstruction {
 
 		Conditional<Double> v1 = frame.popDouble(ctx);
 		Conditional<Double> v2 = frame.popDouble(ctx);
-		ComplexityPrinter.addComplex(v1.size()* v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());
+		ComplexityPrinter.addComplex(v1.size()* v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		frame.push(ctx, mapr(v1, v2));
 		return getNext(ctx, ti);
 	}

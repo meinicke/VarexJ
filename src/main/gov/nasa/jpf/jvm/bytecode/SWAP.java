@@ -38,7 +38,7 @@ public class SWAP extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.swap();
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo());    
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
     return getNext(ctx, ti);
   }
 

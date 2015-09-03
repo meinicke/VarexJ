@@ -40,7 +40,7 @@ public class ISTORE extends LocalVariableInstruction implements StoreInstruction
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.storeOperand(ctx, index);
-    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, frame.getMethodInfo());
+    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
     return getNext(ctx, ti);
 
   }
