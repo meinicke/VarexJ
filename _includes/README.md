@@ -15,7 +15,7 @@ The build process has to be run with JDK 7, JRE will not work.
 
 # JPF options:
 
-Variability-Aware options:
+Variability-Aware options: 
 
 * set feature expression [SAT, BDD]
 	`factory=BDD`
