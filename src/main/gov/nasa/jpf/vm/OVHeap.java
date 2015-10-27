@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.Iterator;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.ObjVector;
-
-import java.util.Iterator;
 
 /**
  * a heap that implements search global object ids (SGOIDs) and uses

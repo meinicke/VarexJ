@@ -19,6 +19,11 @@
 
 package gov.nasa.jpf.listener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -40,12 +45,6 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * listener that perturbs GETFIELD/GETSTATIC and InvokeInstruction results

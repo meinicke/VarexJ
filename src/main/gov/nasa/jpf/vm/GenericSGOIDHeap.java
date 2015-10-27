@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.IntTable;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * abstract Heap trait that implements SGOIDs by means of a search global

@@ -1,7 +1,5 @@
 package cmu.peers;
 
-import gov.nasa.jpf.vm.NativeMethodInfo;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +10,7 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.vm.NativeMethodInfo;
 
 public class NativeMethodInfoTest {
 

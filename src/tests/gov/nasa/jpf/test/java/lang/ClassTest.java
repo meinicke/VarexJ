@@ -36,9 +36,6 @@
  */
 package gov.nasa.jpf.test.java.lang;
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.io.Serializable;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -48,9 +45,13 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
+
 /**
  * test of java.lang.Class API
  */
+@SuppressWarnings({ "unused", "serial" })
 public class ClassTest extends TestJPF implements Cloneable, Serializable {
   
   /**************************** tests **********************************/
@@ -58,8 +59,7 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
 
   int data = 42; // that creates a default ctor for our newInstance test
 
-
-  @Test 
+@Test 
   public void testClassForName () throws ClassNotFoundException {
     if (verifyNoPropertyViolation()) {
 
@@ -231,7 +231,6 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
     }    
   }
   
-  @SuppressWarnings("null")
   @Test 
   public void testClassField () {
     if (verifyNoPropertyViolation()) {

@@ -19,16 +19,16 @@
 
 package gov.nasa.jpf.jvm;
 
-import gov.nasa.jpf.util.FileUtils;
-import gov.nasa.jpf.vm.ClassFileMatch;
-import gov.nasa.jpf.vm.ClassParseException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import gov.nasa.jpf.util.FileUtils;
+import gov.nasa.jpf.vm.ClassFileMatch;
+import gov.nasa.jpf.vm.ClassParseException;
 
 /**
  * a ClassFileContainer that loads classes from jar files

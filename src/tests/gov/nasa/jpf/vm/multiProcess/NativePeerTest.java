@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
-import gov.nasa.jpf.util.test.TestMultiProcessJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestMultiProcessJPF;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

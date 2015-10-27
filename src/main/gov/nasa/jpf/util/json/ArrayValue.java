@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.util.json;
 
-import gov.nasa.jpf.JPFException;
-
 import java.util.ArrayList;
+
+import gov.nasa.jpf.JPFException;
 
 /**
  * Array parsed from JSON document

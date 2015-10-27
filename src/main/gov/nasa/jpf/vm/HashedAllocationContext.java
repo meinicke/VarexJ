@@ -21,10 +21,11 @@ package gov.nasa.jpf.vm;
 // see mixinJPFStack() comments
 import static gov.nasa.jpf.util.OATHash.hashFinalize;
 import static gov.nasa.jpf.util.OATHash.hashMixin;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import sun.misc.JavaLangAccess;
 import sun.misc.SharedSecrets;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * an AllocationContext that uses a hash value for comparison. This is

@@ -19,13 +19,13 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.JPFLogger;
 import gov.nasa.jpf.util.StringMatcher;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * native peer to configure concrete URLConnection classes for specific URLs

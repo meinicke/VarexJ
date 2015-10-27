@@ -19,11 +19,6 @@
 
 package gov.nasa.jpf.tool;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPFClassLoader;
-import gov.nasa.jpf.util.FileUtils;
-import gov.nasa.jpf.util.JPFSiteUtils;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -31,6 +26,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPFClassLoader;
+import gov.nasa.jpf.util.FileUtils;
+import gov.nasa.jpf.util.JPFSiteUtils;
 
 /**
  * tool to run JPF test with configured classpath

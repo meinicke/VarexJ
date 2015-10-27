@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf;
 
+import java.io.PrintWriter;
+
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.PrintWriter;
 
 /**
  * generic abstract base class implementing program properties. This is mostly

@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.OATHash;
-
 import java.util.Arrays;
 import java.util.HashMap;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.util.OATHash;
 
 /**
  * class that captures execution context consisting of executing thread and 

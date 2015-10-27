@@ -1,16 +1,15 @@
 package cmu.defect4j;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runners.Parameterized;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.LinkedList;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runners.Parameterized;
 
 /**
  * @author: chupanw

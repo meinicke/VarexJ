@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.test.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.TypeRef;
 import gov.nasa.jpf.util.test.TestJPF;
-
-import org.junit.Test;
 
 /**
  * model class for MJI test

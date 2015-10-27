@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.test.mc.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 /**
  * test non-deterministic init of final fields

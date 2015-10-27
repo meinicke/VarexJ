@@ -19,12 +19,12 @@
 package gov.nasa.jpf.test.mc.data;
 
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.util.Random;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
 
 /**
  * test of gov.nasa.jpf.vm.Verify nondeterministic data initailization

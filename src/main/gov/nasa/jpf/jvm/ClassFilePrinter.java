@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.jvm;
 
+import java.io.PrintWriter;
+
 import gov.nasa.jpf.util.StructuredPrinter;
 import gov.nasa.jpf.vm.ClassParseException;
-
-import java.io.PrintWriter;
 
 /**
  * simple tool to print contents of a classfile

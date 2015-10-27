@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.vm.threads;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /** Unit tests for the three levels of exception handlers that threads have. */
 public class ThreadExceptionHandlerTest extends TestJPF {

@@ -19,6 +19,9 @@
 
 package gov.nasa.jpf.vm.serialize;
 
+import java.io.OutputStream;
+
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.util.FinalBitSet;
 import gov.nasa.jpf.vm.DebugStateSerializer;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -26,10 +29,6 @@ import gov.nasa.jpf.vm.JPFOutputStream;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.StaticElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import java.io.OutputStream;
-
-import cmu.conditional.Conditional;
 
 /**
  * a CFSerializer that stores the serialized program state in a 

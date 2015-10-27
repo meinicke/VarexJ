@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.vm.reflection;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class ReflectionTest extends TestJPF {
 

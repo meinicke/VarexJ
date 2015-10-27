@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.io.PrintWriter;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.annotation.JPFOption;
@@ -33,8 +35,6 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.PrintWriter;
 
 /**
  * Listener tool to monitor JPF execution. This class can be used as a drop-in

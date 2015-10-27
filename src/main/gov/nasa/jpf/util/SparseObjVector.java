@@ -75,7 +75,6 @@ public class SparseObjVector<E> {
   
   // INTERNAL //
   
-  @SuppressWarnings("unchecked")
   protected void newTable() {
     valTable = new Object[1 << pow];
     idxTable = new int[1 << pow];

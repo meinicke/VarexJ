@@ -19,6 +19,10 @@
 
 package gov.nasa.jpf.test.mc.basic;
 
+import java.util.ArrayList;
+
+import org.junit.Test;
+
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.util.test.TestJPF;
@@ -29,10 +33,6 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Verify;
 import gov.nasa.jpf.vm.choice.IntChoiceFromList;
-
-import java.util.ArrayList;
-
-import org.junit.Test;
 
 /**
  * regression test for CG notifications
@@ -92,7 +92,8 @@ public class CGNotificationTest extends TestJPF {
     }
   }
 
-  @Test
+  @SuppressWarnings("unused")
+@Test
   public void testCGNotificationSequence () {
     if (!isJPFRun()){
       Sequencer.sequence = new ArrayList<String>();

@@ -18,6 +18,15 @@
 //
 package gov.nasa.jpf.test.vm.basic;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
+
+import org.junit.Test;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
@@ -29,16 +38,7 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.Method;
-
-import org.junit.Test;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
-
+@SuppressWarnings({ "unused" })
 public class AnnotationTest extends TestJPF {
 
   @Test //----------------------------------------------------------------------
@@ -207,7 +207,7 @@ public class AnnotationTest extends TestJPF {
   @Test
   public void testAnnotationClass() throws ClassNotFoundException, NoSuchMethodException {
     if (verifyNoPropertyViolation()) { 
-      Class clazz = Class.forName("gov.nasa.jpf.test.vm.basic.AnnotationTest");
+      Class<?> clazz = Class.forName("gov.nasa.jpf.test.vm.basic.AnnotationTest");
       Method method = clazz.getDeclaredMethod("testAnnotationClass");
       Annotation annotations[] = method.getAnnotations();
       
@@ -239,7 +239,7 @@ public class AnnotationTest extends TestJPF {
   @A7(MyEnum.ONE)
   public void testEnumValue() throws ClassNotFoundException, NoSuchMethodException {
     if (verifyNoPropertyViolation()){
-      Class clazz = Class.forName("gov.nasa.jpf.test.vm.basic.AnnotationTest");  // Any class outside of this file will do.
+      Class<?> clazz = Class.forName("gov.nasa.jpf.test.vm.basic.AnnotationTest");  // Any class outside of this file will do.
       Method method = clazz.getDeclaredMethod("testEnumValue");               // Any method with an annotation will do.
       Annotation annotations[] = method.getAnnotations();
 
@@ -256,14 +256,14 @@ public class AnnotationTest extends TestJPF {
 
   @Retention(RetentionPolicy.RUNTIME)
   @interface A8 {
-    Class value();
+    Class<?> value();
   }
 
   @Test
   @A8(AnnotationTest.class)
   public void testClassValue() throws ClassNotFoundException, NoSuchMethodException {
     if (verifyNoPropertyViolation()){
-      Class clazz = Class.forName("gov.nasa.jpf.test.vm.basic.AnnotationTest");  // Any class outside of this file will do.
+      Class<?> clazz = Class.forName("gov.nasa.jpf.test.vm.basic.AnnotationTest");  // Any class outside of this file will do.
       Method method = clazz.getDeclaredMethod("testClassValue");               // Any method with an annotation will do.
       Annotation annotations[] = method.getAnnotations();
 

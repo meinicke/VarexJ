@@ -1,12 +1,11 @@
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.util.Calendar;
 import java.util.Locale;
 
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 public class JPF_java_util_Calendar extends NativePeer {
 

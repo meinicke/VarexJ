@@ -18,6 +18,10 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
+import java.util.ArrayList;
+
+import org.junit.Test;
+
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.LocalVariableInstruction;
 import gov.nasa.jpf.util.test.TestJPF;
@@ -26,10 +30,6 @@ import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.ArrayList;
-
-import org.junit.Test;
 
 
 /**

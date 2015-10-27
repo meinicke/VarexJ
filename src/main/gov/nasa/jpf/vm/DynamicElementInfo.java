@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
+import gov.nasa.jpf.JPFException;
 
 /**
  * A specialized version of ElementInfo that represents heap objects

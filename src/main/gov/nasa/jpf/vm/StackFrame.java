@@ -18,17 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.util.BitSet64;
-import gov.nasa.jpf.util.FixedBitSet;
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.Misc;
-import gov.nasa.jpf.util.OATHash;
-import gov.nasa.jpf.util.ObjectList;
-import gov.nasa.jpf.util.PrintUtils;
-import gov.nasa.jpf.vm.va.IStackHandler;
-import gov.nasa.jpf.vm.va.StackHandlerFactory;
-
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -39,6 +28,16 @@ import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.util.BitSet64;
+import gov.nasa.jpf.util.FixedBitSet;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.Misc;
+import gov.nasa.jpf.util.OATHash;
+import gov.nasa.jpf.util.ObjectList;
+import gov.nasa.jpf.util.PrintUtils;
+import gov.nasa.jpf.vm.va.IStackHandler;
+import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 
 /**

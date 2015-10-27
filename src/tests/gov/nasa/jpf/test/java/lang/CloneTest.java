@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.test.java.lang;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * clone related tests

@@ -19,13 +19,12 @@
 
 package gov.nasa.jpf.jvm;
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.LocalVarInfo;
-
 import org.junit.Test;
 
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.LocalVarInfo;
 
 
 /**

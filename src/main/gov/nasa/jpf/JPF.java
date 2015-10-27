@@ -18,6 +18,16 @@
 //
 package gov.nasa.jpf;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.ChoiceFactory.Factory;
+import cmu.conditional.Conditional;
+import coverage.Coverage;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.report.Publisher;
 import gov.nasa.jpf.report.PublisherExtension;
 import gov.nasa.jpf.report.Reporter;
@@ -31,17 +41,6 @@ import gov.nasa.jpf.util.RunRegistry;
 import gov.nasa.jpf.vm.NoOutOfMemoryErrorProperty;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.VMListener;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-import coverage.Coverage;
-import cmu.conditional.ChoiceFactory;
-import cmu.conditional.ChoiceFactory.Factory;
-import cmu.conditional.Conditional;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -831,7 +830,6 @@ public class JPF implements Runnable {
    * w/o exiting the whole Java process. If we just do a System.exit(), we couldn't
    * use JPF in an embedded context
    */
-  @SuppressWarnings("serial")
   public static class ExitException extends RuntimeException {
     boolean report = true;
     

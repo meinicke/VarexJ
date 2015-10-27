@@ -19,13 +19,13 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
-import gov.nasa.jpf.util.test.TestMultiProcessJPF;
-import gov.nasa.jpf.vm.MethodInfo;
-
 import java.lang.reflect.Method;
 import java.util.List;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestMultiProcessJPF;
+import gov.nasa.jpf.vm.MethodInfo;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

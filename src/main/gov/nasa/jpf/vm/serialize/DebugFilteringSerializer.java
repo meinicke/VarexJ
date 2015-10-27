@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.vm.serialize;
 
-import gov.nasa.jpf.vm.DebugStateSerializer;
-
 import java.io.OutputStream;
+
+import gov.nasa.jpf.vm.DebugStateSerializer;
 
 /**
  * a FilteringSerializer that stores the serialized program state in a 

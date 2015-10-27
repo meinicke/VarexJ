@@ -19,6 +19,9 @@
 
 package gov.nasa.jpf.perturb;
 
+import java.util.Random;
+import java.util.Vector;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.IntChoiceGenerator;
@@ -26,9 +29,6 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
-
-import java.util.Random;
-import java.util.Vector;
 
 /**
  * This file implements a generic data abstraction module that can be used

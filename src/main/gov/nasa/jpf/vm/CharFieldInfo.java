@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.JPFException;
 
 /**
  * fieldinfo for slots holding chars

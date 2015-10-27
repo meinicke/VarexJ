@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.ObjectList;
-
 import java.util.Comparator;
+
+import gov.nasa.jpf.util.ObjectList;
 
 /**
  * generic interface for configurable choice generators
@@ -123,7 +123,7 @@ public interface ChoiceGenerator<T> extends Cloneable {
 
   boolean isCascaded();
 
-  <T extends ChoiceGenerator<?>> T getPreviousChoiceGeneratorOfType(Class<T> cls);
+  <U extends ChoiceGenerator<?>> U getPreviousChoiceGeneratorOfType(Class<U> cls);
 
   /**
    * returns the prev CG if it was registered for the same insn

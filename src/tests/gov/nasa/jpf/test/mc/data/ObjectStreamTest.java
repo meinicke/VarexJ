@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.test.mc.data;
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,10 +25,14 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
+
 /**
  *
  * @author Ivan Mushketik
  */
+@SuppressWarnings("serial")
 public class ObjectStreamTest extends TestJPF {
   static String osFileName = "file";
 
@@ -70,11 +71,11 @@ public class ObjectStreamTest extends TestJPF {
     }
   }
   
-  static class Sup implements Serializable {
+static class Sup implements Serializable {
     int s;
   }
   
-  static class Inherited extends Sup{
+static class Inherited extends Sup{
     int i;
   }
   
@@ -133,7 +134,7 @@ public class ObjectStreamTest extends TestJPF {
     }
 
     if (verifyNoPropertyViolation()) {
-      ArrayList al = Verify.readObjectFromFile(ArrayList.class, osFileName);
+      ArrayList<?> al = Verify.readObjectFromFile(ArrayList.class, osFileName);
 
       assert al.size() == 3;
       assert al.get(0).equals(1);

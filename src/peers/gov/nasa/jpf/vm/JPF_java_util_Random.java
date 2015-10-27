@@ -18,18 +18,17 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.ConfigChangeListener;
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.annotation.MJI;
-
 import java.lang.reflect.Field;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
-import sun.misc.Unsafe;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.ConfigChangeListener;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.annotation.MJI;
+import sun.misc.Unsafe;
 
 /**
  * MJI NativePeer class for java.util.Random library abstraction

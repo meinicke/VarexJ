@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.GenericProperty;
 import gov.nasa.jpf.search.Search;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 
 /**

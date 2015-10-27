@@ -2,12 +2,11 @@ package cmu;
 
 import java.util.Arrays;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Ignore;
-import org.junit.Test;
 
 @SuppressWarnings("unused")
 public class VariabilityAwareTest extends TestJPF {

@@ -725,7 +725,6 @@ public class PSIntMap <V> implements Iterable<V> {
     }
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   public Iterator<V> iterator(){
     return new ValueIterator();
   }
@@ -748,7 +747,6 @@ public class PSIntMap <V> implements Iterable<V> {
     int nVisited, nTotal;
     
     
-    @SuppressWarnings("unchecked")
     public ValueIterator (){
       node = PSIntMap.this.rootNode;
       if (node != null) {

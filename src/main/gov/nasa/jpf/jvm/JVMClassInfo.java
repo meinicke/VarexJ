@@ -19,6 +19,9 @@
 
 package gov.nasa.jpf.jvm;
 
+import java.util.LinkedHashMap;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -35,10 +38,6 @@ import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
-
-import java.util.LinkedHashMap;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * a ClassInfo that was created from a Java classfile

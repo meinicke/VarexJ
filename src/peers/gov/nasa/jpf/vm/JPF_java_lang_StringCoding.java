@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * we are not really interested in model checking this, so we intercept

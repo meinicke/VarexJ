@@ -1,7 +1,7 @@
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 
 public class JPF_gov_nasa_jpf_SerializationConstructor extends NativePeer {

@@ -18,13 +18,13 @@
 //
 package gov.nasa.jpf.vm.serialize;
 
+import java.util.ArrayList;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.ObjVector;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.MethodInfo;
-
-import java.util.ArrayList;
 
 public class AmmendableFilterConfiguration implements FilterConfiguration {
   public interface Ammendment {

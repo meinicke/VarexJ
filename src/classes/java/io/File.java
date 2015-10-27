@@ -18,14 +18,13 @@
 //
 package java.io;
 
-import gov.nasa.jpf.annotation.FilterField;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+
+import gov.nasa.jpf.annotation.FilterField;
 
 
 /**

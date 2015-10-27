@@ -19,16 +19,17 @@
 
 package gov.nasa.jpf.test.mc.basic;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+
 /**
  * regression test for ExceptionInjector listener
  */
+@SuppressWarnings({ "unused" })
 public class ExceptionInjectorTest extends TestJPF {
   
   @Test

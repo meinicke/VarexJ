@@ -19,6 +19,12 @@
 
 package gov.nasa.jpf.util;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClinitRequired;
@@ -26,13 +32,6 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Fields;
 import gov.nasa.jpf.vm.MJIEnv;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Object transformer from Java objects to JPF objects

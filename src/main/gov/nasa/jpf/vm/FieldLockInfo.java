@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPF;
-
 import java.util.logging.Logger;
+
+import gov.nasa.jpf.JPF;
 
 /**
  * class encapsulating the lock protection status for field access

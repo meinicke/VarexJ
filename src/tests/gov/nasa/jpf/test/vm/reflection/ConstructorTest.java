@@ -19,8 +19,6 @@
 
 package gov.nasa.jpf.test.vm.reflection;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,9 +26,12 @@ import java.lang.reflect.Constructor;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+
 /**
  * regression test for constructor reflection
  */
+@SuppressWarnings({ "cast", "unused" })
 public class ConstructorTest extends TestJPF {
 
   @Retention(RetentionPolicy.RUNTIME)

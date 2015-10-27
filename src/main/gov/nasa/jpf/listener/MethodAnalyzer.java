@@ -18,6 +18,10 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.io.PrintWriter;
+import java.util.HashMap;
+
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -35,11 +39,6 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.PrintWriter;
-import java.util.HashMap;
-
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**

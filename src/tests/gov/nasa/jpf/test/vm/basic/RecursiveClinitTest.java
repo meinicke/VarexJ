@@ -19,12 +19,12 @@
 
 package gov.nasa.jpf.test.vm.basic;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * test automatic and recursive clinit invocation

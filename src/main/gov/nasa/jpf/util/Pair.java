@@ -34,7 +34,7 @@ public class Pair<A,B> {
   
   public final boolean equals(Object o) {
     if (o instanceof Pair){
-      Pair p = (Pair)o;
+      Pair<?,?> p = (Pair<?,?>)o;
       if ((_1 == null) && (p._1 != null)){
         return false;
       }

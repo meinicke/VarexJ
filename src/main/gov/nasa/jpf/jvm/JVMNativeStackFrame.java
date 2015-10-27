@@ -19,14 +19,14 @@
 
 package gov.nasa.jpf.jvm;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativeStackFrame;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
-import cmu.conditional.Conditional;
-import cmu.conditional.Function;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * a NativeStackFrame used for calling NativeMethods from Java bytecode

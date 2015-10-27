@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.Config;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,6 +30,8 @@ import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import gov.nasa.jpf.Config;
 
 /**
  * log handler class that deals with output selection and formatting. This is the

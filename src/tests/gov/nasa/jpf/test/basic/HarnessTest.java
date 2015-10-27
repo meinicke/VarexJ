@@ -1,10 +1,10 @@
 package gov.nasa.jpf.test.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.util.TypeRef;
 import gov.nasa.jpf.util.test.TestJPF;
-
-import org.junit.Test;
 
 /**
  * basic test to test the test harness

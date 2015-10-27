@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.test.mc.threads;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import org.junit.Test;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

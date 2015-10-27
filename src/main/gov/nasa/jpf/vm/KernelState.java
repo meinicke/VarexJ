@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-
 import java.util.Iterator;
 import java.util.Stack;
+
+import gov.nasa.jpf.Config;
 
 
 /**

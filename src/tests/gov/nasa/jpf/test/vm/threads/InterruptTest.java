@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.test.vm.threads;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.util.concurrent.locks.LockSupport;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * raw test for Thread.interrupt conformance

@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.ObjectList;
-import gov.nasa.jpf.util.Source;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.util.ObjectList;
+import gov.nasa.jpf.util.Source;
 
 /**
  * common root of all JPF bytecode instruction classes

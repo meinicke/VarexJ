@@ -18,6 +18,15 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.ListIterator;
+import java.util.Stack;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -30,15 +39,6 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.ListIterator;
-import java.util.Stack;
 
 /**
  * example of a listener that creates property specific traces. The interesting
@@ -411,7 +411,6 @@ public class DeadlockAnalyzer extends ListenerAdapter {
   void storeLastTransition(){
     if (lastOp != null) {
       int stateId = search.getStateId();
-      ThreadInfo ti = lastOp.ti;
 
       for (ThreadOp op = lastOp; op != null; op = op.prevOp) {
         assert op.stateId == 0;

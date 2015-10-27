@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.vm;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.test.TestJPF;
-
-import org.junit.Test;
 
 /**
  * unit test for ElementInfos

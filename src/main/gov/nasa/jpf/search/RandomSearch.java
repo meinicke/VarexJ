@@ -18,12 +18,6 @@
 //
 package gov.nasa.jpf.search;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.vm.RestorableVMState;
-import gov.nasa.jpf.vm.ThreadInfo;
-import gov.nasa.jpf.vm.VM;
-
 import java.io.File;
 import java.util.HashMap;
 
@@ -35,6 +29,11 @@ import coverage.Interaction;
 import coverage.XMLWriter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.vm.RestorableVMState;
+import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.VM;
 
 /**
  * this is a straight execution pseudo-search - it doesn't search at all (i.e.

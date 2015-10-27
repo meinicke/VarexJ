@@ -18,31 +18,25 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.Hashtable;
-
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import cmu.utils.CoverageLogger;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
-import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.FieldLockInfo;
 import gov.nasa.jpf.vm.FieldLockInfoFactory;
 import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.VM;
-import cmu.conditional.BiFunction;
-import cmu.conditional.ChoiceFactory;
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
-import cmu.utils.CoverageLogger;
-import cmu.utils.TraceComparator;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * parent class for PUT/GET FIELD/STATIC insns
@@ -203,7 +197,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     return getNext(ctx, ti);
   }
 
-  private void coverField(FeatureExpr ctx, ElementInfo eiFieldOwner, Conditional val, Conditional oldValue, StackFrame frame, ThreadInfo ti) {
+  private void coverField(FeatureExpr ctx, ElementInfo eiFieldOwner, Conditional<?> val, Conditional<?> oldValue, StackFrame frame, ThreadInfo ti) {
 	if (JPF.COVERAGE != null) {
 		if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.field ||
 				JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.interaction) {

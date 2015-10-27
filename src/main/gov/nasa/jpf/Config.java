@@ -19,9 +19,6 @@
 package gov.nasa.jpf;
 
 
-import gov.nasa.jpf.util.FileUtils;
-import gov.nasa.jpf.util.JPFSiteUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -44,6 +41,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import gov.nasa.jpf.util.FileUtils;
+import gov.nasa.jpf.util.JPFSiteUtils;
 
 
 /**

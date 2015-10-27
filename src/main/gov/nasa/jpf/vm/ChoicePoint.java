@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -27,6 +25,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.util.HashMap;
+
+import gov.nasa.jpf.JPFException;
 
 /**
  * a little helper class that is used to replay previously stored traces

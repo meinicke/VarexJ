@@ -18,12 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.JPFLogger;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,6 +27,11 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import cmu.conditional.Conditional;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.JPFLogger;
 
 
 /**

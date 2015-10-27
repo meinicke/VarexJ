@@ -1,11 +1,11 @@
 package cmu.datatypes;
 
-import gov.nasa.jpf.annotation.Conditional;
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.util.LinkedList;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.annotation.Conditional;
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class ListTest extends TestJPF {
 	static String[] JPF_CONFIGURATION = {/*"+interaction=interaction",*/"+choice=MapChoice", "+search.class= .search.RandomSearch", "+invocation=true"};

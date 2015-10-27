@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.jvm.bytecode.PUTFIELD;
@@ -29,8 +31,6 @@ import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 
 /**

@@ -18,14 +18,13 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.IntTable;
-import gov.nasa.jpf.util.ObjVector;
-
 import java.util.Iterator;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.util.IntTable;
+import gov.nasa.jpf.util.ObjVector;
 
 /**
  * Statics implementation that uses a simple ObjVector as the underlying container.

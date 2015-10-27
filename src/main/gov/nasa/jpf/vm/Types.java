@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+
+import gov.nasa.jpf.JPFException;
 
 
 /**

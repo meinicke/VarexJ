@@ -19,11 +19,11 @@
 
 package gov.nasa.jpf.vm;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.choice.DoubleChoiceFromList;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
-
-import org.junit.Test;
 
 
 /**

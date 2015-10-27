@@ -19,6 +19,9 @@
 package gov.nasa.jpf.vm;
 
 
+import java.util.ArrayList;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
@@ -26,10 +29,6 @@ import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.util.Predicate;
 import gov.nasa.jpf.vm.choice.BreakGenerator;
 import gov.nasa.jpf.vm.choice.MultiProcessThreadChoice;
-
-import java.util.ArrayList;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * A VM implementation that simulates running multiple applications within the same

@@ -18,24 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.SystemAttribute;
-import gov.nasa.jpf.jvm.bytecode.ATHROW;
-import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
-import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
-import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
-import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
-import gov.nasa.jpf.jvm.bytecode.LocalVariableInstruction;
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.IntVector;
-import gov.nasa.jpf.util.JPFLogger;
-import gov.nasa.jpf.util.Predicate;
-import gov.nasa.jpf.util.StringSetMatcher;
-import gov.nasa.jpf.vm.choice.BreakGenerator;
-import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -61,6 +43,23 @@ import cmu.utils.TraceComparator;
 import coverage.Interaction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.SystemAttribute;
+import gov.nasa.jpf.jvm.bytecode.ATHROW;
+import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
+import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
+import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
+import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
+import gov.nasa.jpf.jvm.bytecode.LocalVariableInstruction;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.IntVector;
+import gov.nasa.jpf.util.JPFLogger;
+import gov.nasa.jpf.util.Predicate;
+import gov.nasa.jpf.util.StringSetMatcher;
+import gov.nasa.jpf.vm.choice.BreakGenerator;
+import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
 
 
 /**
@@ -2741,7 +2740,6 @@ public Conditional<Instruction> executeInstruction () {
     int objref = getThreadObjectRef();
     ElementInfo ei = getModifiableElementInfo(objref);
     SystemState ss = vm.getSystemState();
-    ThreadList tl = vm.getThreadList();
     
     // beware - this notifies all waiters for this thread (e.g. in a join())
     // hence it has to be able to acquire the lock

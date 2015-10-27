@@ -18,12 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.ObjectList;
-import gov.nasa.jpf.util.Processor;
-
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -31,6 +25,11 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.ObjectList;
+import gov.nasa.jpf.util.Processor;
 
 /**
  * Describes an element of memory containing the field values of a class or an

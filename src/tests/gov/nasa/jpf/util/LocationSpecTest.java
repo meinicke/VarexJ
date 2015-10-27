@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * unit test for gov.nasa.jpf.util.LocationSpec

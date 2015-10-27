@@ -19,15 +19,14 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
-import gov.nasa.jpf.vm.ThreadInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.NativePeer;
+import gov.nasa.jpf.vm.ThreadInfo;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

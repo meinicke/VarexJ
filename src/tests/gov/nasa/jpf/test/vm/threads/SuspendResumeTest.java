@@ -18,14 +18,13 @@
 //
 package gov.nasa.jpf.test.vm.threads;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * regression test for suspend/resume
  */
-@SuppressWarnings("deprecation")
 public class SuspendResumeTest extends TestJPF {
 
   static boolean isRunning;

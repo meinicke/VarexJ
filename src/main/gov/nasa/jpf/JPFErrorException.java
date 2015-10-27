@@ -21,7 +21,6 @@ package gov.nasa.jpf;
 /**
  * internal JPF error
  */
-@SuppressWarnings("serial")
 public class JPFErrorException extends JPFException {
   public JPFErrorException (String s) {
     super(s);

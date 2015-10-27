@@ -1,7 +1,5 @@
 package cmu.testprograms;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
 
 import EmailSystem.Scenario;

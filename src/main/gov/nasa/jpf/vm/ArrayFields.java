@@ -18,12 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
-
 import java.io.PrintStream;
 
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.JPFException;
 
 /**
  * a Field (data value) store for array objects

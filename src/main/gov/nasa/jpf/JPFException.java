@@ -23,7 +23,6 @@ import java.io.PrintStream;
 /**
  * common root for all exceptions thrown by JPF
  */
-@SuppressWarnings("serial")
 public class JPFException extends RuntimeException {
 
   public JPFException (String details) {

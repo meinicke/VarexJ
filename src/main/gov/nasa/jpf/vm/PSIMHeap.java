@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.Iterator;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.PSIntMap;
 import gov.nasa.jpf.util.Predicate;
-
-import java.util.Iterator;
 
 /**
  * heap implementation that uses a PersistentStagingMsbIntMap as the underlying container

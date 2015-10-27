@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.test.java.lang;
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
@@ -29,9 +26,13 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
+
 /**
  * test of java.lang.String APIs
  */
+@SuppressWarnings({ "unused" })
 public class StringTest extends TestJPF {
 
 

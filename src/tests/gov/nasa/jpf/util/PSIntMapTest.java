@@ -19,8 +19,6 @@
 
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.HashMap;
@@ -30,9 +28,12 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+
 /**
  * regression test for PSIntMap
  */
+@SuppressWarnings({ "unused" })
 public class PSIntMapTest extends TestJPF {
 
   PSIntMap<Integer> createPersistentIntMap(){

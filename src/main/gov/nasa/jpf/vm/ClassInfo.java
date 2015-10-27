@@ -18,18 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFConfigException;
-import gov.nasa.jpf.JPFListener;
-import gov.nasa.jpf.util.ImmutableList;
-import gov.nasa.jpf.util.JPFLogger;
-import gov.nasa.jpf.util.LocationSpec;
-import gov.nasa.jpf.util.MethodSpec;
-import gov.nasa.jpf.util.Misc;
-import gov.nasa.jpf.util.OATHash;
-import gov.nasa.jpf.util.Source;
-
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -47,6 +35,17 @@ import java.util.logging.Level;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFConfigException;
+import gov.nasa.jpf.JPFListener;
+import gov.nasa.jpf.util.ImmutableList;
+import gov.nasa.jpf.util.JPFLogger;
+import gov.nasa.jpf.util.LocationSpec;
+import gov.nasa.jpf.util.MethodSpec;
+import gov.nasa.jpf.util.Misc;
+import gov.nasa.jpf.util.OATHash;
+import gov.nasa.jpf.util.Source;
 
 
 /**

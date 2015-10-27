@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.mc.threads;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * test verification of daemon threads, which are different because of their

@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.test.mc.basic;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * various shared object propagations that could lead to missed paths

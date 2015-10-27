@@ -19,6 +19,11 @@
 
 package gov.nasa.jpf.util.test;
 
+import java.util.ArrayList;
+
+import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
@@ -27,12 +32,6 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import java.util.ArrayList;
-
-import cmu.conditional.Conditional;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer for our test class root
@@ -103,7 +102,6 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
   @MJI
   public void runTestsOfThisClass___3Ljava_lang_String_2__V (MJIEnv env, int clsObjRef,
                                                                     int selectedTestsRef, FeatureExpr ctx) {
-    ThreadInfo ti = env.getThreadInfo();
 
     if (!done) {
       if (testMethods == null) {

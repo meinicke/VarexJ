@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.jvm;
 
-import gov.nasa.jpf.vm.DirectCallStackFrame;
-import gov.nasa.jpf.vm.MethodInfo;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.DirectCallStackFrame;
+import gov.nasa.jpf.vm.MethodInfo;
 
 /**
  * a direct call stackframe that supports JVM calling conventions

@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.test.vm.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
-
-import org.junit.Test;
 
 /*
  * VM.registerStartupClass must be kept in sync with ClassInfo.registerClass.

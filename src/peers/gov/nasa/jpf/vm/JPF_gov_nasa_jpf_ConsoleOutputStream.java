@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,6 +27,7 @@ import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * MJI NativePeer class to intercept all System.out and System.err

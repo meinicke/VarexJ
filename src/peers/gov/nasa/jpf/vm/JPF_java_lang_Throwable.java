@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -27,6 +25,7 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 
 /**

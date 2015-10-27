@@ -19,16 +19,16 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
+import java.util.List;
+
+import org.junit.Test;
+
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.util.test.TestMultiProcessJPF;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.SchedulerFactory;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.List;
-
-import org.junit.Test;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
-
 import java.util.HashMap;
+
+import gov.nasa.jpf.JPFException;
 
 /**
  * the JPF internal representation for Java Annotations

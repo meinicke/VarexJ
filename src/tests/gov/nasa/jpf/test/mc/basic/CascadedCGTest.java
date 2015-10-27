@@ -20,6 +20,10 @@
 package gov.nasa.jpf.test.mc.basic;
 
 
+import org.junit.Test;
+
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
@@ -35,11 +39,6 @@ import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Verify;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
 import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
-
-import org.junit.Test;
-
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * regression test for cascaded ChoiceGenerators

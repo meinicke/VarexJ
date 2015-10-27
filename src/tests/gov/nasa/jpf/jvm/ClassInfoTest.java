@@ -19,15 +19,15 @@
 
 package gov.nasa.jpf.jvm;
 
+import java.io.File;
+
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassParseException;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.MethodInfo;
-
-import java.io.File;
-
-import org.junit.Test;
 
 /**
  * unit test for ClassInfo initialization
@@ -79,7 +79,8 @@ public class ClassInfoTest extends TestJPF {
       }
     }
 
-    protected void foo() throws IndexOutOfBoundsException {
+    @SuppressWarnings("unused")
+	protected void foo() throws IndexOutOfBoundsException {
       @X int d = D;
 
       Object[] a = new Object[2];

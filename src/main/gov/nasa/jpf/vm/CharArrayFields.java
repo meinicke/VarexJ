@@ -19,10 +19,6 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.IntVector;
-import gov.nasa.jpf.util.PrintUtils;
-
 import java.io.PrintStream;
 
 import cmu.conditional.BiFunction;
@@ -31,6 +27,9 @@ import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.IntVector;
+import gov.nasa.jpf.util.PrintUtils;
 
 /**
  * element values for char[] objects

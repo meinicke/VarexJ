@@ -1,7 +1,5 @@
 package gov.nasa.jpf.test.java.io;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +8,8 @@ import java.nio.channels.FileChannel;
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class FileIOStreamTest extends TestJPF {
 

@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.vm.threads;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * signal test (wait/notify)
@@ -113,7 +113,8 @@ public class WaitTest extends TestJPF
 
 
 
-  @Test public void testTimeoutWait () {
+  @SuppressWarnings("unused")
+@Test public void testTimeoutWait () {
     if (verifyNoPropertyViolation()) {
       System.out.println("running testTimeoutWait()");
 

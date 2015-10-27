@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.SystemAttribute;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.NoSuchElementException;
+
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.SystemAttribute;
 
 /**
  * a minimal container API that transparently handles Object lists which can

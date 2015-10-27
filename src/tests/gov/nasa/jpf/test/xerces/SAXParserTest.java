@@ -19,8 +19,6 @@
 
 package gov.nasa.jpf.test.xerces;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,6 +28,8 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * regression test for parsing xml files with Apache xerces

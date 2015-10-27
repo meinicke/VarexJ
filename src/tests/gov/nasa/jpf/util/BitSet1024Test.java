@@ -19,16 +19,17 @@
 
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.util.BitSet;
 import java.util.Random;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+
 /**
  * unit test for gov.nasa.jpf.util.BitSet
  */
+@SuppressWarnings({ "unused" })
 public class BitSet1024Test extends TestJPF {
 
   public static void main (String[] args){

@@ -19,12 +19,12 @@
 
 package gov.nasa.jpf.perturb;
 
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.IntChoiceGenerator;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * simple +/- delta perturbation of integer operand values

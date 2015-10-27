@@ -19,14 +19,6 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.util.ArrayObjectQueue;
-import gov.nasa.jpf.util.IntTable;
-import gov.nasa.jpf.util.IntVector;
-import gov.nasa.jpf.util.ObjectQueue;
-import gov.nasa.jpf.util.Processor;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +29,13 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.util.ArrayObjectQueue;
+import gov.nasa.jpf.util.IntTable;
+import gov.nasa.jpf.util.IntVector;
+import gov.nasa.jpf.util.ObjectQueue;
+import gov.nasa.jpf.util.Processor;
 
 /**
  * this is an abstract root for Heap implementations, providing a standard

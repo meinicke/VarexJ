@@ -18,13 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.Printable;
-
 import java.io.PrintWriter;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.util.Printable;
 
 
 /**
@@ -36,7 +35,6 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  * at this point there is nothing to do anymore, get to the NoUncaughtProperty reporting
  * as quickly as possible, since chances are we would be even obfuscating the problem
  */
-@SuppressWarnings("serial")
 public class UncaughtException extends RuntimeException implements Printable {
 
   ThreadInfo thread;

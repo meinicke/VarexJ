@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.util.json;
 
-import gov.nasa.jpf.vm.ChoiceGenerator;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import gov.nasa.jpf.vm.ChoiceGenerator;
 
 /**
  *

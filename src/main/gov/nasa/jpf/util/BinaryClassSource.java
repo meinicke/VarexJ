@@ -19,13 +19,13 @@
 
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.vm.ClassParseException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import gov.nasa.jpf.vm.ClassParseException;
 
 /**
  * common root for classes that read classes from binary data

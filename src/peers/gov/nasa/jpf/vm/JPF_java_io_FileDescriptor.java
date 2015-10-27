@@ -18,12 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.DynamicObjectArray;
-import gov.nasa.jpf.util.JPFLogger;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -36,6 +30,11 @@ import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.DynamicObjectArray;
+import gov.nasa.jpf.util.JPFLogger;
 
 /**
  * native peer for file descriptors, which are our basic interface to

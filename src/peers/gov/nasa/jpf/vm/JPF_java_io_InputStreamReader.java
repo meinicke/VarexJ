@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -27,6 +25,7 @@ import java.nio.charset.CharsetDecoder;
 
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 public class JPF_java_io_InputStreamReader extends NativePeer {
 
@@ -49,7 +48,7 @@ public class JPF_java_io_InputStreamReader extends NativePeer {
   public int decode___3BI_3CIZ__I (MJIEnv env, int objref,
                                          int bref, int len, int cref, int off,
                                          boolean endOfInput, FeatureExpr ctx){
-    int c = -1;
+//    int c = -1;
     int lim = in.limit();
     
     if (lim < in.capacity()){ // left-over bytes

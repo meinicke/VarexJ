@@ -18,13 +18,14 @@
 //
 package gov.nasa.jpf.test.mc.threads;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * regression test for concurrent clinit execution
  */
+@SuppressWarnings({ "unused" })
 public class ClinitTest extends TestJPF {
 
   static class X {

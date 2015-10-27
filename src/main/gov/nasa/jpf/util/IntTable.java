@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.JPFException;
-
 import java.util.Iterator;
+
+import gov.nasa.jpf.JPFException;
 
 /**
  * A hash map that holds int values associated with generic key objects.

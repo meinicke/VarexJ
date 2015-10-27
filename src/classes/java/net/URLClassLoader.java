@@ -27,8 +27,6 @@ import java.util.Enumeration;
 import java.util.Vector;
 import java.util.jar.Manifest;
 
-import de.fosd.typechef.featureexpr.FeatureExpr;
-
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 

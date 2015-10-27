@@ -1,16 +1,17 @@
 package cmu.defect4j;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
 * @author: chupanw
 */
+@SuppressWarnings({ "unused" })
 public class LangTestGenerator extends TestGenerator{
 
     private String config = "\"+nhandler.delegateUnhandledNative\", \"+classpath+=${jpf-core}/lib/junit-4.11.jar,${jpf-core}/lib/commons-lang3-3.2-SNAPSHOT.jar,${jpf-core}/lib/easymock.jar,${jpf-core}/lib/commons-io.jar\"";

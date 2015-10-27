@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import sun.misc.Hashing;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * simple forwarding sun.misc.Hashing peer to speed up execution and shorten traces

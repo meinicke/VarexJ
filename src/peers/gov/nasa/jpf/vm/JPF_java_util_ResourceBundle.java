@@ -19,8 +19,6 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.util.List;
 
 import cmu.conditional.One;

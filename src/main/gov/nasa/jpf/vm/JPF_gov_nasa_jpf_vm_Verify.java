@@ -18,6 +18,16 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.BitSet;
+import java.util.List;
+
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -37,17 +47,6 @@ import gov.nasa.jpf.vm.choice.FloatChoiceFromList;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
 import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
 import gov.nasa.jpf.vm.choice.LongChoiceFromList;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.BitSet;
-import java.util.List;
-
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer class for programmatic JPF interface (that can be used inside
@@ -777,7 +776,6 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static int getLocalAttribute__Ljava_lang_String_2__I (MJIEnv env, int clsRef, int varRef, FeatureExpr ctx) {
     String slotName = env.getStringObject(ctx, varRef);
-    ThreadInfo ti = env.getThreadInfo();
     StackFrame frame = env.getCallerStackFrame();
 
     int slotIdx = frame.getLocalVariableSlotIndex(slotName);
@@ -810,7 +808,6 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static int getLocalAttributes__Ljava_lang_String_2___3I (MJIEnv env, int clsRef, int varRef, FeatureExpr ctx) {
     String slotName = env.getStringObject(ctx, varRef);
-    ThreadInfo ti = env.getThreadInfo();
     StackFrame frame = env.getCallerStackFrame();
 
     int slotIdx = frame.getLocalVariableSlotIndex(slotName);

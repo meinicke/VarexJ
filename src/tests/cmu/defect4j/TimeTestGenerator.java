@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 /**
  * @author: chupanw
  */
+@SuppressWarnings({ "unused" })
 public class TimeTestGenerator extends TestGenerator{
     private String config = "\"+nhandler.delegateUnhandledNative\", \"+classpath+=${jpf-core}/lib/junit-3.8.2.jar,lib/joda-convert-1.2.jar,jodatime/target/classes/,jodatime/target/test-classes,jodatime/\"";
 
@@ -50,7 +51,7 @@ public class TimeTestGenerator extends TestGenerator{
                 boolean have_null_constructor = true;
 
                 try{
-                    Constructor constructor = c.getDeclaredConstructor();
+                    Constructor<?> constructor = c.getDeclaredConstructor();
                 } catch (NoSuchMethodException e){
                     have_null_constructor = false;
                 }

@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.HashData;
-
 import java.io.PrintWriter;
 import java.util.Arrays;
+
+import gov.nasa.jpf.util.HashData;
 
 /**
  * Represents the variable, hash-collapsed pooled data associated with an object

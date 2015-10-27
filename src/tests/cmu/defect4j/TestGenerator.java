@@ -1,12 +1,12 @@
 package cmu.defect4j;
 
-import junit.framework.TestCase;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.LinkedList;
+
+import junit.framework.TestCase;
 
 /**
  * @author: chupanw

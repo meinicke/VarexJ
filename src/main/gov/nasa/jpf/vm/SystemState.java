@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPFException;
-
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPFException;
 
 
 /**

@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.util.logging.Logger;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
@@ -31,8 +33,6 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.logging.Logger;
 
 /**
  * simple combined listener that checks if a thread seems to do idle loops that

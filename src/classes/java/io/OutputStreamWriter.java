@@ -18,10 +18,10 @@
 //
 package java.io;
 
-import gov.nasa.jpf.vm.Verify;
-
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+
+import gov.nasa.jpf.vm.Verify;
 
 /**
  * natively convert char output into byte output

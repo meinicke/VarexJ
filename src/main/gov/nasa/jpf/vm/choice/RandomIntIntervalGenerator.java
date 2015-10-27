@@ -19,12 +19,12 @@
 
 package gov.nasa.jpf.vm.choice;
 
+import java.util.Random;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ChoiceGeneratorBase;
 import gov.nasa.jpf.vm.IntChoiceGenerator;
-
-import java.util.Random;
 
 /**
  * a IntChoiceGenerator that randomly chooses a configured number

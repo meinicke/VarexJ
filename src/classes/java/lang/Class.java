@@ -50,7 +50,7 @@ import sun.reflect.annotation.AnnotationType;
  * class.getName() / Class.ForName() support (which is (almost) enough for
  * Java assertion support
  */
-@SuppressWarnings("unused")  // native peer uses
+// native peer uses
 public final class Class<T> implements Serializable, GenericDeclaration, Type, AnnotatedElement {
 
   /** don't use serialVersionUID from JDK 1.1 for interoperability */

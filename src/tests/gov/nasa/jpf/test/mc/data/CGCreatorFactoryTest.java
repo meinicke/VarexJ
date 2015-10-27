@@ -19,14 +19,14 @@
 
 package gov.nasa.jpf.test.mc.data;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.json.CGCreator;
 import gov.nasa.jpf.util.json.Value;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.BooleanChoiceGenerator;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 /**
  *
