@@ -15,13 +15,14 @@ import java.net.Socket;
 public class JettyHelloWorldTest extends TestJPF{
     private final String[] config = {"+vm.por.sync_detection=false", "+nhandler.delegateUnhandledNative", "+interaction=context", "+search.class=.search.RandomSearch", "+classpath+=${jpf-core}/lib/junit-4.11.jar,lib/jetty-all-7.6.18-SNAPSHOT.jar,lib/servlet-api-2.5.jar,jetty-resources/classes"};
     @Test(timeout = 6000000)
+	@Ignore
     public void testHelloWorldServer() throws Exception {
         if (verifyNoPropertyViolation(config)) {
             JettyHelloWorld.main(new String[]{});
         }
     }
 
-    @Test
+    @Test @Ignore
     public void testServer() throws Exception {
         if (verifyNoPropertyViolation(config)) {
             final int PORT = 8080;
