@@ -178,8 +178,16 @@ public class JPF_java_io_File extends NativePeer {
   }
   
   @MJI
-  public long length____J (MJIEnv env, int objref, FeatureExpr ctx) {
-    return getFile(env,objref, ctx).getValue().length();
+  public Conditional<Long> length____J (MJIEnv env, int objref, FeatureExpr ctx) {
+//    return getFile(env,objref, ctx).getValue().length();
+    Conditional<File> files = getFile(env, objref, ctx);
+    Conditional<Long> lengths = files.map(new Function<File, Long>() {
+      @Override
+      public Long apply(File x) {
+        return x.length();
+      }
+    });
+    return lengths;
   }
   
   @MJI

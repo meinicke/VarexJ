@@ -132,7 +132,7 @@ public class DefaultSchedulerFactory implements SchedulerFactory {
           break;
         }
       }
-      randomizeThreadList(list);
+//      randomizeThreadList(list);
       return list;
     }
     else{
