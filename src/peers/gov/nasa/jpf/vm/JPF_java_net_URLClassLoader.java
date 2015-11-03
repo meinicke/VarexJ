@@ -22,6 +22,7 @@ import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.JPFLogger;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -55,6 +56,13 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
     }
 
     cl.addClassPathElement(path);
+    // Always add the system classpath
+    String v = System.getProperty("sun.boot.class.path");
+    if (v != null) {
+      for (String pn : v.split(File.pathSeparator)) {
+        cl.addClassPathElement(pn);
+      }
+    }
   }
 
   @MJI

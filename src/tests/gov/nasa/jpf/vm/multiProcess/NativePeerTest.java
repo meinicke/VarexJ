@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm.multiProcess;
 
 import gov.nasa.jpf.util.test.TestMultiProcessJPF;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -36,6 +37,7 @@ public class NativePeerTest extends TestMultiProcessJPF {
   // with the same fully qualified name still share the same NativePeer class
   // but they keep different instances of it
   @Test
+  @Ignore // Ignoring because we don't use multi-process
   public void nativePeerTest() {
     // Note that this code is executed 4 times (twice by each process main thread).
     // Since we do not restore NativePeer states the maximum value of counter in 

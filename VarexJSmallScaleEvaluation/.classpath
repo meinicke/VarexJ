@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-core_old/build/classloader_specific_tests.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-core_old/build/jpf.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-core_old/build/jpf-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-core_old/build/jpf-classes.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-core_old/build/RunJPF.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-core_old/build/RunTest.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-symbc/build/jpf-symbc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-symbc/build/jpf-symbc-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-symbc/build/jpf-symbc-classes.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-bdd/build/jpf-bdd-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/meinicke/git/VarexJ/build/jpf-annotations.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

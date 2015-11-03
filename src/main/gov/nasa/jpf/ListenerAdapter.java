@@ -145,4 +145,7 @@ public abstract class ListenerAdapter implements VMListener, SearchListener, Pub
   @Override
   public void publishProbe (Publisher publisher) {}
 
+  @Override
+  public void resetInstructionCounter() {}
+  
 }

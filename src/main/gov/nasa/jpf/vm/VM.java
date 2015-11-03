@@ -718,7 +718,19 @@ public abstract class VM {
   protected void notifyChoiceGeneratorRegistered (ChoiceGenerator<?>cg, ThreadInfo ti) {
     try {
       for (int i = 0; i < listeners.length; i++) {
-        listeners[i].choiceGeneratorRegistered(this, cg, ti, ti.getPC().getValue());
+        // This is awkward, if we change the signature of this method, we need to
+        // also change a bunch of listeners, most of which are useless to us.
+        // FIXME
+        if (ti.getPC() instanceof One){
+          listeners[i].choiceGeneratorRegistered(this, cg, ti, ti.getPC().getValue());
+        }
+        else{
+          System.err.println("___________________________________________________");
+          System.err.println("[WARN] Get value of choice called: " + this);
+          System.err.println("---------------------------------------------------");
+          // Let's wait for a NullPointerException
+          listeners[i].choiceGeneratorRegistered(this, cg, ti, null);
+        }
       }
     } catch (UncaughtException x) {
       throw x;
@@ -784,6 +796,12 @@ public abstract class VM {
       throw new JPFListenerException("exception during executeInstruction() notification", t);
     }
   }
+  
+  public void resetInstructionCounter() {
+		for (int i = 0; i < listeners.length; i++) {
+			listeners[i].resetInstructionCounter();
+		}
+	}
 
   protected void notifyInstructionExecuted (ThreadInfo ti, Instruction insn, Instruction nextInsn) {
     try {

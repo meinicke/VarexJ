@@ -29,10 +29,7 @@ import gov.nasa.jpf.util.StringSetMatcher;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -727,10 +724,15 @@ public class ClassLoaderInfo
     return getCurrentSystemClassLoader().createClassFileContainer(path);
   }
   
-  public void addClassPathElement (String path){
+  public void addClassPathElement (String path) {
+    for (String existingPath : cp.getPathNames()) {
+      if (existingPath.equals(path)) {
+        return;
+      }
+    }
     ClassFileContainer cfc = createClassFileContainer(path);
-    
-    if (cfc != null){
+
+    if (cfc != null) {
       cp.addClassFileContainer(cfc);
     } else {
       log.warning("unknown classpath element: ", path);

@@ -72,3 +72,14 @@ jpf-nhandler/onthefly/*.java
 META-INF/
 
 junit*.properties
+/build/
+/build/
+
+.externalToolBuilders/org.eclipse.jdt.core.javabuilder.launch
+GlobalPassing.txt
+Notify.sh
+PassingList.txt
+coverage.xml
+jetty-resources/
+# small script to copy the coverage.xml around
+copyCoverage.py

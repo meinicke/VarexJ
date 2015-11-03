@@ -613,5 +613,5 @@ public class Verify {
     System.err.printf(format, args);
   }
 
-  
+  public static void resetInstructionCounter() {}
 }

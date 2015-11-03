@@ -22,6 +22,8 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.choice.BreakGenerator;
 import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
 
+import java.util.Random;
+
 
 /**
  * the general policy is that we only create Thread CGs here (based on their
@@ -69,9 +71,15 @@ public class DefaultSchedulerFactory implements SchedulerFactory {
   }
 
   protected ChoiceGenerator<ThreadInfo> getRunnableCG (String id, ThreadInfo ti) {
-    ThreadInfo[] choices = getRunnablesIfChoices(ti);
+    ThreadInfo[] choices;
+    if (id.equals(THREAD_YIELD) || id.equals(THREAD_START)) {
+      choices = getRunnablesExcept(ti);
+    }
+    else{
+      choices = getRunnablesIfChoices(ti);
+    }
     if (choices != null) {
-      return new ThreadChoiceFromSet( id, choices, true);
+      return new ThreadChoiceFromSet(id, choices, true);
     } else {
       return null;
     }
@@ -102,6 +110,54 @@ public class DefaultSchedulerFactory implements SchedulerFactory {
     } else {
       return null;
     }
+  }
+
+  /**
+   * Used by yield to get a list of runnable threads but put itself to the end of the list, in
+   * case there is no runnable threads at that time.
+   *
+   * @author chupanw
+   * @param ti
+   * @return an array of runnable threads
+   */
+  protected ThreadInfo[] getRunnablesExcept(ThreadInfo ti) {
+    int n = vm.getThreadList().getMatchingCount(vm.getTimedoutRunnablePredicate());
+
+    if ((n > 1) || (n == 1 && breakSingleChoice)) {
+      ThreadInfo[] list = vm.getThreadList().getAllMatching(vm.getTimedoutRunnablePredicate());
+      for (int i = 0; i < list.length; i++) {
+        if (list[i] == ti) {
+          list[i] = list[list.length-1];
+          list[list.length-1] = ti;
+          break;
+        }
+      }
+      randomizeThreadList(list);
+      return list;
+    }
+    else{
+      return null;
+    }
+  }
+
+  private void randomizeThreadList(ThreadInfo[] list) {
+    int upperBound = list.length-2;  // we don't change the last ThreadInfo
+    // no need to switch the order if upper bound is less than 1
+    if (upperBound < 1) {
+      return;
+    }
+    Random rand = new Random();
+    for (int i = 0; i < 10; i++) {
+      int posA = rand.nextInt(upperBound);
+      int posB = rand.nextInt(upperBound);
+      if (posA == posB) {
+        continue;
+      }
+      ThreadInfo tmp = list[posA];
+      list[posA] = list[posB];
+      list[posB] = tmp;
+    }
+
   }
 
   protected ThreadInfo[] getRunnablesWith (ThreadInfo ti) {
@@ -311,7 +367,7 @@ public class DefaultSchedulerFactory implements SchedulerFactory {
       if (ss.isAtomic()) {
         return null;
       }
-      return getRunnableCG( THREAD_YIELD, yieldThread);
+      return getRunnableCG(THREAD_YIELD, yieldThread);
 
     } else {
       return null;

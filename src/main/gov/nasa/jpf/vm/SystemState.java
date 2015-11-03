@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFException;
 
@@ -424,7 +425,7 @@ public class SystemState {
   }
 
   
-  public <T extends ChoiceGenerator<?>> T getInsnChoiceGeneratorOfType (Class<T> cgType, Instruction insn, ChoiceGenerator<?> cgPrev){
+  public <T extends ChoiceGenerator<?>> T getInsnChoiceGeneratorOfType (Class<T> cgType, Conditional<Instruction> insn, ChoiceGenerator<?> cgPrev){
     ChoiceGenerator<?> cg = cgPrev != null ? cgPrev.getPreviousChoiceGenerator() : curCg;
 
     if (cg != null && cg.getInsn() == insn && cgType.isAssignableFrom(cg.getClass())){

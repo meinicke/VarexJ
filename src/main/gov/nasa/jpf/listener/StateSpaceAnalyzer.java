@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.listener;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -253,7 +254,16 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       MethodInfo mi;
       Instruction instruction;
 
-      instruction = generator.getInsn();
+      if (generator.getInsn() instanceof One) {
+        instruction = (Instruction)generator.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: " + this);
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        instruction = null;
+      }
       if (instruction == null) {
         return (null);
       }
@@ -279,7 +289,16 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       MethodInfo mi;
       Instruction instruction;
 
-      instruction = generator.getInsn();
+      if (generator.getInsn() instanceof One) {
+        instruction = (Instruction) generator.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: " + this);
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        instruction = null;
+      }
       if (instruction == null) {
         return (null);
       }
@@ -304,7 +323,16 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       MethodInfo mi;
       Instruction instruction;
 
-      instruction = generator.getInsn();
+      if (generator.getInsn() instanceof One) {
+        instruction = (Instruction) generator.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: " + this);
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        instruction = null;
+      }
       if (instruction == null) {
         return (null);
       }
@@ -357,7 +385,16 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
     private static CGType getType(ThreadChoiceGenerator generator) {
       Instruction instruction;
 
-      instruction = generator.getInsn();
+      if (generator.getInsn() instanceof One) {
+        instruction = generator.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: StateSpaceAnalyzer:getType(ThreadChoiceGenerator)");
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        instruction = null;
+      }
       if (instruction == null) {
         return (null);
       }
@@ -495,7 +532,15 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       if (isLeaf()) {
         if (m_sampleGeneratorClassName == null) {
           m_sampleGeneratorClassName = generator.getClass().getName();
-          m_sampleGeneratorInstruction = generator.getInsn();
+          if (generator.getInsn() instanceof One) {
+            m_sampleGeneratorInstruction = (Instruction) generator.getInsn().getValue();
+          } else {
+            System.err.println("___________________________________________________");
+            System.err.println("[WARN] Get value of choice called: " + this);
+            System.err.println("---------------------------------------------------");
+            // Let's wait for a NullPointerException
+            m_sampleGeneratorInstruction = null;
+          }
         }
 
         return;
