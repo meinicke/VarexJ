@@ -357,7 +357,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   }
   
   protected ElementInfo newString (FeatureExpr fexpr, ClassInfo ciString, ClassInfo ciChars, String str, ThreadInfo ti, AllocationContext ctx) {
-    SystemClassLoaderInfo sysCl = ti.getSystemClassLoaderInfo();
+//    SystemClassLoaderInfo sysCl = ti.getSystemClassLoaderInfo();
     
     //--- the string object itself
     int sRef = getNewElementInfoIndex( ctx);

@@ -54,13 +54,15 @@ public class CommitOutputStreamTest extends TestJPF
       assertEquals(0, m_result.available());
    }
    
-   @Test(expected = NullPointerException.class)
+   @SuppressWarnings("resource")
+@Test(expected = NullPointerException.class)
    public void constructorNullArg()
    {
       new CommitOutputStream(null);
    }
    
-   @Test
+   @SuppressWarnings("resource")
+@Test
    public void flush() throws IOException
    {
       CountedOutputStream counted;

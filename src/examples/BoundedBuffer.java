@@ -107,7 +107,8 @@ public class BoundedBuffer {
     public void run() {
       try {
         while(true) {
-            Object tmp = buf.get();
+        	buf.get();
+//            Object tmp = buf.get(); 
         }
       } catch(InterruptedException e ){}
     }

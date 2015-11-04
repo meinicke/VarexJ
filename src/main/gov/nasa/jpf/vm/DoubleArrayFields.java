@@ -36,6 +36,7 @@ public class DoubleArrayFields extends ArrayFields {
 
   Conditional<Double>[] values;
 
+  @SuppressWarnings("unchecked")
   public DoubleArrayFields (int length) {
     values = new Conditional[length];
     for (int i = 0; i < values.length; i++) {

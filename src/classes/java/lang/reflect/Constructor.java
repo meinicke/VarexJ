@@ -50,6 +50,7 @@ public /*final*/ class Constructor <T> extends AccessibleObject implements Membe
   
   public native Annotation[] getAnnotations();
   public native Annotation[] getDeclaredAnnotations();
+  @SuppressWarnings("hiding")
   public native <T extends Annotation> T getAnnotation( Class<T> annotationCls);
   public native Annotation[][] getParameterAnnotations();
   

@@ -101,7 +101,6 @@ public class ClassUtilsTest extends TestJPF {
     private static interface IE extends IF {    }
     private static interface IF {    }
     private static class CX implements IB, IA, IE {    }
-    @SuppressWarnings("unused")
 	private static class CY extends CX implements IB, IC {    }
 
     @Test(timeout=120000)

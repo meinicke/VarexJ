@@ -24,15 +24,14 @@ import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
-import gov.nasa.jpf.util.ArrayObjectQueueTest.E;
 import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  *
  */
 public class ArrayObjectQueueTest extends TestJPF {
-  
-  <E> void printLogicalOrder (ArrayObjectQueue<E> q){
+  @SuppressWarnings("hiding")
+<E> void printLogicalOrder (ArrayObjectQueue<E> q){
     int n = 0;
     System.out.print('{');
     for (E e : q){
@@ -45,7 +44,8 @@ public class ArrayObjectQueueTest extends TestJPF {
     System.out.println('}');
   }
 
-  <E> void printPhysicalOrder (ArrayObjectQueue<E> q){
+@SuppressWarnings("hiding")
+<E> void printPhysicalOrder (ArrayObjectQueue<E> q){
     int n = 0;
     System.out.print('{');
     for (Iterator<E> it = q.storageIterator(); it.hasNext(); ){

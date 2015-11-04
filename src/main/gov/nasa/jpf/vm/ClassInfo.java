@@ -2365,7 +2365,8 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * It is used for the cases where cl tries to load a class that the original version 
    * of which has been loaded by some other classloader.
    */
-  public ClassInfo cloneFor (FeatureExpr ctx, ClassLoaderInfo cl) {
+  @SuppressWarnings("unchecked")
+public ClassInfo cloneFor (FeatureExpr ctx, ClassLoaderInfo cl) {
     ClassInfo ci;
 
     try {

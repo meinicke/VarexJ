@@ -388,6 +388,7 @@ public class ConsolePublisher extends Publisher {
    * 
    * Add the result to an output file
    */
+  @SuppressWarnings("unused")
   private static void createOutput(long time, long visitedStates, long mb, long insns) {
 		File results = new File("VarexJ.csv");
 		if (!results.exists()) {

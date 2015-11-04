@@ -114,6 +114,7 @@ public class DefaultBacktracker<KState> implements Backtracker {
     }
   }
   
+  @SuppressWarnings("unchecked")
   @Override
   public void restoreState (RestorableState state) {
     ((RestorableStateImpl) state).restore();

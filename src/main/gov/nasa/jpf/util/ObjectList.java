@@ -72,6 +72,7 @@ import gov.nasa.jpf.SystemAttribute;
  *                a = ObjectList.getNext(MyAttr.class, attr, a)) {..}
  * 
  */
+@SuppressWarnings("unchecked")
 public abstract class ObjectList {
   
   // there are no instances, this class is only a static API

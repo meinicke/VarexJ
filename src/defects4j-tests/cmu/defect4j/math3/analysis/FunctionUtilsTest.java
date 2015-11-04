@@ -2,7 +2,7 @@ package cmu.defect4j.math3.analysis;
 
 import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
-
+@SuppressWarnings("deprecation")
 public class FunctionUtilsTest extends TestJPF {
 
     private final String[] config = {"+nhandler.delegateUnhandledNative", "+classpath+=${jpf-core}/lib/junit-4.11.jar,lib/commons-math-3.1-SNAPSHOT.jar"};

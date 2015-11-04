@@ -306,6 +306,7 @@ public final class Class<T> implements Serializable, GenericDeclaration, Type, A
 
   native AnnotationType getAnnotationType();
   
+  @SuppressWarnings("unchecked")
   public TypeVariable<Class<T>>[] getTypeParameters() {
     return new TypeVariable[0];//throw new UnsupportedOperationException(); TODO implement
   }

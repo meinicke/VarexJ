@@ -36,6 +36,7 @@ import gov.nasa.jpf.vm.Verify;
 /**
  * simple test application to break transitions from listeners
  */
+@SuppressWarnings("unused")
 public class BreakTest extends TestJPF {
 
   static final String LISTENER = "+listener=.test.mc.basic.BreakTestListener";

@@ -61,6 +61,7 @@ public class DaemonTest extends TestJPF {
       // termination
       t.blowUp = true;
       
+      @SuppressWarnings("unused")
       int dummy = 42; // totally pointless, but a host VM could still reschedule here
     }
   }

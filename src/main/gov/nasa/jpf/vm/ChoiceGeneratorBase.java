@@ -28,6 +28,7 @@ import gov.nasa.jpf.util.ObjectList;
 /**
  * abstract root class for configurable choice generators
  */
+@SuppressWarnings("unchecked")
 public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
 
   /**
@@ -354,11 +355,13 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
    * this only returns the first attr of this type, there can be more
    * if you don't use client private types or the provided type is too general
    */
-  public <T> T getAttr(Class<T> attrType) {
+  @SuppressWarnings("hiding")
+public <T> T getAttr(Class<T> attrType) {
     return ObjectList.getFirst(attr, attrType);
   }
 
-  public <T> T getNextAttr(Class<T> attrType, Object prev) {
+  @SuppressWarnings("hiding")
+public <T> T getNextAttr(Class<T> attrType, Object prev) {
     return ObjectList.getNext(attr, attrType, prev);
   }
 
@@ -366,7 +369,8 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
     return ObjectList.iterator(attr);
   }
 
-  public <T> ObjectList.TypedIterator<T> attrIterator(Class<T> attrType) {
+  @SuppressWarnings("hiding")
+public <T> ObjectList.TypedIterator<T> attrIterator(Class<T> attrType) {
     return ObjectList.typedIterator(attr, attrType);
   }
 

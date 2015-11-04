@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 /**
  * dynamically growing, cyclic array buffer queue for object references
  */
+@SuppressWarnings("unchecked")
 public class ArrayObjectQueue<E> implements ObjectQueue<E> {
 
   static final int DEFAULT_CAPACITY = 256;
@@ -43,7 +44,7 @@ public class ArrayObjectQueue<E> implements ObjectQueue<E> {
       return (remaining > 0);
     }
 
-    public E next() {
+	public E next() {
       if (remaining == 0){
         throw new NoSuchElementException();
       } else {
