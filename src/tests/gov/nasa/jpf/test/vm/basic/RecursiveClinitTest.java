@@ -103,7 +103,7 @@ public class RecursiveClinitTest extends TestJPF {
       try {
         Class<?> clazz = Class.forName("gov.nasa.jpf.test.vm.basic.RecursiveClinitTest$Derived");
         System.out.println("main now creating Derived(-42)");
-        Constructor ctor = clazz.getConstructor(new Class[] {int.class});
+        Constructor<?> ctor = clazz.getConstructor(new Class[] {int.class});
         Object o = ctor.newInstance( new Object[] {Integer.valueOf(-42)});
         
         System.out.println("back in main");

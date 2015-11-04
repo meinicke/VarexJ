@@ -87,16 +87,17 @@ public class SortedArrayObjectSet<T extends Comparable<T>> implements Iterable<T
   
   
   // if we already have elements, idx has to be within range
-  protected final void insertElement (int idx){
+  @SuppressWarnings("unchecked")
+protected final void insertElement (int idx){
     if (elements == null){
-      elements = (Comparable[]) new Comparable[DEFAULT_CAPACITY];
+      elements = (Comparable<T>[]) new Comparable[DEFAULT_CAPACITY];
      
     } else {
-      Comparable[] a = elements;      
+      Comparable<?>[] a = elements;      
       
       if (size == a.length){
         int newLength = a.length + GROWTH;
-        Comparable[] newElements = new Comparable[newLength];
+        Comparable<T>[] newElements = new Comparable[newLength];
         if (idx > 0){
           System.arraycopy(a, 0, newElements, 0, idx);
         }
@@ -118,7 +119,8 @@ public class SortedArrayObjectSet<T extends Comparable<T>> implements Iterable<T
     // nothing
   }
   
-  public SortedArrayObjectSet (int initialCapacity){
+  @SuppressWarnings("unchecked")
+public SortedArrayObjectSet (int initialCapacity){
     elements = new Comparable[initialCapacity];
   }
   
@@ -134,7 +136,8 @@ public class SortedArrayObjectSet<T extends Comparable<T>> implements Iterable<T
     return ((size > 0) && elements[bisect(v)].equals(v));      
   }
   
-  public void add (T v){
+  @SuppressWarnings("unchecked")
+public void add (T v){
     if (size == 0){
       elements = new Comparable[DEFAULT_CAPACITY];
       elements[0] = v;

@@ -65,7 +65,7 @@ public class ImmutableList<E> implements Iterable<E> {
   }
   
   public Iterator<E> iterator() {
-    return new IteratorImpl(this);
+    return new IteratorImpl<E>(this);
   }
   
   public boolean contains (E object){

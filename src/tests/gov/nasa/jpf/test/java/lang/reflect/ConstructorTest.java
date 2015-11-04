@@ -23,8 +23,8 @@ public class ConstructorTest extends TestJPF {
   @Test
   public void equalsTest () throws SecurityException, NoSuchMethodException{
     if (verifyNoPropertyViolation()){
-      Constructor ctor1 = String.class.getConstructor();
-      Constructor ctor2 = String.class.getConstructor();
+      Constructor<String> ctor1 = String.class.getConstructor();
+      Constructor<String> ctor2 = String.class.getConstructor();
       assertTrue(ctor1.equals(ctor2));
       assertFalse(ctor1 == ctor2);
     }
@@ -41,8 +41,8 @@ public class ConstructorTest extends TestJPF {
   @Test
   public void hashCodeTest (){
     if (verifyNoPropertyViolation()){
-      Constructor ctor1 = Test1.class.getConstructors()[0];
-      Constructor ctor2 = Test1.class.getConstructors()[1];
+      Constructor<?> ctor1 = Test1.class.getConstructors()[0];
+      Constructor<?> ctor2 = Test1.class.getConstructors()[1];
       assertTrue(ctor1.hashCode() == ctor2.hashCode());
     }
   }

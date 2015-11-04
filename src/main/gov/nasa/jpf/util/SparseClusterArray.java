@@ -40,6 +40,7 @@ import java.util.NoSuchElementException;
  *
  * <2do> so far, we are totally ignorant of population constraints
  */
+@SuppressWarnings({"rawtypes","unchecked"})
 public class SparseClusterArray <E> implements Iterable<E> {
 
   public static final int CHUNK_BITS = 8;
@@ -83,7 +84,7 @@ public class SparseClusterArray <E> implements Iterable<E> {
     public int size() {
       return indices.length;
     }
-    public T getValue(int i){
+	public T getValue(int i){
       return (T) values[i];
     }
     public int getIndex(int i){
@@ -146,7 +147,6 @@ public class SparseClusterArray <E> implements Iterable<E> {
       return "Chunk [base=" + base + ",top=" + top + ']';
     }
 
-    @SuppressWarnings("unchecked")
     public <E> Chunk deepCopy( Cloner<E> cloner) throws CloneNotSupportedException {
       Chunk nc = (Chunk) super.clone();
 
@@ -240,7 +240,6 @@ public class SparseClusterArray <E> implements Iterable<E> {
       return (cur != null);
     }
 
-    @SuppressWarnings("unchecked")
     public T next() {
       Chunk c = cur;
       int i = idx;
@@ -413,7 +412,6 @@ public class SparseClusterArray <E> implements Iterable<E> {
     head = base.head;
   }
 
-  @SuppressWarnings("unchecked")
   public E get (int i) {
     Node l1;
     ChunkNode l2;
@@ -445,7 +443,7 @@ public class SparseClusterArray <E> implements Iterable<E> {
   }
 
 
-  public void set (int i, E e) {
+public void set (int i, E e) {
     Node l1;
     ChunkNode l2;
     Chunk l3 = lastChunk;
@@ -502,7 +500,8 @@ public class SparseClusterArray <E> implements Iterable<E> {
     boolean isSet = ((bm[u] >> v) & 0x1) > 0;
 
     if (trackChanges) {
-      Entry entry = new Entry(i,l3.elements[j]);
+      
+	Entry entry = new Entry(i,l3.elements[j]);
       entry.next = changes;
       changes = entry;
     }
@@ -686,7 +685,6 @@ public class SparseClusterArray <E> implements Iterable<E> {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public <T> void restore (Snapshot<E,T> snap, Transformer<T,E> transformer) {
     // <2do> - there are more efficient ways to restore small changes,
     // but since snapshot elements are ordered it should be reasonably fast

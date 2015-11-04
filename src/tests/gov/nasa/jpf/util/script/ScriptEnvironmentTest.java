@@ -192,7 +192,7 @@ public class ScriptEnvironmentTest extends TestJPF {
                      { "A", "B" } };
 
     try {
-      ScriptEnvironment env = new EventEnv("test", new StringReader(s));
+      ScriptEnvironment<?> env = new EventEnv("test", new StringReader(s));
       env.parseScript();
 
       for (String[] sections : a) {

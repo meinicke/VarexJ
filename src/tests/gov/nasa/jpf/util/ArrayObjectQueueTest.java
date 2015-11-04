@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.ArrayObjectQueueTest.E;
 import gov.nasa.jpf.util.test.TestJPF;
 
 /**
@@ -166,7 +167,7 @@ public class ArrayObjectQueueTest extends TestJPF {
   }
 
   static class EProcessor implements Processor<E> {
-    ArrayObjectQueue queue;
+    ArrayObjectQueue<E> queue;
     int processed = 0;
     
     EProcessor (ArrayObjectQueue<E> queue){

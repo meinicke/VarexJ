@@ -199,7 +199,7 @@ public class PrevaylerTest extends ATestExample {
 			// END SNIPPET: adding
 
 			// START SNIPPET: iterating
-			for (Iterator i = list.getTasks().iterator(); i.hasNext();) {
+			for (Iterator<?> i = list.getTasks().iterator(); i.hasNext();) {
 				Task t = (Task) i.next();
 				System.out.println("Task: " + t.getDescription() + ", "
 						+ t.getPriority());

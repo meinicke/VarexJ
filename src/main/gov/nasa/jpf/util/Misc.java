@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
+@SuppressWarnings("unchecked")
 public class Misc {
   public static int hashCode(Object o) {
     return o == null ? 0 : o.hashCode();
@@ -45,12 +45,10 @@ public class Misc {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public static <E> Iterator<E> emptyIterator() {
     return (Iterator<E>) emptyIterator;
   }
 
-  @SuppressWarnings("unchecked")
   public static <E> Iterable<E> emptyIterable() {
     return (Iterable<E>) emptyIterable;
   }
@@ -68,7 +66,6 @@ public class Misc {
   };
 
   public static final Iterable<?> emptyIterable = new Iterable<Object>() {
-    @SuppressWarnings("unchecked")
     public Iterator<Object> iterator () {
       return (Iterator<Object>) emptyIterator;
     }
@@ -98,7 +95,6 @@ public class Misc {
     return false;
   } 
   
-  @SuppressWarnings("unchecked")
   public static <T> T[] stripNullElements(T[] oldArray){
     int count = 0;
     for (int i=0; i<oldArray.length; i++){
@@ -129,7 +125,6 @@ public class Misc {
     }
   }
   
-  @SuppressWarnings("unchecked")
   public static <T> T[] getAddedElements (T[] oldArray, T[] newArray) {
     
     if (newArray == null || newArray.length == 0) {
@@ -382,11 +377,13 @@ public class Misc {
     return sb.toString();    
   }
 
-  public static <T> T[] newArray (T... elements) {
+  @SafeVarargs
+public static <T> T[] newArray (T... elements) {
     return elements;
   }
 
-  public static <T> T[] appendArray (T[] base, T... elements) {
+@SafeVarargs
+public static <T> T[] appendArray (T[] base, T... elements) {
     if (base == null || base.length == 0){
       return elements;
     } else if (elements == null || elements.length == 0){

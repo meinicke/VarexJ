@@ -292,7 +292,8 @@ public class AnnotationInfo implements Cloneable {
     return a;
   }
   
-  public <T> T getValue (String key, Class<T> type){
+  @SuppressWarnings("unchecked")
+public <T> T getValue (String key, Class<T> type){
     Object v = getValue(key);
     if (type.isInstance(v)){
       return (T)v;

@@ -104,9 +104,9 @@ private HashMap<String, CGCreator> cgTable = new HashMap<String, CGCreator>() {{
 
   private CGCreator createCGCreator(String cgCreatorClassName) {
     try {
-      Class cgCreatorClass = loader.loadClass(cgCreatorClassName);
+      Class<?> cgCreatorClass = loader.loadClass(cgCreatorClassName);
       // We search for a constructor with no parameters
-      Constructor ctor = cgCreatorClass.getDeclaredConstructor();
+      Constructor<?> ctor = cgCreatorClass.getDeclaredConstructor();
       ctor.setAccessible(true);
       return (CGCreator) ctor.newInstance();
     } catch (Exception ex) {

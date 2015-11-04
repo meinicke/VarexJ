@@ -94,7 +94,7 @@ public class ObjectConverter {
     try {
 
       String jpfTypeName = fi.getType();
-      Class javaClass = javaObject.getClass();
+      Class<?> javaClass = javaObject.getClass();
       Field javaField = getField(fi.getName(), javaClass);
       javaField.setAccessible(true);
 
@@ -125,7 +125,7 @@ public class ObjectConverter {
     }
   }
 
-  private static Field getField(String fieldName, Class javaClass) throws NoSuchFieldException {
+  private static Field getField(String fieldName, Class<?> javaClass) throws NoSuchFieldException {
     while (true) {
       try {
         Field field = javaClass.getDeclaredField(fieldName);
@@ -147,7 +147,7 @@ public class ObjectConverter {
   // TODO jens check seems to be to expensive
   private static int getJPFArrayRef(FeatureExpr ctx, MJIEnv env, Object javaArr) throws NoSuchFieldException, IllegalAccessException {
         
-    Class arrayElementClass = javaArr.getClass().getComponentType();
+    Class<?> arrayElementClass = javaArr.getClass().getComponentType();
 
     int javaArrLength = Array.getLength(javaArr);
     int arrRef;
@@ -260,7 +260,7 @@ public class ObjectConverter {
   public static Object javaObjectFromJPFObject(ElementInfo ei) {
     try {
       String typeName = ei.getType();
-      Class clazz = ClassLoader.getSystemClassLoader().loadClass(typeName);
+      Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(typeName);
 
       Object javaObject = clazz.newInstance();
       ClassInfo ci = ei.getClassInfo();
@@ -285,7 +285,7 @@ public class ObjectConverter {
     String primitiveType = fi.getName();
     String fieldName = fi.getName();
 
-    Class javaClass = javaObject.getClass();
+    Class<?> javaClass = javaObject.getClass();
     Field javaField = javaClass.getDeclaredField(fieldName);
     javaField.setAccessible(true);
 

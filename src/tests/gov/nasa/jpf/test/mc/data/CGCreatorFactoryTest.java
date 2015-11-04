@@ -35,7 +35,7 @@ import gov.nasa.jpf.vm.Verify;
 public class CGCreatorFactoryTest extends TestJPF {
 static class TestBoolCGCreator implements CGCreator {
 
-    public ChoiceGenerator createCG(String id, Value[] values) {
+    public ChoiceGenerator<?> createCG(String id, Value[] values) {
       return new BooleanChoiceGenerator(id);
     }
 

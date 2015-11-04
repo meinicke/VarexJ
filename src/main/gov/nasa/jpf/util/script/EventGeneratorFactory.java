@@ -18,6 +18,7 @@ import gov.nasa.jpf.vm.SystemState;
  * <2do> - we don't support backtracking for sections yet! needs to be implemented for
  * state charts
  */
+@SuppressWarnings("rawtypes")
 public abstract class EventGeneratorFactory extends ListenerAdapter
                                          implements ElementProcessor, Iterable<EventGenerator> {
 
@@ -66,7 +67,7 @@ public abstract class EventGeneratorFactory extends ListenerAdapter
     //--- those are all dummies - this isn't really a choice
     public void advance() {}
 
-    public Class getChoiceType() {
+    public Class<?> getChoiceType() {
       return null;
     }
 
@@ -86,7 +87,7 @@ public abstract class EventGeneratorFactory extends ListenerAdapter
       return false;
     }
 
-    public ChoiceGenerator randomize() {
+    public ChoiceGenerator<?> randomize() {
       return null;
     }
 
@@ -274,7 +275,7 @@ public abstract class EventGeneratorFactory extends ListenerAdapter
 
     // nextCg is restored (not re-computed), so we need to reset
     SystemState ss = search.getVM().getSystemState();
-    ChoiceGenerator cgNext = ss.getNextChoiceGenerator();
+    ChoiceGenerator<?> cgNext = ss.getNextChoiceGenerator();
     cgNext.reset();
   }
 

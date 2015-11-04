@@ -29,6 +29,7 @@ import org.junit.Test;
 import gov.nasa.jpf.util.test.TestMultiProcessJPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
+import gov.nasa.jpf.vm.multiProcess.TypeSeparationTest.A0;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
@@ -69,7 +70,7 @@ public class TypeSeparationTest extends TestMultiProcessJPF {
   public @interface A0 {
   }
 
-  private native void keepAnnotationClass(Class annCls, int prcId);
+  private native void keepAnnotationClass(Class<A0> annCls, int prcId);
 
   @Test
   public void annotationsTest () {

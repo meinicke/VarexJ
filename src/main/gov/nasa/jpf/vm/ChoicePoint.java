@@ -66,7 +66,7 @@ public class ChoicePoint {
 
   public static void storeTrace (String fileName,
                                  String sutName, String comment,
-                                 ChoiceGenerator[] trace, boolean verbose) {
+                                 ChoiceGenerator<?>[] trace, boolean verbose) {
     int i;
     if (fileName != null) {
       try {

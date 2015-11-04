@@ -44,7 +44,7 @@ public class OverlappingMethodAnalyzer extends MethodAnalyzer {
 
   MethodOp getReturnOp (MethodOp op, boolean withinSameThread){
     MethodInfo mi = op.mi;
-    int stateId = op.stateId;
+//    int stateId = op.stateId;
     int stackDepth = op.stackDepth;
     ElementInfo ei = op.ei;
     ThreadInfo ti = op.ti;
@@ -155,7 +155,8 @@ public class OverlappingMethodAnalyzer extends MethodAnalyzer {
     }
   }
 
-  MethodOp consolidateOp (MethodOp op){
+  @SuppressWarnings("incomplete-switch")
+MethodOp consolidateOp (MethodOp op){
     for (MethodOp o = op.p; o != null; o = o.p){
       if (showTransition && (o.stateId != op.stateId)){
         break;

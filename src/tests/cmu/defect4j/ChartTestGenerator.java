@@ -48,7 +48,7 @@ public class ChartTestGenerator extends TestGenerator{
                 boolean have_null_constructor = true;
 
                 try{
-                    Constructor constructor = c.getDeclaredConstructor();
+                    Constructor<?> constructor = c.getDeclaredConstructor();
                 } catch (NoSuchMethodException e){
                     have_null_constructor = false;
                 }

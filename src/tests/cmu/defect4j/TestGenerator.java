@@ -124,7 +124,7 @@ public abstract class TestGenerator {
         } catch (ClassNotFoundException e){
             e.printStackTrace();
         }
-        LinkedList<Class> l = new LinkedList<>();
+        LinkedList<Class<?>> l = new LinkedList<>();
         getSuperClasses(c, l);
         if (l.contains(TestCase.class)){
             extendTestCase = true;
@@ -141,7 +141,7 @@ public abstract class TestGenerator {
         return haveTest;
     }
 
-    public void getSuperClasses(Class<?> c, LinkedList<Class> l){
+    public void getSuperClasses(Class<?> c, LinkedList<Class<?>> l){
         Class<?> ancestor = c.getSuperclass();
         if (ancestor != null){
             l.add(ancestor);

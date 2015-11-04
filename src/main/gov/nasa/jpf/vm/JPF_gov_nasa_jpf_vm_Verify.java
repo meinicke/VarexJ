@@ -72,7 +72,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   static Config config;  // we need to keep this around for CG creation
 
   // our const ChoiceGenerator ctor argtypes
-  static Class[] cgArgTypes = { Config.class, String.class };
+  static Class<?>[] cgArgTypes = { Config.class, String.class };
   // this is our cache for ChoiceGenerator ctor parameters
   static Object[] cgArgs = { null, null };
 

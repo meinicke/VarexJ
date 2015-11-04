@@ -78,7 +78,7 @@ public class StateCountEstimator extends ListenerAdapter
       VM vm;
       Path path;
       Transition trans;
-      ChoiceGenerator cg;
+      ChoiceGenerator<?> cg;
       double percent, delta;
       long currentState, expectedState, currentTime, expectedTime;
       int i, size, processed;

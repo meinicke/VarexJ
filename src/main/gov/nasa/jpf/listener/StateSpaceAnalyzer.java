@@ -243,12 +243,12 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
 
   private interface CGAccessor {
 
-    public Object getValue(ChoiceGenerator generator);
+    public Object getValue(ChoiceGenerator<?> generator);
   }
 
   private static class CGPackageAccessor implements CGAccessor {
 
-    public Object getValue(ChoiceGenerator generator) {
+    public Object getValue(ChoiceGenerator<?> generator) {
       ClassInfo ci;
       MethodInfo mi;
       Instruction instruction;
@@ -274,7 +274,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
 
   private static class CGClassAccessor implements CGAccessor {
 
-    public Object getValue(ChoiceGenerator generator) {
+    public Object getValue(ChoiceGenerator<?> generator) {
       ClassInfo ci;
       MethodInfo mi;
       Instruction instruction;
@@ -300,7 +300,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
 
   private static class CGMethodAccessor implements CGAccessor {
 
-    public Object getValue(ChoiceGenerator generator) {
+    public Object getValue(ChoiceGenerator<?> generator) {
       MethodInfo mi;
       Instruction instruction;
 
@@ -320,7 +320,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
 
   private static class CGInstructionAccessor implements CGAccessor {
 
-    public Object getValue(ChoiceGenerator generator) {
+    public Object getValue(ChoiceGenerator<?> generator) {
       return (generator.getInsn());
     }
   }
@@ -330,7 +330,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
     private static final String OBJECT_CLASS_NAME = Object.class.getName();
     private static final String THREAD_CLASS_NAME = Thread.class.getName();
 
-    public Object getValue(ChoiceGenerator generator) {
+    public Object getValue(ChoiceGenerator<?> generator) {
       if (generator instanceof ThreadChoiceGenerator) {
         return (getType((ThreadChoiceGenerator) generator));
       }
@@ -485,7 +485,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       }
     }
 
-    public void add(ChoiceGenerator generator) {
+    public void add(ChoiceGenerator<?> generator) {
       TreeNode child;
       Object value;
 
@@ -663,7 +663,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       return(m_root);
     }
     
-    public void add(ChoiceGenerator generator) {
+    public void add(ChoiceGenerator<?> generator) {
       m_sorted = false;
       m_root.add(generator); 
     }
@@ -753,7 +753,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
     }
 
     private void publishDetails(TreeNode node, int levelCount) {
-      ChoiceGenerator generator;
+//      ChoiceGenerator<?> generator;
       Instruction instruction;
 
       instruction = node.getSampleGeneratorInstruction();
