@@ -503,7 +503,7 @@ public int nLocals;
     }
     return null;
   }
-  public Iterator operandAttrIterator(){
+  public Iterator<?> operandAttrIterator(){
     assert (top() >= stackBase);
     Object a = (attrs != null) ? attrs[top()] : null;
     return ObjectList.iterator(a);

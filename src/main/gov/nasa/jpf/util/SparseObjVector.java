@@ -27,6 +27,7 @@ import java.util.Arrays;
  * instead of an array.  Also, does not require allocation with each add. 
  */
 public class SparseObjVector<E> {
+  @SuppressWarnings("unused")
   private static final boolean DEBUG = false; 
   
   static final double MAX_LOAD_WIPE = 0.6;

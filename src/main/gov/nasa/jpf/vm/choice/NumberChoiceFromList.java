@@ -167,6 +167,7 @@ public abstract class NumberChoiceFromList<T extends Number> extends ChoiceGener
   }
 
   
+  @SuppressWarnings("unchecked")
   @Override
   public NumberChoiceFromList<T> reorder (Comparator<T> comparator){
     

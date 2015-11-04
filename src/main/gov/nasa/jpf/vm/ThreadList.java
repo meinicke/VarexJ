@@ -85,7 +85,8 @@ public class ThreadList implements Cloneable, Iterable<ThreadInfo>, Restorable<T
     Memento<ThreadInfo>[] tiMementos;
     int maxTid;
 
-    TListMemento(ThreadList tl) {
+    @SuppressWarnings({ "unchecked" })
+	TListMemento(ThreadList tl) {
       ThreadInfo[] threads = tl.threads;
       int len = threads.length;
 

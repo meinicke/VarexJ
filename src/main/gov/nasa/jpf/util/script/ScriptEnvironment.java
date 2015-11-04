@@ -35,6 +35,7 @@ import gov.nasa.jpf.vm.ChoiceGenerator;
  * class representing a statemachine environment that produces SCEventGenerators
  * from scripts
  */
+@SuppressWarnings("hiding")
 public abstract class ScriptEnvironment<CG extends ChoiceGenerator<?>> 
          implements StateExtensionClient<ScriptEnvironment<CG>.ActiveSnapshot> {
 
@@ -88,7 +89,8 @@ public abstract class ScriptEnvironment<CG extends ChoiceGenerator<?>>
       return null;
     }
 
-    public Object clone() {
+    @SuppressWarnings("unchecked")
+	public Object clone() {
       try {
         ActiveSnapshot ss = (ActiveSnapshot)super.clone();
         for (int i=0; i<actives.length; i++) {
@@ -308,7 +310,7 @@ public abstract class ScriptEnvironment<CG extends ChoiceGenerator<?>>
   }
 
   public void registerListener(JPF jpf) {
-    StateExtensionListener<ActiveSnapshot> sel = new StateExtensionListener(this);
+    StateExtensionListener<ActiveSnapshot> sel = new StateExtensionListener<>(this);
     jpf.addSearchListener(sel);
   }
 

@@ -86,7 +86,7 @@ public class OOMEInjector extends ListenerAdapter {
     if (lineNumbers != null && first >= lineNumbers[0]){
       int last = locSpec.getToLine();
       for (int i=0; i<lineNumbers.length; i++){
-        int l = lineNumbers[i];
+//        int l = lineNumbers[i];
         if (last < lineNumbers[i]){
           return;
         } else {

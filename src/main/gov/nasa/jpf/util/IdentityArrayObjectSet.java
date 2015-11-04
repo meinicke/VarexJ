@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
  * we don't sort&bisect, assuming the number of entries will be small
  * be aware this doesn't scale to large sets
  */
+@SuppressWarnings("unchecked")
 public class IdentityArrayObjectSet<E> implements IdentityObjectSet<E> {
 
   static final int DEFAULT_CAPACITY = 4;

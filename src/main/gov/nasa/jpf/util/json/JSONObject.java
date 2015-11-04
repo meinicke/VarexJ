@@ -22,7 +22,6 @@ package gov.nasa.jpf.util.json;
 import java.util.HashMap;
 import java.util.Set;
 
-import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -243,7 +242,7 @@ public class JSONObject{
     if (arrayElementType.equals("boolean")) {
        arrayRef = env.newBooleanArray(vals.length);
        ElementInfo arrayEI = env.getHeap().getModifiable(arrayRef);
-       Conditional<Boolean>[] bools = arrayEI.asBooleanArray();
+//       Conditional<Boolean>[] bools = arrayEI.asBooleanArray();
 
        for (int i = 0; i < vals.length; i++) {
     	  arrayEI.setBooleanElement(ctx, i, new One<>(vals[i].getBoolean()));

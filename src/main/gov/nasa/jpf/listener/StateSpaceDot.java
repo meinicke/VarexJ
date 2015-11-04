@@ -83,6 +83,7 @@ public class StateSpaceDot extends ListenerAdapter {
   private static int format=DOT_FORMAT;
   private String out_filename = OUT_FILENAME_NO_EXT+"."+DOT_EXT;
   private static boolean labelvisible=false;
+  @SuppressWarnings("unused")
   private static boolean helpRequested=false;
 
 

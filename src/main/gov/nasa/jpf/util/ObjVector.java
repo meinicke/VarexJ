@@ -337,7 +337,8 @@ public class ObjVector<E> implements ReadOnlyObjList<E>, Cloneable {
     return removeRange(fromIdx,size);
   }
 
-  public E remove (int i) {
+  @SuppressWarnings("unchecked")
+public E remove (int i) {
     E e = (E) data[i];
     
     if (e != null) {
@@ -596,6 +597,7 @@ public class ObjVector<E> implements ReadOnlyObjList<E>, Cloneable {
     return new NonNullIterator();
   }
 
+  @SuppressWarnings("unchecked")
   public void process (Processor<E> processor) {
     for (int i=0; i<data.length; i++) {
       Object o = data[i];

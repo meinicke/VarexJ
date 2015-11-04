@@ -39,7 +39,8 @@ public class SortedArrayObjectSet<T extends Comparable<T>> implements Iterable<T
       return (next < size);
     }
 
-    public T next() {
+    @SuppressWarnings("unchecked")
+	public T next() {
       if (next < size){
         return (T)elements[next++];
       } else {

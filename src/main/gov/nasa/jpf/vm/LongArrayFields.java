@@ -39,6 +39,7 @@ public class LongArrayFields extends ArrayFields {
   
   private final static One<Long> nullValue = new One<>(0l);
 
+  @SuppressWarnings("unchecked")
   public LongArrayFields (int length) {
     values = new Conditional[length];
     Arrays.fill(values, nullValue);

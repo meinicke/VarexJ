@@ -31,6 +31,7 @@ import gov.nasa.jpf.JPFException;
  *
  * note: this does deep copy clones, which can be quite expensive
  */
+@SuppressWarnings("unchecked")
 public final class IntTable<E> implements Iterable<IntTable.Entry<E>>, Cloneable{
   static final int INIT_TBL_POW = 7;
   static final double MAX_LOAD = 0.80;
@@ -57,7 +58,6 @@ public final class IntTable<E> implements Iterable<IntTable.Entry<E>>, Cloneable
       next = n; 
     }
 
-    @SuppressWarnings("unchecked")
     public Entry<E> clone() {
       try {
         return (Entry<E>)super.clone();
@@ -80,7 +80,6 @@ public final class IntTable<E> implements Iterable<IntTable.Entry<E>>, Cloneable
     
     public boolean equals (Object o){
       if (o instanceof Entry){
-        @SuppressWarnings("unchecked")
         Entry<E> other = (Entry<E>)o;
         if (val == other.val){
           E k = other.key;
@@ -105,7 +104,6 @@ public final class IntTable<E> implements Iterable<IntTable.Entry<E>>, Cloneable
     protected final E[] keys;
     protected final int[] vals;
     
-    @SuppressWarnings("unchecked")
     protected Snapshot (IntTable<E> t){
       Entry<E>[] tbl = t.table;
       int nEntries = t.size;
@@ -179,7 +177,6 @@ public final class IntTable<E> implements Iterable<IntTable.Entry<E>>, Cloneable
     return lastSnapshot;
   }
   
-  @SuppressWarnings("unchecked")
   public void restore (Snapshot<E> snapshot){
     Entry<E>[] tbl = (Entry<E>[]) new Entry[snapshot.tblSize];
     
@@ -205,7 +202,6 @@ public final class IntTable<E> implements Iterable<IntTable.Entry<E>>, Cloneable
   // this is a deep copy (needs to be because entries are reused when growing the table)
   public IntTable<E> clone() {
     try {
-      @SuppressWarnings("unchecked")
       IntTable<E> t = (IntTable<E>)super.clone();
       Entry<E>[] tbl = (Entry<E>[])table.clone();
       t.table = tbl;
@@ -233,7 +229,6 @@ public final class IntTable<E> implements Iterable<IntTable.Entry<E>>, Cloneable
     }
   }
 
-  @SuppressWarnings("unchecked")
   protected void newTable(int pow) {
     tblPow = pow;
     table = (Entry<E>[]) new Entry[1 << tblPow];

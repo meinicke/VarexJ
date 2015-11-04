@@ -950,7 +950,7 @@ public class ThreadInfo extends InfoObject
   public List<StackFrame> getInvokedStackFrames() {
     ArrayList<StackFrame> list = new ArrayList<StackFrame>(stackDepth);
 
-    int i = stackDepth-1;
+//    int i = stackDepth-1;
     for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
       if (!frame.isDirectCallFrame()){
         list.add( frame);
@@ -1709,7 +1709,8 @@ public Conditional<Instruction> getPC () {
       }
     }
 
-    StackTraceElement (int sRef){
+    @SuppressWarnings("deprecation")
+	StackTraceElement (int sRef){
       FeatureExpr ctx = FeatureExprFactory.True();
       clsName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "clsName").getValue());
       mthName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "mthName").getValue());
@@ -2438,8 +2439,8 @@ public Conditional<Instruction> executeInstruction () {
    */
   public Instruction executeInstructionHidden () {
     Instruction pc = getPC().getValue();
-    SystemState ss = vm.getSystemState();
-    KernelState ks = vm.getKernelState();
+//    SystemState ss = vm.getSystemState();
+//    KernelState ks = vm.getKernelState();
 
     nextPc = null; // reset in case pc.execute() blows (this could be behind an exception firewall)
 
@@ -2549,13 +2550,14 @@ public Conditional<Instruction> executeInstruction () {
 
     pushFrame(frame);
     int    depth = countStackFrames();
-    Instruction pc = frame.getPC().getValue();
+//    Instruction pc = frame.getPC().getValue();
     SystemState ss = vm.getSystemState();
 
     ss.incAtomic(); // to shut off avoidable context switches (MONITOR_ENTER and wait() can still block)
 
     while (depth <= countStackFrames()) {
-      Instruction nextPC = executeInstruction().getValue();
+    	executeInstruction();
+//      Instruction nextPC = executeInstruction().getValue();
 
       if (ss.getNextChoiceGenerator() != null) {
         // BANG - we can't have CG's here
@@ -2563,7 +2565,7 @@ public Conditional<Instruction> executeInstruction () {
         // createAndThrowException("java.lang.AssertionError", "choice point in sync executed method: " + frame);
         throw new JPFException("choice point in atomic method execution: " + frame);
       } else {
-        pc = nextPC;
+//        pc = nextPC;
       }
     }
 

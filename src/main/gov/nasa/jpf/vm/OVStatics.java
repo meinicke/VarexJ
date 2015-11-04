@@ -163,7 +163,7 @@ public class OVStatics implements Statics {
     return new OVMemento(this);
   }
   
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public Iterator<ElementInfo> iterator(){
     return ((ObjVector)elementInfos).nonNullIterator();
@@ -176,7 +176,7 @@ public class OVStatics implements Statics {
     }
   }
 
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public Iterable<StaticElementInfo> liveStatics() {
     return (Iterable)elementInfos.elements();

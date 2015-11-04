@@ -148,7 +148,8 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
     return MJIEnv.NULL;
   }
 
-  @MJI
+  @SuppressWarnings("deprecation")
+@MJI
   public int getProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, Conditional<Integer> keyRef, FeatureExpr ctx){
     String key = env.getStringObject(ctx, keyRef.getValue());
     String val = env.getConfig().getString(key);

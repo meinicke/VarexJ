@@ -27,6 +27,7 @@ import gov.nasa.jpf.JPFException;
  * (more efficient?) alternative to Vector<Integer>
  * @author pcd
  */
+@SuppressWarnings("unchecked")
 public final class IntVector implements Comparable<IntVector>, Cloneable {
   public static final int defaultInitCap = 40;
 

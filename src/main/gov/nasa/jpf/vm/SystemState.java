@@ -31,6 +31,7 @@ import gov.nasa.jpf.JPFException;
  * by VM to backtrack, plus some potential annotations that can be used to
  * control the search (i.e. forward/backtrack calls)
  */
+@SuppressWarnings("unchecked")
 public class SystemState {
 
   /**

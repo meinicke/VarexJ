@@ -257,7 +257,7 @@ public class Perturbator extends ListenerAdapter {
     // (MethodInfo, FieldInfo) we use to identify relevant ops during
     // instruction execution notifications
 
-    String clsName = loadedClass.getName();
+//    String clsName = loadedClass.getName();
 
     for (FieldPerturbation p : fieldWatchList){
       FieldSpec fs = p.fieldSpec;

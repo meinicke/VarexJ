@@ -283,6 +283,7 @@ public class NativePeer implements Cloneable {
   }
 
 
+  @SuppressWarnings("unused")
   private Method getMethod (MethodInfo mi) {
     return getMethod(null, mi);
   }

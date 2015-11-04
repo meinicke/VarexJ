@@ -43,6 +43,7 @@ public class Simulation extends Search {
     super(config, vm);
   }
 
+  @SuppressWarnings("unused")
   public void search () {
     int    depth = 0;
 

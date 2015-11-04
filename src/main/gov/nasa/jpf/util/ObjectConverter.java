@@ -86,6 +86,7 @@ public class ObjectConverter {
       return newObjRef;
   }
 
+  @SuppressWarnings("unused")
   private Object createObject(String className) {
     return null;
   }

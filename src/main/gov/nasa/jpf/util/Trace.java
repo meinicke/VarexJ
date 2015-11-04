@@ -177,7 +177,7 @@ public class Trace<T> extends ListenerAdapter implements Iterable<T> {
     }
   }
 
-  public Trace clone() {
+  public Trace<?> clone() {
     TraceElement<T> e0 = null, eLast = null;
     
     for (TraceElement<T> e = lastElement; e != null; e = e.prevElement){

@@ -72,6 +72,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		String compType = Types.getComponentTerminal(type);
 

@@ -410,13 +410,13 @@ public class Reporter extends SearchListenerAdapter {
         Properties revInfo = new Properties();
         revInfo.load(is);
 
-        StringBuffer sb = new StringBuffer();
+//        StringBuffer sb = new StringBuffer();
         String date = revInfo.getProperty("date");
         String author = revInfo.getProperty("author");
         String rev = revInfo.getProperty("rev");
         String machine = revInfo.getProperty("hostname");
         String loc = revInfo.getProperty("location");
-        String upstream = revInfo.getProperty("upstream");
+//        String upstream = revInfo.getProperty("upstream");
 
         return String.format("%s %s %s %s %s", date,author,rev,machine,loc);
       }

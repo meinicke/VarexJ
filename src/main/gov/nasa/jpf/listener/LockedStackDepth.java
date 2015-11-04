@@ -367,6 +367,7 @@ public class LockedStackDepth extends ListenerAdapter
          return(m_oldDepth);
       }
       
+      @SuppressWarnings("unused")
       public Integer getNewDepth()
       {
          return(m_newDepth);
