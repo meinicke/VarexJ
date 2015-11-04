@@ -55,6 +55,7 @@ import gov.nasa.jpf.vm.choice.LongChoiceFromList;
  * this peer is a bit different in that it only uses static fields and methods because
  * its use is supposed to be JPF global (without classloader namespaces)
  */
+@SuppressWarnings({"deprecation", "unchecked"})
 public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   static final int MAX_COUNTERS = 10;
 
@@ -351,7 +352,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     return dummyVal;
   }
 
-  static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String id, Class<C> cgClass, Class<T> choiceClass){
+static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String id, Class<C> cgClass, Class<T> choiceClass){
     ChoiceGenerator<?> cg = ss.getCurrentChoiceGenerator(id, cgClass);
 
     assert (cg != null) : "no ChoiceGenerator of type " + cgClass.getName();
@@ -1025,7 +1026,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void setProperties___3Ljava_lang_String_2__V (MJIEnv env, int clsObjRef, int argRef, FeatureExpr ctx) {
     if (argRef != MJIEnv.NULL) {
-      Config conf = env.getConfig();
+//      Config conf = env.getConfig();
 
       int n = env.getArrayLength(ctx, argRef);
       for (int i=0; i<n; i++) {
@@ -1041,7 +1042,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static int getProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int keyRef, FeatureExpr ctx) {
     if (keyRef != MJIEnv.NULL){
-      Config conf = env.getConfig();
+//      Config conf = env.getConfig();
 
       String key = env.getStringObject(ctx, keyRef);
       String val = config.getString(key);
@@ -1142,11 +1143,12 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     }
   }
   
-  @MJI
+  @SuppressWarnings("resource")
+@MJI
   public static int readObjectFromFile__Ljava_lang_Class_2Ljava_lang_String_2__Ljava_lang_Object_2(
           MJIEnv env, int clsObjRef, int newObjClsRef, int fileNameRef, FeatureExpr ctx) {
-    int typeNameRef = env.getReferenceField(ctx, newObjClsRef, "name").getValue();
-    String typeName = env.getStringObject(ctx, typeNameRef);
+//    int typeNameRef = env.getReferenceField(ctx, newObjClsRef, "name").getValue();
+//    String typeName = env.getStringObject(ctx, typeNameRef);
     String fileName = env.getStringObject(ctx, fileNameRef);
 
     try {
@@ -1154,7 +1156,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
       FileInputStream fis = new FileInputStream(fileName);
       ObjectInputStream ois = new ObjectInputStream(fis);
       Object javaObject = ois.readObject();
-      String readObjectTypeName = javaObject.getClass().getCanonicalName();
+//      String readObjectTypeName = javaObject.getClass().getCanonicalName();
       
       int readObjRef = ObjectConverter.JPFObjectFromJavaObject(ctx, env, javaObject);
 
