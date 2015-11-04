@@ -1,13 +1,8 @@
 package cmu.defect4j.lang3.tuple;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Calendar;
+import org.junit.Test;
 
 import gov.nasa.jpf.util.test.TestJPF;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.junit.Test;
 
 public class PairTest extends TestJPF {
 

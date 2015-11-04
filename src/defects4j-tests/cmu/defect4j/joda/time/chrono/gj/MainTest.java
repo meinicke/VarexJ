@@ -2,7 +2,6 @@ package cmu.defect4j.joda.time.chrono.gj;
 
 import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
-import junit.framework.TestCase;
 public class MainTest extends TestJPF {
 
     private final String[] config = {"+nhandler.delegateUnhandledNative", "+classpath+=${jpf-core}/lib/junit-3.8.2.jar,lib/joda-convert-1.2.jar,jodatime/target/classes,jodatime/target/test-classes,jodatime/"};
