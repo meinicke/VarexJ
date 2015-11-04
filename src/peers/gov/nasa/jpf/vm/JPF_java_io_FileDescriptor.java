@@ -42,6 +42,7 @@ import gov.nasa.jpf.util.JPFLogger;
  * to FileInputStreams, which is terribly inefficient for frequent
  * restores (in which case a simple byte[] buffer would be more efficient)
  */
+@SuppressWarnings({"resource", "deprecation"})
 public class JPF_java_io_FileDescriptor extends NativePeer {
 
   static JPFLogger logger = JPF.getLogger("java.io.FileDescriptor");

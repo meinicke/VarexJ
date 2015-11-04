@@ -28,6 +28,7 @@ import gov.nasa.jpf.annotation.MJI;
 /**
  * native peer for java.net.URLEncoder forwarding
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_net_URLEncoder extends NativePeer {
 
   // simple host delegation

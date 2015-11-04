@@ -6,7 +6,7 @@ import java.util.Arrays;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
-
+@SuppressWarnings("deprecation")
 public class JPF_java_util_zip_ZipFile extends NativePeer {
 
 	@MJI

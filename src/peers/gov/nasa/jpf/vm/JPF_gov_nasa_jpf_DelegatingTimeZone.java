@@ -41,6 +41,7 @@ public class JPF_gov_nasa_jpf_DelegatingTimeZone extends NativePeer {
   }
 
   //--- native methods
+  @SuppressWarnings("deprecation")
   @MJI
   public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef, FeatureExpr ctx){
     String id = env.getStringObject(ctx, idRef);

@@ -27,6 +27,7 @@ import gov.nasa.jpf.annotation.MJI;
 /**
  * a full peer for the AtomicLongFieldUpdater
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends AtomicFieldUpdater {
 
   @MJI

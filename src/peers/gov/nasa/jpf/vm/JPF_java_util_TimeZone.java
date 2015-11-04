@@ -33,6 +33,7 @@ import gov.nasa.jpf.annotation.MJI;
  * considerably changed in Java 1.7 (OpenJDK) and we need a version that is compatible with
  * pre and post 1.7 releases
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_util_TimeZone extends NativePeer {
 
 

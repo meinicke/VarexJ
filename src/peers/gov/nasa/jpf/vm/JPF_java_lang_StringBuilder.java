@@ -311,7 +311,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 
 		return env.newString(ctx, s);
 	}
-
+	@SuppressWarnings("deprecation")
 	@MJI
 	public Conditional<Integer> indexOf__Ljava_lang_String_2I__I(final MJIEnv env, int objref, final int str, final int fromIndex, FeatureExpr ctx) {
 		Integer aref = env.getReferenceField(ctx, objref, "value").getValue();

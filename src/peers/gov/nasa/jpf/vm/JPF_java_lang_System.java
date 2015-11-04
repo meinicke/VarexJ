@@ -96,7 +96,7 @@ public class JPF_java_lang_System extends NativePeer {
 		});
 
 	}
-
+	@SuppressWarnings("deprecation")
   @MJI
   public int getenv__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef,
                                                                          int keyRef, FeatureExpr ctx){

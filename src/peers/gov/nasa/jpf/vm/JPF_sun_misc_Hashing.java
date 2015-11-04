@@ -26,6 +26,7 @@ import sun.misc.Hashing;
 /**
  * simple forwarding sun.misc.Hashing peer to speed up execution and shorten traces
  */
+@SuppressWarnings("deprecation")
 public class JPF_sun_misc_Hashing extends NativePeer {
     
   @MJI 

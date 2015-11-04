@@ -32,6 +32,7 @@ import gov.nasa.jpf.annotation.MJI;
 /**
  * MJI NativePeer class for java.lang.String library abstraction
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_lang_String extends NativePeer {
 
 	@MJI
@@ -91,7 +92,6 @@ public class JPF_java_lang_String extends NativePeer {
 		return env.newString(ctx, result);
 	}
 
-	@SuppressWarnings("deprecation")
 	@MJI
 	public int init___3BIII__Ljava_lang_String_2(MJIEnv env, int objRef, int asciiRef, int hibyte, int offset, int count, FeatureExpr ctx) {
 		byte[] ascii = env.getByteArrayObjectDeprecated(ctx, asciiRef);
@@ -192,7 +192,6 @@ public class JPF_java_lang_String extends NativePeer {
 		});
 	}
 
-	@SuppressWarnings("deprecation")
 	@MJI
 	public void getBytes__II_3BI__V(MJIEnv env, int objRef, int srcBegin, int srcEnd, int dstRef, int dstBegin, FeatureExpr ctx) {
 		String obj = env.getStringObject(ctx, objRef);

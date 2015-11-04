@@ -34,6 +34,7 @@ import gov.nasa.jpf.annotation.MJI;
 /**
  * MJI NativePeer class for java.lang.Class library abstraction
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_lang_Class extends NativePeer {
 
 	static final String FIELD_CLASSNAME = "java.lang.reflect.Field";

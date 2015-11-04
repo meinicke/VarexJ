@@ -25,6 +25,7 @@ import gov.nasa.jpf.annotation.MJI;
 /**
  * native peer for the MethodTester tool
  */
+@SuppressWarnings("deprecation")
 public class JPF_gov_nasa_jpf_tools_MethodTester extends NativePeer {
 
   @MJI

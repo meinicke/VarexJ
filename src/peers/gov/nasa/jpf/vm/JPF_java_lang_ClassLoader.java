@@ -29,6 +29,7 @@ import gov.nasa.jpf.annotation.MJI;
  * 
  * Native peer for java.lang.ClassLoader
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_lang_ClassLoader extends NativePeer {
 
   @MJI

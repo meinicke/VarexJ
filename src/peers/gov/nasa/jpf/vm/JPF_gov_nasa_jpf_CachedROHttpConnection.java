@@ -133,7 +133,7 @@ public class JPF_gov_nasa_jpf_CachedROHttpConnection extends NativePeer {
 
     return data;
   }
-
+  @SuppressWarnings("deprecation")
   @MJI
   public int getContents__Ljava_lang_String_2___3B (MJIEnv env, int objRef, int surlRef, FeatureExpr ctx){
     String url = env.getStringObject(ctx, surlRef);

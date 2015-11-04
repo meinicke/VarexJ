@@ -26,6 +26,7 @@ import gov.nasa.jpf.annotation.MJI;
  * native peer for Annotation Proxies
  * (saves us some bytecode interpretation shoe leather)
  */
+@SuppressWarnings("deprecation")
 public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
 
   @MJI

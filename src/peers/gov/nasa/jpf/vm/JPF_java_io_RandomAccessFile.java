@@ -95,6 +95,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
   /**
    * This is a bit lame doing it this way, but it is easy.
    */
+  @SuppressWarnings("deprecation")
   @MJI
   public void write___3BII__V (MJIEnv env, int this_ptr, int data_array,
                            int start, int len, FeatureExpr ctx) {

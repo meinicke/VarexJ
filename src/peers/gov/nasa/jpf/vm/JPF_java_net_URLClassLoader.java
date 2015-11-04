@@ -31,6 +31,7 @@ import gov.nasa.jpf.util.JPFLogger;
  * 
  * Native peer for java.net.URLClassLoader
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
   static JPFLogger log = JPF.getLogger("class");
