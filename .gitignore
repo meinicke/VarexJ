@@ -74,3 +74,4 @@ META-INF/
 junit*.properties
 /build/
 /build/
+/coverage.xml

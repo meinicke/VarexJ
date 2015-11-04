@@ -21,11 +21,9 @@ package gov.nasa.jpf.jvm.bytecode;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.utils.CoverageLogger;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -149,7 +147,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter
     if ((!field.simplify(ctx).equals(val.simplify(ctx))) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
-    	coverField(ctx, eiFieldOwner, val, field, frame, ti);
+    	ti.coverage.coverField(ctx, eiFieldOwner, val, field, frame, ti, fi);
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       
       if (fi.isReference()) {
@@ -197,47 +195,13 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     return getNext(ctx, ti);
   }
 
-  private void coverField(FeatureExpr ctx, ElementInfo eiFieldOwner, Conditional<?> val, Conditional<?> oldValue, StackFrame frame, ThreadInfo ti) {
-	if (JPF.COVERAGE != null) {
-		if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.field ||
-				JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.interaction) {
-			if (val.size() - oldValue.size() != 0) {
-				StringBuilder text = new StringBuilder();
-				text.append(fi.getName());
-				text.append(" (");
-				text.append(Conditional.getCTXString(ctx));
-				text.append(")\n");
-				text.append(frame.trace(ctx));
-				text.append("\n");
-				text.append(oldValue.size());
-				text.append(": ");
-				if (oldValue.toString().length() > 800) {
-					text.append(oldValue.toString().substring(0, 800) + "...");
-				} else {
-					text.append(oldValue);
-				}
-				text.append("\n->\n");
-				text.append(val.size());
-				text.append(": ");
-				if (val.toString().length() > 800) {
-					text.append(val.toString().substring(0, 800) + "...");
-				} else {
-					text.append(val);
-				}
-				
-				CoverageLogger.logInteraction(frame, val.size() - oldValue.size(), text, ctx);
-			}
-		}
-	}
-}
-
 protected Conditional<Instruction> put2 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner) {
     Object attr = frame.getLongOperandAttr(ctx);
     Conditional<Long> val = frame.peekLong(ctx);
     lastValue = val;
     Conditional<Long> field = eiFieldOwner.get2SlotField(fi);
 	if ((!field.simplify(ctx).equals(val)) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
-    	coverField(ctx, eiFieldOwner, val, field, frame, ti);
+    	ti.coverage.coverField(ctx, eiFieldOwner, val, field, frame, ti, fi);
       eiFieldOwner = eiFieldOwner.getModifiableInstance();
       eiFieldOwner.set2SlotField(ctx, fi, val);
       

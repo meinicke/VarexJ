@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -30,17 +29,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.TreeMap;
 import java.util.logging.Level;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
-import cmu.utils.CoverageLogger;
+import cmu.utils.CoverageClass;
 import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
-import coverage.Interaction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
@@ -52,7 +49,6 @@ import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
-import gov.nasa.jpf.jvm.bytecode.LocalVariableInstruction;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.JPFLogger;
@@ -411,6 +407,8 @@ public class ThreadInfo extends InfoObject
   static void addId(int objRef, int id) {
     globalTids.put(objRef, id);
   }
+  
+  public CoverageClass coverage = new CoverageClass(this);
   
   /**
    * mainThread ctor called by the VM. Note we don't have a thread object yet (hen-and-egg problem
@@ -2016,63 +2014,13 @@ public Conditional<Instruction> executeInstruction () {
      		if (RuntimeConstants.tracing) {
      			performTracing(i, ctx);
      		}
+     		coverage.preExecuteInstruction(i);
      		
-     		int localSize = 0;
-     		Object oldLocal = null;
-     		if (JPF.COVERAGE != null) {
-     			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.local2 ||
-     					JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.interaction) {
-     				int index = -1;
-		     		if (i instanceof LocalVariableInstruction) {
-		     			LocalVariableInstruction li = (LocalVariableInstruction)i;
-		     			index = li.getLocalVariableIndex();
-		     			if (index != -1) {
-		     				oldLocal = top.stack.getLocal(index);
-		     				localSize = top.stack.getLocal(top.stack.getCtx(), index).toMap().size();
-		     			} 
-		     		}
-     			}
-     		}
-     		long time = 0;
      		final int currentStackDepth = stackDepth;
-     		if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {// TODO revise
-     			time = System.nanoTime();
-     		}
+     		// the point where the instruction is executed
      		final Conditional<Instruction> next = i.execute(ctx, this);
      		
-//     		if ((executedInstructions > 97754252 && top.getDepth() < 11 ) && RuntimeConstants.debug) {
-////     			System.out.print(executedInstructions + " ");
-////     			System.out.print(top.getDepth());
-////     			if (top.getDepth() < 10) {
-////     				System.out.print(" ");
-////     			}
-//// 				System.out.println(" " + i + " if " + ctx);
-//     			if (top != null) {
-//     				System.out.println(top.stack);
-//     			}
-// 			}
-     		
-     		if (JPF.COVERAGE != null) {
-     			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {
-     				time = System.nanoTime() - time;
-     			}
-     			
-     			Object newLocal = null;
-     			int newLocalSize = localSize;
-     			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.local2 ||
-     					JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.interaction) {
-     				int index = -1;
-     				if (i instanceof LocalVariableInstruction) {
-		     			LocalVariableInstruction li = (LocalVariableInstruction)i;
-		     			index = li.getLocalVariableIndex();
-     				}
-     				if (index != -1) {
-			     		newLocal = top.stack.getLocal(index);
-			     		newLocalSize = top.stack.getLocal(top.stack.getCtx(), index).toMap().size();
-     				}
-     			}
-     			performCoverage(i, ctx, time, localSize, oldLocal, newLocalSize, newLocal);
-     		}
+     		coverage.postExecuteInstruction(i, ctx);
      		
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
@@ -2141,7 +2089,7 @@ public Conditional<Instruction> executeInstruction () {
       return (Conditional<Instruction>) One.NULL;
     }
   }
-  
+
 	private void printSpeedLog(int instructions) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(insertDots(instructions));
@@ -2178,7 +2126,7 @@ public Conditional<Instruction> executeInstruction () {
 	  return String.valueOf(value);
   }
 
-/**
+  /**
    * Log trace for trace comparison.
    * @param instruction The instruction to log.
    * @param ctx
@@ -2197,227 +2145,6 @@ public Conditional<Instruction> executeInstruction () {
  			logtrace = true;
  		}
   	}
-
-  	/**
-  	 * Logs the current instruction / state for coverage.
-  	 * @param instruction The instruction to cover.
-  	 * @param ctx
-  	 * @param time 
-  	 * @param localInteractionChange 
-  	 * @param oldLocal 
-  	 * @param newLocal 
-  	 */
-	private void performCoverage(Instruction instruction, FeatureExpr ctx, long time, int oldLocalSize, Object oldLocal, int newLocalSize, Object newLocal) {
-		MethodInfo methodInfo = instruction.getMethodInfo();
-		if (methodInfo != null) {
-			ClassInfo classInfo = methodInfo.getClassInfo();
-			String file = classInfo.getSourceFileName();
-			if (file != null && top != null) {
-				file = file.substring(file.lastIndexOf('/') + 1);
-				switch (JPF.SELECTED_COVERAGE_TYPE) {
-				case feature:
-					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
-					break;
-				case stack:
-					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
-					break;
-				case local:
-					// TODO LocalVariableInstruction.getLocalVariableName()
-					JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
-					break;
-				case interaction:	
-				case local2:
-					String localVariableName = "?";
-					
-					int localInteractionChange = newLocalSize - oldLocalSize;
-					if (instruction instanceof LocalVariableInstruction) {
-						LocalVariableInstruction lvi = ((LocalVariableInstruction)instruction);
-						LocalVarInfo lv = lvi.getLocalVarInfo();
-						localVariableName = lvi.getLocalVariableName();
-						LocalVariableInstruction prev = (LocalVariableInstruction) getPrevLocalInstruction(instruction);
-						if (prev != null) {
-							if (prev.getLocalVarInfo() != lv) {
-								// previous value belongs to another variable
-								localInteractionChange = top.stack.getLocal(top.stack.getCtx(), 
-										((LocalVariableInstruction)instruction).getLocalVariableIndex()).toMap().size() - 1;
-								if (localInteractionChange != 0) {
-									String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
-									content += top.trace(ctx) + "\n";
-									if (newLocal.toString().length() > 800) {
-										content += newLocal.toString().substring(0, 800) + "...";
-									} else {
-										content += newLocal;
-									}
-									CoverageLogger.logInteraction(top, localInteractionChange, content, ctx);
-								}
-								break;
-							}
-						}
-					}
-					if (localInteractionChange != 0) {
-						String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
-						content += top.trace(ctx) + "\n";
-						if (oldLocal.toString().length() > 800) {
-							content += oldLocalSize + " : " + oldLocal.toString().substring(0, 800) + "...";
-						} else {
-							content += oldLocalSize + " : " + oldLocal;
-						}
-						content += "\n -> \n";
-						if (newLocal.toString().length() > 800) {
-							content += newLocalSize + " : " + newLocal.toString().substring(0, 800) + "...";
-						} else {
-							content += newLocalSize + " : " + newLocal;
-						}
-						CoverageLogger.logInteraction(top, localInteractionChange, content, ctx);
-					}
-					
-					break;
-				case context:// same as for composedContext
-				case composedContext:
-					Interaction interaction = JPF.COVERAGE.getCoverage(file, instruction.getLineNumber());
-					if (interaction != null) {
-						@SuppressWarnings({ "rawtypes", "unchecked" })
-						Map<FeatureExpr, Integer> values = (Map) interaction.getValue();
-						if (!values.containsKey(ctx)) {
-							values.put(ctx, 1);
-							interaction.setInteraction(interaction.getInteraction() + 1);
-						} else {
-							Integer runs = values.get(ctx);
-							values.put(ctx, runs + 1);
-						}
-					} else {
-						Map<FeatureExpr, Integer> values = new HashMap<FeatureExpr, Integer>() {
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public String toString() {
-								StringBuilder builder = new StringBuilder();
-								FeatureExpr composedContext = FeatureExprFactory.False();
-								for (FeatureExpr entry : keySet()) {
-									composedContext = composedContext.or(entry);
-								}
-								builder.append("Composed context: ");
-								builder.append(Conditional.getCTXString(composedContext));
-								builder.append('\n');
-								for (java.util.Map.Entry<FeatureExpr, Integer> entry : entrySet()) {
-									FeatureExpr ctx = entry.getKey();
-									Integer runs = entry.getValue();
-									builder.append(Conditional.getCTXString(ctx));
-									builder.append(' ');
-									builder.append(runs);
-									if (runs == 1) {
-										builder.append(" instruction executed\n");
-									} else {
-										builder.append(" instructions executed\n");
-									}
-								}
-								return builder.toString();
-							}
-						};
-						values.put(ctx, 1);
-						JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), 1, values);
-					}
-					break;
-				case time:
-					final int modifier = 1_000_000;
-					interaction = JPF.COVERAGE.getCoverage(file, instruction.getLineNumber());
-					if (interaction != null) {
-						@SuppressWarnings({ "rawtypes", "unchecked" })
-						Map<Instruction, LinkedList<Long>> values = (Map) interaction.getValue();
-						if (values.containsKey(instruction)) {
-							LinkedList<Long> times = values.get(instruction);
-							times.add(time);
-						} else {
-							LinkedList<Long> initialValue = new LinkedList<Long>();
-							initialValue.add(time);
-							values.put(instruction, initialValue);
-						}
-						int degree = interaction.getInteraction();
-						if ((time / modifier) > degree) {
-							interaction.setInteraction((int) (time / modifier));
-						}
-					} else {
-						Map<Instruction, LinkedList<Long>> values = new TreeMap<Instruction, LinkedList<Long>>(new Comparator<Instruction>() {
-
-							@Override
-							public int compare(Instruction o1, Instruction o2) {
-								return o1.insnIndex - o2.insnIndex;
-							}
-
-						}) {
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public String toString() {
-								StringBuilder builder = new StringBuilder();
-								for (java.util.Map.Entry<Instruction, LinkedList<Long>> entry : entrySet()) {
-									builder.append(entry.getKey()).append('\n');
-									LinkedList<Long> times = entry.getValue();
-									Collections.sort(times);
-									long min = times.getFirst();
-									long max = times.getLast();
-									long max2 = 0;
-									if (times.size() >= 2) {
-										max2 = times.get(times.size() - 2);
-									}
-									long sum = 0;
-									for (long value : times) {
-										sum += value;
-									}
-									long average = sum / times.size();
-									builder.append("Max:\t\t");
-									appendTime(builder, max);
-									
-									builder.append("Max2:\t\t");
-									appendTime(builder, max2);
-									
-									builder.append("Average:\t");
-									appendTime(builder, average);
-									
-									builder.append("Min: \t\t");
-									appendTime(builder, min);
-								}
-								return builder.toString();
-							}
-							
-							private void appendTime(final StringBuilder stringBuilder, final long time) {
-								stringBuilder.append("Min: \t\t");
-								if (time < 2000) {
-									stringBuilder.append(time).append("nano s\n");
-								} else {
-									stringBuilder.append(time / 1000).append("micro s\n");
-								}
-							}
-						};
-						LinkedList<Long> initialValue = new LinkedList<Long>();
-						initialValue.add(time);
-						values.put(instruction, initialValue);
-						JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), (int) (time / modifier), values);
-					}
-					break;
-				case field:
-					// handled at FieldInstruction
-					break;
-				default:
-					throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
-				}
-
-			}
-		}
-	}
-
-	private Instruction getPrevLocalInstruction(Instruction instruction) {
-		Instruction prev = instruction.getPrev();
-		while (prev != null) {
-			if (prev instanceof LocalVariableInstruction) {
-				if (((LocalVariableInstruction) prev).getLocalVariableIndex() == ((LocalVariableInstruction)instruction).getLocalVariableIndex()) {
-					return prev;
-				}
-			}
-			prev = prev.getPrev();
-		}
-		return instruction;
-	}
 	
 	/**
   	 * Checks whether the the new top stack is part of the trace of the current stack.

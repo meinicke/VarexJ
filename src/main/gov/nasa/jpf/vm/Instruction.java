@@ -31,7 +31,7 @@ import gov.nasa.jpf.util.Source;
  */
 public abstract class Instruction implements Cloneable {
 
-	protected int insnIndex; // code[] index of instruction
+	public int insnIndex; // code[] index of instruction
 	protected int position; // accumulated bytecode position (prev pos + prev
 							// bc-length)
 	protected MethodInfo mi; // the method this insn belongs to
