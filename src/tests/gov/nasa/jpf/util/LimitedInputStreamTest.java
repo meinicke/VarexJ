@@ -47,7 +47,8 @@ public class LimitedInputStreamTest extends TestJPF
       m_fixture = new LimitedInputStream(m_source);
    }
    
-   @Test(expected = NullPointerException.class)
+   @SuppressWarnings("resource")
+@Test(expected = NullPointerException.class)
    public void constructorNullArg()
    {
       new LimitedInputStream(null);

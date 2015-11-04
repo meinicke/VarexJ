@@ -29,7 +29,8 @@ import gov.nasa.jpf.vm.Verify;
  */
 public class StatelessTest extends TestJPF {
 
-  @Test
+  @SuppressWarnings("unused")
+@Test
   public void testNumberOfPaths(){
     
     if (!isJPFRun()){

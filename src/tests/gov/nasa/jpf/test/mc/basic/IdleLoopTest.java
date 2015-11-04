@@ -47,7 +47,8 @@ public class IdleLoopTest extends TestJPF {
     }
   }
 
-  @Test public void testPrune () {
+  @SuppressWarnings("unused")
+@Test public void testPrune () {
     if (verifyNoPropertyViolation(LISTENER, "+idle.action=prune",
                                   "+log.warning=gov.nasa.jpf.listener.IdleFilter",
                                   "+vm.max_transition_length=MAX")) {

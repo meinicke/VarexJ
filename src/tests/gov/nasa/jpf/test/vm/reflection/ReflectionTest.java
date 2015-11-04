@@ -31,7 +31,8 @@ public class ReflectionTest extends TestJPF {
 
     // compilation will cause a warning about internal proprietary API that cannot be suppressed, but we have to test this
     // since it is still used by standard libs
-    void foo (){
+    @SuppressWarnings("deprecation")
+	void foo (){
       Class<?> callerCls = sun.reflect.Reflection.getCallerClass(0); // that would be getCallerClass()
       System.out.println("-- getCallerClass(0) = " + callerCls);
       assertTrue(callerCls.getName().equals("sun.reflect.Reflection"));

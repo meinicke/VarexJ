@@ -240,7 +240,8 @@ public class ScriptEnvironmentTest extends TestJPF {
   }
 
 
-  @Test
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+@Test
   public void testBacktrack () {
     String s = "SECTION A {\n" +
                "  start, ANY {a1,a2}, REPEAT 2 {r}, end \n" +

@@ -344,7 +344,8 @@ public class PSIntMapTest extends TestJPF {
   final static int NGC = 400;
   
   
-  public void benchmark (){
+  @SuppressWarnings("unchecked")
+public void benchmark (){
     long t1, t2;
 
     //--- PersistentIntMap

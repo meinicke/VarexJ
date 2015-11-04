@@ -346,7 +346,8 @@ public class RaceTest extends TestJPF {
     }
   }
 
-  @Test
+  @SuppressWarnings("unused")
+@Test
   public void testSameObjectOtherField() {
     if (verifyNoPropertyViolation(LISTENER)) {
       final SharedObject o = new SharedObject();
