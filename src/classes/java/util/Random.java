@@ -18,7 +18,7 @@
 //
 
 package java.util;
-
+@SuppressWarnings("unused")
 public class Random {
 
   // the state of this object
