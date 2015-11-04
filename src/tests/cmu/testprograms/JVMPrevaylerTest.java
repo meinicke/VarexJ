@@ -1,6 +1,7 @@
 package cmu.testprograms;
 
 import gov.nasa.jpf.annotation.Conditional;
+import org.junit.Test;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 import org.prevayler.demos.demo1.NumberKeeper;
@@ -37,6 +38,7 @@ public class JVMPrevaylerTest {
     @Conditional
     public static boolean FILE_AGE_THREASHOLD = true;
 
+    @Test
     public void runNumberKeeper() throws Exception {
         // clean up
         deleteDirectory("NumberKeeper");

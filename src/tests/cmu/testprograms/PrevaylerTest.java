@@ -37,7 +37,7 @@ public class PrevaylerTest extends ATestExample {
 	@Conditional
 	public static boolean USE_PAUSABLE_CLOCK = false;
 
-	@Conditional
+//	@Conditional // TODO not working for tutorialTest()
 	public static boolean USE_XSTREAM = true;
 	@Conditional
 	public static boolean USE_TRANSIENT_MODE = false;
@@ -170,6 +170,7 @@ public class PrevaylerTest extends ATestExample {
 
 	@Test
 	public void tutorialTest() throws Exception {
+		System.out.println(USE_XSTREAM_JOURNAL);
 		// clean up
 		deleteDirectory("Tutorial");
 
