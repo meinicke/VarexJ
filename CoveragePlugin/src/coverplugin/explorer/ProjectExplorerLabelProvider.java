@@ -26,7 +26,7 @@ import coverage.UnsupportedCoverageException;
 import coverage.XMLReader;
 
 /**
- * TODO description
+ * Highlights interactions in the project explorer.
  * 
  * @author Jens Meinicke
  */

@@ -24,6 +24,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 /**
+ * TODO is this actually used?
  * Holds a number of color constants and according color names.
  * 
  * @author Sebastian Krieter

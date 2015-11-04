@@ -31,7 +31,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
- * TODO description
+ * Listener on the editor.
  * 
  * @author Jens Meinicke
  */
