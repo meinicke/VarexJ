@@ -47,6 +47,7 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  * to FileInputStreams, which is terribly inefficient for frequent
  * restores (in which case a simple byte[] buffer would be more efficient)
  */
+@SuppressWarnings({"resource", "deprecation"})
 public class JPF_java_io_FileDescriptor extends NativePeer {
 
   static JPFLogger logger = JPF.getLogger("java.io.FileDescriptor");
@@ -170,7 +171,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
         env.throwException(ctx, "java.io.IOException", iox.getMessage());
       }
     }
-    
+
   }
   
   // that's a JPF specific thing - we backrack into

@@ -18,12 +18,13 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * MJI NativePeer class for java.lang.Long library abstraction
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_lang_Long extends NativePeer {
   // <2do> at this point we deliberately do not override clinit
 

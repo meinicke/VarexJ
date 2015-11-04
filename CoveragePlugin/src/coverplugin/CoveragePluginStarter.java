@@ -4,6 +4,7 @@ import org.eclipse.ui.IStartup;
 import coverplugin.LOGGER.COLOR;
 
 /**
+ * Forces to start the plug-in.
  * 
  * @author Jens Meinicke
  *

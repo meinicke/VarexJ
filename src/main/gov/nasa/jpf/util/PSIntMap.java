@@ -127,7 +127,7 @@ import java.util.NoSuchElementException;
  * array allocation) and large switch statements to set respective fields. The resulting
  * programming style should only be acceptable for critical runtime optimizations.
  */ 
-
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class PSIntMap <V> implements Iterable<V> {
 
   //--- auxiliary types
@@ -232,7 +232,7 @@ public class PSIntMap <V> implements Iterable<V> {
     /**
      * this assumes the index is not set 
      */
-    @Override
+	@Override
     Node cloneWithAdded(int i, E newElement) {
       assert i != idx;
       
@@ -725,7 +725,6 @@ public class PSIntMap <V> implements Iterable<V> {
     }
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   public Iterator<V> iterator(){
     return new ValueIterator();
   }
@@ -748,7 +747,6 @@ public class PSIntMap <V> implements Iterable<V> {
     int nVisited, nTotal;
     
     
-    @SuppressWarnings("unchecked")
     public ValueIterator (){
       node = PSIntMap.this.rootNode;
       if (node != null) {
@@ -776,7 +774,6 @@ public class PSIntMap <V> implements Iterable<V> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public V next() {
       if (nVisited >= nTotal) {
         throw new NoSuchElementException();

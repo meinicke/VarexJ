@@ -19,6 +19,9 @@
 
 package gov.nasa.jpf.util.json;
 
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.BooleanChoiceGenerator;
@@ -29,9 +32,6 @@ import gov.nasa.jpf.vm.choice.DoubleThresholdGenerator;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
 import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
 import gov.nasa.jpf.vm.choice.RandomIntIntervalGenerator;
-
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
 
 /**
  * Singleton factory for creating CGCreators.
@@ -46,7 +46,8 @@ public class CGCreatorFactory {
   // Hash where key is a name that user can use in JSON document to set a
   // ChoiceGenerator and value is creator of ChoiceGenerator that uses Values[]
   // from JSON to creat CG
-  private HashMap<String, CGCreator> cgTable = new HashMap<String, CGCreator>() {{
+  @SuppressWarnings("serial")
+private HashMap<String, CGCreator> cgTable = new HashMap<String, CGCreator>() {{
     put("TrueFalse", new BoolCGCreator());
     put("IntSet", new IntFromSetCGCreator());
     put("IntInterval", new IntIntervalCGCreator());
@@ -103,9 +104,9 @@ public class CGCreatorFactory {
 
   private CGCreator createCGCreator(String cgCreatorClassName) {
     try {
-      Class cgCreatorClass = loader.loadClass(cgCreatorClassName);
+      Class<?> cgCreatorClass = loader.loadClass(cgCreatorClassName);
       // We search for a constructor with no parameters
-      Constructor ctor = cgCreatorClass.getDeclaredConstructor();
+      Constructor<?> ctor = cgCreatorClass.getDeclaredConstructor();
       ctor.setAccessible(true);
       return (CGCreator) ctor.newInstance();
     } catch (Exception ex) {

@@ -18,19 +18,6 @@
 //
 package gov.nasa.jpf.report;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.Error;
-import gov.nasa.jpf.util.Left;
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.ClassLoaderInfo;
-import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.Path;
-import gov.nasa.jpf.vm.Step;
-import gov.nasa.jpf.vm.ThreadInfo;
-import gov.nasa.jpf.vm.Transition;
-import gov.nasa.jpf.vm.VM;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,6 +32,18 @@ import java.util.TreeMap;
 
 import cmu.conditional.ChoiceFactory;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.Error;
+import gov.nasa.jpf.util.Left;
+import gov.nasa.jpf.vm.ClassInfo;
+import gov.nasa.jpf.vm.ClassLoaderInfo;
+import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.Path;
+import gov.nasa.jpf.vm.Step;
+import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.Transition;
+import gov.nasa.jpf.vm.VM;
 
 public class ConsolePublisher extends Publisher {
 
@@ -381,34 +380,42 @@ public class ConsolePublisher extends Publisher {
 
     pw.println("loaded code:        classes=" + ClassLoaderInfo.getNumberOfLoadedClasses() + ",methods="
             + MethodInfo.getNumberOfLoadedMethods());
-     createOutput(reporter.getElapsedTime(), (stat.maxUsed >> 20), stat.insns);
+    // createOutput(reporter.getElapsedTime(), stat.visitedStates,(stat.maxUsed >> 20), stat.insns);
   }
  
+  /**
+   * TODO add command line option to activate this code
+   * 
+   * Add the result to an output file
+   */
+  @SuppressWarnings("unused")
+  private static void createOutput(long time, long visitedStates, long mb, long insns) {
+		File results = new File("VarexJ.csv");
+		if (!results.exists()) {
+			try {
+				results.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("write results to " + results + " " + time);
+		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(results, true)))) {
+			out.print(time);
+			out.print(';');
+			out.print(visitedStates);
+			out.print(';');
+			out.print(mb);
+			out.print(';');
+			out.print(insns);
+			out.println();
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+  
   public void publishStatistics() {
     printStatistics(out);
   }
 
-  private static void createOutput(long time, long mb, long insns) {
-    File results = new File("VarexJ.csv");
-    if (!results.exists()) {
-      try {
-        results.createNewFile();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    System.out.println("write results to " + results + " " + time);
-    try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(results, true)))) {
-      out.print(time);
-      out.print(';');
-      out.print(mb);
-      out.print(';');
-      out.print(insns);
-      out.println();
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 }

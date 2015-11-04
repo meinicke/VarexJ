@@ -18,14 +18,13 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.annotation.MJI;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
-
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.annotation.MJI;
+@SuppressWarnings("deprecation")
 public class JPF_java_security_MessageDigest extends NativePeer {
   
   MessageDigest[] digests;

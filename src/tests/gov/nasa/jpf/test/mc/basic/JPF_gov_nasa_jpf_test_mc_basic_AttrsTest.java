@@ -1,9 +1,9 @@
 package gov.nasa.jpf.test.mc.basic;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.NativePeer;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class JPF_gov_nasa_jpf_test_mc_basic_AttrsTest extends NativePeer {
 

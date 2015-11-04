@@ -18,14 +18,15 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 /**
  * Ensures that a recursive lock/unlock doesn't leave the lock in an acquired state.
  */
+@SuppressWarnings({ "unused" })
 public class UnlockNonSharedTest extends TestJPF
 {
    @Test

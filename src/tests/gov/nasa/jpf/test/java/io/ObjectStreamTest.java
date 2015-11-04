@@ -19,8 +19,6 @@
 
 package gov.nasa.jpf.test.java.io;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -30,9 +28,12 @@ import java.io.Serializable;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+
 /**
  * regression test for object streams
  */
+@SuppressWarnings("serial")
 public class ObjectStreamTest extends TestJPF {
 
   static class X implements Serializable {

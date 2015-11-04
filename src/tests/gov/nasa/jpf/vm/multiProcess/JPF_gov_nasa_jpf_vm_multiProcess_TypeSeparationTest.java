@@ -19,16 +19,15 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.NativePeer;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

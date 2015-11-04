@@ -1,13 +1,12 @@
 package cmu.conditional;
 
-import gov.nasa.jpf.vm.MJIEnv;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.MJIEnv;
 
 /**
  * Non conditional value.

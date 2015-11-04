@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.util.json;
 
-import gov.nasa.jpf.JPFException;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+
+import gov.nasa.jpf.JPFException;
 /**
  * Lexical analyzer that reads stream and return JSON tokens.
  * @author Ivan Mushketik

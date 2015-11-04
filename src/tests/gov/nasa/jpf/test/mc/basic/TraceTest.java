@@ -19,13 +19,13 @@
 package gov.nasa.jpf.test.mc.basic;
 
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.io.File;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
+@SuppressWarnings({ "unused" })
 public class TraceTest extends TestJPF {
 
   static final String TEST_CLASS = TraceTest.class.getName();

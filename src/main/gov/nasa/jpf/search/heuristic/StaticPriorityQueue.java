@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.search.heuristic;
 
-import gov.nasa.jpf.Config;
-
 import java.util.Iterator;
 import java.util.TreeSet;
+
+import gov.nasa.jpf.Config;
 
 /**
  * container for statically prioritized states, based on bounded

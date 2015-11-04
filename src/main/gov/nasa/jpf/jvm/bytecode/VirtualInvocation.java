@@ -18,21 +18,24 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.ThreadInfo;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.vm.ClassInfo;
+import gov.nasa.jpf.vm.ElementInfo;
+import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.ThreadInfo;
 
 /**
  * a base class for virtual call instructions
@@ -55,26 +58,47 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 	}
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
-		
 		Conditional<Integer> allRefs = ti.getCalleeThis(ctx, getArgSize());
 		
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
+		
+		Map<String, List<FeatureExpr>> classes = new TreeMap<>();
+		if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
+			for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
+				MethodInfo callee = getInvokedMethod(ctx.and(e.getValue()), ti, e.getKey());
+				String methName = callee.getFullName();
+				if (classes.containsKey(methName)) {
+					classes.get(methName).add(e.getValue());
+				} else {
+					List<FeatureExpr> list = new ArrayList<>(map.size());
+					list.add(e.getValue());
+					classes.put(methName, list);
+				}
+			}
+		}
+		
 		boolean splitRef = false;
-		if (map.size() > 1) {
+		if ((JPF.SHARE_INVOCATIONS && classes.size() > 1) || (!JPF.SHARE_INVOCATIONS && map.size() > 1)) {
 			splitRef = true;
 		}
 		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
-			if (splitRef) {
-				ctx = ctx.and(objRefEntry.getValue());
-			}
+			
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
-				return ChoiceFactory.create(ctx, new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
+				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
 			}
-
-			MethodInfo callee = getInvokedMethod(ctx, ti, objRef);
+			MethodInfo callee = getInvokedMethod(ctx.and(objRefEntry.getValue()), ti, objRef);
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
+			if (!classes.isEmpty()) {
+				FeatureExpr invocationCtx = FeatureExprFactory.False();
+				for (FeatureExpr e : classes.get(callee.getFullName())) {
+					invocationCtx = invocationCtx.or(e);
+				}
+				ctx = ctx.and(invocationCtx);					
+			} else {
+				ctx = ctx.and(objRefEntry.getValue());
+			}
 
 			if (callee == null) {
 				String clsName = ti.getClassInfo(objRef).getName();
@@ -84,45 +108,21 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return new One<>(ti.createAndThrowException(ctx, java.lang.AbstractMethodError.class.getName(), callee.getFullName() + ", object: " + ei));
 				}
 			}
-
+			
+//			if (!classes.isEmpty() && map.size() > classes.size()) {
+//				System.out.println("VIRTUAL reduce invocations from " + map.size() + " to " + classes.size() + " " + callee);
+//			}
+			
 			if (callee.isSynchronized()) {
 				if (checkSyncCG(ei, ti)) {
 					return new One<Instruction>(this);
 				}
 			}
-			
-
-			// set ctx for native method calls
-//			if (callee.isMJI()) {
-//				 IStackHandler stack = ti.getTopFrame().stack;
-//				 if (stack.getStackWidth() > 1) {
-//					 boolean split = false;
-//					 for (int i = 0; i < callee.getArgumentsSize(); i++) {
-//						 if (stack.peek(ctx, i) instanceof IChoice) {
-//							 split = true;
-//							 splitRef = true;
-//							 break;
-//						 }
-//					 }
-//					 
-//					 if (split) {
-//						 
-//						 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
-//						 for (FeatureExpr c : stacks.values()) {
-//							 ctx = ctx.and(c);
-//							 break;
-//						 }
-//					 }
-//				 }
-//			}
-			setupCallee(ctx, ti, callee); // this creates, initializes and
-											// pushes the callee StackFrame
+			setupCallee(ctx, ti, callee);
 			if (!splitRef) {
 				return ti.getPC();
 			}
-			return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify(); // we can't just return the first callee insn
-								// if a listener throws an exception
-
+			return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify();
 		}
 		throw new RuntimeException("Something went wrong");
 	}

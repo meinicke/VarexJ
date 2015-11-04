@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
@@ -30,6 +28,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+@SuppressWarnings("resource")
 public class SplitOutputStreamTest extends TestJPF
 {
    private PipedInputStream  m_sinks[];

@@ -18,20 +18,18 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.annotation.MJI;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * MJI NativePeer class for java.lang.System library abstraction
@@ -98,7 +96,7 @@ public class JPF_java_lang_System extends NativePeer {
 		});
 
 	}
-
+	@SuppressWarnings("deprecation")
   @MJI
   public int getenv__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef,
                                                                          int keyRef, FeatureExpr ctx){

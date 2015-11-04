@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -27,6 +25,8 @@ import java.io.PipedOutputStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class AvailableBufferedInputStreamTest extends TestJPF
 {

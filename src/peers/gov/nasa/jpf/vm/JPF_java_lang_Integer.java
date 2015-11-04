@@ -18,13 +18,14 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * MJI NativePeer class for java.lang.Integer library abstraction
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_lang_Integer extends NativePeer {
   // <2do> at this point we deliberately do not override clinit
 

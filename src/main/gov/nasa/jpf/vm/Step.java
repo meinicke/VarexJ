@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.Source;
-
 import java.util.WeakHashMap;
+
+import gov.nasa.jpf.util.Source;
 
 /**
  * this corresponds to an executed instruction. Note that we can have a

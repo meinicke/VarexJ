@@ -19,14 +19,14 @@
 
 package gov.nasa.jpf.jvm;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativeStackFrame;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
-import cmu.conditional.Conditional;
-import cmu.conditional.Function;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * a NativeStackFrame used for calling NativeMethods from Java bytecode
@@ -154,8 +154,8 @@ public class JVMNativeStackFrame extends NativeStackFrame {
     if (nmi.isStatic()) {
       a[1] = new Integer( nmi.getClassInfo().getClassObjectRef());
     } else {
-      int thisRef = callerFrame.getCalleeThis(ctx, nmi).simplify(ctx).getValue();
-      a[1] = new Integer( thisRef);
+      thisRef = callerFrame.getCalleeThis(ctx, nmi);
+   	  a[1] = thisRef;
       
       setThis(thisRef);
     }

@@ -19,11 +19,11 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.util.JPFLogger;
-
 import java.io.File;
 import java.util.ArrayList;
+
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.util.JPFLogger;
 
 /**
  * this is a lookup mechanism for class files that is based on an ordered

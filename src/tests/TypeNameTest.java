@@ -23,9 +23,9 @@
  * B to be in the unnamed package (so that it has a builtin type name), and as
  * of Java 1.4 you can't import unnamed package classes into named packages
  */
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /*
  * just a helper class for the JavaLangObject raw test that happens to be

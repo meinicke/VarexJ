@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * <2do> hack around a hack - we need to override this as long as we don't

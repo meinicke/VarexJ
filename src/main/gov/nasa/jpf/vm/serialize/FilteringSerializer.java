@@ -19,6 +19,10 @@
 package gov.nasa.jpf.vm.serialize;
 
 
+import java.util.HashMap;
+import java.util.List;
+
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.util.ArrayObjectQueue;
 import gov.nasa.jpf.util.BitArray;
 import gov.nasa.jpf.util.FinalBitSet;
@@ -44,11 +48,6 @@ import gov.nasa.jpf.vm.Statics;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.ThreadList;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.HashMap;
-import java.util.List;
-
-import cmu.conditional.Conditional;
 
 
 /**

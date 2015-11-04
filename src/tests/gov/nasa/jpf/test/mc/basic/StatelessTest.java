@@ -19,17 +19,18 @@
 
 package gov.nasa.jpf.test.mc.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 /**
  * regression test for stateless (non-matching) execution mode
  */
 public class StatelessTest extends TestJPF {
 
-  @Test
+  @SuppressWarnings("unused")
+@Test
   public void testNumberOfPaths(){
     
     if (!isJPFRun()){

@@ -18,16 +18,15 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.lang.reflect.Modifier;
+
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.MethodInfoRegistry;
 import gov.nasa.jpf.util.RunListener;
 import gov.nasa.jpf.util.RunRegistry;
-
-import java.lang.reflect.Modifier;
-
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * native peer for rudimentary constructor reflection.

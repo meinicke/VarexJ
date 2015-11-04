@@ -18,6 +18,10 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.util.HashMap;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.ArrayInstruction;
@@ -38,11 +42,6 @@ import gov.nasa.jpf.vm.Step;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.HashMap;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Simple listener tool to record the values of variables as they are accessed.

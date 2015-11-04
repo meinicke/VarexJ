@@ -549,4 +549,39 @@
             name="coverageplugin.interaction_-10">
       </type>
    </extension>
+   <extension
+       point="org.eclipse.ui.navigator.viewer">
+    <viewerContentBinding
+          viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+       <includes>
+          <contentExtension
+                pattern="varexj.contentID">
+          </contentExtension>
+       </includes>
+    </viewerContentBinding>
+ </extension>
+ 
+ <extension
+       point="org.eclipse.ui.navigator.navigatorContent">
+    <navigatorContent
+          contentProvider="coverplugin.explorer.NullContentProvider"
+          id="varexj.contentID"
+          labelProvider="coverplugin.explorer.ProjectExplorerLabelProvider"
+          name="CoverageLabelProvider"
+          priority="highest">
+       <triggerPoints>
+          <or>
+             <instanceof
+                   value="org.eclipse.core.resources.IFile">
+             </instanceof>
+             <instanceof
+                   value="org.eclipse.core.resources.IFolder">
+             </instanceof>
+             <instanceof
+                   value="java.lang.Object">
+             </instanceof>
+          </or>
+       </triggerPoints>
+    </navigatorContent>
+ </extension>
 </plugin>

@@ -19,15 +19,15 @@
 package gov.nasa.jpf.vm;
 
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.Predicate;
-
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.Predicate;
 
 /**
  * Contains the list of all ThreadInfos for live java.lang.Thread objects
@@ -85,7 +85,8 @@ public class ThreadList implements Cloneable, Iterable<ThreadInfo>, Restorable<T
     Memento<ThreadInfo>[] tiMementos;
     int maxTid;
 
-    TListMemento(ThreadList tl) {
+    @SuppressWarnings({ "unchecked" })
+	TListMemento(ThreadList tl) {
       ThreadInfo[] threads = tl.threads;
       int len = threads.length;
 

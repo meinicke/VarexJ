@@ -19,12 +19,12 @@
 
 package gov.nasa.jpf.test.java.net;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 
 /**

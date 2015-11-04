@@ -1,10 +1,10 @@
 package gov.nasa.jpf.test.vm.basic;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.util.EnumSet;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class EnumTest extends TestJPF {
 

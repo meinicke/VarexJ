@@ -1,8 +1,8 @@
 package gov.nasa.jpf.test.java.net;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.File;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * This is used to hide the package "classloader_specific_tests" from JPF 

@@ -101,7 +101,7 @@ public abstract class ClassLoader {
     return list.elements();
   }
 
-  @SuppressWarnings({"unchecked","rawtypes"})
+  @SuppressWarnings({"unchecked"})
   public Enumeration<URL> getResources(String name) throws IOException {
     Enumeration<URL>[] resEnum = new Enumeration[2];
 

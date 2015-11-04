@@ -18,6 +18,13 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Arrays;
+
+import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
@@ -28,14 +35,6 @@ import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
-
-import java.util.Arrays;
-
-import cmu.conditional.BiFunction;
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Create new multidimensional array
@@ -73,6 +72,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		String compType = Types.getComponentTerminal(type);
 

@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +25,8 @@ import java.security.SecureRandom;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class LimitedInputStreamTest extends TestJPF
 {
@@ -47,7 +47,8 @@ public class LimitedInputStreamTest extends TestJPF
       m_fixture = new LimitedInputStream(m_source);
    }
    
-   @Test(expected = NullPointerException.class)
+   @SuppressWarnings("resource")
+@Test(expected = NullPointerException.class)
    public void constructorNullArg()
    {
       new LimitedInputStream(null);

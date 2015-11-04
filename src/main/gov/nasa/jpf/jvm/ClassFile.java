@@ -19,12 +19,12 @@
 
 package gov.nasa.jpf.jvm;
 
+import java.io.File;
+
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.BailOut;
 import gov.nasa.jpf.util.BinaryClassSource;
 import gov.nasa.jpf.vm.ClassParseException;
-
-import java.io.File;
 
 /**
  * class to read and dissect Java classfile contents (as specified by the Java VM
@@ -747,8 +747,8 @@ public class ClassFile extends BinaryClassSource {
       }
 
       // we don't do much with the version numbers yet
-      int minor = readU2();
-      int major = readU2();
+      @SuppressWarnings("unused") int minor = readU2();
+      @SuppressWarnings("unused") int major = readU2();
 
       // get the const pool
       int cpCount = readU2();
@@ -1093,7 +1093,7 @@ public class ClassFile extends BinaryClassSource {
     int maxStack = readU2();
     int maxLocals = readU2();
     int codeLength = readI4();  // no code length > 2GB supported
-    int codeStartPos = pos;
+//    int codeStartPos = pos;
 
     setCode(reader, tag, maxStack, maxLocals, codeLength);
 

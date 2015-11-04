@@ -18,13 +18,13 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.Config;
-
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import gov.nasa.jpf.Config;
 
 /**
  * this class is responsible for returning properly JPF-configured

@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.mc.threads;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * test verification of daemon threads, which are different because of their
@@ -61,6 +61,7 @@ public class DaemonTest extends TestJPF {
       // termination
       t.blowUp = true;
       
+      @SuppressWarnings("unused")
       int dummy = 42; // totally pointless, but a host VM could still reschedule here
     }
   }

@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.SystemAttribute;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.SystemAttribute;
 
 /**
  * DirectCallStackFrames are only used for overlay calls (from native code), i.e.

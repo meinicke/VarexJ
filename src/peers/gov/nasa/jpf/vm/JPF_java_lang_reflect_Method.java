@@ -18,13 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.MethodInfoRegistry;
-import gov.nasa.jpf.util.RunListener;
-import gov.nasa.jpf.util.RunRegistry;
-
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
@@ -33,6 +26,11 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.MethodInfoRegistry;
+import gov.nasa.jpf.util.RunListener;
+import gov.nasa.jpf.util.RunRegistry;
 
 public class JPF_java_lang_reflect_Method extends NativePeer {
 
@@ -268,7 +266,6 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
   static boolean pushUnboxedArguments (final MJIEnv env, MethodInfo mi, final DirectCallStackFrame frame, int argIdx, final int argsRef, FeatureExpr ctx) {
 	  argIndex = new One<>(argIdx);
-    ClassInfo sourceClass;
     final String destTypeNames[] = mi.getArgumentTypeNames();
     int nArgs, passedCount;
 	final byte destTypes[] = mi.getArgumentTypes();
@@ -513,7 +510,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       ElementInfo eiMth = ti.getElementInfo(mthRef);
       Object object = eiMth.getFieldValueObject("isAccessible");
       if (object instanceof Conditional) {
-    	  object = ((Conditional)object).simplify(ctx).getValue();
+    	  object = ((Conditional<?>)object).simplify(ctx).getValue();
       }
       if (! (Boolean) object) {
         StackFrame caller = ti.getTopFrame().getPrevious();

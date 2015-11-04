@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.io.PrintWriter;
+import java.util.Arrays;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.InstanceFieldInstruction;
@@ -27,9 +30,6 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.PrintWriter;
-import java.util.Arrays;
 
 /**
  * tiny utility listener that can be used to find out where a certain

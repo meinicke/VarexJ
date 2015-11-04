@@ -129,6 +129,7 @@ public class HashSetvBitSetTest extends TestJPF {
 	private static final int LOOPS = 2000; // number of times to invoke methods
 	private static final int LOOPS2 = 10000;
 
+	@SuppressWarnings("unused")
 	private long printTimes(final int arraySize, final int bitSetSize) {
 		final int[] array = new int[arraySize];
 		final BitSet remove = new BitSet();

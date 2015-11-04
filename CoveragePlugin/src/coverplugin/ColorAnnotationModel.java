@@ -39,6 +39,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
@@ -80,11 +87,6 @@ public final class ColorAnnotationModel implements IAnnotationModel {
 	private List<ColorAnnotation> annotations = new ArrayList<ColorAnnotation>(32);
 	private HashMap<Integer, Position> annotatedPositions = new HashMap<Integer, Position>();
 
-	// private HashMap<Integer, FSTDirective> directiveMap = new
-	// HashMap<Integer, FSTDirective>();
-	// private LinkedList<FSTDirective> validDirectiveList = new
-	// LinkedList<FSTDirective>();
-
 	/** List of registered IAnnotationModelListener */
 	private Set<IAnnotationModelListener> annotationModelListeners = new HashSet<IAnnotationModelListener>(2);
 
@@ -112,7 +114,51 @@ public final class ColorAnnotationModel implements IAnnotationModel {
 		}
 	};
 
+	private IResourceChangeListener listener = new IResourceChangeListener() {
+		
+		@Override
+		public void resourceChanged(IResourceChangeEvent event) {
+			
+			IResourceDelta[] deltas = event.getDelta().getAffectedChildren();
+			for (IResourceDelta rd :deltas) {
+				for (IResourceDelta child : rd.getAffectedChildren()) {
+					IResource res = child.getResource();
+					if (res instanceof IFile) {
+						if (res.getName().equals("coverage.xml")) {
+							updateAnnotations(true);
+							
+						}
+					}
+				}
+			}
+			
+		}
+	};
+	boolean POLLING= true; 
+	private Thread pollThread = new Thread() {
+
+		public void run() {
+			while (POLLING) {
+				try {
+					file.getProject().getFile("coverage.xml").refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+				synchronized (this) {
+					try {
+						wait(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		
+	};
+	
 	private ColorAnnotationModel(IDocument document, IFile file, ITextEditor editor) {
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
+		
 		this.document = document;
 		this.file = file;
 		docLines = document.getNumberOfLines();
@@ -128,6 +174,7 @@ public final class ColorAnnotationModel implements IAnnotationModel {
 				}
 			}
 		});
+		pollThread.start();
 	}
 
 	/**
@@ -292,6 +339,7 @@ public final class ColorAnnotationModel implements IAnnotationModel {
 			if (coveragIFile == null) {
 				return;
 			}
+						
 			LOGGER.log(COLOR.MAGENTA, coveragIFile.getFullPath());
 
 			File coveragFile = coveragIFile.getRawLocation().makeAbsolute().toFile();
@@ -411,6 +459,7 @@ public final class ColorAnnotationModel implements IAnnotationModel {
 		if (--openConnections == 0) {
 			document.removeDocumentListener(documentListener);
 		}
+		POLLING = false;
 	}
 
 	/**

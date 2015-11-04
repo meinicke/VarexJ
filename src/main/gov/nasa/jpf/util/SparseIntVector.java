@@ -28,7 +28,6 @@ import java.util.Arrays;
  * Configurable default value. 
  */
 public class SparseIntVector implements Cloneable {
-  private static final boolean DEBUG = false;
   
   static final double MAX_LOAD_WIPE = 0.6;
   static final double MAX_LOAD_REHASH = 0.4;
@@ -134,7 +133,6 @@ public class SparseIntVector implements Cloneable {
   
   // INTERNAL //
   
-  @SuppressWarnings("unchecked")
   protected void newTable() {
     valTable = new int[1 << pow];
     idxTable = new int[1 << pow];
@@ -209,7 +207,6 @@ public class SparseIntVector implements Cloneable {
     }
   }
   
-  @SuppressWarnings("unchecked")
   public int get(int idx) {
     int code = mix(idx);
     int pos = code & mask;

@@ -19,13 +19,6 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFConfigException;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.FileUtils;
-import gov.nasa.jpf.util.JPFLogger;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +28,12 @@ import java.net.URL;
 import java.util.HashMap;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFConfigException;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.FileUtils;
+import gov.nasa.jpf.util.JPFLogger;
 
 /**
  * very simple URLConnection model that can be used for reading static URL contents
@@ -134,7 +133,7 @@ public class JPF_gov_nasa_jpf_CachedROHttpConnection extends NativePeer {
 
     return data;
   }
-
+  @SuppressWarnings("deprecation")
   @MJI
   public int getContents__Ljava_lang_String_2___3B (MJIEnv env, int objRef, int surlRef, FeatureExpr ctx){
     String url = env.getStringObject(ctx, surlRef);

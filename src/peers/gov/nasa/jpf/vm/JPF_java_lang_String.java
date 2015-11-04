@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
@@ -29,10 +27,12 @@ import cmu.conditional.Function;
 import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * MJI NativePeer class for java.lang.String library abstraction
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_lang_String extends NativePeer {
 
 	@MJI
@@ -92,7 +92,6 @@ public class JPF_java_lang_String extends NativePeer {
 		return env.newString(ctx, result);
 	}
 
-	@SuppressWarnings("deprecation")
 	@MJI
 	public int init___3BIII__Ljava_lang_String_2(MJIEnv env, int objRef, int asciiRef, int hibyte, int offset, int count, FeatureExpr ctx) {
 		byte[] ascii = env.getByteArrayObjectDeprecated(ctx, asciiRef);
@@ -141,7 +140,7 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public void getChars__II_3CI__V(final MJIEnv env, final int objRef, Conditional<Integer> srcBegin, final Conditional<Integer> srcEnd, final Conditional<Integer> dstRef,
+	public void getChars__II_3CI__V(final MJIEnv env, final Conditional<Integer> objRef, Conditional<Integer> srcBegin, final Conditional<Integer> srcEnd, final Conditional<Integer> dstRef,
 			final Conditional<Integer> dstBegin, FeatureExpr ctx) {
 		srcBegin.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
 
@@ -159,7 +158,7 @@ public class JPF_java_lang_String extends NativePeer {
 
 									@Override
 									public void apply(FeatureExpr ctx, final Integer dstBegin) {
-										final Conditional<String> obj = env.getStringObjectNew(ctx, objRef);
+										final Conditional<String> obj = env.getStringObjectNew(ctx, objRef.getValue());
 										obj.mapf(ctx, new VoidBiFunction<FeatureExpr, String>() {
 
 											@Override
@@ -193,7 +192,6 @@ public class JPF_java_lang_String extends NativePeer {
 		});
 	}
 
-	@SuppressWarnings("deprecation")
 	@MJI
 	public void getBytes__II_3BI__V(MJIEnv env, int objRef, int srcBegin, int srcEnd, int dstRef, int dstBegin, FeatureExpr ctx) {
 		String obj = env.getStringObject(ctx, objRef);
@@ -206,18 +204,22 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int getBytes__Ljava_lang_String_2___3B(MJIEnv env, int objRef, int charSetRef, FeatureExpr ctx) {
-		String string = env.getStringObject(ctx, objRef);
-		String charset = env.getStringObject(ctx, charSetRef);
+	public Conditional<Integer> getBytes__Ljava_lang_String_2___3B(final MJIEnv env, Conditional<Integer> objRef, Conditional<Integer> charSetRef, final FeatureExpr ctx) {
+		Conditional<String> string = env.getStringObject(ctx, objRef);
+		final String charset = env.getStringObject(ctx, charSetRef.getValue());
+		return string.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<Integer>>() {
 
-		try {
-			byte[] b = string.getBytes(charset);
-			return env.newByteArray(ctx, b);
+			@Override
+			public Conditional<Integer> apply(FeatureExpr x, String string) {
+				try {
+					return new One<>(env.newByteArray(ctx, string.getBytes(charset)));
+				} catch (UnsupportedEncodingException uex) {
+					env.throwException(ctx, uex.getClass().getName(), uex.getMessage());
+					return One.MJIEnvNULL;
+				}
+			}
 
-		} catch (UnsupportedEncodingException uex) {
-			env.throwException(ctx, uex.getClass().getName(), uex.getMessage());
-			return MJIEnv.NULL;
-		}
+		});
 	}
 
 	@MJI
@@ -228,8 +230,15 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public Conditional<Character> charAt__I__C(final MJIEnv env, int objRef, final Conditional<Integer> index, FeatureExpr ctx) {
-		Conditional<char[]> data = env.getStringChars(objRef).simplify(ctx);
+	public Conditional<Character> charAt__I__C(final MJIEnv env, Conditional<Integer> objRef, final Conditional<Integer> index, FeatureExpr ctx) {
+		Conditional<char[]> data = objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<char[]>>() {
+
+			@Override
+			public Conditional<char[]> apply(FeatureExpr ctx, Integer objRef) {
+				return env.getStringChars(objRef);
+			}
+			
+		}).simplify(ctx);
 		return data.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Character>>() {
 
 			@SuppressWarnings("unchecked")

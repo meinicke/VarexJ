@@ -19,12 +19,12 @@
 
 package gov.nasa.jpf.test.java.lang.ref;
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.lang.ref.WeakReference;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
 
 public class WeakReferenceTest extends TestJPF
 {

@@ -20,15 +20,14 @@
 package gov.nasa.jpf.test.vm.threads;
 
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 /**
  * regression test for Thread.stop()
  */
-@SuppressWarnings("deprecation")
 public class ThreadStopTest extends TestJPF {
 
   @Test

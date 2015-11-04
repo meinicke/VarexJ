@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.IntVector;
-
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +27,8 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.IntVector;
 
 /**
  * element values for long[] objects
@@ -40,6 +39,7 @@ public class LongArrayFields extends ArrayFields {
   
   private final static One<Long> nullValue = new One<>(0l);
 
+  @SuppressWarnings("unchecked")
   public LongArrayFields (int length) {
     values = new Conditional[length];
     Arrays.fill(values, nullValue);

@@ -18,9 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -29,10 +31,16 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class JPF_java_lang_Object extends NativePeer {
   
   @MJI
-  public int getClass____Ljava_lang_Class_2 (MJIEnv env, int objref, FeatureExpr ctx) {
-    ClassInfo oci = env.getClassInfo(objref);
+  public Conditional<Integer> getClass____Ljava_lang_Class_2 (final MJIEnv env, Conditional<Integer> objref, FeatureExpr ctx) {
+    return objref.map(new Function<Integer, Integer>() {
 
-    return oci.getClassObjectRef();
+		@Override
+		public Integer apply(Integer objref) {
+			ClassInfo oci = env.getClassInfo(objref);
+		    return oci.getClassObjectRef();
+		 }
+    	
+	}).simplify();
   }
 
   @MJI

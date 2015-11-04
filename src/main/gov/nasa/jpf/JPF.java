@@ -18,6 +18,16 @@
 //
 package gov.nasa.jpf;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.ChoiceFactory.Factory;
+import cmu.conditional.Conditional;
+import coverage.Coverage;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.report.Publisher;
 import gov.nasa.jpf.report.PublisherExtension;
 import gov.nasa.jpf.report.Reporter;
@@ -31,17 +41,6 @@ import gov.nasa.jpf.util.RunRegistry;
 import gov.nasa.jpf.vm.NoOutOfMemoryErrorProperty;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.VMListener;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-import coverage.Coverage;
-import cmu.conditional.ChoiceFactory;
-import cmu.conditional.ChoiceFactory.Factory;
-import cmu.conditional.Conditional;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -127,6 +126,8 @@ public class JPF implements Runnable {
   
   /** we use this as safety margin, to be released upon OutOfMemoryErrors */
   byte[] memoryReserve;
+
+  public static boolean SHARE_INVOCATIONS = false;
   
   private static Logger initLogging(Config conf) {
     LogManager.init(conf);
@@ -306,6 +307,9 @@ public class JPF implements Runnable {
     	  FeatureExprFactory.setDefault(FeatureExprFactory.sat());
       }
       
+      SHARE_INVOCATIONS = config.getBoolean("invocation");
+      
+      
       processInteractionCommand();
       
       // set the trace method
@@ -335,7 +339,7 @@ public class JPF implements Runnable {
   }
   
   public enum COVERAGE_TYPE {
-	  feature, stack, local, context, composedContext, time, local2, field, interaction
+	  feature, stack, local, context, composedContext, time, interaction
   }
   
   public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
@@ -361,10 +365,6 @@ public class JPF implements Runnable {
 							COVERAGE.setType("Max local: ");
 							COVERAGE.setBaseValue(0);
 							break;
-						case local2:
-							COVERAGE.setType("Local change: ");
-							COVERAGE.setBaseValue(-1);
-							break;
 						case stack:
 							COVERAGE.setType("Stack with: ");
 							COVERAGE.setBaseValue(1);
@@ -379,10 +379,6 @@ public class JPF implements Runnable {
 							break;
 						case time:
 							COVERAGE.setType("Max time: ");
-							COVERAGE.setBaseValue(0);
-							break;
-						case field:
-							COVERAGE.setType("Field change: ");
 							COVERAGE.setBaseValue(0);
 							break;
 						case interaction:
@@ -826,7 +822,6 @@ public class JPF implements Runnable {
    * w/o exiting the whole Java process. If we just do a System.exit(), we couldn't
    * use JPF in an embedded context
    */
-  @SuppressWarnings("serial")
   public static class ExitException extends RuntimeException {
     boolean report = true;
     

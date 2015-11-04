@@ -18,6 +18,10 @@
 //
 package gov.nasa.jpf.search;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ConfigChangeListener;
 import gov.nasa.jpf.Error;
@@ -34,10 +38,6 @@ import gov.nasa.jpf.vm.Path;
 import gov.nasa.jpf.vm.ThreadList;
 import gov.nasa.jpf.vm.Transition;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * the mother of all search classes. Mostly takes care of listeners, keeping

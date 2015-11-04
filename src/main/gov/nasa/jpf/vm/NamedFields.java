@@ -19,18 +19,16 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.IntVector;
-
 import java.util.Arrays;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.IntVector;
 
 /**
  * value container for non-array classes

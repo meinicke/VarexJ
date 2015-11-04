@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.JPFLogger;
-import cmu.conditional.Conditional;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -69,7 +69,8 @@ public class JPF_java_lang_Thread extends NativePeer {
     ti.printStackTrace(); // this is not correct, we should go through VM.print
   }
 
-  @MJI
+  @SuppressWarnings("deprecation")
+@MJI
   public void setName0__Ljava_lang_String_2__V (MJIEnv env, int objref, int nameRef, FeatureExpr ctx) {
     // it bails if you try to set a null name
     if (nameRef == MJIEnv.NULL) {
@@ -308,7 +309,8 @@ public class JPF_java_lang_Thread extends NativePeer {
   /**
    * this is here so that we don't have to break the transition on a synchronized call
    */
-  static void join0 (MJIEnv env, int joineeRef, long timeout, FeatureExpr ctx){
+  @SuppressWarnings("incomplete-switch")
+static void join0 (MJIEnv env, int joineeRef, long timeout, FeatureExpr ctx){
     ThreadInfo tiJoiner = env.getThreadInfo(); // this is the CURRENT thread (joiner)
     ThreadInfo tiJoinee = env.getThreadInfoForObjRef(joineeRef);
     boolean isAlive = tiJoinee.isAlive();

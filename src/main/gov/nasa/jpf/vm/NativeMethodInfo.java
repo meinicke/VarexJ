@@ -19,10 +19,6 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFNativePeerException;
-import gov.nasa.jpf.util.JPFLogger;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -39,6 +35,9 @@ import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFNativePeerException;
+import gov.nasa.jpf.util.JPFLogger;
 
 /**
  * a MethodInfo for a native peer executed method
@@ -150,7 +149,7 @@ public class NativeMethodInfo extends MethodInfo {
 				int i = 0;
 				for (Object a : args) {
 					if (a instanceof One) {
-						args[i++] = ((One) a).getValue();
+						args[i++] = ((One<?>) a).getValue();
 					} else if (a instanceof IChoice) {
 						// Entry for n-handler with conditional arguments
 						Conditional<Object[]> unconditionalArgs = getUnconditionalArgs(args);
@@ -179,7 +178,14 @@ public class NativeMethodInfo extends MethodInfo {
 			}
 			try {
 				if (!handled) {
-					ret = mth.invoke(peer, args);
+					if (mth.getParameterTypes()[1].isPrimitive()) {
+						if (args[1] instanceof One) {
+							args[1] = ((One<?>)args[1]).getValue();
+						}
+						ret = mth.invoke(peer, args);
+					} else {
+						ret = mth.invoke(peer, args);
+					}
 				}
 			} catch (IllegalAccessException e) {
 				System.err.println(mth);
@@ -287,8 +293,8 @@ public class NativeMethodInfo extends MethodInfo {
 	private static List<Object[]> insertArgs(List<Object[]> unconditionalArgs, Object arg, int index) {
 		final List<Object[]> newArgs = new LinkedList<>();
 		if (arg instanceof Conditional) {
-			Map<Object, FeatureExpr> map = ((Conditional) arg).toMap();
-			for (Entry<Object, FeatureExpr> e : map.entrySet()) {
+			Map<?, FeatureExpr> map = ((Conditional<?>) arg).toMap();
+			for (Entry<?, FeatureExpr> e : map.entrySet()) {
 				for (Object[] args : unconditionalArgs) {
 					FeatureExpr ctx = ((FeatureExpr)args[args.length - 1]).and(e.getValue());
 					if (!Conditional.isContradiction(ctx)) {

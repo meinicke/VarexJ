@@ -19,18 +19,18 @@
 
 package gov.nasa.jpf.listener;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.vm.ElementInfo;
-import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.ThreadInfo;
-
 import java.io.PrintWriter;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.vm.ElementInfo;
+import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.ThreadInfo;
 
 /**
  * this is a specialized MethodAnalyzer that looks for overlapping method
@@ -44,7 +44,7 @@ public class OverlappingMethodAnalyzer extends MethodAnalyzer {
 
   MethodOp getReturnOp (MethodOp op, boolean withinSameThread){
     MethodInfo mi = op.mi;
-    int stateId = op.stateId;
+//    int stateId = op.stateId;
     int stackDepth = op.stackDepth;
     ElementInfo ei = op.ei;
     ThreadInfo ti = op.ti;
@@ -155,7 +155,8 @@ public class OverlappingMethodAnalyzer extends MethodAnalyzer {
     }
   }
 
-  MethodOp consolidateOp (MethodOp op){
+  @SuppressWarnings("incomplete-switch")
+MethodOp consolidateOp (MethodOp op){
     for (MethodOp o = op.p; o != null; o = o.p){
       if (showTransition && (o.stateId != op.stateId)){
         break;

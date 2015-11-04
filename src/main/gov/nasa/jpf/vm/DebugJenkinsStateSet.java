@@ -19,14 +19,14 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPFConfigException;
-import gov.nasa.jpf.JPFException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPFConfigException;
+import gov.nasa.jpf.JPFException;
 
 /**
  * a JenkinsStateSet that stores program state information in a readable

@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +29,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
 
 public class SplitInputStreamTest extends TestJPF {
 

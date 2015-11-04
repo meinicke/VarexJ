@@ -18,6 +18,28 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
+import cmu.utils.CoverageClass;
+import cmu.utils.RuntimeConstants;
+import cmu.utils.TraceComparator;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -27,7 +49,6 @@ import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
-import gov.nasa.jpf.jvm.bytecode.LocalVariableInstruction;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 import gov.nasa.jpf.util.JPFLogger;
@@ -35,32 +56,6 @@ import gov.nasa.jpf.util.Predicate;
 import gov.nasa.jpf.util.StringSetMatcher;
 import gov.nasa.jpf.vm.choice.BreakGenerator;
 import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
-
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.NoSuchElementException;
-import java.util.TreeMap;
-import java.util.logging.Level;
-
-import cmu.conditional.ChoiceFactory;
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
-import cmu.utils.CoverageLogger;
-import cmu.utils.RuntimeConstants;
-import cmu.utils.TraceComparator;
-import coverage.Interaction;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -197,7 +192,7 @@ public class ThreadInfo extends InfoObject
     static final int ATTR_STACK_CHANGED = 0x20000;
     static final int ATTR_ATTRIBUTE_CHANGED = 0x80000;
 
-    //--- state stored/restored attributes  
+    //--- state stored/restored attributes
     // this is a typical "orthogonal" thread state we have to remember, but
     // that should not affect any locking, blocking, notifying or such
     static final int ATTR_STOPPED = 0x0001;
@@ -399,7 +394,7 @@ public class ThreadInfo extends InfoObject
 
         porUnsharedInit = porInEffect && config.getBoolean("vm.por.unshared_init", true);
 
-        maxTransitionLength = Integer.MAX_VALUE; // because we do not model check // TODO could be done via configuration 
+        maxTransitionLength = Integer.MAX_VALUE; // because we do not model check // TODO could be done via configuration
 //    maxTransitionLength = config.getInt("vm.max_transition_length", 5000);
 
         SharedObjectPolicy.init(config);
@@ -408,7 +403,7 @@ public class ThreadInfo extends InfoObject
     }
 
     //--- factory methods
-    // <2do> this is going to be a configurable factory method  
+    // <2do> this is going to be a configurable factory method
 
     /*
    * search global cache for dense ThreadInfo ids. We could just use oref since those are
@@ -429,26 +424,28 @@ public class ThreadInfo extends InfoObject
         return id;
     }
 
-    static void addId(int objRef, int id) {
-        globalTids.put(objRef, id);
-    }
+  static void addId(int objRef, int id) {
+    globalTids.put(objRef, id);
+  }
+  
+  public CoverageClass coverage = new CoverageClass(this);
 
-    /**
-     * mainThread ctor called by the VM. Note we don't have a thread object yet (hen-and-egg problem
-     * since we can't allocate objects without a ThreadInfo)
-     */
-    protected ThreadInfo(VM vm, int id, ApplicationContext appCtx) {
-        this.id = id;
-        this.appCtx = appCtx;
-
-        init(vm);
-        // we don't have the group yet, no Runnable or parent, and the name is fixed
-        // the thread is also not yet in the ThreadList
-
-        ci = appCtx.getSystemClassLoader().getThreadClassInfo();
-        targetRef = MJIEnv.NULL;
-        threadData.name = MAIN_NAME;
-    }
+  /**
+   * mainThread ctor called by the VM. Note we don't have a thread object yet (hen-and-egg problem
+   * since we can't allocate objects without a ThreadInfo)
+   */
+  protected ThreadInfo (VM vm, int id, ApplicationContext appCtx) {
+    this.id = id;
+    this.appCtx = appCtx;
+    
+    init(vm);
+    // we don't have the group yet, no Runnable or parent, and the name is fixed
+    // the thread is also not yet in the ThreadList
+    
+    ci = appCtx.getSystemClassLoader().getThreadClassInfo();
+    targetRef = MJIEnv.NULL;
+    threadData.name = MAIN_NAME;
+  }
 
     /**
      * the ctor for all explicitly (bytecode) created threads. At this point, there is at least
@@ -972,13 +969,13 @@ public class ThreadInfo extends InfoObject
     public List<StackFrame> getInvokedStackFrames() {
         ArrayList<StackFrame> list = new ArrayList<StackFrame>(stackDepth);
 
-        int i = stackDepth - 1;
-        for (StackFrame frame = top; frame != null; frame = frame.getPrevious()) {
-            if (!frame.isDirectCallFrame()) {
-                list.add(frame);
-            }
-        }
-        Collections.reverse(list);
+//    int i = stackDepth-1;
+    for (StackFrame frame = top; frame != null; frame = frame.getPrevious()){
+      if (!frame.isDirectCallFrame()){
+        list.add( frame);
+      }
+    }
+    Collections.reverse(list);
 
         return list;
     }
@@ -1196,7 +1193,7 @@ public class ThreadInfo extends InfoObject
     // modeling this with a count is an approximation. In reality it behaves
     // rather like a race that /sometimes/ causes the resume to fail, but its
     // Ok if we overapproximate on the safe side, since suspend/resume is such
-    // an inherently unsafe thing. What we *do* want to preserve faithfully is 
+    // an inherently unsafe thing. What we *do* want to preserve faithfully is
     // that locks held by the suspended thread are not released
 
     /**
@@ -1731,13 +1728,14 @@ public class ThreadInfo extends InfoObject
             }
         }
 
-        StackTraceElement(int sRef) {
-            FeatureExpr ctx = FeatureExprFactory.True();
-            clsName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "clsName").getValue());
-            mthName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "mthName").getValue());
-            fileName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "fileName").getValue());
-            line = env.getIntField(sRef, "line").getValue().intValue();
-        }
+    @SuppressWarnings("deprecation")
+	StackTraceElement (int sRef){
+      FeatureExpr ctx = FeatureExprFactory.True();
+      clsName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "clsName").getValue());
+      mthName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "mthName").getValue());
+      fileName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "fileName").getValue());
+      line = env.getIntField(sRef, "line").getValue().intValue();
+    }
 
         int createJPFStackTraceElement(FeatureExpr ctx) {
             if (ignore) {
@@ -1874,7 +1872,7 @@ public class ThreadInfo extends InfoObject
             try {
                 ci = ClassLoaderInfo.getCurrentResolvedClassInfo(cname);
             } catch (ClassInfoException cie) {
-                // the non-system class loader couldn't find the class, 
+                // the non-system class loader couldn't find the class,
                 if (cie.getExceptionClass().equals("java.lang.ClassNotFoundException") &&
                         !ClassLoaderInfo.getCurrentClassLoader().isSystemClassLoader()) {
                     ci = ClassLoaderInfo.getSystemResolvedClassInfo(cname);
@@ -1979,164 +1977,109 @@ public class ThreadInfo extends InfoObject
         // on-the-fly instrumentation or even replace the instruction all together
         vm.notifyExecuteInstruction(this, pc.getValue(true));// TODO revise
 
-        int popedFrames = 0;
-        StackFrame oldStack = top;
+    int popedFrames = 0;
+    StackFrame oldStack = top;
+    
+    if (!skipInstruction) {
+        // enter the next bytecode
+        try {
+        	if (time == 0) {
+	    		time = System.currentTimeMillis();
+	        }
+	        count++;
+	        if (System.currentTimeMillis() - time > 10000) {
+	        	int instructions = count / 10;
+	        	printSpeedLog(instructions);
+	        	time = System.currentTimeMillis();
+	        	count = 0;
+        		vm.getSystemState().gcIfNeeded();
+	        }
+        	Instruction i = null;
+ 	        FeatureExpr ctx = top.stack.getCtx();
+ 	        if (pc instanceof One) {
+ 	        	i = pc.getValue();
+ 	        } else {
+ 		    	Map<Instruction, FeatureExpr> map = pc.simplify(ctx).toMap();// XXX jens why simplify
+ 		    	int minPos = Integer.MAX_VALUE;
+ 		    	MethodInfo m = top.getMethodInfo();
+ 		    	
+ 		    	if (map.size() == 1) {
+ 		    		for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
+ 		    			i = e.getKey();
+ 		    		}
+ 		    	} else {
+ 			   		for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
+ 			   			final Instruction key = e.getKey();
+ 						if (!(key instanceof ReturnInstruction)){
+ 			    			if (key.position < minPos && key.mi == m) {
+ 			    				minPos = key.position;
+ 			    				i = key;
+ 			    			}
+ 			   			} else if (i == null && key.mi == m) {
+ 			   				i = key;
+ 			   			}
+ 			   		}
+ 			   		ctx = map.get(i).and(ctx);
+ 		    	}
+ 	        }	
+ 	        	
+     		if (RuntimeConstants.debug) {
+     			System.out.print(top.getDepth());
+     			if (top.getDepth() < 10) {
+     				System.out.print(" ");
+     			}
+ 				System.out.println(" " + i + " if " + ctx);
+ 			
+ 			}
+ 	    	
+     		if (RuntimeConstants.tracing) {
+     			performTracing(i, ctx);
+     		}
+     		coverage.preExecuteInstruction(i);
 
-        if (!skipInstruction) {
-            // enter the next bytecode
-            try {
-                if (time == 0) {
-                    time = System.currentTimeMillis();
-                }
-                count++;
-                if (System.currentTimeMillis() - time > 10000) {
-                    int instructions = count / 10;
-                    printSpeedLog(instructions);
-                    time = System.currentTimeMillis();
-                    count = 0;
-                    vm.getSystemState().gcIfNeeded();
-                }
-                Instruction i = null;
-                FeatureExpr ctx = top.stack.getCtx();
-                if (pc instanceof One) {
-                    i = pc.getValue();
-                } else {
-                    Map<Instruction, FeatureExpr> map = pc.simplify(ctx).toMap();// XXX jens why simplify
-                    int minPos = Integer.MAX_VALUE;
-                    MethodInfo m = top.getMethodInfo();
+     		final int currentStackDepth = stackDepth;
+     		// the point where the instruction is executed
+     		final Conditional<Instruction> next = i.execute(ctx, this);
 
-                    if (map.size() == 1) {
-                        for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
-                            i = e.getKey();
-                        }
-                    } else {
-                        for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
-                            final Instruction key = e.getKey();
-                            if (!(key instanceof ReturnInstruction)) {
-                                if (key.position < minPos && key.mi == m) {
-                                    minPos = key.position;
-                                    i = key;
-                                }
-                            } else if (i == null && key.mi == m) {
-                                i = key;
-                            }
-                        }
-                        ctx = map.get(i).and(ctx);
-                    }
-                }
-
-                if (RuntimeConstants.debug) {
-                    System.out.print(top.getDepth());
-                    if (top.getDepth() < 10) {
-                        System.out.print(" ");
-                    }
-                    System.out.println(" " + i + " if " + ctx);
-
-                }
-
-                if (RuntimeConstants.tracing) {
-                    performTracing(i, ctx);
-                }
-
-                int localSize = 0;
-                Object oldLocal = null;
-                if (JPF.COVERAGE != null) {
-                    if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.local2 ||
-                            JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.interaction) {
-                        int index = -1;
-                        if (i instanceof LocalVariableInstruction) {
-                            LocalVariableInstruction li = (LocalVariableInstruction) i;
-                            index = li.getLocalVariableIndex();
-                            if (index != -1) {
-                                oldLocal = top.stack.getLocal(index);
-                                localSize = top.stack.getLocal(top.stack.getCtx(), index).toMap().size();
-                            }
-                        }
-                    }
-                }
-                long time = 0;
-                final int currentStackDepth = stackDepth;
-                if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {// TODO revise
-                    time = System.nanoTime();
-                }
-                final Conditional<Instruction> next = i.execute(ctx, this);
-
-//     		if ((executedInstructions > 97754252 && top.getDepth() < 11 ) && RuntimeConstants.debug) {
-////     			System.out.print(executedInstructions + " ");
-////     			System.out.print(top.getDepth());
-////     			if (top.getDepth() < 10) {
-////     				System.out.print(" ");
-////     			}
-//// 				System.out.println(" " + i + " if " + ctx);
-//     			if (top != null) {
-//     				System.out.println(top.stack);
-//     			}
-// 			}
-
-                if (JPF.COVERAGE != null) {
-                    if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {
-                        time = System.nanoTime() - time;
-                    }
-
-                    Object newLocal = null;
-                    int newLocalSize = localSize;
-                    if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.local2 ||
-                            JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.interaction) {
-                        int index = -1;
-                        if (i instanceof LocalVariableInstruction) {
-                            LocalVariableInstruction li = (LocalVariableInstruction) i;
-                            index = li.getLocalVariableIndex();
-                        }
-                        if (index != -1) {
-                            newLocal = top.stack.getLocal(index);
-                            newLocalSize = top.stack.getLocal(top.stack.getCtx(), index).toMap().size();
-                        }
-                    }
-                    performCoverage(i, ctx, time, localSize, oldLocal, newLocalSize, newLocal);
-                }
-
-                final int poped = currentStackDepth - stackDepth;
-                if (i instanceof InvokeInstruction) {
-                    nextPc = next;
-                    if (stackDepth > RuntimeConstants.MAX_FRAMES) {
-                        nextPc = ChoiceFactory.create(ctx,
-                                new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RuntimeConstants.MAX_FRAMES + ")")),
-                                next).simplify();
-                    }
-                } else if (i instanceof ReturnInstruction) {
-                    // instructions already joined at ReturnInstruction#getNext() 
-                    nextPc = next;
-                } else if (i instanceof ATHROW || i instanceof EXCEPTION || (poped > 0 && stackTraceMember(oldStack, top))) {
-                    // some instruction (e.g., IDIV with div by zero) just pop frames but do not throw exceptions
-                    nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
-                    popedFrames = poped;
-                    int k = 0;
-                    StackFrame stackPointer = oldStack;
-                    // set the ctx of popped frames
-                    while (k < popedFrames) {
-                        FeatureExpr newCtx = stackPointer.stack.getCtx().andNot(ctx);
-                        stackPointer.stack.setCtx(newCtx);
-                        stackPointer = stackPointer.prev;
-                        k++;
-                    }
-                } else {
-                    nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
-                }
-            } catch (ClassInfoException cie) {
-                nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
-            }
+     		coverage.postExecuteInstruction(i, ctx);
+     		
+    		final int poped = currentStackDepth - stackDepth;
+    		if (i instanceof InvokeInstruction) {
+    			nextPc = next;
+	    		if (stackDepth > RuntimeConstants.MAX_FRAMES) {
+	            	nextPc = ChoiceFactory.create(ctx, 
+	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RuntimeConstants.MAX_FRAMES + ")")), 
+	            			next).simplify();
+            	}
+    		} else if (i instanceof ReturnInstruction) {
+    			// instructions already joined at ReturnInstruction#getNext() 
+    			nextPc = next;
+    		} else if (i instanceof ATHROW || i instanceof EXCEPTION || (poped > 0 && stackTraceMember(oldStack, top))) {
+    			// some instruction (e.g., IDIV with div by zero) just pop frames but do not throw exceptions
+    			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
+    			popedFrames = poped;
+				int k = 0;
+				StackFrame stackPointer = oldStack;
+				// set the ctx of popped frames
+				while (k < popedFrames) {
+					FeatureExpr newCtx = stackPointer.stack.getCtx().andNot(ctx);
+					stackPointer.stack.setCtx(newCtx);
+					stackPointer = stackPointer.prev;
+					k++;
+				}
+    		} else {
+    			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
+    		}
+        } catch (ClassInfoException cie) {
+          nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
-        // we also count the skipped ones
-        executedInstructions++;
-
-        // Simplest round robin
-//        if (executedInstructions % 1000 == 0) {
-//            mustYield();
-//        }
-
-        if (logInstruction) {
-            ss.recordExecutionStep(pc.getValue(true));
-        }
+      }
+    // we also count the skipped ones
+    executedInstructions++;
+    
+    if (logInstruction) {
+      ss.recordExecutionStep(pc.getValue(true));
+    }
 
         // here we have our post exec bytecode exec observation point
         vm.notifyInstructionExecuted(this, pc.getValue(true), nextPc.getValue(true));// TODO replace true
@@ -2147,36 +2090,36 @@ public class ThreadInfo extends InfoObject
         // clean up whatever might have been stored by enter
         pc.getValue(true).cleanupTransients();
 
-        if (pendingSUTExceptionRequest != null) {
-            processPendingSUTExceptionRequest();
-        }
-
-        // set+return the next insn to enter if we did not return from the last stack frame.
-        // Note that 'nextPc' might have been set by a listener, and/or 'top' might have
-        // been changed by executing an invoke, return or throw (handler), or by
-        // pushing overlay calls on the stack
-        if (top != null) {
-            // <2do> this is where we would have to handle general insn repeat
-            setPC(nextPc);
-            if (popedFrames > 0) {
-                // return to the current method after the chatch clause is set after an exception
-                pushFrames(oldStack, popedFrames);
-            }
-            return nextPc;
-        } else {
-            return (Conditional<Instruction>) One.NULL;
-        }
+    if (pendingSUTExceptionRequest != null){
+      processPendingSUTExceptionRequest();
     }
-
-    private void printSpeedLog(int instructions) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(insertDots(instructions));
-        sb.append(" instructions / s (");
-
-        sb.append(insertDots(executedInstructions));
-        sb.append(')');
-        System.out.println(sb.toString());
+    
+    // set+return the next insn to enter if we did not return from the last stack frame.
+    // Note that 'nextPc' might have been set by a listener, and/or 'top' might have
+    // been changed by executing an invoke, return or throw (handler), or by
+    // pushing overlay calls on the stack
+    if (top != null) {
+      // <2do> this is where we would have to handle general insn repeat
+      setPC(nextPc);
+  		if (popedFrames > 0) {
+  			// return to the current method after the chatch clause is set after an exception
+  			pushFrames(oldStack, popedFrames);
+  		}
+      return nextPc;
+    } else {
+      return (Conditional<Instruction>) One.NULL;
     }
+  }
+
+	private void printSpeedLog(int instructions) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(insertDots(instructions));
+		sb.append(" instructions / s (");
+		
+		sb.append(insertDots(executedInstructions));
+		sb.append(')');
+		System.out.println(sb.toString());
+	}
 
     public static String insertDots(int instructions) {
         StringBuilder sb = new StringBuilder();
@@ -2204,271 +2147,48 @@ public class ThreadInfo extends InfoObject
         return String.valueOf(value);
     }
 
-    /**
-     * Log trace for trace comparison.
-     *
-     * @param instruction The instruction to log.
-     * @param ctx
-     */
-    private void performTracing(Instruction instruction, FeatureExpr ctx) {
-        if (logtrace) {
-            if (!(instruction instanceof InvokeInstruction)) {
-                MethodInfo mi = instruction.getMethodInfo();
-                if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
-                    // ignore class initializations 
-                } else {
-                    TraceComparator.putInstruction(ctx, mi.getFullName() + " " + instruction.getMnemonic().toString() + " " + instruction.getFileLocation());
-                }
-            }
-        } else if (JPF.traceMethod != null && instruction.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
-            logtrace = true;
-        }
-    }
+  /**
+   * Log trace for trace comparison.
+   * @param instruction The instruction to log.
+   * @param ctx
+   */
+  	private void performTracing(Instruction instruction, FeatureExpr ctx) {
+  		if (logtrace) {
+ 			if (!(instruction instanceof InvokeInstruction)) {
+ 				MethodInfo mi = instruction.getMethodInfo();
+ 				if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
+ 					// ignore class initializations
+ 				} else {
+ 					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + instruction.getMnemonic().toString() +  " " + instruction.getFileLocation());
+ 				}
+ 			}
+ 		} else if (JPF.traceMethod != null && instruction.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
+ 			logtrace = true;
+ 		}
+  	}
+	
+	/**
+  	 * Checks whether the the new top stack is part of the trace of the current stack.
+  	 */
+	private boolean stackTraceMember(final StackFrame current, final StackFrame newTop) {
+		if (current == newTop) {
+			return true;
+		}
+		final StackFrame prev = current.prev;
+		if (prev != null) {
+			return stackTraceMember(prev, newTop);
+		}
+		return false;
+	}
 
-    /**
-     * Logs the current instruction / state for coverage.
-     *
-     * @param instruction            The instruction to cover.
-     * @param ctx
-     * @param time
-     * @param localInteractionChange
-     * @param oldLocal
-     * @param newLocal
-     */
-    private void performCoverage(Instruction instruction, FeatureExpr ctx, long time, int oldLocalSize, Object oldLocal, int newLocalSize, Object newLocal) {
-        MethodInfo methodInfo = instruction.getMethodInfo();
-        if (methodInfo != null) {
-            ClassInfo classInfo = methodInfo.getClassInfo();
-            String file = classInfo.getSourceFileName();
-            if (file != null && top != null) {
-                file = file.substring(file.lastIndexOf('/') + 1);
-                switch (JPF.SELECTED_COVERAGE_TYPE) {
-                    case feature:
-                        JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), ctx.collectDistinctFeatures().size(), Conditional.getCTXString(ctx));
-                        break;
-                    case stack:
-                        JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getStackWidth(), Conditional.getCTXString(ctx));
-                        break;
-                    case local:
-                        // TODO LocalVariableInstruction.getLocalVariableName()
-                        JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), top.stack.getLocalWidth(), top.stack.getMaxLocal().toString());
-                        break;
-                    case interaction:
-                    case local2:
-                        String localVariableName = "?";
-
-                        int localInteractionChange = newLocalSize - oldLocalSize;
-                        if (instruction instanceof LocalVariableInstruction) {
-                            LocalVariableInstruction lvi = ((LocalVariableInstruction) instruction);
-                            LocalVarInfo lv = lvi.getLocalVarInfo();
-                            localVariableName = lvi.getLocalVariableName();
-                            LocalVariableInstruction prev = (LocalVariableInstruction) getPrevLocalInstruction(instruction);
-                            if (prev != null) {
-                                if (prev.getLocalVarInfo() != lv) {
-                                    // previous value belongs to another variable
-                                    localInteractionChange = top.stack.getLocal(top.stack.getCtx(),
-                                            ((LocalVariableInstruction) instruction).getLocalVariableIndex()).toMap().size() - 1;
-                                    if (localInteractionChange != 0) {
-                                        String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
-                                        content += top.trace(ctx) + "\n";
-                                        if (newLocal.toString().length() > 800) {
-                                            content += newLocal.toString().substring(0, 800) + "...";
-                                        } else {
-                                            content += newLocal;
-                                        }
-                                        CoverageLogger.logInteraction(top, localInteractionChange, content, ctx);
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                        if (localInteractionChange != 0) {
-                            String content = localVariableName + " (" + Conditional.getCTXString(ctx) + "):\n";
-                            content += top.trace(ctx) + "\n";
-                            if (oldLocal.toString().length() > 800) {
-                                content += oldLocalSize + " : " + oldLocal.toString().substring(0, 800) + "...";
-                            } else {
-                                content += oldLocalSize + " : " + oldLocal;
-                            }
-                            content += "\n -> \n";
-                            if (newLocal.toString().length() > 800) {
-                                content += newLocalSize + " : " + newLocal.toString().substring(0, 800) + "...";
-                            } else {
-                                content += newLocalSize + " : " + newLocal;
-                            }
-                            CoverageLogger.logInteraction(top, localInteractionChange, content, ctx);
-                        }
-
-                        break;
-                    case context:// same as for composedContext
-                    case composedContext:
-                        Interaction interaction = JPF.COVERAGE.getCoverage(file, instruction.getLineNumber());
-                        if (interaction != null) {
-                            @SuppressWarnings({"rawtypes", "unchecked"})
-                            Map<FeatureExpr, Integer> values = (Map) interaction.getValue();
-                            if (!values.containsKey(ctx)) {
-                                values.put(ctx, 1);
-                                interaction.setInteraction(interaction.getInteraction() + 1);
-                            } else {
-                                Integer runs = values.get(ctx);
-                                values.put(ctx, runs + 1);
-                            }
-                        } else {
-                            Map<FeatureExpr, Integer> values = new HashMap<FeatureExpr, Integer>() {
-                                private static final long serialVersionUID = 1L;
-
-                                @Override
-                                public String toString() {
-                                    StringBuilder builder = new StringBuilder();
-                                    FeatureExpr composedContext = FeatureExprFactory.False();
-                                    for (FeatureExpr entry : keySet()) {
-                                        composedContext = composedContext.or(entry);
-                                    }
-                                    builder.append("Composed context: ");
-                                    builder.append(Conditional.getCTXString(composedContext));
-                                    builder.append('\n');
-                                    for (java.util.Map.Entry<FeatureExpr, Integer> entry : entrySet()) {
-                                        FeatureExpr ctx = entry.getKey();
-                                        Integer runs = entry.getValue();
-                                        builder.append(Conditional.getCTXString(ctx));
-                                        builder.append(' ');
-                                        builder.append(runs);
-                                        if (runs == 1) {
-                                            builder.append(" instruction executed\n");
-                                        } else {
-                                            builder.append(" instructions executed\n");
-                                        }
-                                    }
-                                    return builder.toString();
-                                }
-                            };
-                            values.put(ctx, 1);
-                            JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), 1, values);
-                        }
-                        break;
-                    case time:
-                        final int modifier = 1_000_000;
-                        interaction = JPF.COVERAGE.getCoverage(file, instruction.getLineNumber());
-                        if (interaction != null) {
-                            @SuppressWarnings({"rawtypes", "unchecked"})
-                            Map<Instruction, LinkedList<Long>> values = (Map) interaction.getValue();
-                            if (values.containsKey(instruction)) {
-                                LinkedList<Long> times = values.get(instruction);
-                                times.add(time);
-                            } else {
-                                LinkedList<Long> initialValue = new LinkedList<Long>();
-                                initialValue.add(time);
-                                values.put(instruction, initialValue);
-                            }
-                            int degree = interaction.getInteraction();
-                            if ((time / modifier) > degree) {
-                                interaction.setInteraction((int) (time / modifier));
-                            }
-                        } else {
-                            Map<Instruction, LinkedList<Long>> values = new TreeMap<Instruction, LinkedList<Long>>(new Comparator<Instruction>() {
-
-                                @Override
-                                public int compare(Instruction o1, Instruction o2) {
-                                    return o1.insnIndex - o2.insnIndex;
-                                }
-
-                            }) {
-                                private static final long serialVersionUID = 1L;
-
-                                @Override
-                                public String toString() {
-                                    StringBuilder builder = new StringBuilder();
-                                    for (java.util.Map.Entry<Instruction, LinkedList<Long>> entry : entrySet()) {
-                                        builder.append(entry.getKey()).append('\n');
-                                        LinkedList<Long> times = entry.getValue();
-                                        Collections.sort(times);
-                                        long min = times.getFirst();
-                                        long max = times.getLast();
-                                        long max2 = 0;
-                                        if (times.size() >= 2) {
-                                            max2 = times.get(times.size() - 2);
-                                        }
-                                        long sum = 0;
-                                        for (long value : times) {
-                                            sum += value;
-                                        }
-                                        long average = sum / times.size();
-                                        builder.append("Max:\t\t");
-                                        appendTime(builder, max);
-
-                                        builder.append("Max2:\t\t");
-                                        appendTime(builder, max2);
-
-                                        builder.append("Average:\t");
-                                        appendTime(builder, average);
-
-                                        builder.append("Min: \t\t");
-                                        appendTime(builder, min);
-                                    }
-                                    return builder.toString();
-                                }
-
-                                private void appendTime(final StringBuilder stringBuilder, final long time) {
-                                    stringBuilder.append("Min: \t\t");
-                                    if (time < 2000) {
-                                        stringBuilder.append(time).append("nano s\n");
-                                    } else {
-                                        stringBuilder.append(time / 1000).append("micro s\n");
-                                    }
-                                }
-                            };
-                            LinkedList<Long> initialValue = new LinkedList<Long>();
-                            initialValue.add(time);
-                            values.put(instruction, initialValue);
-                            JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), (int) (time / modifier), values);
-                        }
-                        break;
-                    case field:
-                        // handled at FieldInstruction
-                        break;
-                    default:
-                        throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
-                }
-
-            }
-        }
-    }
-
-    private Instruction getPrevLocalInstruction(Instruction instruction) {
-        Instruction prev = instruction.getPrev();
-        while (prev != null) {
-            if (prev instanceof LocalVariableInstruction) {
-                if (((LocalVariableInstruction) prev).getLocalVariableIndex() == ((LocalVariableInstruction) instruction).getLocalVariableIndex()) {
-                    return prev;
-                }
-            }
-            prev = prev.getPrev();
-        }
-        return instruction;
-    }
-
-    /**
-     * Checks whether the the new top stack is part of the trace of the current stack.
-     */
-    private boolean stackTraceMember(final StackFrame current, final StackFrame newTop) {
-        if (current == newTop) {
-            return true;
-        }
-        final StackFrame prev = current.prev;
-        if (prev != null) {
-            return stackTraceMember(prev, newTop);
-        }
-        return false;
-    }
-
-    /**
-     * enter instruction hidden from any listeners, and do not
-     * record it in the path
-     */
-    public Instruction executeInstructionHidden() {
-        Instruction pc = getPC().getValue();
-        SystemState ss = vm.getSystemState();
-        KernelState ks = vm.getKernelState();
+/**
+   * enter instruction hidden from any listeners, and do not
+   * record it in the path
+   */
+  public Instruction executeInstructionHidden () {
+    Instruction pc = getPC().getValue();
+//    SystemState ss = vm.getSystemState();
+//    KernelState ks = vm.getKernelState();
 
         nextPc = null; // reset in case pc.execute() blows (this could be behind an exception firewall)
 
@@ -2576,25 +2296,26 @@ public class ThreadInfo extends InfoObject
      */
     public void executeMethodAtomic(StackFrame frame) {
 
-        pushFrame(frame);
-        int depth = countStackFrames();
-        Instruction pc = frame.getPC().getValue();
-        SystemState ss = vm.getSystemState();
+    pushFrame(frame);
+    int    depth = countStackFrames();
+//    Instruction pc = frame.getPC().getValue();
+    SystemState ss = vm.getSystemState();
 
         ss.incAtomic(); // to shut off avoidable context switches (MONITOR_ENTER and wait() can still block)
 
-        while (depth <= countStackFrames()) {
-            Instruction nextPC = executeInstruction().getValue();
+    while (depth <= countStackFrames()) {
+    	executeInstruction();
+//      Instruction nextPC = executeInstruction().getValue();
 
-            if (ss.getNextChoiceGenerator() != null) {
-                // BANG - we can't have CG's here
-                // should be rather an ordinary exception
-                // createAndThrowException("java.lang.AssertionError", "choice point in sync executed method: " + frame);
-                throw new JPFException("choice point in atomic method execution: " + frame);
-            } else {
-                pc = nextPC;
-            }
-        }
+      if (ss.getNextChoiceGenerator() != null) {
+        // BANG - we can't have CG's here
+        // should be rather an ordinary exception
+        // createAndThrowException("java.lang.AssertionError", "choice point in sync executed method: " + frame);
+        throw new JPFException("choice point in atomic method execution: " + frame);
+      } else {
+//        pc = nextPC;
+      }
+    }
 
         vm.getSystemState().decAtomic();
 
@@ -2689,7 +2410,7 @@ public class ThreadInfo extends InfoObject
             if (mi.isStatic()) {
                 objref = mi.getClassInfo().getClassObjectRef();
             } else {
-                // NOTE 'inMethod' doesn't work for natives, because getThis() pulls 'this' from the stack frame, 
+                // NOTE 'inMethod' doesn't work for natives, because getThis() pulls 'this' from the stack frame,
                 // which we don't have (and don't need) for natives
                 objref = isBeforeCall ? getCalleeThis(mi) : getThis();
             }
@@ -2758,24 +2479,23 @@ public class ThreadInfo extends InfoObject
         vm.notifyMethodExited(this, mi);
     }
 
+  
+  /**
+   * this should only be called from the top half of the last DIRECTCALLRETURN of
+   * a thread.
+ * 
+   * @return true - if the thread is done, false - if instruction has to be re-executed
+   */
+  public boolean exit(FeatureExpr ctx){
+    int objref = getThreadObjectRef();
+    ElementInfo ei = getModifiableElementInfo(objref);
+    SystemState ss = vm.getSystemState();
 
-    /**
-     * this should only be called from the top half of the last DIRECTCALLRETURN of
-     * a thread.
-     *
-     * @return true - if the thread is done, false - if instruction has to be re-executed
-     */
-    public boolean exit(FeatureExpr ctx) {
-        int objref = getThreadObjectRef();
-        ElementInfo ei = getModifiableElementInfo(objref);
-        SystemState ss = vm.getSystemState();
-        ThreadList tl = vm.getThreadList();
-
-        // beware - this notifies all waiters for this thread (e.g. in a join())
-        // hence it has to be able to acquire the lock
-        if (!ei.canLock(this)) {
-            // block first, so that we don't get this thread in the list of CGs
-            ei.block(this);
+    // beware - this notifies all waiters for this thread (e.g. in a join())
+    // hence it has to be able to acquire the lock
+    if (!ei.canLock(this)) {
+      // block first, so that we don't get this thread in the list of CGs
+      ei.block(this);
 
             // if we can't acquire the lock, it means there needs to be another thread alive,
             // but it might not be runnable (deadlock) and we don't want to mask that error
@@ -3045,7 +2765,7 @@ public class ThreadInfo extends InfoObject
                     // we cannot yet remove this thread from the Monitor lock contender list
                     // since it still has to re-acquire the lock before becoming runnable again
 
-                    // NOTE: this can lead to attempts to reenter the same thread to the 
+                    // NOTE: this can lead to attempts to reenter the same thread to the
                     // lock contender list if the interrupt handler of the interrupted thread
                     // tries to wait/block/park again
                     //eiLock.setMonitorWithoutLocked(this);
@@ -3470,7 +3190,7 @@ public class ThreadInfo extends InfoObject
                 insn = callUncaughtHandler(ctx, xi, hRef, "[threadGroupUncaughtHandler]");
 
             } else {
-                // 3. as a last measure, check if there is a global handler 
+                // 3. as a last measure, check if there is a global handler
                 hRef = getGlobalUncaughtHandler();
                 if (hRef != MJIEnv.NULL) {
                     insn = callUncaughtHandler(ctx, xi, hRef, "[globalUncaughtHandler]");
@@ -3577,7 +3297,7 @@ public class ThreadInfo extends InfoObject
         // its debatable if this counts as 'handled'. For handlers that just do
         // reporting this is probably false and we want JPF to report the defect.
         // If this is a fail-safe handler that tries to clean up so that other threads can
-        // take over, we want to be able to go on and properly shut down the 
+        // take over, we want to be able to go on and properly shut down the
         // thread without property violation
 
         if (passUncaughtHandler) {

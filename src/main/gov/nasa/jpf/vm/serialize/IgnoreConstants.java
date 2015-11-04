@@ -1,10 +1,10 @@
 package gov.nasa.jpf.vm.serialize;
 
-import gov.nasa.jpf.vm.FieldInfo;
-import gov.nasa.jpf.vm.serialize.AmmendableFilterConfiguration.StaticAmmendment;
-
 import java.util.Arrays;
 import java.util.HashSet;
+
+import gov.nasa.jpf.vm.FieldInfo;
+import gov.nasa.jpf.vm.serialize.AmmendableFilterConfiguration.StaticAmmendment;
 
 /**
  * Marks static final field of primitive or known immutable type to be

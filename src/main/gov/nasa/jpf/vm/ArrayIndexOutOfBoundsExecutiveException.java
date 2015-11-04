@@ -28,7 +28,6 @@ import gov.nasa.jpf.JPFException;
  * this is a BAD example of using exceptions for general control flow.
  * If this is used for internal AIOBX then it should be just a JPFException
  */
-@SuppressWarnings("serial")
 public class ArrayIndexOutOfBoundsExecutiveException extends JPFException {
   private Instruction i;
 

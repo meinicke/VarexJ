@@ -19,8 +19,8 @@
 package gov.nasa.jpf.vm;
 
 import cmu.conditional.One;
-import gov.nasa.jpf.annotation.MJI;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * native peer for java.util.concurrent.atomic.AtomicLongArray

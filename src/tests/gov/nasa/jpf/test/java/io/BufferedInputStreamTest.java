@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.test.java.io;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,6 +26,8 @@ import java.io.FileOutputStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * raw test for java.io.BufferedInputStream

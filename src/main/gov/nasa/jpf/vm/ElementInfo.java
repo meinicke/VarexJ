@@ -18,12 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.ObjectList;
-import gov.nasa.jpf.util.Processor;
-
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -31,6 +25,11 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.ObjectList;
+import gov.nasa.jpf.util.Processor;
 
 /**
  * Describes an element of memory containing the field values of a class or an
@@ -1092,6 +1091,7 @@ public abstract class ElementInfo implements Cloneable {
    * note this only holds for instance fields, and hence the method has to
    * be overridden in StaticElementInfo
    */
+  @SuppressWarnings("unused")
   private void checkFieldInfo(FieldInfo fi) {
     if (!getClassInfo().isInstanceOf(fi.getClassInfo())) {
       throw new JPFException("wrong FieldInfo : " + fi.getName()
@@ -1972,7 +1972,8 @@ public abstract class ElementInfo implements Cloneable {
   }
 
   // this is used from a context where we don't require a lock, e.g. Unsafe.park()/unpark()
-  public void wait (ThreadInfo ti, long timeout, boolean hasToHoldLock){
+  @SuppressWarnings("incomplete-switch")
+public void wait (ThreadInfo ti, long timeout, boolean hasToHoldLock){
     checkIsModifiable();
     
     boolean holdsLock = monitor.getLockingThread() == ti;

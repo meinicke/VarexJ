@@ -1,9 +1,9 @@
 package cmu.datatypes;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
-
-import org.junit.Test;
 
 @SuppressWarnings("unused")
 public class IntTest extends TestJPF {
@@ -78,6 +78,15 @@ public class IntTest extends TestJPF {
 			
 			int k = 0;
 			k = i % j;
+		}
+	}
+		
+	@Test
+	public void testValueOf() throws Exception {
+		if (verifyNoPropertyViolation("+invocation=true", JPF_CONFIGURATION)) {
+			Integer i = Integer.valueOf(0);
+			if (a) i = Integer.valueOf(1);
+			System.out.println(i.intValue());
 		}
 	}
 }

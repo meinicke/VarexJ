@@ -18,6 +18,11 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.PropertyListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.ArrayElementInstruction;
@@ -32,12 +37,6 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * This is a Race Detection Algorithm that is precise in its calculation of races, i.e. no false warnings.

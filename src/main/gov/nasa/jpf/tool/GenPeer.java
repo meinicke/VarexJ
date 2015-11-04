@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.tool;
 
-import gov.nasa.jpf.vm.Types;
-
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+
+import gov.nasa.jpf.vm.Types;
 
 
 /**

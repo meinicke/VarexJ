@@ -19,9 +19,6 @@
 package gov.nasa.jpf;
 
 
-import gov.nasa.jpf.util.FileUtils;
-import gov.nasa.jpf.util.JPFSiteUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -44,6 +41,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import gov.nasa.jpf.util.FileUtils;
+import gov.nasa.jpf.util.JPFSiteUtils;
 
 
 /**
@@ -131,7 +131,7 @@ import java.util.regex.Pattern;
  */
 
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "unchecked"})
 public class Config extends Properties {
 
   static final char   KEY_PREFIX = '@';
@@ -1044,7 +1044,7 @@ public class Config extends Properties {
     if (loader != null && loader instanceof JPFClassLoader){
       JPFClassLoader jpfCl = (JPFClassLoader)loader;
             
-      ArrayList<String> list = new ArrayList<String>();
+//      ArrayList<String> list = new ArrayList<String>();
       String[] cp = getCompactStringArray("native_classpath");
       cp = FileUtils.expandWildcards(cp);
       for (String e : cp) {
@@ -1094,7 +1094,7 @@ public class Config extends Properties {
       // note we can't use the standard list iterator here because the sole purpose
       // of having this notification is to remove the listener from the list during its enumeration
       // which would give us ConcurrentModificationExceptions
-      ArrayList<ConfigChangeListener> list = (ArrayList<ConfigChangeListener>)changeListeners.clone();
+	ArrayList<ConfigChangeListener> list = (ArrayList<ConfigChangeListener>)changeListeners.clone();
       for (ConfigChangeListener l : list) {
         l.jpfRunTerminated(this);
       }
@@ -1229,7 +1229,7 @@ public class Config extends Properties {
   public String[] getKeysStartingWith (String prefix){
     ArrayList<String> list = new ArrayList<String>();
 
-    for (Enumeration e = keys(); e.hasMoreElements(); ){
+    for (Enumeration<?> e = keys(); e.hasMoreElements(); ){
       String k = e.nextElement().toString();
       if (k.startsWith(prefix)){
         list.add(k);
@@ -1768,7 +1768,7 @@ public class Config extends Properties {
     
     if (ids.length > 0){
       keyPrefix = keyPrefix + '.';
-      T[] arr = (T[]) Array.newInstance(type, ids.length);
+	T[] arr = (T[]) Array.newInstance(type, ids.length);
       
       for(int i = 0; i < ids.length; i++){
         String key = keyPrefix + ids[i];

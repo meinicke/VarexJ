@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.test.java.lang;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 /**
  * raw test for java.lang.System functionality

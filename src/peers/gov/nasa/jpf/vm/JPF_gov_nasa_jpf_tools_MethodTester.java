@@ -19,12 +19,13 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * native peer for the MethodTester tool
  */
+@SuppressWarnings("deprecation")
 public class JPF_gov_nasa_jpf_tools_MethodTester extends NativePeer {
 
   @MJI

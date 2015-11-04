@@ -19,6 +19,9 @@
 
 package gov.nasa.jpf.jvm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.Invocation;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -27,9 +30,6 @@ import gov.nasa.jpf.vm.LookupSwitchInstruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.TableSwitchInstruction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * a special JVMByteCodeReader implementation that builds code arrays for

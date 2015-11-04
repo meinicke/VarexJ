@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * regression unit test for ObjectList API

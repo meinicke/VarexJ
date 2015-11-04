@@ -48,7 +48,8 @@ public class LinkedObjectQueue<E> implements ObjectQueue<E> {
       return e != null;
     }
 
-    public E next() {
+    @SuppressWarnings("unchecked")
+	public E next() {
       if (e == null){
         throw new NoSuchElementException();
       } else {
@@ -110,6 +111,7 @@ public class LinkedObjectQueue<E> implements ObjectQueue<E> {
     return size > 0;
   }
   
+  @SuppressWarnings("unchecked")
   public E peek (){
     if (size == 0){
       return null;
@@ -118,7 +120,8 @@ public class LinkedObjectQueue<E> implements ObjectQueue<E> {
     }
   }
   
-  public E poll(){
+  @SuppressWarnings("unchecked")
+public E poll(){
     if (size == 0){
       return null;
       
@@ -130,7 +133,7 @@ public class LinkedObjectQueue<E> implements ObjectQueue<E> {
       E obj = (E)e.obj;
       
       if (nFree < maxCache){
-        Entry next = e.next;
+//        Entry next = e.next;
         e.next = (nFree++ > 0) ? free : null;
         e.obj = null;
         free = e;
@@ -152,6 +155,7 @@ public class LinkedObjectQueue<E> implements ObjectQueue<E> {
     return new FIFOIterator();
   }
   
+  @SuppressWarnings("unchecked")
   public void process( Processor<E> proc) {
     for (Entry e = first; e != null; ) {
       proc.process( (E)e.obj);

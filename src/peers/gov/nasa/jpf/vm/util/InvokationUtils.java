@@ -1,12 +1,11 @@
 package gov.nasa.jpf.vm.util;
 
-import gov.nasa.jpf.vm.MJIEnv;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.MJIEnv;
 
 public class InvokationUtils {
 	public static Object invoke(String className, String methodName, Object... params) {

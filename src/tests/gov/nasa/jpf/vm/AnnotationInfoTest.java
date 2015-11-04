@@ -19,15 +19,15 @@
 
 package gov.nasa.jpf.vm;
 
+import java.io.File;
+
+import org.junit.Test;
+
 import gov.nasa.jpf.jvm.ClassFile;
 import gov.nasa.jpf.jvm.DirClassFileContainer;
 import gov.nasa.jpf.jvm.JVMAnnotationParser;
 import gov.nasa.jpf.jvm.JVMClassFileContainer;
 import gov.nasa.jpf.util.test.TestJPF;
-
-import java.io.File;
-
-import org.junit.Test;
 
 /**
  * unit test for AnnotationInfo creation

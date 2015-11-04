@@ -34,7 +34,8 @@ public class ClassLoaderList implements Cloneable, Iterable<ClassLoaderInfo>, Re
   static class CllMemento implements Memento<ClassLoaderList> {
     Memento<ClassLoaderInfo>[] clMementos;
 
-    CllMemento (ClassLoaderList cll) {
+    @SuppressWarnings("unchecked")
+	CllMemento (ClassLoaderList cll) {
       ClassLoaderInfo[] classLoaders = cll.classLoaders;
       
       int len = classLoaders.length;

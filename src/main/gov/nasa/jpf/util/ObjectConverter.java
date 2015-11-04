@@ -19,6 +19,12 @@
 
 package gov.nasa.jpf.util;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClinitRequired;
@@ -26,13 +32,6 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Fields;
 import gov.nasa.jpf.vm.MJIEnv;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Object transformer from Java objects to JPF objects
@@ -87,6 +86,7 @@ public class ObjectConverter {
       return newObjRef;
   }
 
+  @SuppressWarnings("unused")
   private Object createObject(String className) {
     return null;
   }
@@ -95,7 +95,7 @@ public class ObjectConverter {
     try {
 
       String jpfTypeName = fi.getType();
-      Class javaClass = javaObject.getClass();
+      Class<?> javaClass = javaObject.getClass();
       Field javaField = getField(fi.getName(), javaClass);
       javaField.setAccessible(true);
 
@@ -126,7 +126,7 @@ public class ObjectConverter {
     }
   }
 
-  private static Field getField(String fieldName, Class javaClass) throws NoSuchFieldException {
+  private static Field getField(String fieldName, Class<?> javaClass) throws NoSuchFieldException {
     while (true) {
       try {
         Field field = javaClass.getDeclaredField(fieldName);
@@ -148,7 +148,7 @@ public class ObjectConverter {
   // TODO jens check seems to be to expensive
   private static int getJPFArrayRef(FeatureExpr ctx, MJIEnv env, Object javaArr) throws NoSuchFieldException, IllegalAccessException {
         
-    Class arrayElementClass = javaArr.getClass().getComponentType();
+    Class<?> arrayElementClass = javaArr.getClass().getComponentType();
 
     int javaArrLength = Array.getLength(javaArr);
     int arrRef;
@@ -261,7 +261,7 @@ public class ObjectConverter {
   public static Object javaObjectFromJPFObject(ElementInfo ei) {
     try {
       String typeName = ei.getType();
-      Class clazz = ClassLoader.getSystemClassLoader().loadClass(typeName);
+      Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(typeName);
 
       Object javaObject = clazz.newInstance();
       ClassInfo ci = ei.getClassInfo();
@@ -286,7 +286,7 @@ public class ObjectConverter {
     String primitiveType = fi.getName();
     String fieldName = fi.getName();
 
-    Class javaClass = javaObject.getClass();
+    Class<?> javaClass = javaObject.getClass();
     Field javaField = javaClass.getDeclaredField(fieldName);
     javaField.setAccessible(true);
 

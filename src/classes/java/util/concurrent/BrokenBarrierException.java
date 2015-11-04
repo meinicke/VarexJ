@@ -18,7 +18,6 @@
 //
 package java.util.concurrent;
 
-@SuppressWarnings("serial")
 public class BrokenBarrierException extends Exception {
      
      public BrokenBarrierException () {

@@ -19,16 +19,16 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * native peer for java.net.URLEncoder forwarding
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_net_URLEncoder extends NativePeer {
 
   // simple host delegation

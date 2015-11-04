@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -32,6 +30,7 @@ import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * intercept and forward some of the filesystem access methods. This is very
@@ -123,7 +122,6 @@ public class JPF_java_io_File extends NativePeer {
   }
   
   // internal helper
-  @SuppressWarnings("deprecation")
   @MJI
   public int getURLSpec____Ljava_lang_String_2 (MJIEnv env, int objref, FeatureExpr ctx){
     try {

@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.va.IStackHandler;
-import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +19,9 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.va.IStackHandler;
+import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 @RunWith(Parameterized.class)
 public class StackHandlerTest {

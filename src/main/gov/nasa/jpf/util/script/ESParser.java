@@ -341,7 +341,7 @@ public class ESParser {
     if (isMatch('(')) {
       while (!isMatch(')')) {
 
-        if (scanner.ttype == scanner.TT_WORD) {
+        if (scanner.ttype == StreamTokenizer.TT_WORD) {
           args.add(scanner.sval);
         } else if (scanner.ttype == '"'){ // string literal
           args.add( "\"" + scanner.sval + '"');

@@ -18,16 +18,16 @@
 //
 package gov.nasa.jpf.test.vm.basic;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * test cast operations
  */
+@SuppressWarnings({ "cast", "unused" })
 public class CastTest extends TestJPF {
   
-  @SuppressWarnings("cast")
   @Test public void testCast () {
     if (verifyNoPropertyViolation()){
       B b = new B();
@@ -57,7 +57,7 @@ public class CastTest extends TestJPF {
     }
   }
   
-  @Test public void testArrayCastFail() {
+@Test public void testArrayCastFail() {
     if (verifyUnhandledException("java.lang.ClassCastException")){
       String[] sa = new String[1];
       Object o = sa ;
@@ -65,7 +65,7 @@ public class CastTest extends TestJPF {
     }
   }
   
-  @Test public void testPrimitiveArrayCast() {
+@Test public void testPrimitiveArrayCast() {
     if (verifyNoPropertyViolation()){
       int[] a = new int[10];
       Object o = a;

@@ -1,10 +1,10 @@
 package cmu.utils;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * Util class for the coverage of interactions.

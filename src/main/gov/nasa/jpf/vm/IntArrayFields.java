@@ -19,9 +19,6 @@
 
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.IntVector;
-
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +28,8 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.IntVector;
 
 /**
  * element values for int[] objects

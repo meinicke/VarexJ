@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.Printable;
-
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import gov.nasa.jpf.util.Printable;
 
 
 /**

@@ -1,11 +1,11 @@
 package gov.nasa.jpf;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.File;
 import java.util.regex.Matcher;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 
 /**

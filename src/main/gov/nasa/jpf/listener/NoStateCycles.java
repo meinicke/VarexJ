@@ -18,14 +18,14 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.PropertyListenerAdapter;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 
 /**

@@ -18,6 +18,10 @@
 //
 package gov.nasa.jpf.vm.serialize;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -38,11 +42,6 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.StaticElementInfo;
 import gov.nasa.jpf.vm.Statics;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.LinkedList;
-import java.util.List;
-
-import cmu.conditional.Conditional;
 
 /**
  * a serializer that uses Abstraction objects stored as field attributes to

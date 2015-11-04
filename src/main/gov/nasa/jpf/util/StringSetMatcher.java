@@ -184,7 +184,7 @@ public class StringSetMatcher {
       }
 
       for (int i=0; i<pattern.length; i++){
-        Pattern p = pattern[i];
+//        Pattern p = pattern[i];
         Matcher m = matcher[i];
         m.reset(s);
 

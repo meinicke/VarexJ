@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.SystemAttribute;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.NoSuchElementException;
+
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.SystemAttribute;
 
 /**
  * a minimal container API that transparently handles Object lists which can
@@ -72,6 +72,7 @@ import java.util.NoSuchElementException;
  *                a = ObjectList.getNext(MyAttr.class, attr, a)) {..}
  * 
  */
+@SuppressWarnings("unchecked")
 public abstract class ObjectList {
   
   // there are no instances, this class is only a static API

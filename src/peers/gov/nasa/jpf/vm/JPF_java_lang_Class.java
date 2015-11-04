@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.annotation.MJI;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,10 +28,13 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * MJI NativePeer class for java.lang.Class library abstraction
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_lang_Class extends NativePeer {
 
 	static final String FIELD_CLASSNAME = "java.lang.reflect.Field";

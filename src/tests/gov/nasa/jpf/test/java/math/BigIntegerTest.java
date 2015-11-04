@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.test.java.math;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.math.BigInteger;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class BigIntegerTest extends TestJPF {
 

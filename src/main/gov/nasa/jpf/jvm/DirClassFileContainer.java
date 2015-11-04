@@ -19,14 +19,14 @@
 
 package gov.nasa.jpf.jvm;
 
-import gov.nasa.jpf.util.FileUtils;
-import gov.nasa.jpf.vm.ClassFileMatch;
-import gov.nasa.jpf.vm.ClassParseException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+
+import gov.nasa.jpf.util.FileUtils;
+import gov.nasa.jpf.vm.ClassFileMatch;
+import gov.nasa.jpf.vm.ClassParseException;
 
 /**
  *

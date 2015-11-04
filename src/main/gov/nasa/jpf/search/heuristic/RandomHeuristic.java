@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.search.heuristic;
 
+import java.util.Random;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.Random;
 
 
 /**

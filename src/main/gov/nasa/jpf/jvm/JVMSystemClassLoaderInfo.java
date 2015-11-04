@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.jvm;
 
+import java.io.File;
+import java.io.IOException;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.util.JPFLogger;
@@ -28,9 +31,6 @@ import gov.nasa.jpf.vm.ClassParseException;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.SystemClassLoaderInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * a SystemClassLoaderInfo that reads standard Java classfiles from *.class and *.jar files, and creates code using a concrete

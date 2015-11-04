@@ -18,9 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.IntVector;
-
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,8 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.IntVector;
 
 /**
  * element values for double[] objects
@@ -37,6 +36,7 @@ public class DoubleArrayFields extends ArrayFields {
 
   Conditional<Double>[] values;
 
+  @SuppressWarnings("unchecked")
   public DoubleArrayFields (int length) {
     values = new Conditional[length];
     for (int i = 0; i < values.length; i++) {

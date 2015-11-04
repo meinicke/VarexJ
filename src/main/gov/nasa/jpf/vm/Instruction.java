@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.util.ObjectList;
-import gov.nasa.jpf.util.Source;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.util.ObjectList;
+import gov.nasa.jpf.util.Source;
 
 /**
  * common root of all JPF bytecode instruction classes
@@ -31,7 +31,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public abstract class Instruction implements Cloneable {
 
-	protected int insnIndex; // code[] index of instruction
+	public int insnIndex; // code[] index of instruction
 	protected int position; // accumulated bytecode position (prev pos + prev
 							// bc-length)
 	protected MethodInfo mi; // the method this insn belongs to

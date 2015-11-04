@@ -23,10 +23,10 @@
 
 package gov.nasa.jpf.test.mc.threads;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.TypeRef;
 import gov.nasa.jpf.util.test.TestJPF;
-
-import org.junit.Test;
 
 class SharedObject {
   int instanceField;
@@ -346,7 +346,8 @@ public class RaceTest extends TestJPF {
     }
   }
 
-  @Test
+  @SuppressWarnings("unused")
+@Test
   public void testSameObjectOtherField() {
     if (verifyNoPropertyViolation(LISTENER)) {
       final SharedObject o = new SharedObject();

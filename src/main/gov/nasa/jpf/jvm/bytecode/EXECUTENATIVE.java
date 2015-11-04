@@ -19,16 +19,15 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.lang.reflect.Method;
+
+import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import java.lang.reflect.Method;
-
-import cmu.conditional.Conditional;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * this is a synthetic instruction to (re-)execute native methods

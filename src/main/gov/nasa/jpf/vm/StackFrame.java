@@ -18,17 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.util.BitSet64;
-import gov.nasa.jpf.util.FixedBitSet;
-import gov.nasa.jpf.util.HashData;
-import gov.nasa.jpf.util.Misc;
-import gov.nasa.jpf.util.OATHash;
-import gov.nasa.jpf.util.ObjectList;
-import gov.nasa.jpf.util.PrintUtils;
-import gov.nasa.jpf.vm.va.IStackHandler;
-import gov.nasa.jpf.vm.va.StackHandlerFactory;
-
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -39,6 +28,16 @@ import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.util.BitSet64;
+import gov.nasa.jpf.util.FixedBitSet;
+import gov.nasa.jpf.util.HashData;
+import gov.nasa.jpf.util.Misc;
+import gov.nasa.jpf.util.OATHash;
+import gov.nasa.jpf.util.ObjectList;
+import gov.nasa.jpf.util.PrintUtils;
+import gov.nasa.jpf.vm.va.IStackHandler;
+import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 
 /**
@@ -86,7 +85,7 @@ public abstract class StackFrame implements Cloneable {
 //  protected int top();                // top() index of the operand stack (NOT size)
                                     // this points to the last pushed value
 
-  protected int thisRef = MJIEnv.NULL;       // slots[0] can change, but we have to keep 'this'
+  protected Conditional<Integer> thisRef = One.MJIEnvNULL;       // slots[0] can change, but we have to keep 'this'
   protected int stackBase;          // index where the operand stack begins
 
 //  protected int[] slots;            // the combined local and operand slots
@@ -269,8 +268,8 @@ public int nLocals;
 
   public Object getFieldValue (String id) {
     // try instance fields first
-    if (thisRef != MJIEnv.NULL) {  // it's an instance method
-      ElementInfo ei = VM.getVM().getHeap().get(thisRef);
+    if (thisRef.getValue() != MJIEnv.NULL) {  // it's an instance method
+      ElementInfo ei = VM.getVM().getHeap().get(thisRef.getValue());
       Object v = ei.getFieldValueObject(id);
       if (v != null) {
         return v;
@@ -504,7 +503,7 @@ public int nLocals;
     }
     return null;
   }
-  public Iterator operandAttrIterator(){
+  public Iterator<?> operandAttrIterator(){
     assert (top() >= stackBase);
     Object a = (attrs != null) ? attrs[top()] : null;
     return ObjectList.iterator(a);
@@ -1039,7 +1038,7 @@ public int nLocals;
     }
     attrs[i] = a;
   }
-  public void setThis (int thisRef2){
+  public void setThis (Conditional<Integer> thisRef2){
     thisRef = thisRef2;
   }
   
@@ -1179,7 +1178,7 @@ public int nLocals;
    * (note this only has to be in slot 0 upon entry)
    */
   public int getThis () {
-    return thisRef;
+    return thisRef.getValue();
   }
 
   // stack operations

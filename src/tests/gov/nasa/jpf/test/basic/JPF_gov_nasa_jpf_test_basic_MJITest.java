@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.test.basic;
 
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -25,9 +28,6 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.UncaughtException;
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * native peer class for unit testing MJI
@@ -120,7 +120,8 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     return 0;
   }
 
-  @MJI
+  @SuppressWarnings("deprecation")
+@MJI
   public long nativeStaticMethod__JLjava_lang_String_2__J (MJIEnv env, int rcls, long l,
                                                                   int stringRef, FeatureExpr ctx) {
     System.out.println("# entering nativeStaticMethod()");

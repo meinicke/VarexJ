@@ -36,9 +36,6 @@
  */
 package gov.nasa.jpf.test.java.lang;
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.io.Serializable;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -48,9 +45,13 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
+
 /**
  * test of java.lang.Class API
  */
+@SuppressWarnings({ "unused", "serial" })
 public class ClassTest extends TestJPF implements Cloneable, Serializable {
   
   /**************************** tests **********************************/
@@ -58,8 +59,7 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
 
   int data = 42; // that creates a default ctor for our newInstance test
 
-
-  @Test 
+@Test 
   public void testClassForName () throws ClassNotFoundException {
     if (verifyNoPropertyViolation()) {
 
@@ -231,7 +231,6 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
     }    
   }
   
-  @SuppressWarnings("null")
   @Test 
   public void testClassField () {
     if (verifyNoPropertyViolation()) {
@@ -381,7 +380,7 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
   public static class ParentAnnotated<E> {
   }
 
-  public static class ChildAnnotated<E> extends ParentAnnotated {
+  public static class ChildAnnotated<E> extends ParentAnnotated<Object> {
   }
 
   public enum TestEnum{
@@ -448,7 +447,7 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
   @Test
   public void getEnclosingConstructor () throws SecurityException, NoSuchMethodException{
     if (verifyNoPropertyViolation()){
-      Class cls = (new ClassTest.TestEnclosedClass()).foo.getClass();
+      Class<? extends Object> cls = (new ClassTest.TestEnclosedClass()).foo.getClass();
       assertTrue(cls.getEnclosingConstructor().getDeclaringClass() == ClassTest.TestEnclosedClass.class);
       assertEquals(cls.getEnclosingConstructor().getName(), "<init>");
       assertNull(cls.getEnclosingMethod());
@@ -458,7 +457,7 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
   @Test
   public void getEnclosingMethod () throws SecurityException, NoSuchMethodException{
     if (verifyNoPropertyViolation()){
-      Class cls = (new ClassTest.TestEnclosedClass()).getLocalClassObj().getClass();
+      Class<? extends Object> cls = (new ClassTest.TestEnclosedClass()).getLocalClassObj().getClass();
       assertTrue(cls.getEnclosingMethod().getDeclaringClass() == ClassTest.TestEnclosedClass.class);
       assertNull(cls.getEnclosingConstructor());
       assertEquals(cls.getEnclosingMethod().getName(), "getLocalClassObj");
@@ -472,7 +471,7 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
   @Test
   public void isAnonymousClassTest (){
     if (verifyNoPropertyViolation()){
-      Class cls = (new ClassTest.TestEnclosedClass()).getAnonymousClassObj().getClass();
+      Class<? extends Object> cls = (new ClassTest.TestEnclosedClass()).getAnonymousClassObj().getClass();
       assertTrue(cls.isAnonymousClass());
       assertFalse(Class.class.isAnonymousClass());
     }
@@ -491,9 +490,9 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
     if (verifyNoPropertyViolation()){
       assertTrue(TestEnclosedClass.class.getDeclaringClass() == ClassTest.class);
       assertNull(Class.class.getDeclaringClass());
-      Class anonymousCls = (new ClassTest.TestEnclosedClass()).getAnonymousClassObj().getClass();
+      Class<? extends Object> anonymousCls = (new ClassTest.TestEnclosedClass()).getAnonymousClassObj().getClass();
       assertNull(anonymousCls.getDeclaringClass());
-      Class localCls = (new ClassTest.TestEnclosedClass()).foo.getClass();
+      Class<? extends Object> localCls = (new ClassTest.TestEnclosedClass()).foo.getClass();
       assertNull(localCls.getDeclaringClass());
     }
   }
@@ -574,7 +573,7 @@ public class ClassTest extends TestJPF implements Cloneable, Serializable {
   @Test
   public void getResourceTest() {
     if (verifyNoPropertyViolation()){
-      Class c = ClassLoader.class;
+      Class<ClassLoader> c = ClassLoader.class;
       assertNotNull(c.getResource("Class.class"));
       assertNotNull(c.getResource("/java/lang/Class.class"));
       assertNull(c.getResource("java/lang/Class.class"));

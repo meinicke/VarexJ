@@ -18,12 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.JPFLogger;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,6 +25,13 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+
+import cmu.conditional.Conditional;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.JPFLogger;
 
 
 /**
@@ -274,7 +275,7 @@ public class NativePeer implements Cloneable {
 
     // native method always have a MJIEnv and int as the first parameters
     Class<?>[] argTypes = mth.getParameterTypes();
-    if ((argTypes.length >= 2) && (argTypes[0] == MJIEnv.class) && (argTypes[1] == int.class) ) {
+    if ((argTypes.length >= 2) && (argTypes[0] == MJIEnv.class) && (argTypes[1] == int.class || argTypes[1] == Conditional.class) ) {
       return true;
     } else {
       return false;
@@ -282,6 +283,7 @@ public class NativePeer implements Cloneable {
   }
 
 
+  @SuppressWarnings("unused")
   private Method getMethod (MethodInfo mi) {
     return getMethod(null, mi);
   }

@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.StackFrame;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.StackFrame;
 
 /**
  * branch instruction for null values

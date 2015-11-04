@@ -1,14 +1,14 @@
 package gov.nasa.jpf.test.java.concurrent;
 
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.Verify;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
 
 public class CountDownLatchTest extends TestJPF {
 

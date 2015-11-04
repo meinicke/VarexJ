@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.test.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -25,8 +27,6 @@ import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.SingleProcessVM;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 public class ListenerTest extends TestJPF {
 

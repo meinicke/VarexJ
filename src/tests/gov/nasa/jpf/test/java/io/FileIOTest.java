@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.test.java.io;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * raw test for Writers, Readers, FileOutputStream and FileInputStream

@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.listener;
 
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.LCMP;
 import gov.nasa.jpf.jvm.bytecode.LSUB;
@@ -29,9 +32,6 @@ import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**

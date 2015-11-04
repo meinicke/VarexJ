@@ -19,11 +19,6 @@
 
 package gov.nasa.jpf.util.script;
 
-import gov.nasa.jpf.util.Misc;
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.ChoiceGenerator;
-import gov.nasa.jpf.vm.ChoiceGeneratorBase;
-
 import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -31,6 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.Misc;
+import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.ChoiceGenerator;
+import gov.nasa.jpf.vm.ChoiceGeneratorBase;
 
 
 /**
@@ -192,7 +192,7 @@ public class ScriptEnvironmentTest extends TestJPF {
                      { "A", "B" } };
 
     try {
-      ScriptEnvironment env = new EventEnv("test", new StringReader(s));
+      ScriptEnvironment<?> env = new EventEnv("test", new StringReader(s));
       env.parseScript();
 
       for (String[] sections : a) {
@@ -240,7 +240,8 @@ public class ScriptEnvironmentTest extends TestJPF {
   }
 
 
-  @Test
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+@Test
   public void testBacktrack () {
     String s = "SECTION A {\n" +
                "  start, ANY {a1,a2}, REPEAT 2 {r}, end \n" +

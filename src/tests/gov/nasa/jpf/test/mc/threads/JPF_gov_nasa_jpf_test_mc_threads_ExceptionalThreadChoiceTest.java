@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.test.mc.threads;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -26,7 +27,6 @@ import gov.nasa.jpf.vm.NativePeer;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.choice.ExceptionThreadChoiceFromSet;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  *

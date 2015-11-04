@@ -18,6 +18,12 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.Error;
 import gov.nasa.jpf.JPF;
@@ -26,12 +32,6 @@ import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.Step;
 import gov.nasa.jpf.vm.Transition;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * Add a state space observer to JPF and build a graph of the state space
@@ -83,6 +83,7 @@ public class StateSpaceDot extends ListenerAdapter {
   private static int format=DOT_FORMAT;
   private String out_filename = OUT_FILENAME_NO_EXT+"."+DOT_EXT;
   private static boolean labelvisible=false;
+  @SuppressWarnings("unused")
   private static boolean helpRequested=false;
 
 

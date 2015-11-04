@@ -1,11 +1,10 @@
 package gov.nasa.jpf.vm.va;
 
-import gov.nasa.jpf.vm.va.StackHandler.Type;
-
 import java.util.Collection;
 
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.va.StackHandler.Type;
 
 /**
  * Interface for variability-aware implementations of a method stack.

@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.test.mc.data;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
 import gov.nasa.jpf.vm.serialize.AbstractionAdapter;
-
-import org.junit.Test;
 
 /**
  * regression test for field value abstractions

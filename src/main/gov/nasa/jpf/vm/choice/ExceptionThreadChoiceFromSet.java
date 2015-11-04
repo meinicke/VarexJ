@@ -19,12 +19,12 @@
 
 package gov.nasa.jpf.vm.choice;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.ThreadChoiceGenerator;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * a ThreadChoiceFromSet that reschedules the specified thread with exceptions

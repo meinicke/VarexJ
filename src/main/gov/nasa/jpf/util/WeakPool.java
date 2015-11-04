@@ -102,7 +102,8 @@ public class WeakPool<E> {
    * Returns a pooled element matching e, which will be e if no match
    * has been previously pooled.
    */
-  public E pool(E e) {
+  @SuppressWarnings("unused")
+public E pool(E e) {
     if (e == null) return null;
     int code = e.hashCode();
     int idx = code & mask;

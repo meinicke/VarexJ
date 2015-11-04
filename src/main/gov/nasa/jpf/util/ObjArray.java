@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
  * Wrapper for arrays of objects which provides proper equals() and hashCode()
  * methods, and behaves nicely with Java 1.5 generics. 
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public final class ObjArray<E> implements ReadOnlyObjList<E>, Iterable<E>, Cloneable  {
   final Object[] data;
 
@@ -51,8 +52,6 @@ public final class ObjArray<E> implements ReadOnlyObjList<E>, Iterable<E>, Clone
     }
   }
   
-  
-  @SuppressWarnings("unchecked")
   public E get(int idx) {
     return (E) data[idx];
   }
@@ -102,7 +101,7 @@ public final class ObjArray<E> implements ReadOnlyObjList<E>, Iterable<E>, Clone
   }
 
   static final ObjArray<Object> zero = new ObjArray<Object>(0);
-  @SuppressWarnings("unchecked")
+
   public static <T> ObjArray<T> zeroLength() {
     return (ObjArray<T>) zero;
   }
@@ -115,7 +114,6 @@ public final class ObjArray<E> implements ReadOnlyObjList<E>, Iterable<E>, Clone
         return idx < data.length;
       }
 
-      @SuppressWarnings("unchecked")
       public E next () {
         if (idx >= data.length) throw new NoSuchElementException();
         return (E) data[idx++];

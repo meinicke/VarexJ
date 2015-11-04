@@ -18,14 +18,13 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.IntTable;
-import gov.nasa.jpf.util.ObjVector;
-
 import java.util.Iterator;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.util.IntTable;
+import gov.nasa.jpf.util.ObjVector;
 
 /**
  * Statics implementation that uses a simple ObjVector as the underlying container.
@@ -164,7 +163,7 @@ public class OVStatics implements Statics {
     return new OVMemento(this);
   }
   
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public Iterator<ElementInfo> iterator(){
     return ((ObjVector)elementInfos).nonNullIterator();
@@ -177,7 +176,7 @@ public class OVStatics implements Statics {
     }
   }
 
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public Iterable<StaticElementInfo> liveStatics() {
     return (Iterable)elementInfos.elements();

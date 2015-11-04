@@ -18,18 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFConfigException;
-import gov.nasa.jpf.JPFListener;
-import gov.nasa.jpf.util.ImmutableList;
-import gov.nasa.jpf.util.JPFLogger;
-import gov.nasa.jpf.util.LocationSpec;
-import gov.nasa.jpf.util.MethodSpec;
-import gov.nasa.jpf.util.Misc;
-import gov.nasa.jpf.util.OATHash;
-import gov.nasa.jpf.util.Source;
-
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -47,6 +35,17 @@ import java.util.logging.Level;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFConfigException;
+import gov.nasa.jpf.JPFListener;
+import gov.nasa.jpf.util.ImmutableList;
+import gov.nasa.jpf.util.JPFLogger;
+import gov.nasa.jpf.util.LocationSpec;
+import gov.nasa.jpf.util.MethodSpec;
+import gov.nasa.jpf.util.Misc;
+import gov.nasa.jpf.util.OATHash;
+import gov.nasa.jpf.util.Source;
 
 
 /**
@@ -2366,7 +2365,8 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * It is used for the cases where cl tries to load a class that the original version 
    * of which has been loaded by some other classloader.
    */
-  public ClassInfo cloneFor (FeatureExpr ctx, ClassLoaderInfo cl) {
+  @SuppressWarnings("unchecked")
+public ClassInfo cloneFor (FeatureExpr ctx, ClassLoaderInfo cl) {
     ClassInfo ci;
 
     try {

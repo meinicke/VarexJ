@@ -18,6 +18,16 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.BitSet;
+import java.util.List;
+
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -38,17 +48,6 @@ import gov.nasa.jpf.vm.choice.IntChoiceFromSet;
 import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
 import gov.nasa.jpf.vm.choice.LongChoiceFromList;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.BitSet;
-import java.util.List;
-
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * native peer class for programmatic JPF interface (that can be used inside
  * of apps to verify - if you are aware of the danger that comes with it)
@@ -56,6 +55,7 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
  * this peer is a bit different in that it only uses static fields and methods because
  * its use is supposed to be JPF global (without classloader namespaces)
  */
+@SuppressWarnings({"deprecation", "unchecked"})
 public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   static final int MAX_COUNTERS = 10;
 
@@ -73,7 +73,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   static Config config;  // we need to keep this around for CG creation
 
   // our const ChoiceGenerator ctor argtypes
-  static Class[] cgArgTypes = { Config.class, String.class };
+  static Class<?>[] cgArgTypes = { Config.class, String.class };
   // this is our cache for ChoiceGenerator ctor parameters
   static Object[] cgArgs = { null, null };
 
@@ -352,7 +352,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     return dummyVal;
   }
 
-  static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String id, Class<C> cgClass, Class<T> choiceClass){
+static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String id, Class<C> cgClass, Class<T> choiceClass){
     ChoiceGenerator<?> cg = ss.getCurrentChoiceGenerator(id, cgClass);
 
     assert (cg != null) : "no ChoiceGenerator of type " + cgClass.getName();
@@ -777,7 +777,6 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static int getLocalAttribute__Ljava_lang_String_2__I (MJIEnv env, int clsRef, int varRef, FeatureExpr ctx) {
     String slotName = env.getStringObject(ctx, varRef);
-    ThreadInfo ti = env.getThreadInfo();
     StackFrame frame = env.getCallerStackFrame();
 
     int slotIdx = frame.getLocalVariableSlotIndex(slotName);
@@ -810,7 +809,6 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static int getLocalAttributes__Ljava_lang_String_2___3I (MJIEnv env, int clsRef, int varRef, FeatureExpr ctx) {
     String slotName = env.getStringObject(ctx, varRef);
-    ThreadInfo ti = env.getThreadInfo();
     StackFrame frame = env.getCallerStackFrame();
 
     int slotIdx = frame.getLocalVariableSlotIndex(slotName);
@@ -1028,7 +1026,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static void setProperties___3Ljava_lang_String_2__V (MJIEnv env, int clsObjRef, int argRef, FeatureExpr ctx) {
     if (argRef != MJIEnv.NULL) {
-      Config conf = env.getConfig();
+//      Config conf = env.getConfig();
 
       int n = env.getArrayLength(ctx, argRef);
       for (int i=0; i<n; i++) {
@@ -1044,7 +1042,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
   @MJI
   public static int getProperty__Ljava_lang_String_2__Ljava_lang_String_2 (MJIEnv env, int clsObjRef, int keyRef, FeatureExpr ctx) {
     if (keyRef != MJIEnv.NULL){
-      Config conf = env.getConfig();
+//      Config conf = env.getConfig();
 
       String key = env.getStringObject(ctx, keyRef);
       String val = config.getString(key);
@@ -1145,11 +1143,12 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
     }
   }
   
-  @MJI
+  @SuppressWarnings("resource")
+@MJI
   public static int readObjectFromFile__Ljava_lang_Class_2Ljava_lang_String_2__Ljava_lang_Object_2(
           MJIEnv env, int clsObjRef, int newObjClsRef, int fileNameRef, FeatureExpr ctx) {
-    int typeNameRef = env.getReferenceField(ctx, newObjClsRef, "name").getValue();
-    String typeName = env.getStringObject(ctx, typeNameRef);
+//    int typeNameRef = env.getReferenceField(ctx, newObjClsRef, "name").getValue();
+//    String typeName = env.getStringObject(ctx, typeNameRef);
     String fileName = env.getStringObject(ctx, fileNameRef);
 
     try {
@@ -1157,7 +1156,7 @@ public class JPF_gov_nasa_jpf_vm_Verify extends NativePeer {
       FileInputStream fis = new FileInputStream(fileName);
       ObjectInputStream ois = new ObjectInputStream(fis);
       Object javaObject = ois.readObject();
-      String readObjectTypeName = javaObject.getClass().getCanonicalName();
+//      String readObjectTypeName = javaObject.getClass().getCanonicalName();
       
       int readObjRef = ObjectConverter.JPFObjectFromJavaObject(ctx, env, javaObject);
 

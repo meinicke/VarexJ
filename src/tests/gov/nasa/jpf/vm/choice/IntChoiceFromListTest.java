@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.vm.choice;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.ChoiceGenerator;
-
-import org.junit.Test;
 
 /**
  * unit test for IntChoiceFromList

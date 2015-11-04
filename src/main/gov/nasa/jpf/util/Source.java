@@ -19,9 +19,6 @@
 package gov.nasa.jpf.util;
 
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +33,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
 
 
 /**

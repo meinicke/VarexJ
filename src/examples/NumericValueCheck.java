@@ -22,6 +22,7 @@
  */
 public class NumericValueCheck {
   
+  @SuppressWarnings("unused")
   public static void main (String[] args){
     double someVariable;
     

@@ -20,18 +20,20 @@
 package gov.nasa.jpf.util;
 
 import static gov.nasa.jpf.util.SparseClusterArray.S1;
-import gov.nasa.jpf.util.SparseClusterArray.Entry;
-import gov.nasa.jpf.util.SparseClusterArray.Snapshot;
-import gov.nasa.jpf.util.test.TestJPF;
 
 import java.util.HashMap;
 import java.util.Random;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.SparseClusterArray.Entry;
+import gov.nasa.jpf.util.SparseClusterArray.Snapshot;
+import gov.nasa.jpf.util.test.TestJPF;
+
 /**
  * unit test for gov.nasa.jpf.util.SparseClusterArray
  */
+@SuppressWarnings({ "unused" })
 public class SparseClusterArrayTest extends TestJPF {
 
   public static void main (String[] args){

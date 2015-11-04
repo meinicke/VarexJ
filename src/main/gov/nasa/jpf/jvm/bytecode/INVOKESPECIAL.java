@@ -18,6 +18,18 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -25,14 +37,6 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
-
-import java.util.Map;
-import java.util.Map.Entry;
-
-import cmu.conditional.ChoiceFactory;
-import cmu.conditional.Conditional;
-import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
 /**
@@ -57,8 +61,24 @@ public class INVOKESPECIAL extends InstanceInvocation {
     int argSize = getArgSize();
     Conditional<Integer> allRefs = ti.getCalleeThis( ctx, argSize);
     Map<Integer, FeatureExpr> map = allRefs.toMap();
+    
+	Map<String, List<FeatureExpr>> classes = new TreeMap<>();
+	if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
+		for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
+			MethodInfo callee = getInvokedMethod(ctx.and(e.getValue()), ti);
+			String methName = callee.getFullName();
+			if (classes.containsKey(methName)) {
+				classes.get(methName).add(e.getValue());
+			} else {
+				List<FeatureExpr> list = new ArrayList<>(map.size());
+				list.add(e.getValue());
+				classes.put(methName, list);
+			}
+		}
+	}
+    
 	boolean splitRef = false;
-	if (map.size() > 1) {
+	if ((JPF.SHARE_INVOCATIONS && classes.size() > 1) || (!JPF.SHARE_INVOCATIONS && map.size() > 1)) {
 		splitRef = true;
 	}
 	for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
@@ -80,6 +100,16 @@ public class INVOKESPECIAL extends InstanceInvocation {
 	      return ti.getPC();
 	    }      
 	
+	    if (!classes.isEmpty()) {
+			FeatureExpr invocationCtx = FeatureExprFactory.False();
+			for (FeatureExpr e : classes.get(callee.getFullName())) {
+				invocationCtx = invocationCtx.or(e);
+			}
+			ctx = ctx.and(invocationCtx);					
+		} else {
+			ctx = ctx.and(objRefEntry.getValue());
+		}
+	    
 	    if (callee == null){
 	      return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodException", "Calling " + cname + '.' + mname));
 	    }
@@ -91,30 +121,11 @@ public class INVOKESPECIAL extends InstanceInvocation {
 	        return new One<Instruction>(this);
 	      }
 	    }
-	
-	//    boolean splitRef = false;
-	//	if (callee.isMJI()) {
-	//		 IStackHandler stack = ti.getTopFrame().stack;
-	//		 if (stack.getStackWidth() > 1) {
-	//			 boolean split = false;
-	//			 for (int i = 0; i < callee.getNumberOfArguments(); i++) {
-	//				 if (stack.peek(ctx, i) instanceof IChoice) {
-	//					 split = true;
-	//					 splitRef = true;
-	//					 break;
-	//				 }
-	//			 }
-	//			 
-	//			 if (split) {
-	//				 Map<Stack, FeatureExpr> stacks = stack.getStack().simplify(ctx).toMap();
-	//				 for (FeatureExpr c : stacks.values()) {
-	//					 ctx = ctx.and(c);
-	//					 break;
-	//				 }
-	//			 }
-	//		 }
-	//	}
-		
+	    
+//		if (!classes.isEmpty() && map.size() > classes.size()) {
+//			System.out.println("SPECIAL reduce invocations from " + map.size() + " to " + classes.size() + " " + callee);
+//		}
+
 		setupCallee(ctx, ti, callee); // this creates, initializes and
 										// pushes the callee StackFrame
 	

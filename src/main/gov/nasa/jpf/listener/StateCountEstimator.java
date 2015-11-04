@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.io.PrintWriter;
+import java.util.Formatter;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.search.Search;
@@ -25,9 +28,6 @@ import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.Path;
 import gov.nasa.jpf.vm.Transition;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.PrintWriter;
-import java.util.Formatter;
 
 /**
  * From already visited states, estimates the total number of states by the branching factor.
@@ -78,7 +78,7 @@ public class StateCountEstimator extends ListenerAdapter
       VM vm;
       Path path;
       Transition trans;
-      ChoiceGenerator cg;
+      ChoiceGenerator<?> cg;
       double percent, delta;
       long currentState, expectedState, currentTime, expectedTime;
       int i, size, processed;

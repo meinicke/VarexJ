@@ -19,6 +19,10 @@
 
 package gov.nasa.jpf.test.mc.basic;
 
+import java.util.ArrayList;
+
+import org.junit.Test;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.search.Search;
@@ -27,10 +31,6 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.ArrayList;
-
-import org.junit.Test;
 
 /**
  * test of the VMListener method notifications

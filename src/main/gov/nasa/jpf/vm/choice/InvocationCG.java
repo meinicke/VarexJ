@@ -19,13 +19,13 @@
 
 package gov.nasa.jpf.vm.choice;
 
-import gov.nasa.jpf.util.Invocation;
-import gov.nasa.jpf.vm.ChoiceGenerator;
-import gov.nasa.jpf.vm.ChoiceGeneratorBase;
-
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.ListIterator;
+
+import gov.nasa.jpf.util.Invocation;
+import gov.nasa.jpf.vm.ChoiceGenerator;
+import gov.nasa.jpf.vm.ChoiceGeneratorBase;
 
 /**
  * ChoiceGenerator that represents method calls

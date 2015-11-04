@@ -19,13 +19,13 @@
 
 package gov.nasa.jpf.vm;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.util.JPFLogger;
 import gov.nasa.jpf.util.StringMatcher;
-import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
  * native peer to configure concrete URLConnection classes for specific URLs
@@ -86,6 +86,7 @@ public class JPF_sun_net_www_protocol_http_Handler extends NativePeer {
 
   }
 
+  @SuppressWarnings("deprecation")
   @MJI
   public int getConnectionClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objref, int surlRef, FeatureExpr ctx){
     String url = env.getStringObject(ctx, surlRef);

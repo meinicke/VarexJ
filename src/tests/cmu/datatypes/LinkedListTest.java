@@ -1,12 +1,12 @@
 package cmu.datatypes;
 
-import gov.nasa.jpf.annotation.Conditional;
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.annotation.Conditional;
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class LinkedListTest extends TestJPF {
 

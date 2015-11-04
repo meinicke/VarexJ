@@ -33,7 +33,7 @@ import org.junit.Test;
 /**
  * unit test for the CGRemover listener
  */
-public class CGRemoverTest extends TestJPF {
+@SuppressWarnings("unused")public class CGRemoverTest extends TestJPF {
 
   static class R1 implements Runnable {
     int data = 42;

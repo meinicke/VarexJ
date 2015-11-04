@@ -18,15 +18,6 @@
 //
 package gov.nasa.jpf.report;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.Error;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFListener;
-import gov.nasa.jpf.search.Search;
-import gov.nasa.jpf.search.SearchListenerAdapter;
-import gov.nasa.jpf.vm.Path;
-import gov.nasa.jpf.vm.VM;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -35,6 +26,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.Error;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFListener;
+import gov.nasa.jpf.search.Search;
+import gov.nasa.jpf.search.SearchListenerAdapter;
+import gov.nasa.jpf.vm.Path;
+import gov.nasa.jpf.vm.VM;
 
 /**
  * this is our default report generator, which is heavily configurable
@@ -410,13 +410,13 @@ public class Reporter extends SearchListenerAdapter {
         Properties revInfo = new Properties();
         revInfo.load(is);
 
-        StringBuffer sb = new StringBuffer();
+//        StringBuffer sb = new StringBuffer();
         String date = revInfo.getProperty("date");
         String author = revInfo.getProperty("author");
         String rev = revInfo.getProperty("rev");
         String machine = revInfo.getProperty("hostname");
         String loc = revInfo.getProperty("location");
-        String upstream = revInfo.getProperty("upstream");
+//        String upstream = revInfo.getProperty("upstream");
 
         return String.format("%s %s %s %s %s", date,author,rev,machine,loc);
       }

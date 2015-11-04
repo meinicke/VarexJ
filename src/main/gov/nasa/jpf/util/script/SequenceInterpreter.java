@@ -19,9 +19,9 @@
 
 package gov.nasa.jpf.util.script;
 
-import gov.nasa.jpf.util.script.ScriptElementContainer.SECIterator;
-
 import java.io.StringReader;
+
+import gov.nasa.jpf.util.script.ScriptElementContainer.SECIterator;
 
 /**
  * an interpreter that walks a ScriptElementContainer hierarchy, returning

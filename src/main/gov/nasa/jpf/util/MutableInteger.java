@@ -22,6 +22,7 @@ package gov.nasa.jpf.util;
  * an object that holds a mutable int. Unfortunately, java.lang.Integer is
  * final, but we can at least be a Number
  */
+@SuppressWarnings("serial")
 public class MutableInteger extends Number {
 
   private int value;

@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 
 /**
@@ -591,7 +591,8 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
   Alloc firstAlloc;
   
   // for debugging purposes only
-  private void dumpAllocs(){
+  @SuppressWarnings("unused")
+private void dumpAllocs(){
     System.out.println("Unsafe allocated memory blocks:{");
     for (Alloc a = firstAlloc; a != null; a = a.next){
       System.out.print("  ");

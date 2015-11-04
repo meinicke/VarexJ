@@ -97,7 +97,8 @@ public class Automaton <S extends State> {
     return nStates;
   }
   
-  public S getCurrentState(){
+  @SuppressWarnings("unchecked")
+public S getCurrentState(){
     return (S)states[current];
   }
   

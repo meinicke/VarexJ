@@ -18,14 +18,13 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * native peer for java.util.TimeZone
@@ -34,6 +33,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  * considerably changed in Java 1.7 (OpenJDK) and we need a version that is compatible with
  * pre and post 1.7 releases
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_util_TimeZone extends NativePeer {
 
 

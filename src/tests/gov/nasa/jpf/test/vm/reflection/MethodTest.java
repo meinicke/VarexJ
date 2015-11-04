@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.test.vm.reflection;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,6 +26,9 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.util.test.TestJPF;
+
+@SuppressWarnings({ "unused" })
 public class MethodTest extends TestJPF {
 
   private double m_data = 42.0;
@@ -45,7 +46,7 @@ public class MethodTest extends TestJPF {
 
   static class SupC {
 
-    private int privateMethod() {
+	private int privateMethod() {
       return -42;
     }
   }

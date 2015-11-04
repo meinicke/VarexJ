@@ -19,13 +19,13 @@
 
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.ListenerAdapter;
-import gov.nasa.jpf.search.Search;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import gov.nasa.jpf.ListenerAdapter;
+import gov.nasa.jpf.search.Search;
 
 /**
  * a generic, listener- created trace over property specific operations
@@ -177,7 +177,7 @@ public class Trace<T> extends ListenerAdapter implements Iterable<T> {
     }
   }
 
-  public Trace clone() {
+  public Trace<?> clone() {
     TraceElement<T> e0 = null, eLast = null;
     
     for (TraceElement<T> e = lastElement; e != null; e = e.prevElement){

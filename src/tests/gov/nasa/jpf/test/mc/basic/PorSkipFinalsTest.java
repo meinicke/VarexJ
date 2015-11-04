@@ -18,14 +18,15 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
-
-import org.junit.Test;
 
 /**
  * test for POR 'final' field config settings, adapted patch from Nathan Reynolds
  */
+@SuppressWarnings("unused")
 public class PorSkipFinalsTest extends TestJPF {
 
   private static Leaker leaker;
@@ -63,7 +64,7 @@ public class PorSkipFinalsTest extends TestJPF {
     Verify.ignoreIf(Verify.getCounter(1) != 0);   // This ensures that the other thread hasn't quit yet.  Thus, ensuring that POR breaks can happen.
   }
 
-  private static void test_SkipFinals() {
+private static void test_SkipFinals() {
     Object test;
 
     run();

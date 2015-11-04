@@ -1,5 +1,7 @@
 package gov.nasa.jpf.listener;
 
+import java.util.logging.Logger;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -8,8 +10,6 @@ import gov.nasa.jpf.util.ObjVector;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.logging.Logger;
 
 
 /**

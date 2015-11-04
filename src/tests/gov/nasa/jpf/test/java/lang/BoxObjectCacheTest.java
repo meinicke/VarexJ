@@ -18,13 +18,13 @@
 //
 package gov.nasa.jpf.test.java.lang;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * regression test for java.lang.Integer

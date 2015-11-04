@@ -18,16 +18,6 @@
 //
 package gov.nasa.jpf.listener;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.PropertyListenerAdapter;
-import gov.nasa.jpf.report.ConsolePublisher;
-import gov.nasa.jpf.report.Publisher;
-import gov.nasa.jpf.search.Search;
-import gov.nasa.jpf.vm.Path;
-import gov.nasa.jpf.vm.Transition;
-import gov.nasa.jpf.vm.VM;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,6 +34,16 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.PropertyListenerAdapter;
+import gov.nasa.jpf.report.ConsolePublisher;
+import gov.nasa.jpf.report.Publisher;
+import gov.nasa.jpf.search.Search;
+import gov.nasa.jpf.vm.Path;
+import gov.nasa.jpf.vm.Transition;
+import gov.nasa.jpf.vm.VM;
 
 /**
  * listener that monitors path output, matching it against specifications

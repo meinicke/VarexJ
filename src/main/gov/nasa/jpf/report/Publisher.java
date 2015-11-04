@@ -18,13 +18,13 @@
 //
 package gov.nasa.jpf.report;
 
-import gov.nasa.jpf.Config;
-
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import gov.nasa.jpf.Config;
 
 /**
  * abstract base for all format specific publishers. Note that this interface

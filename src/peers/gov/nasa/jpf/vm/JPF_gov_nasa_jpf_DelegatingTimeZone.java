@@ -18,13 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.util.Date;
 import java.util.TimeZone;
 
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * native peer for JPFs concrete TimeZone class, which is just delegating to the
@@ -42,6 +41,7 @@ public class JPF_gov_nasa_jpf_DelegatingTimeZone extends NativePeer {
   }
 
   //--- native methods
+  @SuppressWarnings("deprecation")
   @MJI
   public void setID__Ljava_lang_String_2__V (MJIEnv env, int objRef, int idRef, FeatureExpr ctx){
     String id = env.getStringObject(ctx, idRef);

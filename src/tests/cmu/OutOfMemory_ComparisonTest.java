@@ -1,10 +1,10 @@
 package cmu;
 
-import gov.nasa.jpf.vm.Verify;
+import org.junit.Test;
+
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
-
-import org.junit.Test;
+import gov.nasa.jpf.vm.Verify;
 
 /**
  * This test shows a case where normal JPF terminates with a OutOfMemory-Exception and jpf-bdd does not.
@@ -16,6 +16,7 @@ import org.junit.Test;
  * @author rhein
  *
  */
+@SuppressWarnings({ "unused" })
 public class OutOfMemory_ComparisonTest extends TestJPF {
 	private static final String[] JPF_BDD = {"+search.class= .search.RandomSearch", "+choice=MapChoice"};
 	private static final String[] NO_BDD = {"+search.class=gov.nasa.jpf.search.heuristic.BFSHeuristic"
@@ -123,7 +124,6 @@ static boolean a29 = true;
 			System.exit(0);
 	}
 	public void testFunction_no_bdd() {
-		@SuppressWarnings("unused")
 		int i = 0;
 		//LinkedList<Boolean> list = new LinkedList<Boolean>();
 		if (a1 = Verify.getBoolean()) {i++;/* list.add(a1); */}

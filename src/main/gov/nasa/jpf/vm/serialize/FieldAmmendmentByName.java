@@ -1,12 +1,12 @@
 package gov.nasa.jpf.vm.serialize;
 
-import gov.nasa.jpf.vm.FieldInfo;
-import gov.nasa.jpf.vm.serialize.AmmendableFilterConfiguration.FieldAmmendment;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import gov.nasa.jpf.vm.FieldInfo;
+import gov.nasa.jpf.vm.serialize.AmmendableFilterConfiguration.FieldAmmendment;
 
 public class FieldAmmendmentByName implements FieldAmmendment {
   protected final Set<String> fullFieldNames;

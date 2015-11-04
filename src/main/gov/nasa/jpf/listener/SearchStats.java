@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.io.PrintStream;
+
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.search.heuristic.HeuristicSearch;
-
-import java.io.PrintStream;
 
 /**
  * An alternative to SearchMonitor that just reports statistics at the end.

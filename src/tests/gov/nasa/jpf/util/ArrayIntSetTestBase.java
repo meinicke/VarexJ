@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.util;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.util.NoSuchElementException;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public abstract class ArrayIntSetTestBase extends TestJPF {
 

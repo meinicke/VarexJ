@@ -19,10 +19,10 @@
 
 package gov.nasa.jpf.util.script;
 
-import gov.nasa.jpf.util.Misc;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import gov.nasa.jpf.util.Misc;
 
 /**
  * this script element is just a way to do logical partitioning of scripts

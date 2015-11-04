@@ -2,9 +2,9 @@ package cmu.testprograms;
 
 import java.io.IOException;
 
-import net.sf.zipme.ZipTest;
-
 import org.junit.Test;
+
+import net.sf.zipme.ZipTest;
 
 public class ZipMeTest extends ATestExample {
 	

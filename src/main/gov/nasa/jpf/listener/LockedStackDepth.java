@@ -18,6 +18,13 @@
 //
 package gov.nasa.jpf.listener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.search.DFSearch;
@@ -26,13 +33,6 @@ import gov.nasa.jpf.search.heuristic.BFSHeuristic;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A listener that tracks information about the stack depth of when a lock is first acquired.  If 
@@ -367,6 +367,7 @@ public class LockedStackDepth extends ListenerAdapter
          return(m_oldDepth);
       }
       
+      @SuppressWarnings("unused")
       public Integer getNewDepth()
       {
          return(m_newDepth);

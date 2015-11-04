@@ -10,6 +10,7 @@ import java.util.LinkedList;
 /**
  * @author: chupanw
  */
+@SuppressWarnings({ "unused" })
 public class ClosureTestGenerator extends TestGenerator{
     private String config = "\"+nhandler.delegateUnhandledNative\", \"+classpath+=${jpf-core}/lib/junit-4.11.jar,lib/compiler.jar\"";
 
@@ -52,7 +53,7 @@ public class ClosureTestGenerator extends TestGenerator{
                 boolean have_null_constructor = true;
 
                 try{
-                    Constructor constructor = c.getDeclaredConstructor();
+                    Constructor<?> constructor = c.getDeclaredConstructor();
                 } catch (NoSuchMethodException e){
                     have_null_constructor = false;
                 }

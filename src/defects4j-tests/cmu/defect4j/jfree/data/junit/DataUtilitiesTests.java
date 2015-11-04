@@ -1,8 +1,8 @@
 package cmu.defect4j.jfree.data.junit;
 
-import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
-import junit.framework.TestCase;
+
+import gov.nasa.jpf.util.test.TestJPF;
 public class DataUtilitiesTests extends TestJPF {
 
     private final String[] config = {"+nhandler.delegateUnhandledNative", "+classpath+=${jpf-core}/lib/junit-4.11.jar,${jpf-core}/lib/jfreechart-1.2.0-ea1.jar"};

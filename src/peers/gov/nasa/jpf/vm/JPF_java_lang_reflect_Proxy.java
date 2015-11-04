@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.annotation.MJI;
 
-
+@SuppressWarnings("deprecation")
 public class JPF_java_lang_reflect_Proxy extends NativePeer {
   @MJI
   public int defineClass0 (MJIEnv env, int clsObjRef, int classLoaderRef, int nameRef, int bufferRef, int offset, int length, FeatureExpr ctx) {  

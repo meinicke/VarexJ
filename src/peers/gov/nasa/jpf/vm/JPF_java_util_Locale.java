@@ -18,13 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.annotation.MJI;
-
 import java.util.Locale;
 
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-
+import gov.nasa.jpf.annotation.MJI;
+@SuppressWarnings("deprecation")
 public class JPF_java_util_Locale extends NativePeer {
 
   static Locale getLocale (MJIEnv env, int locref, FeatureExpr ctx) {

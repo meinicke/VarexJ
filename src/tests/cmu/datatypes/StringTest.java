@@ -1,13 +1,13 @@
 package cmu.datatypes;
 
+import org.junit.Test;
+
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
-import org.junit.Test;
-
 public class StringTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=local",*/ "+search.class= .search.RandomSearch", "+choice=TreeChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{"+invocation=true", "+search.class= .search.RandomSearch", "+choice=TreeChoice"};
 
 	@Conditional
 	static boolean x = true;
@@ -231,6 +231,17 @@ public class StringTest extends TestJPF {
 			s += i; 
 		}
 		return s.intern();
+	}
+	
+	@Test
+	public void lenthTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			String s = "A";
+			if (x) {
+				s = s + "B";
+			}
+			assertEquals(x ? 2 : 1, s.length());
+		}
 	}
 }
 

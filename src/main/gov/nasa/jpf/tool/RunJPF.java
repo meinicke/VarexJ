@@ -18,16 +18,16 @@
 //
 package gov.nasa.jpf.tool;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPFShell;
-import gov.nasa.jpf.util.JPFSiteUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Properties;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPFShell;
+import gov.nasa.jpf.util.JPFSiteUtils;
 
 /**
  * This class is a wrapper for loading JPF or a JPFShell through a classloader

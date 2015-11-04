@@ -18,6 +18,10 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
+import org.junit.Test;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.DSTORE;
 import gov.nasa.jpf.jvm.bytecode.INVOKEVIRTUAL;
@@ -33,14 +37,10 @@ import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.Verify;
 
-import org.junit.Test;
-
-import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
-
 /**
  * raw test for field/operand/local attribute handling
  */
+@SuppressWarnings({ "unused" })
 public class AttrsTest extends TestJPF {
 
 //------------ this part we only need outside of JPF execution
@@ -367,7 +367,7 @@ public class AttrsTest extends TestJPF {
     }
   }
   
-  @Test public void testInteger() {
+@Test public void testInteger() {
     if (verifyNoPropertyViolation()) {
       int v = 42;
       Verify.setLocalAttribute("v", 4200);
@@ -394,7 +394,7 @@ public class AttrsTest extends TestJPF {
     }
   }
   
-  @Test public void testObjectAttr(){
+@Test public void testObjectAttr(){
 
     if (verifyNoPropertyViolation()){
       Integer o = new Integer(41);

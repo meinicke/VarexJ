@@ -18,13 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
 
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>

@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.test.vm.basic;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import java.lang.reflect.Method;
 
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * JPF unit test for exception handling

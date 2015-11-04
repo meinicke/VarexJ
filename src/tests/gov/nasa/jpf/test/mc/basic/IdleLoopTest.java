@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.mc.basic;
 
-import gov.nasa.jpf.util.test.TestJPF;
-
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * JPF test driver for the IdleFilter listener
@@ -47,7 +47,8 @@ public class IdleLoopTest extends TestJPF {
     }
   }
 
-  @Test public void testPrune () {
+  @SuppressWarnings("unused")
+@Test public void testPrune () {
     if (verifyNoPropertyViolation(LISTENER, "+idle.action=prune",
                                   "+log.warning=gov.nasa.jpf.listener.IdleFilter",
                                   "+vm.max_transition_length=MAX")) {
