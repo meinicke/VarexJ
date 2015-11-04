@@ -89,31 +89,35 @@ public class ProjectExplorerLabelProvider implements ILabelProvider, IColorProvi
 	}
 	
 	Color getColor(int i) {
+		if (i == Integer.MIN_VALUE) {
+			return null;
+		}
+		i = i - coverage.getBaseValue();
 		switch (i) {
 		case 0:
-			return null;
-		case 1:
 			return new Color(null, 166, 255, 201); 
-		case 2:
+		case 1:
 			return new Color(null, 164, 228, 148);
-		case 3:
+		case 2:
 			return new Color(null, 255, 255, 128);
-		case 4:
+		case 3:
 			return new Color(null, 255, 246, 131);
-		case 5:
+		case 4:
 			return new Color(null, 255, 236, 134);
-		case 6:
+		case 5:
 			return new Color(null, 255, 227, 138);
-		case 7:
+		case 6:
 			return new Color(null, 255, 217, 141);
-		case 8:
+		case 7:
 			return new Color(null, 255, 208, 144);
-		case 9:
+		case 8:
 			return new Color(null, 255, 198, 147);
-		case 10:
+		case 9:
 			return new Color(null, 255, 189, 150);
-		case 11:
+		case 10:
 			return new Color(null, 255, 179, 154);
+		case 11:
+			return new Color(null, 255, 160, 160);
 		case 12:
 			return new Color(null, 255, 160, 160);
 		default:
@@ -129,7 +133,7 @@ public class ProjectExplorerLabelProvider implements ILabelProvider, IColorProvi
 	int getMaxInteraction(IResource res, boolean isDefaultPackage) {
 		try {
 			if (res instanceof IFolder) {
-				int maxInteraction = 0;
+				int maxInteraction = Integer.MIN_VALUE;
 				for (IResource child : ((IFolder) res).members()) {
 					if (!isDefaultPackage  || child instanceof IFile) {
 						int i = getMaxInteraction(child, isDefaultPackage);
@@ -152,10 +156,10 @@ public class ProjectExplorerLabelProvider implements ILabelProvider, IColorProvi
 			}
 			Collection<Interaction> coveredLines = coverage.getCoverage(res.getName());
 			if (coveredLines.isEmpty()) {
-				return 0;
+				return Integer.MIN_VALUE;
 			}
 			
-			int maxInteraction = 0;
+			int maxInteraction = Integer.MIN_VALUE;
 			for (Interaction interaction : coveredLines) {
 				int i = interaction.getInteraction();
 				if (i > maxInteraction) {
@@ -166,7 +170,7 @@ public class ProjectExplorerLabelProvider implements ILabelProvider, IColorProvi
 		} catch (ParserConfigurationException | TransformerException | IOException | SAXException | UnsupportedCoverageException | CoreException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return Integer.MIN_VALUE;
 	}
 
 }
