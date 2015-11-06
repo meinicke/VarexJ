@@ -9,7 +9,7 @@ public class AggregateSummaryStatisticsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAggregation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest();
@@ -17,7 +17,7 @@ public class AggregateSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAggregationConsistency() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest();
@@ -25,7 +25,7 @@ public class AggregateSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAggregate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest();
@@ -33,7 +33,7 @@ public class AggregateSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAggregateDegenerate() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest();
@@ -41,7 +41,7 @@ public class AggregateSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAggregateSpecialValues() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest();

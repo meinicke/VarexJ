@@ -18,14 +18,7 @@
 //
 package gov.nasa.jpf.listener;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -47,6 +40,14 @@ import gov.nasa.jpf.vm.IntChoiceGenerator;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadChoiceGenerator;
 import gov.nasa.jpf.vm.VM;
+
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * a listener that collects information about ChoiceGenerators, choices and
@@ -243,17 +244,26 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
 
   private interface CGAccessor {
 
-    public Object getValue(ChoiceGenerator<?> generator);
+    public Object getValue(ChoiceGenerator generator);
   }
 
   private static class CGPackageAccessor implements CGAccessor {
 
-    public Object getValue(ChoiceGenerator<?> generator) {
+    public Object getValue(ChoiceGenerator generator) {
       ClassInfo ci;
       MethodInfo mi;
       Instruction instruction;
 
-      instruction = generator.getInsn();
+      if (generator.getInsn() instanceof One) {
+        instruction = (Instruction)generator.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: " + this);
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        instruction = null;
+      }
       if (instruction == null) {
         return (null);
       }
@@ -274,12 +284,21 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
 
   private static class CGClassAccessor implements CGAccessor {
 
-    public Object getValue(ChoiceGenerator<?> generator) {
+    public Object getValue(ChoiceGenerator generator) {
       ClassInfo ci;
       MethodInfo mi;
       Instruction instruction;
 
-      instruction = generator.getInsn();
+      if (generator.getInsn() instanceof One) {
+        instruction = (Instruction) generator.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: " + this);
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        instruction = null;
+      }
       if (instruction == null) {
         return (null);
       }
@@ -300,11 +319,20 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
 
   private static class CGMethodAccessor implements CGAccessor {
 
-    public Object getValue(ChoiceGenerator<?> generator) {
+    public Object getValue(ChoiceGenerator generator) {
       MethodInfo mi;
       Instruction instruction;
 
-      instruction = generator.getInsn();
+      if (generator.getInsn() instanceof One) {
+        instruction = (Instruction) generator.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: " + this);
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        instruction = null;
+      }
       if (instruction == null) {
         return (null);
       }
@@ -320,7 +348,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
 
   private static class CGInstructionAccessor implements CGAccessor {
 
-    public Object getValue(ChoiceGenerator<?> generator) {
+    public Object getValue(ChoiceGenerator generator) {
       return (generator.getInsn());
     }
   }
@@ -330,7 +358,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
     private static final String OBJECT_CLASS_NAME = Object.class.getName();
     private static final String THREAD_CLASS_NAME = Thread.class.getName();
 
-    public Object getValue(ChoiceGenerator<?> generator) {
+    public Object getValue(ChoiceGenerator generator) {
       if (generator instanceof ThreadChoiceGenerator) {
         return (getType((ThreadChoiceGenerator) generator));
       }
@@ -357,7 +385,16 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
     private static CGType getType(ThreadChoiceGenerator generator) {
       Instruction instruction;
 
-      instruction = generator.getInsn();
+      if (generator.getInsn() instanceof One) {
+        instruction = generator.getInsn().getValue();
+      }
+      else{
+        System.err.println("___________________________________________________");
+        System.err.println("[WARN] Get value of choice called: StateSpaceAnalyzer:getType(ThreadChoiceGenerator)");
+        System.err.println("---------------------------------------------------");
+        // Let's wait for a NullPointerException
+        instruction = null;
+      }
       if (instruction == null) {
         return (null);
       }
@@ -485,7 +522,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       }
     }
 
-    public void add(ChoiceGenerator<?> generator) {
+    public void add(ChoiceGenerator generator) {
       TreeNode child;
       Object value;
 
@@ -495,7 +532,15 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       if (isLeaf()) {
         if (m_sampleGeneratorClassName == null) {
           m_sampleGeneratorClassName = generator.getClass().getName();
-          m_sampleGeneratorInstruction = generator.getInsn();
+          if (generator.getInsn() instanceof One) {
+            m_sampleGeneratorInstruction = (Instruction) generator.getInsn().getValue();
+          } else {
+            System.err.println("___________________________________________________");
+            System.err.println("[WARN] Get value of choice called: " + this);
+            System.err.println("---------------------------------------------------");
+            // Let's wait for a NullPointerException
+            m_sampleGeneratorInstruction = null;
+          }
         }
 
         return;
@@ -663,7 +708,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
       return(m_root);
     }
     
-    public void add(ChoiceGenerator<?> generator) {
+    public void add(ChoiceGenerator generator) {
       m_sorted = false;
       m_root.add(generator); 
     }
@@ -753,7 +798,7 @@ public class StateSpaceAnalyzer extends ListenerAdapter implements PublisherExte
     }
 
     private void publishDetails(TreeNode node, int levelCount) {
-//      ChoiceGenerator<?> generator;
+      ChoiceGenerator generator;
       Instruction instruction;
 
       instruction = node.getSampleGeneratorInstruction();

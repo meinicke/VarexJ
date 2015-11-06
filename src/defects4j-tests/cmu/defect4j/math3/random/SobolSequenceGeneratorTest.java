@@ -9,25 +9,16 @@ public class SobolSequenceGeneratorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void test3DReference() throws Exception {
+    @Test(timeout=1000000)
+    public void testConstructor2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.random.SobolSequenceGeneratorTest object = new org.apache.commons.math3.random.SobolSequenceGeneratorTest();
                object.setUp();
-               object.test3DReference();
+               object.testConstructor2();
         }
     }
 
-    @Test(timeout=120000)
-    public void testSkip() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.random.SobolSequenceGeneratorTest object = new org.apache.commons.math3.random.SobolSequenceGeneratorTest();
-               object.setUp();
-               object.testSkip();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConstructor() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.random.SobolSequenceGeneratorTest object = new org.apache.commons.math3.random.SobolSequenceGeneratorTest();
@@ -36,12 +27,21 @@ public class SobolSequenceGeneratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testConstructor2() throws Exception {
+    @Test(timeout=1000000)
+    public void test3DReference() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.random.SobolSequenceGeneratorTest object = new org.apache.commons.math3.random.SobolSequenceGeneratorTest();
                object.setUp();
-               object.testConstructor2();
+               object.test3DReference();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testSkip() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.random.SobolSequenceGeneratorTest object = new org.apache.commons.math3.random.SobolSequenceGeneratorTest();
+               object.setUp();
+               object.testSkip();
         }
     }
 

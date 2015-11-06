@@ -9,7 +9,7 @@ public class MultivariateFunctionMappingAdapterTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testStartSimplexInsideRange() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionMappingAdapterTest object = new org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionMappingAdapterTest();
@@ -17,7 +17,7 @@ public class MultivariateFunctionMappingAdapterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOptimumOutsideRange() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionMappingAdapterTest object = new org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionMappingAdapterTest();
@@ -25,7 +25,7 @@ public class MultivariateFunctionMappingAdapterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUnbounded() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionMappingAdapterTest object = new org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionMappingAdapterTest();
@@ -33,7 +33,7 @@ public class MultivariateFunctionMappingAdapterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testHalfBounded() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionMappingAdapterTest object = new org.apache.commons.math3.optim.nonlinear.scalar.MultivariateFunctionMappingAdapterTest();

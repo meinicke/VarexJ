@@ -9,7 +9,7 @@ public class MidpointStepInterpolatorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void serialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.nonstiff.MidpointStepInterpolatorTest object = new org.apache.commons.math3.ode.nonstiff.MidpointStepInterpolatorTest();
@@ -17,7 +17,7 @@ public class MidpointStepInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDerivativesConsistency() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.nonstiff.MidpointStepInterpolatorTest object = new org.apache.commons.math3.ode.nonstiff.MidpointStepInterpolatorTest();

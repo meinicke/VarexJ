@@ -9,15 +9,7 @@ public class RealVectorFormatTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testNegativeX() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
-               object.testNegativeX();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNegativeY() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -25,7 +17,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNegativeZ() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -33,7 +25,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNonDefaultSetting() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -41,7 +33,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void tesNegativeInfinity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -49,7 +41,15 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testNegativeX() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
+               object.testNegativeX();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testParseIgnoredWhitespace() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -57,7 +57,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNegativeX() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -65,7 +65,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNegativeY() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -73,7 +73,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNegativeZ() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -81,7 +81,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNegativeAll() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -89,7 +89,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseZeroX() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -97,7 +97,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNonDefaultSetting() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -105,7 +105,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNegativeInfinity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -113,7 +113,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testForgottenPrefix() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -121,7 +121,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testForgottenSeparator() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -129,7 +129,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testForgottenSuffix() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -137,15 +137,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testDefaultFormatRealVectorImpl() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
-               object.testDefaultFormatRealVectorImpl();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNoComponents() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -153,7 +145,15 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testDefaultFormatRealVectorImpl() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
+               object.testDefaultFormatRealVectorImpl();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testParseManyComponents() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -161,7 +161,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSimpleNoDecimals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -169,7 +169,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSimpleWithDecimals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -177,7 +177,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSimpleWithDecimalsTrunc() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -185,7 +185,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNan() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -193,7 +193,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPositiveInfinity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -201,7 +201,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseSimpleNoDecimals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -209,7 +209,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseSimpleWithDecimals() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -217,7 +217,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseSimpleWithDecimalsTrunc() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -225,7 +225,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParseNan() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -233,7 +233,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParsePositiveInfinity() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();
@@ -241,7 +241,7 @@ public class RealVectorFormatTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConstructorSingleFormat() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.RealVectorFormatTest object = new org.apache.commons.math3.linear.RealVectorFormatTest();

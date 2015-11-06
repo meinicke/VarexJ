@@ -19,6 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import java.io.PrintWriter;
+import java.util.HashSet;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -51,6 +52,19 @@ public class ExceptionInfo {
   public String getExceptionClassname() {
     return ei.getClassInfo().getName();
   }
+
+    // Instead of returning only the current Exception name, also return the names of
+    // its super classes
+    public HashSet<String> getExceptionClassnames() {
+        HashSet<String> set = new HashSet<>();
+        ClassInfo info = ei.getClassInfo();
+        set.add(info.getName());
+        while (info.getSuperClass() != null){
+            info = info.getSuperClass();
+            set.add(info.getName());
+        }
+        return set;
+    }
   
   public String getDetails() {
     StringBuilder sb = new StringBuilder();

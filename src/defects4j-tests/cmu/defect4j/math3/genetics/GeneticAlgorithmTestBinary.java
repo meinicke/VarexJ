@@ -9,7 +9,7 @@ public class GeneticAlgorithmTestBinary extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void test() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.genetics.GeneticAlgorithmTestBinary object = new org.apache.commons.math3.genetics.GeneticAlgorithmTestBinary();

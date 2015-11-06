@@ -19,16 +19,17 @@
 
 package gov.nasa.jpf.vm.multiProcess;
 
-import java.util.List;
-
-import org.junit.Test;
-
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.util.test.TestMultiProcessJPF;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.SchedulerFactory;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+
+import java.util.List;
+
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
@@ -105,6 +106,7 @@ public class ThreadTest extends TestMultiProcessJPF {
   // is the thread termination point & number of choice generators does not 
   // exceed 3
   @Test
+  @Ignore //Ignoring because we don't use multi-process
   public void threadInterleavingTest() {
     if (mpVerifyNoPropertyViolation(2, "+listener=gov.nasa.jpf.vm.multiProcess.ThreadTest$InterleaveCheckListener",
             "+vm.max_transition_length=MAX")) {

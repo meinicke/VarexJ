@@ -9,15 +9,15 @@ public class DummyStepInterpolatorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testSerialization() throws Exception {
+    @Test(timeout=1000000)
+    public void testImpossibleSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.sampling.DummyStepInterpolatorTest object = new org.apache.commons.math3.ode.sampling.DummyStepInterpolatorTest();
-               object.testSerialization();
+               object.testImpossibleSerialization();
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testFixedState() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.sampling.DummyStepInterpolatorTest object = new org.apache.commons.math3.ode.sampling.DummyStepInterpolatorTest();
@@ -25,7 +25,7 @@ public class DummyStepInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNoReset() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.sampling.DummyStepInterpolatorTest object = new org.apache.commons.math3.ode.sampling.DummyStepInterpolatorTest();
@@ -33,11 +33,11 @@ public class DummyStepInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testImpossibleSerialization() throws Exception {
+    @Test(timeout=1000000)
+    public void testSerialization() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.sampling.DummyStepInterpolatorTest object = new org.apache.commons.math3.ode.sampling.DummyStepInterpolatorTest();
-               object.testImpossibleSerialization();
+               object.testSerialization();
         }
     }
 

@@ -1,8 +1,6 @@
 package gov.nasa.jpf.listener;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -13,6 +11,9 @@ import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.VM;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 /**
  * generic choice tracker tool, to produce a list of choice values that
@@ -82,7 +83,7 @@ public class ChoiceTracker extends ListenerAdapter implements PublisherExtension
     excludes=ex;
   }
   
-  boolean isRelevantCG (ChoiceGenerator<?> cg){
+  boolean isRelevantCG (ChoiceGenerator cg){
     if (cgClasses == null){
       return true;
     } else {
@@ -168,7 +169,7 @@ public class ChoiceTracker extends ListenerAdapter implements PublisherExtension
           pw.print(line);
 
           if (showLocation) {
-            String loc = cg.getSourceLocation();
+            Conditional<String> loc = cg.getSourceLocation();
             if (loc != null) {
               pw.println();
               pw.print(" \tat ");

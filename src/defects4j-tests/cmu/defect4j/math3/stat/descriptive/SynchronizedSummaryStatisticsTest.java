@@ -9,55 +9,7 @@ public class SynchronizedSummaryStatisticsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testSerialization() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
-               object.testSerialization();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testSetterInjection() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
-               object.testSetterInjection();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testStats() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
-               object.testStats();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testN0andN1Conditions() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
-               object.testN0andN1Conditions();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testProductAndGeometricMean() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
-               object.testProductAndGeometricMean();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testCopy() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
-               object.testCopy();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEqualsAndHashCode() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
@@ -65,23 +17,47 @@ public class SynchronizedSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testSetterIllegalState() throws Exception {
+    @Test(timeout=1000000)
+    public void testSetterInjection() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
-               object.testSetterIllegalState();
+               object.testSetterInjection();
         }
     }
 
-    @Test(timeout=120000)
-    public void testNaNContracts() throws Exception {
+    @Test(timeout=1000000)
+    public void testStats() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
-               object.testNaNContracts();
+               object.testStats();
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testN0andN1Conditions() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
+               object.testN0andN1Conditions();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testProductAndGeometricMean() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
+               object.testProductAndGeometricMean();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testCopy() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
+               object.testCopy();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testGetSummary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
@@ -89,7 +65,7 @@ public class SynchronizedSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOverrideVarianceWithMathClass() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
@@ -97,7 +73,7 @@ public class SynchronizedSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOverrideMeanWithMathClass() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
@@ -105,11 +81,35 @@ public class SynchronizedSummaryStatisticsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOverrideGeoMeanWithMathClass() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
                object.testOverrideGeoMeanWithMathClass();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testSetterIllegalState() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
+               object.testSetterIllegalState();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testNaNContracts() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
+               object.testNaNContracts();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testSerialization() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest object = new org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatisticsTest();
+               object.testSerialization();
         }
     }
 

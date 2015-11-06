@@ -9,7 +9,7 @@ public class AbstractLeastSquaresOptimizerTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testComputeCost() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.fitting.leastsquares.AbstractLeastSquaresOptimizerTest object = new org.apache.commons.math3.fitting.leastsquares.AbstractLeastSquaresOptimizerTest();
@@ -17,7 +17,7 @@ public class AbstractLeastSquaresOptimizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testComputeRMS() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.fitting.leastsquares.AbstractLeastSquaresOptimizerTest object = new org.apache.commons.math3.fitting.leastsquares.AbstractLeastSquaresOptimizerTest();
@@ -25,7 +25,7 @@ public class AbstractLeastSquaresOptimizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testComputeSigma() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.fitting.leastsquares.AbstractLeastSquaresOptimizerTest object = new org.apache.commons.math3.fitting.leastsquares.AbstractLeastSquaresOptimizerTest();

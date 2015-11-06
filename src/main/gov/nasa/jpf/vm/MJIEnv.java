@@ -1504,19 +1504,22 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public ClassInfo getReferredClassInfo (FeatureExpr ctx, int clsObjRef) {
+    if (ctx == null) {
+      ctx = FeatureExprFactory.True();
+    }
     ElementInfo ei = getElementInfo(clsObjRef);
     if (ei.getClassInfo().getName().equals("java.lang.Class")) {
-      int ciId = ei.getIntField( ClassInfo.ID_FIELD).simplify(ctx).getValue();
+      int ciId = ei.getIntField(ClassInfo.ID_FIELD).simplify(ctx).getValue();
       int clref = ei.getReferenceField("classLoader").getValue();
-      
+
       ElementInfo eiCl = getElementInfo(clref);
       int cliId = eiCl.getIntField(ClassLoaderInfo.ID_FIELD).simplify(ctx).getValue();
-      
+
       ClassLoaderInfo cli = getVM().getClassLoader(cliId);
       ClassInfo referredCi = cli.getClassInfo(ciId);
-      
+
       return referredCi;
-      
+
     } else {
       throw new JPFException("not a java.lang.Class object: " + ei);
     }

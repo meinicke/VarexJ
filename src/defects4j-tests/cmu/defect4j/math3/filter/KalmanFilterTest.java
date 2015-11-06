@@ -9,15 +9,7 @@ public class KalmanFilterTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testConstant() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.filter.KalmanFilterTest object = new org.apache.commons.math3.filter.KalmanFilterTest();
-               object.testConstant();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testTransitionMeasurementMatrixMismatch() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.linear.MatrixDimensionMismatchException", config)) {
                org.apache.commons.math3.filter.KalmanFilterTest object = new org.apache.commons.math3.filter.KalmanFilterTest();
@@ -25,7 +17,7 @@ public class KalmanFilterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testTransitionControlMatrixMismatch() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.linear.MatrixDimensionMismatchException", config)) {
                org.apache.commons.math3.filter.KalmanFilterTest object = new org.apache.commons.math3.filter.KalmanFilterTest();
@@ -33,11 +25,19 @@ public class KalmanFilterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConstantAcceleration() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.filter.KalmanFilterTest object = new org.apache.commons.math3.filter.KalmanFilterTest();
                object.testConstantAcceleration();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testConstant() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.filter.KalmanFilterTest object = new org.apache.commons.math3.filter.KalmanFilterTest();
+               object.testConstant();
         }
     }
 

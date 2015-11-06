@@ -18,23 +18,28 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.BiFunction;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.DynamicObjectArray;
+import gov.nasa.jpf.util.JPFLogger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.locks.Condition;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.DynamicObjectArray;
-import gov.nasa.jpf.util.JPFLogger;
 
 /**
  * native peer for file descriptors, which are our basic interface to
@@ -66,17 +71,26 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
   
   @MJI
-  public int open__Ljava_lang_String_2I__I (MJIEnv env, int objref,
-                                                   int fnameRef, int mode, FeatureExpr ctx){
-    String fname = env.getStringObject(ctx, fnameRef);
-    if (mode == FD_READ){
-      return openRead(fname, ctx);
-    } else if (mode == FD_WRITE){
-      return openWrite(fname, ctx);
-    } else {
-      env.throwException(ctx, "java.io.IOException", "illegal open mode: " + mode);
-      return -1;
-    }
+  public Conditional<Integer> open__Ljava_lang_String_2I__I (MJIEnv env, int objref,
+                                                   int fnameRef, int mode, final FeatureExpr ctx) {
+//    String fname = env.getStringObject(ctx, fnameRef);
+    Conditional<String> fnames = env.getConditionalStringObject(fnameRef);
+    final int finalMode = mode;
+    final MJIEnv finalEnv = env;
+    Conditional<Integer> fds = fnames.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<Integer>>() {
+      @Override
+      public Conditional<Integer> apply(FeatureExpr x, String y) {
+        if (finalMode == FD_READ) {
+          return new One(openRead(y, x.and(ctx)));
+        } else if (finalMode == FD_WRITE) {
+          return new One(openWrite(y, x.and(ctx)));
+        } else {
+          finalEnv.throwException(ctx, "java.io.IOException", "illegal open mode: " + finalMode);
+          return new One(-1);
+        }
+      }
+    });
+    return fds;
   }
 
   @MJI
@@ -129,30 +143,35 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
 
   @MJI
   public void close0 (MJIEnv env, int objref, FeatureExpr ctx) {
-    int fd = env.getIntField(objref, "fd").simplify(ctx).getValue().intValue();
-    
-    try {
-      Object fs = content.get(fd);
-      
-      if (fs != null){
-    	  if (fs == CLOSED_OBJECT) {
-    		  return;
-    	  }
-        if (fs instanceof FileInputStream){
-          ((FileInputStream)fs).close();
+//    int fd = env.getIntField(objref, "fd").simplify(ctx).getValue().intValue();
+    Conditional<Integer> fds = env.getIntField(objref, "fd").simplify(ctx);
+
+    List<Integer> fdList = fds.toList();
+    for (int fd : fdList) {
+      try {
+        Object fs = content.get(fd);
+
+        if (fs != null){
+          if (fs == CLOSED_OBJECT) {
+            return;
+          }
+          if (fs instanceof FileInputStream){
+            ((FileInputStream)fs).close();
+          } else {
+            ((FileOutputStream)fs).close();
+          }
         } else {
-          ((FileOutputStream)fs).close();          
+          logger.warning("cannot close ", fd, " : no such stream");
         }
-      } else {
-        logger.warning("cannot close ", fd, " : no such stream");
+        content.set(fd, CLOSED_OBJECT);
+
+      } catch (ArrayIndexOutOfBoundsException aobx){
+        env.throwException(ctx, "java.io.IOException", "file not open");
+      } catch (IOException iox) {
+        env.throwException(ctx, "java.io.IOException", iox.getMessage());
       }
-      content.set(fd, CLOSED_OBJECT);
-      
-    } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException(ctx, "java.io.IOException", "file not open");      
-    } catch (IOException iox) {
-      env.throwException(ctx, "java.io.IOException", iox.getMessage());
     }
+
   }
   
   // that's a JPF specific thing - we backrack into
@@ -403,27 +422,32 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
   }
   
   @MJI
-  public void sync____ (MJIEnv env, int objref, FeatureExpr ctx){
-    int fd = env.getIntField(objref, "fd").simplify(ctx).getValue().intValue();
+  public void sync____ (MJIEnv env, int objref, FeatureExpr ctx) {
+//    int fd = env.getIntField(objref, "fd").simplify(ctx).getValue().intValue();
+    Conditional<Integer> fds = env.getIntField(objref, "fd").simplify(ctx);
 
-    try {
-      Object fs = content.get(fd);
-      if (fs != null){
-        if (fs instanceof FileOutputStream){
-          ((FileOutputStream)fs).flush();
+    List<Integer> fdList = fds.toList();
+
+    for (int fd : fdList) {
+      try {
+        Object fs = content.get(fd);
+        if (fs != null) {
+          if (fs instanceof FileOutputStream) {
+            ((FileOutputStream) fs).flush();
+          } else {
+            // nothing
+          }
+
         } else {
-          // nothing
+          env.throwException(ctx, "java.io.IOException", "sync attempt on closed file");
         }
-        
-      } else {
-        env.throwException(ctx, "java.io.IOException", "sync attempt on closed file");
+
+      } catch (ArrayIndexOutOfBoundsException aobx) {
+        env.throwException(ctx, "java.io.IOException", "file not open");
+      } catch (IOException iox) {
+        env.throwException(ctx, "java.io.IOException", iox.getMessage());
       }
-          
-    } catch (ArrayIndexOutOfBoundsException aobx){
-      env.throwException(ctx, "java.io.IOException", "file not open");      
-    } catch (IOException iox) {
-      env.throwException(ctx, "java.io.IOException", iox.getMessage());
-    }        
+    }
   }
   
   @MJI

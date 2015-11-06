@@ -9,7 +9,7 @@ public class PointVectorValuePairTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSerial() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optimization.PointVectorValuePairTest object = new org.apache.commons.math3.optimization.PointVectorValuePairTest();

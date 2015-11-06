@@ -1830,9 +1830,12 @@ pw.print(stack);
   }
   
   public Conditional<Integer> pop (FeatureExpr ctx) {
+    if (ctx == null) {
+      ctx = FeatureExprFactory.True();
+    }
     //assert (top() >= stackBase) : "stack empty";
-	  boolean isRef = stack.isRef(ctx, 0);
-	  
+    boolean isRef = stack.isRef(ctx, 0);
+
     Conditional<Integer> v = stack.pop(ctx);
 
     // <2do> get rid of this
@@ -1842,7 +1845,7 @@ pw.print(stack);
       }
     }
 
-    if (attrs != null){ // just to avoid memory leaks
+    if (attrs != null) { // just to avoid memory leaks
       attrs[top() + 1] = null;
     }
 
@@ -1957,8 +1960,12 @@ pw.print(stack);
     //}
   }
 
-  public void pushRef (FeatureExpr ctx, int ref){
-	  pushRef(ctx, new One<>(ref));
+  public void pushRef (FeatureExpr ctx, int ref) {
+    // quick fix
+    if (ctx == null) {
+      ctx = FeatureExprFactory.True();
+    }
+    pushRef(ctx, new One<>(ref));
   }
   
   public void pushRef(FeatureExpr ctx, Conditional<Integer> ref) {

@@ -9,7 +9,7 @@ public class ComplexUtilsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPolar2Complex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.ComplexUtilsTest object = new org.apache.commons.math3.complex.ComplexUtilsTest();
@@ -17,7 +17,7 @@ public class ComplexUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPolar2ComplexIllegalModulus() throws Exception {
         if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
                org.apache.commons.math3.complex.ComplexUtilsTest object = new org.apache.commons.math3.complex.ComplexUtilsTest();
@@ -25,7 +25,7 @@ public class ComplexUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPolar2ComplexNaN() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.ComplexUtilsTest object = new org.apache.commons.math3.complex.ComplexUtilsTest();
@@ -33,7 +33,7 @@ public class ComplexUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPolar2ComplexInf() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.ComplexUtilsTest object = new org.apache.commons.math3.complex.ComplexUtilsTest();
@@ -41,7 +41,7 @@ public class ComplexUtilsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConvertToComplex() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.ComplexUtilsTest object = new org.apache.commons.math3.complex.ComplexUtilsTest();

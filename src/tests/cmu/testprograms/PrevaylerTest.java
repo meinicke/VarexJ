@@ -3,6 +3,7 @@ package cmu.testprograms;
 import java.io.File;
 import java.util.Iterator;
 
+import gov.nasa.jpf.annotation.Conditional;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.prevayler.Prevayler;
@@ -22,40 +23,42 @@ import org.prevayler.tutorial.RemoveTask;
 import org.prevayler.tutorial.Task;
 import org.prevayler.tutorial.TaskList;
 
-import gov.nasa.jpf.annotation.Conditional;
-
 public class PrevaylerTest extends ATestExample {
 
 	private static String NUMBER_KEEPER = "NumberKeeper";
 
 	@Conditional
-	static boolean USE_LOG4J_MONITOR = false;
+	public static boolean USE_LOG4J_MONITOR = false;
 	@Conditional
-	static boolean USE_NULL_MONITOR = false;
+	public static boolean USE_NULL_MONITOR = false;
 
 	@Conditional
-	static boolean USE_BROKEN_CLOCK = false;
+	public static boolean USE_BROKEN_CLOCK = false;
 	@Conditional
-	static boolean USE_PAUSABLE_CLOCK = false;
+	public static boolean USE_PAUSABLE_CLOCK = false;
 
+//	@Conditional // TODO not working for tutorialTest()
+	public static boolean USE_XSTREAM = true;
 	@Conditional
-	static boolean USE_XSTREAM = true;
-//	@Conditional // TODO Does not work
-	static boolean USE_XSTREAM_JOURNAL = false;
-//	 @Conditional // TODO Does not work conditionally
-	static boolean USE_FILTERING = false;
+	public static boolean USE_TRANSIENT_MODE = false;
 	@Conditional
-	static boolean USE_TRANSIENT_MODE = false;
-	@Conditional
-	static boolean USE_JOURNAL_DISK_SYNC = false;
+	public static boolean USE_JOURNAL_DISK_SYNC = false;
 	
-	@Conditional // TODO Does not work conditionally
-	static boolean FILE_AGE_THREASHOLD = true;
-//	@Conditional // TODO Does not work conditionally
-	static boolean FILE_SIZE_THREASHOLD = true;	
+	@Conditional
+	public static boolean FILE_AGE_THREASHOLD = true;
+
+//	@Conditional // TODO not working
+	static boolean FILE_SIZE_THREASHOLD = true;
+//  @Conditional // TODO not working
+	static boolean USE_XSTREAM_JOURNAL = true;
+//	@Conditional // TODO not working
+	static boolean USE_FILTERING = false;
 
 	@Test
 	public void runNumberKeeper() throws Exception {
+		// clean up
+		deleteDirectory("NumberKeeper");
+
 		if (verifyNoPropertyViolation(config)) {
 			// delete old counts
 			String folderName = clearTempFolder(NUMBER_KEEPER);
@@ -121,7 +124,7 @@ public class PrevaylerTest extends ATestExample {
 
 	@Override
 	protected String getClassPath() {
-		return "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-api-2.1.jar;lib/log4j-core-2.1.jar;lib/xstream-1.4.7.jar";
+		return "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-1.2.15.jar;lib/xstream-1.4.7.jar;lib/kxml2-2.3.0.jar";
 	}
 
 	@Override
@@ -129,29 +132,32 @@ public class PrevaylerTest extends ATestExample {
 		return "";
 	}
 
-	@Ignore
 	@Test
 	public void scalabilityTest() {
+		// clean up
+		deleteDirectory("QueryTest");
 		if (verifyNoPropertyViolation(config)) {
 			org.prevayler.demos.scalability.Main.main(null);
 		}
 	}
 
-	@Ignore
 	@Test
 	public void jxpathTest() {
+		// clean up
+		deleteDirectory("demoJXPath");
+
 		if (verifyNoPropertyViolation(config)) {
-			String[] args1 = new String[] { "proj", "100", "learn JXPath" };
-			String[] args2 = new String[] { "task", "50", "read docs",
-					"09/21/02 2:00 PM", "09/21/02 3:00 PM", "100" };
-			String[] args3 = new String[] { "task", "51", "write code",
-					"09/21/02 3:00 PM", "09/21/02 4:00 PM", "100" };
-			String[] args4 = new String[] { "task", "52", "veg out",
-					"09/21/02 4:00 PM", "09/21/02 5:00 PM", "100" };
-			String[] args5 = new String[] { "list", "projects" };
-			String[] args6 = new String[] { "list", "projects/tasks" };
-			String[] args7 = new String[] { "list",
-					"projects/tasks[name='read docs']" };
+			String[] args1 = new String[]{"proj", "100", "learn JXPath"};
+			String[] args2 = new String[]{"task", "50", "read docs",
+					"09/21/02 2:00 PM", "09/21/02 3:00 PM", "100"};
+			String[] args3 = new String[]{"task", "51", "write code",
+					"09/21/02 3:00 PM", "09/21/02 4:00 PM", "100"};
+			String[] args4 = new String[]{"task", "52", "veg out",
+					"09/21/02 4:00 PM", "09/21/02 5:00 PM", "100"};
+			String[] args5 = new String[]{"list", "projects"};
+			String[] args6 = new String[]{"list", "projects/tasks"};
+			String[] args7 = new String[]{"list",
+					"projects/tasks[name='read docs']"};
 			org.prevayler.demos.jxpath.Main.main(args1);
 			org.prevayler.demos.jxpath.Main.main(args2);
 			org.prevayler.demos.jxpath.Main.main(args3);
@@ -162,9 +168,12 @@ public class PrevaylerTest extends ATestExample {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void tutorialTest() throws Exception {
+		System.out.println(USE_XSTREAM_JOURNAL);
+		// clean up
+		deleteDirectory("Tutorial");
+
 		if (verifyNoPropertyViolation(config)) {
 			String folderName = clearTempFolder("Tutorial");
 			// org.prevayler.tutorial.Main.main(folderName);
@@ -199,7 +208,7 @@ public class PrevaylerTest extends ATestExample {
 			// END SNIPPET: adding
 
 			// START SNIPPET: iterating
-			for (Iterator<?> i = list.getTasks().iterator(); i.hasNext();) {
+			for (Iterator i = list.getTasks().iterator(); i.hasNext();) {
 				Task t = (Task) i.next();
 				System.out.println("Task: " + t.getDescription() + ", "
 						+ t.getPriority());
@@ -265,6 +274,22 @@ public class PrevaylerTest extends ATestExample {
 			factory.configureJournalSerializer(new XStreamSerializer());
 		} else {
 			factory.configureJournalSerializer(new JavaSerializer());
+		}
+	}
+
+	void deleteDirectory(String name){
+		File dir = new File(name);
+		if (dir.exists() && dir.isDirectory()) {
+			File[] list = dir.listFiles();
+			assert list != null;
+			for (File file : list) {
+				if (file.isDirectory()) {
+					deleteDirectory(file.getAbsolutePath());
+				}
+				else {
+					file.delete();
+				}
+			}
 		}
 	}
 

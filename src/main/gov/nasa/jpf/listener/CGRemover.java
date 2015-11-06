@@ -19,10 +19,7 @@
 
 package gov.nasa.jpf.listener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -36,6 +33,10 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * listener that removes CGs for specified locations, method calls or method bodies
@@ -243,7 +244,20 @@ public class CGRemover extends ListenerAdapter {
   @Override
   public void choiceGeneratorRegistered (VM vm, ChoiceGenerator<?> nextCG, ThreadInfo ti, Instruction executedInsn){
     ChoiceGenerator<?> cg = vm.getNextChoiceGenerator();
-    Instruction insn = cg.getInsn();
+    Instruction insn;
+    if (cg.getInsn() instanceof One)
+    {
+      insn = cg.getInsn().getValue();
+    }
+    else
+    {
+      System.err.println("___________________________________________________");
+      System.err.println("[WARN] Get value of choice called: " + this);
+      System.err.println("---------------------------------------------------");
+      // Let's wait for a NullPointerException
+      insn = null;
+    }
+
 
     if (locations != null){
       if ( removeCG(vm, locations.get(insn), cg)){

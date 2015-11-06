@@ -9,7 +9,7 @@ public class JacobianFunctionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSphere() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.JacobianFunctionTest object = new org.apache.commons.math3.analysis.differentiation.JacobianFunctionTest();

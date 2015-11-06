@@ -9,7 +9,7 @@ public class RootsOfUnityTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMathIllegalState1() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.MathIllegalStateException", config)) {
                org.apache.commons.math3.complex.RootsOfUnityTest object = new org.apache.commons.math3.complex.RootsOfUnityTest();
@@ -17,7 +17,7 @@ public class RootsOfUnityTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMathIllegalState2() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.MathIllegalStateException", config)) {
                org.apache.commons.math3.complex.RootsOfUnityTest object = new org.apache.commons.math3.complex.RootsOfUnityTest();
@@ -25,7 +25,7 @@ public class RootsOfUnityTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMathIllegalState3() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.MathIllegalStateException", config)) {
                org.apache.commons.math3.complex.RootsOfUnityTest object = new org.apache.commons.math3.complex.RootsOfUnityTest();
@@ -33,7 +33,7 @@ public class RootsOfUnityTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testZeroNumberOfRoots() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.ZeroException", config)) {
                org.apache.commons.math3.complex.RootsOfUnityTest object = new org.apache.commons.math3.complex.RootsOfUnityTest();
@@ -41,7 +41,7 @@ public class RootsOfUnityTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGetNumberOfRoots() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.RootsOfUnityTest object = new org.apache.commons.math3.complex.RootsOfUnityTest();
@@ -49,7 +49,7 @@ public class RootsOfUnityTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testComputeRoots() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.complex.RootsOfUnityTest object = new org.apache.commons.math3.complex.RootsOfUnityTest();

@@ -9,7 +9,7 @@ public class SynchronizedRandomGeneratorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMath899Sync() throws Throwable {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.random.SynchronizedRandomGeneratorTest object = new org.apache.commons.math3.random.SynchronizedRandomGeneratorTest();
@@ -17,7 +17,7 @@ public class SynchronizedRandomGeneratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAdapter() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.random.SynchronizedRandomGeneratorTest object = new org.apache.commons.math3.random.SynchronizedRandomGeneratorTest();

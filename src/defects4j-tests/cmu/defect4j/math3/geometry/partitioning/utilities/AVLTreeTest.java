@@ -9,7 +9,15 @@ public class AVLTreeTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testInsert() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest object = new org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest();
+               object.testInsert();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testDelete1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest object = new org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest();
@@ -17,7 +25,7 @@ public class AVLTreeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNavigation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest object = new org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest();
@@ -25,7 +33,7 @@ public class AVLTreeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSearch() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest object = new org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest();
@@ -33,19 +41,11 @@ public class AVLTreeTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testRepetition() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest object = new org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest();
                object.testRepetition();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testInsert() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest object = new org.apache.commons.math3.geometry.partitioning.utilities.AVLTreeTest();
-               object.testInsert();
         }
     }
 

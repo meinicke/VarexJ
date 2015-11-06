@@ -18,15 +18,6 @@
 //
 package gov.nasa.jpf.util.test;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.Error;
 import gov.nasa.jpf.JPF;
@@ -41,6 +32,16 @@ import gov.nasa.jpf.util.TypeRef;
 import gov.nasa.jpf.vm.ExceptionInfo;
 import gov.nasa.jpf.vm.NoUncaughtExceptionsProperty;
 import gov.nasa.jpf.vm.NotDeadlockedProperty;
+
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * base class for JPF unit tests. TestJPF mostly includes JPF invocations
@@ -858,10 +859,15 @@ public abstract class TestJPF implements JPFShell  {
       Property errorProperty = error.getProperty();
       if (errorProperty instanceof NoUncaughtExceptionsProperty){ 
         ExceptionInfo xi = ((NoUncaughtExceptionsProperty)errorProperty).getUncaughtExceptionInfo();
-        String xn = xi.getExceptionClassname();
-        if (!xn.equals(xClassName)) {
-          fail("JPF caught wrong exception: " + xn + ", expected: " + xClassName);
-        }
+//        String xn = xi.getExceptionClassname();
+//        if (!xn.equals(xClassName)) {
+//          fail("JPF caught wrong exception: " + xn + ", expected: " + xClassName);
+//        }
+          HashSet<String> exceptionNameSet = xi.getExceptionClassnames();
+          String xn = xi.getExceptionClassname();
+          if (!exceptionNameSet.contains(xClassName)){
+              fail("JPF caught wrong exception: " + xn + ", expected: " + xClassName);
+          }
 
         if (details != null) {
           String gotDetails = xi.getDetails();

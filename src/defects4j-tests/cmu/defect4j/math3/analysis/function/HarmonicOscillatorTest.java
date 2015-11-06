@@ -9,15 +9,7 @@ public class HarmonicOscillatorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testDerivative() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
-               object.testDerivative();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSomeValues() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
@@ -25,7 +17,7 @@ public class HarmonicOscillatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParametricUsage1() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NullArgumentException", config)) {
                org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
@@ -33,7 +25,7 @@ public class HarmonicOscillatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParametricUsage2() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
@@ -41,7 +33,7 @@ public class HarmonicOscillatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParametricUsage3() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NullArgumentException", config)) {
                org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
@@ -49,7 +41,7 @@ public class HarmonicOscillatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParametricUsage4() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
@@ -57,7 +49,7 @@ public class HarmonicOscillatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParametricValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
@@ -65,11 +57,19 @@ public class HarmonicOscillatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParametricGradient() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
                object.testParametricGradient();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testDerivative() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.function.HarmonicOscillatorTest object = new org.apache.commons.math3.analysis.function.HarmonicOscillatorTest();
+               object.testDerivative();
         }
     }
 

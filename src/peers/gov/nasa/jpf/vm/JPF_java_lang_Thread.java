@@ -189,6 +189,7 @@ public class JPF_java_lang_Thread extends NativePeer {
       }
             
 
+      // Note: already did in the init0 method
       //vm.registerThread(tiStartee);
       
       // we don't do this during thread creation because the thread isn't in
@@ -227,6 +228,7 @@ public class JPF_java_lang_Thread extends NativePeer {
   @MJI
   public void yield____V (MJIEnv env, int clsObjRef, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
+//    System.out.println(ti.getName() + " trying to yield");
     SystemState ss = env.getSystemState();
 
     if (!ti.isFirstStepInsn()) { // first time we see this (may be the only time)
@@ -466,4 +468,5 @@ static void join0 (MJIEnv env, int joineeRef, long timeout, FeatureExpr ctx){
 
     tiStop.setStopped(ctx, throwableRef);
   }
+
 }
