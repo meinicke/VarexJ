@@ -1,7 +1,7 @@
 package coverplugin;
 
 /**
- * 
+ * A colorful logger.
  * @author Jens Meinicke
  *
  */
