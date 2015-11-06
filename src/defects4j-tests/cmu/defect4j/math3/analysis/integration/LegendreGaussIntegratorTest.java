@@ -9,7 +9,15 @@ public class LegendreGaussIntegratorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testQuinticFunction() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest();
+               object.testQuinticFunction();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testExactIntegration() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest();
@@ -17,15 +25,7 @@ public class LegendreGaussIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testIssue464() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest();
-               object.testIssue464();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSinFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest();
@@ -33,11 +33,11 @@ public class LegendreGaussIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testQuinticFunction() throws Exception {
+    @Test(timeout=1000000)
+    public void testIssue464() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest object = new org.apache.commons.math3.analysis.integration.LegendreGaussIntegratorTest();
-               object.testQuinticFunction();
+               object.testIssue464();
         }
     }
 

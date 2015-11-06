@@ -9,7 +9,7 @@ public class GeometricDistributionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMoments() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.distribution.GeometricDistributionTest object = new org.apache.commons.math3.distribution.GeometricDistributionTest();
@@ -18,16 +18,7 @@ public class GeometricDistributionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testIllegalArguments() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.distribution.GeometricDistributionTest object = new org.apache.commons.math3.distribution.GeometricDistributionTest();
-               object.setUp();
-               object.testIllegalArguments();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDensities() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.distribution.GeometricDistributionTest object = new org.apache.commons.math3.distribution.GeometricDistributionTest();
@@ -36,7 +27,7 @@ public class GeometricDistributionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCumulativeProbabilities() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.distribution.GeometricDistributionTest object = new org.apache.commons.math3.distribution.GeometricDistributionTest();
@@ -45,7 +36,7 @@ public class GeometricDistributionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testInverseCumulativeProbabilities() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.distribution.GeometricDistributionTest object = new org.apache.commons.math3.distribution.GeometricDistributionTest();
@@ -54,7 +45,7 @@ public class GeometricDistributionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConsistencyAtSupportBounds() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.distribution.GeometricDistributionTest object = new org.apache.commons.math3.distribution.GeometricDistributionTest();
@@ -63,12 +54,21 @@ public class GeometricDistributionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSampling() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.distribution.GeometricDistributionTest object = new org.apache.commons.math3.distribution.GeometricDistributionTest();
                object.setUp();
                object.testSampling();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testIllegalArguments() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.distribution.GeometricDistributionTest object = new org.apache.commons.math3.distribution.GeometricDistributionTest();
+               object.setUp();
+               object.testIllegalArguments();
         }
     }
 

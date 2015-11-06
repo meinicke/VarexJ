@@ -18,20 +18,21 @@
 //
 package gov.nasa.jpf.vm;
 
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.JPFLogger;
+
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.JPFLogger;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 
  * Native peer for java.net.URLClassLoader
  */
-@SuppressWarnings("deprecation")
 public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
   static JPFLogger log = JPF.getLogger("class");
@@ -55,12 +56,20 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
     }
 
     cl.addClassPathElement(path);
+    // Always add the system classpath
+    String v = System.getProperty("sun.boot.class.path");
+    if (v != null) {
+      for (String pn : v.split(File.pathSeparator)) {
+        cl.addClassPathElement(pn);
+      }
+    }
   }
 
   @MJI
   public int findClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef, FeatureExpr ctx) {
     String typeName = env.getStringObject(ctx, nameRef);
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
+    ThreadInfo ti = env.getThreadInfo();
 
     try {
       ClassInfo ci = cl.getResolvedClassInfo( ctx, typeName);

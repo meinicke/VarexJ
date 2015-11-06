@@ -9,7 +9,7 @@ public class SubLineTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEndPoints() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -17,23 +17,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testNoSegments() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
-               object.testNoSegments();
-        }
-    }
-
-    @Test(timeout=120000)
-    public void testSeveralSegments() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
-               object.testSeveralSegments();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNoEndPoints() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -41,7 +25,23 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testNoSegments() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
+               object.testNoSegments();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testSeveralSegments() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
+               object.testSeveralSegments();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testHalfInfiniteNeg() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -49,7 +49,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testHalfInfinitePos() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -57,7 +57,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIntersectionInsideInside() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -65,7 +65,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIntersectionInsideBoundary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -73,7 +73,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIntersectionInsideOutside() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -81,7 +81,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIntersectionBoundaryBoundary() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -89,7 +89,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIntersectionBoundaryOutside() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -97,7 +97,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIntersectionOutsideOutside() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();
@@ -105,7 +105,7 @@ public class SubLineTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIntersectionNotIntersecting() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.geometry.euclidean.threed.SubLineTest object = new org.apache.commons.math3.geometry.euclidean.threed.SubLineTest();

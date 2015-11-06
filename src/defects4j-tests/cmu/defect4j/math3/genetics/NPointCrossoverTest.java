@@ -9,7 +9,7 @@ public class NPointCrossoverTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCrossover() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.genetics.NPointCrossoverTest object = new org.apache.commons.math3.genetics.NPointCrossoverTest();
@@ -17,7 +17,7 @@ public class NPointCrossoverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCrossoverDimensionMismatchException() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.genetics.NPointCrossoverTest object = new org.apache.commons.math3.genetics.NPointCrossoverTest();
@@ -25,7 +25,7 @@ public class NPointCrossoverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCrossoverInvalidFixedLengthChromosomeFirst() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.MathIllegalArgumentException", config)) {
                org.apache.commons.math3.genetics.NPointCrossoverTest object = new org.apache.commons.math3.genetics.NPointCrossoverTest();
@@ -33,7 +33,7 @@ public class NPointCrossoverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCrossoverInvalidFixedLengthChromosomeSecond() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.MathIllegalArgumentException", config)) {
                org.apache.commons.math3.genetics.NPointCrossoverTest object = new org.apache.commons.math3.genetics.NPointCrossoverTest();
@@ -41,7 +41,7 @@ public class NPointCrossoverTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNumberIsTooLargeException() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooLargeException", config)) {
                org.apache.commons.math3.genetics.NPointCrossoverTest object = new org.apache.commons.math3.genetics.NPointCrossoverTest();

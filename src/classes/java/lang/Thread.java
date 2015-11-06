@@ -171,6 +171,7 @@ public class Thread implements Runnable {
 
   public ClassLoader getContextClassLoader () {
     // <NSY>
+    // FIXME: jetty call this to load webapp classes
     return null;
   }
 

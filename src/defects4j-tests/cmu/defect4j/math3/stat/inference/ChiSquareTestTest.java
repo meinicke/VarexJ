@@ -9,7 +9,7 @@ public class ChiSquareTestTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChiSquare() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.ChiSquareTestTest object = new org.apache.commons.math3.stat.inference.ChiSquareTestTest();
@@ -17,7 +17,7 @@ public class ChiSquareTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChiSquareIndependence() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.ChiSquareTestTest object = new org.apache.commons.math3.stat.inference.ChiSquareTestTest();
@@ -25,7 +25,7 @@ public class ChiSquareTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChiSquareLargeTestStatistic() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.ChiSquareTestTest object = new org.apache.commons.math3.stat.inference.ChiSquareTestTest();
@@ -33,7 +33,7 @@ public class ChiSquareTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChiSquareZeroCount() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.ChiSquareTestTest object = new org.apache.commons.math3.stat.inference.ChiSquareTestTest();
@@ -41,7 +41,7 @@ public class ChiSquareTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChiSquareDataSetsComparisonEqualCounts() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.ChiSquareTestTest object = new org.apache.commons.math3.stat.inference.ChiSquareTestTest();
@@ -49,7 +49,7 @@ public class ChiSquareTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChiSquareDataSetsComparisonUnEqualCounts() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.ChiSquareTestTest object = new org.apache.commons.math3.stat.inference.ChiSquareTestTest();
@@ -57,7 +57,7 @@ public class ChiSquareTestTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testChiSquareDataSetsComparisonBadCounts() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.ChiSquareTestTest object = new org.apache.commons.math3.stat.inference.ChiSquareTestTest();

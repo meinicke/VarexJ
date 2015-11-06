@@ -9,7 +9,7 @@ public class MicrosphereInterpolatorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testLinearFunction2D() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.MicrosphereInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.MicrosphereInterpolatorTest();
@@ -17,7 +17,7 @@ public class MicrosphereInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testParaboloid2D() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.MicrosphereInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.MicrosphereInterpolatorTest();

@@ -9,7 +9,7 @@ public class OverlappingEventsTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOverlappingEvents0() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.events.OverlappingEventsTest object = new org.apache.commons.math3.ode.events.OverlappingEventsTest();
@@ -17,7 +17,7 @@ public class OverlappingEventsTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOverlappingEvents1() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.ode.events.OverlappingEventsTest object = new org.apache.commons.math3.ode.events.OverlappingEventsTest();

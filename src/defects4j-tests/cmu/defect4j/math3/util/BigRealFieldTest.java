@@ -9,7 +9,7 @@ public class BigRealFieldTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testZero() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.BigRealFieldTest object = new org.apache.commons.math3.util.BigRealFieldTest();
@@ -17,19 +17,19 @@ public class BigRealFieldTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testOne() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.util.BigRealFieldTest object = new org.apache.commons.math3.util.BigRealFieldTest();
-               object.testOne();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSerial() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.util.BigRealFieldTest object = new org.apache.commons.math3.util.BigRealFieldTest();
                object.testSerial();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testOne() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.util.BigRealFieldTest object = new org.apache.commons.math3.util.BigRealFieldTest();
+               object.testOne();
         }
     }
 

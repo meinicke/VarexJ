@@ -9,7 +9,7 @@ public class VectorialCovarianceTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSerial() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest object = new org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest();
@@ -17,15 +17,7 @@ public class VectorialCovarianceTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testSimplistic() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest object = new org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest();
-               object.testSimplistic();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMismatch() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest object = new org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest();
@@ -33,7 +25,15 @@ public class VectorialCovarianceTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testSimplistic() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest object = new org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest();
+               object.testSimplistic();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testBasicStats() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest object = new org.apache.commons.math3.stat.descriptive.moment.VectorialCovarianceTest();

@@ -9,7 +9,7 @@ public class OneWayAnovaTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAnovaFValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.OneWayAnovaTest object = new org.apache.commons.math3.stat.inference.OneWayAnovaTest();
@@ -17,7 +17,7 @@ public class OneWayAnovaTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAnovaPValue() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.OneWayAnovaTest object = new org.apache.commons.math3.stat.inference.OneWayAnovaTest();
@@ -25,7 +25,7 @@ public class OneWayAnovaTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAnovaPValueSummaryStatistics() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.OneWayAnovaTest object = new org.apache.commons.math3.stat.inference.OneWayAnovaTest();
@@ -33,7 +33,7 @@ public class OneWayAnovaTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAnovaTest() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.inference.OneWayAnovaTest object = new org.apache.commons.math3.stat.inference.OneWayAnovaTest();

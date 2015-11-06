@@ -9,7 +9,7 @@ public class BiDiagonalTransformerTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDimensions() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.BiDiagonalTransformerTest object = new org.apache.commons.math3.linear.BiDiagonalTransformerTest();
@@ -17,7 +17,7 @@ public class BiDiagonalTransformerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testAEqualUSVt() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.BiDiagonalTransformerTest object = new org.apache.commons.math3.linear.BiDiagonalTransformerTest();
@@ -25,7 +25,7 @@ public class BiDiagonalTransformerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUOrthogonal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.BiDiagonalTransformerTest object = new org.apache.commons.math3.linear.BiDiagonalTransformerTest();
@@ -33,7 +33,7 @@ public class BiDiagonalTransformerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testVOrthogonal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.BiDiagonalTransformerTest object = new org.apache.commons.math3.linear.BiDiagonalTransformerTest();
@@ -41,7 +41,7 @@ public class BiDiagonalTransformerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testBBiDiagonal() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.BiDiagonalTransformerTest object = new org.apache.commons.math3.linear.BiDiagonalTransformerTest();
@@ -49,7 +49,7 @@ public class BiDiagonalTransformerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSingularMatrix() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.BiDiagonalTransformerTest object = new org.apache.commons.math3.linear.BiDiagonalTransformerTest();
@@ -57,7 +57,7 @@ public class BiDiagonalTransformerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMatricesValues() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.BiDiagonalTransformerTest object = new org.apache.commons.math3.linear.BiDiagonalTransformerTest();
@@ -65,7 +65,7 @@ public class BiDiagonalTransformerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUpperOrLower() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.BiDiagonalTransformerTest object = new org.apache.commons.math3.linear.BiDiagonalTransformerTest();

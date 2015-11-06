@@ -9,7 +9,7 @@ public class GradientFunctionTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void test2DDistance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.GradientFunctionTest object = new org.apache.commons.math3.analysis.differentiation.GradientFunctionTest();
@@ -17,7 +17,7 @@ public class GradientFunctionTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void test3DDistance() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.differentiation.GradientFunctionTest object = new org.apache.commons.math3.analysis.differentiation.GradientFunctionTest();

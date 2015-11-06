@@ -18,17 +18,19 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import cmu.conditional.One;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.util.ObjectList;
+
 import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.Random;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.ObjectList;
-
 /**
  * abstract root class for configurable choice generators
  */
-@SuppressWarnings("unchecked")
 public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
 
   /**
@@ -62,7 +64,7 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
   protected ChoiceGenerator<?> prev;
 
   // the instruction that created this CG
-  protected Instruction insn;
+  protected Conditional<Instruction> insn;
 
   // and the thread that executed this insn
   protected ThreadInfo ti;
@@ -150,21 +152,27 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
     return ti;
   }
 
-  public void setInsn(Instruction insn) {
+  public void setInsn(Conditional<Instruction> insn) {
     this.insn = insn;
   }
 
-  public Instruction getInsn() {
+  public Conditional<Instruction> getInsn() {
     return insn;
   }
 
   public void setContext(ThreadInfo tiCreator) {
     ti = tiCreator;
-    insn = tiCreator.getPC().getValue();
+    insn = tiCreator.getPC();
   }
 
-  public String getSourceLocation() {
-    return insn.getSourceLocation();
+  public Conditional<String> getSourceLocation() {
+//    return insn.getSourceLocation();
+    return insn.map(new Function<Instruction, String>() {
+      @Override
+      public String apply(Instruction x) {
+        return x.getSourceLocation();
+      }
+    }).simplify();
   }
 
   public boolean supportsReordering(){
@@ -355,13 +363,11 @@ public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
    * this only returns the first attr of this type, there can be more
    * if you don't use client private types or the provided type is too general
    */
-  @SuppressWarnings("hiding")
-public <T> T getAttr(Class<T> attrType) {
+  public <T> T getAttr(Class<T> attrType) {
     return ObjectList.getFirst(attr, attrType);
   }
 
-  @SuppressWarnings("hiding")
-public <T> T getNextAttr(Class<T> attrType, Object prev) {
+  public <T> T getNextAttr(Class<T> attrType, Object prev) {
     return ObjectList.getNext(attr, attrType, prev);
   }
 
@@ -369,8 +375,7 @@ public <T> T getNextAttr(Class<T> attrType, Object prev) {
     return ObjectList.iterator(attr);
   }
 
-  @SuppressWarnings("hiding")
-public <T> ObjectList.TypedIterator<T> attrIterator(Class<T> attrType) {
+  public <T> ObjectList.TypedIterator<T> attrIterator(Class<T> attrType) {
     return ObjectList.typedIterator(attr, attrType);
   }
 

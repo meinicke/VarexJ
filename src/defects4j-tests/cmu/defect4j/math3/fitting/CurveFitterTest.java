@@ -9,7 +9,7 @@ public class CurveFitterTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMath303() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.fitting.CurveFitterTest object = new org.apache.commons.math3.fitting.CurveFitterTest();
@@ -17,7 +17,7 @@ public class CurveFitterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMath304() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.fitting.CurveFitterTest object = new org.apache.commons.math3.fitting.CurveFitterTest();
@@ -25,7 +25,7 @@ public class CurveFitterTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMath372() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.fitting.CurveFitterTest object = new org.apache.commons.math3.fitting.CurveFitterTest();

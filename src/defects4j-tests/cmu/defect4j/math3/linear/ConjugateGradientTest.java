@@ -9,7 +9,7 @@ public class ConjugateGradientTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNonSquareOperator() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.linear.NonSquareOperatorException", config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -17,7 +17,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDimensionMismatchRightHandSide() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -25,7 +25,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testDimensionMismatchSolution() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -33,7 +33,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNonPositiveDefiniteLinearOperator() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.linear.NonPositiveDefiniteOperatorException", config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -41,7 +41,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUnpreconditionedSolution() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -49,7 +49,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUnpreconditionedInPlaceSolutionWithInitialGuess() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -57,7 +57,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUnpreconditionedSolutionWithInitialGuess() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -65,7 +65,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUnpreconditionedResidual() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -73,7 +73,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNonSquarePreconditioner() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.linear.NonSquareOperatorException", config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -81,7 +81,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMismatchedOperatorDimensions() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -89,7 +89,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNonPositiveDefinitePreconditioner() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.linear.NonPositiveDefiniteOperatorException", config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -97,7 +97,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPreconditionedSolution() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -105,7 +105,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPreconditionedResidual() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -113,7 +113,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPreconditionedSolution2() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -121,7 +121,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEventManagement() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -129,7 +129,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUnpreconditionedNormOfResidual() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();
@@ -137,7 +137,7 @@ public class ConjugateGradientTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testPreconditionedNormOfResidual() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.linear.ConjugateGradientTest object = new org.apache.commons.math3.linear.ConjugateGradientTest();

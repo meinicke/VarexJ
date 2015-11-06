@@ -76,7 +76,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@SuppressWarnings("unchecked")
 	public StackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
 		if (ctx == null) {
-			throw new RuntimeException("CTX == NULL");
+			// if loading class inside jetty, the ctx is null
+			System.err.println("CAUTIOUS! CTX == NULL, creating True");
+			ctx = FeatureExprFactory.True();
+//			throw new RuntimeException("CTX == NULL");
 		}
 		length = nLocals + nOperands;
 		locals = new Conditional[nLocals];
@@ -413,15 +416,15 @@ public class StackHandler implements Cloneable, IStackHandler {
 				} else if (value instanceof Float) {
 					clone.push(Float.floatToIntBits((Float) value), isRef);
 				} else if (value instanceof Byte) {
-					clone.push(((Byte)value).intValue(), isRef);
+					clone.push(((Byte) value).intValue(), isRef);
 				} else if (value instanceof Short) {
-					clone.push((int)(Short)value, isRef);
+					clone.push((int) (Short) value, isRef);
 				} else if (value == null) {
 					clone.push(MJIEnv.NULL, isRef);
 				} else {
 					throw new RuntimeException(value + " of type " + value.getClass() + " cannot be pushed to the stack.");
 				}
-				
+
 				if (stackCTX.equivalentTo(f)) {
 					return new One<>(clone);
 				}

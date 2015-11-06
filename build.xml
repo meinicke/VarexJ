@@ -129,17 +129,17 @@
 	</target>
 
     <target name="-compile-defects4j-tests" if="have_tests" depends="-compile-annotations,-compile-main,-compile-classes">
-        <!--<mkdir dir="build/defects4j-tests" />
-        <javac srcdir="src/defects4j-tests" destdir="build/defects4j-tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}">-->
+        <mkdir dir="build/defects4j-tests" />
+        <javac srcdir="src/defects4j-tests" destdir="build/defects4j-tests" includes="**/NormalDistributionTest.java" includeantruntime="false" debug="${debug}" deprecation="${deprecation}">
             <!--<exclude name="cmu/defect4j/math3/**"/>-->
-            <!--<compilerarg value="-XDenableSunApiLintControl" />
+            <compilerarg value="-XDenableSunApiLintControl" />
             <compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked" />
             <classpath>
                 <path refid="lib.path" />
                 <pathelement location="build/annotations" />
                 <pathelement location="build/classes" />
             </classpath>
-        </javac>-->
+        </javac>
     </target>
 
 	<target name="-compile-examples" if="have_examples" depends="-compile-annotations,-compile-main">
@@ -427,6 +427,7 @@
 			<batchtest todir="build/tests">
 				<fileset dir="build/tests">
 					<exclude name="**/JPF_*.class" />
+					<exclude name="**/cmu/jetty/JettyHelloWorldTest.class"/>
 					<include name="**/*Test.class" />
 					<exclude name="**cmu/*" />
 				</fileset>
@@ -584,6 +585,176 @@
 		</junitreport>
 
 
+	</target>
+
+	<target name="test_math3_parallel" depends="build" description="run math3 test cases with 4 groups">
+		<parallel threadcount="8">
+			<echo message="running parallel"/>
+			<antcall target="test_math3_group1">
+			</antcall>
+			<antcall target="test_math3_group2">
+			</antcall>
+			<antcall target="test_math3_group3">
+            </antcall>
+			<antcall target="test_math3_group4">
+            </antcall>
+		</parallel>
+	</target>
+
+
+	<target name="test_math3_group1" description="run the group 1 of math3 tests">
+		<mkdir dir="build/defects4j-tests/group1"/>
+		<condition property="junit.usefile">
+			<!-- don't set if this is running from within an IDE that collects output -->
+			<not>
+				<isset property="netbeans.home" />
+			</not>
+		</condition>
+		<junit printsummary="on" showoutput="on" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="2048m" outputtoformatters="true">
+			<formatter type="plain" usefile="${junit.usefile}" />
+			<assertions>
+				<enable />
+			</assertions>
+			<classpath>
+				<path refid="lib.path" />
+				<!--JPF need this to run the test cases using the JPF-->
+				<pathelement location="build/defects4j-tests" />
+				<pathelement location="build/classes" />
+				<pathelement location="build/annotations" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="build/defects4j-tests/group1">
+				<fileset dir="build/defects4j-tests">
+					<include name="**/math3/analysis/*Test.class" />
+					<include name="**/math3/complex/*Test.class" />
+					<include name="**/math3/dfp/*Test.class" />
+					<include name="**/math3/distribution/*Test.class" />
+					<include name="**/math3/exception/*Test.class" />
+					<include name="**/math3/util/*Test.class"/>
+					<exclude name="**/*$*.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<junitreport todir="build/defects4j-tests/group1">
+			<fileset dir="build/defects4j-tests/group1" includes="TEST-*.xml" />
+			<report todir="build/defects4j-tests/group1" />
+		</junitreport>
+	</target>
+
+	<target name="test_math3_group2" description="run the group 2 of math3 tests" >
+		<mkdir dir="build/defects4j-tests/group2"/>
+		<condition property="junit.usefile">
+			<!-- don't set if this is running from within an IDE that collects output -->
+			<not>
+				<isset property="netbeans.home" />
+			</not>
+		</condition>
+		<junit printsummary="on" showoutput="on" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="2048m" outputtoformatters="true">
+			<formatter type="plain" usefile="${junit.usefile}" />
+			<assertions>
+				<enable />
+			</assertions>
+			<classpath>
+				<path refid="lib.path" />
+				<!--JPF need this to run the test cases using the JPF-->
+				<pathelement location="build/defects4j-tests" />
+				<pathelement location="build/classes" />
+				<pathelement location="build/annotations" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="build/defects4j-tests/group2">
+				<fileset dir="build/defects4j-tests">
+					<include name="**/math3/filter/*Test.class" />
+					<include name="**/math3/fitting/*Test.class" />
+					<include name="**/math3/fraction/*Test.class" />
+					<include name="**/math3/genetics/*Test.class" />
+					<include name="**/math3/geometry/*Test.class" />
+					<include name="**/math3/RetryRunnerTest.class"/>
+					<exclude name="**/*$*.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<junitreport todir="build/defects4j-tests/group2">
+			<fileset dir="build/defects4j-tests/group2" includes="TEST-*.xml" />
+			<report todir="build/defects4j-tests/group2" />
+		</junitreport>
+	</target>
+
+	<target name="test_math3_group3" description="run the group 3 of math3 tests">
+		<mkdir dir="build/defects4j-tests/group3"/>
+		<condition property="junit.usefile">
+			<!-- don't set if this is running from within an IDE that collects output -->
+			<not>
+				<isset property="netbeans.home" />
+			</not>
+		</condition>
+		<junit printsummary="on" showoutput="on" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="2048m" outputtoformatters="true">
+			<formatter type="plain" usefile="${junit.usefile}" />
+			<assertions>
+				<enable />
+			</assertions>
+			<classpath>
+				<path refid="lib.path" />
+				<!--JPF need this to run the test cases using the JPF-->
+				<pathelement location="build/defects4j-tests" />
+				<pathelement location="build/classes" />
+				<pathelement location="build/annotations" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="build/defects4j-tests/group3">
+				<fileset dir="build/defects4j-tests">
+					<include name="**/math3/linear/*Test.class" />
+					<include name="**/math3/ml/*Test.class" />
+					<include name="**/math3/ode/*Test.class" />
+					<include name="**/math3/optim/*Test.class" />
+					<include name="**/math3/optimization/*Test.class" />
+					<exclude name="**/*$*.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<junitreport todir="build/defects4j-tests/group3">
+			<fileset dir="build/defects4j-tests/group3" includes="TEST-*.xml" />
+			<report todir="build/defects4j-tests/group3" />
+		</junitreport>
+	</target>
+
+	<target name="test_math3_group4" description="run the group 4 of math3 tests" >
+		<echo message="running group4"/>
+		<mkdir dir="build/defects4j-tests/group4"/>
+		<condition property="junit.usefile">
+			<!-- don't set if this is running from within an IDE that collects output -->
+			<not>
+				<isset property="netbeans.home" />
+			</not>
+		</condition>
+		<junit printsummary="on" showoutput="on" haltonfailure="no" logfailedtests="true" failureproperty="test.failed" dir="${basedir}" fork="yes" forkmode="perTest" maxmemory="2048m" outputtoformatters="true">
+			<formatter type="plain" usefile="${junit.usefile}" />
+			<assertions>
+				<enable />
+			</assertions>
+			<classpath>
+				<path refid="lib.path" />
+				<!--JPF need this to run the test cases using the JPF-->
+				<pathelement location="build/defects4j-tests" />
+				<pathelement location="build/classes" />
+				<pathelement location="build/annotations" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="build/defects4j-tests/group4">
+				<fileset dir="build/defects4j-tests">
+					<include name="**/math3/primes/*Test.class" />
+					<include name="**/math3/random/*Test.class" />
+					<include name="**/math3/special/*Test.class" />
+					<include name="**/math3/stat/*Test.class" />
+					<include name="**/math3/transform/*Test.class" />
+					<exclude name="**/*$*.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<junitreport todir="build/defects4j-tests/group4">
+			<fileset dir="build/defects4j-tests/group4" includes="TEST-*.xml" />
+			<report todir="build/defects4j-tests/group4" />
+		</junitreport>
 	</target>
 
 </project>

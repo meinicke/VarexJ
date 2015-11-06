@@ -9,23 +9,15 @@ public class MidPointIntegratorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testLowAccuracy() throws Exception {
+    @Test(timeout=1000000)
+    public void testQuinticFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.MidPointIntegratorTest object = new org.apache.commons.math3.analysis.integration.MidPointIntegratorTest();
-               object.testLowAccuracy();
+               object.testQuinticFunction();
         }
     }
 
-    @Test(timeout=120000)
-    public void testParameters() throws Exception {
-        if (verifyNoPropertyViolation(config)) {
-               org.apache.commons.math3.analysis.integration.MidPointIntegratorTest object = new org.apache.commons.math3.analysis.integration.MidPointIntegratorTest();
-               object.testParameters();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testSinFunction() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.MidPointIntegratorTest object = new org.apache.commons.math3.analysis.integration.MidPointIntegratorTest();
@@ -33,11 +25,19 @@ public class MidPointIntegratorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testQuinticFunction() throws Exception {
+    @Test(timeout=1000000)
+    public void testParameters() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.integration.MidPointIntegratorTest object = new org.apache.commons.math3.analysis.integration.MidPointIntegratorTest();
-               object.testQuinticFunction();
+               object.testParameters();
+        }
+    }
+
+    @Test(timeout=1000000)
+    public void testLowAccuracy() throws Exception {
+        if (verifyNoPropertyViolation(config)) {
+               org.apache.commons.math3.analysis.integration.MidPointIntegratorTest object = new org.apache.commons.math3.analysis.integration.MidPointIntegratorTest();
+               object.testLowAccuracy();
         }
     }
 

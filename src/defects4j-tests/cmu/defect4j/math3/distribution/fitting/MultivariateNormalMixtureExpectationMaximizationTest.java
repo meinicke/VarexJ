@@ -9,7 +9,7 @@ public class MultivariateNormalMixtureExpectationMaximizationTest extends TestJP
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNonJaggedData() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
@@ -17,15 +17,7 @@ public class MultivariateNormalMixtureExpectationMaximizationTest extends TestJP
         }
     }
 
-    @Test(timeout=120000)
-    public void testNonEmptyData() throws Exception {
-        if (verifyUnhandledException("org.apache.commons.math3.exception.NotStrictlyPositiveException", config)) {
-               org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
-               object.testNonEmptyData();
-        }
-    }
-
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMultipleColumnsRequired() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooSmallException", config)) {
                org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
@@ -33,7 +25,15 @@ public class MultivariateNormalMixtureExpectationMaximizationTest extends TestJP
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
+    public void testNonEmptyData() throws Exception {
+        if (verifyUnhandledException("org.apache.commons.math3.exception.NotStrictlyPositiveException", config)) {
+               org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
+               object.testNonEmptyData();
+        }
+    }
+
+    @Test(timeout=1000000)
     public void testMaxIterationsPositive() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotStrictlyPositiveException", config)) {
                org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
@@ -41,7 +41,7 @@ public class MultivariateNormalMixtureExpectationMaximizationTest extends TestJP
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testThresholdPositive() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotStrictlyPositiveException", config)) {
                org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
@@ -49,7 +49,7 @@ public class MultivariateNormalMixtureExpectationMaximizationTest extends TestJP
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testConvergenceException() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.ConvergenceException", config)) {
                org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
@@ -57,7 +57,7 @@ public class MultivariateNormalMixtureExpectationMaximizationTest extends TestJP
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIncompatibleIntialMixture() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
@@ -65,7 +65,7 @@ public class MultivariateNormalMixtureExpectationMaximizationTest extends TestJP
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testInitialMixture() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();
@@ -73,7 +73,7 @@ public class MultivariateNormalMixtureExpectationMaximizationTest extends TestJP
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testFit() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest object = new org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximizationTest();

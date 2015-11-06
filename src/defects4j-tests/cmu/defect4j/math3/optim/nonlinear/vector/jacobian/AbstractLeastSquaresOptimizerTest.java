@@ -9,15 +9,15 @@ public class AbstractLeastSquaresOptimizerTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
-    public void testComputeSigma() throws Exception {
+    @Test(timeout=1000000)
+    public void testGetRMS() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTest object = new org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTest();
-               object.testComputeSigma();
+               object.testGetRMS();
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testGetChiSquare() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTest object = new org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTest();
@@ -25,11 +25,11 @@ public class AbstractLeastSquaresOptimizerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
-    public void testGetRMS() throws Exception {
+    @Test(timeout=1000000)
+    public void testComputeSigma() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTest object = new org.apache.commons.math3.optim.nonlinear.vector.jacobian.AbstractLeastSquaresOptimizerTest();
-               object.testGetRMS();
+               object.testComputeSigma();
         }
     }
 

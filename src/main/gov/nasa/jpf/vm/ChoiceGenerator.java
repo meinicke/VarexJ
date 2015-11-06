@@ -18,9 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
-import java.util.Comparator;
-
+import cmu.conditional.Conditional;
 import gov.nasa.jpf.util.ObjectList;
+
+import java.util.Comparator;
 
 /**
  * generic interface for configurable choice generators
@@ -96,13 +97,13 @@ public interface ChoiceGenerator<T> extends Cloneable {
 
   ThreadInfo getThreadInfo();
 
-  void setInsn(Instruction insn);
+  void setInsn(Conditional<Instruction> insn);
 
-  Instruction getInsn();
+  Conditional<Instruction> getInsn();
 
   void setContext(ThreadInfo tiCreator);
 
-  String getSourceLocation();
+  Conditional<String> getSourceLocation();
 
   boolean supportsReordering();
   
@@ -123,7 +124,7 @@ public interface ChoiceGenerator<T> extends Cloneable {
 
   boolean isCascaded();
 
-  <U extends ChoiceGenerator<?>> U getPreviousChoiceGeneratorOfType(Class<U> cls);
+  <T extends ChoiceGenerator<?>> T getPreviousChoiceGeneratorOfType(Class<T> cls);
 
   /**
    * returns the prev CG if it was registered for the same insn

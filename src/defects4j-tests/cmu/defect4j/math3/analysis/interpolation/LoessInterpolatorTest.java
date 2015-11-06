@@ -9,7 +9,7 @@ public class LoessInterpolatorTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOnOnePoint() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -17,7 +17,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOnTwoPoints() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -25,7 +25,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOnStraightLine() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -33,7 +33,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testOnDistortedSine() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -41,7 +41,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIncreasingBandwidthIncreasesSmoothness() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -49,7 +49,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIncreasingRobustnessItersIncreasesSmoothnessWithOutliers() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -57,7 +57,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testUnequalSizeArguments() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.DimensionMismatchException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -65,7 +65,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEmptyData() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NoDataException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -73,7 +73,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNonStrictlyIncreasing1() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NonMonotonicSequenceException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -81,7 +81,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNonStrictlyIncreasing2() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NonMonotonicSequenceException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -89,7 +89,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNotAllFiniteReal1() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotFiniteNumberException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -97,7 +97,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNotAllFiniteReal2() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotFiniteNumberException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -105,7 +105,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNotAllFiniteReal3() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotFiniteNumberException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -113,7 +113,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNotAllFiniteReal4() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotFiniteNumberException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -121,7 +121,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNotAllFiniteReal5() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotFiniteNumberException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -129,7 +129,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testNotAllFiniteReal6() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotFiniteNumberException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -137,7 +137,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testInsufficientBandwidth() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NumberIsTooSmallException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -145,7 +145,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCompletelyIncorrectBandwidth1() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.OutOfRangeException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -153,7 +153,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCompletelyIncorrectBandwidth2() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.OutOfRangeException", config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();
@@ -161,7 +161,7 @@ public class LoessInterpolatorTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testMath296withoutWeights() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest object = new org.apache.commons.math3.analysis.interpolation.LoessInterpolatorTest();

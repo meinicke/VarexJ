@@ -9,7 +9,7 @@ public class SimplePointCheckerTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIterationCheck() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optimization.SimplePointCheckerTest object = new org.apache.commons.math3.optimization.SimplePointCheckerTest();
@@ -17,7 +17,7 @@ public class SimplePointCheckerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIterationCheckPrecondition() throws Exception {
         if (verifyUnhandledException("org.apache.commons.math3.exception.NotStrictlyPositiveException", config)) {
                org.apache.commons.math3.optimization.SimplePointCheckerTest object = new org.apache.commons.math3.optimization.SimplePointCheckerTest();
@@ -25,7 +25,7 @@ public class SimplePointCheckerTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testIterationCheckDisabled() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.optimization.SimplePointCheckerTest object = new org.apache.commons.math3.optimization.SimplePointCheckerTest();

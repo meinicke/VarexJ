@@ -9,7 +9,7 @@ public class MedianTest extends TestJPF {
     public static void main(String[] testMethods){
         runTestsOfThisClass(testMethods);
     }
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testCopy() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.rank.MedianTest object = new org.apache.commons.math3.stat.descriptive.rank.MedianTest();
@@ -17,7 +17,7 @@ public class MedianTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEvaluation() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.rank.MedianTest object = new org.apache.commons.math3.stat.descriptive.rank.MedianTest();
@@ -25,7 +25,7 @@ public class MedianTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEvaluateArraySegment() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.rank.MedianTest object = new org.apache.commons.math3.stat.descriptive.rank.MedianTest();
@@ -33,7 +33,7 @@ public class MedianTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testEvaluateArraySegmentWeighted() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.rank.MedianTest object = new org.apache.commons.math3.stat.descriptive.rank.MedianTest();
@@ -41,7 +41,7 @@ public class MedianTest extends TestJPF {
         }
     }
 
-    @Test(timeout=120000)
+    @Test(timeout=1000000)
     public void testWeightedConsistency() throws Exception {
         if (verifyNoPropertyViolation(config)) {
                org.apache.commons.math3.stat.descriptive.rank.MedianTest object = new org.apache.commons.math3.stat.descriptive.rank.MedianTest();
