@@ -18,28 +18,25 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.BiFunction;
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.DynamicObjectArray;
-import gov.nasa.jpf.util.JPFLogger;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.locks.Condition;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.annotation.MJI;
+import gov.nasa.jpf.util.DynamicObjectArray;
+import gov.nasa.jpf.util.JPFLogger;
 
 /**
  * native peer for file descriptors, which are our basic interface to
@@ -81,12 +78,12 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
       @Override
       public Conditional<Integer> apply(FeatureExpr x, String y) {
         if (finalMode == FD_READ) {
-          return new One(openRead(y, x.and(ctx)));
+          return One.valueOf(openRead(y, x.and(ctx)));
         } else if (finalMode == FD_WRITE) {
-          return new One(openWrite(y, x.and(ctx)));
+          return One.valueOf(openWrite(y, x.and(ctx)));
         } else {
           finalEnv.throwException(ctx, "java.io.IOException", "illegal open mode: " + finalMode);
-          return new One(-1);
+          return One.valueOf(-1);
         }
       }
     });

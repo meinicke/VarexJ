@@ -396,7 +396,6 @@ public class SimpleDot extends ListenerAdapter {
   }
 
   protected String getError (Search search){
-    String e;
     Error error = search.getLastError();
     Property prop = error.getProperty();
 

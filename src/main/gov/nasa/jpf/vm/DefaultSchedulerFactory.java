@@ -140,6 +140,7 @@ public class DefaultSchedulerFactory implements SchedulerFactory {
     }
   }
 
+  @SuppressWarnings("unused")
   private void randomizeThreadList(ThreadInfo[] list) {
     int upperBound = list.length-2;  // we don't change the last ThreadInfo
     // no need to switch the order if upper bound is less than 1

@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
 
 /**
  * @author: chupanw
@@ -20,7 +18,7 @@ public class BruteForceRunner {
 
 
     public static void runJetty(int times) {
-        HashSet<Integer> set = new HashSet<>();
+//        HashSet<Integer> set = new HashSet<>();
 //        Integer[] randomArray = new Integer[times];
         Integer[] randomArray = new Integer[]{
             69, 65, 78, 79, 75, 15, 16, 87, 82, 25,

@@ -7,8 +7,9 @@ import java.io.*;
  *
  * @author: chupanw
  */
+@SuppressWarnings("unused")
 public class LOCCounter {
-    private String targetPath;
+	private String targetPath;
     private File targetFile;
 
     public static void main(String[] args) {
@@ -53,8 +54,7 @@ public class LOCCounter {
             return 0;
         }
         int count = 0;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while (reader.readLine() != null) {
                 count++;
             }

@@ -19,12 +19,11 @@
 package gov.nasa.jpf.vm;
 
 import cmu.conditional.BiFunction;
+import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
-import gov.nasa.jpf.annotation.MJI;
-import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import org.hamcrest.Condition;
+import gov.nasa.jpf.annotation.MJI;
 
 /**
  * MJI NativePeer class for java.lang.Double library abstraction
@@ -69,7 +68,7 @@ public class JPF_java_lang_Double extends NativePeer {
     return d.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Integer>>() {
       @Override
       public Conditional<Integer> apply(FeatureExpr ctx, Double x) {
-        return new One(env.newString(ctx, Double.toString(x)));
+        return new One<Integer>(env.newString(ctx, Double.toString(x)));
       }
     });
   }

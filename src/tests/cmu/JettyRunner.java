@@ -6,7 +6,8 @@ import cmu.jetty.JettyHelloWorld;
  * @author: chupanw
  */
 public class JettyRunner {
-    public static void main(String[] args) throws Exception {
+    @SuppressWarnings("static-access")
+	public static void main(String[] args) throws Exception {
         JettyHelloWorld SUT = new JettyHelloWorld();
         for (int i = 0; i < args.length; i++) {
             Boolean val = Boolean.valueOf(args[i]);

@@ -33,6 +33,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  * 
  * Native peer for java.net.URLClassLoader
  */
+@SuppressWarnings("deprecation")
 public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
 
   static JPFLogger log = JPF.getLogger("class");
@@ -69,7 +70,7 @@ public class JPF_java_net_URLClassLoader extends JPF_java_lang_ClassLoader{
   public int findClass__Ljava_lang_String_2__Ljava_lang_Class_2 (MJIEnv env, int objRef, int nameRef, FeatureExpr ctx) {
     String typeName = env.getStringObject(ctx, nameRef);
     ClassLoaderInfo cl = env.getClassLoaderInfo(objRef);
-    ThreadInfo ti = env.getThreadInfo();
+//    ThreadInfo ti = env.getThreadInfo();
 
     try {
       ClassInfo ci = cl.getResolvedClassInfo( ctx, typeName);

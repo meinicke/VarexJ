@@ -83,7 +83,7 @@ public class ChoiceTracker extends ListenerAdapter implements PublisherExtension
     excludes=ex;
   }
   
-  boolean isRelevantCG (ChoiceGenerator cg){
+  boolean isRelevantCG (ChoiceGenerator<?> cg){
     if (cgClasses == null){
       return true;
     } else {

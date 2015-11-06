@@ -8,6 +8,7 @@ import org.junit.Test;
 /**
  * @author: chupanw
  */
+@SuppressWarnings("unused")
 public class ChoiceGeneratorBaseTest extends TestJPF{
     @Conditional
     static boolean A = true;
@@ -25,7 +26,7 @@ public class ChoiceGeneratorBaseTest extends TestJPF{
         if (verifyNoPropertyViolation("+search.class=.search.RandomSearch")) {
             // Create a thread to access the same filed
             Thread t = new Thread(new Runnable() {
-                @Override
+				@Override
                 public void run() {
                     // iterate to keep the thread alive
                     for (int i=0; i < 1000; i++){

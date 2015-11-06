@@ -1,13 +1,13 @@
 package cmu;
 
-import cmu.testprograms.JVMPrevaylerTest;
 import cmu.testprograms.PrevaylerTest;
 
 /**
  * @author: chupanw
  */
 public class PrevaylerRunner {
-    public static void main(String[] args) throws Exception {
+    @SuppressWarnings("static-access")
+	public static void main(String[] args) throws Exception {
 //        JVMPrevaylerTest SUT = new JVMPrevaylerTest();
         PrevaylerTest SUT = new PrevaylerTest();
         for (int i = 0; i < args.length; i++) {

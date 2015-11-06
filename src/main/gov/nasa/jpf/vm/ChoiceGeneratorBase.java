@@ -18,19 +18,19 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Conditional;
-import cmu.conditional.Function;
-import cmu.conditional.One;
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.util.ObjectList;
-
 import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.Random;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.util.ObjectList;
+
 /**
  * abstract root class for configurable choice generators
  */
+@SuppressWarnings({"hiding","unchecked"})
 public abstract class ChoiceGeneratorBase<T> implements ChoiceGenerator<T> {
 
   /**

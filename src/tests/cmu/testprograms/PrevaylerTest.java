@@ -3,8 +3,6 @@ package cmu.testprograms;
 import java.io.File;
 import java.util.Iterator;
 
-import gov.nasa.jpf.annotation.Conditional;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
@@ -22,6 +20,8 @@ import org.prevayler.tutorial.AddTask;
 import org.prevayler.tutorial.RemoveTask;
 import org.prevayler.tutorial.Task;
 import org.prevayler.tutorial.TaskList;
+
+import gov.nasa.jpf.annotation.Conditional;
 
 public class PrevaylerTest extends ATestExample {
 
@@ -208,7 +208,7 @@ public class PrevaylerTest extends ATestExample {
 			// END SNIPPET: adding
 
 			// START SNIPPET: iterating
-			for (Iterator i = list.getTasks().iterator(); i.hasNext();) {
+			for (Iterator<?> i = list.getTasks().iterator(); i.hasNext();) {
 				Task t = (Task) i.next();
 				System.out.println("Task: " + t.getDescription() + ", "
 						+ t.getPriority());

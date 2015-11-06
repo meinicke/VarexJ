@@ -66,7 +66,8 @@ public class JVMPrevaylerTest {
         System.out.println(prevayler.clock().time());
     }
 
-    private String clearTempFolder(String folderName) {
+    @SuppressWarnings("unused")
+	private String clearTempFolder(String folderName) {
         File tempFolder = new File(folderName);
         boolean cleared = true;
         if (tempFolder.exists()) {

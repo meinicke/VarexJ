@@ -124,7 +124,8 @@ public interface ChoiceGenerator<T> extends Cloneable {
 
   boolean isCascaded();
 
-  <T extends ChoiceGenerator<?>> T getPreviousChoiceGeneratorOfType(Class<T> cls);
+  @SuppressWarnings("hiding")
+<T extends ChoiceGenerator<?>> T getPreviousChoiceGeneratorOfType(Class<T> cls);
 
   /**
    * returns the prev CG if it was registered for the same insn

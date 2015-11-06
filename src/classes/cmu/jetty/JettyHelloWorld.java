@@ -112,7 +112,8 @@ public class JettyHelloWorld extends AbstractHandler {
         }
     }
 
-    private static void setLogging() throws IOException {
+    @SuppressWarnings("deprecation")
+	private static void setLogging() throws IOException {
         RolloverFileOutputStream outputStream = new RolloverFileOutputStream("./jetty-resources/logs/stderrout.log", false, 90, TimeZone.getTimeZone("GMT"));
         String serverLogName = outputStream.getDatedFilename();
         PrintStream serverLog = new PrintStream(outputStream);
