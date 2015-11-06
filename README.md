@@ -1,9 +1,10 @@
+[![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=master)](https://travis-ci.org/meinicke/VarexJ)
+
 # Overview
 
 VarexJ is a variability-aware interpreter for Java(7) bytecode based on Java Pathfinder v7.0 (rev 1155+) see: http://javapathfinder.sourceforge.net/.
 
 JDK 7 is required.
-
 
 # Build:
 
