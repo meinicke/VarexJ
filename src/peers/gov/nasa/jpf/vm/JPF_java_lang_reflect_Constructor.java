@@ -63,7 +63,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     int eidx = env.newObject(ctx, ciCtor);
     ElementInfo ei = env.getModifiableElementInfo(eidx);
     
-    ei.setIntField(ctx, "regIdx", new One<>(regIdx));
+    ei.setIntField(ctx, "regIdx", One.valueOf(regIdx));
     return eidx;
   }
 

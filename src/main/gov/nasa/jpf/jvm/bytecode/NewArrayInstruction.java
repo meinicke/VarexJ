@@ -30,7 +30,7 @@ public abstract class NewArrayInstruction extends JVMInstruction implements Allo
   protected String type;
   protected String typeName; // deferred initialization
   
-  protected Conditional<Integer> arrayLength = new One<>(-1);
+  protected Conditional<Integer> arrayLength = One.valueOf(-1);
 
   /**
    * this only makes sense post-execution since the array dimension
@@ -55,6 +55,6 @@ public abstract class NewArrayInstruction extends JVMInstruction implements Allo
   
   @Override
   public void cleanupTransients(){
-    arrayLength = new One<>(-1);
+    arrayLength = One.valueOf(-1);
   }
 }

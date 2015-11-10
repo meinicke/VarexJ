@@ -38,7 +38,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
   @MJI
   public void $clinit (MJIEnv env, int rcls, FeatureExpr ctx) {
     System.out.println("# entering native <clinit>");
-    env.setStaticIntField(ctx, rcls, "sdata", new One<>(42));
+    env.setStaticIntField(ctx, rcls, "sdata", One.valueOf(42));
   }
 
   // intercept MJITest(int i) ctor
@@ -49,7 +49,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     // better approach is to refactor this into a separate native method
     // (say init0(..))
     System.out.println("# entering native <init>(I)");
-    env.setIntField(ctx, robj, "idata", new One<>(i));
+    env.setIntField(ctx, robj, "idata", One.valueOf(i));
   }
 
   @MJI
@@ -62,7 +62,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
       int ea = env.newIntArray(size2);
 
       if (i == 1) {
-        env.setIntArrayElement(ctx, ea, 1, new One<>(42));
+        env.setIntArrayElement(ctx, ea, 1, One.valueOf(42));
       }
 
       env.setReferenceArrayElement(ctx, ar, i, new One<>(ea));
@@ -78,7 +78,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
 
     int ar = env.newIntArray(size);
 
-    env.setIntArrayElement(ctx, ar, 1, new One<>(1));
+    env.setIntArrayElement(ctx, ar, 1, One.valueOf(1));
 
     return ar;
   }

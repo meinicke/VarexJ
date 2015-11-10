@@ -132,7 +132,7 @@ public class StopWatchFuzzer extends ListenerAdapter {
           frame.popLong(FeatureExprFactory.True()).getValue();
           frame.popLong(FeatureExprFactory.True()).getValue();
           
-          frame.push(FeatureExprFactory.True(), new One<>(choice));
+          frame.push(FeatureExprFactory.True(), One.valueOf(choice));
           
           ti.skipInstruction(insnToExecute.getNext());
         }

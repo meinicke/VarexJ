@@ -93,9 +93,9 @@ public class Utilities {
   public static void setJPFPrimitiveField (FeatureExpr ctx, ElementInfo ei, int index, Field fld, Object JVMObj) throws IllegalAccessException, ConversionException{
     Fields fields = ei.getFields();
     if (fld.getType().getName().equals("boolean")){
-      fields.setBooleanValue(ctx, index, new One<>(fld.getBoolean(JVMObj)));
+      fields.setBooleanValue(ctx, index, One.valueOf(fld.getBoolean(JVMObj)));
     } else if (fld.getType().getName().equals("byte")) {
-      fields.setByteValue(ctx, index, new One<>(fld.getByte(JVMObj)));
+      fields.setByteValue(ctx, index, One.valueOf(fld.getByte(JVMObj)));
     } else if (fld.getType().getName().equals("int")) {
       fields.setIntValue(ctx, index, new One<>(fld.getInt(JVMObj)));
     } else if (fld.getType().getName().equals("short")) {
@@ -103,7 +103,7 @@ public class Utilities {
     } else if (fld.getType().getName().equals("long")) {
       fields.setLongValue(ctx, index, new One<>(fld.getLong(JVMObj)));
     } else if (fld.getType().getName().equals("char")) {
-      fields.setCharValue(ctx, index, new One<>(fld.getChar(JVMObj)));
+      fields.setCharValue(ctx, index, One.valueOf(fld.getChar(JVMObj)));
     } else if (fld.getType().getName().equals("float")) {
       fields.setFloatValue(ctx, index, new One<>(fld.getFloat(JVMObj)));
     } else if (fld.getType().getName().equals("double")) {

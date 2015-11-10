@@ -290,7 +290,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     
     ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, IntegerFieldInfo.class, "int", true, ctx);
     if (ei != null){
-      ei.setIntField(ctx,fi, new One<>(val));
+      ei.setIntField(ctx,fi, One.valueOf(val));
     }
   }
 

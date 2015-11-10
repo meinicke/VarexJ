@@ -47,7 +47,7 @@ public class BooleanFieldInfo extends SingleSlotFieldInfo {
   }
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setBooleanValue(ctx, storageOffset, new One<>(init));
+    ei.getFields().setBooleanValue(ctx, storageOffset, One.valueOf(init));
   }
 
   public boolean isBooleanField() {
@@ -56,11 +56,11 @@ public class BooleanFieldInfo extends SingleSlotFieldInfo {
 
   public Object getValueObject (Fields f){
     Conditional<Integer> i = f.getIntValue(storageOffset);
-    return i.map(new Function<Integer, Object>() {
+    return i.mapr(new Function<Integer, Conditional<Boolean>>() {
 
 		@Override
-		public Object apply(Integer i) {
-			return Boolean.valueOf(i != 0);
+		public Conditional<Boolean> apply(Integer i) {
+			return One.valueOf(Boolean.valueOf(i != 0));
 		}
     	
 	});

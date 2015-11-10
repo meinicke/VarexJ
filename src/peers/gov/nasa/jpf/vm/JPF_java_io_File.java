@@ -165,11 +165,11 @@ public class JPF_java_io_File extends NativePeer {
   @MJI
   public Conditional<Boolean> delete____Z (MJIEnv env, int objref, FeatureExpr ctx) {
 	  Conditional<File> file = getFile(env,objref, ctx).simplify(ctx);
-	  return file.map(new Function<File, Boolean>() {
+	  return file.mapr(new Function<File, Conditional<Boolean>>() {
 
 		@Override
-		public Boolean apply(File file) {
-			return file.delete();
+		public Conditional<Boolean> apply(File file) {
+			return One.valueOf(file.delete());
 		}
 		  
 	  });
@@ -270,7 +270,7 @@ public class JPF_java_io_File extends NativePeer {
 	  final File file = getFile(env,objref, ctx).getValue();
 	  Conditional<File> toFile = getFile(env,toRef, ctx).simplify(ctx);
 	  if (toFile instanceof One) {
-		  return new One<>(file.renameTo(toFile.getValue()));  
+		  return One.valueOf(file.renameTo(toFile.getValue()));  
 	  }
 	  
 	  Conditional<Boolean> returnValue = toFile.map(new Function<File, Boolean>() {

@@ -74,8 +74,8 @@ public class ConditionalTest {
 	@Test
 	public void testMap1() throws Exception {
 		Conditional<Integer> v1 = Choice(fa, One(1), One(2));
-		v1 = v1.map(new Function<Integer, Integer>() {
-			public Integer apply(Integer x) {return x+1;}
+		v1 = v1.mapr(new Function<Integer, Conditional<Integer>>() {
+			public Conditional<Integer> apply(Integer x) {return One.valueOf(x+1);}
 		}
 		);
 		assertEquals(Choice(fa, One(2), One(3)), v1);
@@ -84,8 +84,8 @@ public class ConditionalTest {
 	@Test
 	public void testMap2() throws Exception {
 		Conditional<Integer> v1 = Choice(fa, Choice(fb, One(1), One(2)), Choice(fb, Choice(fc, One(3), One(4)), One(5)));
-		v1 = v1.map(new Function<Integer, Integer>() {
-			public Integer apply(Integer x) {return x+1;}
+		v1 = v1.mapr(new Function<Integer, Conditional<Integer>>() {
+			public Conditional<Integer> apply(Integer x) {return One.valueOf(x+1);}
 		}
 		);
 		assertEquals(Choice(fa, Choice(fb, One(2), One(3)), Choice(fb, Choice(fc, One(4), One(5)), One(6))), v1);
@@ -186,7 +186,7 @@ public class ConditionalTest {
 	}
 
 	private static One<Integer> One(int i) {
-		return new One<>(i);
+		return One.valueOf(i);
 	}
 	
 	@Ignore @Test

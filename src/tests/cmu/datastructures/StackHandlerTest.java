@@ -52,7 +52,7 @@ public class StackHandlerTest {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr feature = FeatureExprFactory.createDefinedExternal("Feature" + System.currentTimeMillis());
 
-		Conditional<Integer> n1 = new One<>(20);
+		Conditional<Integer> n1 = One.valueOf(20);
 		stack.push(FeatureExprFactory.True(), n1, true);
 
 		Conditional<Integer> n2 = new One<>(1000);
@@ -61,8 +61,8 @@ public class StackHandlerTest {
 		Conditional<Integer> peek = stack.peek(FeatureExprFactory.True());
 		assertEquals(n2, peek.simplify(feature));
 		assertEquals(n1, peek.simplify(feature.not()));
-		assertEquals(One.FALSE, new One<>(stack.isRef(feature, 0)));
-		assertEquals(One.TRUE, new One<>(stack.isRef(feature.not(), 0)));
+		assertEquals(One.FALSE, One.valueOf(stack.isRef(feature, 0)));
+		assertEquals(One.TRUE, One.valueOf(stack.isRef(feature.not(), 0)));
 
 		assertEquals(2, stack.getStackWidth());
 		Conditional<Integer> pop = stack.pop(feature);
@@ -75,7 +75,7 @@ public class StackHandlerTest {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
 
-		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+		Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 		stack.push(FeatureExprFactory.True(), n1, true);
 		assertEquals(1, stack.getStackWidth());
 		Conditional<Integer> n2 = new One<>((int) (Math.random() * 1000));
@@ -90,7 +90,7 @@ public class StackHandlerTest {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
 
-		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+		Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 		stack.push(FeatureExprFactory.True(), n1, true);
 		assertEquals(1, stack.getStackWidth());
 		Conditional<Integer> n2 = new One<>((int) (Math.random() * 1000));
@@ -104,7 +104,7 @@ public class StackHandlerTest {
 	public void isRefLocalTest() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 0);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+		Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 		stack.setLocal(f1, 0, n1, true);
 		stack.setLocal(f1.not(), 0, n1, false);
 		assertTrue(stack.isRefLocal(f1, 0));
@@ -128,7 +128,7 @@ public class StackHandlerTest {
 	public void test4() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10));
+		Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10));
 		stack.push(FeatureExprFactory.True(), n1, true);
 
 		Conditional<Integer> n2 = new One<>((int) (Math.random() * 1000 + 10));
@@ -143,7 +143,7 @@ public class StackHandlerTest {
 		Conditional<Integer> res1 = stack.getLocal(f1, 0);
 		Conditional<Integer> res2 = stack.getLocal(f1.not(), 0);
 		assertEquals(n1, res1);
-		assertEquals(new One<>(MJIEnv.NULL), res2);
+		assertEquals(One.valueOf(MJIEnv.NULL), res2);
 
 		stack.pushLocal(f1, 1);
 		Conditional<Integer> peek = stack.peek(FeatureExprFactory.True());
@@ -155,7 +155,7 @@ public class StackHandlerTest {
 	public void hasAnyRefTest() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 1, 1);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10));
+		Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10));
 		stack.push(f1, n1, true);
 
 		assertTrue(stack.hasAnyRef(f1));
@@ -181,7 +181,7 @@ public class StackHandlerTest {
 	public void popTest() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+		Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 		stack.push(FeatureExprFactory.True(), n1, true);
 		Conditional<Integer> res = stack.pop(f1);
 		assertEquals(n1, res);
@@ -193,11 +193,11 @@ public class StackHandlerTest {
 		int n = (int) (Math.random() * 10 + 1);
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, n);
 		for (int i = 0; i < n; i++) {
-			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 			stack.push(f1, n1, Math.random() < 0.5);
 		}
 		stack.pop(f1, n);
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 	
 	@Test
@@ -206,15 +206,15 @@ public class StackHandlerTest {
 		int n = (int) (Math.random() * 10 + 1);
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, n);
 		for (int i = 0; i < n; i++) {
-			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 			stack.push(f1, n1, Math.random() < 0.5);
 		}
-		Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+		Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 		stack.push(f1.not(), n1);
 		
 		stack.pop(f1, n);
 		assertEquals(n1, stack.pop(f1.not()));
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 	
 	@Test
@@ -223,7 +223,7 @@ public class StackHandlerTest {
 		int n = (int) (Math.random() * 10 + 1);
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, n);
 		for (int i = 0; i < n; i++) {
-			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 			stack.push(FeatureExprFactory.True(), n1, Math.random() < 0.5);
 		}
 		System.out.println(stack);
@@ -242,15 +242,15 @@ public class StackHandlerTest {
 			IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), m, n);
 			assertEquals(stack, stack.clone());
 			for (int i = 0; i < m; i++) {
-				Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+				Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 				stack.setLocal(f1, i, n1, Math.random() < 0.5);
-				Conditional<Integer> n2 = new One<>((int) (Math.random() * 10 + 1));
+				Conditional<Integer> n2 = One.valueOf((int) (Math.random() * 10 + 1));
 				stack.setLocal(f1.not(), i, n2, Math.random() < 0.5);
 			}
 			for (int i = 0; i < n; i++) {
-				Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 100));
+				Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 100));
 				stack.push(f1, n1, Math.random() < 0.5);
-				Conditional<Integer> n2 = new One<>((int) (Math.random() * 10 + 100));
+				Conditional<Integer> n2 = One.valueOf((int) (Math.random() * 10 + 100));
 				stack.push(f1.not(), n2, Math.random() < 0.5);
 			}
 			IStackHandler clone = stack.clone();
@@ -275,18 +275,18 @@ public class StackHandlerTest {
 			if (i == 2) {
 				continue;
 			}
-			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 			stack.setLocal(f1, i, n1, Math.random() < 0.5);
-			Conditional<Integer> n2 = new One<>((int) (Math.random() * 10 + 1));
+			Conditional<Integer> n2 = One.valueOf((int) (Math.random() * 10 + 1));
 			stack.setLocal(f1.not(), i, n2, Math.random() < 0.5);
 		}
 		for (int i = 0; i < n; i++) {
 			if (i == 3) {
 				continue;
 			}
-			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 100));
+			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 100));
 			stack.push(f1, n1, Math.random() < 0.5);
-			Conditional<Integer> n2 = new One<>((int) (Math.random() * 10 + 100));
+			Conditional<Integer> n2 = One.valueOf((int) (Math.random() * 10 + 100));
 			stack.push(f1.not(), n2, Math.random() < 0.5);
 		}
 		
@@ -303,15 +303,15 @@ public class StackHandlerTest {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), m, n);
 		assertEquals(stack, stack.clone());
 		for (int i = 0; i < m; i++) {
-			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 1));
+			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 			stack.setLocal(f1, i, n1, Math.random() < 0.5);
-			Conditional<Integer> n2 = new One<>((int) (Math.random() * 10 + 1));
+			Conditional<Integer> n2 = One.valueOf((int) (Math.random() * 10 + 1));
 			stack.setLocal(f1.not(), i, n2, Math.random() < 0.5);
 		}
 		for (int i = 0; i < n; i++) {
-			Conditional<Integer> n1 = new One<>((int) (Math.random() * 10 + 100));
+			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 100));
 			stack.push(f1, n1, Math.random() < 0.5);
-			Conditional<Integer> n2 = new One<>((int) (Math.random() * 10 + 100));
+			Conditional<Integer> n2 = One.valueOf((int) (Math.random() * 10 + 100));
 			System.out.println(stack);
 			stack.push(f1.not(), n2, Math.random() < 0.5);
 		}
@@ -352,8 +352,8 @@ public class StackHandlerTest {
 	public void dup_x1_test() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 3);
 		FeatureExpr ctx = FeatureExprFactory.True();
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
 
@@ -362,15 +362,15 @@ public class StackHandlerTest {
 		assertEquals(A, stack.pop(ctx));
 		assertEquals(B, stack.pop(ctx));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	@Test
 	public void dup_x1_test_conditional() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 3);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
 
@@ -383,17 +383,17 @@ public class StackHandlerTest {
 		assertEquals(B, stack.pop(f1.not()));
 		assertEquals(A, stack.pop(f1.not()));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	@Test
 	public void dup2_x2_test() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 6);
 		FeatureExpr ctx = FeatureExprFactory.True();
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
-		Conditional<Integer> C = new One<>(3);
-		Conditional<Integer> D = new One<>(4);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
+		Conditional<Integer> C = One.valueOf(3);
+		Conditional<Integer> D = One.valueOf(4);
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
 		stack.push(FeatureExprFactory.True(), C, true);
@@ -408,17 +408,17 @@ public class StackHandlerTest {
 		assertEquals(D, stack.pop(ctx));
 		assertEquals(C, stack.pop(ctx));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	@Test
 	public void dup2_x2_test_conditional() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 6);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
-		Conditional<Integer> C = new One<>(3);
-		Conditional<Integer> D = new One<>(4);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
+		Conditional<Integer> C = One.valueOf(3);
+		Conditional<Integer> D = One.valueOf(4);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -439,7 +439,7 @@ public class StackHandlerTest {
 		assertEquals(B, stack.pop(ctx.not()));
 		assertEquals(A, stack.pop(ctx.not()));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -449,9 +449,9 @@ public class StackHandlerTest {
 	public void dup2_x1_test() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.True();
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
-		Conditional<Integer> C = new One<>(3);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
+		Conditional<Integer> C = One.valueOf(3);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -465,7 +465,7 @@ public class StackHandlerTest {
 		assertEquals(C, stack.pop(ctx));
 		assertEquals(B, stack.pop(ctx));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -475,9 +475,9 @@ public class StackHandlerTest {
 	public void dup2_x1_test_conditional() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
-		Conditional<Integer> C = new One<>(3);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
+		Conditional<Integer> C = One.valueOf(3);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -495,7 +495,7 @@ public class StackHandlerTest {
 		assertEquals(B, stack.pop(ctx.not()));
 		assertEquals(A, stack.pop(ctx.not()));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -505,8 +505,8 @@ public class StackHandlerTest {
 	public void dup2_test() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.True();
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -518,7 +518,7 @@ public class StackHandlerTest {
 		assertEquals(B, stack.pop(ctx));
 		assertEquals(A, stack.pop(ctx));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -528,8 +528,8 @@ public class StackHandlerTest {
 	public void dup2_test_conditional() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -544,7 +544,7 @@ public class StackHandlerTest {
 		assertEquals(B, stack.pop(ctx.not()));
 		assertEquals(A, stack.pop(ctx.not()));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -554,7 +554,7 @@ public class StackHandlerTest {
 	public void dup_test() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.True();
-		Conditional<Integer> A = new One<>(1);
+		Conditional<Integer> A = One.valueOf(1);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		System.out.println(stack);
@@ -563,7 +563,7 @@ public class StackHandlerTest {
 		assertEquals(A, stack.pop(ctx));
 		assertEquals(A, stack.pop(ctx));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -573,7 +573,7 @@ public class StackHandlerTest {
 	public void dup_test_conditional() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> A = new One<>(1);
+		Conditional<Integer> A = One.valueOf(1);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		System.out.println(stack);
@@ -585,7 +585,7 @@ public class StackHandlerTest {
 		System.out.println(stack);
 		assertEquals(A, stack.pop(ctx.not()));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -595,9 +595,9 @@ public class StackHandlerTest {
 	public void dup_x2_test() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 5);
 		FeatureExpr ctx = FeatureExprFactory.True();
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
-		Conditional<Integer> C = new One<>(3);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
+		Conditional<Integer> C = One.valueOf(3);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -611,7 +611,7 @@ public class StackHandlerTest {
 		assertEquals(C, stack.pop(ctx));
 		assertEquals(B, stack.pop(ctx));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -621,9 +621,9 @@ public class StackHandlerTest {
 	public void dup_x2_test_conditional() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 4);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
-		Conditional<Integer> C = new One<>(3);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
+		Conditional<Integer> C = One.valueOf(3);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -640,7 +640,7 @@ public class StackHandlerTest {
 		assertEquals(B, stack.pop(ctx.not()));
 		assertEquals(A, stack.pop(ctx.not()));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -650,8 +650,8 @@ public class StackHandlerTest {
 	public void swap_test() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.True();
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -661,7 +661,7 @@ public class StackHandlerTest {
 		assertEquals(A, stack.pop(ctx));
 		assertEquals(B, stack.pop(ctx));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	/**
@@ -671,8 +671,8 @@ public class StackHandlerTest {
 	public void swap_test_conditional() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 2);
 		FeatureExpr ctx = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		Conditional<Integer> A = new One<>(1);
-		Conditional<Integer> B = new One<>(2);
+		Conditional<Integer> A = One.valueOf(1);
+		Conditional<Integer> B = One.valueOf(2);
 
 		stack.push(FeatureExprFactory.True(), A, true);
 		stack.push(FeatureExprFactory.True(), B, false);
@@ -685,7 +685,7 @@ public class StackHandlerTest {
 		assertEquals(B, stack.pop(ctx.not()));
 		assertEquals(A, stack.pop(ctx.not()));
 
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	@Test
@@ -700,7 +700,7 @@ public class StackHandlerTest {
 
 		Conditional<Long> pop = stack.popLong(ctx);
 		assertEquals(n1, pop);
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	@Test
@@ -716,7 +716,7 @@ public class StackHandlerTest {
 
 		Conditional<Double> pop = stack.popDouble(ctx);
 		assertEquals(new One<>(d), pop);
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	@Test
@@ -731,7 +731,7 @@ public class StackHandlerTest {
 
 		Conditional<Float> pop = stack.popFloat(ctx);
 		assertEquals(n1, pop);
-		assertEquals(new One<>(-1), stack.getTop());
+		assertEquals(One.valueOf(-1), stack.getTop());
 	}
 
 	@Test
@@ -770,10 +770,10 @@ public class StackHandlerTest {
 		FeatureExpr f2 = FeatureExprFactory.createDefinedExternal("f2" + System.currentTimeMillis());
 		
 		IStackHandler stack = StackHandlerFactory.createStack(f1, 0, 4);
-		stack.push(f1, new One<>(42), false);
+		stack.push(f1, One.valueOf(42), false);
 		assertEquals(1, stack.getStackWidth());
 		System.out.println(stack);
-		stack.push(f2, new One<>(43), false);
+		stack.push(f2, One.valueOf(43), false);
 		
 		assertEquals(2, stack.getStackWidth());
 		System.out.println(stack);
@@ -783,8 +783,8 @@ public class StackHandlerTest {
 	public void ctxTest2() throws Exception {
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
 		IStackHandler stack = StackHandlerFactory.createStack(f1, 0, 4);
-		stack.push(f1, new One<>(42), false);
-		stack.push(f1, new One<>(43), true);
+		stack.push(f1, One.valueOf(42), false);
+		stack.push(f1, One.valueOf(43), true);
 		assertEquals(1, stack.getStackWidth());
 		
 		System.out.println(stack);
@@ -798,9 +798,9 @@ public class StackHandlerTest {
 	public void storeOperandTest() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
-		stack.push(FeatureExprFactory.True(), new One<>(42), true);
+		stack.push(FeatureExprFactory.True(), One.valueOf(42), true);
 		stack.storeOperand(f1, 0);
-		assertEquals(new One<>(42), stack.pop(f1.not()));
+		assertEquals(One.valueOf(42), stack.pop(f1.not()));
 	}
 	
 	/**

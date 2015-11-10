@@ -1899,7 +1899,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     ElementInfo eiClsName = heap.newSystemString(name, ti, clsObjRef);
     ei.setReferenceField(FeatureExprFactory.True(), "name", new One<>(eiClsName.getObjectRef()));
 
-    ei.setBooleanField(ctx, "isPrimitive", new One<>(isPrimitive()));
+    ei.setBooleanField(ctx, "isPrimitive", One.valueOf(isPrimitive()));
     
     // setting the ID_FIELD is done in registerClass once we have a StaticElementInfo
 
@@ -1965,7 +1965,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     ElementInfo ei = createClassObject(ctx, ti);
     
     sei.setClassObjectRef(ei.getObjectRef());
-    ei.setIntField(ctx, ID_FIELD, new One<>(id));      
+    ei.setIntField(ctx, ID_FIELD, One.valueOf(id));      
     
     return ei;
   }

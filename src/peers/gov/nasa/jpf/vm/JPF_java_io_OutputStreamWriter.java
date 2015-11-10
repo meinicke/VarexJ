@@ -66,7 +66,7 @@ public class JPF_java_io_OutputStreamWriter extends NativePeer {
     
     int n = out.position();
     for (int i=0; i<n; i++){
-      env.setByteArrayElement(ctx,bref,i, new One<>(out.get(i)));
+      env.setByteArrayElement(ctx,bref,i, One.valueOf(out.get(i)));
     }
     
     return n;

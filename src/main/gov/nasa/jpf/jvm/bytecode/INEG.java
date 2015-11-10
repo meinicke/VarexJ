@@ -36,7 +36,7 @@ public class INEG extends JVMInstruction {
 		
 		@Override
 		public Conditional<Integer> apply(Integer x) {
-			return One.valueOf(-x);
+			return new One<>(-x);
 		}
 	};
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {

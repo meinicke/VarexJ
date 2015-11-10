@@ -20,6 +20,7 @@
 package gov.nasa.jpf.vm;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
@@ -34,14 +35,12 @@ import gov.nasa.jpf.util.IntVector;
 public class ByteArrayFields extends ArrayFields {
 
   Conditional<Byte>[] values;
-  private static final One<Byte> init = new One<>((byte)0);
+  private static final One<Byte> init = One.valueOf((byte)0);
   
   @SuppressWarnings("unchecked")
   public ByteArrayFields (int length) {
-    values = new Conditional[length];
-    for (int i = 0; i < length; i++) {
-    	values[i] = init;
-    }
+	  values = new Conditional[length];
+	  Arrays.fill(values, init);
   }
 
   public Conditional<Byte>[] asByteArray() {

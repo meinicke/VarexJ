@@ -128,28 +128,66 @@ public class One<T> extends Conditional<T> implements Cloneable {
 		return 1;
 	}
 	
+	/*################################################
+	 * cache methods for int, byte, char
+	 */
+	
 	public static One<Boolean> valueOf(boolean value) {
 		return value ? TRUE : FALSE;
 	}
 	
+	/**
+	 * Only use this for values: -128 <= x <= 128 
+	 * @return Returns a cached One<Integer>
+	 */
 	public static One<Integer> valueOf(int value) {
-		if (value >= IntegerCache.low && value <= IntegerCache.high) {
-			return IntegerCache.cache[value - IntegerCache.low];
-		}
-		return new One<>(value);
+		return IntegerCache.cache[value + 128];
 	}
 
 	@SuppressWarnings("unchecked")
 	private static class IntegerCache {
-		static final int low = -128;
-		static final int high = 1024;
-		static final One<Integer>[] cache;
+		static final One<Integer>[] cache = new One[128- (-128) + 1];
 
 		static {
-			cache = new One[high - low + 1];
-			int j = low;
-			for (int k = 0; k < cache.length; ++k)
+			int j = -128;
+			for (int k = 0; k < cache.length; ++k) {
 				cache[k] = new One<>(Integer.valueOf(j++));
+			}
 		}
 	}
+		
+	public static One<Byte> valueOf(byte value) {
+		return ByteCache.cache[value - Byte.MIN_VALUE];
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static class ByteCache {
+		static final One<Byte>[] cache = new One[-Byte.MIN_VALUE + Byte.MAX_VALUE + 1];
+
+		static {
+			byte j = Byte.MIN_VALUE;
+			for (int k = 0; k < cache.length; ++k) {
+				cache[k] = new One<>(Byte.valueOf(j++));
+			}
+		}
+	}
+	
+	public static One<Character> valueOf(char c) {
+		if (c <= 127) {
+			return CharacterCache.cache[(int)c];
+		}
+		return new One<>(c);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static class CharacterCache {
+		static final One<Character>[] cache = new One[127 + 1];
+
+		static {
+			for (int k = 0; k < cache.length; k++) {
+				cache[k] = new One<>(Character.valueOf((char)k));
+			}
+		}
+	}
+
 }

@@ -52,7 +52,7 @@ public class IDIV extends JVMInstruction {
 
 						@Override
 						public Conditional<Integer> apply(Integer v2) {
-							return One.valueOf(v2.intValue() / v1.intValue());
+							return new One<>(v2.intValue() / v1.intValue());
 						}
 						
 					}));

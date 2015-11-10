@@ -130,7 +130,7 @@ public final class IntVector implements Comparable<IntVector>, Cloneable {
       ensureCapacity(size + length);
     }
     for (int i = size; i < newSize; i++) {
-      data[i] = new One<>(0);
+      data[i] = One.valueOf(0);
     }
     size = newSize;
   }
@@ -429,7 +429,7 @@ public final class IntVector implements Comparable<IntVector>, Cloneable {
     } else {
       while (size > sz) {
         size--;
-        data[size] = new One<>(0);
+        data[size] = One.valueOf(0);
       }
     }
   }

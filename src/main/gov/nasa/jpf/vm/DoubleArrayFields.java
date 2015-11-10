@@ -20,6 +20,7 @@ package gov.nasa.jpf.vm;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cmu.conditional.ChoiceFactory;
@@ -34,14 +35,14 @@ import gov.nasa.jpf.util.IntVector;
  */
 public class DoubleArrayFields extends ArrayFields {
 
+	private static One<Double> NULL_VALUE = new One<>(0.0);
+	
   Conditional<Double>[] values;
 
   @SuppressWarnings("unchecked")
   public DoubleArrayFields (int length) {
     values = new Conditional[length];
-    for (int i = 0; i < values.length; i++) {
-		values[i] = new One<>(0.0);
-	}
+    Arrays.fill(values, NULL_VALUE);
   }
 
   public Conditional<Double>[] asDoubleArray() {// TODO jens return values;
@@ -57,7 +58,7 @@ public class DoubleArrayFields extends ArrayFields {
   }
 
   public Conditional<Integer> arrayLength() {
-    return new One<>(values.length);
+    return One.valueOf(values.length);
   }
 
   public int getHeapSize() {  // in bytes

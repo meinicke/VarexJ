@@ -19,6 +19,8 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -36,7 +38,14 @@ public class I2B extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     Conditional<Integer> v = frame.pop(ctx);
     
-    frame.push(ctx, mapr2(v, null));
+    frame.push(ctx, v.mapr(new Function<Integer, Conditional<Byte>>() {
+
+		@Override
+		public Conditional<Byte> apply(final Integer v) {
+			return One.valueOf((byte)v.intValue());
+		}
+
+	}).simplify());
 
     return getNext(ctx, ti);
   }

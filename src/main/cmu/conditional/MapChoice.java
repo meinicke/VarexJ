@@ -97,18 +97,30 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Conditional<T> simplifyValues() {
 		if (map.size() == 1) {
-			return new One<>(map.keySet().iterator().next());
+			T value = map.keySet().iterator().next();
+			if (value instanceof Byte) {
+				return (Conditional<T>) One.valueOf((Byte)value);
+			}
+			if (value instanceof Boolean) {
+				return (Conditional<T>) One.valueOf((Boolean)value);
+			}
+			if (value instanceof Integer) {
+				return (Conditional<T>) new One<>((Integer)value);
+			}
+			return new One<>(value);
 		}
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Conditional<T> simplify(FeatureExpr ctx) {
 		if (map.size() == 1) {
-			return new One<>(map.keySet().iterator().next());
+			return simplifyValues();
 		}
 		if (isTautology(ctx)) {
 			return this;
@@ -118,10 +130,20 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
 			final FeatureExpr value = e.getValue();
 			if (!isContradiction(value.and(ctx))) {
+				T key = e.getKey();
 				if (ctx.equals(value)) {
-					return new One<>(e.getKey());
+					if (key instanceof Byte) {
+						return (Conditional<T>) One.valueOf((Byte)key);
+					}
+					if (key instanceof Boolean) {
+						return (Conditional<T>) One.valueOf((Boolean)key);
+					}
+					if (key instanceof Integer) {
+						return (Conditional<T>) new One<>((Integer)key);
+					}
+					return new One<>(key);
 				} else {
-					newMap.put(e.getKey(), value);
+					newMap.put(key, value);
 				}
 			}
 		}

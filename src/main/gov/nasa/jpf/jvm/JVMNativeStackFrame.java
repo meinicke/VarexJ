@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.NativeMethodInfo;
 import gov.nasa.jpf.vm.NativeStackFrame;
@@ -56,11 +57,11 @@ public class JVMNativeStackFrame extends NativeStackFrame {
       switch (argTypes[k]) {
       case Types.T_BOOLEAN:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.map(new Function<Integer, Boolean>() {
+        a[j] = ival.mapr(new Function<Integer, Conditional<Boolean>>() {
 
 			@Override
-			public Boolean apply(Integer ival) {
-				return Types.intToBoolean(ival);
+			public Conditional<Boolean> apply(Integer ival) {
+				return One.valueOf(Types.intToBoolean(ival));
 			}
         	
         });
@@ -68,11 +69,11 @@ public class JVMNativeStackFrame extends NativeStackFrame {
 
       case Types.T_BYTE:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.map(new Function<Integer, Byte>() {
+        a[j] = ival.mapr(new Function<Integer, Conditional<Byte>>() {
 
 			@Override
-			public Byte apply(Integer ival) {
-				return (byte) ival.intValue();
+			public Conditional<Byte> apply(Integer ival) {
+				return One.valueOf((byte) ival.intValue());
 			}
         	
         });
@@ -80,11 +81,11 @@ public class JVMNativeStackFrame extends NativeStackFrame {
 
       case Types.T_CHAR:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.map(new Function<Integer, Character>() {
+        a[j] = ival.mapr(new Function<Integer, Conditional<Character>>() {
 
 			@Override
-			public Character apply(Integer ival) {
-				return (char) ival.intValue();
+			public Conditional<Character> apply(Integer ival) {
+				return One.valueOf((char) ival.intValue());
 			}
         	
         });

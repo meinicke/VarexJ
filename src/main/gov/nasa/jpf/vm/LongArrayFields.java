@@ -58,7 +58,7 @@ public class LongArrayFields extends ArrayFields {
   }
 
   public Conditional<Integer> arrayLength() {
-    return new One<>(values.length);
+    return One.valueOf(values.length);
   }
 
   public int getHeapSize() {  // in bytes

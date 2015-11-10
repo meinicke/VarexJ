@@ -68,13 +68,13 @@ public class CharArrayFields extends ArrayFields {
 	}
 
 	public Conditional<Integer> arrayLength() {
-		return values.map(ArrayLength).simplifyValues();
+		return values.mapr(ArrayLength).simplifyValues();
 	}
 	
-	private static final Function<char[], Integer> ArrayLength = new Function<char[], Integer>() {
+	private static final Function<char[], Conditional<Integer>> ArrayLength = new Function<char[], Conditional<Integer>>() {
 		@Override
-		public Integer apply(char[] values) {
-			return values.length;
+		public Conditional<Integer> apply(char[] values) {
+			return new One<>(values.length);
 		}
 	};
 

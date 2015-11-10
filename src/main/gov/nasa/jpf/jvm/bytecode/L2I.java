@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -38,11 +39,11 @@ public class L2I extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     Conditional<Long> v = frame.popLong(ctx);
-    frame.push(ctx, v.map(new Function<Long, Integer>() {
+    frame.push(ctx, v.mapr(new Function<Long, Conditional<Integer>>() {
 
  		@Override
- 		public Integer apply(Long l) {
- 			return (int)l.longValue();
+ 		public Conditional<Integer> apply(Long l) {
+ 			return new One<>((int)l.longValue());
  		}
      	
  	}));

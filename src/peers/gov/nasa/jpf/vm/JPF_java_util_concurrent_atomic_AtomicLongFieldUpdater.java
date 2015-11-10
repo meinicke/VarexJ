@@ -48,7 +48,7 @@ public class JPF_java_util_concurrent_atomic_AtomicLongFieldUpdater extends Atom
     }
 
     int fidx = fi.getFieldIndex();
-    env.setIntField(ctx, objRef, "fieldId", new One<>(fidx));
+    env.setIntField(ctx, objRef, "fieldId", One.valueOf(fidx));
   }
 
   @MJI

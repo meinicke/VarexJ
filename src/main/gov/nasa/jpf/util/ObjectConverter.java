@@ -103,7 +103,7 @@ public class ObjectConverter {
         newObjEI.setCharField(ctx, fi, new One<>(javaField.getChar(javaObject)));
       }
       else if (jpfTypeName.equals("byte")) {
-        newObjEI.setByteField(ctx, fi, new One<>(javaField.getByte(javaObject)));
+        newObjEI.setByteField(ctx, fi, One.valueOf(javaField.getByte(javaObject)));
       }
       else if (jpfTypeName.equals("short")) {
         newObjEI.setShortField(ctx, fi, new One<>(javaField.getShort(javaObject)));
@@ -196,7 +196,7 @@ public class ObjectConverter {
 //      
 
       for (int i = 0; i < javaArrLength; i++) {
-    	  intArrRef.setIntElement(ctx, i, new One<>(Array.getInt(javaArr, i)));
+    	  intArrRef.setIntElement(ctx, i, One.valueOf(Array.getInt(javaArr, i)));
       }
     }
     else if (arrayElementClass == Long.TYPE) {

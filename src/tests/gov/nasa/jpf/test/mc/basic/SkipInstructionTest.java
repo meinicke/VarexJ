@@ -57,7 +57,7 @@ public class SkipInstructionTest extends TestJPF {
           StackFrame frame = ti.getModifiableTopFrame();
 
           frame.pop(FeatureExprFactory.True());
-          frame.push(FeatureExprFactory.True(), new One<>(42));
+          frame.push(FeatureExprFactory.True(), One.valueOf(42));
 
           ti.skipInstruction(pc.getNext());
         }
@@ -130,7 +130,7 @@ public class SkipInstructionTest extends TestJPF {
             assert lastInsn instanceof IRETURN : "last instruction not an IRETURN ";
             StackFrame frame = ti.getModifiableTopFrame(); // we are modifying it
             System.out.println("listener is skipping method body of " + mi + " returning " + choice);
-            frame.push(FeatureExprFactory.True(), new One<>(choice));
+            frame.push(FeatureExprFactory.True(), One.valueOf(choice));
             ti.setNextPC(lastInsn);
           } else {
             System.out.println("unexpected CG: " + cg);

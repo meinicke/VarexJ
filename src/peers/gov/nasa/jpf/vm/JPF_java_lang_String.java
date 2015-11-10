@@ -199,7 +199,7 @@ public class JPF_java_lang_String extends NativePeer {
 		obj.getBytes(srcBegin, srcEnd, dst, dstBegin);
 
 		for (int i = dstBegin; i < srcEnd - srcBegin + dstBegin; i++) {
-			env.setByteArrayElement(ctx, dstRef, i, new One<>(dst[i]));
+			env.setByteArrayElement(ctx, dstRef, i, One.valueOf(dst[i]));
 		}
 	}
 

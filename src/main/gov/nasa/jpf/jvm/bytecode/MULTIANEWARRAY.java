@@ -86,7 +86,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 		}
 
 		arrayLengths = new Conditional[dimensions];
-		Arrays.fill(arrayLengths, new One<>(0));
+		Arrays.fill(arrayLengths, One.valueOf(0));
 		StackFrame frame = ti.getModifiableTopFrame();
 
 		for (int i = dimensions - 1; i >= 0; i--) {

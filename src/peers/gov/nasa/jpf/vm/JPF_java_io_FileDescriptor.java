@@ -78,9 +78,9 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
       @Override
       public Conditional<Integer> apply(FeatureExpr x, String y) {
         if (finalMode == FD_READ) {
-          return One.valueOf(openRead(y, x.and(ctx)));
+          return new One<>(openRead(y, x.and(ctx)));
         } else if (finalMode == FD_WRITE) {
-          return One.valueOf(openWrite(y, x.and(ctx)));
+          return new One<>(openWrite(y, x.and(ctx)));
         } else {
           finalEnv.throwException(ctx, "java.io.IOException", "illegal open mode: " + finalMode);
           return One.valueOf(-1);
@@ -351,7 +351,7 @@ public class JPF_java_io_FileDescriptor extends NativePeer {
           
           int r = fis.read(buf);
           for (int i=0, j=offset; i<len; i++, j++) {
-            env.setByteArrayElement(ctx, bufref, j, new One<>(buf[i]));
+            env.setByteArrayElement(ctx, bufref, j, One.valueOf(buf[i]));
           }
           env.setLongField(ctx, objref, "off", new One<>(fc.position()));
           return r;

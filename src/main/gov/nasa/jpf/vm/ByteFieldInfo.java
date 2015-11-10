@@ -46,7 +46,7 @@ public class ByteFieldInfo extends SingleSlotFieldInfo {
 
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setByteValue(ctx, storageOffset, new One<>(init));
+    ei.getFields().setByteValue(ctx, storageOffset, One.valueOf(init));
   }
 
   public boolean isByteField() {
@@ -61,7 +61,7 @@ public class ByteFieldInfo extends SingleSlotFieldInfo {
 
   public Object getValueObject (Fields f){
     int i = f.getIntValue(storageOffset).getValue();
-    return new Byte((byte)i);
+    return Byte.valueOf((byte)i);
   }
 
   public boolean isNumericField(){

@@ -142,38 +142,38 @@ public class NATIVERETURN extends ReturnInstruction {
 			switch (retType) {
 			case Types.T_BOOLEAN:
 				if (ret instanceof Conditional) {
-					Conditional<Integer> ival = ((Conditional) ret).map(new Function<Object, Integer>() {
+					Conditional<Integer> ival = ((Conditional) ret).mapr(new Function<Object, Conditional<Integer>>() {
 
 						@Override
-						public Integer apply(Object ret) {
-							return Types.booleanToInt(((Boolean) ret).booleanValue());
+						public Conditional<Integer> apply(Object ret) {
+							return One.valueOf(Types.booleanToInt(((Boolean) ret).booleanValue()));
 						}
 						
 					});
 					fr.push(ctx, ival);
 				} else {
 					int ival = Types.booleanToInt(((Boolean) ret).booleanValue());
-					fr.push(ctx, new One<>(ival));
+					fr.push(ctx, One.valueOf(ival));
 				}
 				break;
 
 			case Types.T_BYTE:
-				fr.push(ctx, new One<>((int) (((Byte) ret).byteValue())));
+				fr.push(ctx, One.valueOf((int) (((Byte) ret).byteValue())));
 				break;
 
 			case Types.T_CHAR:
 				if (ret instanceof Conditional) {
-					Conditional<Integer> ival = ((Conditional) ret).map(new Function<Object, Integer>() {
+					Conditional<Integer> ival = ((Conditional) ret).mapr(new Function<Object, Conditional<Integer>>() {
 
 						@Override
-						public Integer apply(Object ret) {
-							return (int) ((Character) ret).charValue();
+						public Conditional<Integer> apply(Object ret) {
+							return new One<>((int) ((Character) ret).charValue());
 						}
 						
 					});
 					fr.push(ctx, ival);
 				} else {
-					fr.push(ctx, new One<>((int) ((Character) ret).charValue()));
+					fr.push(ctx, One.valueOf((int) ((Character) ret).charValue()));
 				}
 				break;
 

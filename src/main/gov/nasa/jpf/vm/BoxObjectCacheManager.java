@@ -79,7 +79,7 @@ public class BoxObjectCacheManager {
     byte val = byteLow;
     for (int i = 0; i < n; i++) {
       ElementInfo eiByte = heap.newSystemObject(ctx, ci, ti, ANCHOR);
-      eiByte.setByteField(ctx, "value", new One<>(val++));
+      eiByte.setByteField(ctx, "value", One.valueOf(val++));
       eiArray.setReferenceElement(ctx, i, new One<>(eiByte.getObjectRef()));
     }
 
@@ -118,7 +118,7 @@ public class BoxObjectCacheManager {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Character");
     for (int i = 0; i < n; i++) {
       ElementInfo eiChar = heap.newSystemObject(ctx, ci, ti, ANCHOR);
-      eiChar.setCharField(ctx, "value", new One<>((char) i));
+      eiChar.setCharField(ctx, "value", One.valueOf((char) i));
       eiArray.setReferenceElement(ctx, i, new One<>(eiChar.getObjectRef()));
     }
 
@@ -202,7 +202,7 @@ public class BoxObjectCacheManager {
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
     for (int i = 0; i < n; i++) {
       ElementInfo eiInteger = heap.newSystemObject(ctx, ci, ti, ANCHOR);
-      eiInteger.setIntField(ctx, "value", new One<>(i + intLow));
+      eiInteger.setIntField(ctx, "value", One.valueOf(i + intLow));
       eiArray.setReferenceElement(ctx, i, new One<>(eiInteger.getObjectRef()));
     }
 

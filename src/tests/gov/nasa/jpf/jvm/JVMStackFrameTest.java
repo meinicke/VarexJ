@@ -38,9 +38,9 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(0, 10);
 
-    frame.push(FeatureExprFactory.True(), new One<>(1));
-    frame.push(FeatureExprFactory.True(), new One<>(2));
-    frame.push(FeatureExprFactory.True(), new One<>(3));
+    frame.push(FeatureExprFactory.True(), One.valueOf(1));
+    frame.push(FeatureExprFactory.True(), One.valueOf(2));
+    frame.push(FeatureExprFactory.True(), One.valueOf(3));
     frame.printOperands(System.out);
 
     frame.dup2_x1(FeatureExprFactory.True());
@@ -60,9 +60,9 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(0, 10);
 
-    frame.push(FeatureExprFactory.True(), new One<>(1)); frame.setOperandAttr("1");
-    frame.push(FeatureExprFactory.True(), new One<>(2)); frame.setOperandAttr("2");
-    frame.push(FeatureExprFactory.True(), new One<>(3)); frame.setOperandAttr("3");
+    frame.push(FeatureExprFactory.True(), One.valueOf(1)); frame.setOperandAttr("1");
+    frame.push(FeatureExprFactory.True(), One.valueOf(2)); frame.setOperandAttr("2");
+    frame.push(FeatureExprFactory.True(), One.valueOf(3)); frame.setOperandAttr("3");
     frame.printOperands(System.out);
 
     frame.dup2_x1(FeatureExprFactory.True());
@@ -83,10 +83,10 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(0, 10);
 
-    frame.push(FeatureExprFactory.True(), new One<>(1));
-    frame.push(FeatureExprFactory.True(), new One<>(2));
-    frame.push(FeatureExprFactory.True(), new One<>(3));
-    frame.push(FeatureExprFactory.True(), new One<>(4));
+    frame.push(FeatureExprFactory.True(), One.valueOf(1));
+    frame.push(FeatureExprFactory.True(), One.valueOf(2));
+    frame.push(FeatureExprFactory.True(), One.valueOf(3));
+    frame.push(FeatureExprFactory.True(), One.valueOf(4));
     frame.printOperands(System.out);
 
     frame.dup2_x2(FeatureExprFactory.True());
@@ -107,10 +107,10 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(0, 10);
 
-    frame.push(FeatureExprFactory.True(), new One<>(1)); frame.setOperandAttr("1");
-    frame.push(FeatureExprFactory.True(), new One<>(2)); frame.setOperandAttr("2");
-    frame.push(FeatureExprFactory.True(), new One<>(3)); frame.setOperandAttr("3");
-    frame.push(FeatureExprFactory.True(), new One<>(4)); frame.setOperandAttr("4");
+    frame.push(FeatureExprFactory.True(), One.valueOf(1)); frame.setOperandAttr("1");
+    frame.push(FeatureExprFactory.True(), One.valueOf(2)); frame.setOperandAttr("2");
+    frame.push(FeatureExprFactory.True(), One.valueOf(3)); frame.setOperandAttr("3");
+    frame.push(FeatureExprFactory.True(), One.valueOf(4)); frame.setOperandAttr("4");
     frame.printOperands(System.out);
 
     frame.dup2_x2(FeatureExprFactory.True());
@@ -151,9 +151,9 @@ public class JVMStackFrameTest extends TestJPF {
 
     JVMStackFrame frame = new JVMStackFrame(2, 10);
     // Initialize local values and the stack frame
-    frame.push(FeatureExprFactory.True(), new One<>(1));
-    frame.push(FeatureExprFactory.True(), new One<>(2));
-    frame.push(FeatureExprFactory.True(), new One<>(3));
+    frame.push(FeatureExprFactory.True(), One.valueOf(1));
+    frame.push(FeatureExprFactory.True(), One.valueOf(2));
+    frame.push(FeatureExprFactory.True(), One.valueOf(3));
 
     double value = Math.PI;
 

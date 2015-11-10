@@ -155,7 +155,7 @@ public class CascadedCGTest extends TestJPF {
 
             int v = cg.getNextChoice();
             int n = frame.pop(FeatureExprFactory.True()).getValue();
-            frame.push(FeatureExprFactory.True(), new One<>(v));
+            frame.push(FeatureExprFactory.True(), One.valueOf(v));
 
             System.out.println("# listener replacing " + n + " with " + v);
           }

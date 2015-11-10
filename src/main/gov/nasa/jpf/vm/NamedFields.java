@@ -35,7 +35,7 @@ import gov.nasa.jpf.util.IntVector;
  */
 public class NamedFields extends Fields {
 
-	private static final One<Integer> nullValue = new One<>(0);
+	private static final One<Integer> nullValue = One.valueOf(0);
 	/**
 	 * this is where we store the instance data. Since field types are
 	 * heterogenous, we have to map everything into int
@@ -122,11 +122,11 @@ public class NamedFields extends Fields {
 
 	@Override
 	public Conditional<Boolean> getBooleanValue(int index) {
-		return values[index].map(new Function<Integer, Boolean>() {
+		return values[index].mapr(new Function<Integer, Conditional<Boolean>>() {
 
 			@Override
-			public Boolean apply(Integer v) {
-				return Types.intToBoolean(v);
+			public Conditional<Boolean> apply(Integer v) {
+				return One.valueOf(Types.intToBoolean(v));
 			}
 			
 		});
@@ -134,11 +134,11 @@ public class NamedFields extends Fields {
 
 	@Override
 	public Conditional<Byte> getByteValue(int index) {
-		return values[index].map(new Function<Integer, Byte>() {
+		return values[index].mapr(new Function<Integer, Conditional<Byte>>() {
 
 			@Override
-			public Byte apply(Integer x) {
-				return x.byteValue();
+			public Conditional<Byte> apply(Integer x) {
+				return One.valueOf(x.byteValue());
 			}
 			
 		});
@@ -185,13 +185,13 @@ public class NamedFields extends Fields {
 	@Override
 	public void setBooleanValue(FeatureExpr ctx, int index, Conditional<Boolean> newValue) {
 		if (Conditional.isTautology(ctx)) {
-			values[index] = new One<>(newValue.getValue() ? 1 : 0);
+			values[index] = One.valueOf(newValue.getValue() ? 1 : 0);
 		} else {
-			values[index] = ChoiceFactory.create(ctx, newValue.map(new Function<Boolean, Integer>() {
+			values[index] = ChoiceFactory.create(ctx, newValue.mapr(new Function<Boolean, Conditional<Integer>>() {
 	
 				@Override
-				public Integer apply(Boolean v) {
-					return v ? 1 : 0;
+				public Conditional<Integer> apply(Boolean v) {
+					return One.valueOf(v ? 1 : 0);
 				}
 				
 			}), values[index]).simplify();
@@ -201,13 +201,13 @@ public class NamedFields extends Fields {
 	@Override
 	public void setByteValue(FeatureExpr ctx, int index, Conditional<Byte> newValue) {
 		if (Conditional.isTautology(ctx)) {
-			values[index] = new One<>((int)newValue.getValue());	
+			values[index] = One.valueOf((int)newValue.getValue());	
 		} else {
-			values[index] = ChoiceFactory.create(ctx, newValue.map(new Function<Byte, Integer>() {
+			values[index] = ChoiceFactory.create(ctx, newValue.mapr(new Function<Byte, Conditional<Integer>>() {
 	
 				@Override
-				public Integer apply(Byte x) {
-					return (int) x;
+				public Conditional<Integer> apply(Byte x) {
+					return One.valueOf((int) x);
 				}
 				
 			}), values[index]).simplify();
@@ -216,13 +216,13 @@ public class NamedFields extends Fields {
 
 	@Override
 	public void setCharValue(FeatureExpr ctx, int index, Conditional<Character> newValue) {
-		values[index] = ChoiceFactory.create(ctx, newValue.map(SetCharValue), values[index]).simplify();
+		values[index] = ChoiceFactory.create(ctx, newValue.mapr(SetCharValue), values[index]).simplify();
 	}
 	
-	private static final Function<Character, Integer> SetCharValue = new Function<Character, Integer>() {
+	private static final Function<Character, Conditional<Integer>> SetCharValue = new Function<Character, Conditional<Integer>>() {
 		@Override
-		public Integer apply(final Character newValue) {
-			return (int) newValue.charValue();
+		public Conditional<Integer> apply(final Character newValue) {
+			return new One<>((int) newValue.charValue());
 		}
 	};
 
@@ -232,11 +232,11 @@ public class NamedFields extends Fields {
 		if (Conditional.isTautology(ctx)) {
 			values[index] = new One<>((int)(newValue.getValue()));	
 		} else {
-			values[index] = ChoiceFactory.create(ctx, newValue.map(new Function<Short, Integer>() {
+			values[index] = ChoiceFactory.create(ctx, newValue.mapr(new Function<Short, Conditional<Integer>>() {
 	
 				@Override
-				public Integer apply(Short v) {
-					return (int)v;
+				public Conditional<Integer> apply(Short v) {
+					return new One<>((int)v);
 				}
 				
 			}), values[index]).simplify();

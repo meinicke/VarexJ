@@ -74,6 +74,6 @@ public class JPF_gov_nasa_jpf_test_mc_basic_RestorerTest$X extends NativePeer {
     }
     
     a.count++;
-    env.setIntField(ctx, objref, "id", new One<>(a.count));
+    env.setIntField(ctx, objref, "id", One.valueOf(a.count));
   }
 }

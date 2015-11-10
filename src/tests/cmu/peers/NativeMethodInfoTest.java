@@ -24,7 +24,7 @@ public class NativeMethodInfoTest {
 		Object[] args = new Object[4];
 		args[0] = "MJI";
 		args[1] = 403;
-		args[2] = new One<>(3);
+		args[2] = One.valueOf(3);
 		args[3] = FeatureExprFactory.True();
 		List<Object[]> res = NativeMethodInfo.getUnconditionalArgs(args).toList();
 		for (Object[] a : res) {
@@ -46,7 +46,7 @@ public class NativeMethodInfoTest {
 		Object[] args = new Object[4];
 		args[0] = "MJI";
 		args[1] = 403;
-		args[2] = ChoiceFactory.create(feature, new One<>(3), new One<>(0));
+		args[2] = ChoiceFactory.create(feature, One.valueOf(3), One.valueOf(0));
 		args[3] = FeatureExprFactory.True();
 		List<Object[]> res = NativeMethodInfo.getUnconditionalArgs(args).toList();
 		for (Object[] a : res) {
@@ -64,8 +64,8 @@ public class NativeMethodInfoTest {
 		Object[] args = new Object[5];
 		args[0] = "MJI";
 		args[1] = 403;
-		args[2] = ChoiceFactory.create(feature, new One<>(3), new One<>(0));
-		args[3] = ChoiceFactory.create(feature, new One<>(5), new One<>(0));
+		args[2] = ChoiceFactory.create(feature, One.valueOf(3), One.valueOf(0));
+		args[3] = ChoiceFactory.create(feature, One.valueOf(5), One.valueOf(0));
 		args[4] = FeatureExprFactory.True();
 		List<Object[]> res = NativeMethodInfo.getUnconditionalArgs(args).toList();
 		for (Object[] a : res) {
@@ -84,8 +84,8 @@ public class NativeMethodInfoTest {
 		Object[] args = new Object[5];
 		args[0] = "MJI";
 		args[1] = 403;
-		args[2] = ChoiceFactory.create(feature, new One<>(3), new One<>(0));
-		args[3] = ChoiceFactory.create(feature2, new One<>(5), new One<>(0));
+		args[2] = ChoiceFactory.create(feature, One.valueOf(3), One.valueOf(0));
+		args[3] = ChoiceFactory.create(feature2, One.valueOf(5), One.valueOf(0));
 		args[4] = FeatureExprFactory.True();
 		Map<Object[], FeatureExpr> res = NativeMethodInfo.getUnconditionalArgs(args).toMap();
 		for (Entry<Object[], FeatureExpr> a : res.entrySet()) {

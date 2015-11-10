@@ -34,7 +34,7 @@ import gov.nasa.jpf.util.PrintUtils;
  * (references are stored as int's)
  */
 public class ReferenceArrayFields extends ArrayFields {
-	  private static final One<Integer> init = new One<>(0);
+	  private static final One<Integer> init = One.valueOf(0);
   Conditional<Integer>[] values; // the references
 
   @SuppressWarnings("unchecked")

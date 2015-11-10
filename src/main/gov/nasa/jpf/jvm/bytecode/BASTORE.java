@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;
@@ -37,11 +38,11 @@ public class BASTORE extends ArrayStoreInstruction {
   Conditional<Byte> value;
 
   protected void popValue(FeatureExpr ctx, StackFrame frame){
-    value = frame.pop(ctx).map(new Function<Integer, Byte>() {
+    value = frame.pop(ctx).mapr(new Function<Integer, Conditional<Byte>>() {
 
 		@Override
-		public Byte apply(Integer x) {
-			return x.byteValue();
+		public Conditional<Byte> apply(Integer y) {
+			return One.valueOf(y.byteValue());
 		}
     	
     });
@@ -56,11 +57,11 @@ public class BASTORE extends ArrayStoreInstruction {
       ei.setByteElement(ctx, index, value);
 
     } else if (f instanceof BooleanArrayFields){
-      ei.setBooleanElement(ctx, index, value.map(new Function<Byte, Boolean>() {
+      ei.setBooleanElement(ctx, index, value.mapr(new Function<Byte, Conditional<Boolean>>() {
 
 		@Override
-		public Boolean apply(Byte v) {
-			return v != 0 ? Boolean.TRUE : Boolean.FALSE;
+		public Conditional<Boolean> apply(Byte v) {
+			return v != 0 ? One.TRUE : One.FALSE;
 		}
     	  
       }));

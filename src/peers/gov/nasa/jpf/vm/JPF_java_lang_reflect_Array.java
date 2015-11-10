@@ -267,7 +267,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   @MJI
   public void setInt__Ljava_lang_Object_2II__V (MJIEnv env, int clsRef, int aref, int index, int val, FeatureExpr ctx) {
     if (check(env, aref, index, ctx)) {
-      env.setIntArrayElement(ctx, aref, index, new One<>(val));
+      env.setIntArrayElement(ctx, aref, index, One.valueOf(val));
     }
   }
 

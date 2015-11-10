@@ -939,7 +939,7 @@ static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String 
    */
   @MJI
   public static int random__I__I (MJIEnv env, int clsObjRef, Conditional<Integer> x, FeatureExpr ctx) {
-   return getInt__II__I( env, clsObjRef, new One<>(0), x, ctx);
+   return getInt__II__I( env, clsObjRef, One.valueOf(0), x, ctx);
   }
 
   static void boring__Z__V (MJIEnv env, int clsObjRef, boolean b, FeatureExpr ctx) {

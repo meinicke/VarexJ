@@ -80,10 +80,10 @@ public class JPF_java_lang_Double extends NativePeer {
   @MJI
   public Conditional<Boolean> isInfinite__D__Z (MJIEnv env, int rcls, Conditional<Double> v, FeatureExpr ctx) {
 //    return Double.isInfinite(v.getValue());
-    return v.map(new Function<Double, Boolean>() {
+    return v.mapr(new Function<Double, Conditional<Boolean>>() {
       @Override
-      public Boolean apply(Double x) {
-        return Double.isInfinite(x);
+      public Conditional<Boolean> apply(Double x) {
+        return One.valueOf(Double.isInfinite(x));
       }
     });
   }
@@ -91,10 +91,10 @@ public class JPF_java_lang_Double extends NativePeer {
   // ditto (see isInfinite)
   @MJI
   public Conditional<Boolean> isNaN__D__Z (MJIEnv env, int rcls, Conditional<Double> v, FeatureExpr ctx) {
-    return v.map(new Function<Double, Boolean>() {
+    return v.mapr(new Function<Double, Conditional<Boolean>>() {
       @Override
-      public Boolean apply(Double x) {
-        return Double.isNaN(x);
+      public Conditional<Boolean> apply(Double x) {
+        return One.valueOf(Double.isNaN(x));
       }
     });
 //    return Double.isNaN(v.getValue());

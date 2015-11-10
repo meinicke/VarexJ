@@ -36,7 +36,7 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class BALOAD extends ArrayLoadInstruction {
 	
-	private static final One<Byte> nullValue = new One<>((byte)0);
+	private static final One<Byte> nullValue = One.valueOf((byte)0);
 
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
@@ -46,11 +46,11 @@ public class BALOAD extends ArrayLoadInstruction {
     if (f instanceof ByteArrayFields){
       value = ei.getByteElement(index);
     } else if (f instanceof BooleanArrayFields){
-    	value = ei.getBooleanElement(index).map(new Function<Boolean, Byte>() {
+    	value = ei.getBooleanElement(index).mapr(new Function<Boolean, Conditional<Byte>>() {
 
 			@Override
-			public Byte apply(Boolean v) {
-				return (byte) (v ? 1 : 0);
+			public Conditional<Byte> apply(Boolean v) {
+				return One.valueOf((byte) (v ? 1 : 0));
 			}
     		
     	}).simplify();

@@ -38,7 +38,7 @@ public class IntArrayFields extends ArrayFields {
 
 	Conditional<Integer>[] values;
 
-	private static final One<Integer> init = new One<>(0);
+	private static final One<Integer> init = One.valueOf(0);
 
 	@SuppressWarnings("unchecked")
 	public IntArrayFields(int length) {

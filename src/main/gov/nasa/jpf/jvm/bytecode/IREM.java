@@ -47,11 +47,11 @@ public class IREM extends JVMInstruction {
 				      return new One<>(ti.createAndThrowException(ctx,java.lang.ArithmeticException.class.getName(), "division by zero"));
 				    }
 				    
-					frame.push(ctx, v2.map(new Function<Integer, Integer>() {
+					frame.push(ctx, v2.mapr(new Function<Integer, Conditional<Integer>>() {
 
 						@Override
-						public Integer apply(Integer v2) {
-							return v2.intValue() % v1.intValue();
+						public Conditional<Integer> apply(Integer v2) {
+							return new One<>(v2.intValue() % v1.intValue());
 						}
 						
 					}));
