@@ -114,12 +114,9 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     ClassLoaderInfo cl = ClassLoaderInfo.getCurrentSystemClassLoader();
 
     ClassInfo ci = cl.getResolvedClassInfo(ctx, cname);
-    {
-    	ClassInfo component = ci;
-    	while (ci.isArray()) {
-    		component = component.getComponentClassInfo();
-    	}
-    }
+	while (ci.isArray()) {
+		ci = ci.getComponentClassInfo();
+	}
     
     if(!ci.isRegistered()) {
       ci.registerClass(ctx, env.getThreadInfo());
