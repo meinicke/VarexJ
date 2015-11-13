@@ -1,11 +1,11 @@
 package cmu.jpf;
 
-import gov.nasa.jpf.annotation.Conditional;
-import gov.nasa.jpf.util.test.TestJPF;
-import org.junit.Ignore;
+import java.io.File;
+
 import org.junit.Test;
 
-import java.io.File;
+import gov.nasa.jpf.annotation.Conditional;
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * @author: chupanw
@@ -15,7 +15,6 @@ public class FileTest extends TestJPF{
     static boolean A = true;
 
     @Test
-    @Ignore // not working
     public void testIsDirectory() {
         if (verifyNoPropertyViolation("+search.class=.search.RandomSearch")) {
             File file;
@@ -26,7 +25,7 @@ public class FileTest extends TestJPF{
                 file = new File("README.md");
             }
             // Expect two false
-            System.out.println(file.isDirectory());
+            assertFalse(file.isDirectory());
         }
     }
 }
