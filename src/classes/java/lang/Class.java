@@ -324,7 +324,7 @@ public final class Class<T> implements Serializable, GenericDeclaration, Type, A
   }
 
   void setSigners(Object[] signers) {
-    signers = null;  // Get rid of IDE warning 
+//    signers = null;  // Get rid of IDE warning 
     throw new UnsupportedOperationException();
   }
   
@@ -371,7 +371,7 @@ public final class Class<T> implements Serializable, GenericDeclaration, Type, A
   }
 
   void setProtectionDomain0(java.security.ProtectionDomain pd) {
-    pd = null;  // Get rid of IDE warning 
+//    pd = null;  // Get rid of IDE warning 
     throw new UnsupportedOperationException();
   }
 

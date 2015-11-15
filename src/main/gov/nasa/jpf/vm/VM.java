@@ -1511,8 +1511,8 @@ public abstract class VM {
    * this is here so that we can intercept it in subclassed VMs
    */
   public Instruction handleException (ThreadInfo ti, int xObjRef){
-    ti = null;        // Get rid of IDE warning
-    xObjRef = 0;
+//    ti = null;        // Get rid of IDE warning
+//    xObjRef = 0;
     return null;
   }
 

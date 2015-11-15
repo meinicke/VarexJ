@@ -261,7 +261,7 @@ public class CoverageClass {
 	}
 
 	private void coverLocal(Instruction instruction, String file) {
-		JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), ti.getTopFrame().stack.getLocalWidth(), ti.getTopFrame().stack.getMaxLocal().toString());
+		JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), ti.getTopFrame().stack.getLocalWidth(), ti.getTopFrame().stack.getMaxLocal());
 	}
 
 	private void coverStack(Instruction instruction, FeatureExpr ctx, String file) {

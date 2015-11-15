@@ -459,7 +459,6 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   public ElementInfo newInternString (FeatureExpr ctx, String str, ThreadInfo ti) {
     IntTable.Entry<String> e = internStrings.get(str);
     if (e == null){
-      if (str != null) {
         ElementInfo ei = newString(ctx, str, ti);
         int index = ei.getObjectRef();
         
@@ -467,13 +466,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
         ei.incPinDown();
         addToPinDownList(index);
         addToInternStrings(str, index);
-
         return ei;
-      
-      } else {
-        return null;
-      }
-
     } else {
       return get(e.val);
     }

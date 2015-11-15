@@ -991,9 +991,6 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
   public Conditional<Double>[] getDoubleArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
-    if (ei == null) {
-    	System.out.println("MJIEnv.getDoubleArrayObject(" + objref +  ")");
-    }
     return ei.asDoubleArray();
 
   }

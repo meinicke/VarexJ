@@ -262,7 +262,7 @@ public class AnnotationInfo implements Cloneable {
   public String[] getValueAsStringArray() {
     String a[] = null; 
     Object v = value();
-    if (v != null && v instanceof Object[]) {
+    if (v instanceof Object[]) {
       Object[] va = (Object[])v;
       a = new String[va.length];
       for (int i=0; i<a.length; i++) {
@@ -279,7 +279,7 @@ public class AnnotationInfo implements Cloneable {
     // <2do> not very efficient
     String a[] = null; 
     Object v = getValue(key);
-    if (v != null && v instanceof Object[]) {
+    if (v instanceof Object[]) {
       Object[] va = (Object[])v;
       a = new String[va.length];
       for (int i=0; i<a.length; i++) {

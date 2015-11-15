@@ -532,7 +532,7 @@ public abstract class ElementInfo implements Cloneable {
 
   @Override
   public boolean equals(Object o) {
-    if (o != null && o instanceof ElementInfo) {
+    if (o instanceof ElementInfo) {
       ElementInfo other = (ElementInfo) o;
 
       if (ci != other.ci){

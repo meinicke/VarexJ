@@ -1412,7 +1412,7 @@ public class ThreadInfo extends InfoObject
      * by the executing method
      */
     public void dumpStoringData(IntVector v) {
-        v = null;  // Get rid of IDE warnings
+//        v = null;  // Get rid of IDE warnings
     }
 
     /**
@@ -2159,7 +2159,7 @@ public class ThreadInfo extends InfoObject
  				if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
  					// ignore class initializations
  				} else {
- 					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + instruction.getMnemonic().toString() +  " " + instruction.getFileLocation());
+ 					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + instruction.getMnemonic() +  " " + instruction.getFileLocation());
  				}
  			}
  		} else if (JPF.traceMethod != null && instruction.getMethodInfo().getFullName().equals(JPF.traceMethod)) {

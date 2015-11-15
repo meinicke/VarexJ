@@ -1232,7 +1232,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   }
 
   public int getFieldAttrs (int fieldIndex) {
-    fieldIndex = 0; // Get rid of IDE warning
+//    fieldIndex = 0; // Get rid of IDE warning
      
     return 0;
   }
@@ -1285,8 +1285,8 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     //    return r.isStaticMethodAbstractionDeterministic(th, mi);
     // <2do> - still has to be implemented
      
-    th = null;  // Get rid of IDE warning
-    mi = null;
+//    th = null;  // Get rid of IDE warning
+//    mi = null;
      
     return true;
   }
@@ -2165,7 +2165,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   }
 
   Map<String, MethodInfo> loadBuiltinMethods (String type) {
-    type = null;  // Get rid of IDE warning 
+//    type = null;  // Get rid of IDE warning 
      
     return new HashMap<String, MethodInfo>(0);
   }

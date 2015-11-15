@@ -147,7 +147,7 @@ public class PreciseAllocationContext implements AllocationContext {
   
   /** mostly for debugging purposes */
   public String toString(){
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("(tid=");
     sb.append(ti.getId());
     sb.append(",stack=[");

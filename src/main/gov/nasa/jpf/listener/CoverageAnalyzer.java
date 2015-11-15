@@ -168,7 +168,7 @@ public class CoverageAnalyzer extends ListenerAdapter implements PublisherExtens
     }
 
     void setCGed(ThreadInfo ti, Instruction insn) {
-      ti = null;  // Remove IDE warning about unused variable.
+//      ti = null;  // Remove IDE warning about unused variable.
       // Hmm, we have to store the bb set at this point
       BitSet bb = getBasicBlocks();
       Instruction next = insn.getNext();

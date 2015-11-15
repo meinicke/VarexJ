@@ -1095,7 +1095,7 @@ public class Types {
    */
   public static String getSignatureName (String methodDecl) {
 
-    StringBuffer sb = new StringBuffer(128);
+    StringBuilder sb = new StringBuilder(128);
     String retType = null;
 
     int i = methodDecl.indexOf('(');

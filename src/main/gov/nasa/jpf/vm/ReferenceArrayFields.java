@@ -98,7 +98,7 @@ public ReferenceArrayFields (int length) {
 
   public boolean equals(Object o) {
     if (o instanceof ReferenceArrayFields) {
-    	IntArrayFields other = (IntArrayFields)o;
+    	ReferenceArrayFields other = (ReferenceArrayFields)o;
 
         Conditional<Integer>[] v = values;
         Conditional<Integer>[] vOther = other.values;

@@ -80,7 +80,7 @@ public class ApplicationContext implements SystemAttribute {
   }
   
   public String toString(){
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("ApplicationContext {mainClassName=");
     sb.append(mainClassName);
     sb.append(",mainEntry=");

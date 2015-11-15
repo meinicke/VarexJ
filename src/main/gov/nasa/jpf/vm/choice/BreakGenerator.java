@@ -32,7 +32,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class BreakGenerator extends ChoiceGeneratorBase<ThreadInfo> implements ThreadChoiceGenerator {
 
-  protected ThreadInfo ti;
+//  protected ThreadInfo ti;
   protected int state = -1;
   protected boolean isTerminator;
 

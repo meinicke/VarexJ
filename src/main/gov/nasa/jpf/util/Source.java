@@ -80,7 +80,7 @@ public class Source {
     }
 
     public boolean equals (Object other){
-      return (other != null) && (other instanceof DirRoot) &&
+      return (other instanceof DirRoot) &&
               path.equals(((DirRoot)other).path);
     }
 
@@ -121,7 +121,7 @@ public class Source {
     }
 
     public boolean equals (Object other){
-      if ( (other != null) && (other instanceof JarRoot)){
+      if (other instanceof JarRoot){
 
         // just how hard can it be to check if two JarFiles instances refer to
         // the same file?
@@ -132,7 +132,7 @@ public class Source {
           if (entryPrefix == null){
             return o.entryPrefix == null;
           } else {
-            entryPrefix.equals(o.entryPrefix);
+            return entryPrefix.equals(o.entryPrefix);
           }
         }
       }

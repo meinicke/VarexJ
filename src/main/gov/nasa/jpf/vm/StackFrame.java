@@ -818,7 +818,7 @@ public int nLocals;
 
   public void replaceLocalAttr (int index, Object oldAttr, Object newAttr){
     assert index < stackBase && oldAttr != null && newAttr != null;
-    if (attrs == null){
+    if (attrs != null){
       attrs[index] = ObjectList.replace(attrs[index], oldAttr, newAttr);    
     }
   }
