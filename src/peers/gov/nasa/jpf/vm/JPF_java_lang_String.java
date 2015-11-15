@@ -252,7 +252,7 @@ public class JPF_java_lang_String extends NativePeer {
 					@Override
 					public Conditional<Character> apply(FeatureExpr ctx, Integer index) {
 						if ((index < 0) || (index >= data.length)) {
-							env.ti.createAndThrowException(ctx, StringIndexOutOfBoundsException.class.getName(), index + "");
+							env.ti.createAndThrowException(ctx, StringIndexOutOfBoundsException.class.getName(), index.toString());
 							return (Conditional<Character>) One.NULL;
 						}
 						return new One<>(data[index]);// currently not lifted						

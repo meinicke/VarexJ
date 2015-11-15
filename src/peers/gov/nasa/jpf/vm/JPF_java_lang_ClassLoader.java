@@ -217,7 +217,7 @@ public class JPF_java_lang_ClassLoader extends NativePeer {
     int pkgArr = env.newObjectArray(pkg_class_name, size);
 
     int i = 0;
-    for(String name: cl.getPackages().keySet()) {
+    for(String name: pkgs.keySet()) {
       int pkgRef = createPackageObject(env, pkgClass, name, cl, ctx);
       // place the object into the array
       env.setReferenceArrayElement(ctx, pkgArr, i++, new One<>(pkgRef));

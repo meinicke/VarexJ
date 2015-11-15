@@ -62,7 +62,7 @@ public class One<T> extends Conditional<T> implements Cloneable {
 		} else {
 			s += value;
 		}
-		return s + ")";
+		return s + ')';
 	}
 
 	@Override

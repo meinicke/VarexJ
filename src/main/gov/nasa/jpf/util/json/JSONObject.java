@@ -355,8 +355,7 @@ public class JSONObject{
 
     FeatureExpr ctx = FeatureExprFactory.True();
     if (primitiveName.equals("boolean") && cgResult instanceof Boolean) {
-      Boolean bool = (Boolean) cgResult;
-      ei.setBooleanField(ctx, fi, new One<>(bool.booleanValue()));
+      ei.setBooleanField(ctx, fi, new One<>((Boolean) cgResult));
     } else if (cgResult instanceof Number) {
       Number number = (Number) cgResult;
 

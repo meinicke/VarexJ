@@ -38,8 +38,8 @@ public class FloatChoiceFromList extends NumberChoiceFromList<Float> implements 
   }
     
   protected Float parseLiteral (String literal, int sign){
-    Float val = Float.parseFloat(literal);
-    return new Float( val * sign);
+    Float val = Float.valueOf(literal);
+    return val * sign;
   }
   
   protected Float newValue (Number num, int sign){

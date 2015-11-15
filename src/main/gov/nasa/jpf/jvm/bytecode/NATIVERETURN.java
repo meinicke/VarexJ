@@ -193,7 +193,7 @@ public class NATIVERETURN extends ReturnInstruction {
 				if (ret instanceof Conditional) {
 					fr.push(ctx, ((Conditional) ret));
 				} else {
-					fr.push(ctx, new One<>(((Long) ret).longValue()));
+					fr.push(ctx, new One<>((Long) ret));
 					retSize = 2;
 				}
 				retSize = 2;

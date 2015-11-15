@@ -407,7 +407,7 @@ public abstract class Instruction implements Cloneable {
 
 					@Override
 					public Conditional<Integer> apply(final Integer x1) {
-						return new One<>((int)instruction((Number)x1, (Number)x2));
+						return new One<>((Integer)instruction((Number)x1, (Number)x2));
 					}
 
 				}).simplify();

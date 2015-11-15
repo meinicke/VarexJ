@@ -205,7 +205,7 @@ public final class Class<T> implements Serializable, GenericDeclaration, Type, A
 	  String simpleName = getSimpleBinaryName();
       if (simpleName == null) { // top level class
           simpleName = getName();
-          return simpleName.substring(simpleName.lastIndexOf(".")+1); // strip the package name
+          return simpleName.substring(simpleName.lastIndexOf('.')+1); // strip the package name
       }
 	  
 	  

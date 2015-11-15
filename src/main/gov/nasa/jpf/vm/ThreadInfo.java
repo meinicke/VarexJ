@@ -2651,7 +2651,7 @@ public class ThreadInfo extends InfoObject
 
         ClassInfo ciPermit = sysCl.getResolvedClassInfo(ctx, "java.lang.Thread$Permit");
         ElementInfo eiPermit = heap.newObject(ctx, ciPermit, this);
-        eiPermit.setBooleanField(ctx, "blockPark", new One<>(true));
+        eiPermit.setBooleanField(ctx, "blockPark", One.TRUE);
         eiThread.setReferenceField(ctx, "permit", new One<>(eiPermit.getObjectRef()));
 
         addToThreadGroup(ctx, eiGroup);
@@ -2747,12 +2747,12 @@ public class ThreadInfo extends InfoObject
             case NOTIFIED:
             case TIMEDOUT:
                 // just set interrupt flag
-                eiThread.setBooleanField(ctx, "interrupted", new One<>(true));
+                eiThread.setBooleanField(ctx, "interrupted", One.TRUE);
                 break;
 
             case WAITING:
             case TIMEOUT_WAITING:
-                eiThread.setBooleanField(ctx, "interrupted", new One<>(true));
+                eiThread.setBooleanField(ctx, "interrupted", One.TRUE);
                 setState(State.INTERRUPTED);
 
                 // since this is potentially called w/o owning the wait lock, we

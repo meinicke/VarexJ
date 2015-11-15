@@ -28,7 +28,7 @@ public class DoubleValue extends AbstractValue {
 
   public DoubleValue(String strValue) {
     super(strValue);
-    value = Double.parseDouble(strValue);
+    value = Double.valueOf(strValue);
   }
 
   @Override

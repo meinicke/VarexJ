@@ -273,17 +273,17 @@ public class JPF_java_io_File extends NativePeer {
 		  return One.valueOf(file.renameTo(toFile.getValue()));  
 	  }
 	  
-	  Conditional<Boolean> returnValue = toFile.map(new Function<File, Boolean>() {
+	  Conditional<Boolean> returnValue = toFile.mapr(new Function<File, Conditional<Boolean>>() {
 
 		@Override
-		public Boolean apply(File toFile) {
+		public Conditional<Boolean> apply(File toFile) {
 			try {
 				FileUtils.copyFile(file, toFile);
 			} catch (IOException e) {
 				e.printStackTrace();
-				return false;
+				return One.FALSE;
 			}
-			return true;
+			return One.TRUE;
 		}
 		  
 	  });

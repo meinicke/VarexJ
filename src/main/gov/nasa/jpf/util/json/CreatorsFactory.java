@@ -57,7 +57,7 @@ class BoxedBoolCreator implements Creator {
     if (read != null) {
       boolRef = env.newObject(ctx, "java.lang.Boolean");
       ElementInfo ei = env.getModifiableElementInfo(boolRef);
-      ei.setBooleanField(ctx, "value", new One<>(read == true));
+      ei.setBooleanField(ctx, "value", new One<>(read));
     }
 
     return boolRef;
@@ -147,7 +147,7 @@ class BoxedDoubleCreator implements Creator {
     if (read != null) {
       doubleRef = env.newObject(ctx, "java.lang.Double");
       ElementInfo ei = env.getModifiableElementInfo(doubleRef);
-      ei.setDoubleField(ctx, "value", new One<>(read.doubleValue()));
+      ei.setDoubleField(ctx, "value", new One<>(read));
     }
 
     return doubleRef;

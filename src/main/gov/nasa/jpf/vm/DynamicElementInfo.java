@@ -181,21 +181,21 @@ public class DynamicElementInfo extends ElementInfo {
     if (cname.startsWith("java.lang.")){
       cname = cname.substring(10);
       if ("Boolean".equals(cname)){
-        return Boolean.valueOf(getBooleanField("value").getValue());
+        return getBooleanField("value").getValue();
       } else if ("Character".equals(cname)){
-        return Character.valueOf(getCharField("value").getValue());
+        return getCharField("value").getValue();
       } else if ("Byte".equals(cname)){
-        return Byte.valueOf( getByteField("value").getValue());
+        return getByteField("value").getValue();
       } else if ("Short".equals(cname)){
-        return Short.valueOf( getShortField("value").getValue());
+        return getShortField("value").getValue();
       } else if ("Integer".equals(cname)){
         return getIntField("value").getValue();
       } else if ("Float".equals(cname)){
-        return Float.valueOf( getFloatField("value").getValue());
+        return getFloatField("value").getValue();
       } else if ("Long".equals(cname)){
         return getLongField("value").getValue();
       } else if ("Double".equals(cname)){
-        return Double.valueOf( getDoubleField("value").getValue());
+        return getDoubleField("value").getValue();
       }
     }
     

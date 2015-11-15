@@ -190,9 +190,9 @@ public class Event extends ScriptElement {
 
     } else if (Character.isDigit(c)) { // ints and doubbles
       if (s.indexOf('.') >=0) {
-        return Double.parseDouble(s);
+        return Double.valueOf(s);
       } else {
-        return Integer.parseInt(s);
+        return Integer.valueOf(s);
       }
       
     } else if (s.equals("true")) { // boolean

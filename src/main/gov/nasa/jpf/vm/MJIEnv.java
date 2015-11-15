@@ -865,11 +865,11 @@ public Conditional<String> getConditionalStringObject (int objRef) {
       ClassInfo ci = getClassInfo(aref);
       String clsName = ci.getName();
       if (clsName.equals("java.lang.Boolean")){
-        args[i] = Boolean.valueOf(getBooleanField(aref,"value").getValue());
+        args[i] = getBooleanField(aref,"value").getValue();
       } else if (clsName.equals("java.lang.Integer")){
         args[i] = getIntField(aref,"value").getValue();
       } else if (clsName.equals("java.lang.Double")){
-        args[i] = Double.valueOf(getDoubleField(aref,"value").getValue());
+        args[i] = getDoubleField(aref,"value").getValue();
       } else if (clsName.equals("java.lang.String")){
         args[i] = getStringObject(ctx, aref);
       }
@@ -879,7 +879,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public Boolean getBooleanObject (int objref){
-    return Boolean.valueOf(getBooleanField(objref, "value").getValue());// TODO jens
+    return getBooleanField(objref, "value").getValue();// TODO jens
   }
 
   public Byte getByteObject (int objref){
@@ -887,11 +887,11 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public Character getCharObject (int objref){
-    return new Character(getCharField(objref, "value").getValue());// TODO jens
+    return getCharField(objref, "value").getValue();// TODO jens
   }
 
   public Short getShortObject (int objref){
-    return new Short(getShortField(objref, "value").getValue());// TODO jens
+    return getShortField(objref, "value").getValue();// TODO jens
   }
 
   public Integer getIntegerObject (int objref){
@@ -903,11 +903,11 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public Float getFloatObject (int objref){
-    return new Float(getFloatField(objref, "value").getValue());// TODO jens
+    return getFloatField(objref, "value").getValue();// TODO jens
   }
 
   public Double getDoubleObject (int objref){
-    return new Double(getDoubleField(objref, "value").getValue());// TODO jens
+    return getDoubleField(objref, "value").getValue();// TODO jens
   }
 
   // danger - the returned arrays could be used to modify contents of stored objects
@@ -1676,22 +1676,21 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     if (v instanceof String){
       setReferenceField(ctx, proxyRef, fname, newString(FeatureExprFactory.True(), new One<>((String)v)));
     } else if (v instanceof Boolean){
-      setBooleanField(ctx, proxyRef, fname, new One<>(((Boolean)v).booleanValue()));
+      setBooleanField(ctx, proxyRef, fname, new One<>((Boolean)v));
     } else if (v instanceof Integer){
-      setIntField(ctx, proxyRef, fname, new One<>(((Integer)v).intValue()));
+      setIntField(ctx, proxyRef, fname, new One<>((Integer)v));
     } else if (v instanceof Long){
-      setLongField(ctx, proxyRef, fname, new One<>(((Long)v).longValue()));
+      setLongField(ctx, proxyRef, fname, new One<>((Long)v));
     } else if (v instanceof Float){
-      setFloatField(ctx, proxyRef, fname, new One<>(((Float)v).floatValue()));
+      setFloatField(ctx, proxyRef, fname, new One<>((Float)v));
     } else if (v instanceof Short){
-      setShortField(ctx, proxyRef, fname, new One<>(((Short)v).shortValue()));
+      setShortField(ctx, proxyRef, fname, new One<>((Short)v));
     } else if (v instanceof Character){
-      setCharField(ctx, proxyRef, fname, new One<>(((Character)v).charValue()));
+      setCharField(ctx, proxyRef, fname, new One<>((Character)v));
     } else if (v instanceof Byte){
-      setByteField(ctx, proxyRef, fname, new One<>(((Byte)v).byteValue()));
+      setByteField(ctx, proxyRef, fname, new One<>((Byte)v));
     } else if (v instanceof Double){
-      setDoubleField(ctx, proxyRef, fname, new One<>(((Double)v).doubleValue()));
-
+      setDoubleField(ctx, proxyRef, fname, new One<>((Double)v));
     } else if (v instanceof AnnotationInfo.EnumValue){ // an enum constant
       AnnotationInfo.EnumValue ev = (AnnotationInfo.EnumValue)v;
       String eCls = ev.getEnumClassName();
@@ -1730,22 +1729,22 @@ public Conditional<String> getConditionalStringObject (int objRef) {
       } else if (ftype.equals("int[]")){
         aref = newIntArray(a.length);
         for (int i=0; i<a.length; i++){
-          setIntArrayElement(ctx,aref,i, new One<>(((Number)a[i]).intValue()));
+          setIntArrayElement(ctx,aref,i, new One<>((Integer)a[i]));
         }
       } else if (ftype.equals("boolean[]")){
         aref = newBooleanArray(a.length);
         for (int i=0; i<a.length; i++){
-          setBooleanArrayElement(ctx,aref,i, new One<>(((Boolean)a[i]).booleanValue()));
+          setBooleanArrayElement(ctx,aref,i, new One<>((Boolean)a[i]));
         }
       } else if (ftype.equals("long[]")){
         aref = newLongArray(a.length);
         for (int i=0; i<a.length; i++){
-          setLongArrayElement(ctx,aref,i, new One<>(((Number)a[i]).longValue()));
+          setLongArrayElement(ctx,aref,i, new One<>(((Long)a[i])));
         }
       } else if (ftype.equals("double[]")){
         aref = newDoubleArray(a.length);
         for (int i=0; i<a.length; i++){
-          setDoubleArrayElement(ctx,aref,i, new One<>(((Number)a[i]).doubleValue()));
+          setDoubleArrayElement(ctx,aref,i, new One<>(((Double)a[i])));
         }
       } else if (ftype.equals("java.lang.Class[]")){
         aref = newObjectArray("java.lang.Class", a.length);

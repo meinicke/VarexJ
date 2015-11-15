@@ -43,7 +43,7 @@ public class JSONLexer {
   // Last read character
   int currentChar;
 
-  private final int STREAM_END = -1;
+  private static final int STREAM_END = -1;
 
   public JSONLexer(Reader reader) {
     this.reader = reader;
