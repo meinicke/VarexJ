@@ -5,6 +5,13 @@ import org.junit.Test;
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
+/**
+ * 
+ * Tests non stetic features.
+ * 
+ * @author Jens Meinicke
+ *
+ */
 public class NonStaticVariabilityAwareTest extends TestJPF {
 
 	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=interaction",*/ "+search.class= .search.RandomSearch", "+choice=MapChoice"};

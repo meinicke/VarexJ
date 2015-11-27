@@ -21,6 +21,12 @@ import de.fosd.typechef.featureexpr.AbstractFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
+/**
+ * Test for conditional implementations.
+ * 
+ * @author Jens Meinicke
+ *
+ */
 @SuppressWarnings("unused")
 @RunWith(Parameterized.class)
 public class ConditionalTest {

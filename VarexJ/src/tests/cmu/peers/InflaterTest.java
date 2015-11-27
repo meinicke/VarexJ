@@ -1,4 +1,4 @@
-package cmu;
+package cmu.peers;
 
 import java.util.zip.Inflater;
 

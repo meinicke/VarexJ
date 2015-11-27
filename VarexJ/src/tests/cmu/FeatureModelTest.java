@@ -9,6 +9,12 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureModel;
 
+/**
+ * Tests the usage of dimacs files as feature models.
+ * 
+ * @author Jens Meinicke
+ *
+ */
 public class FeatureModelTest {
 	
 	@Test
