@@ -1,18 +1,15 @@
 package nhandler.conversion.jpf2jvm;
 
+import java.lang.reflect.Array;
+
 import cmu.conditional.Conditional;
-import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DynamicElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.ReferenceArrayFields;
 import gov.nasa.jpf.vm.StaticElementInfo;
-
-import java.lang.reflect.Array;
-
 import nhandler.conversion.ConversionException;
 import nhandler.conversion.ConverterBase;
 
@@ -242,7 +239,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         // In case that value is of the type One
         Object JVMObj;
         if (value instanceof Conditional)
-            JVMObj = new String((char[]) ((Conditional) value).simplify(ctx).getValue());
+            JVMObj = new String((char[]) ((Conditional<?>) value).simplify(ctx).getValue());
         else {
             System.out.println("Warning from JPF2JVMConverter.java L244, JVMObj is not One");
             JVMObj = new String((char[]) value);

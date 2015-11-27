@@ -17,12 +17,6 @@
 
 package gov.nasa.jpf.vm;
 
-import nhandler.peerGen.PeerClassGen;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.MethodInfo;
-import gov.nasa.jpf.vm.NativeMethodInfo;
-import gov.nasa.jpf.vm.NativePeer;
-
 /**
  * This is a subclass of NativeMethodInfo which makes executeNative() skip the
  * execution of the unhandled native method by executing the corresponding empty 

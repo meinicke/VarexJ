@@ -26,7 +26,8 @@ public class Server {
         try {
             final int PORT = 1024;
 
-            ServerSocket serverSocket = new ServerSocket(PORT);
+            @SuppressWarnings("resource")
+			ServerSocket serverSocket = new ServerSocket(PORT);
             System.out.println("Waiting for a client ...");
             Socket socket = serverSocket.accept();
             System.out.println("Client has arrived ...");

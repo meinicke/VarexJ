@@ -32,7 +32,8 @@ public class SimpleReciever extends ReceiverAdapter {
     channel.connect("SimpleCluster");
   }
 
-  private void sendMessage (String text) {
+  @SuppressWarnings("unused")
+private void sendMessage (String text) {
     String line = "[" + user_name + "] " + text;
     Message msg = new Message(null, null, line);
     try {

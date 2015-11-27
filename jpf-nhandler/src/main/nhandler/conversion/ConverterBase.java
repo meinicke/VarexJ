@@ -1,11 +1,12 @@
 package nhandler.conversion;
 
-import gov.nasa.jpf.util.ObjArray;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import gov.nasa.jpf.vm.MJIEnv;
-
-import java.net.Socket;
-import java.util.*;
-
 import nhandler.util.ValueIdentityHashMap;
 
 /**

@@ -1,14 +1,12 @@
 package nhandler.conversion.jvm2jpf;
 
+import java.lang.reflect.Field;
+
 import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Fields;
 import gov.nasa.jpf.vm.MJIEnv;
-
-import java.lang.reflect.Field;
-
 import nhandler.conversion.ConversionException;
 
 /** 

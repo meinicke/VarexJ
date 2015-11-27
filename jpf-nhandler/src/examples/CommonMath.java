@@ -76,6 +76,7 @@ public class CommonMath {
     CorrelatedRandomVectorGenerator generator = new CorrelatedRandomVectorGenerator(mean, covariance, 1.0e-12 * covariance.getNorm(), rawGenerator);
 
     // Use the generator to generate correlated vectors
-    double[] randomVector = generator.nextVector();
+    @SuppressWarnings("unused")
+	double[] randomVector = generator.nextVector();
   }
 }

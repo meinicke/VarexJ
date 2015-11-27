@@ -122,7 +122,7 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
                         int fieldValueRef = dei.getFields().getReferenceValue(fi.getStorageOffset()).getValue();
                         Object JVMField = obtainJVMObj(fieldValueRef, env, ctx);
                         if (JVMField instanceof One) {
-                            JVMField = ((One) JVMField).getValue();
+                            JVMField = ((One<?>) JVMField).getValue();
                         }
                         try {
                             fld[i].set(JVMObj, JVMField);
