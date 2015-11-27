@@ -26,7 +26,7 @@
   <property file="${user.home}/.jpf/site.properties"/>
 
   <!-- if there is none, default to a 'jpf-core' peer dir -->
-  <property name="jpf-core" value = "../"/>
+  <property name="jpf-core" value = "../VarexJ"/>
 
   <!-- get the dependent project properties -->
   <property file="${jpf-core}/jpf.properties"/>
