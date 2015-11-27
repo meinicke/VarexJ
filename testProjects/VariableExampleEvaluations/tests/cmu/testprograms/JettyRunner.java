@@ -1,4 +1,4 @@
-package cmu;
+package cmu.testprograms;
 
 import cmu.jetty.JettyHelloWorld;
 

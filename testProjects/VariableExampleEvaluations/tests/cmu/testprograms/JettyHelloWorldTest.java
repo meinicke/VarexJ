@@ -1,8 +1,10 @@
-package cmu.jetty;
+package cmu.testprograms;
 
 import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import cmu.jetty.JettyHelloWorld;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,7 +26,8 @@ public class JettyHelloWorldTest extends TestJPF{
     }
 
 	@SuppressWarnings("unused")
-	@Test @Ignore
+	@Test
+	@Ignore
     public void testServer() throws Exception {
         if (verifyNoPropertyViolation(config)) {
             final int PORT = 8080;

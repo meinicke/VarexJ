@@ -9,7 +9,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureModel;
 
-public class FMTest {
+public class FeatureModelTest {
 	
 	@Test
 	public void testSimple() throws Exception {

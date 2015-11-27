@@ -22,5 +22,7 @@
 	<classpathentry kind="lib" path="lib/Mine.jar"/>
 	<classpathentry kind="lib" path="lib/ZipMe.jar"/>
 	<classpathentry kind="lib" path="lib/kxml2-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-all-7.6.18-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar"/>
 	<classpathentry kind="output" path="src"/>
 </classpath>

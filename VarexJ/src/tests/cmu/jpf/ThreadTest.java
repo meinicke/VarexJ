@@ -1,4 +1,4 @@
-package cmu.jetty;
+package cmu.jpf;
 
 import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
@@ -7,7 +7,7 @@ import org.junit.Test;
  * @author: chupanw
  */
 public class ThreadTest extends TestJPF{
-    private final String[] config = {"+nhandler.delegateUnhandledNative", "+vm.scheduler_factory.class = gov.nasa.jpf.vm.DefaultSchedulerFactory", "+search.class=.search.RandomSearch", "+classpath+=${jpf-core}/lib/junit-4.11.jar,lib/jetty-all-7.6.18-SNAPSHOT.jar,lib/servlet-api-2.5.jar"};
+    private final String[] config = {"+nhandler.delegateUnhandledNative", "+vm.scheduler_factory.class = gov.nasa.jpf.vm.DefaultSchedulerFactory", "+search.class=.search.RandomSearch"};
 
     /**
      * To see whether threads can switch
@@ -46,7 +46,7 @@ public class ThreadTest extends TestJPF{
      */
     @Test
     public void testYield(){
-        //fixme
+        //FIXME
     }
 
 }
