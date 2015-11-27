@@ -19,7 +19,7 @@ public class FeatureModelTest {
 		FeatureExpr b = FeatureExprFactory.createDefinedExternal("CONFIG_B");
 		FeatureExpr c = FeatureExprFactory.createDefinedExternal("CONFIG_C");
 		
-		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile("model.dimacs");
+		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile("src/tests/cmu/model.dimacs");
 		assertFalse(a.and(b.not()).isContradiction());
 		assertTrue(a.and(b.not()).isContradiction(model));
 		
@@ -31,7 +31,7 @@ public class FeatureModelTest {
 	public void testBankAccount() throws Exception {
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 		FeatureExpr bankaccount = FeatureExprFactory.createDefinedExternal("CONFIG_bankaccount");
-		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile("BAmodel.dimacs");
+		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile("src/tests/cmu/BAmodel.dimacs");
 		assertFalse(bankaccount.not().isContradiction());
 		assertTrue(bankaccount.not().isContradiction(model));
 		
