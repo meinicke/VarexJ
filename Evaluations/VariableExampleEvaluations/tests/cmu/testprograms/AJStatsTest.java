@@ -32,5 +32,8 @@ public class AJStatsTest extends ATestExample {
 		return "";
 	}
 
-
+	@Override
+	protected String getModelFolder() {
+		return "";
+	}
 }

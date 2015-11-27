@@ -292,5 +292,10 @@ public class PrevaylerTest extends ATestExample {
 			}
 		}
 	}
+	
+	@Override
+	protected String getModelFolder() {
+		return "";
+	}
 
 }
