@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="lib/kxml2-2.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-all-7.6.18-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar"/>
-	<classpathentry kind="output" path="src"/>
+	<classpathentry kind="lib" path="lib/aspectjrt.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
