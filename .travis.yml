@@ -3,4 +3,4 @@ language: java
 jdk:
   - oraclejdk7
 
-script: ./script/test.sh
+script: chmod a+x ./script/test.sh
