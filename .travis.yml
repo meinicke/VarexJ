@@ -4,5 +4,5 @@ jdk:
   - oraclejdk7
 
 script: 
-  - chmod a+x ./script/test.sh
-  - ./script/test.sh
+  - chmod a+x ./.BuildScripts/build.sh
+  - ./.BuildScripts/build.sh
