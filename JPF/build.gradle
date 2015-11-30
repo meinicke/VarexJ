@@ -1,0 +1,15 @@
+sourceSets {
+	classes {
+		compileClasspath += sourceSets.main.runtimeClasspath
+	}
+	peers {
+		compileClasspath += sourceSets.main.runtimeClasspath
+	}
+	examples {
+		compileClasspath += sourceSets.main.runtimeClasspath
+	}
+}
+
+dependencies {
+	compile fileTree(dir: "${System.properties['user.dir']}/JPF/lib", include: '*.jar')
+}
