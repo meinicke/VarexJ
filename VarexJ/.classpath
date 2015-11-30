@@ -10,14 +10,10 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="lib" path="lib/conditionallib_2.10-0.3.4.jar"/>
-	<classpathentry kind="lib" path="lib/frontend_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/org.sat4j.core-2.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/scala-library-2.10.3.jar"/>
 	<classpathentry kind="lib" path="lib/javabdd-1.0b2.jar"/>
-	<classpathentry kind="lib" path="lib/kxml2-2.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-all-7.6.18-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/Coverage.jar"/>
 	<classpathentry kind="lib" path="lib/ColoredLogger.jar"/>
