@@ -1,1 +1,1 @@
-include 'JPF'
+include 'JPF', "jpf-nhandler"

@@ -76,7 +76,7 @@
     <available file="src/annotations" type="dir" property="have_annotations"/>
     <available file="src/peers"       type="dir" property="have_peers"/>
     <available file="src/classes"     type="dir" property="have_classes"/>
-    <available file="src/tests"       type="dir" property="have_tests"/>
+    <available file="src/test" type="dir" property="have_tests"/>
     <available file="src/examples"    type="dir" property="have_examples"/>
 
     <condition property="have_jvm_code">

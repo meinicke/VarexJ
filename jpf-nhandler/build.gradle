@@ -1,0 +1,66 @@
+////////////////// sourceSet part //////////////////
+/*
+ * sourceSet list:
+ *    main(default in Gradle) -> main handler implementation
+ *    annotations -> JPF annotations
+ *    classes -> model classes
+ *    peers -> peer methods
+ *    examples -> handler examples
+ */
+sourceSets {
+    annotations
+    classes {
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+    peers {
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+    examples {
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+    test {
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+def libFolder = fileTree(dir: "$projectDir/lib", include: '*.jar')
+dependencies {
+    compile libFolder, project(":JPF")
+    classesCompile libFolder, project(":JPF")
+    peersCompile libFolder, project(":JPF")
+    examplesCompile libFolder, project(":JPF")
+    testCompile libFolder, project(":JPF")
+}
+
+////////////////// Build part //////////////////
+
+jar {
+    archiveName = 'jpf-nhandler.jar'
+    from(sourceSets.main.output)
+    from(sourceSets.peers.output)
+    dependsOn
+}
+
+task classesJar(type: Jar) {
+    archiveName = 'jpf-nhandler-classes.jar'
+    from sourceSets.classes.output
+    from sourceSets.annotations.output
+}
+
+task annotationsJar(type: Jar) {
+    archiveName = 'jpf-nhandler-annotations.jar'
+    from sourceSets.annotations.output
+}
+
+////////////////// Testing part //////////////////
+
+test {
+    minHeapSize = "512m"
+    maxHeapSize = "1024m"
+    classpath = project.sourceSets.test.runtimeClasspath +
+            project.sourceSets.main.runtimeClasspath +
+            project.sourceSets.classes.runtimeClasspath +
+            project.sourceSets.annotations.runtimeClasspath
+    include '**/*Test.class'
+    exclude '**/JPF_*.class'
+}
