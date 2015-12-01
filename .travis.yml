@@ -1,8 +1,13 @@
-sudo: false
 language: java
+
+sudo: false
 
 jdk:
   - oraclejdk7
+
+env:
+  global:
+    JAVA_OPTS=-Xmx1g
 
 #script:
 #  - chmod a+x ./.BuildScripts/build.sh
