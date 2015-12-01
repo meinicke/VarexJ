@@ -133,6 +133,8 @@ jar {
  */
 test {
     maxParallelForks = 1
+    minHeapSize = "512m"
+    maxHeapSize = "1024m"
     classpath = project.sourceSets.test.runtimeClasspath +
             project.sourceSets.main.runtimeClasspath +
             project.sourceSets.classes.runtimeClasspath +
