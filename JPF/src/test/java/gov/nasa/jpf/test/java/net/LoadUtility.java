@@ -15,10 +15,10 @@ public class LoadUtility extends TestJPF{
   protected String user_dir = System.getProperty("user.dir");
   protected String pkg = "classloader_specific_tests";
 
-  protected String originalPath = user_dir + "/build/tests/" + pkg;
+  protected String originalPath = user_dir + "/build/classes/test/" + pkg;
   protected String tempPath = user_dir + "/build/" + pkg;
 
-  protected String jarUrl = "jar:file:" + user_dir + "/build/" + pkg + ".jar!/";
+  protected String jarUrl = "jar:file:" + user_dir + "/build/libs/" + pkg + ".jar!/";
   protected String dirUrl = "file:" + user_dir + "/build";
 
   /**

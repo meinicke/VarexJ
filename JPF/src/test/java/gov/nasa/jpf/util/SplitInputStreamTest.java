@@ -38,7 +38,7 @@ public class SplitInputStreamTest extends TestJPF {
   private static final Random s_random = Verify.isRunningInJPF() ? null : new SecureRandom();
   private static final String s_jpfArgs[] = new String[]{
     "+listener+=,gov.nasa.jpf.listener.PreciseRaceDetector",
-    "+classpath=build/main"
+    "+classpath=build/classes/main"
   };
   private SplitInputStream m_fixture;
   private InputStream m_input;

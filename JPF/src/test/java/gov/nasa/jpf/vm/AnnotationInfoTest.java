@@ -44,7 +44,7 @@ public class AnnotationInfoTest extends TestJPF {
   }
 
   protected AnnotationInfo createAnnotationInfo (String annotationName) throws ClassParseException {
-    DirClassFileContainer dfc = new DirClassFileContainer( new File("build/tests"));
+    DirClassFileContainer dfc = new DirClassFileContainer( new File("build/classes/test"));
     ClassPath cp = new ClassPath();
     cp.addClassFileContainer(dfc);
     

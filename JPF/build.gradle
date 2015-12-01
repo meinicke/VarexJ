@@ -1,15 +1,145 @@
+////////////////// sourceSet part //////////////////
+/*
+ * sourceSet list:
+ *    main(default in Gradle) -> main JVM implementation
+ *    annotations -> JPF annotations
+ *    classes -> model classes
+ *    peers -> peer methods
+ *    examples -> JPF examples
+ */
 sourceSets {
+    annotations
+    main {
+        compileClasspath += sourceSets.annotations.runtimeClasspath
+    }
 	classes {
 		compileClasspath += sourceSets.main.runtimeClasspath
+        compileClasspath += sourceSets.annotations.runtimeClasspath
 	}
 	peers {
 		compileClasspath += sourceSets.main.runtimeClasspath
+        compileClasspath += sourceSets.annotations.runtimeClasspath
 	}
 	examples {
 		compileClasspath += sourceSets.main.runtimeClasspath
+        compileClasspath += sourceSets.annotations.runtimeClasspath
 	}
+    test {
+        compileClasspath += sourceSets.annotations.runtimeClasspath
+        compileClasspath += sourceSets.classes.runtimeClasspath
+        compileClasspath += sourceSets.main.runtimeClasspath
+        compileClasspath += sourceSets.peers.runtimeClasspath
+    }
 }
 
+def libFolder = fileTree(dir: "$projectDir/lib", include: '*.jar')
 dependencies {
-	compile fileTree(dir: "${System.properties['user.dir']}/JPF/lib", include: '*.jar')
+    compile libFolder
+    classesCompile libFolder
+    peersCompile libFolder
+    examplesCompile libFolder
+    testCompile libFolder
+}
+
+////////////////// Build part //////////////////
+
+task classesJar(type: Jar) {
+    archiveName = 'jpf-classes.jar'
+    from sourceSets.annotations.output
+    from sourceSets.classes.output
+    from (sourceSets.main.output) {
+        include('gov/nasa/jpf/vm/Verify.class')
+        include('gov/nasa/jpf/JPFShell.class')
+        include('gov/nasa/jpf/util/TypeRef.class')
+        include('gov/nasa/jpf/util/test/TestJPF.class')
+        include('gov/nasa/jpf/util/test/TestMultiProcessJPF.class')
+        include('gov/nasa/jpf/util/test/TestJPFHelper.class')
+    }
+}
+
+task annotationsJar(type: Jar) {
+    archiveName = 'jpf-annotations.jar'
+    from sourceSets.annotations.output
+}
+
+task classloaderSpecificTestsJar(type: Jar) {
+    archiveName = 'classloader_specific_tests.jar'
+    from(sourceSets.test.output) {
+        include('classloader_specific_tests/*.class')
+    }
+}
+
+task runJPFJar(type: Jar) {
+    archiveName = 'RunJPF.jar'
+    from(sourceSets.main.output) {
+        include('gov/nasa/jpf/tool/Run.class')
+        include('gov/nasa/jpf/tool/RunJPF.class')
+        include('gov/nasa/jpf/Config.class')
+        include('gov/nasa/jpf/ConfigChangeListener.class')
+        include('gov/nasa/jpf/Config$MissingRequiredKeyException.class')
+        include('gov/nasa/jpf/JPFClassLoader.class')
+        include('gov/nasa/jpf/JPFShell.class')
+        include('gov/nasa/jpf/JPFException.class')
+        include('gov/nasa/jpf/JPFConfigException.class')
+        include('gov/nasa/jpf/JPFTargetException.class')
+        include('gov/nasa/jpf/util/JPFSiteUtils.class')
+        include('gov/nasa/jpf/util/FileUtils.class')
+        include('gov/nasa/jpf/util/StringMatcher.class')
+        include('gov/nasa/jpf/util/Pair.class')
+    }
+    manifest {
+        attributes("Main-Class": "gov.nasa.jpf.tool.RunJPF")
+    }
+}
+
+task runTestJar(type: Jar) {
+    archiveName = 'RunTest.jar'
+    from(sourceSets.main.output) {
+        include('gov/nasa/jpf/tool/Run.class')
+        include('gov/nasa/jpf/tool/RunTest.class')
+        include('gov/nasa/jpf/tool/RunTest$Failed.class')
+        include('gov/nasa/jpf/Config.class')
+        include('gov/nasa/jpf/ConfigChangeListener.class')
+        include('gov/nasa/jpf/Config$MissingRequiredKeyException.class')
+        include('gov/nasa/jpf/JPFClassLoader.class')
+        include('gov/nasa/jpf/JPFException.class')
+        include('gov/nasa/jpf/JPFConfigException.class')
+        include('gov/nasa/jpf/util/JPFSiteUtils.class')
+        include('gov/nasa/jpf/util/FileUtils.class')
+        include('gov/nasa/jpf/util/StringMatcher.class')
+        include('gov/nasa/jpf/util/DevNullPrintStream.class')
+    }
+    manifest {
+        attributes("Main-Class": "gov.nasa.jpf.tool.RunTest")
+    }
+}
+
+jar {
+    archiveName = 'jpf.jar'
+    dependsOn classesJar, annotationsJar, runJPFJar, runTestJar, classloaderSpecificTestsJar
+    from sourceSets.main.output
+    from sourceSets.peers.output
+    from sourceSets.annotations.output
+    from sourceSets.examples.output
+    from(sourceSets.classes.output) {
+        include('org/junit/*.class')
+    }
+}
+
+////////////////// Testing part //////////////////
+
+/*
+    Core regression test for JPF
+ */
+test {
+    maxParallelForks = 1
+    classpath = project.sourceSets.test.runtimeClasspath +
+            project.sourceSets.main.runtimeClasspath +
+            project.sourceSets.classes.runtimeClasspath +
+            project.sourceSets.peers.runtimeClasspath +
+            project.sourceSets.annotations.runtimeClasspath
+    include '**/*Test.class'
+    exclude 'cmu/*'
+    exclude '**/JPF_*.class'
+    dependsOn assemble
 }

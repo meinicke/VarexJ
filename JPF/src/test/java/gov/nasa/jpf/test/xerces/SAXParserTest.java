@@ -43,9 +43,9 @@ public class SAXParserTest extends TestJPF {
 
     if (verifyNoPropertyViolation(
             "+http.connection=http://*.dtd -- gov.nasa.jpf.CachedROHttpConnection",
-            "+http.cache_dir=src/tests/gov/nasa/jpf/test/xerces",
+            "+http.cache_dir=src/test/java/gov/nasa/jpf/test/xerces",
             "+log.info=http")){
-      String pathName = "src/tests/gov/nasa/jpf/test/xerces/sun_checks.xml";
+      String pathName = "src/test/java/gov/nasa/jpf/test/xerces/sun_checks.xml";
 
       DefaultHandler handler = new DefaultHandler();
 

@@ -114,7 +114,7 @@ public class ClassInfoTest extends TestJPF {
 
   @Test
   public void testClassFileInitialization() {
-    File file = new File("build/tests/gov/nasa/jpf/jvm/ClassInfoTest$MyClass.class");
+    File file = new File("build/classes/test/gov/nasa/jpf/jvm/ClassInfoTest$MyClass.class");
 
     try {
       ClassInfo ci = new NonResolvedClassInfo( "gov.nasa.jpf.jvm.ClassInfoTest$MyClass", file);
