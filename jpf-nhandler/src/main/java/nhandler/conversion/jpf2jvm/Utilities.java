@@ -2,6 +2,8 @@ package nhandler.conversion.jpf2jvm;
 
 import java.lang.reflect.Field;
 
+import cmu.conditional.One;
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.vm.ArrayFields;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -86,6 +88,9 @@ public class Utilities {
     // char[]
     else if (type.equals("[C")) {
       JVMObj = ((ArrayFields) ei.getFields()).asCharArray();
+      if (JVMObj instanceof One) {
+        JVMObj = ((One) JVMObj).getValue();
+      }
     }
     // short[]
     else if (type.equals("[S")) {

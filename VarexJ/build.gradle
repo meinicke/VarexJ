@@ -10,25 +10,27 @@
 sourceSets {
     annotations
     main {
-        compileClasspath += sourceSets.annotations.runtimeClasspath
+        compileClasspath += sourceSets.annotations.output
     }
 	classes {
-		compileClasspath += sourceSets.main.runtimeClasspath
-        compileClasspath += sourceSets.annotations.runtimeClasspath
+		compileClasspath += sourceSets.main.output
+        compileClasspath += sourceSets.annotations.output
 	}
 	peers {
-		compileClasspath += sourceSets.main.runtimeClasspath
-        compileClasspath += sourceSets.annotations.runtimeClasspath
+		compileClasspath += sourceSets.main.output
+        compileClasspath += sourceSets.annotations.output
 	}
 	examples {
-		compileClasspath += sourceSets.main.runtimeClasspath
-        compileClasspath += sourceSets.annotations.runtimeClasspath
+		compileClasspath += sourceSets.main.output
+        compileClasspath += sourceSets.annotations.output
 	}
     test {
-        compileClasspath += sourceSets.annotations.runtimeClasspath
-        compileClasspath += sourceSets.classes.runtimeClasspath
-        compileClasspath += sourceSets.main.runtimeClasspath
-        compileClasspath += sourceSets.peers.runtimeClasspath
+        compileClasspath += sourceSets.annotations.output
+        runtimeClasspath += sourceSets.annotations.output
+        compileClasspath += sourceSets.classes.output
+        runtimeClasspath += sourceSets.classes.output
+        compileClasspath += sourceSets.peers.output
+        runtimeClasspath += sourceSets.peers.output
     }
 }
 
@@ -132,16 +134,10 @@ jar {
     Core regression test for JPF
  */
 test {
-    maxParallelForks = 1
+    maxParallelForks = 4
     minHeapSize = "512m"
     maxHeapSize = "1024m"
-    classpath = project.sourceSets.test.runtimeClasspath +
-            project.sourceSets.main.runtimeClasspath +
-            project.sourceSets.classes.runtimeClasspath +
-            project.sourceSets.peers.runtimeClasspath +
-            project.sourceSets.annotations.runtimeClasspath
     include '**/*Test.class'
-    exclude 'cmu/*'
+    exclude '**cmu/*.class'
     exclude '**/JPF_*.class'
-    dependsOn assemble
 }

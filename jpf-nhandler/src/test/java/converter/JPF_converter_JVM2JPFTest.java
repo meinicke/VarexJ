@@ -35,7 +35,7 @@ import converter.JVM2JPFTest.JVM2JPFTestConversion;
 public class JPF_converter_JVM2JPFTest extends NativePeer {
 
   @MJI
-  public static int createStringTest____Ljava_lang_String_2 (FeatureExpr ctx, MJIEnv env, int objRef) throws ConversionException{
+  public static int createStringTest____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx) throws ConversionException{
     String s = new String("Hello World");
 
     ConverterBase.reset(env);
@@ -47,7 +47,7 @@ public class JPF_converter_JVM2JPFTest extends NativePeer {
   }
 
   @MJI
-  public static int createIntegerTest____Ljava_lang_Integer_2 (FeatureExpr ctx, MJIEnv env, int objRef) throws ConversionException{
+  public static int createIntegerTest____Ljava_lang_Integer_2 (MJIEnv env, int objRef, FeatureExpr ctx) throws ConversionException{
     Integer i = new Integer(100);
 
     ConverterBase.reset(env);
@@ -59,7 +59,7 @@ public class JPF_converter_JVM2JPFTest extends NativePeer {
   }
 
   @MJI
-  public static int createArrayTest_____3Ljava_lang_String_2 (FeatureExpr ctx, MJIEnv env, int objRef) throws ConversionException{
+  public static int createArrayTest_____3Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx) throws ConversionException{
     String[] arr = { "e1", "e2", "e3" };
 
     ConverterBase.reset(env);
@@ -71,7 +71,7 @@ public class JPF_converter_JVM2JPFTest extends NativePeer {
   }
 
   @MJI
-  public static int createHashMapTest____Ljava_util_HashMap_2 (FeatureExpr ctx, MJIEnv env, int objRef) throws ConversionException{
+  public static int createHashMapTest____Ljava_util_HashMap_2 (MJIEnv env, int objRef, FeatureExpr ctx) throws ConversionException{
     HashMap<Integer, String> map = new HashMap<Integer, String>();
     map.put(0, "zero");
     map.put(1, "one");
@@ -86,7 +86,7 @@ public class JPF_converter_JVM2JPFTest extends NativePeer {
   }
 
   @MJI
-  public static int createClassTest____Ljava_lang_Class_2 (FeatureExpr ctx, MJIEnv env, int objRef) throws ConversionException{
+  public static int createClassTest____Ljava_lang_Class_2 (MJIEnv env, int objRef, FeatureExpr ctx) throws ConversionException{
     JVM2JPFTestConversion.inc(10);
     Class<?> cls = JVM2JPFTestConversion.class;
 

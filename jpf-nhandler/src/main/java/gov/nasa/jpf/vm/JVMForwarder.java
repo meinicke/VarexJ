@@ -42,19 +42,19 @@ import gov.nasa.jpf.util.MethodSpec;
  */
 public class JVMForwarder extends PropertyListenerAdapter {
 
-  private static String[] delegate_spec = null;
+  private String[] delegate_spec = null;
 
-  private static String[] delegateNative_spec = null;
+  private String[] delegateNative_spec = null;
 
-  private static String[] skip_spec = null;
+  private String[] skip_spec = null;
 
-  private static String[] filter_spec = null;
+  private String[] filter_spec = null;
 
-  private static boolean delegateUnhandledNatives = false;
+  private boolean delegateUnhandledNatives = false;
 
-  private static boolean skipNatives = false;
+  private boolean skipNatives = false;
 
-  private static boolean initialized = false;
+  private boolean initialized = false;
 
   private void init (Config conf){
     if (!initialized){

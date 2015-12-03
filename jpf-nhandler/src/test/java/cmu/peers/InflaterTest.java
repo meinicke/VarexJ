@@ -10,7 +10,7 @@ public class InflaterTest extends TestJPF {
 	
 	@Test
 	public void test() throws Exception {
-		if (verifyNoPropertyViolation()) {
+		if (verifyNoPropertyViolation("+nhandler.delegateUnhandledNative")) {
 			new Inflater().finished();
 			new Inflater(true).finished();
 		}

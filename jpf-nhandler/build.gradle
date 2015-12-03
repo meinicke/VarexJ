@@ -8,39 +8,22 @@
  *    examples -> handler examples
  */
 sourceSets {
-    annotations
-    classes {
-        compileClasspath += sourceSets.main.runtimeClasspath
-    }
-    peers {
-        compileClasspath += sourceSets.main.runtimeClasspath
-    }
-    examples {
-        compileClasspath += sourceSets.main.runtimeClasspath
-    }
-    test {
-        compileClasspath += sourceSets.main.runtimeClasspath
-    }
+    annotations{}
+    classes{}
+    peers {}
+    examples {}
 }
 
 def libFolder = fileTree(dir: "$projectDir/lib", include: '*.jar')
 dependencies {
-    compile libFolder, project(":JPF")
-    classesCompile libFolder, project(":JPF")
-    peersCompile libFolder, project(":JPF")
-    examplesCompile libFolder, project(":JPF")
-    testCompile libFolder, project(":JPF")
+    compile libFolder, project(":VarexJ")
+    annotationsCompile libFolder, project(":VarexJ")
+    classesCompile libFolder, project(":VarexJ")
+    peersCompile libFolder, project(":VarexJ")
+    examplesCompile libFolder, project(":VarexJ")
 }
 
 ////////////////// Build part //////////////////
-
-jar {
-    archiveName = 'jpf-nhandler.jar'
-    from(sourceSets.main.output)
-    from(sourceSets.peers.output)
-    dependsOn
-}
-
 task classesJar(type: Jar) {
     archiveName = 'jpf-nhandler-classes.jar'
     from sourceSets.classes.output
@@ -52,15 +35,18 @@ task annotationsJar(type: Jar) {
     from sourceSets.annotations.output
 }
 
+jar {
+    archiveName = 'jpf-nhandler.jar'
+    from(sourceSets.main.output)
+    from(sourceSets.peers.output)
+    dependsOn classesJar, annotationsJar
+}
+
 ////////////////// Testing part //////////////////
 
 test {
     minHeapSize = "512m"
     maxHeapSize = "1024m"
-    classpath = project.sourceSets.test.runtimeClasspath +
-            project.sourceSets.main.runtimeClasspath +
-            project.sourceSets.classes.runtimeClasspath +
-            project.sourceSets.annotations.runtimeClasspath
     include '**/*Test.class'
     exclude '**/JPF_*.class'
 }

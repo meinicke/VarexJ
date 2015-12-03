@@ -41,7 +41,7 @@ import converter.JPF2JVMTest.JPF2JVMTestConversion;
 public class JPF_converter_JPF2JVMTest extends NativePeer {
 
   @MJI
-  public static void convertStringTest__Ljava_lang_String_2__V (FeatureExpr ctx, MJIEnv env, int objRef, int jpfRef) throws ConversionException, ClassNotFoundException{
+  public static void convertStringTest__Ljava_lang_String_2__V (MJIEnv env, int objRef, int jpfRef, FeatureExpr ctx) throws ConversionException, ClassNotFoundException{
     ConverterBase.reset(env);
 
     // converting JPF String to JVM string
@@ -52,7 +52,7 @@ public class JPF_converter_JPF2JVMTest extends NativePeer {
   }
 
   @MJI
-  public static void convertIntegerTest__Ljava_lang_Integer_2__V (FeatureExpr ctx, MJIEnv env, int objRef, int jpfRef) throws ConversionException, ClassNotFoundException{
+  public static void convertIntegerTest__Ljava_lang_Integer_2__V (MJIEnv env, int objRef, int jpfRef, FeatureExpr ctx) throws ConversionException, ClassNotFoundException{
     ConverterBase.reset(env);
 
     // converting JPF Integer to JVM Integer
@@ -64,7 +64,7 @@ public class JPF_converter_JPF2JVMTest extends NativePeer {
   }
 
   @MJI
-  public static void convertArrayTest___3Ljava_lang_String_2__V (FeatureExpr ctx, MJIEnv env, int objRef, int jpfArr) throws ConversionException, ClassNotFoundException{
+  public static void convertArrayTest___3Ljava_lang_String_2__V (MJIEnv env, int objRef, int jpfArr, FeatureExpr ctx) throws ConversionException, ClassNotFoundException{
     ConverterBase.reset(env);
 
     // converting JPF String array to JVM String array
@@ -78,7 +78,7 @@ public class JPF_converter_JPF2JVMTest extends NativePeer {
   }
 
   @MJI
-  public static void convertHashMapTest__Ljava_util_HashMap_2__V (FeatureExpr ctx, MJIEnv env, int objRef, int jpfMap) throws ConversionException, ClassNotFoundException{
+  public static void convertHashMapTest__Ljava_util_HashMap_2__V (MJIEnv env, int objRef, int jpfMap, FeatureExpr ctx) throws ConversionException, ClassNotFoundException{
     ConverterBase.reset(env);
 
     // converting JPF HashMap to JVM HashMap
@@ -97,7 +97,7 @@ public class JPF_converter_JPF2JVMTest extends NativePeer {
   }
 
   @MJI
-  public static void convertClassTest__Ljava_lang_Class_2__V (FeatureExpr ctx, MJIEnv env, int objRef, int jpfCls) throws
+  public static void convertClassTest__Ljava_lang_Class_2__V (MJIEnv env, int objRef, int jpfCls, FeatureExpr ctx) throws
          ConversionException, IllegalArgumentException, SecurityException, 
            IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
  
