@@ -4,4 +4,6 @@ nhandler.delegateUnhandledNative = true
 
 nhandler.clean = true
 
-classpath+=${jpf-core}/build/;${jpf-core}/lib/prevayler-demo1-2.5.jar;${jpf-core}/lib/prevayler-factory-2.5.jar;${jpf-core}/lib/prevayler-core-2.5.jar;
+build = ${jpf.home}/Evaluations/prevayler/build/classes/main
+lib = ${jpf.home}/Evaluations/prevayler/lib
+classpath+=${build}:${lib}/prevayler-factory-2.5.jar:${lib}/prevayler-core-2.5.jar:
