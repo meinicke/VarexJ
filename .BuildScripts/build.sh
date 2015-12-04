@@ -5,5 +5,5 @@
 # ant -buildfile jpf-nhandler/build.xml build
 # ant -buildfile VarexJ/build.xml test
 
-gradle assemble
-gradle test -i
+./gradlew assemble
+./gradlew test --info

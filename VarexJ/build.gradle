@@ -134,7 +134,7 @@ jar {
     Core regression test for JPF
  */
 test {
-    maxParallelForks = 4
+    maxParallelForks = 1
     minHeapSize = "512m"
     maxHeapSize = "1024m"
     include '**/*Test.class'
