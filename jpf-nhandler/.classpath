@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main"/>
-	<classpathentry kind="src" path="src/peers"/>
-	<classpathentry kind="src" path="src/classes"/>
-	<classpathentry kind="src" path="src/annotations"/>
-	<classpathentry kind="src" path="src/examples"/>
-	<classpathentry excluding="cmu/datatypes/LinkedList.java" kind="src" path="src/tests"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/build"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib" exported="true"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
 	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="src" path="src/annotations/java"/>
 	<classpathentry kind="src" path="src/classes/java"/>
 	<classpathentry kind="src" path="src/examples/java"/>
 	<classpathentry kind="src" path="src/peers/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="/VarexJ"/>
+	<classpathentry kind="lib" path="/Users/chupanw/Projects/VarexJ/jpf-nhandler/lib/bcel-5.2.jar"/>
 	<classpathentry kind="lib" path="/Users/chupanw/Projects/VarexJ/VarexJ/lib/annotations.jar"/>
 	<classpathentry kind="lib" path="/Users/chupanw/Projects/VarexJ/VarexJ/lib/ColoredLogger.jar"/>
 	<classpathentry kind="lib" path="/Users/chupanw/Projects/VarexJ/VarexJ/lib/commons-io.jar"/>
