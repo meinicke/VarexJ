@@ -5,6 +5,6 @@ sudo: false
 jdk:
   - oraclejdk7
 
-#script:
-#  - chmod a+x ./.BuildScripts/build.sh
-#  - ./.BuildScripts/build.sh
+script:
+  - chmod a+x ./.BuildScripts/build.sh
+  - ./.BuildScripts/build.sh
