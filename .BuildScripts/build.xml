@@ -12,7 +12,7 @@
     buildinfo         create buildinfo properties file
 -->
 
-<project name="jpf-core" default="build" basedir=".">
+<project name="jpf-core" default="build" basedir="../VarexJ">
 
 	<!-- ===================== ===== COMMON SECTION ========================== -->
 
@@ -26,7 +26,7 @@
 	<property name="debug" value="on" />
 	<property name="deprecation" value="off" />
 	<property name="report.dir" value="build/junitreport" />
-	<uptodate property="build_uptodate" targetfile="build/main/gov/nasa/jpf/build.properties" srcfile="build.properties" />
+	<uptodate property="build_uptodate" targetfile="build/main/gov/nasa/jpf/build.properties" srcfile="../VarexJ/build.properties" />
 
 
 	<!-- generic classpath settings -->
@@ -34,7 +34,7 @@
 		<pathelement location="build/main" />
 		<pathelement location="build/peers" />
 		<pathelement location="build/annotations" />
-		<fileset dir=".">
+		<fileset dir="../VarexJ">
 			<include name="lib/*.jar" />
 		</fileset>
 	</path>
@@ -44,7 +44,7 @@
 	<target name="-init">
 		<tstamp />
 
-		<mkdir dir="build" />
+		<mkdir dir="../VarexJ/build" />
 		<!-- the build root -->
 
 		<!-- the things that have to be in the classpath of whatever runs Ant -->
@@ -52,12 +52,12 @@
 		<fail unless="have_javac">no javac was found __or__ check http://babelfish.arc.nasa.gov/trac/jpf/wiki/install/build for possible solutions</fail>
 
 
-		<available file="src/main" type="dir" property="have_main" />
-		<available file="src/annotations" type="dir" property="have_annotations" />
-		<available file="src/peers" type="dir" property="have_peers" />
-		<available file="src/classes" type="dir" property="have_classes" />
-		<available file="src/test" type="dir" property="have_tests" />
-		<available file="src/examples" type="dir" property="have_examples" />
+		<available file="../VarexJ/src/main" type="dir" property="have_main" />
+		<available file="../VarexJ/src/annotations" type="dir" property="have_annotations" />
+		<available file="../VarexJ/src/peers" type="dir" property="have_peers" />
+		<available file="../VarexJ/src/classes" type="dir" property="have_classes" />
+		<available file="../VarexJ/src/test" type="dir" property="have_tests" />
+		<available file="../VarexJ/src/examples" type="dir" property="have_examples" />
 
 		<available file=".hg" type="dir" property="have_hg" />
 
@@ -76,7 +76,7 @@
 
 	<!-- public compile -->
 	<target name="compile" depends="-init,-compile-annotations,-compile-main,-compile-peers,-compile-classes,-compile-tests, -compile-examples" description="compile all JPF core sources">
-		<copy file="build.properties" todir="build/main/gov/nasa/jpf" failonerror="false" />
+		<copy file="../VarexJ/build.properties" todir="build/main/gov/nasa/jpf" failonerror="false" />
 	</target>
 
 	<target name="-compile-annotations" if="have_annotations">
@@ -104,8 +104,8 @@
 	</target>
 
 	<target name="-compile-classes" if="have_classes" depends="-compile-annotations,-compile-main">
-		<mkdir dir="build/classes" />
-		<javac srcdir="src/classes" destdir="build/classes" includeantruntime="false" debug="${debug}" deprecation="${deprecation}">
+		<mkdir dir="../VarexJ/build/classes" />
+		<javac srcdir="src/classes" destdir="../VarexJ/build/classes" includeantruntime="false" debug="${debug}" deprecation="${deprecation}">
 			<compilerarg value="-XDenableSunApiLintControl" />
 			<compilerarg value="-Xlint:all,-sunapi" />
 			<classpath>
@@ -123,7 +123,7 @@
 			<classpath>
 				<path refid="lib.path" />
 				<pathelement location="build/annotations" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
 			</classpath>
 		</javac>
 	</target>
@@ -161,16 +161,16 @@
 		</exec>
 
 		<!-- .version is in .hgignore -->
-		<echo message="${version}${line.separator}" file=".version" />
+		<echo message="${version}${line.separator}" file="../VarexJ/.version" />
 	</target>
 
 	<!-- build jars -->
 	<target name="build" depends="-cond-clean,compile,-version" description="generate the core JPF jar files">
 
-		<copy file=".version" todir="build/main/gov/nasa/jpf" failonerror="false" />
+		<copy file="../VarexJ/.version" todir="build/main/gov/nasa/jpf" failonerror="false" />
 
 		<jar jarfile="build/jpf-classes.jar">
-			<fileset dir="build/classes" />
+			<fileset dir="../VarexJ/build/classes" />
 			<fileset dir="build/annotations" />
 
 			<fileset dir="build/main">
@@ -193,7 +193,7 @@
 			<fileset dir="build/annotations" />
 
 			<!-- this is for annotations used by JPF regression tests, which can also be executed outside of junit -->
-			<fileset dir="build/classes">
+			<fileset dir="../VarexJ/build/classes">
 				<include name="org/junit/*.class" />
 			</fileset>
 
@@ -274,12 +274,12 @@
 
 	<!-- public clean: cleanup from previous tasks/builds -->
 	<target name="clean" description="remove all build artifacts and temporary files">
-		<delete dir="build" failonerror="false" />
+		<delete dir="../VarexJ/build" failonerror="false" />
 		<delete dir="tmp" failonerror="false" />
 		<delete>
-			<fileset dir="." includes="**/*~" defaultexcludes="no" />
-			<fileset dir="." includes="**/*.bak" defaultexcludes="no" />
-			<fileset dir="." includes="**/error.xml" />
+			<fileset dir="../VarexJ" includes="**/*~" defaultexcludes="no" />
+			<fileset dir="../VarexJ" includes="**/*.bak" defaultexcludes="no" />
+			<fileset dir="../VarexJ" includes="**/error.xml" />
 		</delete>
 	</target>
 
@@ -328,9 +328,9 @@
 		<!-- Windows doesn't have hostname -->
 
 		<!-- it seems the 'propertyfile' task just appends -->
-		<delete file="build.properties" failonerror="false" />
+		<delete file="../VarexJ/build.properties" failonerror="false" />
 
-		<propertyfile file="build.properties" comment="JPF core build info">
+		<propertyfile file="../VarexJ/build.properties" comment="JPF core build info">
 			<entry key="revision" value="${hg.tip.id}" />
 			<entry key="date.tip" value="${hg.tip.date}" />
 
@@ -360,11 +360,11 @@
 
 		<!-- 2do this seems stupid - there needs to be a better way to re-base (zip basedir fails miserably) -->
 		<zip destfile="build/${ant.project.name}${hg.tip.rev}.zip" update="false" excludes="*">
-			<zipfileset file="jpf.properties" prefix="${ant.project.name}" />
-			<zipfileset file="build.properties" prefix="${ant.project.name}" />
-			<zipfileset dir="lib" prefix="${ant.project.name}/lib" />
+			<zipfileset file="../VarexJ/jpf.properties" prefix="${ant.project.name}" />
+			<zipfileset file="../VarexJ/build.properties" prefix="${ant.project.name}" />
+			<zipfileset dir="../VarexJ/lib" prefix="${ant.project.name}/lib" />
 			<zipfileset dir="bin" prefix="${ant.project.name}/bin" filemode="754" />
-			<zipfileset dir="build" includes="*.jar" prefix="${ant.project.name}/build" />
+			<zipfileset dir="../VarexJ/build" includes="*.jar" prefix="${ant.project.name}/build" />
 		</zip>
 	</target>
 
@@ -378,19 +378,19 @@
 		</exec>
 
 		<zip destfile="build/${ant.project.name}${hg.tip.rev}-src.zip" update="false" excludes="*">
-			<zipfileset file="jpf.properties" prefix="${ant.project.name}" />
-			<zipfileset file="build.properties" prefix="${ant.project.name}" />
+			<zipfileset file="../VarexJ/jpf.properties" prefix="${ant.project.name}" />
+			<zipfileset file="../VarexJ/build.properties" prefix="${ant.project.name}" />
 			<zipfileset file="build.xml" prefix="${ant.project.name}" />
 			<zipfileset file="NOSA-1.3-JPF" prefix="${ant.project.name}" />
 			<zipfileset file="README" prefix="${ant.project.name}" />
-			<zipfileset dir="src" prefix="${ant.project.name}/src" />
-			<zipfileset dir="lib" prefix="${ant.project.name}/lib" />
+			<zipfileset dir="../VarexJ/src" prefix="${ant.project.name}/src" />
+			<zipfileset dir="../VarexJ/lib" prefix="${ant.project.name}/lib" />
 			<zipfileset dir="bin" prefix="${ant.project.name}/bin" filemode="754" />
 			<zipfileset dir="tools" prefix="${ant.project.name}/tools" />
 
 			<!-- IDE related configuration files -->
-			<zipfileset file=".project" prefix="${ant.project.name}" />
-			<zipfileset file=".classpath" prefix="${ant.project.name}" />
+			<zipfileset file="../VarexJ/.project" prefix="${ant.project.name}" />
+			<zipfileset file="../VarexJ/.classpath" prefix="${ant.project.name}" />
 			<zipfileset dir="eclipse" prefix="${ant.project.name}/eclipse" />
 
 			<zipfileset dir="nbproject" prefix="${ant.project.name}/nbproject" />
@@ -420,7 +420,7 @@
 				<path refid="lib.path" />
 				<pathelement location="lib/*" />
 				<pathelement location="build/tests" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
 				<pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
@@ -464,7 +464,7 @@
 				<pathelement location="lib/*" />
 				<pathelement location="lib/GPL/*" />
 				<pathelement location="build/tests" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
 				<pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
@@ -507,7 +507,7 @@
 				<pathelement location="lib/*" />
 				<pathelement location="lib/GPL/*" />
 				<pathelement location="build/tests" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
 				<pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
@@ -549,7 +549,7 @@
 				<path refid="lib.path" />
                 <!--JPF need this to run the test cases using the JPF-->
                 <pathelement location="build/defects4j-tests" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
                 <pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
@@ -619,7 +619,7 @@
 				<path refid="lib.path" />
 				<!--JPF need this to run the test cases using the JPF-->
 				<pathelement location="build/defects4j-tests" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
 				<pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
@@ -658,7 +658,7 @@
 				<path refid="lib.path" />
 				<!--JPF need this to run the test cases using the JPF-->
 				<pathelement location="build/defects4j-tests" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
 				<pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
@@ -697,7 +697,7 @@
 				<path refid="lib.path" />
 				<!--JPF need this to run the test cases using the JPF-->
 				<pathelement location="build/defects4j-tests" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
 				<pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
@@ -736,7 +736,7 @@
 				<path refid="lib.path" />
 				<!--JPF need this to run the test cases using the JPF-->
 				<pathelement location="build/defects4j-tests" />
-				<pathelement location="build/classes" />
+				<pathelement location="../VarexJ/build/classes" />
 				<pathelement location="build/annotations" />
 			</classpath>
 			<formatter type="xml" />
