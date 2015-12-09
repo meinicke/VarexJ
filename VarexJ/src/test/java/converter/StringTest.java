@@ -1,4 +1,4 @@
-package on_the_fly;
+package converter;
 
 import gov.nasa.jpf.util.test.TestJPF;
 

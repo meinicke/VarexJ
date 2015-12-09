@@ -78,13 +78,13 @@ public class PeerSourceGen {
     gotoNextLine();
     append("import gov.nasa.jpf.vm.MJIEnv;");
     gotoNextLine();
-    append("import nhandler.conversion.ConversionException;");
+    append("import ConversionException;");
     gotoNextLine();
-    append("import nhandler.conversion.ConverterBase;");
+    append("import ConverterBase;");
     gotoNextLine();
-    append("import nhandler.conversion.jvm2jpf.JVM2JPFConverter;");
+    append("import JVM2JPFConverter;");
     gotoNextLine();
-    append("import nhandler.conversion.jpf2jvm.JPF2JVMConverter;");
+    append("import JPF2JVMConverter;");
     gotoNextLine();
     append("import java.lang.reflect.InvocationTargetException;");
     gotoNextLine();

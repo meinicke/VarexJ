@@ -1,1 +1,1 @@
-include 'VarexJ', "jpf-nhandler", "Evaluations:prevayler"
+include 'VarexJ', 'Evaluations:prevayler'

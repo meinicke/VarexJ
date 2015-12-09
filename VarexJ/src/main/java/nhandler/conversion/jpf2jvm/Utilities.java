@@ -3,7 +3,6 @@ package nhandler.conversion.jpf2jvm;
 import java.lang.reflect.Field;
 
 import cmu.conditional.One;
-import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.vm.ArrayFields;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
