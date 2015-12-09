@@ -46,15 +46,11 @@ public class DREM extends JVMInstruction {
 
 		@Override
 		public Conditional<Instruction> apply(FeatureExpr ctx, final Double v1) {
-		    if (v1 == 0){
-		      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
-		    }
-		    
 			frame.push(ctx, v2.map(new Function<Double, Double>() {
 
 				@Override
-				public Double apply(Double v2) {
-					return v2.doubleValue() / v1.doubleValue();
+				public Double apply(Double v2) {	
+					return v2.doubleValue() % v1.doubleValue();
 				}
 				
 			}));
