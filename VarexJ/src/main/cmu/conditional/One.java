@@ -141,9 +141,12 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	 * @return Returns a cached One<Integer>
 	 */
 	public static One<Integer> valueOf(int value) {
-		return IntegerCache.cache[value + 128];
+		if (-128 <= value && value <= 128) {
+			return IntegerCache.cache[value + 128];
+		}
+		return new One<>(value);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private static class IntegerCache {
 		static final One<Integer>[] cache = new One[128- (-128) + 1];
