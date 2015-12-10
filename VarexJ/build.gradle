@@ -13,20 +13,22 @@ sourceSets {
         compileClasspath += sourceSets.annotations.output
     }
 	classes {
-		compileClasspath += sourceSets.main.output
-        compileClasspath += sourceSets.annotations.output
+		compileClasspath += sourceSets.main.output + sourceSets.annotations.output
 	}
 	peers {
-		compileClasspath += sourceSets.main.output
-        compileClasspath += sourceSets.annotations.output
+		compileClasspath += sourceSets.main.output + sourceSets.annotations.output
 	}
 	examples {
-		compileClasspath += sourceSets.main.output
-        compileClasspath += sourceSets.annotations.output
+		compileClasspath += sourceSets.main.output + sourceSets.annotations.output
 	}
+    nhandler {
+        compileClasspath += sourceSets.main.output + sourceSets.annotations.output
+    }
     test {
         compileClasspath += sourceSets.annotations.output
         runtimeClasspath += sourceSets.annotations.output
+        compileClasspath += sourceSets.nhandler.output
+        runtimeClasspath += sourceSets.nhandler.output
         compileClasspath += sourceSets.classes.output
         runtimeClasspath += sourceSets.classes.output
         compileClasspath += sourceSets.peers.output
@@ -40,6 +42,7 @@ dependencies {
     classesCompile libFolder
     peersCompile libFolder
     examplesCompile libFolder
+    nhandlerCompile libFolder
     testCompile libFolder
 }
 
@@ -73,6 +76,7 @@ task classloaderSpecificTestsJar(type: Jar) {
 
 task runJPFJar(type: Jar) {
     archiveName = 'RunJPF.jar'
+    from sourceSets.nhandler.output
     from(sourceSets.main.output) {
         include('gov/nasa/jpf/tool/Run.class')
         include('gov/nasa/jpf/tool/RunJPF.class')
@@ -120,6 +124,7 @@ jar {
     archiveName = 'jpf.jar'
     dependsOn classesJar, annotationsJar, runJPFJar, runTestJar, classloaderSpecificTestsJar
     from sourceSets.main.output
+    from sourceSets.nhandler.output
     from sourceSets.peers.output
     from sourceSets.annotations.output
     from sourceSets.examples.output
