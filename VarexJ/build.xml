@@ -117,7 +117,7 @@
 
 	<target name="-compile-tests" if="have_tests" depends="-compile-annotations,-compile-main,-compile-classes">
 		<mkdir dir="build/tests" />
-		<javac srcdir="src/tests" destdir="build/tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" includes="*,gov/nasa/jpf/**, cmu/**, classloader_specific_tests/**">
+		<javac srcdir="src/tests" destdir="build/tests" includeantruntime="false" debug="${debug}" deprecation="${deprecation}" includes="*,gov/nasa/jpf/**, cmu/**, jikesRVM/**, classloader_specific_tests/**">
 			<compilerarg value="-XDenableSunApiLintControl" />
 			<compilerarg value="-Xlint:all,-sunapi,-serial,-rawtypes,-unchecked" />
 			<classpath>

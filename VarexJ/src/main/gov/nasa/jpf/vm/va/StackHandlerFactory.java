@@ -19,7 +19,7 @@ public class StackHandlerFactory {
 	}
 	
 	public static void activateDefaultStackHandler() {
-		f = new BufferedStackHandlerFactory();
+		f = new DefaultStackHandlerFactory();
 	}
 }
 

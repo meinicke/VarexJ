@@ -68,6 +68,16 @@ public class IntegerFieldInfo extends SingleSlotFieldInfo {
     // booleans, byte, char and short are too
     return true;
   }
+  
+  @Override
+	public boolean isByteField() {
+		return true;
+	}
+  
+  @Override
+	public boolean isShortField() {
+		return true;
+	}
 
   public boolean isNumericField(){
     return true;

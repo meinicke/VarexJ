@@ -87,37 +87,65 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
     return fi.getModifiers();
   }
 
-  static ElementInfo getCheckedElementInfo (MJIEnv env, FieldInfo fi, int fobjRef, Class<?> fiType, String type, boolean isWrite, FeatureExpr ctx){
-    ElementInfo ei;
+	static ElementInfo getCheckedElementInfo(MJIEnv env, int objRef, FieldInfo fi, int fobjRef, Class<?> fiType, String type, boolean isWrite, FeatureExpr ctx) {
+		ElementInfo ei;
 
-    if (!isAvailable(env, fi, fobjRef, ctx)){
-      return null;
-    }
+		if (!isAvailable(env, fi, fobjRef, ctx)) {
+			return null;
+		}
 
-    if (fi.isStatic()){
-      ClassInfo fci = fi.getClassInfo();
-      ei = isWrite ? fci.getModifiableStaticElementInfo() : fci.getStaticElementInfo();
-    } else { // instance field
-      ei = isWrite ? env.getModifiableElementInfo(fobjRef) : env.getElementInfo(fobjRef);
-    }
+		if (fi.isStatic()) {
+			ClassInfo fci = fi.getClassInfo();
+			ei = isWrite ? fci.getModifiableStaticElementInfo() : fci.getStaticElementInfo();
+		} else { // instance field
+			ei = isWrite ? env.getModifiableElementInfo(fobjRef) : env.getElementInfo(fobjRef);
+		}
+		
+		// our guards (still need IllegalAccessException)
+		if (fi.isPrivate() && !env.getBooleanField(objRef, "isAccessible").getValue()) {
+			env.throwException(ctx, IllegalAccessException.class.getName(), fi + "");
+			return null;
+		}
 
-    // our guards (still need IllegalAccessException)
-    if (ei == null) {
-      env.throwException(ctx, "java.lang.NullPointerException");
-      return null;
-    }
-    if (fiType != null && !fiType.isInstance(fi)) {
-      env.throwException(ctx, "java.lang.IllegalArgumentException", "field type incompatible with " + type);
-      return null;
-    }
+		if (ei == null) {
+			env.throwException(ctx, "java.lang.NullPointerException");
+			return null;
+		}
+		if (fiType != null) {
+			if (fiType == ByteFieldInfo.class) {
+				if (fi.isByteField()) {
+					return ei;
+				}
+			} else if (fiType == ShortFieldInfo.class) {
+				if (fi.isShortField()) {
+					return ei;
+				}
+			} else if (fiType == IntegerFieldInfo.class) {
+				if (fi.isIntField()) {
+					return ei;
+				}
+			} else if (fiType == LongFieldInfo.class) {
+				if (fi.isLongField()) {
+					return ei;
+				}
+			} else if (fiType == FloatFieldInfo.class) {
+				if (fi.isFloatField()) {
+					return ei;
+				}
+			}
+			if (!fiType.isInstance(fi)) {
+				env.throwException(ctx, "java.lang.IllegalArgumentException", "field type " + fi.getType() + " incompatible with " + type);
+				return null;
+			}
+		}
 
-    return ei;
-  }
+		return ei;
+	}
   
   @MJI
   public boolean getBoolean__Ljava_lang_Object_2__Z (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);    
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, BooleanFieldInfo.class, "boolean", false, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, BooleanFieldInfo.class, "boolean", false, ctx);
     if (ei != null){
       return ei.getBooleanField(fi).getValue();
     }
@@ -127,7 +155,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public byte getByte__Ljava_lang_Object_2__B (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ByteFieldInfo.class, "byte", false, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, ByteFieldInfo.class, "byte", false, ctx);
     if (ei != null){
       return ei.getByteField(fi).getValue();
     }
@@ -137,7 +165,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public char getChar__Ljava_lang_Object_2__C (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, CharFieldInfo.class, "char", false, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, CharFieldInfo.class, "char", false, ctx);
     if (ei != null){
       return ei.getCharField(fi).getValue();
     }
@@ -147,7 +175,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public short getShort__Ljava_lang_Object_2__S (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ShortFieldInfo.class, "short", false, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, ShortFieldInfo.class, "short", false, ctx);
     if (ei != null){
       return ei.getShortField(fi).getValue();
     }
@@ -157,7 +185,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public int getInt__Ljava_lang_Object_2__I (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, IntegerFieldInfo.class, "int", false, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, IntegerFieldInfo.class, "int", false, ctx);
     if (ei != null){
       return ei.getIntField(fi).simplify(ctx).getValue();
     }
@@ -167,7 +195,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public long getLong__Ljava_lang_Object_2__J (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, LongFieldInfo.class, "long", false, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, LongFieldInfo.class, "long", false, ctx);
     if (ei != null){
       return ei.getLongField(fi).getValue();
     }
@@ -177,7 +205,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public float getFloat__Ljava_lang_Object_2__F (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, FloatFieldInfo.class, "float", false, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, FloatFieldInfo.class, "float", false, ctx);
     if (ei != null){
       return ei.getFloatField(fi).getValue();
     }
@@ -187,7 +215,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public double getDouble__Ljava_lang_Object_2__D (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, DoubleFieldInfo.class, "double", false, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, DoubleFieldInfo.class, "double", false, ctx);
     if (ei != null){
       return ei.getDoubleField(fi).getValue();
     }
@@ -236,24 +264,24 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return;
     }
     
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, BooleanFieldInfo.class, "boolean", true, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, BooleanFieldInfo.class, "boolean", true, ctx);
     if (ei != null){
       ei.setBooleanField(ctx,fi, new One<>(val));
     }
   }
 
-  @MJI
-  public void setByte__Ljava_lang_Object_2B__V (MJIEnv env, int objRef, int fobjRef, byte val, FeatureExpr ctx) {
-    FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    if (!isAvailable(env, fi, fobjRef, ctx)){
-      return;
-    }
-    
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ByteFieldInfo.class, "byte", true, ctx);
-    if (ei != null){
-      ei.setByteField(ctx,fi, new One<>(val));
-    }
-  }
+	@MJI
+	public void setByte__Ljava_lang_Object_2B__V(MJIEnv env, int objRef, int fobjRef, byte val, FeatureExpr ctx) {
+		FieldInfo fi = getFieldInfo(ctx, env, objRef);
+		if (!isAvailable(env, fi, fobjRef, ctx)) {
+			return;
+		}
+
+		ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, ByteFieldInfo.class, "byte", true, ctx);
+		if (ei != null) {
+			ei.setByteField(ctx, fi, new One<>(val));
+		}
+	}
 
   @MJI
   public void setChar__Ljava_lang_Object_2C__V (MJIEnv env, int objRef, int fobjRef, char val, FeatureExpr ctx) {
@@ -262,7 +290,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return;
     }
     
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, CharFieldInfo.class, "char", true, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, CharFieldInfo.class, "char", true, ctx);
     if (ei != null){
       ei.setCharField(ctx,fi, new One<>(val));
     }
@@ -275,7 +303,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return;
     }
     
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, ShortFieldInfo.class, "short", true, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, ShortFieldInfo.class, "short", true, ctx);
     if (ei != null){
       ei.setShortField(ctx,fi, new One<>(val));
     }
@@ -288,7 +316,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return;
     }
     
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, IntegerFieldInfo.class, "int", true, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, IntegerFieldInfo.class, "int", true, ctx);
     if (ei != null){
       ei.setIntField(ctx,fi, One.valueOf(val));
     }
@@ -301,7 +329,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return;
     }
     
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, LongFieldInfo.class, "long", true, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, LongFieldInfo.class, "long", true, ctx);
     if (ei != null){
       ei.setLongField(ctx,fi, new One<>(val));
     }
@@ -314,7 +342,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return;
     }
     
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, FloatFieldInfo.class, "float", true, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, FloatFieldInfo.class, "float", true, ctx);
     if (ei != null){
       ei.setFloatField(ctx,fi, new One<>(val));
     }
@@ -327,7 +355,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
       return;
     }
     
-    ElementInfo ei = getCheckedElementInfo(env, fi, fobjRef, DoubleFieldInfo.class, "double", true, ctx);
+    ElementInfo ei = getCheckedElementInfo(env, objRef, fi, fobjRef, DoubleFieldInfo.class, "double", true, ctx);
     if (ei != null){
       ei.setDoubleField(ctx,fi, new One<>(val));
     }
@@ -336,7 +364,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   @MJI
   public int get__Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
-    ElementInfo ei = getCheckedElementInfo( env, fi, fobjRef, null, null, false, ctx); // no type check here
+    ElementInfo ei = getCheckedElementInfo( env, objRef, fi, fobjRef, null, null, false, ctx); // no type check here
     if (ei == null){
       return 0;
     }

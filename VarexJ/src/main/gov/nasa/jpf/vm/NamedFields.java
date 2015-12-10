@@ -141,7 +141,7 @@ public class NamedFields extends Fields {
 				return One.valueOf(x.byteValue());
 			}
 			
-		});
+		}).simplify();
 	}
 
 	@Override

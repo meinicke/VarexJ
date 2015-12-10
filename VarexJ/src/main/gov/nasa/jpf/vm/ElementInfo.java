@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -874,8 +875,7 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
     
     if (fi.isByteField()) {
-      int offset = fi.getStorageOffset();
-      fields.setByteValue(ctx, offset, newValue);
+    	set(ctx, fi, newValue);
     } else {
       throw new JPFException("not a byte field: " + fi.getName());
     }
@@ -896,19 +896,61 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
 
     if (fi.isShortField()) {
-      int offset = fi.getStorageOffset();
-      fields.setShortValue(ctx, offset, newValue);
+    	set(ctx, fi, newValue);
     } else {
       throw new JPFException("not a short field: " + fi.getName());
     }
   }
 
+	private <T extends Number> void set(FeatureExpr ctx, FieldInfo fi, Conditional<T> newValue) {
+		int offset = fi.getStorageOffset();
+		if (fi instanceof FloatFieldInfo) {
+			fields.setFloatValue(ctx, offset, newValue.map(new Function<T, Float>() {
+				public Float apply(T x) {
+					return x.floatValue();
+				}
+			}));
+		} else if (fi instanceof DoubleFieldInfo) {
+			fields.setDoubleValue(ctx, offset, newValue.map(new Function<T, Double>() {
+				public Double apply(T x) {
+					return x.doubleValue();
+				}
+			}));
+		} else if (fi instanceof IntegerFieldInfo) {
+			fields.setIntValue(ctx, offset, newValue.map(new Function<T, Integer>() {
+				public Integer apply(T x) {
+					return x.intValue();
+				}
+			}));
+		} else if (fi instanceof LongFieldInfo) {
+			fields.setLongValue(ctx, offset, newValue.map(new Function<T, Long>() {
+				public Long apply(T x) {
+					return x.longValue();
+				}
+			}));
+		} else if (fi instanceof ByteFieldInfo) {
+			fields.setByteValue(ctx, offset, newValue.map(new Function<T, Byte>() {
+				public Byte apply(T x) {
+					return x.byteValue();
+				}
+			}));
+		} else if (fi instanceof ShortFieldInfo) {
+			fields.setShortValue(ctx, offset, newValue.map(new Function<T, Short>() {
+				public Short apply(T x) {
+					return x.shortValue();
+				}
+			}));
+		} else {
+			throw new RuntimeException(fi.getType());
+		}
+	}
+  
+  
   public void setIntField(FeatureExpr ctx, FieldInfo fi, Conditional<Integer> newValue) {
     checkIsModifiable();
 
     if (fi.isIntField()) {
-      int offset = fi.getStorageOffset();
-      fields.setIntValue( ctx, offset, newValue);
+      set(ctx, fi, newValue);
     } else {
       throw new JPFException("not an int field: " + fi.getName());
     }
@@ -918,8 +960,7 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
 
     if (fi.isLongField()) {
-      int offset = fi.getStorageOffset();
-      fields.setLongValue( ctx, offset, newValue);
+      set(ctx, fi, newValue);
     } else {
       throw new JPFException("not a long field: " + fi.getName());
     }
@@ -929,8 +970,7 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
 
     if (fi.isFloatField()) {
-      int offset = fi.getStorageOffset();
-      fields.setFloatValue( ctx, offset, newValue);
+      set(ctx, fi, newValue);
     } else {
       throw new JPFException("not a float field: " + fi.getName());
     }
