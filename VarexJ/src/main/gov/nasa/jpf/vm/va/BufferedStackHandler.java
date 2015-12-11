@@ -741,6 +741,34 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 		}
 		
 	}
+	
+	@Override
+	public void pushLongLocal(FeatureExpr ctx, int index) {
+		Conditional<Entry> entry = locals[index];
+		if (entry == null) {
+			entry = new One<>(new Entry(0, false));
+		}
+		
+		push(ctx, entry.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Integer>>() {
+
+			@Override
+			public One<Integer> apply(final FeatureExpr ctx, final Entry entry) {
+				return new One<>(entry.value);
+			}
+		}), false);
+		
+		entry = locals[index + 1];
+		if (entry == null) {
+			entry = new One<>(new Entry(0, false));
+		}
+		push(ctx, entry.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Integer>>() {
+
+			@Override
+			public One<Integer> apply(final FeatureExpr ctx, final Entry entry) {
+				return new One<>(entry.value);
+			}
+		}), false);
+	}
 
 	@Override
 	public boolean isRef(FeatureExpr ctx, int offset) {
@@ -974,7 +1002,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 
 	@Override
 	public int getStackWidth() {
-		debufferAll();
+//		debufferAll();
 		return super.getStackWidth();
 	}
 

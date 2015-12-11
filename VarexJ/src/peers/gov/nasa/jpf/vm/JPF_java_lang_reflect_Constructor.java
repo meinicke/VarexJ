@@ -91,7 +91,7 @@ public class JPF_java_lang_reflect_Constructor extends NativePeer {
     ThreadInfo ti = env.getThreadInfo();
     DirectCallStackFrame frame = ti.getReturnedDirectCall();
     MethodInfo miCallee = getMethodInfo(ctx,env, mthRef);
-    if (miCallee.isPrivate()) {// constructor is private
+    if (miCallee.isPrivate() && !env.getBooleanField(mthRef, "isAccessible").getValue()) {// constructor is private
 		if (ti.getTopFrame().getPrevious().mi.ci != miCallee.ci) {
 			env.throwException(ctx, IllegalAccessException.class.getName());
 			return MJIEnv.NULL;
