@@ -12,7 +12,7 @@ Import the project into eclipse.
 
 Use gradle to build the project (e.g., ./gradlew build)
 
-Within Eclipse you can use the gradele plugin: https://github.com/spring-projects/eclipse-integration-gradle/
+Within Eclipse you can use the gradle plugin: https://github.com/spring-projects/eclipse-integration-gradle/
 
 * On the "build.gradle" file Run as/Gradle build... Specify "build" at the Gradle Tasks page and press run
 * You may need to generate eclipse project files: Specify "eclipse" at the Gradle Tasks page
