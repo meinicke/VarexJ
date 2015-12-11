@@ -1,0 +1,9 @@
+target = Demo1Test
+
+nhandler.delegateUnhandledNative = true
+
+nhandler.clean = true
+
+build = ${jpf.home}/Evaluations/prevayler/build/classes/main
+lib = ${jpf.home}/Evaluations/prevayler/lib
+classpath+=${build}:${lib}/prevayler-factory-2.5.jar:${lib}/prevayler-core-2.5.jar:

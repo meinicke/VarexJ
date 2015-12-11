@@ -1,0 +1,9 @@
+target = RunNumberKeeper
+
+nhandler.delegateUnhandledNative = true
+
+nhandler.clean = true
+
+build = ${jpf.home}/Evaluations/prevayler/build/classes/main
+lib = ${jpf.home}/Evaluations/prevayler/lib
+classpath+=${build}:${lib}/prevayler-factory-2.5.jar:${lib}/prevayler-core-2.5.jar:${lib}/prevayler-xstream-2.7-SNAPSHOT.jar:${lib}/xstream-1.4.7.jar:${lib}/kxml2-2.3.0.jar:

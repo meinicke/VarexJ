@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=master)](https://travis-ci.org/meinicke/VarexJ)
+Master: [![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=master)](https://travis-ci.org/meinicke/VarexJ)
+
+New_Project_Structure: [![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=New_Project_Structure)](https://travis-ci.org/meinicke/VarexJ)
 
 # Overview
 
