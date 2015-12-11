@@ -139,10 +139,13 @@ jar {
     Core regression test for JPF
  */
 test {
+    scanForTestClasses = false
     maxParallelForks = 1
     minHeapSize = "512m"
     maxHeapSize = "1024m"
     include '**/*Test.class'
+    include '**/jikesRVM/**/Test*.class'
+    exclude '**/jikesRVM/**/Test*$*.class'
     exclude '**cmu/*.class'
     exclude '**/JPF_*.class'
 }

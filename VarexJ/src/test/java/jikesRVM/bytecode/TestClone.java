@@ -22,22 +22,22 @@ public class TestClone extends TestJPF {
 	@Test
 	public void test() throws CloneNotSupportedException {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			TestClone2.main(null);
+			Clone2.main(null);
 		}
 	}
 }
 
-class TestClone2 implements Cloneable {
+class Clone2 implements Cloneable {
 	String id;
 
-	TestClone2(String id) {
+	Clone2(String id) {
 		this.id = id;
 	}
 
 	public static void main(String[] args) throws CloneNotSupportedException {
 
-		final TestClone2 a = new TestClone2("a");
-		final TestClone2 b = (TestClone2) a.clone();
+		final Clone2 a = new Clone2("a");
+		final Clone2 b = (Clone2) a.clone();
 		runTest(a, b, false);
 		a.id = "aa";
 		System.out.println();
@@ -48,11 +48,11 @@ class TestClone2 implements Cloneable {
 		System.out.println("Testing arrays.");
 		System.out.println();
 
-		TestClone2[][] c = new TestClone2[2][3];
+		Clone2[][] c = new Clone2[2][3];
 		for (int i = 0; i < 2; ++i)
 			for (int j = 0; j < 3; ++j)
-				c[i][j] = new TestClone2(i + "" + j);
-		final TestClone2[][] d = c.clone();
+				c[i][j] = new Clone2(i + "" + j);
+		final Clone2[][] d = c.clone();
 
 		runTest(c, d, false);
 
@@ -63,19 +63,19 @@ class TestClone2 implements Cloneable {
 
 		System.out.println();
 		System.out.println("after changing element");
-		c[1][1] = new TestClone2("zz");
+		c[1][1] = new Clone2("zz");
 		runTest(c, d, false);
 
 		System.out.println();
 		System.out.println("after changing row");
-		c[1] = new TestClone2[] { new TestClone2("a"), new TestClone2("b"), new TestClone2("c") };
+		c[1] = new Clone2[] { new Clone2("a"), new Clone2("b"), new Clone2("c") };
 		runTest(c, d, true);
 	}
 
 	private static String output(final Object o) {
 		StringBuilder values = new StringBuilder();
-		if (o instanceof TestClone2[][]) {
-			final TestClone2[][] c = (TestClone2[][]) o;
+		if (o instanceof Clone2[][]) {
+			final Clone2[][] c = (Clone2[][]) o;
 			for (int i = 0; i < 2; ++i) {
 				for (int j = 0; j < 3; ++j) {
 					System.out.print(c[i][j].id + " ");
@@ -84,8 +84,8 @@ class TestClone2 implements Cloneable {
 				System.out.println();
 			}
 		} else {
-			System.out.println(((TestClone2) o).id);
-			values.append(((TestClone2) o).id);
+			System.out.println(((Clone2) o).id);
+			values.append(((Clone2) o).id);
 		}
 		return values.toString();
 	}
@@ -98,7 +98,7 @@ class TestClone2 implements Cloneable {
 		if (valuesChanged) {
 			TestJPF.assertFalse(valuesA.equals(valuesB));
 		} else {
-			TestJPF.assertEquals(valuesA, valuesB);			
+			TestJPF.assertEquals(valuesA, valuesB);
 		}
 		System.out.println("a.equals(b) = " + a.equals(b));
 		TestJPF.assertFalse(a.equals(b));
