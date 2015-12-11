@@ -116,3 +116,5 @@ Distributions of interactions during program execution (blue bars represent inte
 Initial Work:
 
 > Jens Meinicke. [VarexJ: A Variability-Aware Interpreter for Java Application](http://wwwiti.cs.uni-magdeburg.de/iti_db/publikationen/ps/auto/M14.pdf). Master's thesis, University of Magdeburg, Germany, December 2014.
+
+gh-pages/README.md
