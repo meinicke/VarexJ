@@ -1,0 +1,7 @@
+#org.springsource.ide.eclipse.gradle.core.preferences.GradleProjectPreferences
+#Fri Dec 11 20:04:05 CET 2015
+build.family.org.gradle.tooling.model.eclipse.HierarchicalEclipseProject=;Evaluations;Evaluations/prevayler;VarexJ;
+org.springsource.ide.eclipse.gradle.classname.enableSorting=false
+org.springsource.ide.eclipse.gradle.classpath.enableSorting=false
+org.springsource.ide.eclipse.gradle.linkedresources=
+org.springsource.ide.eclipse.gradle.rootprojectloc=

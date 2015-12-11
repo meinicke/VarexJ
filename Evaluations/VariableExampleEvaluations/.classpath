@@ -10,20 +10,21 @@
 	<classpathentry kind="lib" path="lib/Elevator.jar"/>
 	<classpathentry kind="lib" path="lib/Email.jar"/>
 	<classpathentry kind="lib" path="lib/GPL.jar"/>
-	<classpathentry kind="lib" path="lib/Prevayler.jar"/>
-	<classpathentry kind="lib" path="lib/prevayler-core-2.5.jar"/>
-	<classpathentry kind="lib" path="lib/prevayler-factory-2.5.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-core-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-api-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/prevayler-log4j-2.7-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/xstream-1.4.7.jar"/>
-	<classpathentry kind="lib" path="lib/prevayler-xstream-2.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/Mine.jar"/>
 	<classpathentry kind="lib" path="lib/ZipMe.jar"/>
-	<classpathentry kind="lib" path="lib/kxml2-2.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-all-7.6.18-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/aspectjrt.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/commons-jxpath-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/kxml2-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/log4j-api-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/log4j-core-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/prevayler-core-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/prevayler-factory-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/prevayler-log4j-2.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/prevayler-xstream-2.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/Prevayler.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/xstream-1.4.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

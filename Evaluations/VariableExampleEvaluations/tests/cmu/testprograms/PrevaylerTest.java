@@ -124,7 +124,7 @@ public class PrevaylerTest extends ATestExample {
 
 	@Override
 	protected String getClassPath() {
-		return "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-1.2.15.jar;lib/xstream-1.4.7.jar;lib/kxml2-2.3.0.jar";
+		return "lib/prevayler/Prevayler.jar;lib/prevayler/prevayler-factory-2.5.jar;lib/prevayler/prevayler-core-2.5.jar;lib/prevayler/commons-jxpath-1.3.jar;lib/prevayler/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler/prevayler-xstream-2.7-SNAPSHOT.jar;lib/prevayler/log4j-1.2.15.jar;lib/prevayler/xstream-1.4.7.jar;lib/prevayler/kxml2-2.3.0.jar";
 	}
 
 	@Override
