@@ -69,6 +69,31 @@ public class DoubleFieldInfo extends DoubleSlotFieldInfo {
   public boolean isDoubleField(){
     return true;
   }
+  
+	@Override
+	public boolean isByteField() {
+		return true;
+	}
+	
+	@Override
+	public boolean isShortField() {
+		return true;
+	}
+	
+	@Override
+	public boolean isIntField() {
+		return true;
+	}
+	
+	@Override
+	public boolean isLongField() {
+		return true;
+	}
+	
+	@Override
+	public boolean isFloatField() {
+		return true;
+	}
 
   public boolean isNumericField(){
     return true;

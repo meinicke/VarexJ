@@ -1452,10 +1452,19 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
 
     } else {
       cname = Types.getClassNameFromTypeName(cname);
-
+     
       for (ClassInfo c = this; c != null; c = c.superClass) {
         if (c.name.equals(cname)) {
           return true;
+        }
+        if (c != this) {
+	        if (isArray) {// TODO revise
+	        	if (cname.startsWith("[L")) {
+	        		if (("[L" + c.name + ";").equals(cname)) {
+	        	          return true;
+	        	    }
+	        	}
+	        }
         }
       }
 

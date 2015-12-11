@@ -320,4 +320,25 @@ class Entry {
 	public int hashCode() {
 		return value;
 	}
+	
+	static Entry[] references = new Entry[128];
+	static Entry[] values = new Entry[128];
+	
+	static {
+		for (int i = 0; i < 128;i++) {
+			references[i] = new Entry(i - 1, true);
+			values[i] = new Entry(i - 1, false);
+		}
+	}
+	
+	static Entry create(int value, boolean isRef) {
+		if (value >= -1 && value < 127) {
+			if (isRef) {
+				return references[value + 1];
+			} else {
+				return values[value + 1];
+			}
+		}
+		return new Entry(value, isRef); 
+	}
 }

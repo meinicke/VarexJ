@@ -53,6 +53,11 @@ public class ShortFieldInfo extends SingleSlotFieldInfo {
   public boolean isShortField() {
     return true;
   }
+  
+  @Override
+	public boolean isByteField() {
+		return true;
+	}
 
   public boolean isNumericField(){
     return true;

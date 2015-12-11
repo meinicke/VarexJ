@@ -25,7 +25,7 @@ import gov.nasa.jpf.vm.Types;
  */
 public class StackHandler implements Cloneable, IStackHandler {
 
-	enum Type {
+	public enum Type {
 		INT, FLOAT, LONG, DOUBLE
 	}
 
@@ -34,11 +34,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 	}
 
 	/** Locals are directly accessed with index **/
-	private Conditional<Entry>[] locals;
+	protected Conditional<Entry>[] locals;
 
-	public Conditional<Stack> stack;
+	protected Conditional<Stack> stack;
 
-	public int length = 0;
+	protected int length = 0;
 
 	public FeatureExpr stackCTX;
 	
@@ -71,7 +71,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 		return string.toString();
 	}
 	
-	private static final One<Entry> nullValue = new One<>(new Entry(MJIEnv.NULL, false)); 
+	protected static final One<Entry> nullValue = new One<>(new Entry(MJIEnv.NULL, false)); 
 
 	@SuppressWarnings("unchecked")
 	public StackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
@@ -574,7 +574,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 		return peek(ctx, offset, Type.FLOAT);
 	}
 
-	private <T> Conditional<T> peek(FeatureExpr ctx, final int offset, final Type t) {
+	protected <T> Conditional<T> peek(FeatureExpr ctx, final int offset, final Type t) {
 		return stack.simplify(ctx).map(new Function<Stack, T>() {
 
 			@SuppressWarnings("unchecked")
@@ -766,7 +766,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public int hashCode() {
-		throw new RuntimeException("hashCode not designed");
+		return 42;
 	}
 
 	/* (non-Javadoc)

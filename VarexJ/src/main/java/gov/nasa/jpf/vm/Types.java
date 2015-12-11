@@ -1003,7 +1003,11 @@ public class Types {
   public static boolean instanceOf (String type, String ofType) {
     int bType = getBuiltinTypeFromSignature(type);
 
-    if ((bType == T_ARRAY) && ofType.equals("Ljava.lang.Object;")) {
+    if (ofType.equals("Ljava.lang.Object;")) {
+    	throw new RuntimeException("different identifiers are used");
+    }
+    
+    if ((bType == T_ARRAY) && ofType.equals("Ljava/lang/Object;")) {
       return true;
     }
 

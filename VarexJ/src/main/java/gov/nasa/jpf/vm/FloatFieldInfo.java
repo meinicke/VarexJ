@@ -66,6 +66,26 @@ public class FloatFieldInfo extends SingleSlotFieldInfo {
     return true;
   }
 
+	@Override
+	public boolean isByteField() {
+		return true;
+	}
+	
+	@Override
+	public boolean isShortField() {
+		return true;
+	}
+	
+	@Override
+	public boolean isIntField() {
+		return true;
+	}
+	
+	@Override
+	public boolean isLongField() {
+		return true;
+	}
+  
   public boolean isNumericField(){
     return true;
   }

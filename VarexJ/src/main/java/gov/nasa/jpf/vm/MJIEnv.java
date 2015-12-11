@@ -1292,7 +1292,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public int newFloat (FeatureExpr ctx, Conditional<Float> f){
-    ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Float"), ti);
+    ElementInfo ei = heap.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Float"), ti);
     ei.setFloatField(ctx,"value", f);
     return ei.getObjectRef();
   }
@@ -1304,7 +1304,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public int newShort (FeatureExpr ctx, Conditional<Short> s){
-    ElementInfo ei = heap.newObject(null, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Short"), ti);
+    ElementInfo ei = heap.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Short"), ti);
     ei.setShortField(ctx,"value", s);
     return ei.getObjectRef();
   }

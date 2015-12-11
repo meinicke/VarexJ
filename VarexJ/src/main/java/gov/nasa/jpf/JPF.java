@@ -41,6 +41,7 @@ import gov.nasa.jpf.util.RunRegistry;
 import gov.nasa.jpf.vm.NoOutOfMemoryErrorProperty;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.VMListener;
+import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 
 /**
@@ -316,9 +317,12 @@ public class JPF implements Runnable {
       traceMethod = config.getString("traceMethod", null);
       
       // Set StackHandlerFactory
-//      if (factory.equals("X")) {
-//      StackHandlerFactory.setStackHandler(); // TODO
-//    } else { }
+      String stackHandlerFactory = config.getString("stack", "");
+      if (stackHandlerFactory.equals("BufferedStackHandler")) {
+      	StackHandlerFactory.activateBufferedStackHandler();
+      } else {
+      	StackHandlerFactory.activateDefaultStackHandler();
+      }
       
       // Set the ChoiceFactory
       String choice = config.getString("choice", Factory.TreeChoice.toString());
