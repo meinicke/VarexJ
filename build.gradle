@@ -1,6 +1,7 @@
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
+	apply plugin: 'findbugs'
 	sourceCompatibility = JavaVersion.VERSION_1_7
 }
 
