@@ -14,10 +14,23 @@ package jikesRVM.reflect;
 
 import java.lang.reflect.Constructor;
 
+import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
+
 /**
  * Test of whether we enforce member access with newInstance()
  */
-class tNewInstance {
+public class tNewInstance extends TestJPF {
+	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
+
+	@Test
+	public void main() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			main(null);
+		}
+	}
+	
   static Object o;
   static final class OnlyPrivateConstructor {
     private OnlyPrivateConstructor() {}
@@ -36,26 +49,30 @@ class tNewInstance {
 
     System.out.println("tNewInstance...");
     try {
-      Class<?> klass = Class.forName("test.org.jikesrvm.basic.core.reflect.tNewInstance$OnlyPrivateConstructor");
+      Class<?> klass = Class.forName("jikesRVM.reflect.tNewInstance$OnlyPrivateConstructor");
       @SuppressWarnings("unused")
 	Object o = klass.newInstance();
       fail = true;
+      fail();
      } catch (IllegalAccessException e2) {
        // Test passed.
      } catch (Exception e) {
       e.printStackTrace();
       fail = true;
+      fail();
     }
 
     try {
       Constructor<?> cons = OnlyPrivateConstructor.getConstructor();
       cons.newInstance(new Object[] {});
       fail = true;
+      fail();
     } catch (IllegalAccessException e2) {
       // Test passed
     } catch (Exception e) {
       e.printStackTrace();
       fail = true;
+      fail();
     }
 
     try {
@@ -63,6 +80,7 @@ class tNewInstance {
     } catch (Exception e) {
       e.printStackTrace();
       fail = true;
+      fail();
     }
 
     if (fail) {

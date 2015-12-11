@@ -14,7 +14,20 @@ package jikesRVM.reflect;
 
 import java.lang.reflect.Method;
 
-class tInstance {
+import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
+
+public class tInstance  extends TestJPF {
+	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
+
+	@Test
+	public void main() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			main(null);
+		}
+	}
+	
   public int ifield;
   public double dfield;
   public boolean bfield;
@@ -56,7 +69,7 @@ class tInstance {
   public static void main(String[] args) throws Exception {
     // Class.forName
     //
-    Class<?> c = Class.forName("test.org.jikesrvm.basic.core.reflect.tInstance");
+    Class<?> c = Class.forName("jikesRVM.reflect.tInstance");
     tInstance myInstance = (tInstance) c.newInstance();
     myInstance.ifield = 4;
     myInstance.dfield = 8.8;
