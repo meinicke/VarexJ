@@ -3,8 +3,8 @@
 ![Travis Logo](https://pbs.twimg.com/profile_images/3378789570/e1da61d4058395b770cd5ce15a6925e6_normal.png)
 [![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=master)](https://travis-ci.org/meinicke/VarexJ)
 
-![Jenkins Logo](http://mirrors.jenkins-ci.org/art/jenkins-logo/favicon.ico)
-[![Build Status](http://feature.isri.cmu.edu:8080/job/VarexJ/badge/icon)](http://feature.isri.cmu.edu:8080/job/VarexJ/)
+[//]: # (![Jenkins Logo](http://mirrors.jenkins-ci.org/art/jenkins-logo/favicon.ico))
+[//]: # ([![Build Status](http://feature.isri.cmu.edu:8080/job/VarexJ/badge/icon)](http://feature.isri.cmu.edu:8080/job/VarexJ/))
 
 # Overview
 
