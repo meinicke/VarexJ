@@ -76,7 +76,6 @@ task classloaderSpecificTestsJar(type: Jar) {
 
 task runJPFJar(type: Jar) {
     archiveName = 'RunJPF.jar'
-    from sourceSets.nhandler.output
     from(sourceSets.main.output) {
         include('gov/nasa/jpf/tool/Run.class')
         include('gov/nasa/jpf/tool/RunJPF.class')
