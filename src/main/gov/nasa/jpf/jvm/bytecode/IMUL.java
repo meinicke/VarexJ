@@ -38,8 +38,9 @@ public class IMUL extends JVMInstruction {
 
     Conditional<Integer> v1 = frame.pop(ctx);
     Conditional<Integer> v2 = frame.pop(ctx);
-    ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-    frame.push(ctx, maprInt(v1, v2));
+    Conditional<Integer> result = maprInt(v1, v2);
+    ComplexityPrinter.addComplex(v1.size()*v2.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+	frame.push(ctx, result);
     return getNext(ctx, ti);
   }
   

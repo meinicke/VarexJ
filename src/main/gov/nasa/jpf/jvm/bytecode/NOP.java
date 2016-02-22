@@ -37,7 +37,7 @@ public class NOP extends JVMInstruction {
   }
   
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo th) {
-	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, th.getTopFrameMethodInfo(), th);
+	  ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, th.getTopFrameMethodInfo(), th);
     return getNext(ctx, th);
   }
 

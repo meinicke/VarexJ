@@ -103,7 +103,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 		}
 
 		Conditional<Integer> arrayRef = allocateArray(ti.getHeap(), type, arrayLengths, ti, 0);
-		ComplexityPrinter.addComplex(arrayRef.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+		ComplexityPrinter.addComplex(arrayRef.size(), arrayRef.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		// put the result (the array reference) on the stack
 		frame.pushRef(ctx, arrayRef);
 

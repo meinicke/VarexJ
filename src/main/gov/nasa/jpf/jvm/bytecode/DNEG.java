@@ -36,8 +36,9 @@ public class DNEG extends JVMInstruction {
 		StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Double> v1 = frame.popDouble(ctx);
-		ComplexityPrinter.addComplex(v1.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-		frame.push(ctx, mapr2(v1, null));
+		Conditional<Double> result = mapr2(v1, null);
+		ComplexityPrinter.addComplex(v1.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+		frame.push(ctx, result);
 		return getNext(ctx, ti);
 	}
 

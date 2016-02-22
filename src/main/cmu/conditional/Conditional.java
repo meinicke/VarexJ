@@ -135,4 +135,6 @@ public abstract class Conditional<T> {
 	}
 
     public abstract int size();
+
+	public abstract int getFeatureCount();
 }

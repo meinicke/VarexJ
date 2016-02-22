@@ -59,7 +59,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 		lastThis = objRef;
 		final GETFIELD thisInstruction = this;
-		ComplexityPrinter.addComplex(objRef.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+		ComplexityPrinter.addComplex(objRef.size(), objRef.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

@@ -46,7 +46,7 @@ public class BIPUSH extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     frame.push(ctx, new One<>(value));
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+    ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
     return getNext(ctx, ti);
   }
   

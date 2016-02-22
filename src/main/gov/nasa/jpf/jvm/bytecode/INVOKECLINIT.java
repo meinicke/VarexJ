@@ -55,7 +55,7 @@ public class INVOKECLINIT extends INVOKESTATIC {
     MethodInfo callee = getInvokedMethod(ctx, ti);
     ClassInfo ci = callee.getClassInfo();
     ElementInfo ei = ci.getModifiableClassObject();
-    ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+    ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     if (!ti.isFirstStepInsn()) {
       // if we can't acquire the lock, it means somebody else is initializing concurrently
       if (!ei.canLock(ti)) {

@@ -41,7 +41,8 @@ public class FSTORE extends LocalVariableInstruction implements StoreInstruction
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.storeOperand(ctx, index);
-    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+    Conditional simplifiedValue = ((Conditional)frame.stack.getLocal(index)).simplify(ctx);
+	ComplexityPrinter.addComplex(simplifiedValue.size(), simplifiedValue.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
     return getNext(ctx, ti);
   }
 

@@ -38,8 +38,9 @@ public class FADD extends JVMInstruction {
     
     Conditional<Float> v1 = frame.popFloat(ctx);
     Conditional<Float> v2 = frame.popFloat(ctx);
-    ComplexityPrinter.addComplex(v1.size()* v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);  
-    frame.push(ctx, mapr(v1, v2));
+    Conditional<Float> result = mapr(v1, v2);
+    ComplexityPrinter.addComplex(v1.size()* v2.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);  
+	frame.push(ctx, result);
     return getNext(ctx, ti);
   }
   

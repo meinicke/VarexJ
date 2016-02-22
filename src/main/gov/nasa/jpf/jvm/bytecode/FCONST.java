@@ -47,7 +47,7 @@ public class FCONST extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.push(ctx, new One<>(value));
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+    ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

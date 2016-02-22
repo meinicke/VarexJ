@@ -86,7 +86,7 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     // pushes the return value onto the stack
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushRef( ctx, objRef);
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+    ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     return getNext(ctx, ti);
   }
   

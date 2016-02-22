@@ -40,8 +40,7 @@ public class FREM extends JVMInstruction {
 
 		Conditional<Float> v1 = frame.popFloat(ctx);
 		final Conditional<Float> v2 = frame.popFloat(ctx);
-		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-		return v1.mapf(ctx, new BiFunction<FeatureExpr, Float, Conditional<Instruction>>() {
+		Conditional<Instruction> result = v1.mapf(ctx, new BiFunction<FeatureExpr, Float, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, final Float v1) {
@@ -62,7 +61,8 @@ public class FREM extends JVMInstruction {
 			}
 	    	
 	    });
-		
+		ComplexityPrinter.addComplex(v1.size()*v2.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+		return result;
 	}
 
 	@Override

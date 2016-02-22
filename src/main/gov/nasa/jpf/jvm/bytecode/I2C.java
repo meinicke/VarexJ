@@ -36,8 +36,9 @@ public class I2C extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     Conditional<Integer> v = frame.pop(ctx);
-    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
-    frame.push( ctx, mapr2(v, null), false);
+    Conditional<Integer> result = mapr2(v, null);
+    ComplexityPrinter.addComplex(v.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+	frame.push( ctx, result, false);
 
     return getNext(ctx, ti);
   }

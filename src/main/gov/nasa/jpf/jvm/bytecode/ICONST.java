@@ -42,10 +42,8 @@ public class ICONST extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    int before = frame.stack.getStackWidth();
     frame.push(ctx, One.valueOf(value));
-    int after = frame.stack.getStackWidth();
-    ComplexityPrinter.addComplex(after, getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+    ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

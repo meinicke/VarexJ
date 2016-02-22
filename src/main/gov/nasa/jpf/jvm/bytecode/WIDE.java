@@ -47,7 +47,7 @@ public class WIDE extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
     // nothing, BCEL doesn't even pass this on;
-	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+	  ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

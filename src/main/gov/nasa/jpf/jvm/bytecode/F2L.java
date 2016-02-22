@@ -37,16 +37,17 @@ public class F2L extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     Conditional<Float> f = frame.popFloat(ctx);
-    ComplexityPrinter.addComplex(f.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-    frame.push(ctx, f.map(new Function<Float, Long>() {
+    Conditional<Long> result = f.map(new Function<Float, Long>() {
 
 		@Override
 		public Long apply(Float f) {
 			return (long)f.floatValue();
 		}
     	
-	}));
+	});
+	frame.push(ctx, result);
     
+    ComplexityPrinter.addComplex(f.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

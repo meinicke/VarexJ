@@ -119,7 +119,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return new One<Instruction>(this);
 				}
 			}
-			ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+			ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 			setupCallee(ctx, ti, callee);
 			if (!splitRef) {
 				return ti.getPC();

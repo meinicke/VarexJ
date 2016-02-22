@@ -67,7 +67,7 @@ public class ANEWARRAY extends NewArrayInstruction {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayLength = frame.pop(ctx);
-		ComplexityPrinter.addComplex(arrayLength.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+		ComplexityPrinter.addComplex(arrayLength.size(), arrayLength.getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
 		return arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

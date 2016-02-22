@@ -38,8 +38,9 @@ public class LNEG extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     Conditional<Long> v1 = frame.popLong(ctx);
-    ComplexityPrinter.addComplex(v1.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
-    frame.push(ctx, mapr2(v1, null));
+    Conditional<Long> result = mapr2(v1, null);
+    ComplexityPrinter.addComplex(v1.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+	frame.push(ctx, result);
     return getNext(ctx, ti);
   }
   

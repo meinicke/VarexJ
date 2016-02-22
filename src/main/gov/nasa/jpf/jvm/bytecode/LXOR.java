@@ -39,8 +39,9 @@ public class LXOR extends JVMInstruction {
     
     Conditional<Long> v1 = frame.popLong(ctx);
     Conditional<Long> v2 = frame.popLong(ctx);
-    ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
-    frame.push(ctx, mapr(v1, v2));
+    Conditional<Long> res = mapr(v1, v2);
+    ComplexityPrinter.addComplex(v1.size()*v2.size(), res.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+	frame.push(ctx, res);
     return getNext(ctx, ti);
   }
   

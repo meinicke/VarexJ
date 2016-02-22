@@ -95,7 +95,7 @@ public abstract class IfInstruction extends JVMInstruction {
 		    }
 		}
 	}).simplify();
-    ComplexityPrinter.addComplex(conditionValue.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+    ComplexityPrinter.addComplex(conditionValue.size(), returnValue.getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
     return returnValue;
   }
 

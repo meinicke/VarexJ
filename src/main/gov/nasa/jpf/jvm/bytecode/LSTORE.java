@@ -41,7 +41,8 @@ public class LSTORE extends LocalVariableInstruction implements StoreInstruction
     StackFrame frame = ti.getModifiableTopFrame();
     
     frame.storeLongOperand(ctx, index);
-    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+    Conditional local = ((Conditional)frame.stack.getLocal(index)).simplify(ctx);
+	ComplexityPrinter.addComplex(local.size(), local.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
     return getNext(ctx, ti);
   }
 

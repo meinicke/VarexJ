@@ -37,8 +37,9 @@ public class I2F extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     Conditional<Integer> v = frame.pop(ctx);
-    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
-    frame.push(ctx, mapr2(v, 0));
+    Conditional<Integer> result = mapr2(v, 0);
+    ComplexityPrinter.addComplex(v.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+	frame.push(ctx, result);
 
     return getNext(ctx, ti);
   }

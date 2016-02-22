@@ -39,7 +39,7 @@ public class L2D extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     Conditional<Long> v = frame.popLong(ctx);
-    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+    ComplexityPrinter.addComplex(v.size(), v.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     frame.push(ctx, v.map(new Function<Long, Double>() {
 
 		@Override

@@ -42,7 +42,7 @@ public class MONITOREXIT extends LockInstruction {
 
 		Conditional<Integer> objref = frame.peek(ctx);
 		final MONITOREXIT thisInstruction = this;
-		ComplexityPrinter.addComplex(objref.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+		ComplexityPrinter.addComplex(objref.size(), objref.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

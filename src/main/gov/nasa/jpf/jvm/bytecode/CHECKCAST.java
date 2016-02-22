@@ -53,7 +53,7 @@ public class CHECKCAST extends JVMInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		StackFrame frame = ti.getTopFrame();
 		Conditional<Integer> objref = frame.peek(ctx);
-		ComplexityPrinter.addComplex(objref.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+		ComplexityPrinter.addComplex(objref.size(), objref.getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
 		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override

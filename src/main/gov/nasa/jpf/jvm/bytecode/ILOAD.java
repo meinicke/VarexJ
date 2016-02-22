@@ -40,8 +40,9 @@ public class ILOAD extends LocalVariableInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushLocal(ctx, index);
-    int size = ((Conditional)frame.stack.getLocal(index)).simplify(ctx).size();
-    ComplexityPrinter.addComplex(size, getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+    Conditional local = ((Conditional)frame.stack.getLocal(index)).simplify(ctx);
+	int size = local.size();
+    ComplexityPrinter.addComplex(size, local.getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

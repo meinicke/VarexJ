@@ -36,7 +36,7 @@ public class DUP_X2 extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     frame.dup_x2(ctx);
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), frame.stack.getStack().getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

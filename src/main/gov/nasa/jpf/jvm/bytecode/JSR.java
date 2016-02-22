@@ -52,7 +52,7 @@ public class JSR extends JVMInstruction {
 		}
     	
     });
-    ComplexityPrinter.addComplex(tgtAdr.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+    ComplexityPrinter.addComplex(tgtAdr.size(), tgtAdr.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
     frame.push(ctx, tgtAdr);
 
     return new One<>(mi.getInstructionAt(target));

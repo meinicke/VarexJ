@@ -153,4 +153,9 @@ public class One<T> extends Conditional<T> implements Cloneable {
 				cache[k] = new One<>(Integer.valueOf(j++));
 		}
 	}
+
+	@Override
+	public int getFeatureCount() {
+		return 0;
+	}
 }

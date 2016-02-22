@@ -1,10 +1,13 @@
 package cmu.conditional;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.SingleFeatureExpr;
 
 /**
  * Choice implementation as tree. 
@@ -198,6 +201,20 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 	@Override
 	public int size() {
 		return thenBranch.size() + elseBranch.size();
+	}
+
+	@Override
+	public int getFeatureCount() {
+		Set<SingleFeatureExpr> features = new HashSet<>();
+		for (FeatureExpr entry : toMap().values()) {
+			scala.collection.immutable.Set<SingleFeatureExpr> distinctFeature = entry.collectDistinctFeatureObjects();
+			SingleFeatureExpr[] array = new SingleFeatureExpr[distinctFeature.size()];
+			distinctFeature.copyToArray(array);
+			for (SingleFeatureExpr feature : array) {
+				features.add(feature);
+			}
+		}
+		return features.size();
 	}
 
 }

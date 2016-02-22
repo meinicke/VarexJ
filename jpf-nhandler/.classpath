@@ -11,6 +11,6 @@
 	<classpathentry kind="lib" path="lib/examples-lib/jgroups-3.2.5.jar"/>
 	<classpathentry kind="lib" path="lib/examples-lib/json-20090211.jar"/>
 	<classpathentry kind="lib" path="lib/examples-lib/db-derby-10.9.1.0/lib/derby.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/VarexJ"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/VarexJ-Root"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

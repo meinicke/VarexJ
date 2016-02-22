@@ -39,8 +39,7 @@ public class IREM extends JVMInstruction {
 
 		Conditional<Integer> v1 = frame.pop(ctx);
 		final Conditional<Integer> v2 = frame.pop(ctx);
-		ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		 Conditional<Instruction> result = v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 				@Override
 				public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
@@ -61,7 +60,8 @@ public class IREM extends JVMInstruction {
 				}
 		    	
 		    });
-
+		 ComplexityPrinter.addComplex(v1.size()*v2.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+		 return result;
 	}
 
 	public int getByteCode() {

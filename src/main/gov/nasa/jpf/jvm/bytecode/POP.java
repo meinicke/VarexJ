@@ -35,7 +35,7 @@ public class POP extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+    ComplexityPrinter.addComplex(frame.stack.getStackWidth(), frame.stack.getStack().getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     frame.pop(ctx, 1);
     return getNext(ctx, ti);
   }

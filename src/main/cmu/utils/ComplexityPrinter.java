@@ -38,76 +38,79 @@ public class ComplexityPrinter {
 		reset();
 	}
 	
-	static int complMax = 0;
-	static double complSum = 0;
-	static int featureMax = 0;
-	static double featureSum = 0;
+//	static int complMax = 0;
+//	static double complSum = 0;
+//	static double featureSum = 0;
 	
 	static int pointer = 0;
-	static final double samples = 100;
-	public static void addComplex(int complexity, String instruction, FeatureExpr ctx, MethodInfo mi, ThreadInfo ti) {
-		if (complexity > 20) {
-			out.print(complexity);
-			out.print(';');
-			out.print(instruction);
-			out.print(';');
-			out.print(mi.getClassName()+ " # " + mi.getName());
-			out.println();
-			System.out.println(complexity + " " + instruction + " @ " + mi.getClassName()+ " # " + mi.getName());
+	static final double samples = 1000;
+	
+	static int maxOverhead = 0;
+	static int maxFeature = 0;
+	static int maxInteractionDegree = 0;
+	
+	public static void addComplex(int overhead, int interactionDegree, String instruction, FeatureExpr ctx, MethodInfo mi, ThreadInfo ti) {
+//		if (overhead > 20) {
+//		if (out != null) {
+//			out.print(overhead);
+//			out.print(';');
+//			out.print(interactionDegree);
+//			out.print(';');
+//			out.print(ctx.collectDistinctFeatures().size());
+//			out.print(';');
+//			out.print(ctx.toString());
+//			out.print(';');
+//			out.print(instruction);
+//			out.println();
+//		}
+//			out.print(';');
+//			out.print(mi.getClassName()+ " # " + mi.getName());
+//			out.println();
+//			System.out.println(overhead + " " + instruction + " @ " + mi.getClassName()+ " # " + mi.getName());
 			
-			StackFrame frame = ti.getTopFrame();
+//			StackFrame frame = ti.getTopFrame();
 			
-			printTrace(frame);
-			System.out.println("--------------------------");
+//			printTrace(frame);
+//			System.out.println("--------------------------");
+//		}
+		
+//		
+		pointer++;
+		if (overhead > maxOverhead ) {
+			maxOverhead = overhead;
+		}
+		if (ctx.collectDistinctFeatures().size() > maxFeature ) {
+			maxFeature = ctx.collectDistinctFeatures().size();
 		}
 		
+		if (interactionDegree > maxInteractionDegree) {
+			maxInteractionDegree  = interactionDegree;
+		}
 		
-//		pointer++;
-//		if (complexity > complMax ) {
-//			complMax = complexity;
-//		}
-//		complSum += complexity;
-//		if (ctx.collectDistinctFeatures().size() > featureMax ) {
-//			featureMax = ctx.collectDistinctFeatures().size();
-//		}
-//		featureSum += ctx.collectDistinctFeatures().size();
-//		
-//		if (pointer >= samples) {
-//			pointer = 0;
-//			line++;
-//			if (line > 1_000_000) {
-//				write();
-//				line = 0;
-//				results = new File("complex" + fileid++ + ".csv");
-//				reset();
-//			}
-//			
-//			if (out != null) {
-//				out.print(complMax);
-//				out.print(';');
-//				out.print(String.valueOf(complSum / samples).replace('.', ','));
-//				out.print(';');
-//				out.print(featureMax);
-//				out.print(';');
-//				out.print(String.valueOf(featureSum / samples).replace('.', ','));
-//				
-//				complMax = 0;
-//				complSum = 0;
-//				featureMax = 0;
-//				featureSum = 0;
-////				out.print(complexity);
-////				out.print(';');
-//				out.print(instruction);
-//				out.print(';');
-//				out.print(mi.getClassName()+ " # " + mi.getName());
-//				out.print(';');
-////				out.print(ctx.collectDistinctFeatures().size());
-////				out.print(';');
-////				out.print(Conditional.getCTXString(ctx));
-////				out.println();
-//				out.println();
-//			}
-//		}
+		if (pointer >= samples) {
+			pointer = 0;
+			line++;
+			if (line > 1_000_000) {
+				write();
+				line = 0;
+				results = new File("complex" + fileid++ + ".csv");
+				reset();
+			}
+			
+			if (out != null) {
+				out.print(maxOverhead);
+				out.print(';');
+				out.print(maxInteractionDegree * -1);
+				out.print(';');
+				out.print(maxFeature * -1);
+				out.println();
+				
+				maxOverhead = 0;
+				maxInteractionDegree = 0;
+				maxFeature = 0;
+				
+			}
+		}
 	}
 
 	private static void printTrace(StackFrame frame) {
@@ -121,12 +124,20 @@ public class ComplexityPrinter {
 
 	public static void reset() {
 		pointer = 0;
-		complMax = 0;
-		complSum = 0;
-		featureMax = 0;
-		featureSum = 0;
+//		complMax = 0;
+//		complSum = 0;
+		maxFeature = 0;
+//		featureSum = 0;
+		maxInteractionDegree = 0;
+		maxOverhead = 0;
 		try {
 			out = new PrintWriter(new BufferedWriter(new FileWriter(results, true)));
+//			out.print("effort");
+//			out.print(';');
+//			out.print("interactionDegree");
+//			out.print(';');
+//			out.print("ctx.size()");
+//			out.println();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -144,6 +155,7 @@ public class ComplexityPrinter {
 
 
 	public static void write() {
+		System.out.println("ComplexityPrinter.write()");
 		if (out != null) {
 			out.flush();
 			out.close();

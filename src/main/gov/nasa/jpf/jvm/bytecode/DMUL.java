@@ -37,8 +37,9 @@ public class DMUL extends JVMInstruction {
 
 		Conditional<Double> v1 = frame.popDouble(ctx);
 		Conditional<Double> v2 = frame.popDouble(ctx);
-		ComplexityPrinter.addComplex(v1.size() * v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-		frame.push(ctx, mapr(v1, v2));
+		Conditional<Double> result = mapr(v1, v2);
+		ComplexityPrinter.addComplex(v1.size() * v2.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+		frame.push(ctx, result);
 		return getNext(ctx, ti);
 	}
 

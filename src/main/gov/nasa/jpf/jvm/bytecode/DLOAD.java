@@ -40,7 +40,8 @@ public class DLOAD extends LocalVariableInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushLongLocal(ctx, index);
-    ComplexityPrinter.addComplex(((Conditional)frame.stack.getLocal(index)).simplify(ctx).size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+    Conditional simplifiedValue = ((Conditional)frame.stack.getLocal(index)).simplify(ctx);
+	ComplexityPrinter.addComplex(simplifiedValue.size(), simplifiedValue.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     return getNext(ctx, ti);
   }
 

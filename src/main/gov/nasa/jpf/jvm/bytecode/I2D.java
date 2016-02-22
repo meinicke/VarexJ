@@ -38,8 +38,9 @@ public class I2D extends JVMInstruction {
 
     Conditional<Integer> ival = frame.pop(ctx);
     
-    frame.push(ctx, mapr2(ival, null));
-    ComplexityPrinter.addComplex(ival.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+    Conditional<Integer> result = mapr2(ival, null);
+	frame.push(ctx, result);
+    ComplexityPrinter.addComplex(ival.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
     return getNext(ctx, ti);
   }
   

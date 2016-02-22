@@ -38,8 +38,9 @@ public class IAND extends JVMInstruction {
 
     Conditional<Integer> v1 = frame.pop(ctx);
     Conditional<Integer> v2 = frame.pop(ctx);
-    ComplexityPrinter.addComplex(v1.size()*v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-    frame.push(ctx, mapr(v1, v2));
+    Conditional<Integer> mapr = mapr(v1, v2);
+    ComplexityPrinter.addComplex(v1.size()*v2.size(), mapr.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+	frame.push(ctx, mapr);
 
     return getNext(ctx, ti);
   }

@@ -43,7 +43,7 @@ public class RET extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getTopFrame();
     Conditional<Integer> jumpTgt = frame.getLocalVariable(ctx, index);
-    ComplexityPrinter.addComplex(jumpTgt.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+    ComplexityPrinter.addComplex(jumpTgt.size(), jumpTgt.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     return jumpTgt.map(new Function<Integer, Instruction>() {
 
 		@Override

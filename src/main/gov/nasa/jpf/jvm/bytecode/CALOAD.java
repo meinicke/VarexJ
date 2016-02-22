@@ -36,7 +36,7 @@ public class CALOAD extends ArrayLoadInstruction {
   protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     e.checkArrayBounds(ctx, index);
     Conditional<Character> charElement = e.getCharElement(index);
-    ComplexityPrinter.addComplex(charElement.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), null);
+    ComplexityPrinter.addComplex(charElement.size(), charElement.getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), null);
 	frame.push( ctx, charElement.map(new Function<Character, Integer>() {
 
 		@Override

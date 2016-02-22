@@ -37,15 +37,16 @@ public class F2I extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     Conditional<Float> f = frame.popFloat(ctx);
-    ComplexityPrinter.addComplex(f.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-    frame.push(ctx, f.map(new Function<Float, Integer>() {
+    Conditional<Integer> result = f.map(new Function<Float, Integer>() {
 
 		@Override
 		public Integer apply(Float f) {
 			return (int)f.floatValue();
 		}
     	
-	}));
+	});
+	frame.push(ctx, result);
+	ComplexityPrinter.addComplex(f.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 
     return getNext(ctx, ti);
   }

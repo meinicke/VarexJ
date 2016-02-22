@@ -151,6 +151,8 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     		val = ChoiceFactory.create(ctx, frame.peek(ctx), field).simplify();
     	}
     }
+	
+	System.out.println("ctx: " + Conditional.getCTXString(ctx) + " newvalue:" + val + " oldValue:" + field + " " + eiFieldOwner + " " + fi);
     lastValue = val;
 
     // we only have to modify the field owner if the values have changed, and only
@@ -194,7 +196,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
         }
 
       } else { // not a reference, nothing exposed
-    	  ComplexityPrinter.addComplex(val.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+    	  ComplexityPrinter.addComplex(val.size(), val.getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
         eiFieldOwner.set1SlotField(ctx, fi, val);
         eiFieldOwner.setFieldAttr(fi, attr); // see above about overwrite vs. accumulation
       }

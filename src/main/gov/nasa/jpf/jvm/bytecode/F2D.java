@@ -37,7 +37,7 @@ public class F2D extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     Conditional<Float> f = frame.popFloat(ctx);
-    ComplexityPrinter.addComplex(f.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+    ComplexityPrinter.addComplex(f.size(), f.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
     frame.push(ctx, f.map(new Function<Float, Double>() {
 
 		@Override

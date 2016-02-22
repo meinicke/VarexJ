@@ -38,8 +38,9 @@ public class FNEG extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     Conditional<Float> v = frame.popFloat(ctx);
-    ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
-    frame.push(ctx, mapr2(v, null));
+    Conditional<Float> result = mapr2(v, null);
+    ComplexityPrinter.addComplex(v.size(), v.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);    
+	frame.push(ctx, result);
     return getNext(ctx, ti);
   }
   

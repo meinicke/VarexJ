@@ -127,7 +127,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 //		if (!classes.isEmpty() && map.size() > classes.size()) {
 //			System.out.println("SPECIAL reduce invocations from " + map.size() + " to " + classes.size() + " " + callee);
 //		}
-	    ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+	    ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
 		setupCallee(ctx, ti, callee); // this creates, initializes and
 										// pushes the callee StackFrame
 	

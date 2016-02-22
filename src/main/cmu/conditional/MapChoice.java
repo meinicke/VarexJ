@@ -1,12 +1,22 @@
 package cmu.conditional;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.junit.Test;
+
+import java.util.Set;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import de.fosd.typechef.featureexpr.SingleFeatureExpr;
 
 /**
  * Choice implementation using a map from value to {@link FeatureExpr}.
@@ -183,6 +193,20 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	@Override
 	public int size() {
 		return map.size();
+	}
+	
+	@Override
+	public int getFeatureCount() {
+		Set<SingleFeatureExpr> features = new HashSet<>();
+		for (FeatureExpr entry : map.values()) {
+			scala.collection.immutable.Set<SingleFeatureExpr> distinctFeature = entry.collectDistinctFeatureObjects();
+			SingleFeatureExpr[] array = new SingleFeatureExpr[distinctFeature.size()];
+			distinctFeature.copyToArray(array);
+			for (SingleFeatureExpr feature : array) {
+				features.add(feature);
+			}
+		}
+		return features.size();
 	}
 
 }

@@ -38,7 +38,7 @@ public class D2F extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
 		Conditional<Double> v = frame.popDouble(ctx);
-		ComplexityPrinter.addComplex(v.size(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+		ComplexityPrinter.addComplex(v.size(), v.getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
 		frame.push(ctx, v.map(new Function<Double, Float>() {
 
 			@Override

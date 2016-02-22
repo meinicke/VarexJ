@@ -40,10 +40,9 @@ public class IINC extends LocalVariableInstruction {
 	@Override
 	public Conditional<Instruction> execute(final FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
-		int before = ((Conditional)frame.stack.getLocal(index)).size();
+		int local = ((Conditional)frame.stack.getLocal(index)).size();
 		frame.IINC(ctx, index, increment);
-		int after = ((Conditional)frame.stack.getLocal(index)).size();
-		ComplexityPrinter.addComplex(before, getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
+		ComplexityPrinter.addComplex(local, ((Conditional)frame.stack.getLocal(index)).getFeatureCount(), getClass().getSimpleName(), ctx, frame.getMethodInfo(), ti);
 		return getNext(ctx, ti);
 	}
 	

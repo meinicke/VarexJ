@@ -68,7 +68,7 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     // pop the current frame but do not advance the new top frame, and do
     // not touch its operand stack
-	  ComplexityPrinter.addComplex(1, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+	  ComplexityPrinter.addComplex(1, 0, getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     if (ti.getStackDepth() == 1){ // thread exit point (might be re-executed)
     
       if (!ti.exit(ctx)){

@@ -65,8 +65,7 @@ public class INSTANCEOF extends JVMInstruction {
 
 		final StackFrame frame = ti.getModifiableTopFrame();
 		Conditional<Integer> objref = frame.pop(ctx);
-		ComplexityPrinter.addComplex(objref.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		Conditional<Instruction> returnValue = objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objref) {
@@ -82,6 +81,8 @@ public class INSTANCEOF extends JVMInstruction {
 			}
 
 		});
+		ComplexityPrinter.addComplex(objref.size(), objref.getFeatureCount() , getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
+		return returnValue;
 	}
 
 	public String getType() {

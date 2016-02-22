@@ -42,8 +42,7 @@ public class DREM extends JVMInstruction {
     
     Conditional<Double> v1 = frame.popDouble(ctx);
     final Conditional<Double> v2 = frame.popDouble(ctx);
-    ComplexityPrinter.addComplex(v1.size() * v2.size(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
-    return v1.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Instruction>>() {
+    Conditional<Instruction> result = v1.mapf(ctx, new BiFunction<FeatureExpr, Double, Conditional<Instruction>>() {
 
 		@Override
 		public Conditional<Instruction> apply(FeatureExpr ctx, final Double v1) {
@@ -65,8 +64,9 @@ public class DREM extends JVMInstruction {
     	
     });
     
+    ComplexityPrinter.addComplex(v1.size() * v2.size(), result.getFeatureCount(), getClass().getSimpleName(), ctx, ti.getTopFrameMethodInfo(), ti);
     
-	
+	return result;
   }
 
   @Override
