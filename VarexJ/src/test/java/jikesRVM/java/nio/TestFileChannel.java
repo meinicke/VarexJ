@@ -88,12 +88,14 @@ public class TestFileChannel extends TestJPF {
 	      if (file_int != MAGIC_INT) {
 	        System.out.println("TestFileChannel FAILURE");
 	        System.out.println("Wrote " + Integer.toHexString(MAGIC_INT) + " but read " + Integer.toHexString(file_int));
+	        fail();
 	      } else {
 	        System.out.println("TestFileChannel SUCCESS");
 	      }
 	    } catch (Exception e) {
 	      System.out.println("TestFileChannel FAILURE");
 	      e.printStackTrace(System.out);
+	      fail();
 	    } finally {
 	      if (null != file) {
 	        file.delete();

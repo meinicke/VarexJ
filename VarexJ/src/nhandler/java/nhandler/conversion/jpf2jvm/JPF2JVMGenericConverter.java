@@ -129,7 +129,7 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
                             JVMField = ((One<?>) JVMField).getValue();
                         }
                         if (JVMField instanceof Conditional[]) {
-                        	@SuppressWarnings("unchecked")
+							@SuppressWarnings("rawtypes")
 							final Conditional[] conditionals = (Conditional[]) JVMField;
                         	long[] array = new long[conditionals.length];
 							for (int index = 0; index < conditionals.length; index++) {

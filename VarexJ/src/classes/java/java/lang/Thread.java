@@ -29,11 +29,7 @@ import sun.nio.ch.Interruptible;
 public class Thread implements Runnable {
 	// TODO not implemented yet
 	private volatile Interruptible blocker;
-	private final Object blockerLock = createLock();
-
-	private java.lang.Object createLock() {
-		return new Object();
-	}
+	private final Object blockerLock = new Object();
 
 	public interface UncaughtExceptionHandler {
 		// note this doesn't stop the thread from being terminated
@@ -405,9 +401,8 @@ public class Thread implements Runnable {
 	}
 
 	void blockedOn(Interruptible b) {
-		System.out.println(blockerLock);
-//		synchronized (blockerLock) {
+		synchronized (blockerLock) {
 			blocker = b;
-//		}
+		}
 	}
 }

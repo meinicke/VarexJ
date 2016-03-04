@@ -2639,8 +2639,7 @@ public class ThreadInfo extends InfoObject
         ElementInfo eiThread = heap.newObject(ctx, ciThread, this);
         objRef = eiThread.getObjectRef();
 
-//        ElementInfo eiName = heap.newString(FeatureExprFactory.True(), MAIN_NAME, this);// TODO jens TRUE?
-        ElementInfo eiName = heap.newArray(FeatureExprFactory.True(), "C", MAIN_NAME.length(), this);// TODO jens TRUE?
+        ElementInfo eiName = heap.newArray(FeatureExprFactory.True(), "C", MAIN_NAME.length(), this);
         int i = 0;
         for (char c : MAIN_NAME.toCharArray()) {
         	eiName.setCharElement(ctx, i++, One.valueOf(c));
@@ -2648,6 +2647,10 @@ public class ThreadInfo extends InfoObject
         int nameRef = eiName.getObjectRef();
         eiThread.setReferenceField(ctx, "name", new One<>(nameRef));
 
+        final ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo(Object.class.getName());
+        final ElementInfo blockerLock = heap.newObject(FeatureExprFactory.True(), ci, this);
+        eiThread.setReferenceField(ctx, "blockerLock", new One<>(blockerLock.getObjectRef()));
+        
         ElementInfo eiGroup = createMainThreadGroup(ctx, sysCl);
         eiThread.setReferenceField(ctx, "group", new One<>(eiGroup.getObjectRef()));
 
