@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -99,12 +100,15 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
         }
     }
 
+    /**
+     * Updates the values in the JVM object
+     */
     @Override
-    protected void setInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException {
+    public void setInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException {
         Class<?> cls = JVMObj.getClass();
         ClassInfo JPFCl = dei.getClassInfo();
 
-        while (cls != null) {
+        while (cls != null) {        	
             Field fld[] = cls.getDeclaredFields();
 
             for (int i = 0; i < fld.length; i++) {
@@ -121,11 +125,26 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
                     if (fi.isReference()) {
                         int fieldValueRef = dei.getFields().getReferenceValue(fi.getStorageOffset()).getValue();
                         Object JVMField = obtainJVMObj(fieldValueRef, env, ctx);
-                        if (JVMField instanceof One) {
+                        if (JVMField instanceof Conditional) {
                             JVMField = ((One<?>) JVMField).getValue();
                         }
+                        if (JVMField instanceof Conditional[]) {
+                        	@SuppressWarnings("unchecked")
+							final Conditional[] conditionals = (Conditional[]) JVMField;
+                        	long[] array = new long[conditionals.length];
+							for (int index = 0; index < conditionals.length; index++) {
+								array[index] = (long)conditionals[index].getValue();
+							}
+							JVMField = array;
+                        }
+                        
                         try {
-                            fld[i].set(JVMObj, JVMField);
+                        	if (fld[i].getType().equals(char[].class) &&
+                        			JVMField instanceof String) {
+                        		fld[i].set(JVMObj, ((String)JVMField).toCharArray());
+                        	} else {
+                        		fld[i].set(JVMObj, JVMField);
+                        	}
                         } catch (IllegalArgumentException e) {
                             e.printStackTrace();
                         } catch (IllegalAccessException e) {
@@ -148,7 +167,7 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
     }
 
     @Override
-    protected void updateInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException {
+    public void updateInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException {
         Class<?> cls = JVMObj.getClass();
         ClassInfo JPFCl = dei.getClassInfo();
 
@@ -171,13 +190,14 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
                         int fieldValueRef = dei.getFields().getReferenceValue(fi.getStorageOffset()).getValue();
                         // If the field object is already in sync, skip.
                         // Otherwise, updateInstanceFields() gets called again and again
-                        if (ConverterBase.objMapJPF2JVM.containsKey(fieldValueRef)) {
+                        if (ConverterBase.updatedJPFObj.containsKey(fieldValueRef)) {
                             // TODO: Say that this field belongs to a class which contains a public field x
                             // TODO: if x is changed somewhere in the code, current impl could not reflect
                             // TODO: those changes to the corresponding JVMObject
                             continue;
                         }
                         Object JVMField = obtainJVMObj(fieldValueRef, env, ctx);
+                        ConverterBase.updatedJPFObj.put(fieldValueRef, JVMField);
                         try {
                             fld[i].set(JVMObj, JVMField);
                         } catch (IllegalArgumentException e) {
@@ -209,11 +229,12 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
      */
     protected Object instantiateFrom(Class<?> cl) {
         Object JVMObj = null;
-
+        
         if (cl == Class.class) {
             return cl;
         }
-
+        
+        System.out.println("create JVM object " + cl);
         Constructor<?> ctor = getNoArgCtor(cl);
         try {
             ctor.setAccessible(true);

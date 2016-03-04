@@ -1,9 +1,15 @@
 package nhandler.conversion;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.Resetable;
 import gov.nasa.jpf.vm.MJIEnv;
 import nhandler.util.ValueIdentityHashMap;
-
-import java.util.*;
 
 /**
  * This is just a common root of all Converters and keeps key elements used by
@@ -20,25 +26,58 @@ public class ConverterBase {
 	 * Keeps track of the JVM objects that have been already created from their
 	 * corresponding JPF objects, while performing conversion from JPF to JVM
 	 */
-	protected static ValueIdentityHashMap<Integer, Object> objMapJPF2JVM = new ValueIdentityHashMap<Integer, Object>();
+	@SuppressWarnings("serial")
+	public static Map<Integer, Object> objMapJPF2JVM = new HashMap<Integer, Object>() {
+		public Object put(Integer key, Object value) {
+			if (containsKey(key)) {
+				Object currentObject = get(key);
+				if (currentObject == value) {
+					return null;
+				}
+				for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+					System.out.println(element);
+				}
+				System.out.println("-----------------------------------");
+				}
+			return super.put(key, value);
+		};
+	};
 	/**
 	 * Keeps track of the JVM classes that have been already created from their
 	 * corresponding JPF classes, while performing conversion from JPF to JVM
 	 */
-	protected static ValueIdentityHashMap<Integer, Class<?>> classMapJPF2JVM = new ValueIdentityHashMap<Integer, Class<?>>();
+	public static ValueIdentityHashMap<Integer, Class<?>> classMapJPF2JVM = new ValueIdentityHashMap<Integer, Class<?>>();
 
 	/**
 	 * Keeps track of the JPF objects that have been already updated from their
 	 * corresponding JVM objects, while performing conversion from JVM to JPF
 	 */
-	protected static HashMap<Integer, Object> updatedJPFObj = new ValueIdentityHashMap<Integer, Object>();
+	public static HashMap<Integer, Object> updatedJPFObj = new ValueIdentityHashMap<Integer, Object>();
 
+	
 	/**
 	 * Keeps track of the JPF classes that have been already updated from their
 	 * corresponding JVM classes, while performing conversion from JVM to JPF
 	 */
-	protected static Set<Integer> updatedJPFCls = new HashSet<Integer>();
+	public static Set<Integer> updatedJPFCls = new HashSet<Integer>();
 	static boolean resetState;
+
+	static {
+		JPF.resetable.add(new Resetable() {
+			
+			@Override
+			public void reset() {
+				System.out.println("RESET");
+				updatedJPFObj.clear();
+				classMapJPF2JVM.clear();
+				objMapJPF2JVM.clear();
+				updatedJPFCls.clear();
+				resetState = false;
+			}
+			
+		});
+	}
+	
 
 	public static void init() {
 		converterFactory = new DefaultConverterFactory();

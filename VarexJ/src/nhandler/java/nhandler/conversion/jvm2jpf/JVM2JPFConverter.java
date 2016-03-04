@@ -156,7 +156,6 @@ public abstract class JVM2JPFConverter extends ConverterBase {
       if (JVMObj == null){ 
         return; 
       }
-
       if (JVMObj.getClass().isArray()){
         this.updateJPFArrObj(JVMObj, JPFObj, env, ctx);
       } else{

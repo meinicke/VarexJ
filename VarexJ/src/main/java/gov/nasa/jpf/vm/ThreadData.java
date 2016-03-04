@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.Arrays;
+
 import gov.nasa.jpf.util.HashData;
 
 
@@ -37,7 +39,7 @@ public class ThreadData {
    * the name of this thread
    * (only temporarily unset, between NEW and INVOKESPECIAL)
    */
-  String name = "?";
+  char[] name = new char[]{'?'};
 
   /** is this a daemon thread */
   boolean isDaemon;
@@ -82,7 +84,7 @@ public class ThreadData {
             (isDaemon == t.isDaemon) && 
             (lockCount == t.lockCount) &&
             (suspendCount == t.suspendCount) && 
-            (name.equals(t.name)));
+            (Arrays.equals(name, t.name)));
   }
 
   public void hash (HashData hd) {

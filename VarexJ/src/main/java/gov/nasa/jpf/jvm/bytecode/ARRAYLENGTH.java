@@ -45,14 +45,12 @@ public class ARRAYLENGTH extends ArrayInstruction {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayRef) {
-
 				if (arrayRef == MJIEnv.NULL) {
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "array length of null object"));
 				}
 
 				ElementInfo ei = ti.getElementInfo(arrayRef);
 				frame.push(ctx, ei.arrayLength(), false);
-
 				return getNext(ctx, ti);
 
 			}

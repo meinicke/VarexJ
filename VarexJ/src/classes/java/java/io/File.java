@@ -201,4 +201,7 @@ public class File
   public static File createTempFile(String prefix, String suffix) throws IOException  {
     return createTempFile(prefix, suffix, null);
   }
+  public boolean isInvalid() {
+	  return false;// TODO implement
+  }
 }

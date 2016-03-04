@@ -88,7 +88,7 @@ public class Utilities {
     else if (type.equals("[C")) {
       JVMObj = ((ArrayFields) ei.getFields()).asCharArray();
       if (JVMObj instanceof One) {
-        JVMObj = ((One) JVMObj).getValue();
+        JVMObj = ((One<?>) JVMObj).getValue();
       }
     }
     // short[]

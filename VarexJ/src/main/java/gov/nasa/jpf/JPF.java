@@ -50,7 +50,10 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory;
  */
 public class JPF implements Runnable {
 	
+	public static List<Resetable> resetable = new ArrayList<>();
+	
 	public static Coverage COVERAGE;
+	
 	  
   public static String VERSION = "7.0"; // the major version number
 
@@ -715,6 +718,11 @@ public class JPF implements Runnable {
    * runs the verification.
    */
   public void run() {
+	  for (Resetable m : resetable) {
+		  m.reset();
+	  }
+	  
+	  
     Runtime rt = Runtime.getRuntime();
 
     // this might be executed consecutively, so notify everybody

@@ -301,7 +301,6 @@ public class PeerClassGen implements Constants {
     }
     urls = new URL[] { url };
 
-    @SuppressWarnings("resource")
 	URLClassLoader cl = new URLClassLoader(urls, env.getConfig().getClassLoader());
     cls = cl.loadClass(className);
     return cls;

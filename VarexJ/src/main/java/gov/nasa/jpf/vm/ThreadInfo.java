@@ -444,7 +444,7 @@ public class ThreadInfo extends InfoObject
     
     ci = appCtx.getSystemClassLoader().getThreadClassInfo();
     targetRef = MJIEnv.NULL;
-    threadData.name = MAIN_NAME;
+    threadData.name = MAIN_NAME.toCharArray();
   }
 
     /**
@@ -462,7 +462,7 @@ public class ThreadInfo extends InfoObject
         this.objRef = objRef;
         this.targetRef = runnableRef;
 
-        threadData.name = vm.getElementInfo(nameRef).asString().getValue();
+        threadData.name = vm.getElementInfo(nameRef).asString().getValue().toCharArray();
 
         // note the thread is not yet in the ThreadList, we have to register from the caller
     }
@@ -1327,7 +1327,7 @@ public class ThreadInfo extends InfoObject
 
 
     public String getName() {
-        return threadData.name;
+        return new String(threadData.name);
     }
 
 
@@ -2040,7 +2040,6 @@ public class ThreadInfo extends InfoObject
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
      		final Conditional<Instruction> next = i.execute(ctx, this);
-
      		coverage.postExecuteInstruction(i, ctx);
      		
     		final int poped = currentStackDepth - stackDepth;
@@ -2640,7 +2639,12 @@ public class ThreadInfo extends InfoObject
         ElementInfo eiThread = heap.newObject(ctx, ciThread, this);
         objRef = eiThread.getObjectRef();
 
-        ElementInfo eiName = heap.newString(FeatureExprFactory.True(), MAIN_NAME, this);// TODO jens TRUE?
+//        ElementInfo eiName = heap.newString(FeatureExprFactory.True(), MAIN_NAME, this);// TODO jens TRUE?
+        ElementInfo eiName = heap.newArray(FeatureExprFactory.True(), "C", MAIN_NAME.length(), this);// TODO jens TRUE?
+        int i = 0;
+        for (char c : MAIN_NAME.toCharArray()) {
+        	eiName.setCharElement(ctx, i++, One.valueOf(c));
+        }
         int nameRef = eiName.getObjectRef();
         eiThread.setReferenceField(ctx, "name", new One<>(nameRef));
 
@@ -3595,7 +3599,7 @@ public class ThreadInfo extends InfoObject
     }
 
     void setName(String newName) {
-        threadDataClone().name = newName;
+    	threadDataClone().name = newName.toCharArray();
 
         // see 'setPriority()', only that it's more serious here, because the
         // java.lang.Thread name is stored as a char[]

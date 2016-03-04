@@ -10,5 +10,5 @@ package sun.nio.ch;
  */
 
 public interface Interruptible {
-  public void interrupt();
+  public void interrupt(Thread thread);
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.springsource.ide.eclipse.gradle.launch">
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
+<booleanAttribute key="org.eclipse.ui.externaltools.ATTR_TRIGGERS_CONFIGURED" value="true"/>
+<stringAttribute key="org.springsource.ide.eclipse.gradle.launch.JRE_NAME" value="jdk1.7.0_75"/>
+<stringAttribute key="org.springsource.ide.eclipse.gradle.launch.PROJECT" value="VarexJ"/>
+<stringAttribute key="org.springsource.ide.eclipse.gradle.launch.TASKTEXT" value="assemble"/>
+</launchConfiguration>

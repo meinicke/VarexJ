@@ -173,13 +173,11 @@ public abstract class ElementInfo implements Cloneable {
   }
 
   protected ElementInfo (int id, ClassInfo c, Fields f, Monitor m, ThreadInfo ti) {
-    
     objRef = id;
     
     ci = c;
     fields = f;
     monitor = m;
-    
     assert ti != null; // we need that for our POR
   }
 

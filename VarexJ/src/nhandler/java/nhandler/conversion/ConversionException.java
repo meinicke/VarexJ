@@ -24,7 +24,6 @@ package nhandler.conversion;
  * @author Nastaran Shafiei
  * @author Franck van Breugel
  */
-@SuppressWarnings("serial")
 public class ConversionException extends Exception {
   /**
    * Constructs a ConversionException without a detail message.

@@ -811,17 +811,17 @@ private void dumpAllocs(){
     byte b0 = (byte)(0xff & (val >>> 24));    
     
     ElementInfo ei = env.getModifiableElementInfo(a.objRef);
-
+    int offset = addr - a.startAdr;
     if (env.isBigEndianPlatform()){
-      ei.setByteElement(ctx,   addr, new One<>(b0));
-      ei.setByteElement(ctx, addr+1, new One<>(b1));
-      ei.setByteElement(ctx, addr+2, new One<>(b2));
-      ei.setByteElement(ctx, addr+3, new One<>(b3));
+      ei.setByteElement(ctx,   offset, new One<>(b0));
+      ei.setByteElement(ctx, offset+1, new One<>(b1));
+      ei.setByteElement(ctx, offset+2, new One<>(b2));
+      ei.setByteElement(ctx, offset+3, new One<>(b3));
     } else {
-      ei.setByteElement(ctx,   addr, new One<>(b3));
-      ei.setByteElement(ctx, addr+1, new One<>(b2));
-      ei.setByteElement(ctx, addr+2, new One<>(b1));
-      ei.setByteElement(ctx, addr+3, new One<>(b0));
+      ei.setByteElement(ctx,   offset, new One<>(b3));
+      ei.setByteElement(ctx, offset+1, new One<>(b2));
+      ei.setByteElement(ctx, offset+2, new One<>(b1));
+      ei.setByteElement(ctx, offset+3, new One<>(b0));
     }
   }
 
@@ -915,6 +915,26 @@ private void dumpAllocs(){
       ei.setByteElement(ctx, offset+7, new One<>(b0));
     }
   }
-
+  
+	/**
+	 * Sets all bytes in a given block of memory to a fixed value (usually
+	 * zero). This provides a single-register addressing mode, as discussed in
+	 * #getInt(Object,long) . Equivalent to setMemory(null, address, bytes,
+	 * value).
+	 */
+	@MJI
+	public void setMemory__JJB__V(MJIEnv env, int unsafeRef, long address, long bytes, byte value, FeatureExpr ctx) {
+		int addr = (int)address;
+	    Alloc a = getAlloc(addr);
+	    
+	    if (a == null) {
+	      env.throwException(ctx, "java.lang.IllegalArgumentException", "invalid memory address: " + Integer.toHexString(addr));
+	      return;
+	    }
+		ElementInfo ei = env.getModifiableElementInfo(a.objRef);
+	    int offset = addr - a.startAdr;
+	    for (long i = bytes; i > 0; i--) {
+	    	ei.setByteElement(ctx, offset++, new One<>(value));
+	    }
+	}
 }
-

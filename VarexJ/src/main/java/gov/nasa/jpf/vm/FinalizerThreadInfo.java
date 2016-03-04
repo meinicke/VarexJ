@@ -70,7 +70,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     super(vm, id, appCtx);
     
     ci = appCtx.getSystemClassLoader().getResolvedClassInfo(null, "gov.nasa.jpf.FinalizerThread");
-    threadData.name = FINALIZER_NAME;
+    threadData.name = FINALIZER_NAME.toCharArray();
     
     tempFinalizeQueue = new ArrayList<ElementInfo>();
   }
@@ -101,7 +101,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     
     addId( objRef, id);
     
-    threadData.name = FINALIZER_NAME;
+    threadData.name = FINALIZER_NAME.toCharArray();
 
     // start the thread by pushing Thread.run()
     startFinalizerThread(ctx);

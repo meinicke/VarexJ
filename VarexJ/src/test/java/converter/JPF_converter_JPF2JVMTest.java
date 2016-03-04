@@ -45,7 +45,13 @@ public class JPF_converter_JPF2JVMTest extends NativePeer {
     ConverterBase.reset(env);
 
     // converting JPF String to JVM string
-    String s1 = (String) JPF2JVMConverter.obtainJVMObj(jpfRef, env, ctx);
+    Object obtainJVMObj = JPF2JVMConverter.obtainJVMObj(jpfRef, env, ctx);
+    String s1;
+    if (obtainJVMObj.getClass().equals(char[].class)) {
+    	s1 = new String ((char[])obtainJVMObj);
+    } else {
+    	s1 = (String) obtainJVMObj;
+    }
     String s2 = new String("Hello World");
 
     TestJPF.assertEquals(s1, s2);

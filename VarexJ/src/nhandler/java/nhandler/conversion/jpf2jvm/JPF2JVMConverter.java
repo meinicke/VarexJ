@@ -1,6 +1,7 @@
 package nhandler.conversion.jpf2jvm;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -25,7 +26,6 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         if (JPFRef == MJIEnv.NULL) {
             return null;
         }
-
         ClassInfo ci = env.getReferredClassInfo(ctx, JPFRef);
         JPF2JVMConverter converter = ConverterBase.converterFactory.getJPF2JVMConverter(ci.getName());
         return converter.getJVMCls(JPFRef, env, ctx);
@@ -35,7 +35,10 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         if (JPFRef == MJIEnv.NULL) {
             return null;
         }
-
+        if (ConverterBase.objMapJPF2JVM.containsKey(JPFRef)) {
+        	Object object = ConverterBase.objMapJPF2JVM.get(JPFRef);
+        	return  object;
+        }
         DynamicElementInfo dei = (DynamicElementInfo) env.getHeap().get(JPFRef);
         ClassInfo ci = dei.getClassInfo();
         JPF2JVMConverter converter = ConverterBase.converterFactory.getJPF2JVMConverter(ci.getName());
@@ -148,6 +151,9 @@ public abstract class JPF2JVMConverter extends ConverterBase {
                     } else {
                         // Creates a new instance of JVMCl
                         JVMObj = instantiateFrom(JVMCl);
+                        if (ConverterBase.classMapJPF2JVM.containsKey(JPFRef)) {
+                        	System.err.println("something went wrong !!!!!!!!!!!!!!!!!!!!!");
+                        }
                     }
 
                     ConverterBase.objMapJPF2JVM.put(JPFRef, JVMObj);
@@ -162,9 +168,9 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         return JVMObj;
     }
 
-    protected abstract void setInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException;
+    public abstract void setInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException;
 
-    protected abstract void updateInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException;
+    public abstract void updateInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException;
 
     /**
      * Returns a JVM array corresponding to the given JPF array. If such an array
@@ -241,7 +247,8 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         if (value instanceof Conditional)
             JVMObj = new String((char[]) ((Conditional<?>) value).simplify(ctx).getValue());
         else {
-            System.out.println("Warning from JPF2JVMConverter.java L244, JVMObj is not One");
+            System.out.println("Warning from JPF2JVMConverter.java L244, JVMObj is not One:");
+            System.out.println('\t' + Arrays.toString((char[]) value).replaceAll(",\\s", ""));
             JVMObj = new String((char[]) value);
         }
         ConverterBase.objMapJPF2JVM.put(JPFRef, JVMObj);

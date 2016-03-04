@@ -119,7 +119,7 @@ public class JPF_java_lang_Thread extends NativePeer {
   }
 
   @MJI
-  public void interrupt____V (MJIEnv env, int objref, FeatureExpr ctx) {
+  public void interrupt0____V (MJIEnv env, int objref, FeatureExpr ctx) {
     ThreadInfo ti = env.getThreadInfo();
     SystemState ss = env.getSystemState();
 
@@ -468,5 +468,5 @@ static void join0 (MJIEnv env, int joineeRef, long timeout, FeatureExpr ctx){
 
     tiStop.setStopped(ctx, throwableRef);
   }
-
+ 
 }
