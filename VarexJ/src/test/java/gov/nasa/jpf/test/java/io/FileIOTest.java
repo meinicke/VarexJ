@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -39,90 +40,219 @@ import gov.nasa.jpf.util.test.TestJPF;
  */
 public class FileIOTest extends TestJPF {
 
-  public static final String fname = "_test_";
+	public static final String fname = "_test_";
+	private static final int MAGIC_INT = 1234567890;
 
-  @Test
-  public void testRoundtrip() throws IOException, FileNotFoundException {
-    if (verifyNoPropertyViolation()) {
-      Random r = new Random(42);
-      File file = new File(fname);
-      String[] lines = {"one", "two", "three", "four", "five"};
+	@Test
+	public void bufferTest() throws IOException, FileNotFoundException {
+		if (verifyNoPropertyViolation()) {
+			final ByteBuffer buffer = ByteBuffer.allocateDirect(4);
+			
+			buffer.putInt(MAGIC_INT);
+			
+			buffer.position(0);
+			while (buffer.hasRemaining()) {
+				System.out.println(buffer.get());				
+			}
+			System.out.println("--------------");
+			buffer.flip();
+			while (buffer.hasRemaining()) {
+				System.out.println(buffer.get());				
+			}
+		}
+	}
+	
+	@Test
+	public void bufferTest2() throws IOException, FileNotFoundException {
+		if (verifyNoPropertyViolation()) {
+			final ByteBuffer buffer = ByteBuffer.allocateDirect(4);
+			System.out.println(buffer.position());
+			buffer.putInt(MAGIC_INT);
+			System.out.println(buffer);
+			buffer.flip();
+			System.out.println("flip");
+			System.out.println(buffer);
+			final int file_int = buffer.getInt();
+			System.out.println(buffer);
+			System.out.println(file_int);
+		}
+	}
+	
 
-      //--- write part
-      System.out.println("##---- writing: " + file.getName());
-      FileOutputStream os = new FileOutputStream(file);
-      OutputStreamWriter ow = new OutputStreamWriter(os);
-      PrintWriter pw = new PrintWriter(ow);
-      int a, b;
+	@Test
+	public void writeTest() throws IOException, FileNotFoundException {
+		if (verifyNoPropertyViolation()) {
+			System.out.write(new byte[] { 0, 1 });
+		}
+	}
 
-      for (int i = 0; i < lines.length; i++) {
-        pw.println(lines[i]);
-        if (i == 2) {
-          // add a CG here
-          a = r.nextInt(1);
-          System.out.println("## write got here: " + a);
-        }
-      }
+	@Test
+	public void OutputStreamWriterTest2() throws IOException, FileNotFoundException {
+		if (false|| verifyNoPropertyViolation()) {
+			OutputStreamWriter pw = new OutputStreamWriter(System.out);
+			pw.write("abc".toCharArray(), 0, 3);
+			pw.flush();
+		}
+	}
 
-      pw.close();
-      os.close(); // without this, Windows/Cygwin doesn't delete the file
+	@Test
+	public void OutputStreamWriterTest() throws IOException, FileNotFoundException {
+		if (verifyNoPropertyViolation()) {
+			String[] lines = { "one", "two", "three", "four", "five" };
 
-      System.out.println("##---- checking file system attributes");
+			OutputStreamWriter pw = new OutputStreamWriter(System.out);
 
-      assert file.exists() : "File.exits() failed on " + fname;
+			for (int i = 0; i < lines.length; i++) {
+				// System.out.println(lines[i]);
 
-      assert file.isFile() : "File.isFile() failed on " + fname;
+				pw.write(lines[i]);
+				pw.write('\n');
+				pw.flush();
+			}
+		}
+	}
 
-      assert !file.isDirectory() : "!File.isDirectory() failed on " + fname;
+	@Test
+	public void pwTest() throws IOException, FileNotFoundException {
+		if (verifyNoPropertyViolation()) {
+			String[] lines = { "one", "two", "three", "four", "five" };
 
-      assert isInCurrentDirList(fname) : "dir list test failed on " + fname;
+			PrintWriter pw = new PrintWriter(System.out, true);
 
+			for (int i = 0; i < lines.length; i++) {
+				// System.out.println(lines[i]);
+				pw.println(lines[i]);
+			}
+		}
+	}
 
-      //--- read part
-      System.out.println("##---- reading: " + file.getName());
-      ArrayList<String> contents = new ArrayList<String>();
-      String line;
-      FileInputStream is = new FileInputStream(file);
-      InputStreamReader ir = new InputStreamReader(is);
-      BufferedReader br = new BufferedReader(ir);
+	@Test
+	public void testRoundtrip2() throws IOException, FileNotFoundException {
+		if (verifyNoPropertyViolation()) {
+			File file = new File(fname);
+			String[] lines = { "one", "two", "three", "four", "five" };
 
-      for (int i = 0; (line = br.readLine()) != null; i++) {
-        if (i == 2) {
-          b = r.nextInt(1);
-          System.out.println("## read got here: " + b);
-        }
-        contents.add(line);
-      }
+			FileOutputStream os = new FileOutputStream(file);
+			OutputStreamWriter ow = new OutputStreamWriter(os);
+			PrintWriter pw = new PrintWriter(System.out);
 
-      br.close();
-      is.close(); // without this, Windows/Cygwin doesn't delete the file
+			for (int i = 0; i < lines.length; i++) {
+				System.out.println(lines[i]);
+				pw.println(lines[i]);
+			}
 
-      //--- check part
-      System.out.println("##---- comparing");
-      assert lines.length == contents.size() : "file length differs: " + lines.length + " / " + contents.size();
+			pw.close();
+			os.close(); // without this, Windows/Cygwin doesn't delete the file
 
-      for (int i = 0; i < lines.length; i++) {
-        assert lines[i].equals(contents.get(i)) : "line " + i + " differs, expected: \"" + lines[i] + "\", got: \"" + contents.get(i) + "\"";
-      }
+			System.out.println("##---- checking file system attributes");
 
+			assert file.exists() : "File.exits() failed on " + fname;
 
-      if (file.delete()) {
-        assert !file.exists() : "File.delete() failed (supposedly deleted but file exists) on " + fname;
-      } else {
-        assert false : "File.delete() failed to delete file (can happen on Windows/Cygwin)";
-      }
+			assert file.isFile() : "File.isFile() failed on " + fname;
 
-      System.out.println("##---- done");
-    }
-  }
+			assert !file.isDirectory() : "!File.isDirectory() failed on " + fname;
 
-  private boolean isInCurrentDirList(String fn) {
-    for (String s : new File(".").list()) {
-      if (fn.equals(s)) {
-        return true;
-      }
-    }
+			assert isInCurrentDirList(fname) : "dir list test failed on " + fname;
 
-    return false;
-  }
+			// --- read part
+			System.out.println("##---- reading: " + file.getName());
+			ArrayList<String> contents = new ArrayList<String>();
+			String line;
+			FileInputStream is = new FileInputStream(file);
+			InputStreamReader ir = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(ir);
+
+			for (; (line = br.readLine()) != null;) {
+				System.out.println(line);
+				contents.add(line);
+			}
+			System.out.println(contents);
+
+			br.close();
+			is.close();
+		}
+	}
+
+	@Test
+	public void testRoundtrip() throws IOException, FileNotFoundException {
+		if (verifyNoPropertyViolation()) {
+			Random r = new Random(42);
+			File file = new File(fname);
+			String[] lines = { "one", "two", "three", "four", "five" };
+
+			// --- write part
+			System.out.println("##---- writing: " + file.getName());
+			FileOutputStream os = new FileOutputStream(file);
+			OutputStreamWriter ow = new OutputStreamWriter(os);
+			PrintWriter pw = new PrintWriter(ow);
+			int a, b;
+
+			for (int i = 0; i < lines.length; i++) {
+				pw.println(lines[i]);
+				if (i == 2) {
+					// add a CG here
+					a = r.nextInt(1);
+					System.out.println("## write got here: " + a);
+				}
+			}
+
+			pw.close();
+			os.close(); // without this, Windows/Cygwin doesn't delete the file
+
+			System.out.println("##---- checking file system attributes");
+
+			assert file.exists() : "File.exits() failed on " + fname;
+
+			assert file.isFile() : "File.isFile() failed on " + fname;
+
+			assert !file.isDirectory() : "!File.isDirectory() failed on " + fname;
+
+			assert isInCurrentDirList(fname) : "dir list test failed on " + fname;
+
+			// --- read part
+			System.out.println("##---- reading: " + file.getName());
+			ArrayList<String> contents = new ArrayList<String>();
+			String line;
+			FileInputStream is = new FileInputStream(file);
+			InputStreamReader ir = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(ir);
+
+			for (int i = 0; (line = br.readLine()) != null; i++) {
+				if (i == 2) {
+					b = r.nextInt(1);
+					System.out.println("## read got here: " + b);
+				}
+				contents.add(line);
+			}
+
+			br.close();
+			is.close(); // without this, Windows/Cygwin doesn't delete the file
+
+			// --- check part
+			System.out.println("##---- comparing");
+			assert lines.length == contents.size() : "file length differs: " + lines.length + " / " + contents.size();
+
+			for (int i = 0; i < lines.length; i++) {
+				assert lines[i].equals(contents.get(i)) : "line " + i + " differs, expected: \"" + lines[i] + "\", got: \"" + contents.get(i) + "\"";
+			}
+
+			if (file.delete()) {
+				assert !file.exists() : "File.delete() failed (supposedly deleted but file exists) on " + fname;
+			} else {
+				assert false : "File.delete() failed to delete file (can happen on Windows/Cygwin)";
+			}
+
+			System.out.println("##---- done");
+		}
+	}
+
+	private boolean isInCurrentDirList(String fn) {
+		for (String s : new File(".").list()) {
+			if (fn.equals(s)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

@@ -1,0 +1,18 @@
+c 1 Empty
+c 2 Elevator
+c 3 TwoThirdsFull
+c 4 ExecutiveFloor
+c 5 Base
+c 6 Weight
+c 7 Overloaded
+p cnf 7 10
+2 0
+-2 5 0
+-5 2 0
+-6 2 0
+-1 2 0
+-4 2 0
+-3 2 0
+-7 2 0
+-3 6 0
+-7 6 0

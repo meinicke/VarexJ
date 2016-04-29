@@ -121,6 +121,7 @@ public class LocationSpec {
     toLine = line2;
   }
 
+  @Override
   public String toString(){
     StringBuilder sb = new StringBuilder();
 
@@ -195,10 +196,8 @@ public class LocationSpec {
     if (pathName != null){
       pathName = pathName.replace('\\', '/');
       int idx = pathName.lastIndexOf('/');
-
       if (idx >= 0) {
         String fname = pathName.substring(idx + 1);
-
         if (fileSpec.matches(fname)) {
           if (pathSpec != null) {
             String pname = idx > 0 ? pathName.substring(0, idx) : "/";

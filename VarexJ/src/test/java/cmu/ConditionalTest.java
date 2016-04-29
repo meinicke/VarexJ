@@ -43,7 +43,8 @@ public class ConditionalTest {
 		List<Object[]> params = new LinkedList<>(); 
 		for (Object[] choice : ChoiceFactory.asParameter()) {
 			params.add(new Object[]{choice[0], FeatureExprFactory.bdd()});
-			params.add(new Object[]{choice[0], FeatureExprFactory.sat()});
+//			params.add(new Object[]{choice[0], FeatureExprFactory.sat()});
+			break;
 		}
 		return params;
 	}
@@ -224,5 +225,37 @@ public class ConditionalTest {
 		Conditional<Integer> v1 = Choice(fa, One(1), Choice(fb, One(1), Choice(fc, One(2), One(3)))).simplify();
 		assertEquals(Choice(fa.or(fa.not().and(fb)), One(1), Choice(fc, One(2), One(3))), v1);
 	}
+	
+	@Test
+	public void testtest() throws Exception {
+		final Conditional<Integer> a = Choice(fa, One(0), One(1));
+		final Conditional<Integer> b = Choice(fa, One(2), One(3));
+		final Conditional<Integer> c = Choice(fb, One(4), One(5));
+		final Conditional<Integer> d = Choice(fb, One(6), Choice(fc, One(7), One(8)));
+//		System.out.println(combine(a,b));
+//		System.out.println(combine(a,b).size());
+		System.out.println(combine(a,c));
+		
+		System.out.println(combine(combine(a,c), b).size());
+		
+		System.out.println(combine(combine(combine(a,c), b), d).size());
+	}
+	
+	static Conditional<Integer> combine(final Conditional<Integer> a, final Conditional<Integer> b) {
+		return a.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+			@Override
+			public Conditional<Integer> apply(FeatureExpr c, final Integer y) {
+				return b.mapf(c, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+					@Override
+					public Conditional<Integer> apply(FeatureExpr c, final Integer z) {
+						return new One(y+z);
+					}
+					
+				});
+			}
+			
+		}).simplify();
+	}
+	
 	
 }

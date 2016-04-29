@@ -28,9 +28,8 @@ public class TestFileChannel extends TestJPF {
 	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
 	@Test
-	public void test1() {
+	public void byteBufferTest() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-
 			final ByteBuffer buffer = ByteBuffer.allocateDirect(4);
 			System.out.println(buffer.position());
 			assertEquals(0, buffer.position());
@@ -73,13 +72,13 @@ public class TestFileChannel extends TestJPF {
 	    try {
 	      file = File.createTempFile("TestFileChannel", ".dat");
 	      final ByteBuffer buffer = ByteBuffer.allocateDirect(4);
-	      final ByteChannel output = (ByteChannel) new FileOutputStream(file).getChannel();
+	      final ByteChannel output = new FileOutputStream(file).getChannel();
 	      buffer.putInt(MAGIC_INT);
 	      buffer.flip();
 	      output.write(buffer);
 	      output.close();
 
-	      final ByteChannel input = (ByteChannel) new FileInputStream(file).getChannel();
+	      final ByteChannel input = new FileInputStream(file).getChannel();
 	      buffer.clear();
 	      while (buffer.hasRemaining()) { input.read(buffer); }
 	      input.close();

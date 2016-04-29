@@ -261,11 +261,9 @@ public class NativeMethodInfo extends MethodInfo {
 			if (itx.getTargetException() instanceof UncaughtException) { // Native methods could
 				throw (UncaughtException) itx.getTargetException();
 			}
-
+			
 			// this will catch all exceptionHandlers thrown by the native method execution
 			// we don't try to hand them back to the application
-			System.out.println("The following is the InvocationTargetException stackTrace:");
-			ti.printStackTrace();
 			throw new JPFNativePeerException("exception in native method " + ci.getName() + '.' + getName(), itx.getTargetException());
 		}
 	}

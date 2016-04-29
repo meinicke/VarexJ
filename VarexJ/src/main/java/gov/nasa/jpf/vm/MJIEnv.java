@@ -812,7 +812,9 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   public String[] getStringArrayObject (FeatureExpr ctx, int aRef){
     String[] sa = null;
      
-    if (aRef == NULL) return sa;
+    if (aRef == NULL) {
+		return sa;
+	}
 
     ClassInfo aci = getClassInfo(aRef);
     if (aci.isArray()){
@@ -855,7 +857,9 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
   public Object[] getArgumentArray (FeatureExpr ctx, int argRef) {
     Object[] args = null;
-    if (argRef == NULL) return args;
+    if (argRef == NULL) {
+		return args;
+	}
 
     int nArgs = getArrayLength(ctx, argRef);
     args = new Object[nArgs];
@@ -1502,6 +1506,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
   public ClassInfo getReferredClassInfo (FeatureExpr ctx, int clsObjRef) {
     if (ctx == null) {
+    	// TODO remove
       ctx = FeatureExprFactory.True();
     }
     ElementInfo ei = getElementInfo(clsObjRef);
@@ -1514,7 +1519,6 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
       ClassLoaderInfo cli = getVM().getClassLoader(cliId);
       ClassInfo referredCi = cli.getClassInfo(ciId);
-
       return referredCi;
 
     } else {

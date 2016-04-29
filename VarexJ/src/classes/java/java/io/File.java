@@ -21,6 +21,7 @@ package java.io;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -204,4 +205,8 @@ public class File
   public boolean isInvalid() {
 	  return false;// TODO implement
   }
+
+	public Path toPath() {
+		throw new RuntimeException("TODO implement");
+	}
 }

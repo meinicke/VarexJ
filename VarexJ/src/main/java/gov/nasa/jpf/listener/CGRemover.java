@@ -19,6 +19,10 @@
 
 package gov.nasa.jpf.listener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
@@ -33,10 +37,6 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * listener that removes CGs for specified locations, method calls or method bodies

@@ -6,7 +6,7 @@ public class IncJPF_SE {
 
 	public static void main(String[] args) {
 		Verify.resetInstructionCounter();
-		new IncJPF_SE(Integer.parseInt(args[0]));
+		System.out.println(new IncJPF_SE(Integer.parseInt(args[0])).i);
 	}
 
 	@Symbolic("true") static boolean a1;
@@ -40,13 +40,14 @@ public class IncJPF_SE {
 	@Symbolic("true") static boolean a29;
 	@Symbolic("true") static boolean a30;
 	
+	int i = 0;
 	public IncJPF_SE(int max) {
-		int i = 0;
-
+		System.out.println("Blah");
 		int current = 0;
 		if (current++ == max) return;
 		if (a1) {i++;}if (current++ == max) return;
 		if (a2) {i++;}if (current++ == max) return;
+		System.out.println(i);
 		if (a3) {i++;}if (current++ == max) return;
 		if (a4) {i++;}if (current++ == max) return;
 		if (a5) {i++;}if (current++ == max) return;
@@ -75,5 +76,6 @@ public class IncJPF_SE {
 		if (a28){i++;}if (current++ == max) return;
 		if (a29){i++;}if (current++ == max) return;
 		if (a30){i++;}if (current++ == max) return;
+		System.out.println(i);
 	}
 }

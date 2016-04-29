@@ -405,6 +405,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return classLoader.getResolvedAnnotationInfo( typeName);
   }
   
+  @Override
   public void setAnnotations(AnnotationInfo[] annotations) {
     this.annotations = annotations;
   }
@@ -794,10 +795,12 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     return classLoader.desiredAssertionStatus(name);
   }
 
-  public String getGenericSignature() {
+  @Override
+public String getGenericSignature() {
     return genericSignature;
   }
 
+  @Override
   public void setGenericSignature(String sig){
     genericSignature = sig;
   }
@@ -1060,11 +1063,13 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     }
   }
 
+  @Override
   public Iterator<MethodInfo> iterator() {
     return new Iterator<MethodInfo>() {
       ClassInfo ci = ClassInfo.this;
       Iterator<MethodInfo> it = ci.methods.values().iterator();
 
+      @Override
       public boolean hasNext() {
         if (it.hasNext()) {
           return true;
@@ -1079,7 +1084,8 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
         }
       }
 
-      public MethodInfo next() {
+      @Override
+	public MethodInfo next() {
         if (hasNext()) {
           return it.next();
         } else {
@@ -1087,7 +1093,8 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
         }
       }
 
-      public void remove() {
+      @Override
+	public void remove() {
         // not supported
         throw new UnsupportedOperationException("can't remove methods");
       }
@@ -1109,7 +1116,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
 
     while (c != null) {
       fi = c.getDeclaredStaticField(fName);
-      if (fi != null) return fi;
+      if (fi != null) {
+		return fi;
+	}
       c = c.superClass;
     }
 
@@ -1118,7 +1127,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     for (String interfaceName : getAllInterfaces()) {
       ClassInfo ci = ClassLoaderInfo.getCurrentResolvedClassInfo(interfaceName);
         fi = ci.getDeclaredStaticField(fName);
-        if (fi != null) return fi;
+        if (fi != null) {
+			return fi;
+		}
     }
 
     return null;
@@ -1155,7 +1166,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    */
   public FieldInfo getDeclaredStaticField (String fName) {
     for (int i=0; i<sFields.length; i++) {
-      if (sFields[i].getName().equals(fName)) return sFields[i];
+      if (sFields[i].getName().equals(fName)) {
+		return sFields[i];
+	}
     }
 
     return null;
@@ -1172,7 +1185,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
 
     while (c != null) {
       fi = c.getDeclaredInstanceField(fName);
-      if (fi != null) return fi;
+      if (fi != null) {
+		return fi;
+	}
       c = c.superClass;
     }
 
@@ -1184,7 +1199,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    */
   public FieldInfo getDeclaredInstanceField (String fName) {
     for (int i=0; i<iFields.length; i++) {
-      if (iFields[i].getName().equals(fName)) return iFields[i];
+      if (iFields[i].getName().equals(fName)) {
+		return iFields[i];
+	}
     }
 
     return null;
@@ -1307,7 +1324,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
    * to ourself, return this (a little bit strange if we hit it in the first place)
    */
   public ClassInfo getSuperClass (String clsName) {
-    if (clsName.equals(name)) return this;
+    if (clsName.equals(name)) {
+		return this;
+	}
 
     if (superClass != null) {
       return superClass.getSuperClass(clsName);
@@ -1416,7 +1435,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
       FieldInfo[] fia = c.iFields;
       for (int i=0; i<fia.length; i++) {
         FieldInfo fi = c.iFields[i];
-        if (fi.isReference() && (fv.getIntValue( fi.getStorageOffset()).getValue() == ref)) return true;
+        if (fi.isReference() && (fv.getIntValue( fi.getStorageOffset()).getValue() == ref)) {
+			return true;
+		}
       }
       c = c.superClass;
     } while (c != null);
@@ -1563,7 +1584,9 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   }
 
   ClassInfo getClassBase (String clsBase) {
-    if ((clsBase == null) || (name.equals(clsBase))) return this;
+    if ((clsBase == null) || (name.equals(clsBase))) {
+		return this;
+	}
 
     if (superClass != null) {
       return superClass.getClassBase(clsBase);
@@ -1771,7 +1794,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
 
   public Instruction[] getMatchingInstructions (LocationSpec lspec){
     Instruction[] insns = null;
-
+    
     if (lspec.matchesFile(sourceFileName)){
       for (MethodInfo mi : methods.values()) {
         Instruction[] a = mi.getMatchingInstructions(lspec);
@@ -2294,7 +2317,8 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     
   }
   
-  public String toString() {
+  @Override
+public String toString() {
     return "ClassInfo[name=" + name + "]";
   }
 

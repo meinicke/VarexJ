@@ -17,6 +17,11 @@ public interface RuntimeConstants {
 	boolean debug = false;
 	
 	/**
+	 * Enables debug output.
+	 */
+	boolean debugGC = false;
+	
+	/**
 	 * Defines weather the context is part of the console output.
 	 */
 	boolean ctxOutput = true;

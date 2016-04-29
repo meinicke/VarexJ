@@ -20,7 +20,9 @@ package gov.nasa.jpf;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import cmu.conditional.ChoiceFactory;
@@ -74,8 +76,9 @@ public class JPF implements Runnable {
     @Override
     public void propertyChanged(Config config, String key, String oldValue, String newValue) {
       if ("listener".equals(key)) {
-        if (oldValue == null)
-          oldValue = "";
+        if (oldValue == null) {
+			oldValue = "";
+		}
         
         String[] nv = config.asStringArray(newValue);
         String[] ov = config.asStringArray(oldValue);
@@ -350,6 +353,8 @@ public class JPF implements Runnable {
   }
   
   public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
+
+  public static Map<Integer, Object> JVMheap = Collections.emptyMap();
 
   private void processInteractionCommand() {
 	String logInteractions = config.getString("interaction", null);
@@ -717,6 +722,7 @@ public class JPF implements Runnable {
   /**
    * runs the verification.
    */
+  @Override
   public void run() {
 	  for (Resetable m : resetable) {
 		  m.reset();

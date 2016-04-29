@@ -17,6 +17,7 @@
 
 package gov.nasa.jpf.vm;
 
+import cmu.utils.RuntimeConstants;
 import nhandler.peerGen.PeerClassGen;
 
 /** 
@@ -35,7 +36,9 @@ public class DelegatedMethodInfo extends HandledMethodInfo {
   @Override
   protected boolean isUnsatisfiedLinkError (MJIEnv env){
     if(mth == null){
-      System.out.println(printInfo());
+    	if (RuntimeConstants.debug) {
+    		System.out.println(printInfo());
+    	}
 
       PeerClassGen peerCreator = PeerClassGen.getPeerCreator(this.getClassInfo(), env);
       mth = peerCreator.createMethod(this);

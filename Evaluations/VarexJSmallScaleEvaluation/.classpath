@@ -12,6 +12,6 @@
 	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-symbc/build/jpf-symbc-annotations.jar"/>
 	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-symbc/build/jpf-symbc-classes.jar"/>
 	<classpathentry kind="lib" path="C:/Users/meinicke/workspaceJPFBDD/jpf-bdd/build/jpf-bdd-annotations.jar"/>
-	<classpathentry kind="lib" path="C:/Users/meinicke/git/VarexJ/build/jpf-annotations.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/VarexJ"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

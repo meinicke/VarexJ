@@ -477,7 +477,9 @@ public int nLocals;
   public void setOperandAttr (Object a){
     assert (top() >= stackBase);
     if (attrs == null) {
-      if (a == null) return;
+      if (a == null) {
+		return;
+	}
       attrs = new Object[stack.getLength()];
     }
     attrs[top()] = a;
@@ -585,7 +587,9 @@ public int nLocals;
     assert (i >= stackBase);
 
     if (attrs == null) {
-      if (a == null) return;
+      if (a == null) {
+		return;
+	}
       attrs = new Object[stack.getLength()];
     }
     attrs[i] = a;
@@ -756,7 +760,9 @@ public int nLocals;
   public void setLocalAttr (int index, Object a) {
     assert index < stackBase;
     if (attrs == null){
-      if (a == null) return;
+      if (a == null) {
+		return;
+	}
       attrs = new Object[stack.getLength()];
     }
     attrs[index] = a;
@@ -803,7 +809,9 @@ public int nLocals;
   public void addLocalAttr (int index, Object attr){
     assert index < stackBase;
     if (attrs == null){
-      if (attr == null) return;
+      if (attr == null) {
+		return;
+	}
       attrs = new Object[stack.getLength()];
     }
     attrs[index] = ObjectList.add(attrs[index], attr);
@@ -1192,7 +1200,8 @@ public int nLocals;
   }
   
   // this is callerSlots deep copy
-  public StackFrame clone () {
+  @Override
+public StackFrame clone () {
     try {
       StackFrame sf = (StackFrame) super.clone();
 
@@ -1418,7 +1427,8 @@ public int nLocals;
 
   // <2do> pcm - I assume this compares snapshots, not types. Otherwise it
   // would be pointless to compare stack/local values
-  public boolean equals (Object o) {
+  @Override
+public boolean equals (Object o) {
     if (o instanceof StackFrame){
       StackFrame other = (StackFrame)o;
       if (prev != other.prev) {
@@ -1521,7 +1531,8 @@ public int nLocals;
   // computes an hash code for the hash table
   // the default hash code is different for each object
   // we need to redifine it to make the hash table work
-  public int hashCode () {
+  @Override
+public int hashCode () {
     HashData hd = new HashData();
     hash(hd);
     return hd.getValue();
@@ -1708,7 +1719,8 @@ pw.print(stack);
     return super.hashCode();
   }
 
-  public String toString () {
+  @Override
+public String toString () {
     StringWriter sw = new StringWriter(128);
     PrintWriter pw = new PrintWriter(sw);
 

@@ -20,6 +20,7 @@ package gov.nasa.jpf.vm;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
+import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -102,11 +104,13 @@ public class ThreadInfo extends InfoObject
     protected class StackIterator implements Iterator<StackFrame> {
         StackFrame frame = top;
 
-        public boolean hasNext() {
+        @Override
+		public boolean hasNext() {
             return frame != null;
         }
 
-        public StackFrame next() {
+        @Override
+		public StackFrame next() {
             if (frame != null) {
                 StackFrame ret = frame;
                 frame = frame.getPrevious();
@@ -117,7 +121,8 @@ public class ThreadInfo extends InfoObject
             }
         }
 
-        public void remove() {
+        @Override
+		public void remove() {
             throw new UnsupportedOperationException("can't remove StackFrames");
         }
     }
@@ -127,7 +132,8 @@ public class ThreadInfo extends InfoObject
             frame = getLastInvokedStackFrame();
         }
 
-        public StackFrame next() {
+        @Override
+		public StackFrame next() {
             if (frame != null) {
                 StackFrame ret = frame;
                 frame = null;
@@ -288,7 +294,8 @@ public class ThreadInfo extends InfoObject
             ti.markUnchanged();
         }
 
-        public ThreadInfo restore(ThreadInfo ignored) {
+        @Override
+		public ThreadInfo restore(ThreadInfo ignored) {
             ti.resetVolatiles();
 
             ti.threadData = threadData;
@@ -494,7 +501,8 @@ public class ThreadInfo extends InfoObject
         env = new MJIEnv(this);
     }
 
-    public Memento<ThreadInfo> getMemento(MementoFactory factory) {
+    @Override
+	public Memento<ThreadInfo> getMemento(MementoFactory factory) {
         return factory.getMemento(this);
     }
 
@@ -723,8 +731,9 @@ public class ThreadInfo extends InfoObject
      * Returns true if this thread is either RUNNING or UNBLOCKED
      */
     public boolean isRunnable() {
-        if (threadData.suspendCount != 0)
-            return false;
+        if (threadData.suspendCount != 0) {
+			return false;
+		}
 
         switch (threadData.state) {
             case RUNNING:
@@ -740,8 +749,9 @@ public class ThreadInfo extends InfoObject
     }
 
     public boolean willBeRunnable() {
-        if (threadData.suspendCount != 0)
-            return false;
+        if (threadData.suspendCount != 0) {
+			return false;
+		}
 
         switch (threadData.state) {
             case RUNNING:
@@ -760,8 +770,9 @@ public class ThreadInfo extends InfoObject
     }
 
     public boolean isTimeoutRunnable() {
-        if (threadData.suspendCount != 0)
-            return false;
+        if (threadData.suspendCount != 0) {
+			return false;
+		}
 
         switch (threadData.state) {
 
@@ -931,13 +942,15 @@ public class ThreadInfo extends InfoObject
         return threadData.getState().name();
     }
 
-    public Iterator<StackFrame> iterator() {
+    @Override
+	public Iterator<StackFrame> iterator() {
         return new StackIterator();
     }
 
     public Iterable<StackFrame> invokedStackFrames() {
         return new Iterable<StackFrame>() {
-            public Iterator<StackFrame> iterator() {
+            @Override
+			public Iterator<StackFrame> iterator() {
                 return new InvokedStackIterator();
             }
         };
@@ -1533,7 +1546,8 @@ public class ThreadInfo extends InfoObject
     }
 
 
-    public Object clone() {
+    @Override
+	public Object clone() {
         try {
             // threadData and top StackFrame are copy-on-write, so we should not have to clone them
             // lockedObjects are state-volatile and restored explicitly after a backtrack
@@ -1948,6 +1962,7 @@ public class ThreadInfo extends InfoObject
 
     private static int count = 0;
     private static long time = 0;
+    
 
     public static boolean logtrace = false;
     public static boolean RUN_SIMPLE = false;
@@ -1987,12 +2002,19 @@ public class ThreadInfo extends InfoObject
 	    		time = System.currentTimeMillis();
 	        }
 	        count++;
-	        if (System.currentTimeMillis() - time > 10000) {
-	        	int instructions = count / 10;
-	        	printSpeedLog(instructions);
-	        	time = System.currentTimeMillis();
+	        if (System.currentTimeMillis() - time > 10_000) {
+	        	for (int m = 0; m < 10_000; m++) {
+	     			ElementInfo ei = getHeap().get(m);
+	     			if (ei != null)
+	     				System.out.println(ei);
+	     		}
+	        	int instructions = count;
 	        	count = 0;
-        		vm.getSystemState().gcIfNeeded();
+	        	printSpeedLog(instructions / 10);
+	        	if (checkGcNeeded(instructions)) {
+	        		vm.getSystemState().gcIfNeeded();
+	        	}
+	        	time = System.currentTimeMillis();
 	        }
         	Instruction i = null;
  	        FeatureExpr ctx = top.stack.getCtx();
@@ -2031,7 +2053,7 @@ public class ThreadInfo extends InfoObject
  				System.out.println(" " + i + " if " + ctx);
  			
  			}
- 	    	
+     		
      		if (RuntimeConstants.tracing) {
      			performTracing(i, ctx);
      		}
@@ -2110,13 +2132,57 @@ public class ThreadInfo extends InfoObject
     }
   }
 
+    static Conditional<Integer> combine(final Conditional<Integer> a, final Conditional<Integer> b) {
+		return a.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+			@Override
+			public Conditional<Integer> apply(FeatureExpr c, final Integer y) {
+				return b.mapf(c, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+					@Override
+					public Conditional<Integer> apply(FeatureExpr c, final Integer z) {
+						return new One(y+z);
+					}
+					
+				});
+			}
+			
+		}).simplify();
+	}
+    
+    private static int countGc = 0;
+    private final static long maxMemory = Runtime.getRuntime().maxMemory();
+	private static boolean checkGcNeeded(int instructions) {
+		if (countGc++ >= 1) {
+			countGc = 0;
+			return true;
+		}
+		
+		// VM is slow, maybe because heap is full 
+		if (instructions < 1_000) {
+			return true;
+		}
+		
+		final long total = Runtime.getRuntime().totalMemory();
+		if (total + (100<<20/*100MB*/) >=  maxMemory) {
+			final long free = Runtime.getRuntime().freeMemory();
+			final long usedMemory = total - free;
+			if (usedMemory >> 2 > free) {
+				return true;
+			}
+		}
+		
+		
+		return false;
+	}
+
 	private void printSpeedLog(int instructions) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(insertDots(instructions));
 		sb.append(" instructions / s (");
 		
 		sb.append(insertDots(executedInstructions));
-		sb.append(')');
+		sb.append(" @ ");
+		sb.append((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())>>20);
+		sb.append("MB)");
 		System.out.println(sb.toString());
 	}
 
@@ -2558,7 +2624,8 @@ public class ThreadInfo extends InfoObject
 
     Predicate<ThreadInfo> getRunnableNonDaemonPredicate() {
         return new Predicate<ThreadInfo>() {
-            public boolean isTrue(ThreadInfo ti) {
+            @Override
+			public boolean isTrue(ThreadInfo ti) {
                 return (ti.isRunnable() && !ti.isDaemon());
             }
         };
@@ -3585,7 +3652,8 @@ public class ThreadInfo extends InfoObject
         return null;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "ThreadInfo [name=" + getName() + ",id=" + id + ",state=" + getStateName() + ']';
     }
 
@@ -3627,7 +3695,8 @@ public class ThreadInfo extends InfoObject
     /**
      * Comparison for sorting based on index.
      */
-    public int compareTo(ThreadInfo that) {
+    @Override
+	public int compareTo(ThreadInfo that) {
         return this.id - that.id;
     }
 

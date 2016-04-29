@@ -185,25 +185,29 @@ public abstract class VM {
     
     // set predicates used to query from threadlist
     userliveNonDaemonPredicate = new Predicate<ThreadInfo>() {
-      public boolean isTrue (ThreadInfo ti) {
+      @Override
+	public boolean isTrue (ThreadInfo ti) {
         return (!ti.isDaemon() && !ti.isTerminated() && !ti.isSystemThread());
       }
     };
 
     timedoutRunnablePredicate = new Predicate<ThreadInfo>() {
-      public boolean isTrue (ThreadInfo ti) {
+      @Override
+	public boolean isTrue (ThreadInfo ti) {
         return (ti.isTimeoutRunnable());
       }
     };
     
     userTimedoutRunnablePredicate = new Predicate<ThreadInfo>() {
-      public boolean isTrue (ThreadInfo ti) {
+      @Override
+	public boolean isTrue (ThreadInfo ti) {
         return (ti.isTimeoutRunnable() && !ti.isSystemThread());
       }
     };
     
     alivePredicate = new Predicate<ThreadInfo>() {
-      public boolean isTrue (ThreadInfo ti) {
+      @Override
+	public boolean isTrue (ThreadInfo ti) {
         return (ti.isAlive());
       }
     };
@@ -226,7 +230,9 @@ public abstract class VM {
     ss = new SystemState(config, this);
 
     stateSet = config.getInstance("vm.storage.class", StateSet.class);
-    if (stateSet != null) stateSet.attach(this);
+    if (stateSet != null) {
+		stateSet.attach(this);
+	}
     backtracker = config.getEssentialInstance("vm.backtracker.class", Backtracker.class);
     backtracker.attach(this);
 
@@ -581,7 +587,7 @@ public abstract class VM {
   protected void initializeFinalizerThread (FeatureExpr ctx, ApplicationContext appCtx, int tid) {
     if(processFinalizers) {
       ApplicationContext app = getCurrentApplicationContext();
-      FinalizerThreadInfo finalizerTi = (FinalizerThreadInfo) app.getFinalizerThread();
+      FinalizerThreadInfo finalizerTi = app.getFinalizerThread();
     
       finalizerTi = (FinalizerThreadInfo) createFinalizerThreadInfo(tid, app);
       finalizerTi.createFinalizerThreadObject(ctx, app.getSystemClassLoader());
@@ -594,7 +600,8 @@ public abstract class VM {
     assert ciThread != null : "java.lang.Thread not loaded yet";
     
     ciThread.addReleaseAction( new ReleaseAction(){
-      public void release (ElementInfo ei) {
+      @Override
+	public void release (ElementInfo ei) {
         ThreadList tl = getThreadList();
         int objRef = ei.getObjectRef();
         ThreadInfo ti = tl.getThreadInfoForObjRef(objRef);
@@ -726,6 +733,9 @@ public abstract class VM {
         else{
           System.err.println("___________________________________________________");
           System.err.println("[WARN] Get value of choice called: " + this);
+          for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
+     		 System.err.println(e);
+     		 }
           System.err.println("---------------------------------------------------");
           // Let's wait for a NullPointerException
           listeners[i].choiceGeneratorRegistered(this, cg, ti, null);
@@ -1609,7 +1619,9 @@ public abstract class VM {
 
     boolean success = backtracker.backtrack();
     if (success) {
-      if (CHECK_CONSISTENCY) checkConsistency(false);
+      if (CHECK_CONSISTENCY) {
+		checkConsistency(false);
+	}
       
       // restore the path
       path.removeLast();
@@ -2012,7 +2024,7 @@ public abstract class VM {
    */
   public void addToFinalizeQueue(ElementInfo ei) {
     ApplicationContext app = getApplicationContext(ei.getObjectRef());
-    ((FinalizerThreadInfo)app.getFinalizerThread()).addToFinalizeQueue(ei);
+    app.getFinalizerThread().addToFinalizeQueue(ei);
   }
   
   public FinalizerThreadInfo getFinalizerThread() {

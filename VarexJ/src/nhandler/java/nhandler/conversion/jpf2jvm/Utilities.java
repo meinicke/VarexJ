@@ -3,6 +3,7 @@ package nhandler.conversion.jpf2jvm;
 import java.lang.reflect.Field;
 
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayFields;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -21,11 +22,10 @@ public class Utilities {
    * 
    * @param fld
    *          a field of a JVM object which is of primitive type.
-   * @param obj
+ * @param obj
    *          The JVM object that includes the field fld.
-   * @param ei
+ * @param ei
    *          a JPF object which is corresponding to the given JVM object, obj.
-   * 
    * @throws IllegalAccessException
    *           when method trying to access a private field of an JVM object
    *           whose "isAccessible" is not true. But that will not happen,
@@ -35,11 +35,11 @@ public class Utilities {
    * @throws ConversionException
    *           if the given field is not of primitive type
    */
-  public static void setJVMPrimitiveField (Field fld, Object obj, ElementInfo ei, FieldInfo fi) throws IllegalAccessException, ConversionException {
+  public static void setJVMPrimitiveField (Field fld, Object obj, ElementInfo ei, FieldInfo fi, FeatureExpr ctx) throws IllegalAccessException, ConversionException {
     if (fi.isBooleanField()) {
       fld.setBoolean(obj, ei.getBooleanField(fi).getValue());
     } else if (fi.isByteField()) {
-      fld.setByte(obj, ei.getByteField(fi).getValue());
+      fld.setByte(obj, ei.getByteField(fi).simplify(ctx).getValue());
     } else if (fi.isShortField()) {
       fld.setShort(obj, ei.getShortField(fi).getValue());
     } else if (fi.isIntField()) {

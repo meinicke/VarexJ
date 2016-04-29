@@ -30,6 +30,7 @@ import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.ArrayObjectQueue;
 import gov.nasa.jpf.util.IntTable;
@@ -601,6 +602,9 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     }
 
     ElementInfo ei = get(objref);
+    if (ei == null) {
+    	System.out.println("no element for " + objref);
+    }
     if (!ei.isMarked()){ // only add objects once
       ei.setMarked();
       markQueue.add(ei);
@@ -657,6 +661,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
         
         vm.notifyObjectReleased(ti, ei);
         remove(ei.getObjectRef());
+        JPF.JVMheap.remove(ei.getObjectRef());
       }
     }
     nLiveObjects = n;

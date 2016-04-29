@@ -60,6 +60,15 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 		});
 	}
+	
+	@MJI
+	public void print__B__V(MJIEnv env, int objref, byte b, FeatureExpr ctx) {
+		if (RuntimeConstants.ctxOutput) {
+			env.getVM().print("(<" + b + "> : " + Conditional.getCTXString(ctx) + ")");
+		} else {
+			env.getVM().print(b);
+		}
+	}
 
 	@MJI
 	public void print__D__V(MJIEnv env, int objref, double d, FeatureExpr ctx) {
@@ -73,7 +82,11 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void print__I__V(MJIEnv env, int objref, int i, FeatureExpr ctx) {
-		env.getVM().print(i);
+		if (RuntimeConstants.ctxOutput) {
+			env.getVM().print("(<" + i + "> : " + Conditional.getCTXString(ctx) + ")");
+		} else {
+			env.getVM().print(i);
+		}
 	}
 
 	@MJI

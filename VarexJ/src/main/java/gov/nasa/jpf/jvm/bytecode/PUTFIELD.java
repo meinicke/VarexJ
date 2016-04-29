@@ -100,7 +100,6 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 							break;
 						}
 					}
-					
 					return put(ctx, ti, frame, ei, false);
 
 				} else { // re-execution
@@ -115,6 +114,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 		});
 	}
 
+	@Override
 	public ElementInfo peekElementInfo(ThreadInfo ti) {
 		FieldInfo fi = getFieldInfo(null);
 		int storageSize = fi.getStorageSize();
@@ -124,18 +124,22 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 		return ei;
 	}
 
+	@Override
 	public int getLength() {
 		return 3; // opcode, index1, index2
 	}
 
+	@Override
 	public int getByteCode() {
 		return 0xB5;
 	}
 
+	@Override
 	public boolean isRead() {
 		return false;
 	}
 
+	@Override
 	public void accept(InstructionVisitor insVisitor) {
 		insVisitor.visit(this);
 	}

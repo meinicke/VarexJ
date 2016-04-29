@@ -16,11 +16,11 @@ public class JPFSERunner {
 		System.out.println("JPFSERunner.JPFSERunner()");
 		String[] testClasses = new String[] {
 //				prefix.PrefixJPF_SE.class.getName(),
-//				inc.IncJPF_SE.class.getName(), 
+				inc.IncJPF_SE.class.getName(), 
 //				reference.RefSE.class.getName(),
 //				nointeraction.NoJPF_SE.class.getName(),
 //				nesting.NestJPF_SE.class.getName(),
-				explosion.ExplosionJPF_SE.class.getName()
+//				explosion.ExplosionJPF_SE.class.getName()
 				};
 		for (String test : testClasses) {
 			LinkedList<String> commands = new LinkedList<>();
@@ -29,7 +29,7 @@ public class JPFSERunner {
 			commands.add("-Xmx7g");
 			commands.add("-jar");
 			commands.add("C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\RunJPF.jar");
-			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\VarexJSmallScaleEvaluation\\bin\\;" + "C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\jpf.jar;"
+			commands.add("+classpath=C:\\Users\\meinicke\\git\\VarexJ\\Evaluations\\VarexJSmallScaleEvaluation\\bin\\;" + "C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-core_old\\build\\jpf.jar;"
 					+ "C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-symbc\\build\\jpf-symbc.jar;" + "C:\\Users\\meinicke\\workspaceJPFBDD\\jpf-symbc\\build\\jpf-symbc-annotations.jar;");
 
 			commands.add("+vm.insn_factory.class=gov.nasa.jpf.symbc.SymbolicInstructionFactory");
@@ -38,7 +38,7 @@ public class JPFSERunner {
 			commands.add("+symbolic.method=" + test + ".main(con)");
 			commands.add("+search.multiple_errors=true");
 			commands.add("+jpf.report.console.finished=");
-
+			commands.add("+search.class=.search.heuristic.BFSHeuristic");
 			commands.add(test);
 			commands.add("");
 			int max = 100;
@@ -49,7 +49,7 @@ public class JPFSERunner {
 				commands.removeLast();
 				commands.add("" + complexity);
 				boolean maxReached = false;
-				for (int round = 0; round < 3; round++) {
+				for (int round = 0; round < 1; round++) {
 					long start = System.currentTimeMillis();
 					process(commands);
 					long timeInS = (System.currentTimeMillis() - start) / 1000;
@@ -109,17 +109,19 @@ public class JPFSERunner {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (input != null)
+				if (input != null) {
 					input.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				if (error != null)
+				if (error != null) {
 					try {
 						error.close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+				}
 			}
 		}
 	}

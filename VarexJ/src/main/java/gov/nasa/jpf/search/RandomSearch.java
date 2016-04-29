@@ -55,6 +55,22 @@ public class RandomSearch extends Search {
 	@SuppressWarnings("incomplete-switch")
 	public void search() {
 		try {
+			if (JPF.COVERAGE != null) {
+				// XXX some quick fix for coverage
+				File file = new File("coverage.xml");
+				System.out.println("Create file: " + file.getAbsolutePath());
+				XMLWriter writer = new XMLWriter(gov.nasa.jpf.JPF.COVERAGE);
+				try {
+					writer.writeToFile(file);
+				} catch (ParserConfigurationException | TransformerException e) {
+					System.out.println(e.getMessage());
+					for (StackTraceElement element : e.getStackTrace()) {
+						System.out.println(element);
+					}
+					e.printStackTrace();
+				}
+			}
+			
 			ThreadInfo.RUN_SIMPLE = true;
 			int depth = 0;
 			int paths = 0;

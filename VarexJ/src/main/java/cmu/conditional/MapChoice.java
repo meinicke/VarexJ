@@ -164,7 +164,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 
 	@Override
 	public Conditional<T> clone() throws CloneNotSupportedException {
-		throw new RuntimeException("not yet implemented");
+		return new MapChoice<>(map);
 	}
 	
 	@Override

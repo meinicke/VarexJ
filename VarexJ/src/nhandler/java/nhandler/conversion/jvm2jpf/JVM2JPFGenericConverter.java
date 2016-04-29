@@ -1,5 +1,6 @@
 package nhandler.conversion.jvm2jpf;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -92,7 +93,7 @@ public class JVM2JPFGenericConverter extends JVM2JPFConverter {
         if (fi != null && isNonStaticField){
           // If the current field is of reference type
           if (fi.isReference()){
-            int JPFfldValue = MJIEnv.NULL;
+            Conditional<Integer> JPFfldValue = One.MJIEnvNULL;
             Object JVMfldValue = null;
 
             try{
@@ -101,19 +102,20 @@ public class JVM2JPFGenericConverter extends JVM2JPFConverter {
             } catch (IllegalAccessException e2){
               e2.printStackTrace();
             }
-
-            JPFfldValue = dei.getReferenceField(fi).getValue();
-
+            JPFfldValue = dei.getReferenceField(fi);
+            if (JPFfldValue != null) {
+            	JPFfldValue = JPFfldValue.simplify(ctx);
+            }
             if (JVMfldValue == null){
-              JPFfldValue = MJIEnv.NULL;
-            } else if (JPFfldValue == MJIEnv.NULL || ConverterBase.objMapJPF2JVM.get(JPFfldValue) != JVMfldValue){
-              JPFfldValue = obtainJPFObj(JVMfldValue, env, ctx);
+              JPFfldValue = One.MJIEnvNULL;
+            } else if (JPFfldValue == One.MJIEnvNULL || ConverterBase.objMapJPF2JVM.get(JPFfldValue) != JVMfldValue){
+              JPFfldValue = new One<>(obtainJPFObj(JVMfldValue, env, ctx));
             } else if (ConverterBase.objMapJPF2JVM.get(JPFfldValue) == JVMfldValue){
-              updateJPFObj(JVMfldValue, JPFfldValue, env, ctx);
+              updateJPFObj(JVMfldValue, JPFfldValue.getValue(), env, ctx);
             } else{
               throw new ConversionException("Unconsidered case observed! - JVM2JPF.updateObj()");
             }
-            dei.setReferenceField(ctx, fi, new One<>(JPFfldValue));
+            dei.setReferenceField(ctx, fi, JPFfldValue);
           }
           // If the current field is of primitive type
           else{

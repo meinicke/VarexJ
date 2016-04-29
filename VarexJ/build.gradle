@@ -127,6 +127,7 @@ jar {
     from sourceSets.peers.output
     from sourceSets.annotations.output
     from sourceSets.examples.output
+    from sourceSets.test.output
     from(sourceSets.classes.output) {
         include('org/junit/*.class')
     }
