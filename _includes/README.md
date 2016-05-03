@@ -5,7 +5,7 @@ Highly-configurable systems allow users to achieve their specific needs. Such so
 
 VarexJ is based on [JavaPathfinder](http://javapathfinder.sourceforge.net/) v7.0 (rev 1155+).
 
-#Usage
+# Usage
 
 ##Build
 
