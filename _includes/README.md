@@ -7,7 +7,7 @@ VarexJ is based on [JavaPathfinder](http://javapathfinder.sourceforge.net/) v7.0
 
 # Usage
 
-##Build
+## Build
 
 Use gradle to build the project (e.g., ./gradlew build)
 
@@ -16,7 +16,7 @@ Within Eclipse you can use the gradle plugin: [gradle](https://github.com/spring
 * On the "build.gradle" file Run as/Gradle build... Specify "build" at the Gradle Tasks page and press run
 * You may need to generate eclipse project files: Specify "eclipse" at the Gradle Tasks page.
 
-##VarexJ options
+## VarexJ options
 
 * set feature expression [SAT, BDD]:
 	`factory=BDD`
@@ -27,7 +27,7 @@ Within Eclipse you can use the gradle plugin: [gradle](https://github.com/spring
 * define whether a method call on multiple opjects (i.e., Choice(Feature, Object1, Object2)) of the same type should be shared:
 	`invocation=true`
 
-##Specify conditional boolean fields
+## Specify conditional boolean fields
 <a href="/resources/VarexJ/Example/trace.png"><img align="right" alt="VAriability-Aware Trace" src="/resources/VarexJ/Example/trace.png" height="368"/></a>
 
 	import gov.nasa.jpf.annotation.Conditional;
@@ -55,7 +55,7 @@ Within Eclipse you can use the gradle plugin: [gradle](https://github.com/spring
 
 A and B are used as if they have both values true and false. 
 
-##Run VarexJ
+## Run VarexJ
 
 a) as test: see test package "cmu.*", it contains several examples for variability-aware execution
 
@@ -106,7 +106,7 @@ Distributions of interactions during program execution (blue bars represent inte
 ### Jetty
 <a href="/resources/VarexJ/Traces/Jetty.png"><img alt="Jetty" src="/resources/VarexJ/Traces/Jetty.png" width="800"/></a>
 
-##Credits
+## Credits
 
 * [Jens Meinicke](http://wwwiti.cs.uni-magdeburg.de/~meinicke/) (University of Magdeburg, Germany, project lead)
 * [Christian Kästner](http://www.cs.cmu.edu/~ckaestne/) (Carnegie Mellon University, USA)
@@ -114,7 +114,7 @@ Distributions of interactions during program execution (blue bars represent inte
 * [Thomas Thüm](https://www.tu-braunschweig.de/isf/team/thuem) (TU Braunschweig, Germany)
 * [Gunter Saake](http://wwwiti.cs.uni-magdeburg.de/~saake/) (University of Magdeburg, Germany)
 
-##Publications
+## Publications
 
 Initial Work:
 
