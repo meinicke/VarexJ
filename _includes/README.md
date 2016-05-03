@@ -86,22 +86,25 @@ Distributions of interactions during program execution (blue bars represent inte
 <a href="/resources/VarexJ/Traces/Mine.png"><img alt="Elevator" src="/resources/VarexJ/Traces/Mine.png" width="800"/></a>
 
 ### E-Mail
-<a href="/resources/VarexJ/Traces/Email.png"><img alt="Elevator" src="/resources/VarexJ/Traces/Email.png" width="800"/></a>
+<a href="/resources/VarexJ/Traces/Email.png"><img alt="E-Mail" src="/resources/VarexJ/Traces/Email.png" width="800"/></a>
 
 ### GPL
-<a href="/resources/VarexJ/Traces/GPL.png"><img alt="Checkstyle" src="/resources/VarexJ/Traces/GPL.png" width="800"/></a>
+<a href="/resources/VarexJ/Traces/GPL.png"><img alt="GPL" src="/resources/VarexJ/Traces/GPL.png" width="800"/></a>
 
 ### ZipMe
-<a href="/resources/VarexJ/Traces/ZipMe.png"><img alt="Checkstyle" src="/resources/VarexJ/Traces/ZipMe.png" width="800"/></a>
+<a href="/resources/VarexJ/Traces/ZipMe.png"><img alt="ZipMe" src="/resources/VarexJ/Traces/ZipMe.png" width="800"/></a>
 
 ### QuEval
-<a href="/resources/VarexJ/Traces/QuEval.png"><img alt="Checkstyle" src="/resources/VarexJ/Traces/QuEval.png" width="800"/></a>
+<a href="/resources/VarexJ/Traces/QuEval.png"><img alt="QuEval" src="/resources/VarexJ/Traces/QuEval.png" width="800"/></a>
 
 ### Prevayler
-<a href="/resources/VarexJ/Traces/Prevayler.png"><img alt="Checkstyle" src="/resources/VarexJ/Traces/Prevayler.png" width="800"/></a>
+<a href="/resources/VarexJ/Traces/Prevayler.png"><img alt="Prevayler" src="/resources/VarexJ/Traces/Prevayler.png" width="800"/></a>
 
 ### Checkstyle
 <a href="/resources/VarexJ/Traces/Checkstyle.png"><img alt="Checkstyle" src="/resources/VarexJ/Traces/Checkstyle.png" width="800"/></a>
+
+### Jetty
+<a href="/resources/VarexJ/Traces/Jetty.png"><img alt="Jetty" src="/resources/VarexJ/Traces/Jetty.png" width="800"/></a>
 
 ##Credits
 
