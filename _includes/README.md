@@ -65,7 +65,7 @@ b) as JVM via command line:
 
 # Scalability
 
-### Interaction Benchmarks
+## Interaction Benchmarks
 
 We did several experiments on small bechmark programms to analyze the scalability of variability-aware execution compared to other approaches. All benchmarks are adjusteble to the number of options from 1 to 100. The measured results are shown in the three middle diagrams. The most right diagramms show how the options interact on data and on the program flow. 
 
@@ -76,7 +76,7 @@ We compared the scalability of VarexJ with the following tools:
 [JavaPathfinder (JPF)](http://babelfish.arc.nasa.gov/trac/jpf), [JPF-symbolic](http://babelfish.arc.nasa.gov/trac/jpf/wiki/projects/jpf-symbc), [JPF-bdd](https://bitbucket.org/rhein/jpf-bdd/wiki/Home),
 [SPLat](http://www.cin.ufpe.br/~pbsf/publications/kim-etal-fse2013.pdf)([source code](https://github.com/meinicke/VarexJ/tree/master/SPLat))
 
-### Study on overhead and efficiency of VarexJ
+## Study on overhead and efficiency of VarexJ
 
 <a href="/resources/VarexJ/table.PNG"><img alt="Teable" src="/resources/VarexJ/table.PNG" width="800"/></a>
 µJVM, average execution time with the JVM - µVarexJ - average execution time
@@ -86,7 +86,7 @@ parentheses.
 
 # Understanding Interactions
 
-Distributions of interactions during program execution (blue bars represent interactions on data, the red line shows interactions on the program flow (#features in the context)):
+Distributions of essential configuration complexity (blue bars), interaction degree on data (green bars), and interaction degree on the control flow (red lien):
 
 ### Elevator
 <a href="/resources/VarexJ/Traces/Elevator.png"><img alt="Elevator" src="/resources/VarexJ/Traces/Elevator.png" width="800"/></a>
