@@ -67,7 +67,7 @@ b) as JVM via command line:
 
 ## Interaction Benchmarks
 
-We did several experiments on small bechmark programms to analyze the scalability of variability-aware execution compared to other approaches. All benchmarks are adjusteble to the number of options from 1 to 100. The measured results are shown in the three middle diagrams. The most right diagramms show how the options interact on data and on the program flow. 
+We did several experiments on small bechmark programms to analyze the scalability of variability-aware execution compared to other approaches. All benchmarks are adjusteble to the number of options from 0 to 100. The performance measures are shown in the three right diagrams. The most diagramms in the second column show how the options interact on data and on the program flow, and the resulting essential configuration complexity (i.e., essential effort to execute instructions cuased by interactions). 
 
 <a href="/resources/VarexJ/benchmarks.PNG"><img alt="Benchmarks" src="/resources/VarexJ/benchmarks.PNG" width="800"/></a>
 
