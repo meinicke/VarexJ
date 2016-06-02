@@ -22,6 +22,7 @@ import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
@@ -149,6 +150,7 @@ public class BoxObjectCacheManager {
   private static short shortHigh;
 
   public static int initShortCache (FeatureExpr ctx, ThreadInfo ti) {
+	  ctx = FeatureExprFactory.True();
     shortLow = (short) ti.getVM().getConfig().getInt("vm.cache.low_short", defLow);
     shortHigh = (short) ti.getVM().getConfig().getInt("vm.cache.high_short", defHigh);
     int n = (shortHigh - shortLow) + 1;
@@ -172,13 +174,13 @@ public class BoxObjectCacheManager {
 
   public static int valueOfShort (FeatureExpr ctx, ThreadInfo ti, short s) {
     ClassInfo cacheClass = ClassLoaderInfo.getSystemResolvedClassInfo(MODEL_CLASS);
-    int shortCache = cacheClass.getStaticElementInfo().getReferenceField("shortCache").getValue();
+    int shortCache = cacheClass.getStaticElementInfo().getReferenceField("shortCache").simplify(ctx).getValue();
 
     if (shortCache == MJIEnv.NULL) { // initializing the cache on demand
-      shortCache = initShortCache(ctx, ti);
+      shortCache = initShortCache(FeatureExprFactory.True(), ti);
     }
 
-    if (s >= shortLow && s <= shortHigh) { return ti.getElementInfo(shortCache).getReferenceElement(s - shortLow).getValue(); }
+    if (s >= shortLow && s <= shortHigh) { return ti.getElementInfo(shortCache).getReferenceElement(s - shortLow).simplify(ctx).getValue(); }
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Short");
     ElementInfo eiShort = ti.getHeap().newObject(ctx, ci, ti);

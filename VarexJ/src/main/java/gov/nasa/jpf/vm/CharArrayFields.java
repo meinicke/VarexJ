@@ -90,7 +90,11 @@ public class CharArrayFields extends ArrayFields {
 
 	public CharArrayFields clone() {
 		CharArrayFields f = (CharArrayFields) cloneFields();
-		f.values = new One<>(values.getValue().clone());
+		try {
+			f.values = values.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
 		return f;
 	}
 
