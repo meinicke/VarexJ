@@ -2003,11 +2003,6 @@ public class ThreadInfo extends InfoObject
 	        }
 	        count++;
 	        if (System.currentTimeMillis() - time > 10_000) {
-	        	for (int m = 0; m < 10_000; m++) {
-	     			ElementInfo ei = getHeap().get(m);
-	     			if (ei != null)
-	     				System.out.println(ei);
-	     		}
 	        	int instructions = count;
 	        	count = 0;
 	        	printSpeedLog(instructions / 10);
