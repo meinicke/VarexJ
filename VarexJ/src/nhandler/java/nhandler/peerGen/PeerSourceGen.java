@@ -58,10 +58,9 @@ public class PeerSourceGen {
 
     if (!this.file.exists()){
       this.file.createNewFile();
-      System.out.println("Create Peer FIle  " + file + " " + file.getAbsolutePath());
+      System.out.println("Create Peer File  " + file);
       generateMinimalPeerSource();
     } else{
-      System.out.println("Load Peer FIle  " + file + " " + file.getAbsolutePath());
       loadContent();
     }
 

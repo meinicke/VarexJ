@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.HashMap;
 
 import org.apache.bcel.Constants;
@@ -212,16 +213,21 @@ public class PeerClassGen implements Constants {
     PeerMethodGen nmthCreator = new PeerMethodGen(mi, env, this, sourceGen);
     nmthCreator.create();
 
-    OutputStream out;
-    try{
-      out = new FileOutputStream(this.path);
-      this._cg.getJavaClass().dump(out);
-      out.close();
-    } catch (FileNotFoundException e){
-      e.printStackTrace();
-    } catch (IOException e){
-      e.printStackTrace();
-    }
+		try {
+			final File file = new File(this.path);
+			if (!file.exists()) {
+				Files.createDirectories(file.getParentFile().toPath());
+				System.out.println("Create Peer File  " + file);
+				file.createNewFile();
+			}
+			try (OutputStream out = new FileOutputStream(this.path)) {
+				this._cg.getJavaClass().dump(out);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
     Class<?> peerClass = null;
     try{
