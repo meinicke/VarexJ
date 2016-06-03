@@ -290,54 +290,66 @@ public class JPF_java_lang_String extends NativePeer {
 
 	@MJI
 	public Conditional<Boolean> equals__Ljava_lang_Object_2__Z(final MJIEnv env, final int objRef, Conditional<Integer> argRef, FeatureExpr ctx) {
-		return argRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
+		try {
+			return argRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
 
-			@Override
-			public Conditional<Boolean> apply(FeatureExpr ctx, Integer argRef) {
-				if (Conditional.isContradiction(ctx)) {
-					return One.TRUE;
-				}
-				if (argRef == MJIEnv.NULL) {
-					return One.FALSE;
-				}
-
-				Heap heap = env.getHeap();
-				ElementInfo s1 = heap.get(objRef);
-				ElementInfo s2 = heap.get(argRef);
-
-				if (!env.isInstanceOf(argRef, "java.lang.String")) {
-					return One.FALSE;
-				}
-
-				Fields f1 = heap.get(s1.getReferenceField("value").simplify(ctx).getValue()).getFields();
-				final Fields f2 = heap.get(s2.getReferenceField("value").simplify(ctx).getValue()).getFields();
-
-				Conditional<char[]> c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx);
-				return c1.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
-
-					@Override
-					public Conditional<Boolean> apply(FeatureExpr ctx, char[] c1) {
-						char[] c2 = ((CharArrayFields) f2).asCharArray().simplify(ctx).getValue();
-
-						if (c1.length != c2.length) {
-							return One.FALSE;
-						}
-
-						for (int i = 0; i < c1.length; i++) {
-							if (c1[i] != c2[i]) {
-								return One.FALSE;
-							}
-						}
-
+				@Override
+				public Conditional<Boolean> apply(FeatureExpr ctx, Integer argRef) {
+					if (Conditional.isContradiction(ctx)) {
 						return One.TRUE;
-
+					}
+					if (argRef == MJIEnv.NULL) {
+						return One.FALSE;
 					}
 
-				});
+					Heap heap = env.getHeap();
+					ElementInfo s1 = heap.get(objRef);
+					ElementInfo s2 = heap.get(argRef);
 
+					if (!env.isInstanceOf(argRef, "java.lang.String")) {
+						return One.FALSE;
+					}
+
+					Fields f1 = heap.get(s1.getReferenceField("value").simplify(ctx).getValue()).getFields();
+					final Fields f2 = heap.get(s2.getReferenceField("value").simplify(ctx).getValue()).getFields();
+
+					Conditional<char[]> c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx);
+					return c1.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
+
+						@Override
+						public Conditional<Boolean> apply(FeatureExpr ctx, final char[] c1) {
+							return ((CharArrayFields) f2).asCharArray().mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
+
+								@Override
+								public Conditional<Boolean> apply(FeatureExpr x, char[] c2) {
+									if (c1.length != c2.length) {
+										return One.FALSE;
+									}
+
+									for (int i = 0; i < c1.length; i++) {
+										if (c1[i] != c2[i]) {
+											return One.FALSE;
+										}
+									}
+
+									return One.TRUE;
+								}
+
+							});
+						}
+
+					});
+
+				}
+
+			});
+		} catch (Exception e) {
+			System.out.println(e);
+			for (StackTraceElement ste : e.getStackTrace()) {
+				System.out.println(ste);
 			}
-
-		});
+			return null;
+		}
 	}
 
 	@MJI
