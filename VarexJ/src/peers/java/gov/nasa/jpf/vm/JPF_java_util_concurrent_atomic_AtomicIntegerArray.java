@@ -31,14 +31,14 @@ public class JPF_java_util_concurrent_atomic_AtomicIntegerArray extends NativePe
   public int getNative__I__I (MJIEnv env, int objRef, int index, FeatureExpr ctx) {
 	  
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
-    return env.getIntArrayElement(arrayRef, index);
+    return env.getIntArrayElement(arrayRef, index).getValue();
   }
 
   @MJI
   public boolean compareAndSetNative__III__Z (MJIEnv env, int objRef, int index, int expect, int update, FeatureExpr ctx){
 	  
     int arrayRef = env.getReferenceField(ctx, objRef, "array").getValue();
-    int value = env.getIntArrayElement(arrayRef, index);
+    int value = env.getIntArrayElement(arrayRef, index).getValue();
     if (value == expect) {
       env.setIntArrayElement(ctx, arrayRef, index, new One<>(update));
       return true;

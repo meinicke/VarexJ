@@ -205,7 +205,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int index = offset / INT_SIZE;
     int bit_shift = 8 * (offset % INT_SIZE);
     int int_array = env.getReferenceField(ctx, chunk_obj, data).getValue();
-    int old_value = env.getIntArrayElement(int_array, index);
+    int old_value = env.getIntArrayElement(int_array, index).getValue();
     env.setIntArrayElement(ctx, int_array,
                              index, new One<>((old_value & ~(0xff << bit_shift)) |
                              data_value << bit_shift));
@@ -217,7 +217,7 @@ public class JPF_java_io_RandomAccessFile extends NativePeer {
     int index = offset / INT_SIZE;
     int bit_shift = 8 * (offset % INT_SIZE);
     int int_array = env.getReferenceField(ctx, chunk_obj, data).getValue();
-    return (byte) (env.getIntArrayElement(int_array, index) >> bit_shift);
+    return (byte) (env.getIntArrayElement(int_array, index).getValue() >> bit_shift);
 
   }
 }

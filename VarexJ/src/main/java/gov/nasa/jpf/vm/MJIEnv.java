@@ -440,8 +440,8 @@ public VM getVM () {
     return heap.get(objref).getShortElement(index);
   }
 
-  public int getIntArrayElement (int objref, int index) {
-    return heap.get(objref).getIntElement(index).getValue();// TODO jens
+  public Conditional<Integer> getIntArrayElement (int objref, int index) {
+    return heap.get(objref).getIntElement(index);
   }
 
   public Conditional<Character> getCharArrayElement (int objref, int index) {
@@ -898,8 +898,8 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     return getShortField(objref, "value").getValue();// TODO jens
   }
 
-  public Integer getIntegerObject (int objref){
-    return getIntField(objref, "value").getValue();// TODO jens
+  public Conditional<Integer> getIntegerObject (int objref){
+    return getIntField(objref, "value");
   }
 
   public Long getLongObject (int objref){
@@ -1220,7 +1220,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
         } else if (clsName.equals("java.lang.Short")) {
           arg[i] = getShortObject(ref);
         } else if (clsName.equals("java.lang.Integer")) {
-          arg[i] = getIntegerObject(ref);
+          arg[i] = createSimpleObj(getIntegerObject(ref), ctx);
         } else if (clsName.equals("java.lang.Long")) {
           arg[i] = getLongObject(ref);
         } else if (clsName.equals("java.lang.Float")) {
@@ -1235,6 +1235,14 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     }
 
     return String.format(format,arg);
+  }
+  
+  private static Object createSimpleObj(Conditional<?> c, FeatureExpr ctx) {
+	  c = c.simplify(ctx);
+	  if (c instanceof One) {
+		  return c.getValue();
+	  }
+	  return c;
   }
 
   public String format (FeatureExpr ctx,Locale l, int fmtRef, int argRef){
@@ -1255,7 +1263,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 	        } else if (clsName.equals("java.lang.Short")) {
 	          arg[i] = getShortObject(ref);
 	        } else if (clsName.equals("java.lang.Integer")) {
-	          arg[i] = getIntegerObject(ref);
+	          arg[i] = createSimpleObj(getIntegerObject(ref), ctx);
 	        } else if (clsName.equals("java.lang.Long")) {
 	          arg[i] = getLongObject(ref);
 	        } else if (clsName.equals("java.lang.Float")) {

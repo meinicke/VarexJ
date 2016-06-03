@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
@@ -82,7 +83,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
     
     int[] dim = new int[n];
     for (i=0; i<n; i++) {
-      dim[i] = env.getIntArrayElement(dimArrayRef, i);
+      dim[i] = env.getIntArrayElement(dimArrayRef, i).getValue();
     }
     
     int aRef = createNewMultiArray(env, arrayType, dim, 0, ctx); 
@@ -113,7 +114,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
     String at = env.getArrayType(aref);
 	if (at.equals("int") || "I".equals(at)){
       int vref = env.newObject(ctx, "java.lang.Integer");
-      env.setIntField(ctx, vref, "value", new One<>(env.getIntArrayElement(aref,index)));
+      env.setIntField(ctx, vref, "value", env.getIntArrayElement(aref,index));
       return vref;
       
     } else if (at.equals("long") || "J".equals(at)){
@@ -152,7 +153,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       return vref;
 
     } else {
-      return env.getReferenceArrayElement(aref, index).getValue();
+      return env.getReferenceArrayElement(aref, index).simplify(ctx).getValue();
     }
   }
 
@@ -205,11 +206,11 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
   }
 
   @MJI
-  public int getInt__Ljava_lang_Object_2I__I (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
+  public Conditional<Integer> getInt__Ljava_lang_Object_2I__I (MJIEnv env, int clsRef, int aref, int index, FeatureExpr ctx) {
     if (check(env, aref, index, ctx)) {
       return env.getIntArrayElement(aref, index);
     }
-    return 0;
+    return One.valueOf(0);
   }
 
   @MJI
