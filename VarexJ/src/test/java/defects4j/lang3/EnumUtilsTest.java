@@ -1,8 +1,8 @@
 package defects4j.lang3;
 
-import gov.nasa.jpf.annotation.Conditional;
-import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class EnumUtilsTest extends TestJPF {
 
@@ -13,13 +13,10 @@ public class EnumUtilsTest extends TestJPF {
 		runTestsOfThisClass(testMethods);
 	}
 
-	@Conditional
-	static boolean a = true;
-
 	@Test(timeout = 120000)
 	public void testConstructable() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.testConstructable();
 			}
@@ -30,7 +27,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_getEnumMap() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_getEnumMap();
 			}
@@ -41,7 +38,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_getEnumList() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_getEnumList();
 			}
@@ -52,7 +49,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_isEnum() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_isEnum();
 			}
@@ -63,7 +60,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_isEnum_nullClass() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_isEnum_nullClass();
 			}
@@ -74,7 +71,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_getEnum() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_getEnum();
 			}
@@ -85,7 +82,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_getEnum_nullClass() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_getEnum_nullClass();
 			}
@@ -96,7 +93,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_nullClass() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_nullClass();
 			}
@@ -107,7 +104,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors_nullClass() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors_nullClass();
 			}
@@ -118,7 +115,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_nullIterable() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_nullIterable();
 			}
@@ -129,7 +126,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors_nullIterable() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors_nullIterable();
 			}
@@ -140,7 +137,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_nullElement() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_nullElement();
 			}
@@ -151,7 +148,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors_nullElement() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors_nullElement();
 			}
@@ -162,7 +159,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_nullClassWithArray() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_nullClassWithArray();
 			}
@@ -173,7 +170,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors_nullClassWithArray() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors_nullClassWithArray();
 			}
@@ -184,7 +181,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_nullArray() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_nullArray();
 			}
@@ -195,7 +192,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors_nullArray() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors_nullArray();
 			}
@@ -206,7 +203,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_nullArrayElement() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_nullArrayElement();
 			}
@@ -217,7 +214,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors_nullArrayElement() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors_nullArrayElement();
 			}
@@ -228,7 +225,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_longClass() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_longClass();
 			}
@@ -239,7 +236,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_longClassWithArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_longClassWithArray();
 			}
@@ -250,7 +247,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_nonEnumClass() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_nonEnumClass();
 			}
@@ -261,7 +258,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors_nonEnumClass() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors_nonEnumClass();
 			}
@@ -272,7 +269,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector_nonEnumClassWithArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector_nonEnumClassWithArray();
 			}
@@ -283,7 +280,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors_nonEnumClassWithArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors_nonEnumClassWithArray();
 			}
@@ -294,7 +291,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVector() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVector();
 			}
@@ -305,7 +302,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectors() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectors();
 			}
@@ -316,7 +313,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectorFromArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectorFromArray();
 			}
@@ -327,7 +324,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_generateBitVectorsFromArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_generateBitVectorsFromArray();
 			}
@@ -338,7 +335,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_processBitVector_nullClass() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_processBitVector_nullClass();
 			}
@@ -349,7 +346,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_processBitVectors_nullClass() throws Exception {
 		if (verifyUnhandledException("java.lang.NullPointerException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_processBitVectors_nullClass();
 			}
@@ -360,7 +357,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_processBitVector() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_processBitVector();
 			}
@@ -371,7 +368,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_processBitVectors() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_processBitVectors();
 			}
@@ -382,7 +379,7 @@ public class EnumUtilsTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void test_processBitVector_longClass() throws Exception {
 		if (verifyUnhandledException("java.lang.IllegalArgumentException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.EnumUtilsTest object = new org.apache.commons.lang3.EnumUtilsTest();
 				object.test_processBitVector_longClass();
 			}

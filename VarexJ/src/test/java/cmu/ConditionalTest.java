@@ -248,7 +248,7 @@ public class ConditionalTest {
 				return b.mapf(c, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 					@Override
 					public Conditional<Integer> apply(FeatureExpr c, final Integer z) {
-						return new One(y+z);
+						return new One<>(y+z);
 					}
 					
 				});

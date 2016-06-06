@@ -1,8 +1,8 @@
 package defects4j.lang3;
 
-import gov.nasa.jpf.annotation.Conditional;
-import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class ArrayUtilsAddTest extends TestJPF {
 
@@ -14,13 +14,10 @@ public class ArrayUtilsAddTest extends TestJPF {
 		runTestsOfThisClass(testMethods);
 	}
 
-	@Conditional
-	static boolean a = true;
-
 	@Test(timeout = 120000)
 	public void testJira567() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testJira567();
 			}
@@ -30,7 +27,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayBoolean() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayBoolean();
 			}
@@ -40,7 +37,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayByte() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayByte();
 			}
@@ -50,7 +47,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayChar() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayChar();
 			}
@@ -60,7 +57,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayDouble() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayDouble();
 			}
@@ -70,7 +67,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayFloat() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayFloat();
 			}
@@ -80,7 +77,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayInt() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayInt();
 			}
@@ -90,7 +87,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayLong() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayLong();
 			}
@@ -100,7 +97,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayShort() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayShort();
 			}
@@ -110,7 +107,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayObject() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayObject();
 			}
@@ -120,7 +117,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testLANG571() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testLANG571();
 			}
@@ -130,7 +127,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectArrayToObjectArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectArrayToObjectArray();
 			}
@@ -140,7 +137,7 @@ public class ArrayUtilsAddTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testAddObjectAtIndex() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsAddTest object = new org.apache.commons.lang3.ArrayUtilsAddTest();
 				object.testAddObjectAtIndex();
 			}

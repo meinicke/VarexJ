@@ -1,8 +1,8 @@
 package defects4j.lang3;
 
-import gov.nasa.jpf.annotation.Conditional;
-import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 
@@ -13,13 +13,10 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 		runTestsOfThisClass(testMethods);
 	}
 
-	@Conditional
-	static boolean a = true;
-
 	@Test(timeout = 120000)
 	public void testRemoveAllObjectArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllObjectArrayRemoveNone();
 			}
@@ -29,7 +26,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllObjectArrayNegativeIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllObjectArrayNegativeIndex();
 			}
@@ -39,7 +36,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllObjectArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllObjectArray();
 			}
@@ -49,7 +46,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllObjectArrayOutOfBoundsIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllObjectArrayOutOfBoundsIndex();
 			}
@@ -59,7 +56,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNullObjectArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNullObjectArray();
 			}
@@ -69,7 +66,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNumberArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNumberArray();
 			}
@@ -79,7 +76,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllBooleanArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllBooleanArray();
 			}
@@ -89,7 +86,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllBooleanArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllBooleanArrayRemoveNone();
 			}
@@ -99,7 +96,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllBooleanArrayNegativeIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllBooleanArrayNegativeIndex();
 			}
@@ -109,7 +106,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllBooleanArrayOutOfBoundsIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllBooleanArrayOutOfBoundsIndex();
 			}
@@ -119,7 +116,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNullBooleanArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNullBooleanArray();
 			}
@@ -129,7 +126,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllByteArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllByteArray();
 			}
@@ -139,7 +136,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllByteArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllByteArrayRemoveNone();
 			}
@@ -149,7 +146,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllByteArrayNegativeIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllByteArrayNegativeIndex();
 			}
@@ -159,7 +156,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllByteArrayOutOfBoundsIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllByteArrayOutOfBoundsIndex();
 			}
@@ -169,7 +166,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNullByteArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNullByteArray();
 			}
@@ -179,7 +176,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllCharArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllCharArray();
 			}
@@ -189,7 +186,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllCharArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllCharArrayRemoveNone();
 			}
@@ -199,7 +196,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllCharArrayNegativeIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllCharArrayNegativeIndex();
 			}
@@ -209,7 +206,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllCharArrayOutOfBoundsIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllCharArrayOutOfBoundsIndex();
 			}
@@ -219,7 +216,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNullCharArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNullCharArray();
 			}
@@ -229,7 +226,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllDoubleArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllDoubleArray();
 			}
@@ -239,7 +236,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllDoubleArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllDoubleArrayRemoveNone();
 			}
@@ -257,7 +254,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllDoubleArrayOutOfBoundsIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllDoubleArrayOutOfBoundsIndex();
 			}
@@ -267,7 +264,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNullDoubleArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNullDoubleArray();
 			}
@@ -277,7 +274,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllFloatArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllFloatArray();
 			}
@@ -287,7 +284,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllFloatArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllFloatArrayRemoveNone();
 			}
@@ -321,7 +318,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllIntArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllIntArray();
 			}
@@ -331,7 +328,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllIntArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllIntArrayRemoveNone();
 			}
@@ -341,7 +338,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllIntArrayNegativeIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllIntArrayNegativeIndex();
 			}
@@ -351,7 +348,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllIntArrayOutOfBoundsIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllIntArrayOutOfBoundsIndex();
 			}
@@ -361,7 +358,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNullIntArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNullIntArray();
 			}
@@ -371,7 +368,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllLongArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllLongArray();
 			}
@@ -381,7 +378,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllLongArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllLongArrayRemoveNone();
 			}
@@ -391,7 +388,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllLongArrayNegativeIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllLongArrayNegativeIndex();
 			}
@@ -401,7 +398,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllLongArrayOutOfBoundsIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllLongArrayOutOfBoundsIndex();
 			}
@@ -411,7 +408,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNullLongArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNullLongArray();
 			}
@@ -421,7 +418,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllShortArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllShortArray();
 			}
@@ -431,7 +428,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllShortArrayRemoveNone() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllShortArrayRemoveNone();
 			}
@@ -441,7 +438,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllShortArrayNegativeIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllShortArrayNegativeIndex();
 			}
@@ -451,7 +448,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllShortArrayOutOfBoundsIndex() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllShortArrayOutOfBoundsIndex();
 			}
@@ -461,7 +458,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveAllNullShortArray() throws Exception {
 		if (verifyUnhandledException("java.lang.IndexOutOfBoundsException", config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveAllNullShortArray();
 			}
@@ -471,7 +468,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementsObjectArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementsObjectArray();
 			}
@@ -481,7 +478,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementBooleanArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementBooleanArray();
 			}
@@ -491,7 +488,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementByteArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementByteArray();
 			}
@@ -501,7 +498,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementCharArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementCharArray();
 			}
@@ -511,7 +508,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementDoubleArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementDoubleArray();
 			}
@@ -521,7 +518,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementFloatArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementFloatArray();
 			}
@@ -531,7 +528,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementIntArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementIntArray();
 			}
@@ -541,7 +538,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementLongArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementLongArray();
 			}
@@ -551,7 +548,7 @@ public class ArrayUtilsRemoveMultipleTest extends TestJPF {
 	@Test(timeout = 120000)
 	public void testRemoveElementShortArray() throws Exception {
 		if (verifyNoPropertyViolation(config)) {
-			if (a) {
+			if (V) {
 				org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest object = new org.apache.commons.lang3.ArrayUtilsRemoveMultipleTest();
 				object.testRemoveElementShortArray();
 			}
