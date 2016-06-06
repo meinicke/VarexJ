@@ -16,15 +16,21 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class TestThrownException extends TestJPF {
 	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
+	@Conditional
+	static boolean a = true;
+
 	@Test
 	public void main() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			main(null);
+			if (a) {
+				main(null);
+			}
 		}
 	}
 

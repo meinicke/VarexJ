@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class TestClassInitializer extends TestJPF {
@@ -60,26 +61,31 @@ public class TestClassInitializer extends TestJPF {
 
 	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
+	@Conditional
+	static boolean a = true;
+
 	@Test
 	public void test() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			int i = TypeA.i;
-			initOrder.add(i); // test initialization before first field
+			if (a) {
+				int i = TypeA.i;
+				initOrder.add(i); // test initialization before first field
 									// reference
-			initOrder.add(new TypeB().f()); // test initialization before
-													// first instance creation
-			initOrder.add(TypeD.i); // test order of superclass
-											// initialization
-			
-			assertEquals("TypeA.<clinit>()", initOrder.get(0).toString());
-			assertEquals("TypeA.f()", initOrder.get(1).toString());
-			assertEquals("123", initOrder.get(2).toString());
-			assertEquals("TypeB.<clinit>()", initOrder.get(3).toString());
-			assertEquals("TypeB.f()", initOrder.get(4).toString());
-			assertEquals("456", initOrder.get(5).toString());
-			assertEquals("TypeC.<clinit>()", initOrder.get(6).toString());
-			assertEquals("TypeD.<clinit>()", initOrder.get(7).toString());
-			assertEquals("123", initOrder.get(8).toString());
+				initOrder.add(new TypeB().f()); // test initialization before
+												// first instance creation
+				initOrder.add(TypeD.i); // test order of superclass
+										// initialization
+
+				assertEquals("TypeA.<clinit>()", initOrder.get(0).toString());
+				assertEquals("TypeA.f()", initOrder.get(1).toString());
+				assertEquals("123", initOrder.get(2).toString());
+				assertEquals("TypeB.<clinit>()", initOrder.get(3).toString());
+				assertEquals("TypeB.f()", initOrder.get(4).toString());
+				assertEquals("456", initOrder.get(5).toString());
+				assertEquals("TypeC.<clinit>()", initOrder.get(6).toString());
+				assertEquals("TypeD.<clinit>()", initOrder.get(7).toString());
+				assertEquals("123", initOrder.get(8).toString());
+			}
 		}
 	}
 	

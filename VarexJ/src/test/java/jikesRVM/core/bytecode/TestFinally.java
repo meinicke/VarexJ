@@ -14,6 +14,7 @@ package jikesRVM.core.bytecode;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class TestFinally extends TestJPF {
@@ -41,18 +42,23 @@ public class TestFinally extends TestJPF {
 		}
 	}
 
+	@Conditional
+	static boolean a = true;
+
 	@Test
 	public void main() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			System.out.println("TestFinally.main()");
-			System.out.println(TestFinally.foo());
-			System.out.println(TestFinally.foo2());
-			try {
-				System.out.println("hi"); // jsr
-				return;
-			} finally {
-				System.out.println("bye");
-			} // ret
+			if (a) {
+				System.out.println("TestFinally.main()");
+				System.out.println(TestFinally.foo());
+				System.out.println(TestFinally.foo2());
+				try {
+					System.out.println("hi"); // jsr
+					return;
+				} finally {
+					System.out.println("bye");
+				} // ret
+			}
 		}
 	}
 }

@@ -14,114 +14,130 @@ package jikesRVM.core.bytecode;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class TestConstants extends TestJPF {
 	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
+	@Conditional
+	static boolean a = true;
+
 	@Test
 	public void aconst() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			Object x = null;
-			assertEquals(null, x); // aconst_null
+			if (a) {
+				Object x = null;
+				assertEquals(null, x); // aconst_null
+			}
 		}
 	}
 
 	@Test
 	public void iconst() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			int x;
-			x = -1;
-			assertEquals(-1, x); // iconst_m1
-			x = 0;
-			assertEquals(0, x); // iconst_0
-			x = 1;
-			assertEquals(1, x); // iconst_1
-			x = 2;
-			assertEquals(2, x); // iconst_2
-			x = 3;
-			assertEquals(3, x); // iconst_3
-			x = 4;
-			assertEquals(4, x); // iconst_4
-			x = 5;
-			assertEquals(5, x); // iconst_5
+			if (a) {
+				int x;
+				x = -1;
+				assertEquals(-1, x); // iconst_m1
+				x = 0;
+				assertEquals(0, x); // iconst_0
+				x = 1;
+				assertEquals(1, x); // iconst_1
+				x = 2;
+				assertEquals(2, x); // iconst_2
+				x = 3;
+				assertEquals(3, x); // iconst_3
+				x = 4;
+				assertEquals(4, x); // iconst_4
+				x = 5;
+				assertEquals(5, x); // iconst_5
+			}
 		}
 	}
 
 	@Test
 	public void lconst() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			long x;
-			x = 0;
-			assertEquals(0, x); // lconst_0
-			x = 1;
-			assertEquals(1, x); // lconst_1
+			if (a) {
+				long x;
+				x = 0;
+				assertEquals(0, x); // lconst_0
+				x = 1;
+				assertEquals(1, x); // lconst_1
+			}
 		}
 	}
 
 	@Test
 	public void fconst() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			float x;
-			x = 0;
-			assertEquals(0.0, x); // fconst_0
-			x = 1;
-			assertEquals(1.0, x); // fconst_1
-			x = 2;
-			assertEquals(2.0, x); // fconst_2
+			if (a) {
+				float x;
+				x = 0;
+				assertEquals(0.0, x); // fconst_0
+				x = 1;
+				assertEquals(1.0, x); // fconst_1
+				x = 2;
+				assertEquals(2.0, x); // fconst_2
+			}
 		}
 	}
 
 	@Test
 	public void dconst() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			double x;
-			x = 0;
-			assertEquals(0.0, x); // dconst_0
-			x = 1;
-			assertEquals(1.0, x); // dconst_1
+			if (a) {
+				double x;
+				x = 0;
+				assertEquals(0.0, x); // dconst_0
+				x = 1;
+				assertEquals(1.0, x); // dconst_1
+			}
 		}
 	}
 
 	@Test
 	public void misc() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			byte x0 = 127;
-			assertEquals(127, x0); // bipush
-			x0 = -127;
-			assertEquals(-127, x0); // bipush
+			if (a) {
+				byte x0 = 127;
+				assertEquals(127, x0); // bipush
+				x0 = -127;
+				assertEquals(-127, x0); // bipush
 
-			short x1 = 32767;
-			assertEquals(32767, x1); // sipush
-			x1 = -32767;
-			assertEquals(-32767, x1); // sipush
+				short x1 = 32767;
+				assertEquals(32767, x1); // sipush
+				x1 = -32767;
+				assertEquals(-32767, x1); // sipush
 
-			int x2 = 0x7fffffff;
-			assertEquals(2147483647, x2); // ldc
-			x2 = 0x80000001;
-			assertEquals(-2147483647, x2); // ldc
+				int x2 = 0x7fffffff;
+				assertEquals(2147483647, x2); // ldc
+				x2 = 0x80000001;
+				assertEquals(-2147483647, x2); // ldc
 
-			long x4 = 0x7fffffffffffffffL;
-			assertEquals(9223372036854775807l, x4); // ldc2_w
-			x4 = 0x8000000000000001L;
-			assertEquals(-9223372036854775807l, x4); // ldc2_w
+				long x4 = 0x7fffffffffffffffL;
+				assertEquals(9223372036854775807l, x4); // ldc2_w
+				x4 = 0x8000000000000001L;
+				assertEquals(-9223372036854775807l, x4); // ldc2_w
 
-			assertEquals("X98", new TestConstants().s()); // ldc_w
+				assertEquals("X98", new TestConstants().s()); // ldc_w
 
-			// Intel FPU constants
-			assertEquals(3.141592653589793, Math.PI);
+				// Intel FPU constants
+				assertEquals(3.141592653589793, Math.PI);
 
-			final double LG2 = 0.3010299956639811952256464283594894482;
-			assertEquals(0.3010299956639812, LG2);
+				final double LG2 = 0.3010299956639811952256464283594894482;
+				assertEquals(0.3010299956639812, LG2);
 
-			final double LN2 = 0.6931471805599453094286904741849753009;
-			assertEquals(0.6931471805599453, LN2);
+				final double LN2 = 0.6931471805599453094286904741849753009;
+				assertEquals(0.6931471805599453, LN2);
 
-			final double L2E = 1.4426950408889634073876517827983434472;
-			assertEquals(1.4426950408889634, L2E);
+				final double L2E = 1.4426950408889634073876517827983434472;
+				assertEquals(1.4426950408889634, L2E);
 
-			final double L2T = 3.3219280948873623478083405569094566090;
-			assertEquals(3.321928094887362, L2T);
+				final double L2T = 3.3219280948873623478083405569094566090;
+				assertEquals(3.321928094887362, L2T);
+			}
 		}
 	}
 

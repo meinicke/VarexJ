@@ -14,6 +14,7 @@ package jikesRVM.core.bytecode;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class TestArithmetic extends TestJPF {
@@ -35,32 +36,37 @@ public class TestArithmetic extends TestJPF {
   
   static String[] JPF_CONFIGURATION = new String[]{"+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice"};
 
-  @Test
-  public void test() {
-	  if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-	    System.out.println();
-	    System.out.println("-- itest --");
-	    itest();
-	    System.out.println();
-	    System.out.println("-- ltest --");
-	    ltest();
-	    System.out.println();
-	    System.out.println("-- ftest --");
-	    ftest();
-	    System.out.println();
-	    System.out.println("-- dtest --");
-	    dtest();
-	    System.out.println();
-	    System.out.println("-- nanTestFloat --");
-	    nanTestFloat();
-	    System.out.println();
-	    System.out.println("-- nanTestDouble --");
-	    nanTestDouble();
-	    System.out.println();
-	    System.out.println("-- remTest --");
-	    remTest();
-	  }
-  }
+  @Conditional
+  static boolean a = true;
+  
+	@Test
+	public void test() {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			if (a) {
+				System.out.println();
+				System.out.println("-- itest --");
+				itest();
+				System.out.println();
+				System.out.println("-- ltest --");
+				ltest();
+				System.out.println();
+				System.out.println("-- ftest --");
+				ftest();
+				System.out.println();
+				System.out.println("-- dtest --");
+				dtest();
+				System.out.println();
+				System.out.println("-- nanTestFloat --");
+				nanTestFloat();
+				System.out.println();
+				System.out.println("-- nanTestDouble --");
+				nanTestDouble();
+				System.out.println();
+				System.out.println("-- remTest --");
+				remTest();
+			}
+		}
+	}
 
   private static void itest() {
     int a = int3;

@@ -14,25 +14,31 @@ package jikesRVM.core.bytecode;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class TestReturn extends TestJPF {
 	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
+	@Conditional
+	static boolean a = true;
+
 	@Test
 	public void main() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			assertEquals(true, boolean_f());
-			assertEquals((byte)2, byte_f());
-			assertEquals('a', char_f());
-			assertEquals((short)4, short_f());
-			assertEquals(5, int_f());
-			assertEquals(6l, long_f());
-			assertEquals(7.0f, float_f());
-			assertEquals(8.0d, double_f());
-			assertEquals(null, object_f());
-			assertEquals(null, primitive_array_f());
-			assertEquals(null, object_array_f());
+			if (a) {
+				assertEquals(true, boolean_f());
+				assertEquals((byte) 2, byte_f());
+				assertEquals('a', char_f());
+				assertEquals((short) 4, short_f());
+				assertEquals(5, int_f());
+				assertEquals(6l, long_f());
+				assertEquals(7.0f, float_f());
+				assertEquals(8.0d, double_f());
+				assertEquals(null, object_f());
+				assertEquals(null, primitive_array_f());
+				assertEquals(null, object_array_f());
+			}
 		}
 	}
 

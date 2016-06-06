@@ -14,6 +14,7 @@ package jikesRVM.java.lang;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 /*
@@ -26,42 +27,47 @@ public class TestMath extends TestJPF {
 		new TestMath().test();
 	}
 	
+	@Conditional
+	static boolean a = true;
+	
 	@Test
 	public void test() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			runFloorTest(1.6, 1.0);
-			runFloorTest(1.5, 1.0);
-			runFloorTest(1.4, 1.0);
-			runFloorTest(1.0, 1.0);
+			if (a) {
+				runFloorTest(1.6, 1.0);
+				runFloorTest(1.5, 1.0);
+				runFloorTest(1.4, 1.0);
+				runFloorTest(1.0, 1.0);
 
-			runFloorTest(-2.0, -2.0);
-			runFloorTest(-1.6, -2.0);
-			runFloorTest(-1.5, -2.0);
-			runFloorTest(-1.4, -2.0);
+				runFloorTest(-2.0, -2.0);
+				runFloorTest(-1.6, -2.0);
+				runFloorTest(-1.5, -2.0);
+				runFloorTest(-1.4, -2.0);
 
-			System.out.println(Double.NaN == Double.NaN);
-			
-			runFloorTest(Double.NaN, Double.NaN);
-			runFloorTest(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
-			runFloorTest(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-			runFloorTest(-0, -0);
-			runFloorTest(0, 0);
+				System.out.println(Double.NaN == Double.NaN);
 
-			runCeilTest(1.6, 2.0);
-			runCeilTest(1.5, 2.0);
-			runCeilTest(1.4, 2.0);
-			runCeilTest(1.0, 1.0);
+				runFloorTest(Double.NaN, Double.NaN);
+				runFloorTest(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+				runFloorTest(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+				runFloorTest(-0, -0);
+				runFloorTest(0, 0);
 
-			runCeilTest(-2.0, -2.0);
-			runCeilTest(-1.6, -1.0);
-			runCeilTest(-1.5, -1.0);
-			runCeilTest(-1.4, -1.0);
+				runCeilTest(1.6, 2.0);
+				runCeilTest(1.5, 2.0);
+				runCeilTest(1.4, 2.0);
+				runCeilTest(1.0, 1.0);
 
-			runCeilTest(Double.NaN, Double.NaN);
-			runCeilTest(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
-			runCeilTest(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-			runCeilTest(-0, -0);
-			runCeilTest(0, 0);
+				runCeilTest(-2.0, -2.0);
+				runCeilTest(-1.6, -1.0);
+				runCeilTest(-1.5, -1.0);
+				runCeilTest(-1.4, -1.0);
+
+				runCeilTest(Double.NaN, Double.NaN);
+				runCeilTest(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+				runCeilTest(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+				runCeilTest(-0, -0);
+				runCeilTest(0, 0);
+			}
 		}
 	}
 

@@ -14,27 +14,33 @@ package jikesRVM.core.bytecode;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class TestArrayAccess extends TestJPF {
 	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
+	@Conditional
+	static boolean a = true;
+
 	@Test
 	public void test() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			boolean_array();
-			byte_array();
-			char_array();
-			short_array();
-			int_array();
-			long_array();
-			float_array();
-			double_array();
-			object_array();
-			array_array();
-			multi_int_array();
-			multi_object_array();
-			multi_partial_array();
+			if (a) {
+				boolean_array();
+				byte_array();
+				char_array();
+				short_array();
+				int_array();
+				long_array();
+				float_array();
+				double_array();
+				object_array();
+				array_array();
+				multi_int_array();
+				multi_object_array();
+				multi_partial_array();
+			}
 		}
 	}
 

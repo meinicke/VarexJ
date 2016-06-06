@@ -14,23 +14,29 @@ package jikesRVM.core.bytecode;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 @SuppressWarnings("unused")
 public class TestCompare extends TestJPF {
 	static String[] JPF_CONFIGURATION = new String[]{"+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice"};
 
+	@Conditional
+	static boolean a = true;
+
 	@Test
 	public void test() {
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
-			zero_cmp();
-			i_cmp();
-			l_cmp();
-			f_cmp();
-			d_cmp();
-			a_cmp();
-			null_cmp();
-			str_cmp();
+			if (a) {
+				zero_cmp();
+				i_cmp();
+				l_cmp();
+				f_cmp();
+				d_cmp();
+				a_cmp();
+				null_cmp();
+				str_cmp();
+			}
 		}
 	}
 
