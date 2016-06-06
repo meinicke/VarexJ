@@ -1,4 +1,4 @@
-package cmu.workingd4j.lang3;
+package defects4j.lang3;
 
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
