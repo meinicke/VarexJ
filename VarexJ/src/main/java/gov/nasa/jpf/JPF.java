@@ -20,6 +20,7 @@ package gov.nasa.jpf;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,12 @@ import gov.nasa.jpf.util.RunRegistry;
 import gov.nasa.jpf.vm.NoOutOfMemoryErrorProperty;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.VMListener;
+import gov.nasa.jpf.vm.va.BufferedStackHandler;
+import gov.nasa.jpf.vm.va.HybridStackHandler;
+import gov.nasa.jpf.vm.va.HybridStackHandler.LiftedStack;
+import gov.nasa.jpf.vm.va.HybridStackHandler.NormalStack;
+import gov.nasa.jpf.vm.va.OneStackHandler;
+import gov.nasa.jpf.vm.va.StackHandler;
 import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 
@@ -322,13 +329,29 @@ public class JPF implements Runnable {
       // set the trace method
       traceMethod = config.getString("traceMethod", null);
       
-      // Set StackHandlerFactory
-      String stackHandlerFactory = config.getString("stack", "");
-      if (stackHandlerFactory.equals("BufferedStackHandler")) {
-      	StackHandlerFactory.activateBufferedStackHandler();
-      } else {
-      	StackHandlerFactory.activateDefaultStackHandler();
-      }
+			// Set StackHandlerFactory
+			String stackHandlerFactory = config.getString("stack", "");
+			if (stackHandlerFactory.equals(BufferedStackHandler.class.getSimpleName())) {
+				StackHandlerFactory.activateBufferedStackHandler();
+			} else if (stackHandlerFactory.equals(OneStackHandler.class.getSimpleName())) {
+				StackHandlerFactory.activateOneStackHandler();
+			} else if (stackHandlerFactory.startsWith(HybridStackHandler.class.getSimpleName())) {
+				StackHandlerFactory.activateHybridStackHandler();
+				String[] split = stackHandlerFactory.split("[|]");
+				System.out.println(Arrays.toString(split));
+				if (split.length == 3) {
+					if (split[1].equals("JPF")) {
+						HybridStackHandler.normalStack = NormalStack.JPFStack;
+					}
+					if (split[2].equals("Buffered")) {
+						HybridStackHandler.liftedStack = LiftedStack.Buffered;
+					}
+				}
+			} else if (stackHandlerFactory.equals(StackHandler.class.getSimpleName())) {
+				StackHandlerFactory.activateDefaultStackHandler();
+			} else {
+				StackHandlerFactory.activateHybridStackHandler();
+			}
       
       // Set the ChoiceFactory
       String choice = config.getString("choice", Factory.TreeChoice.toString());

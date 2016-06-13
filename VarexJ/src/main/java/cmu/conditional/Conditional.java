@@ -135,4 +135,8 @@ public abstract class Conditional<T> {
 	}
 
     public abstract int size();
+    
+    public boolean isOne() {
+    	return false;
+    }
 }

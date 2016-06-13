@@ -47,10 +47,10 @@ public class ByteArrayFields extends ArrayFields {
     return values;
   }
 
-    public Byte[] asByteArrayConcrete() {
+    public Byte[] asByteArrayConcrete(FeatureExpr ctx) {
         Byte[] cvalues = new Byte[this.values.length];
         for (int i = 0; i < this.values.length; i++) {
-            cvalues[i] = this.values[i].getValue();
+            cvalues[i] = this.values[i].simplify(ctx).getValue();
         }
         return cvalues;
     }

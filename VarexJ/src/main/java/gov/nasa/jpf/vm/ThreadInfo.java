@@ -20,7 +20,6 @@ package gov.nasa.jpf.vm;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

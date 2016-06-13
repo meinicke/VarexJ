@@ -20,8 +20,10 @@ import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
+import gov.nasa.jpf.vm.va.BufferedStackHandler;
 import gov.nasa.jpf.vm.va.IStackHandler;
 import gov.nasa.jpf.vm.va.StackHandlerFactory;
+import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
 
 @RunWith(Parameterized.class)
 public class StackHandlerTest {
@@ -29,15 +31,18 @@ public class StackHandlerTest {
 	@Parameters(name = "ChoiceFactory: {0} ,FeatureExprFactory: {1}")
 	public static List<Object[]> configurations() {
 		List<Object[]> params = new LinkedList<>(); 
-		for (Object[] choice : ChoiceFactory.asParameter()) {
-			params.add(new Object[]{choice[0], "BDD"});
-			params.add(new Object[]{choice[0], "SAT"});
-		}
+		for (Object SHfactory: StackHandlerFactory.asParameter()) {
+			for (Object[] choice : ChoiceFactory.asParameter()) {
+				params.add(new Object[]{SHfactory, choice[0], "BDD"});
+				params.add(new Object[]{SHfactory, choice[0], "SAT"});
+			}
+		}	
 		return params;
 	}
 	
-	public StackHandlerTest(Factory factory, String fexprFeactory) {
+	public StackHandlerTest(SHFactory shFactory, Factory factory, String fexprFeactory) {
 		ChoiceFactory.setDefault(factory);
+		StackHandlerFactory.setFactory(shFactory);
 		if ("BDD".equals(fexprFeactory)) {
 			FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 		} else {
@@ -80,9 +85,11 @@ public class StackHandlerTest {
 		assertEquals(1, stack.getStackWidth());
 		Conditional<Integer> n2 = new One<>((int) (Math.random() * 1000));
 		stack.push(f1, n2, false);
-		assertEquals(2, stack.getStackWidth());
+		assertTrue(stack.getStackWidth() <= 2);
 		stack.push(f1.not(), n2, false);
-		assertEquals(1, stack.getStackWidth());
+		if (!(stack instanceof BufferedStackHandler)) {
+			assertEquals(1, stack.getStackWidth());
+		}
 	}
 
 	@Test
@@ -95,7 +102,7 @@ public class StackHandlerTest {
 		assertEquals(1, stack.getStackWidth());
 		Conditional<Integer> n2 = new One<>((int) (Math.random() * 1000));
 		stack.push(f1, n2, false);
-		assertEquals(2, stack.getStackWidth());
+		assertTrue(stack.getStackWidth() <= 2);
 		stack.push(f1.not(), n2, true);
 		assertEquals(2, stack.getStackWidth());
 	}
@@ -226,9 +233,7 @@ public class StackHandlerTest {
 			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 1));
 			stack.push(FeatureExprFactory.True(), n1, Math.random() < 0.5);
 		}
-		System.out.println(stack);
 		stack.clear(f1);
-		System.out.println(stack);
 		assertEquals(2, stack.getStackWidth());
 	}
 
@@ -312,7 +317,6 @@ public class StackHandlerTest {
 			Conditional<Integer> n1 = One.valueOf((int) (Math.random() * 10 + 100));
 			stack.push(f1, n1, Math.random() < 0.5);
 			Conditional<Integer> n2 = One.valueOf((int) (Math.random() * 10 + 100));
-			System.out.println(stack);
 			stack.push(f1.not(), n2, Math.random() < 0.5);
 		}
 		IStackHandler clone = stack.clone();
@@ -400,7 +404,7 @@ public class StackHandlerTest {
 		stack.push(FeatureExprFactory.True(), D, false);
 
 		stack.dup2_x2(ctx);
-
+		
 		assertEquals(D, stack.pop(ctx));
 		assertEquals(C, stack.pop(ctx));
 		assertEquals(B, stack.pop(ctx));
@@ -557,7 +561,6 @@ public class StackHandlerTest {
 		Conditional<Integer> A = One.valueOf(1);
 
 		stack.push(FeatureExprFactory.True(), A, true);
-		System.out.println(stack);
 		stack.dup(ctx);
 
 		assertEquals(A, stack.pop(ctx));
@@ -576,13 +579,9 @@ public class StackHandlerTest {
 		Conditional<Integer> A = One.valueOf(1);
 
 		stack.push(FeatureExprFactory.True(), A, true);
-		System.out.println(stack);
 		stack.dup(ctx);
-		System.out.println(stack);
 		assertEquals(A, stack.pop(ctx));
-		System.out.println(stack);
 		assertEquals(A, stack.pop(ctx));
-		System.out.println(stack);
 		assertEquals(A, stack.pop(ctx.not()));
 
 		assertEquals(One.valueOf(-1), stack.getTop());
@@ -772,11 +771,9 @@ public class StackHandlerTest {
 		IStackHandler stack = StackHandlerFactory.createStack(f1, 0, 4);
 		stack.push(f1, One.valueOf(42), false);
 		assertEquals(1, stack.getStackWidth());
-		System.out.println(stack);
 		stack.push(f2, One.valueOf(43), false);
 		
-		assertEquals(2, stack.getStackWidth());
-		System.out.println(stack);
+		assertTrue(stack.getStackWidth() <= 2);
 	}
 	
 	@Test
@@ -787,10 +784,7 @@ public class StackHandlerTest {
 		stack.push(f1, One.valueOf(43), true);
 		assertEquals(1, stack.getStackWidth());
 		
-		System.out.println(stack);
-		
 		stack.pop(f1);
-		System.out.println(stack);
 		assertEquals(1, stack.getStackWidth());
 	}
 	

@@ -44,6 +44,7 @@ import gov.nasa.jpf.vm.Step;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Transition;
 import gov.nasa.jpf.vm.VM;
+import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 public class ConsolePublisher extends Publisher {
 
@@ -134,7 +135,9 @@ public class ConsolePublisher extends Publisher {
   protected void publishJPF() {
     out.println(reporter.getJPFBanner());
     out.println();
-    out.println("    Variability-Aware Interpreter v0.5 (" + FeatureExprFactory.dflt().getClass().getSimpleName().substring(0, 3) + ", " + ChoiceFactory.getCurrent() + ")");
+    out.println("    VarexJ v0.5 (" + FeatureExprFactory.dflt().getClass().getSimpleName().substring(0, 3)
+    		+ ", " + ChoiceFactory.getCurrent()
+    		+ ", " + StackHandlerFactory.getCurrent() + ")");
     out.println();
   }
 

@@ -197,7 +197,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
 
                 // Array of primitive type
                 if (dei.getClassInfo().getComponentClassInfo().isPrimitive()) {
-                    JVMArr = Utilities.createJVMPrimitiveArr(dei);
+                    JVMArr = Utilities.createJVMPrimitiveArr(dei, ctx);
                 }
                 // Array of Non-primitives
                 else {

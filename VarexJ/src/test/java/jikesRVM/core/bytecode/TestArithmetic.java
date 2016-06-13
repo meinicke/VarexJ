@@ -34,7 +34,7 @@ public class TestArithmetic extends TestJPF {
   private static long long0xBEEFBEEFCAFEBABE = 0xBEEFBEEFCAFEBABEL;
 
   
-  static String[] JPF_CONFIGURATION = new String[]{"+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice"};
+  static String[] JPF_CONFIGURATION = new String[]{"+stack=HybridStackHandler", "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice"};
 
   @Conditional
   static boolean a = true;

@@ -63,6 +63,7 @@ public class Utilities {
    * 
    * @param ei
    *          An ElementInfo which represents a JPF array of primitive type
+ * @param ctx TODO
    * 
    * @return a JVM array of primitive type which is created corresponding to the
    *         given JPF array represented by ei
@@ -70,14 +71,14 @@ public class Utilities {
    * @throws ConversionException
    *           if the given array is not of primitive type
    */
-  public static Object createJVMPrimitiveArr (ElementInfo ei) throws ConversionException {
+  public static Object createJVMPrimitiveArr (ElementInfo ei, FeatureExpr ctx) throws ConversionException {
     String type = ei.getType();
     Object JVMObj = null;
 
     // byte[]
     if (type.equals("[B")) {
 //      JVMObj = ((ArrayFields) ei.getFields()).asByteArrayConcrete();
-      Byte[] ByteArray = ((ArrayFields) ei.getFields()).asByteArrayConcrete();
+      Byte[] ByteArray = ((ArrayFields) ei.getFields()).asByteArrayConcrete(ctx);
         byte[] byteArray = new byte[ByteArray.length];
         for (int i = 0; i < ByteArray.length; i++) {
             byteArray[i] = ByteArray[i].byteValue();

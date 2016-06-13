@@ -7,7 +7,7 @@ import gov.nasa.jpf.util.test.TestJPF;
 
 public class StringTest extends TestJPF {
 
-	static String[] JPF_CONFIGURATION = new String[]{"+invocation=true", "+search.class= .search.RandomSearch", "+choice=TreeChoice"};
+	static String[] JPF_CONFIGURATION = new String[]{"+stack=DefaultStackHandler" + "+invocation=true", "+search.class= .search.RandomSearch", "+choice=TreeChoice"};
 
 	@Conditional
 	static boolean x = true;

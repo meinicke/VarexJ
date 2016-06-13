@@ -25,14 +25,6 @@ import gov.nasa.jpf.vm.Types;
  */
 public class StackHandler implements Cloneable, IStackHandler {
 
-	public enum Type {
-		INT, FLOAT, LONG, DOUBLE
-	}
-
-	enum StackInstruction {
-		DUP_X1, DUP2_X2, DUP2_X1, DUP2, DUP, DUP_X2, SWAP
-	}
-
 	/** Locals are directly accessed with index **/
 	protected Conditional<Entry>[] locals;
 
@@ -93,6 +85,17 @@ public class StackHandler implements Cloneable, IStackHandler {
 		stack = new One<>(new Stack(0));
 		locals = new Conditional[0];
 		stackCTX = FeatureExprFactory.True();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public StackHandler(FeatureExpr ctx, Stack stack, Entry[] locals) {
+		stackCTX = ctx;
+		this.stack = new One<>(stack);
+		this.locals = new Conditional[locals.length];
+		for (int i = 0; i < locals.length; i++) {
+			this.locals[i] = new One<>(locals[i]);
+		}
+		length = stack.slots.length + locals.length;
 	}
 	
 	@Override

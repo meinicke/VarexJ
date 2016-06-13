@@ -19,7 +19,6 @@ import gov.nasa.jpf.vm.Verify;
 public class VariabilityAwareTest extends TestJPF {
 
 	static String[] JPF_CONFIGURATION = new String[]{/*"+interaction=interaction",*/ "+search.class=.search.RandomSearch", "+choice=MapChoice"};
-
 	static boolean RUN_WITH_JPF = true;
 
 	@Conditional
@@ -62,6 +61,7 @@ public class VariabilityAwareTest extends TestJPF {
 			for (int start = 0; start <= rounds; start++) {
 				a++;
 			}
+			System.out.println(a);
 		}
 	}
 

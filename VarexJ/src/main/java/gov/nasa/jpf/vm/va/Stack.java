@@ -87,6 +87,10 @@ public class Stack {
 	public void push(Integer value, boolean isRef) {
 		slots[++top] = new Entry(value, isRef);
 	}
+	
+	public void push(Entry entry) {
+		slots[++top] = entry;
+	}
 
 	public boolean isRef(int offset) {
 //		 if (top - offset < 0) {
@@ -159,7 +163,6 @@ public class Stack {
 				}
 			}
 			return true;
-//			return Arrays.equals(slots, ((Stack) o).slots);
 		}
 		return false;
 	}

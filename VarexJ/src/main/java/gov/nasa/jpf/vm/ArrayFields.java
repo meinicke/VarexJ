@@ -180,7 +180,7 @@ public abstract class ArrayFields extends Fields {
 	}
 
     // cpwTODO
-    public Byte[] asByteArrayConcrete() {
+    public Byte[] asByteArrayConcrete(FeatureExpr ctx) {
         // overridden by subclass
         throw new JPFException("not a byte[]");
     }

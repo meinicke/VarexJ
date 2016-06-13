@@ -193,4 +193,8 @@ public class One<T> extends Conditional<T> implements Cloneable {
 		}
 	}
 
+	@Override
+	public boolean isOne() {
+		return true;
+	}
 }
