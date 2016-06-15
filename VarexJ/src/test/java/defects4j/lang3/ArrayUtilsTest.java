@@ -2,6 +2,7 @@ package defects4j.lang3;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class ArrayUtilsTest extends TestJPF {
@@ -12,6 +13,9 @@ public class ArrayUtilsTest extends TestJPF {
 	public static void main(String[] testMethods) {
 		runTestsOfThisClass(testMethods);
 	}
+
+	@Conditional
+	public static boolean V = true;
 
 	@Test(timeout = 120000)
 	public void testConstructor() throws Exception {

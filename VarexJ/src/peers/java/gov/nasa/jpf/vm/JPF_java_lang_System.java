@@ -132,6 +132,33 @@ public class JPF_java_lang_System extends NativePeer {
     return env.newObject(ctx, ci);
   }
   
+  private int createInputStream(MJIEnv env, int clsObjRef, FeatureExpr ctx) {
+	  ThreadInfo ti = env.getThreadInfo();
+//    Instruction insn = ti.getPC().getValue();
+//    StackFrame frame = ti.getTopFrame();
+    ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("gov.nasa.jpf.ConsoleInputStream");
+
+    // it's not really used, but it would be hack'ish to use a class whose
+    // super class hasn't been initialized yet
+    if (!ci.isRegistered()) {
+      ci.registerClass(ctx, ti);
+    }
+
+    if (!ci.isInitialized()) {
+      if (ci.initializeClass(ctx, ti)) {
+        env.repeatInvocation();
+        return MJIEnv.NULL;
+      }
+    }
+
+    return env.newObject(ctx, ci);
+	}
+  
+  @MJI
+  public int createSystemIn____Ljava_io_InputStream_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
+    return createInputStream(env,clsObjRef, ctx);
+  }
+ 
   @MJI
   public int createSystemOut____Ljava_io_PrintStream_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
     return createPrintStream(env,clsObjRef, ctx);

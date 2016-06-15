@@ -4,6 +4,7 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.jvm.JVMHeap;
 import gov.nasa.jpf.vm.ArrayFields;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassInfoException;
@@ -14,6 +15,7 @@ import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StaticElementInfo;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import nhandler.conversion.ConversionException;
 import nhandler.conversion.ConverterBase;
@@ -226,9 +228,9 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 	protected void updateJPFNonArrObj(Object JVMObj, int JPFObj, MJIEnv env, FeatureExpr ctx) throws ConversionException {
 		if (JVMObj != null) {
 			// First check if the JPF object has been already updated
-			if (!ConverterBase.updatedJPFObj.containsKey(JPFObj)) {
-				ConverterBase.updatedJPFObj.put(JPFObj, JVMObj);
-				ConverterBase.objMapJPF2JVM.put(JPFObj, JVMObj);
+			if (!JVMHeap.isKeyUpdated(JPFObj, ctx)) {
+				JVMHeap.update(JPFObj, JVMObj, ctx);
+				JVMHeap.put(JPFObj, JVMObj, ctx);
 
 				// Why do we need that? Because JPF might have not leaded the
 				// class
@@ -271,9 +273,9 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 	protected void updateJPFArrObj(Object JVMArr, int JPFArr, final MJIEnv env, FeatureExpr ctx) throws ConversionException {
 		if (JVMArr != null) {
 			// First check if the JPF array has been already updated
-			if (!ConverterBase.updatedJPFObj.containsKey(JPFArr)) {
-				ConverterBase.updatedJPFObj.put(JPFArr, JVMArr);
-				ConverterBase.objMapJPF2JVM.put(JPFArr, JVMArr);
+			if (!JVMHeap.isValueUpaded(JPFArr, ctx)) {
+				JVMHeap.update(JPFArr, JVMArr, ctx);
+				JVMHeap.put(JPFArr, JVMArr, ctx);
 
 				final DynamicElementInfo dei = (DynamicElementInfo) env.getHeap().getModifiable(JPFArr);
 
@@ -298,9 +300,9 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 								try {
 									if (arrObj[currentI] == null) {
 										elementValueRef = MJIEnv.NULL;
-									} else if (elementValueRef == MJIEnv.NULL || ConverterBase.objMapJPF2JVM.get(elementValueRef) != arrObj[currentI]) {
+									} else if (elementValueRef == MJIEnv.NULL || JVMHeap.get(elementValueRef, ctx) != arrObj[currentI]) {
 										elementValueRef = obtainJPFObj(arrObj[currentI], env, ctx);
-									} else if (ConverterBase.objMapJPF2JVM.get(elementValueRef) == arrObj[currentI]) {
+									} else if (JVMHeap.get(elementValueRef, ctx) == arrObj[currentI]) {
 										updateJPFObj(arrObj[currentI], elementValueRef, env, ctx);
 									} else {
 										throw new ConversionException("Unconsidered case observed! - JVM2JPF.updateArr()");
@@ -335,30 +337,44 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 	protected int getExistingJPFRef(Object JVMObj, boolean update, MJIEnv env, FeatureExpr ctx) throws ConversionException {
 		int JPFRef = MJIEnv.NULL;
 		boolean found = false;
-		if (ConverterBase.updatedJPFObj.containsValue(JVMObj)) {
-			Iterator<Integer> iterator = (ConverterBase.updatedJPFObj.keySet()).iterator();
+		if (JVMHeap.isValueUpaded(JVMObj,ctx)) {
+			Iterator<Integer> iterator = (JVMHeap.getUpdatesKeySet()).iterator();
 			Integer key;
 			while (!found && iterator.hasNext()) {
 				key = iterator.next();
-				Object value = ConverterBase.updatedJPFObj.get(key);
-				if (value == JVMObj) {
-					found = true;
-					JPFRef = key;
+				Conditional<Object> value = JVMHeap.getUpdatesValue(key, ctx);
+				for (Object v : value.toList()) {
+					if (v == JVMObj) {
+						found = true;
+						JPFRef = key;
+					}
 				}
 			}
 		}
 
-		if (!found && ConverterBase.objMapJPF2JVM.containsValue(JVMObj)) {
-			Iterator<Integer> iterator = (ConverterBase.objMapJPF2JVM.keySet()).iterator();
+		if (!found && JVMHeap.containsValue(JVMObj, ctx)) {
+			Iterator<Integer> iterator = (JVMHeap.keySet()).iterator();
 			Integer key;
 			while (!found && iterator.hasNext()) {
 				key = iterator.next();
-				Object value = ConverterBase.objMapJPF2JVM.get(key);
-				if (value == JVMObj) {
-					found = true;
-					JPFRef = key;
-					if (update == true) {
-						getUpdatedJPFObj(JVMObj, JPFRef, env, ctx);
+				Object value = JVMHeap.get(key, ctx);
+				if (value instanceof Conditional) {
+					for (Map.Entry<Object, FeatureExpr> entry : ((Conditional<Object>) value).toMap().entrySet()) {
+						if (entry.getKey() == JVMObj) {
+							found = true;
+							JPFRef = key;
+							if (update == true) {
+								getUpdatedJPFObj(JVMObj, JPFRef, env, ctx.and(entry.getValue()));
+							}
+						}
+					}
+				} else {
+					if (value == JVMObj) {
+						found = true;
+						JPFRef = key;
+						if (update == true) {
+							getUpdatedJPFObj(JVMObj, JPFRef, env, ctx);
+						}
 					}
 				}
 			}

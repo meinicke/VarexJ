@@ -41,6 +41,7 @@ public class System {
   
   static {
 
+	in = createSystemIn();  
     out = createSystemOut();
     err = createSystemErr();
 
@@ -100,8 +101,10 @@ public class System {
     };
   }
 
+
   static private native String[] getKeyValuePairs();
 
+  static private native InputStream createSystemIn();
   static private native PrintStream createSystemOut();
   static private native PrintStream createSystemErr();
 

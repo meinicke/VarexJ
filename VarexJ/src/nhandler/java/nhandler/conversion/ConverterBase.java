@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import cmu.utils.RuntimeConstants;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.Resetable;
+import gov.nasa.jpf.jvm.JVMHeap;
 import gov.nasa.jpf.vm.MJIEnv;
 import nhandler.util.ValueIdentityHashMap;
 
@@ -22,83 +22,12 @@ public class ConverterBase {
 
 	public static ArrayList<Object> socketObjArray = new ArrayList<>();
 	public static ConverterFactory converterFactory;
-	/**
-	 * Keeps track of the JVM objects that have been already created from their
-	 * corresponding JPF objects, while performing conversion from JPF to JVM
-	 */
-	@SuppressWarnings("serial")
-	public static Map<Integer, Object> objMapJPF2JVM = new HashMap<Integer, Object>() {
-		@Override
-		public Object put(Integer key, Object value) {
-			if (containsKey(key)) {
-				Object currentObject = get(key);
-				if (currentObject == value) {
-					return null;
-				}
-				System.out.println("--- object for id " + key + " already created, but newly created " + value);
-				for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-					System.out.println(element);
-				}
-				System.out.println("-----------------------------------");
-			}
-			return super.put(key, value);
-		};
-
-		@SuppressWarnings("unused")
-		@Override
-		public Object remove(Object key) {
-			Object object = super.remove(key);
-			if (RuntimeConstants.debugGC && object != null) {
-				System.out.println("GC JVM Heap(" + objMapJPF2JVM.size() + ") " + printSize(object) + object.getClass().getName() + " @ " + key);
-			}
-			return object;
-		}
-
-		private String printSize(final Object object) {
-			int size = 0;
-			if (object.getClass().isArray()) {
-				final String componentType = object.getClass().getComponentType().getSimpleName();
-				switch (componentType) {
-				case "char":
-					size = Character.SIZE * ((char[]) object).length;
-					break;
-				case "byte":
-					size = Byte.SIZE * ((byte[]) object).length;
-					break;
-				default:
-					System.out.println("to string for " + componentType + " not supported");
-					break;
-				}
-			} else if (object instanceof String) {
-				size = (Character.SIZE * ((String)object).toCharArray().length) >> 3;
-			}
-			if (size == 0) {
-				return "";
-			}
-			size = (size >> 3);
-			if (size >= 1024) {
-				size = size >> 10;
-				if (size >= 1024) {
-					size = size >> 10;
-					return size + " MB ";
-				}
-				return size + " KB ";
-			}
-			return size + " Byte ";
-		};
-	};
 
 	/**
 	 * Keeps track of the JVM classes that have been already created from their
 	 * corresponding JPF classes, while performing conversion from JPF to JVM
 	 */
 	public static ValueIdentityHashMap<Integer, Class<?>> classMapJPF2JVM = new ValueIdentityHashMap<Integer, Class<?>>();
-
-	/**
-	 * Keeps track of the JPF objects that have been already updated from their
-	 * corresponding JVM objects, while performing conversion from JVM to JPF
-	 */
-	public static HashMap<Integer, Object> updatedJPFObj = new ValueIdentityHashMap<Integer, Object>();
 
 	/**
 	 * Keeps track of the JPF classes that have been already updated from their
@@ -112,15 +41,13 @@ public class ConverterBase {
 
 			@Override
 			public void reset() {
-				updatedJPFObj.clear();
 				classMapJPF2JVM.clear();
-				objMapJPF2JVM.clear();
+				JVMHeap.clear();
 				updatedJPFCls.clear();
 				resetState = false;
 			}
 
 		});
-		JPF.JVMheap = objMapJPF2JVM;
 	}
 
 	public static void init() {
@@ -141,7 +68,7 @@ public class ConverterBase {
 		if (ConverterBase.resetState) {
 			// these are reset on-demond by setting the nhandler.resetVMState
 			// property in the properties file
-			ConverterBase.objMapJPF2JVM.clear();
+			JVMHeap.clear();
 			ConverterBase.classMapJPF2JVM.clear();
 			// clearObj(ConverterBase.objMapJPF2JVM);
 			// clearCls(ConverterBase.classMapJPF2JVM);
@@ -149,7 +76,7 @@ public class ConverterBase {
 		}
 
 		// these always need to be reset
-		ConverterBase.updatedJPFObj.clear();
+		JVMHeap.updatedJPFObj.clear();
 		ConverterBase.updatedJPFCls.clear();
 	}
 
@@ -219,7 +146,7 @@ public class ConverterBase {
 		if (socketObjArray.size() >= 4) {
 			System.out.println("clearing!!!");
 			socketObjArray.clear();
-			objMapJPF2JVM.clear();
+			JVMHeap.clear();
 		}
 	}
 

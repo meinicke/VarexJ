@@ -2,6 +2,7 @@ package defects4j.lang3;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 public class ArrayUtilsAddTest extends TestJPF {
@@ -14,6 +15,9 @@ public class ArrayUtilsAddTest extends TestJPF {
 		runTestsOfThisClass(testMethods);
 	}
 
+	@Conditional
+	public static boolean V = true;
+	
 	@Test(timeout = 120000)
 	public void testJira567() throws Exception {
 		if (verifyNoPropertyViolation(config)) {

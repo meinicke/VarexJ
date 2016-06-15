@@ -69,9 +69,6 @@ import java.util.List;
  * </ol>
  */
 public abstract class TestJPF implements JPFShell  {
-	
-	@Conditional
-	public static boolean V = true;
 
   static PrintStream out = System.out;
 

@@ -1,19 +1,18 @@
 package nhandler.conversion.jvm2jpf;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.jvm.JVMHeap;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DynamicElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StaticElementInfo;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
 import nhandler.conversion.ConversionException;
-import nhandler.conversion.ConverterBase;
 
 /**
  * This class is used to convert objects and classes from JVM to JPF. This is only
@@ -50,13 +49,13 @@ public class JVM2JPFGenericConverter extends JVM2JPFConverter {
               e2.printStackTrace();
             }
 
-            JPFfldValue = sei.getReferenceField(fi).getValue();
+            JPFfldValue = sei.getReferenceField(fi).simplify(ctx).getValue();
 
             if (JVMfldValue == null){
               JPFfldValue = MJIEnv.NULL;
-            } else if (JPFfldValue == MJIEnv.NULL || ConverterBase.objMapJPF2JVM.get(JPFfldValue) != JVMfldValue){
+            } else if (JPFfldValue == MJIEnv.NULL || JVMHeap.get(JPFfldValue, ctx) != JVMfldValue){
               JPFfldValue = obtainJPFObj(JVMfldValue, env, ctx);
-            } else if (ConverterBase.objMapJPF2JVM.get(JPFfldValue) == JVMfldValue){
+            } else if (JVMHeap.get(JPFfldValue, ctx) == JVMfldValue){
               updateJPFObj(JVMfldValue, JPFfldValue, env, ctx);
             } else{
               throw new ConversionException("Unconsidered case observed! - JVM2JPF.getJPFCls()");
@@ -108,9 +107,9 @@ public class JVM2JPFGenericConverter extends JVM2JPFConverter {
             }
             if (JVMfldValue == null){
               JPFfldValue = One.MJIEnvNULL;
-            } else if (JPFfldValue == One.MJIEnvNULL || ConverterBase.objMapJPF2JVM.get(JPFfldValue) != JVMfldValue){
+            } else if (JPFfldValue == One.MJIEnvNULL || JVMHeap.get(JPFfldValue.getValue(), ctx) != JVMfldValue){
               JPFfldValue = new One<>(obtainJPFObj(JVMfldValue, env, ctx));
-            } else if (ConverterBase.objMapJPF2JVM.get(JPFfldValue) == JVMfldValue){
+            } else if (JVMHeap.get(JPFfldValue.getValue(), ctx) == JVMfldValue){
               updateJPFObj(JVMfldValue, JPFfldValue.getValue(), env, ctx);
             } else{
               throw new ConversionException("Unconsidered case observed! - JVM2JPF.updateObj()");

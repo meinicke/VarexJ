@@ -46,14 +46,6 @@ public class ByteArrayFields extends ArrayFields {
   public Conditional<Byte>[] asByteArray() {
     return values;
   }
-
-    public Byte[] asByteArrayConcrete(FeatureExpr ctx) {
-        Byte[] cvalues = new Byte[this.values.length];
-        for (int i = 0; i < this.values.length; i++) {
-            cvalues[i] = this.values[i].simplify(ctx).getValue();
-        }
-        return cvalues;
-    }
   
   protected void printValue(PrintStream ps, int idx){
     ps.print(values[idx]);

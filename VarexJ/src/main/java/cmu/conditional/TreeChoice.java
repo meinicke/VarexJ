@@ -110,8 +110,14 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
-		throw new RuntimeException("hashCode not designed");
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((elseBranch == null) ? 0 : elseBranch.hashCode());
+		result = prime * result + ((featureExpr == null) ? 0 : featureExpr.hashCode());
+		result = prime * result + ((thenBranch == null) ? 0 : thenBranch.hashCode());
+		return result;
 	}
 
 	@Override

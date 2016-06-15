@@ -1,5 +1,6 @@
 package defects4j.lang3;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 import org.junit.Test;
 
@@ -11,6 +12,9 @@ public class BitFieldTest extends TestJPF {
 	public static void main(String[] testMethods) {
 		runTestsOfThisClass(testMethods);
 	}
+	
+	@Conditional
+	public static boolean V = true;
 
 	@Test(timeout = 120000)
 	public void testGetValue() throws Exception {
