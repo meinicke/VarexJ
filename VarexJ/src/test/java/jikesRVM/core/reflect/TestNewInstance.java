@@ -21,7 +21,7 @@ import gov.nasa.jpf.util.test.TestJPF;
 /**
  * Test of whether we enforce member access with newInstance()
  */
-public class tNewInstance extends TestJPF {
+public class TestNewInstance extends TestJPF {
 	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
 	@Test
@@ -49,7 +49,7 @@ public class tNewInstance extends TestJPF {
 
     System.out.println("tNewInstance...");
     try {
-      Class<?> klass = Class.forName("jikesRVM.core.reflect.tNewInstance$OnlyPrivateConstructor");
+      Class<?> klass = Class.forName("jikesRVM.core.reflect.TestNewInstance$OnlyPrivateConstructor");
       @SuppressWarnings("unused")
 	Object o = klass.newInstance();
       fail = true;

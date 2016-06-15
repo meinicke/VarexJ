@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import gov.nasa.jpf.util.test.TestJPF;
 
-public class tInstance  extends TestJPF {
+public class TestInstance  extends TestJPF {
 	static String[] JPF_CONFIGURATION = new String[] { "+nhandler.delegateUnhandledNative", "+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
 	@Test
@@ -69,8 +69,8 @@ public class tInstance  extends TestJPF {
   public static void main(String[] args) throws Exception {
     // Class.forName
     //
-    Class<?> c = Class.forName("jikesRVM.core.reflect.tInstance");
-    tInstance myInstance = (tInstance) c.newInstance();
+    Class<?> c = Class.forName("jikesRVM.core.reflect.TestInstance");
+    TestInstance myInstance = (TestInstance) c.newInstance();
     myInstance.ifield = 4;
     myInstance.dfield = 8.8;
     myInstance.bfield = true;
