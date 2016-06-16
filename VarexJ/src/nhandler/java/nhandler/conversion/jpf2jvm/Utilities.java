@@ -2,7 +2,6 @@ package nhandler.conversion.jpf2jvm;
 
 import java.lang.reflect.Field;
 
-import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayFields;
@@ -79,14 +78,10 @@ public class Utilities {
     // byte[]
     if (type.equals("[B")) {
 //      JVMObj = ((ArrayFields) ei.getFields()).asByteArrayConcrete();
-    	Conditional<Byte>[] ByteArray = ((ArrayFields) ei.getFields()).asByteArray();
+      Byte[] ByteArray = ((ArrayFields) ei.getFields()).asByteArrayConcrete(ctx);
         byte[] byteArray = new byte[ByteArray.length];
         for (int i = 0; i < ByteArray.length; i++) {
-            Conditional<Byte> simplify = ByteArray[i].simplify(ctx);
-            if (!simplify.isOne()) {
-            	System.err.println("cannot create JVM array for " + simplify);
-            }
-            byteArray[i] = simplify.getValue(true).byteValue();
+            byteArray[i] = ByteArray[i].byteValue();
         }
         JVMObj = byteArray;
     }

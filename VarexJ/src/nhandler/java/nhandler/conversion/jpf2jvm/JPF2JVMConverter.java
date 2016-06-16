@@ -3,9 +3,7 @@ package nhandler.conversion.jpf2jvm;
 import java.lang.reflect.Array;
 
 import cmu.conditional.Conditional;
-import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.jvm.JVMHeap;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DynamicElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -36,8 +34,8 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         if (JPFRef == MJIEnv.NULL) {
             return null;
         }
-        if (JVMHeap.containsKey(JPFRef, ctx)) {
-        	Object object = JVMHeap.get(JPFRef, ctx);
+        if (ConverterBase.objMapJPF2JVM.containsKey(JPFRef)) {
+        	Object object = ConverterBase.objMapJPF2JVM.get(JPFRef);
         	return  object;
         }
         DynamicElementInfo dei = (DynamicElementInfo) env.getHeap().get(JPFRef);
@@ -113,7 +111,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         Object JVMObj = null;
         if (JPFRef != MJIEnv.NULL) {
             // First check if the object has been already created
-            JVMObj = JVMHeap.get(JPFRef, ctx);
+            JVMObj = ConverterBase.objMapJPF2JVM.get(JPFRef);
             /**
              * If the object has not been created & the given JPF object is not NULL,
              * the corresponding JVM object is created from JPFRef
@@ -130,7 +128,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
                 // we treat Strings differently
                 if (JPFCl.isStringClassInfo()) {
                     JVMObj = createStringObject(JPFRef, env, ctx);
-                    JVMHeap.put(JPFRef, JVMObj, ctx);
+                    ConverterBase.objMapJPF2JVM.put(JPFRef, JVMObj);
                 } else {
                     int JPFClsRef = JPFCl.getStaticElementInfo().getClassObjectRef();
                     Class<?> JVMCl = this.getJVMCls(JPFClsRef, env, ctx);
@@ -152,12 +150,12 @@ public abstract class JPF2JVMConverter extends ConverterBase {
                         return JVMObj;
                     } else {
                         // Creates a new instance of JVMCl
-                    	if (JVMHeap.containsKey(JPFRef, ctx)) {
-                    		JVMObj = JVMHeap.get(JPFRef, ctx);
+                    	if (ConverterBase.objMapJPF2JVM.containsKey(JPFRef)) {
+                    		JVMObj = ConverterBase.objMapJPF2JVM.get(JPFRef);
                     		System.out.println("JVM object " + JVMObj + " already exists!");
                     	} else {
                     		JVMObj = instantiateFrom(JVMCl);
-                    		JVMHeap.put(JPFRef, JVMObj, ctx);
+                    		ConverterBase.objMapJPF2JVM.put(JPFRef, JVMObj);
                     	}
                     }
                     setInstanceFields(JVMObj, dei, env, ctx);
@@ -187,7 +185,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         Object JVMArr = null;
         if (JPFRef != MJIEnv.NULL) {
             // First check if the array has been already created
-            JVMArr = JVMHeap.get(JPFRef, ctx);
+            JVMArr = ConverterBase.objMapJPF2JVM.get(JPFRef);
 
             /**
              * If the array has not been created & the given JPF array is not NULL,
@@ -226,7 +224,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
                     }
                     JVMArr = arrObj;
                 }
-                JVMHeap.put(JPFRef, JVMArr, ctx);
+                ConverterBase.objMapJPF2JVM.put(JPFRef, JVMArr);
             }
         }
         return JVMArr;
@@ -255,7 +253,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
 //            System.out.println('\t' + Arrays.toString((char[]) value).replaceAll(",\\s", ""));
             JVMObj = new String((char[]) value);
         }
-        JVMHeap.put(JPFRef, JVMObj, ctx);
+        ConverterBase.objMapJPF2JVM.put(JPFRef, JVMObj);
         return JVMObj;
     }
 

@@ -32,7 +32,6 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.jvm.JVMHeap;
 import gov.nasa.jpf.util.ArrayObjectQueue;
 import gov.nasa.jpf.util.IntTable;
 import gov.nasa.jpf.util.IntVector;
@@ -662,7 +661,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
         
         vm.notifyObjectReleased(ti, ei);
         remove(ei.getObjectRef());
-        JVMHeap.remove(ei.getObjectRef());
+        JPF.JVMheap.remove(ei.getObjectRef());
       }
     }
     nLiveObjects = n;

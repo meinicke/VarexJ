@@ -8,13 +8,13 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.jvm.JVMHeap;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DynamicElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StaticElementInfo;
 import nhandler.conversion.ConversionException;
+import nhandler.conversion.ConverterBase;
 
 /**
  * This class is used to convert objects and classes from JPF to JVM. This is only
@@ -201,14 +201,14 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
                         int fieldValueRef = dei.getFields().getReferenceValue(fi.getStorageOffset()).getValue();
                         // If the field object is already in sync, skip.
                         // Otherwise, updateInstanceFields() gets called again and again
-                        if (JVMHeap.isKeyUpdated(fieldValueRef, ctx)) {
+                        if (ConverterBase.updatedJPFObj.containsKey(fieldValueRef)) {
                             // TODO: Say that this field belongs to a class which contains a public field x
                             // TODO: if x is changed somewhere in the code, current impl could not reflect
                             // TODO: those changes to the corresponding JVMObject
                             continue;
                         }
                         Object JVMField = obtainJVMObj(fieldValueRef, env, ctx);
-                        JVMHeap.update(fieldValueRef, JVMField, ctx);
+                        ConverterBase.updatedJPFObj.put(fieldValueRef, JVMField);
                         try {
                             fld[i].set(JVMObj, JVMField);
                         } catch (IllegalArgumentException e) {
@@ -256,6 +256,7 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
         if (cl.getName().equals(ClassLoader.class.getName())) {
         	
         	JVMObj = getClass().getClassLoader();
+        	System.out.println(cl + " -> " + JVMObj);
         	return JVMObj;
         }
         
