@@ -1,8 +1,6 @@
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 /**
  * 
  * Original implementation by 
@@ -16,18 +14,20 @@ public class SPLat {
 	public static void main(String[] args) {
 		int runs = 0;
 		System.out.println("---------------------- run nr. " + ++runs);
-		new SPLat().method();
+		new SPLat().method2();
 		
 		while (!missingConfigurations.isEmpty()) {
 			System.out.println("---------------------- run nr. " + ++runs);
-			currentConfiguration = missingConfigurations.remove(0);
-			new SPLat().method();
+//			currentConfiguration = missingConfigurations.remove(0);
+//			currentConfiguration = missingConfigurations.remove(missingConfigurations.size() - 1);
+			currentConfiguration = missingConfigurations.removeLast();
+			new SPLat().method2();
 		}
 		System.out.println("finished after " + runs + " configurations");
 	}
-	static final int nrFeatures = 3;
+	static final int nrFeatures = 20;
 	
-	static List<Configuration> missingConfigurations = new LinkedList<>();
+	static LinkedList<Configuration> missingConfigurations = new LinkedList<>();
 	
 	static Configuration currentConfiguration = new Configuration();
 	
@@ -70,39 +70,43 @@ public class SPLat {
 		if (get(16)){i++;} 
 		if (get(17)){i++;} 
 		if (get(18)){i++;} 
-		if (get(19)){i++;} 
-		if (get(20)){i++;} 
-		if (get(21)){i++;} 
-		if (get(22)){i++;}
+//		if (get(19)){i++;} 
+//		if (get(20)){i++;} 
+//		if (get(21)){i++;} 
+//		if (get(22)){i++;}
+		
+//		System.out.println(i);
+//		System.out.println(currentConfiguration);
+		System.out.println(missingConfigurations.size());
 	}
 	private boolean get(int i) {
-		Boolean selection = currentConfiguration.get(i);
-		if (selection == null) {
-			currentConfiguration.set(i, Boolean.TRUE);
+		byte selection = currentConfiguration.get(i);
+		if (selection == 0) {
+			currentConfiguration.set(i, (byte) 1);
 			Configuration newConfig = currentConfiguration.copy();
 			
-			newConfig.set(i, Boolean.FALSE);
+			newConfig.set(i, (byte)-1);
 			missingConfigurations.add(newConfig);
 		}
 		
-		return currentConfiguration.get(i);
+		return currentConfiguration.get(i) == 1;
 	}
 
 }
 class Configuration {
-	Boolean[] selection = new Boolean[SPLat.nrFeatures];
-	Boolean get(int i) {
+	byte[] selection = new byte[SPLat.nrFeatures];
+	byte get(int i) {
 		return selection[i];
 	}
-	void set(int i, Boolean b) {
-		selection[i] = b;
+	void set(int i, byte j) {
+		selection[i] = j;
 	}
 	
 	Configuration copy() {
 		Configuration c = new Configuration();
 		for (int k = 0; k < selection.length; k++) {
-			if (selection[k] != null) {
-				c.set(k, selection[k]);
+			if (selection[k] != 0) {
+				c.selection[k] = selection[k];
 			}
 		}
 		return c;
@@ -112,7 +116,7 @@ class Configuration {
 	public int hashCode() {
 		int hash = 0;
 		for (int j = 0; j < selection.length; j++) {
-			if (selection[j] != null && selection[j]) {
+			if (selection[j] != 0 && selection[j] == 1) {
 				hash += Math.pow(2, j);
 			}
 		}

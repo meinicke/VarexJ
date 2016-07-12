@@ -29,12 +29,12 @@ public class SPLat {
 
 	public static void main(String[] args) {
 		ISPLatEvaluation[] testClasses = new ISPLatEvaluation[]{
-//				new NoSPLat(),
+				new NoSPLat(),
 //				new PrefixSPLat(), 
-//				new RefSPLat(), 
-//				new IncSPLat(), 
-//				new NestSPLat()
-				new ExplosionSPLat()
+				new RefSPLat(), 
+				new IncSPLat(), 
+				new NestSPLat(),
+//				new ExplosionSPLat()
 				};
 		for (ISPLatEvaluation testClass : testClasses) {
 			System.out.println("Start " + testClass.getClass().getName());
@@ -52,7 +52,7 @@ public class SPLat {
 					int runs = runSPLat(testClass, max);
 					long end = System.currentTimeMillis();
 					long time = (end - start);
-					System.out.println(" finished after " + runs + " configurations after " + time + "ms " + (maxUsedMemory >> 20) + "MB");
+					System.out.println(" finished after " + runs + " configurations after " + time + "ms " + (maxUsedMemory >> 10) + "MB");
 					createOutput(time);
 					missingConfigurations.clear();
 					Runtime.getRuntime().gc();
@@ -67,7 +67,10 @@ public class SPLat {
 		}
 	}
 	
+//	static int maxConfs = 0;
+	
 	private static int runSPLat(ISPLatEvaluation testClass, int max) {
+//		maxConfs = 0;
 		System.out.print("#feature " + max);
 		nrFeatures = max;
 		if (testClass.getClass() == PrefixSPLat.class) {
@@ -77,12 +80,19 @@ public class SPLat {
 		maxUsedMemory = 0;
 		missingConfigurations.add(new Configuration());
 		while (!missingConfigurations.isEmpty()) {
-			Runtime rt = Runtime.getRuntime();
-			final long m = rt.totalMemory() - rt.freeMemory();
-			if (m > maxUsedMemory) {
-				maxUsedMemory  = m;
-			}
-			currentConfiguration = missingConfigurations.remove(0);
+			// include for memory usage
+//			if (maxConfs < missingConfigurations.size()) {
+//				maxConfs = missingConfigurations.size();
+//				System.out.println(maxConfs);
+//				Runtime rt = Runtime.getRuntime();
+//				Runtime.getRuntime().gc();
+//				final long m = rt.totalMemory() - rt.freeMemory();
+//				if (m > maxUsedMemory) {
+//					maxUsedMemory  = m;
+//				}
+//			}
+//			currentConfiguration = missingConfigurations.remove(0);
+			currentConfiguration = missingConfigurations.removeLast();
 			testClass.run(max);runs++;
 		}
 		return runs;
@@ -102,44 +112,40 @@ public class SPLat {
 	}
 
 	
-	
 	static int nrFeatures = 0;
 	
 	static LinkedList<Configuration> missingConfigurations = new LinkedList<>();
-//	static Set<Configuration> finishedConfigurations = new HashSet<>((int)Math.pow(2, 23));
 	
 	static Configuration currentConfiguration = new Configuration();
 	
 	public static boolean get(int i) {
-		Boolean selection = currentConfiguration.get(i);
-		if (selection == null) {
-			currentConfiguration.set(i, Boolean.TRUE);
+		byte selection = currentConfiguration.get(i);
+		if (selection == 0) {
+			currentConfiguration.set(i, (byte) 1);
 			Configuration newConfig = currentConfiguration.copy();
-			newConfig.set(i, Boolean.FALSE);
-//			if (!finishedConfigurations.contains(currentConfiguration)) {
-				missingConfigurations.addFirst(newConfig);
-//			}
+			
+			newConfig.set(i, (byte)-1);
+			missingConfigurations.add(newConfig);
 		}
 		
-		return currentConfiguration.get(i);
+		return currentConfiguration.get(i) == 1;
 	}
 
 }
 class Configuration {
-	Boolean[] selection = new Boolean[SPLat.nrFeatures];
-
-	Boolean get(int i) {
+	byte[] selection = new byte[SPLat.nrFeatures];
+	byte get(int i) {
 		return selection[i];
 	}
-	void set(int i, Boolean b) {
-		selection[i] = b;
+	void set(int i, byte j) {
+		selection[i] = j;
 	}
 	
 	Configuration copy() {
 		Configuration c = new Configuration();
 		for (int k = 0; k < selection.length; k++) {
-			if (selection[k] != null) {
-				c.set(k, selection[k]);
+			if (selection[k] != 0) {
+				c.selection[k] = selection[k];
 			}
 		}
 		return c;
@@ -149,7 +155,7 @@ class Configuration {
 	public int hashCode() {
 		int hash = 0;
 		for (int j = 0; j < selection.length; j++) {
-			if (selection[j] != null && selection[j]) {
+			if (selection[j] != 0 && selection[j] == 1) {
 				hash += Math.pow(2, j);
 			}
 		}
@@ -165,4 +171,5 @@ class Configuration {
 	public String toString() {
 		return Arrays.toString(selection);
 	}
+	
 }
