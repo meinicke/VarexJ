@@ -127,7 +127,7 @@ Distributions of essential configuration complexity (blue bars), interaction deg
 
 Feature Interaction Study:
 
-> Jens Meinicke, Chu-Pan Wong, Christian Kästner, Thomas Thüm, and Gunter Saake. On Essential Configuration Complexity: Measuring Interactions In Highly-Configurable Systems. In Proceedings of the International Conference on Automated Software Engineering (ASE), volume 31. ACM, September 2016. accepted.
+> Jens Meinicke, Chu-Pan Wong, Christian Kästner, Thomas Thüm, and Gunter Saake. [On Essential Configuration Complexity: Measuring Interactions In Highly-Configurable Systems](http://wwwiti.cs.uni-magdeburg.de/iti_db/publikationen/ps/auto/MeinickeWK+:ASE16.pdf). In Proceedings of the International Conference on Automated Software Engineering (ASE), volume 31. ACM, September 2016. accepted.
 
 Tool Description:
 
