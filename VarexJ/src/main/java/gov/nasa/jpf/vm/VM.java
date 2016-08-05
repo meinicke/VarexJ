@@ -334,9 +334,9 @@ public abstract class VM {
     return tiMain;
   }
   
-  protected ThreadInfo createThreadInfo (int objRef, int groupRef, int runnableRef, int nameRef){
+  protected ThreadInfo createThreadInfo (int objRef, int groupRef, int runnableRef, int nameRef, FeatureExpr ctx){
     ThreadInfo tiCurrent = ThreadInfo.getCurrentThread();
-    ThreadInfo tiNew = new ThreadInfo( this, objRef, groupRef, runnableRef, nameRef, tiCurrent);
+    ThreadInfo tiNew = new ThreadInfo( this, objRef, groupRef, runnableRef, nameRef, tiCurrent, ctx);
 
     // note that we have to register here so that subsequent native peer calls can use the objRef
     // to lookup the ThreadInfo. This is a bit premature since the thread is not runnable yet,

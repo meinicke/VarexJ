@@ -1,5 +1,6 @@
 package nhandler.conversion.jvm2jpf;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.conditional.VoidBiFunction;
@@ -41,7 +42,8 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 		}
 
 		JVM2JPFConverter converter = ConverterBase.converterFactory.getJVM2JPFConverter(JVMObj.getClass().getName());
-		return converter.getJPFObj(JVMObj, env, ctx);
+		int jpfObj = converter.getJPFObj(JVMObj, env, ctx);
+		return jpfObj;
 	}
 
 	public static void updateJPFObj(Object JVMObj, int JPFObj, MJIEnv env, FeatureExpr ctx) throws ConversionException {
@@ -228,7 +230,13 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 			// First check if the JPF object has been already updated
 			if (!ConverterBase.updatedJPFObj.containsKey(JPFObj)) {
 				ConverterBase.updatedJPFObj.put(JPFObj, JVMObj);
-				ConverterBase.objMapJPF2JVM.put(JPFObj, JVMObj);
+				
+				Conditional<Object> oldValue = ConverterBase.objMapJPF2JVM.get(JPFObj);
+				if (oldValue == null) {
+					ConverterBase.objMapJPF2JVM.put(JPFObj, new One<>(JVMObj));
+				} else {				
+					ConverterBase.objMapJPF2JVM.put(JPFObj, ChoiceFactory.create(ctx, new One<>(JVMObj), oldValue).simplify());
+				}
 
 				// Why do we need that? Because JPF might have not leaded the
 				// class
@@ -273,7 +281,7 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 			// First check if the JPF array has been already updated
 			if (!ConverterBase.updatedJPFObj.containsKey(JPFArr)) {
 				ConverterBase.updatedJPFObj.put(JPFArr, JVMArr);
-				ConverterBase.objMapJPF2JVM.put(JPFArr, JVMArr);
+				ConverterBase.objMapJPF2JVM.put(JPFArr, new One<>(JVMArr));
 
 				final DynamicElementInfo dei = (DynamicElementInfo) env.getHeap().getModifiable(JPFArr);
 
@@ -298,9 +306,9 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 								try {
 									if (arrObj[currentI] == null) {
 										elementValueRef = MJIEnv.NULL;
-									} else if (elementValueRef == MJIEnv.NULL || ConverterBase.objMapJPF2JVM.get(elementValueRef) != arrObj[currentI]) {
+									} else if (elementValueRef == MJIEnv.NULL || getValueOrNull(ConverterBase.objMapJPF2JVM.get(elementValueRef)) != arrObj[currentI]) {
 										elementValueRef = obtainJPFObj(arrObj[currentI], env, ctx);
-									} else if (ConverterBase.objMapJPF2JVM.get(elementValueRef) == arrObj[currentI]) {
+									} else if (ConverterBase.objMapJPF2JVM.get(elementValueRef).getValue() == arrObj[currentI]) {
 										updateJPFObj(arrObj[currentI], elementValueRef, env, ctx);
 									} else {
 										throw new ConversionException("Unconsidered case observed! - JVM2JPF.updateArr()");
@@ -348,7 +356,7 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 			}
 		}
 
-		if (!found && ConverterBase.objMapJPF2JVM.containsValue(JVMObj)) {
+		if (!found && ConverterBase.objMapJPF2JVM.containsValue(new One<>(JVMObj))) {
 			Iterator<Integer> iterator = (ConverterBase.objMapJPF2JVM.keySet()).iterator();
 			Integer key;
 			while (!found && iterator.hasNext()) {
@@ -391,7 +399,7 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 				try {
 					fci = this.getJPFCls(JVMCls, env, ctx);
 				} catch (ClassInfoException e) {
-					System.out.println("WARNING: the class " + JVMCls + " is ignored!");
+					System.err.println("WARNING: the class " + JVMCls + " is ignored!");
 					return MJIEnv.NULL;
 				}
 

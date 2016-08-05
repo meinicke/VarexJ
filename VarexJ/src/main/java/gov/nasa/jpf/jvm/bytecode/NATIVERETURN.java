@@ -232,10 +232,21 @@ public class NATIVERETURN extends ReturnInstruction {
 				}
 				retSize = 2;
 				break;
-
+			case Types.T_VOID:
+				return;
 			default:
 				// everything else is supposed to be a reference
+//				System.out.println(retType);
+				if (new One<>(null).equals(ret)) {
+					System.out.println("RETURN");
+					return;
+				}
 				if (ret instanceof Conditional) {
+					if (((Conditional) ret).isOne()) {
+						if (((Conditional) ret).getValue() == null) {
+							return;
+						}
+					}
 					fr.push(ctx, (Conditional) ret, true);
 				} else {
 					fr.push(ctx, ((Integer) ret).intValue(), true);

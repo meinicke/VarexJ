@@ -91,7 +91,7 @@ public class MONITORENTER extends LockInstruction {
 
 				// this is only executed in the bottom half
 				StackFrame frame = ti.getModifiableTopFrame(); // now we need to modify it
-				frame.pop(ctx);
+				frame.pop(ctx, 1);
 				ei.lock(ti); // Still have to increment the lockCount
 
 				return getNext(ctx, ti);

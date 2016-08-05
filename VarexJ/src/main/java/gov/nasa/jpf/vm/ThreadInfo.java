@@ -456,8 +456,9 @@ public class ThreadInfo extends InfoObject
     /**
      * the ctor for all explicitly (bytecode) created threads. At this point, there is at least
      * a mainThread and we have a corresponding java.lang.Thread object
+     * @param ctx TODO
      */
-    protected ThreadInfo(VM vm, int objRef, int groupRef, int runnableRef, int nameRef, ThreadInfo parent) {
+    protected ThreadInfo(VM vm, int objRef, int groupRef, int runnableRef, int nameRef, ThreadInfo parent, FeatureExpr ctx) {
         id = computeId(objRef);
         this.appCtx = parent.getApplicationContext();
 
@@ -468,7 +469,7 @@ public class ThreadInfo extends InfoObject
         this.objRef = objRef;
         this.targetRef = runnableRef;
 
-        threadData.name = vm.getElementInfo(nameRef).asString().getValue().toCharArray();
+        threadData.name = vm.getElementInfo(nameRef).asString().simplify(ctx).getValue().toCharArray();
 
         // note the thread is not yet in the ThreadList, we have to register from the caller
     }
@@ -1586,7 +1587,7 @@ public class ThreadInfo extends InfoObject
 
         for (; frame != null; frame = frame.getPrevious()) {
             snap[j++] = frame.getMethodInfo().getGlobalId();
-            snap[j++] = frame.getPC().simplify(ctx).getValue().getInstructionIndex();
+            snap[j++] = frame.getPC().simplify(ctx).getValue(true).getInstructionIndex();
         }
 
         return snap;
@@ -3065,8 +3066,9 @@ public class ThreadInfo extends InfoObject
     /**
      * this is basically a side-effect free version of throwException to determine if a given
      * exception will be handled.
+     * @param ctx TODO
      */
-    public HandlerContext getHandlerContextFor(ClassInfo ciException) {
+    public HandlerContext getHandlerContextFor(ClassInfo ciException, FeatureExpr ctx) {
         ExceptionHandler matchingHandler = null; // the matching handler we found (if any)
 
         for (StackFrame frame = top; frame != null; frame = frame.getPrevious()) {
@@ -3087,7 +3089,7 @@ public class ThreadInfo extends InfoObject
                 return new HandlerContext(this, ciException, HandlerContext.UncaughtHandlerType.INSTANCE, uchRef);
             }
 
-            int grpRef = getThreadGroupRef();
+            int grpRef = getThreadGroupRef(ctx);
             if ((uchRef = getThreadGroupUncaughtHandler(grpRef)) != MJIEnv.NULL) {
                 return new HandlerContext(this, ciException, HandlerContext.UncaughtHandlerType.GROUP, uchRef);
             }
@@ -3214,13 +3216,14 @@ public class ThreadInfo extends InfoObject
      * is there any UncaughHandler in effect for this thread?
      * NOTE - this doesn't check if we are already executing one (i.e. it would still handle an exception)
      * or if uncaughtHandlers are enabled within JPF
+     * @param ctx TODO
      */
-    public boolean hasUncaughtHandler() {
+    public boolean hasUncaughtHandler(FeatureExpr ctx) {
         if (getInstanceUncaughtHandler() != MJIEnv.NULL) {
             return true;
         }
 
-        int grpRef = getThreadGroupRef();
+        int grpRef = getThreadGroupRef(ctx);
         if (getThreadGroupUncaughtHandler(grpRef) != MJIEnv.NULL) {
             return true;
         }
@@ -3251,7 +3254,7 @@ public class ThreadInfo extends InfoObject
 
         } else {
             // 2. check if any of the ThreadGroup chain has an overridden uncaughtException
-            int grpRef = getThreadGroupRef();
+            int grpRef = getThreadGroupRef(ctx);
             hRef = getThreadGroupUncaughtHandler(grpRef);
 
             if (hRef != MJIEnv.NULL) {
@@ -3285,9 +3288,9 @@ public class ThreadInfo extends InfoObject
         return handlerRef;
     }
 
-    protected int getThreadGroupRef() {
+    protected int getThreadGroupRef(FeatureExpr ctx) {
         ElementInfo ei = getElementInfo(objRef);
-        int groupRef = ei.getReferenceField("group").getValue();
+        int groupRef = ei.getReferenceField("group").simplify(ctx).getValue();
         return groupRef;
     }
 

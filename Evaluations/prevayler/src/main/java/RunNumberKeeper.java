@@ -1,43 +1,38 @@
-import gov.nasa.jpf.annotation.Conditional;
+import java.io.File;
+
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 import org.prevayler.demos.demo1.NumberKeeper;
 import org.prevayler.demos.demo1.PrimeCalculator;
 import org.prevayler.foundation.monitor.Log4jMonitor;
-import org.prevayler.foundation.monitor.NullMonitor;
-import org.prevayler.foundation.monitor.SimpleMonitor;
-import org.prevayler.foundation.serialization.JavaSerializer;
 import org.prevayler.foundation.serialization.XStreamSerializer;
-import org.prevayler.implementation.clock.BrokenClock;
-import org.prevayler.implementation.clock.MachineClock;
-import org.prevayler.implementation.clock.PausableClock;
 
-import java.io.File;
+import gov.nasa.jpf.annotation.Conditional;
 
 public class RunNumberKeeper {
 
 //	@Conditional
-	public static boolean USE_LOG4J_MONITOR = false;
+	public static boolean USE_LOG4J_MONITOR = true;
 	@Conditional
-	public static boolean USE_NULL_MONITOR = false;
+	public static boolean USE_NULL_MONITOR = true;
 //	@Conditional
-	public static boolean USE_BROKEN_CLOCK = false;
+	public static boolean USE_BROKEN_CLOCK = true;
 //	@Conditional
-	public static boolean USE_PAUSABLE_CLOCK = false;
+	public static boolean USE_PAUSABLE_CLOCK = true;
 	//	@Conditional // TODO not working for tutorialTest()
-	public static boolean USE_XSTREAM = false;
+	public static boolean USE_XSTREAM = true;
 //	@Conditional
-	public static boolean USE_TRANSIENT_MODE = false;
+	public static boolean USE_TRANSIENT_MODE = true;
 //	@Conditional
-	public static boolean USE_JOURNAL_DISK_SYNC = false;
+	public static boolean USE_JOURNAL_DISK_SYNC = true;
 //	@Conditional
-	public static boolean FILE_AGE_THREASHOLD = false;
+	public static boolean FILE_AGE_THREASHOLD = true;
 	//	@Conditional // TODO not working
-	static boolean FILE_SIZE_THREASHOLD = false;
+	static boolean FILE_SIZE_THREASHOLD = true;
 	//  @Conditional // TODO not working
-	static boolean USE_XSTREAM_JOURNAL = false;
+	static boolean USE_XSTREAM_JOURNAL = true;
 	//	@Conditional // TODO not working
-	static boolean USE_FILTERING = false;
+	static boolean USE_FILTERING = true;
 	private static String NUMBER_KEEPER = "NumberKeeper";
 
 	public static void main(String[] args) {

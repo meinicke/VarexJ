@@ -93,9 +93,9 @@ public class Stack {
 	}
 
 	public boolean isRef(int offset) {
-//		 if (top - offset < 0) {
-//			 return false;
-//		 }
+		 if (top - offset < 0) {
+			 return false;
+		 }
 		return slots[top - offset].isRef;
 	}
 

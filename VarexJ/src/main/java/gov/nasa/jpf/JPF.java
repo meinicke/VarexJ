@@ -377,7 +377,7 @@ public class JPF implements Runnable {
   
   public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
 
-  public static Map<Integer, Object> JVMheap = Collections.emptyMap();
+  public static Map<?,?> JVMheap = Collections.emptyMap();
 
   private void processInteractionCommand() {
 	String logInteractions = config.getString("interaction", null);

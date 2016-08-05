@@ -3,6 +3,7 @@ package nhandler.conversion.jpf2jvm;
 import java.lang.reflect.Array;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DynamicElementInfo;
@@ -35,7 +36,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
             return null;
         }
         if (ConverterBase.objMapJPF2JVM.containsKey(JPFRef)) {
-        	Object object = ConverterBase.objMapJPF2JVM.get(JPFRef);
+        	Object object = ConverterBase.objMapJPF2JVM.get(JPFRef).simplify(ctx).getValue();
         	return  object;
         }
         DynamicElementInfo dei = (DynamicElementInfo) env.getHeap().get(JPFRef);
@@ -128,7 +129,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
                 // we treat Strings differently
                 if (JPFCl.isStringClassInfo()) {
                     JVMObj = createStringObject(JPFRef, env, ctx);
-                    ConverterBase.objMapJPF2JVM.put(JPFRef, JVMObj);
+                    ConverterBase.objMapJPF2JVM.put(JPFRef, new One<>(JVMObj));
                 } else {
                     int JPFClsRef = JPFCl.getStaticElementInfo().getClassObjectRef();
                     Class<?> JVMCl = this.getJVMCls(JPFClsRef, env, ctx);
@@ -145,17 +146,15 @@ public abstract class JPF2JVMConverter extends ConverterBase {
                             }
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
-                            System.out.println("JPF2JVMConverter.getJVMNonArrObj()");
                         }
                         return JVMObj;
                     } else {
                         // Creates a new instance of JVMCl
                     	if (ConverterBase.objMapJPF2JVM.containsKey(JPFRef)) {
-                    		JVMObj = ConverterBase.objMapJPF2JVM.get(JPFRef);
-                    		System.out.println("JVM object " + JVMObj + " already exists!");
+                    		JVMObj = ConverterBase.objMapJPF2JVM.get(JPFRef).getValue();
                     	} else {
                     		JVMObj = instantiateFrom(JVMCl);
-                    		ConverterBase.objMapJPF2JVM.put(JPFRef, JVMObj);
+                    		ConverterBase.objMapJPF2JVM.put(JPFRef, new One<>(JVMObj));
                     	}
                     }
                     setInstanceFields(JVMObj, dei, env, ctx);
@@ -163,7 +162,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
             } else {
                 // Need to update the JVM object fields
                 DynamicElementInfo dei = (DynamicElementInfo) env.getHeap().get(JPFRef);
-                updateInstanceFields(JVMObj, dei, env, ctx);
+                updateInstanceFields(((Conditional<?>)JVMObj).getValue(), dei, env, ctx);
             }
         }
         return JVMObj;
@@ -224,8 +223,22 @@ public abstract class JPF2JVMConverter extends ConverterBase {
                     }
                     JVMArr = arrObj;
                 }
-                ConverterBase.objMapJPF2JVM.put(JPFRef, JVMArr);
+                ConverterBase.objMapJPF2JVM.put(JPFRef, new One<>(JVMArr));
+            } else {
+            	JVMArr = ((Conditional<?>)JVMArr).getValue();
             }
+        }
+        if (JVMArr instanceof Conditional) {
+        	if (((Conditional) JVMArr).isOne()) {
+        		JVMArr = ((Conditional) JVMArr).getValue();
+        	} else {
+        		Conditional simplify = ((Conditional) JVMArr).simplify(ctx);
+        		if (!simplify.isOne()) {
+        			System.out.println("Cannot call method with choice @" + JPFRef + " : " + simplify);
+        			throw new RuntimeException();
+        		}
+        		JVMArr = simplify.getValue(true);
+        	}
         }
         return JVMArr;
     }
@@ -253,7 +266,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
 //            System.out.println('\t' + Arrays.toString((char[]) value).replaceAll(",\\s", ""));
             JVMObj = new String((char[]) value);
         }
-        ConverterBase.objMapJPF2JVM.put(JPFRef, JVMObj);
+        ConverterBase.objMapJPF2JVM.put(JPFRef, new One<>(JVMObj));
         return JVMObj;
     }
 

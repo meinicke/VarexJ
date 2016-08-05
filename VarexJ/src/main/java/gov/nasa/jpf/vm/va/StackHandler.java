@@ -115,7 +115,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@SuppressWarnings("unchecked")
 	public StackHandler clone() {
 		StackHandler clone = new StackHandler();
-//		clone.setCtx(stackCTX); // TODO ThreadStopTest.testStopRunning() fails
+		clone.setCtx(stackCTX); // TODO ThreadStopTest.testStopRunning() fails
 		clone.length = length;
 		clone.locals = new Conditional[locals.length];
 		for (int i = 0; i < locals.length; i++) {
@@ -212,6 +212,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	}
 
 	private Conditional<Entry> popEntry(FeatureExpr ctx, final boolean copyRef) {
+		System.out.println(this);
 		Conditional<Entry> result = stack.simplify(ctx).mapf(ctx, new BiFunction<FeatureExpr, Stack, Conditional<Entry>>() {
 
 			@Override

@@ -75,7 +75,7 @@ public class MONITOREXIT extends LockInstruction {
 				}
 
 				StackFrame frame = ti.getModifiableTopFrame(); // now we need to modify it
-				frame.pop(ctx);
+				frame.pop(ctx, 1);
 
 				return getNext(ctx, ti);
 

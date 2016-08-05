@@ -102,7 +102,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
 		}
 		
 		// our guards (still need IllegalAccessException)
-		if (fi.isPrivate() && !env.getBooleanField(objRef, "isAccessible").getValue()) {
+		if (fi.isPrivate() && !env.getBooleanField(objRef, "isAccessible").simplify(ctx).getValue()) {
 			env.throwException(ctx, IllegalAccessException.class.getName(), fi + "");
 			return null;
 		}
@@ -480,7 +480,7 @@ static FieldInfo getFieldInfo (FeatureExpr ctx, MJIEnv env, int objRef) {
         		+ fi.getFullName());
         return;
       }
-    if (!env.getBooleanField(objRef, "isAccessible").getValue() && fi.isFinal()) {
+    if (!env.getBooleanField(objRef, "isAccessible").simplify(ctx).getValue() && fi.isFinal()) {
     	env.throwException(ctx, IllegalAccessException.class.getName(), "Can not set final " + fi.getType() + " field " 
     			+ fi.getFullName());
     	return;
@@ -496,7 +496,7 @@ static FieldInfo getFieldInfo (FeatureExpr ctx, MJIEnv env, int objRef) {
     
 
     
-    if (!env.getBooleanField(objRef, "isAccessible").getValue()) {
+    if (!env.getBooleanField(objRef, "isAccessible").simplify(ctx).getValue()) {
 		if (!fi.isStatic() && cio.isInstanceOf(ci)) {
 			if (!fi.isPublic()) {
 				env.throwException(ctx, IllegalAccessException.class.getName(),

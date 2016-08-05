@@ -95,7 +95,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 							PUTSTATIC.featureNumber++;
 							System.out.println("Found feature #" + PUTSTATIC.featureNumber + " - " + className+ "." + fname + "-" + objRef);
 							IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
-							frame.pop(ctx);
+							frame.pop(ctx, 1);
 							frame.push(ctx, create);
 							break;
 						}

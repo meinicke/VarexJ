@@ -42,7 +42,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 	@Override
 	protected void popOperands1(FeatureExpr ctx, StackFrame frame) {
-		frame.pop(ctx); // .. val => ..
+		frame.pop(ctx, 1); // .. val => ..
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 					}
 				}
 
-				frame.pop(ctx); // Ok, now we can remove the object ref from the stack
+				frame.pop(ctx, 1); // Ok, now we can remove the object ref from the stack
 				Object attr = ei.getFieldAttr(fi);
 
 				// We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level

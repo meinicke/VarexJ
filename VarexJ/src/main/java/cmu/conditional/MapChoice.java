@@ -206,5 +206,10 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	public int size() {
 		return map.size();
 	}
+	
+	@Override
+	public boolean isOne() {
+		return map.size() <= 1;
+	}
 
 }

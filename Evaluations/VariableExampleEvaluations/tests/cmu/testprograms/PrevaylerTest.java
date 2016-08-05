@@ -1,6 +1,7 @@
 package cmu.testprograms;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Iterator;
 
 import org.junit.Test;
@@ -27,33 +28,35 @@ public class PrevaylerTest extends ATestExample {
 
 	private static String NUMBER_KEEPER = "NumberKeeper";
 
-	@Conditional
+//	@Conditional
 	public static boolean USE_LOG4J_MONITOR = false;
-	@Conditional
+//	@Conditional
 	public static boolean USE_NULL_MONITOR = false;
 
-	@Conditional
+//	@Conditional
 	public static boolean USE_BROKEN_CLOCK = false;
-	@Conditional
+//	@Conditional
 	public static boolean USE_PAUSABLE_CLOCK = false;
 
 //	@Conditional // TODO not working for tutorialTest()
-	public static boolean USE_XSTREAM = true;
-	@Conditional
+	public static boolean USE_XSTREAM = false;
+//	@Conditional
 	public static boolean USE_TRANSIENT_MODE = false;
-	@Conditional
+//	@Conditional
 	public static boolean USE_JOURNAL_DISK_SYNC = false;
 	
-	@Conditional
+//	@Conditional // conditional write to the same file
 	public static boolean FILE_AGE_THREASHOLD = true;
 
-//	@Conditional // TODO not working
-	static boolean FILE_SIZE_THREASHOLD = true;
-//  @Conditional // TODO not working
-	static boolean USE_XSTREAM_JOURNAL = true;
-//	@Conditional // TODO not working
+//	@Conditional // conditional write to the same file
+	static boolean FILE_SIZE_THREASHOLD = false;
+    @Conditional // TODO not working
+	static boolean USE_XSTREAM_JOURNAL = false;
+	//@Conditional // TODO not working
 	static boolean USE_FILTERING = false;
 
+	
+	
 	@Test
 	public void runNumberKeeper() throws Exception {
 		// clean up

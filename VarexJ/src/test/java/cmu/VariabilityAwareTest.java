@@ -1,6 +1,7 @@
 package cmu;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -47,6 +48,24 @@ public class VariabilityAwareTest extends TestJPF {
 	@Conditional
 	static boolean z = true;
 
+	long l = 0;
+	
+	@Test
+	public void dateTest() {
+		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+//			long x = 0;
+			if (a) {
+				l = 10000;
+			}
+			Date date = methodDate();
+			date.getTime();
+		}
+	}
+	
+	Date methodDate() {
+		Date date = new Date(l);
+		return date;
+	}
 	@Test
 	public void simpleForTest() {
 		if (!RUN_WITH_JPF || verifyNoPropertyViolation(JPF_CONFIGURATION)) {

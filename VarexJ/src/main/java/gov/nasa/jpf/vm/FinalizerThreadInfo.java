@@ -87,7 +87,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     
     // Since we create FinalizerThread upon VM initialization, they are assigned to the
     // same group as the main thread
-    int grpRef = ThreadInfo.getCurrentThread().getThreadGroupRef();
+    int grpRef = ThreadInfo.getCurrentThread().getThreadGroupRef(ctx);
     eiThread.setReferenceField(ctx, "group", new One<>(grpRef));
     
     eiThread.setIntField(ctx, "priority", One.valueOf(Thread.MAX_PRIORITY-2));

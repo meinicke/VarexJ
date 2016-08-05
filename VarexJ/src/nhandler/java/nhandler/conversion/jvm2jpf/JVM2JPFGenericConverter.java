@@ -50,13 +50,13 @@ public class JVM2JPFGenericConverter extends JVM2JPFConverter {
               e2.printStackTrace();
             }
 
-            JPFfldValue = sei.getReferenceField(fi).getValue();
+            JPFfldValue = sei.getReferenceField(fi).simplify(ctx).getValue();
 
             if (JVMfldValue == null){
               JPFfldValue = MJIEnv.NULL;
-            } else if (JPFfldValue == MJIEnv.NULL || ConverterBase.objMapJPF2JVM.get(JPFfldValue) != JVMfldValue){
+            } else if (JPFfldValue == MJIEnv.NULL || ConverterBase.objMapJPF2JVM.get(JPFfldValue).getValue() != JVMfldValue){
               JPFfldValue = obtainJPFObj(JVMfldValue, env, ctx);
-            } else if (ConverterBase.objMapJPF2JVM.get(JPFfldValue) == JVMfldValue){
+            } else if (ConverterBase.objMapJPF2JVM.get(JPFfldValue).getValue() == JVMfldValue){
               updateJPFObj(JVMfldValue, JPFfldValue, env, ctx);
             } else{
               throw new ConversionException("Unconsidered case observed! - JVM2JPF.getJPFCls()");
@@ -108,9 +108,9 @@ public class JVM2JPFGenericConverter extends JVM2JPFConverter {
             }
             if (JVMfldValue == null){
               JPFfldValue = One.MJIEnvNULL;
-            } else if (JPFfldValue == One.MJIEnvNULL || ConverterBase.objMapJPF2JVM.get(JPFfldValue) != JVMfldValue){
+            } else if (JPFfldValue.equals(One.MJIEnvNULL) || getValueOrNull(ConverterBase.objMapJPF2JVM.get(JPFfldValue.getValue(true))) != JVMfldValue){
               JPFfldValue = new One<>(obtainJPFObj(JVMfldValue, env, ctx));
-            } else if (ConverterBase.objMapJPF2JVM.get(JPFfldValue) == JVMfldValue){
+            } else if (ConverterBase.objMapJPF2JVM.get(JPFfldValue.getValue()).getValue() == JVMfldValue){
               updateJPFObj(JVMfldValue, JPFfldValue.getValue(), env, ctx);
             } else{
               throw new ConversionException("Unconsidered case observed! - JVM2JPF.updateObj()");

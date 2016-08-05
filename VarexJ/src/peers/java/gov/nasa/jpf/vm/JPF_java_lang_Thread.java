@@ -48,7 +48,7 @@ public class JPF_java_lang_Thread extends NativePeer {
     
     // we only need to create the ThreadInfo - its initialization will take care
     // of proper linkage to the java.lang.Thread object (objRef)
-    vm.createThreadInfo( objRef, groupRef.getValue(), runnableRef.getValue(), nameRef.getValue());
+    vm.createThreadInfo( objRef, groupRef.getValue(), runnableRef.getValue(), nameRef.getValue(), ctx);
   }
 
   @MJI

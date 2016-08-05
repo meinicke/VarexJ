@@ -83,11 +83,15 @@ public class One<T> extends Conditional<T> implements Cloneable {
 				return true;
 			}
 			if (value instanceof char[]) {
-				Arrays.equals((char[]) value, (char[]) ((One<?>) obj).value);
+				if (((One<?>) obj).value instanceof char[]) {
+					Arrays.equals((char[]) value, (char[]) ((One<?>) obj).value);
+				} else {
+					return false;
+				}
 			}
-
-			if (((One<?>) obj).value != null && value != null && ((One<?>) obj).value.equals(value))
+			if (((One<?>) obj).value != null && value != null && ((One<?>) obj).value.equals(value)) {
 				return true;
+			}
 		}
 		return false;
 	}

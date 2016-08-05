@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import cmu.conditional.Conditional;
 import cmu.utils.RuntimeConstants;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.Resetable;
@@ -27,27 +28,37 @@ public class ConverterBase {
 	 * corresponding JPF objects, while performing conversion from JPF to JVM
 	 */
 	@SuppressWarnings("serial")
-	public static Map<Integer, Object> objMapJPF2JVM = new HashMap<Integer, Object>() {
+	public static Map<Integer, Conditional<Object>> objMapJPF2JVM = new HashMap<Integer, Conditional<Object>>() {
+
+		public cmu.conditional.Conditional<Object> get(Object key) {
+			if (key instanceof Conditional) {
+
+				throw new RuntimeException();
+			}
+			return super.get(key);
+		};
+		
+
 		@Override
-		public Object put(Integer key, Object value) {
+		public Conditional<Object> put(Integer key, Conditional<Object> value) {
 			if (containsKey(key)) {
 				Object currentObject = get(key);
 				if (currentObject == value) {
 					return null;
 				}
-				System.out.println("--- object for id " + key + " already created, but newly created " + value);
-				for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-					System.out.println(element);
-				}
-				System.out.println("-----------------------------------");
+//				System.out.println("--- object for id " + key + " already created, but newly created " + value);
+//				for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+//					System.out.println(element);
+//				}
+//				System.out.println("-----------------------------------");
 			}
 			return super.put(key, value);
 		};
 
 		@SuppressWarnings("unused")
 		@Override
-		public Object remove(Object key) {
-			Object object = super.remove(key);
+		public Conditional<Object> remove(Object key) {
+			Conditional<Object> object = super.remove(key);
 			if (RuntimeConstants.debugGC && object != null) {
 				System.out.println("GC JVM Heap(" + objMapJPF2JVM.size() + ") " + printSize(object) + object.getClass().getName() + " @ " + key);
 			}
@@ -70,7 +81,7 @@ public class ConverterBase {
 					break;
 				}
 			} else if (object instanceof String) {
-				size = (Character.SIZE * ((String)object).toCharArray().length) >> 3;
+				size = (Character.SIZE * ((String) object).toCharArray().length) >> 3;
 			}
 			if (size == 0) {
 				return "";
@@ -159,20 +170,12 @@ public class ConverterBase {
 			changed = false;
 			for (Map.Entry<Integer, Object> entry : map.entrySet()) {
 				Object obj = entry.getValue();
-				if (obj.getClass().getName().equals("java.net.Socket")
-						|| obj.getClass().getName().equals("java.net.SocksSocketImpl")
-						|| obj.getClass().getName().equals("java.net.SocketInputStream")
-						|| obj.getClass().getName().equals("java.net.SocketOutputStream")
-						|| obj.getClass().getName().startsWith("java.util.zip.ZipFile")
-						|| obj.getClass().getName().equals("java.util.jar.JarFile")
-						|| obj.getClass().getName().equals("sun.net.www.protocol.jar.URLJarFile")
-						|| obj.getClass().getName().equals("sun.net.www.protocol.jar.JarURLConnection")
-						|| obj.getClass().getName().equals("java.util.ResourceBundle")
-						|| obj.getClass().getName().equals("java.util.zip.CRC32")
-						|| obj.getClass().getName().equals("sun.nio.ch.IOUtil")
-						|| obj.getClass().getName().equals("sun.nio.ch.KQueueArrayWrapper")
-						|| obj.getClass().getName().equals("java.util.zip.Deflater")
-						) {
+				if (obj.getClass().getName().equals("java.net.Socket") || obj.getClass().getName().equals("java.net.SocksSocketImpl") || obj.getClass().getName().equals("java.net.SocketInputStream")
+						|| obj.getClass().getName().equals("java.net.SocketOutputStream") || obj.getClass().getName().startsWith("java.util.zip.ZipFile")
+						|| obj.getClass().getName().equals("java.util.jar.JarFile") || obj.getClass().getName().equals("sun.net.www.protocol.jar.URLJarFile")
+						|| obj.getClass().getName().equals("sun.net.www.protocol.jar.JarURLConnection") || obj.getClass().getName().equals("java.util.ResourceBundle")
+						|| obj.getClass().getName().equals("java.util.zip.CRC32") || obj.getClass().getName().equals("sun.nio.ch.IOUtil")
+						|| obj.getClass().getName().equals("sun.nio.ch.KQueueArrayWrapper") || obj.getClass().getName().equals("java.util.zip.Deflater")) {
 
 					continue;
 				} else {
@@ -190,20 +193,22 @@ public class ConverterBase {
 			changed = false;
 			for (Map.Entry<Integer, Class<?>> entry : map.entrySet()) {
 				Class<?> cls = entry.getValue();
-				if (cls.getName().equals("java.net.Socket")
-						|| cls.getName().equals("java.net.SocksSocketImpl") // this one is not in the jpf.properties file, but we need this
-						|| cls.getName().equals("java.net.SocketInputStream")
-						|| cls.getName().equals("java.net.SocketOutputStream")
-						|| cls.getName().startsWith("java.util.zip.ZipFile")
-						|| cls.getName().equals("java.util.jar.JarFile")
-						|| cls.getName().equals("sun.net.www.protocol.jar.URLJarFile")
-						|| cls.getName().equals("sun.net.www.protocol.jar.JarURLConnection")
-						|| cls.getName().equals("java.util.ResourceBundle")
-						|| cls.getName().equals("java.util.zip.CRC32")
-						|| cls.getName().equals("sun.nio.ch.IOUtil")
-						|| cls.getName().equals("sun.nio.ch.KQueueArrayWrapper")
-						|| cls.getName().equals("java.util.zip.Deflater")
-						) {
+				if (cls.getName().equals("java.net.Socket") || cls.getName().equals("java.net.SocksSocketImpl") // this
+																												// one
+																												// is
+																												// not
+																												// in
+																												// the
+																												// jpf.properties
+																												// file,
+																												// but
+																												// we
+																												// need
+																												// this
+						|| cls.getName().equals("java.net.SocketInputStream") || cls.getName().equals("java.net.SocketOutputStream") || cls.getName().startsWith("java.util.zip.ZipFile")
+						|| cls.getName().equals("java.util.jar.JarFile") || cls.getName().equals("sun.net.www.protocol.jar.URLJarFile")
+						|| cls.getName().equals("sun.net.www.protocol.jar.JarURLConnection") || cls.getName().equals("java.util.ResourceBundle") || cls.getName().equals("java.util.zip.CRC32")
+						|| cls.getName().equals("sun.nio.ch.IOUtil") || cls.getName().equals("sun.nio.ch.KQueueArrayWrapper") || cls.getName().equals("java.util.zip.Deflater")) {
 
 					continue;
 				} else {
@@ -222,5 +227,12 @@ public class ConverterBase {
 			objMapJPF2JVM.clear();
 		}
 	}
+	
+	protected static Object getValueOrNull(Conditional<Object> conditional) {
+		  if (conditional == null){
+			  return null;
+		  }
+		  return conditional.getValue();
+		}
 
 }

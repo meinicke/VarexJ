@@ -134,6 +134,7 @@ public class JPF2JVMGenericConverter extends JPF2JVMConverter {
                 if (fi != null && isNonStaticField) {
                     // Field is of reference type
                     if (fi.isReference()) {
+                    	System.out.println(fld[i] + " " + dei + " " + JVMObj);
                         int fieldValueRef = dei.getFields().getReferenceValue(fi.getStorageOffset()).simplify(ctx).getValue();
                         Object JVMField = obtainJVMObj(fieldValueRef, env, ctx);
                         if (JVMField instanceof Conditional) {

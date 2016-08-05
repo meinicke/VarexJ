@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +113,7 @@ public class NativeMethodInfo extends MethodInfo {
 		return -1; // we have no line numbers
 	}
 	
+	// TODO revise this method
 	public Conditional<Instruction> executeNative(final FeatureExpr ctx, ThreadInfo ti) {
 		Object ret = null;
 		Object[] args = null;
@@ -158,6 +160,8 @@ public class NativeMethodInfo extends MethodInfo {
 							@Override
 							public Object apply(Object[] args) {
 								try {
+									
+									System.out.println("4 " + mth.getName() + " " + Arrays.toString(args));
 									return mth.invoke(peer, args);
 								} catch (IllegalAccessException | InvocationTargetException e) {
 									System.err.println(mth);
@@ -182,8 +186,37 @@ public class NativeMethodInfo extends MethodInfo {
 						if (args[1] instanceof One) {
 							args[1] = ((One<?>)args[1]).getValue();
 						}
-						ret = mth.invoke(peer, args);
+						if (JPF.JVMheap.get(args[1]) instanceof Conditional) {
+							if (!((Conditional<?>)JPF.JVMheap.get(args[1])).isOne()) {
+								final Object[] finalArgs = args;
+								ret = ((Conditional)JPF.JVMheap.get(args[1])).mapf(ctx, new BiFunction<FeatureExpr, Object, Object>() {
+
+									@Override
+									public Object apply(FeatureExpr ctx, Object y) {
+										finalArgs[finalArgs.length-1] = ctx;
+										try {
+											System.out.println("3 "+ mth.getName() + " " + Arrays.toString(finalArgs));
+											Object returnValue = mth.invoke(peer, finalArgs);
+											return new One<>(returnValue);
+										} catch (IllegalAccessException e) {
+											e.printStackTrace();
+										} catch (InvocationTargetException e) {
+											e.printStackTrace();
+										}
+										return 0;
+									}
+									
+								});
+							} else {
+								System.out.println("2 "+ mth.getName() + " " + Arrays.toString(args));
+								ret = mth.invoke(peer, args);
+							}
+						} else {
+							System.out.println("1 "+ mth.getName() + " " + Arrays.toString(args));
+							ret = mth.invoke(peer, args);
+						}
 					} else {
+						System.out.println("5 "+ mth.getName() + " " + Arrays.toString(args));
 						ret = mth.invoke(peer, args);
 					}
 				}
@@ -265,6 +298,7 @@ public class NativeMethodInfo extends MethodInfo {
 			// this will catch all exceptionHandlers thrown by the native method execution
 			// we don't try to hand them back to the application
 			throw new JPFNativePeerException("exception in native method " + ci.getName() + '.' + getName(), itx.getTargetException());
+//			return new One<>(ti.createAndThrowException(ctx, InvocationTargetException.class.getName(), "calling " + ci.getName() + '.' + getName()));
 		}
 	}
 	

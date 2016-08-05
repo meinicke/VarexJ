@@ -2,6 +2,7 @@ package nhandler.conversion.jpf2jvm;
 
 import java.lang.reflect.Field;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayFields;
@@ -37,9 +38,17 @@ public class Utilities {
    */
   public static void setJVMPrimitiveField (Field fld, Object obj, ElementInfo ei, FieldInfo fi, FeatureExpr ctx) throws IllegalAccessException, ConversionException {
     if (fi.isBooleanField()) {
-      fld.setBoolean(obj, ei.getBooleanField(fi).getValue());
+      fld.setBoolean(obj, ei.getBooleanField(fi).simplify(ctx).getValue());
     } else if (fi.isByteField()) {
-      fld.setByte(obj, ei.getByteField(fi).simplify(ctx).getValue());
+      Conditional<Byte> simplify = ei.getByteField(fi).simplify(ctx);
+      Byte value;
+      if (simplify.isOne()) {
+    	 value = simplify.getValue();
+      } else {
+    	 System.err.println("Cannot set setJVMPrimitiveField " + fld + " for " + simplify + " in " + ctx);
+    	 value = simplify.getValue(true);
+      }
+      fld.setByte(obj, value);
     } else if (fi.isShortField()) {
       fld.setShort(obj, ei.getShortField(fi).getValue());
     } else if (fi.isIntField()) {
@@ -78,10 +87,17 @@ public class Utilities {
     // byte[]
     if (type.equals("[B")) {
 //      JVMObj = ((ArrayFields) ei.getFields()).asByteArrayConcrete();
-      Byte[] ByteArray = ((ArrayFields) ei.getFields()).asByteArrayConcrete(ctx);
+      Conditional<Byte>[] ByteArray = ((ArrayFields) ei.getFields()).asByteArray();
+      
         byte[] byteArray = new byte[ByteArray.length];
         for (int i = 0; i < ByteArray.length; i++) {
-            byteArray[i] = ByteArray[i].byteValue();
+        	Conditional<Byte> byteValue = ByteArray[i].simplify(ctx);
+			if (byteValue.isOne()) {
+        		byteArray[i] = byteValue.getValue().byteValue();
+        	} else {
+        		byteArray[i] = byteValue.getValue(true).byteValue();
+        		System.out.println("Unable to call native method with conditional value " + byteValue);
+        	}
         }
         JVMObj = byteArray;
     }
