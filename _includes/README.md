@@ -86,7 +86,7 @@ parentheses.
 
 # Understanding Interactions
 
-Distributions of essential configuration complexity (blue bars), interaction degree on data (green bars), and interaction degree on the control flow (red lien):
+Distributions of essential configuration complexity (blue bars), interaction degree on data (green bars), and interaction degree on the control flow (red line):
 
 ### Elevator
 <a href="/resources/VarexJ/Traces/Elevator.png"><img alt="Elevator" src="/resources/VarexJ/Traces/Elevator.png" width="800"/></a>
