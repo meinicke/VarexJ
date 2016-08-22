@@ -117,7 +117,7 @@ Distributions of essential configuration complexity (blue bars), interaction deg
 
 ## Credits
 
-* [Jens Meinicke](http://wwwiti.cs.uni-magdeburg.de/~meinicke/) (University of Magdeburg, Germany, project lead)
+* [Jens Meinicke](http://wwwiti.cs.uni-magdeburg.de/~meinicke/) (University of Magdeburg, Germany, Carnegie Mellon University, USA)
 * [Christian Kästner](http://www.cs.cmu.edu/~ckaestne/) (Carnegie Mellon University, USA)
 * [Chu-Pan Wong](https://www.cs.cmu.edu/~chupanw/) (Carnegie Mellon University, USA)
 * [Thomas Thüm](https://www.tu-braunschweig.de/isf/team/thuem) (TU Braunschweig, Germany)
