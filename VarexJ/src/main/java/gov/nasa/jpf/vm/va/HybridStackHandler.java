@@ -20,7 +20,10 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 public class HybridStackHandler implements Cloneable, IStackHandler {
 	
 	/** Locals are directly accessed with index **/
-	private IStackHandler stackHandler; 
+	private IStackHandler stackHandler;
+	public IStackHandler getStackHandler() {
+		return stackHandler;
+	}
 	
 	public static NormalStack normalStack = NormalStack.OneStack;
 	public enum NormalStack {
@@ -56,6 +59,9 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	protected int length = 0;
 	private boolean lifted = false;
+	public boolean isLifted() {
+		return lifted;
+	}
 	public FeatureExpr stackCTX;
 	private final int nLocals;
 	private final int nOperands;
@@ -368,7 +374,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	
 	private void checkValueO(Object value, FeatureExpr ctx) {
 		if (!lifted && value instanceof IChoice<?>) {
-			if (!((Conditional<?>)value).simplify(stackCTX).isOne()) {
+			if (!((Conditional<?>)value).simplify(ctx).simplify(stackCTX).isOne()) {
 				createNewStackHandler();
 			}
 		}
