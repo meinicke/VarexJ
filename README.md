@@ -53,4 +53,15 @@ b) as JVM via command line:
 
 `java -jar ..\RunJPF.jar +native_classpath=.."path to VarexJ"\lib\* +search.class=.search.RandomSearch +featuremodel="path to the feature model"\model.dimacs +choice=TreeChoice +factory=BDD +classpath="path to the application"\bin\ A.B.Main args `
 
+c) using a main method:
 
+	public static void main(String[] _) {
+		String path = "C:/Project/";
+		String[] args = {
+			"+classpath=" + path + "bin",
+			"+search.class=.search.RandomSearch",
+			"+featuremodel=" + path + "model.dimacs", 
+			"Main"
+		};
+		JPF.main(args);
+	}
