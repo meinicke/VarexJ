@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.StackFrame;
 
 public class StackHandlerFactory {
 
@@ -42,6 +43,14 @@ public class StackHandlerFactory {
 	}
 
 	public static IStackHandler createStack(FeatureExpr ctx, int nLocals, int nOperands) {
+		return createStack(ctx, nLocals, nOperands, null);
+	}
+	
+	public static IStackHandler createStack(FeatureExpr ctx, int nLocals, int nOperands, StackFrame frame) {
+		return new MeasuringStackHandler(ctx, nLocals, nOperands, frame);
+	}
+	
+	public static IStackHandler createStack2(FeatureExpr ctx, int nLocals, int nOperands) {
 		return f.createStack(ctx, nLocals, nOperands);
 	}
 

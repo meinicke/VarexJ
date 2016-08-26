@@ -134,7 +134,7 @@ public int nLocals;
     stackBase = nLocals;
 //    int top() = nLocals-1;
 
-    stack = StackHandlerFactory.createStack(ctx, nLocals, nOperands);
+    stack = StackHandlerFactory.createStack(ctx, nLocals, nOperands, this);
 //    int nSlots = nLocals + nOperands;
 //    if (nSlots > 0){
 //      slots = new int[nLocals + nOperands];
@@ -170,7 +170,7 @@ public int nLocals;
   protected StackFrame (int nLocals, int nOperands){
     stackBase = nLocals;
     this.nLocals = nLocals;
-    stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), nLocals, nOperands);
+    stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), nLocals, nOperands, this);
   }
   
   

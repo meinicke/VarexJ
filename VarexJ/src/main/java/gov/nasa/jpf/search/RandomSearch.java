@@ -34,6 +34,7 @@ import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.RestorableVMState;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
+import gov.nasa.jpf.vm.va.Store;
 
 /**
  * this is a straight execution pseudo-search - it doesn't search at all (i.e.
@@ -163,6 +164,8 @@ public class RandomSearch extends Search {
 				TraceComparator.compare();
 				TraceComparator.clear();
 			}
+			
+			Store.print();
 		}
 	}
 }
