@@ -7,6 +7,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,8 @@ public class Store {
 
 	private static Map<MeasuringStackHandler, List<LogEntry>> entries = new HashMap<>();
 
+	private static List<Measurement> measures = new ArrayList<>();
+	
 	private Store() {
 	}
 
@@ -47,6 +51,8 @@ public class Store {
 				writer.print(';');
 			}
 			writer.println();
+			
+			System.out.println("reexecute stack operations");
 			for (List<LogEntry> entry : entries.values()) {
 				if (verbose) {
 					System.out.println(entry.get(0).methodName);
@@ -58,8 +64,8 @@ public class Store {
 
 				Object[] initArgs = entry.get(0).args;
 
-				writer.print(entry.get(0).methodName);
-				writer.print(';');
+				Measurement measurement = new Measurement(entry.get(0).methodName);
+				measures.add(measurement);
 				for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
 					StackHandlerFactory.setFactory(factory);
 					IStackHandler checkStack = StackHandlerFactory.createStack2((FeatureExpr) initArgs[0],
@@ -78,8 +84,6 @@ public class Store {
 							}
 							logEntry.stackInstruction.invoke(checkStack, logEntry.args);
 						} catch (SecurityException | IllegalAccessException | InvocationTargetException e) {
-							// e.printStackTrace();
-							// throw new RuntimeException();
 							start = 0;
 							break;
 						}
@@ -87,17 +91,24 @@ public class Store {
 					long end = System.nanoTime();
 					long duration = (end - start);
 					
-					writer.print(duration);
-					writer.print(';');
-//					if (duration > 0) {
-//						System.out.print(factory + ": ");
-//						System.out.println(entry.get(0).methodName + " " + (duration / 10) + "." + (duration % 10));
-//					}
+					measurement.time[factory.ordinal()] = duration;
 				}
-				writer.println();
+			}
+			
+			System.out.println("Order measurements");
+			Collections.sort(measures, new Comparator<Measurement>() {
+
+				@Override
+				public int compare(Measurement o1, Measurement o2) {
+					return Long.compare(o1.time[SHFactory.Hybid.ordinal()], o2.time[SHFactory.Hybid.ordinal()]);
+				}
+			});
+			
+			System.out.println("Print measurements");
+			for (Measurement measurement : measures) {
+				writer.println(measurement.toString());
 			}
 		} catch (FileNotFoundException | UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -114,5 +125,26 @@ public class Store {
 			this.args = args;
 		}
 
+	}
+	
+	static class Measurement {
+		
+		String methodName;
+		
+		long[] time = new long[3];
+		public Measurement(String methodName) {
+			this.methodName = methodName;
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append(methodName);
+			for (int i = 0; i < time.length; i++) {
+				builder.append(';');
+				builder.append(time[i]);
+			}
+			return builder.toString();
+		}
 	}
 }
