@@ -1,8 +1,8 @@
 package gov.nasa.jpf.vm.va;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -14,7 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
+import de.fosd.typechef.featureexpr.bdd.SingleBDDFeatureExpr;
+import de.fosd.typechef.featureexpr.bdd.True;
 import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
+import size.ObjectSizeMeasure;
 
 public class Store {
 
@@ -23,7 +27,29 @@ public class Store {
 	private static Map<MeasuringStackHandler, List<LogEntry>> entries = new HashMap<>();
 
 	private static List<Measurement> measures = new ArrayList<>();
-	
+
+	private static PrintWriter writer;
+	static {
+		// ObjectSizeMeasure.VERBOUS = true;
+		ObjectSizeMeasure.ignoreClass(BDDFeatureExpr.class);
+		ObjectSizeMeasure.ignoreClass(True.class);
+		ObjectSizeMeasure.ignoreClass(de.fosd.typechef.featureexpr.bdd.True$.class);
+		ObjectSizeMeasure.ignoreClass(SingleBDDFeatureExpr.class);
+		try {
+			File file = new File("stacklog.csv");
+			System.out.println(file.getAbsolutePath());
+			writer = new PrintWriter(file);
+			writer.print(';');
+			for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
+				writer.print(factory);
+				writer.print(';');
+			}
+			writer.println();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private Store() {
 	}
 
@@ -41,77 +67,99 @@ public class Store {
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
+		if (method != null && "hasAnyRef".equals(method.getName())) {
+			reexecuteFrame(instructions);
+			entries.remove(handler);
+		}
 	}
 
-	public static void print() {
-		try (PrintWriter writer = new PrintWriter("stacklog.csv", "UTF-8")){
-			writer.print(';');
-			for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
-				writer.print(factory);
-				writer.print(';');
-			}
-			writer.println();
-			
-			System.out.println("reexecute stack operations");
-			for (List<LogEntry> entry : entries.values()) {
-				if (verbose) {
-					System.out.println(entry.get(0).methodName);
-					for (LogEntry logEntry : entry) {
-						System.out.println(logEntry.stackInstruction + Arrays.toString(logEntry.args));
-					}
-					System.out.println();
-				}
-
-				Object[] initArgs = entry.get(0).args;
-
-				Measurement measurement = new Measurement(entry.get(0).methodName);
-				measures.add(measurement);
-				for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
-					StackHandlerFactory.setFactory(factory);
-					IStackHandler checkStack = StackHandlerFactory.createStack2((FeatureExpr) initArgs[0],
-							(int) initArgs[1], (int) initArgs[2]);
-					
-					long start = System.nanoTime();
-					for (LogEntry logEntry : entry) {
-						if (logEntry.stackInstruction == null) {
-							// case constructor
-							continue;
-						}
-						try {
-							if (verbose) {
-								System.out.print("invoke: " + logEntry.stackInstruction.getName());
-								System.out.println(" args: " + Arrays.toString(logEntry.args));
-							}
-							logEntry.stackInstruction.invoke(checkStack, logEntry.args);
-						} catch (SecurityException | IllegalAccessException | InvocationTargetException e) {
-							start = 0;
-							break;
-						}
-					}
-					long end = System.nanoTime();
-					long duration = (end - start);
-					
-					measurement.time[factory.ordinal()] = duration;
-				}
-			}
-			
-			System.out.println("Order measurements");
-			Collections.sort(measures, new Comparator<Measurement>() {
-
-				@Override
-				public int compare(Measurement o1, Measurement o2) {
-					return Long.compare(o1.time[SHFactory.Hybid.ordinal()], o2.time[SHFactory.Hybid.ordinal()]);
-				}
-			});
-			
-			System.out.println("Print measurements");
-			for (Measurement measurement : measures) {
-				writer.println(measurement.toString());
-			}
-		} catch (FileNotFoundException | UnsupportedEncodingException e1) {
-			e1.printStackTrace();
+	public synchronized static void print() {
+		System.out.println("reexecute stack operations");
+		for (List<LogEntry> entry : entries.values()) {
+			reexecuteFrame(entry);
 		}
 
+		System.out.println("Order measurements");
+		Collections.sort(measures, new Comparator<Measurement>() {
+
+			@Override
+			public int compare(Measurement o1, Measurement o2) {
+				int compare = Long.compare(o1.measurement[SHFactory.Hybid.ordinal()], o2.measurement[SHFactory.Hybid.ordinal()]);
+				if (compare == 0) {
+					compare = Long.compare(o1.measurement[SHFactory.Default.ordinal()],
+							o2.measurement[SHFactory.Default.ordinal()]);
+				}
+				return compare;
+			}
+		});
+
+		System.out.println("Print measurements");
+		for (Measurement measurement : measures) {
+			writer.println(measurement.toString());
+		}
+		writer.close();
+	}
+
+	private synchronized static void reexecuteFrame(List<LogEntry> entry) {
+		// if (!entry.get(0).methodName.equals("testGetChars")) {
+		// continue;
+		// }
+
+		if (verbose) {
+			System.out.println(entry.get(0).methodName);
+			for (LogEntry logEntry : entry) {
+				System.out.println(logEntry.stackInstruction + Arrays.toString(logEntry.args));
+			}
+			System.out.println();
+		}
+
+		Object[] initArgs = entry.get(0).args;
+
+		Measurement measurement = new Measurement(entry.get(0).methodName);
+		measures.add(measurement);
+		for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
+//			if (factory != SHFactory.Hybid) {
+//				continue;
+//			}
+			StackHandlerFactory.setFactory(factory);
+			IStackHandler checkStack;
+			try {
+				checkStack = StackHandlerFactory.createStack2((FeatureExpr) initArgs[0], (int) initArgs[1],
+						(int) initArgs[2]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				continue;
+			}
+
+//			long start = System.nanoTime();
+
+			long bytes = ObjectSizeMeasure.getSizeInByte(checkStack);
+			for (LogEntry logEntry : entry) {
+				if (logEntry.stackInstruction == null) {
+					// case constructor
+					continue;
+				}
+				try {
+					if (verbose) {
+						System.out.print("invoke: " + logEntry.stackInstruction.getName());
+						System.out.println(" args: " + Arrays.toString(logEntry.args));
+					}
+					logEntry.stackInstruction.invoke(checkStack, logEntry.args);
+					bytes = Math.max(bytes, ObjectSizeMeasure.getSizeInByte(checkStack));
+					if (bytes > 400) {
+						ObjectSizeMeasure.VERBOUS = true;
+						ObjectSizeMeasure.getSizeInByte(checkStack);
+						ObjectSizeMeasure.VERBOUS = false;
+					}
+				} catch (SecurityException | IllegalAccessException | InvocationTargetException e) {
+//					start = 0;
+					break;
+				}
+			}
+//			long end = System.nanoTime();
+//			long duration = (end - start);
+//			measurement.measurement[factory.ordinal()] = duration;
+			measurement.measurement[factory.ordinal()] = bytes;
+		}
 	}
 
 	private static class LogEntry {
@@ -126,23 +174,24 @@ public class Store {
 		}
 
 	}
-	
+
 	static class Measurement {
-		
+
 		String methodName;
-		
-		long[] time = new long[3];
+
+		long[] measurement = new long[3];
+
 		public Measurement(String methodName) {
 			this.methodName = methodName;
 		}
-		
+
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append(methodName);
-			for (int i = 0; i < time.length; i++) {
+			for (int i = 0; i < measurement.length; i++) {
 				builder.append(';');
-				builder.append(time[i]);
+				builder.append(measurement[i]);
 			}
 			return builder.toString();
 		}
