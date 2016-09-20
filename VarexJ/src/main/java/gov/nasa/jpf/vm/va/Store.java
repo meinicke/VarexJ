@@ -145,11 +145,6 @@ public class Store {
 					}
 					logEntry.stackInstruction.invoke(checkStack, logEntry.args);
 					bytes = Math.max(bytes, ObjectSizeMeasure.getSizeInByte(checkStack));
-					if (bytes > 400) {
-						ObjectSizeMeasure.VERBOUS = true;
-						ObjectSizeMeasure.getSizeInByte(checkStack);
-						ObjectSizeMeasure.VERBOUS = false;
-					}
 				} catch (SecurityException | IllegalAccessException | InvocationTargetException e) {
 //					start = 0;
 					break;
