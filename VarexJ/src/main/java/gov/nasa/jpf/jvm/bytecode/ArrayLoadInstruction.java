@@ -39,7 +39,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
-
+		final Instruction thisInstruction = this;
 		// we need to get the object first, to check if it is shared
 		Conditional<Integer> aref = frame.peek(ctx, 1); // ..,arrayRef,idx
 		final ArrayLoadInstruction instruction = this;
@@ -82,8 +82,8 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							}
 		
 							return getNext(ctx, ti);
-						} catch (ArrayIndexOutOfBoundsExecutiveException ex) {
-							return new One<>(ex.getInstruction());
+						} catch (ArrayIndexOutOfBoundsException ex) {
+							return new One<Instruction>(new EXCEPTION(thisInstruction, java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));
 						}
 					}
 					

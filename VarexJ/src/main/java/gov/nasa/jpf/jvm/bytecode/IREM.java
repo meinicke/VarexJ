@@ -38,13 +38,13 @@ public class IREM extends JVMInstruction {
 
 		Conditional<Integer> v1 = frame.pop(ctx);
 		final Conditional<Integer> v2 = frame.pop(ctx);
-
+		final Instruction thisInstruction = this;
 		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 				@Override
 				public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
 				    if (v1 == 0){
-				      return new One<>(ti.createAndThrowException(ctx,java.lang.ArithmeticException.class.getName(), "division by zero"));
+				    	return new One<Instruction>(new EXCEPTION(thisInstruction, java.lang.ArithmeticException.class.getName(), "division by zero"));
 				    }
 				    
 					frame.push(ctx, v2.mapr(new Function<Integer, Conditional<Integer>>() {
