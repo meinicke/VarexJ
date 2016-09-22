@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -36,26 +37,34 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class ARRAYLENGTH extends ArrayInstruction {
     
+	private Conditional<Integer> pushValue = One.valueOf(0);
+	private FeatureExpr pushCtx; 
+	
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayRef = frame.pop(ctx);
-
-		return arrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		pushCtx = ctx;
+		final Instruction thisInstruction = this;
+		final Conditional<Instruction> next = arrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayRef) {
 				if (arrayRef == MJIEnv.NULL) {
-					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "array length of null object"));
+					pushCtx = pushCtx.andNot(ctx);
+					return new One<Instruction>(new EXCEPTION(thisInstruction, "java.lang.NullPointerException",
+							"array length of null object"));
 				}
 
 				ElementInfo ei = ti.getElementInfo(arrayRef);
-				frame.push(ctx, ei.arrayLength(), false);
+				pushValue = ChoiceFactory.create(ctx, ei.arrayLength(), pushValue);
 				return getNext(ctx, ti);
 
 			}
 
 		});
+		frame.push(pushCtx, pushValue);
+		return next;
 	}
   
   @Override

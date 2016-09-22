@@ -33,16 +33,16 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class CALOAD extends ArrayLoadInstruction {
 
-  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     e.checkArrayBounds(ctx, index);
-    frame.push( ctx, e.getCharElement(index).mapr(new Function<Character, Conditional<Integer>>() {
+    return e.getCharElement(index).mapr(new Function<Character, Conditional<Integer>>() {
 
 		@Override
 		public Conditional<Integer> apply(Character x) {
 			return new One<>((int) x);
 		}
     	
-    }), isReference());
+    });
   }
 
   public int getByteCode () {

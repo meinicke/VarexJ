@@ -18,22 +18,6 @@
 //
 package gov.nasa.jpf.util.test;
 
-import gov.nasa.jpf.Config;
-import gov.nasa.jpf.Error;
-import gov.nasa.jpf.JPF;
-import gov.nasa.jpf.JPFShell;
-import gov.nasa.jpf.Property;
-import gov.nasa.jpf.annotation.Conditional;
-import gov.nasa.jpf.annotation.FilterField;
-import gov.nasa.jpf.tool.RunTest;
-import gov.nasa.jpf.util.DevNullPrintStream;
-import gov.nasa.jpf.util.JPFSiteUtils;
-import gov.nasa.jpf.util.Reflection;
-import gov.nasa.jpf.util.TypeRef;
-import gov.nasa.jpf.vm.ExceptionInfo;
-import gov.nasa.jpf.vm.NoUncaughtExceptionsProperty;
-import gov.nasa.jpf.vm.NotDeadlockedProperty;
-
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
@@ -43,6 +27,21 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import gov.nasa.jpf.Config;
+import gov.nasa.jpf.Error;
+import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.JPFShell;
+import gov.nasa.jpf.Property;
+import gov.nasa.jpf.annotation.FilterField;
+import gov.nasa.jpf.tool.RunTest;
+import gov.nasa.jpf.util.DevNullPrintStream;
+import gov.nasa.jpf.util.JPFSiteUtils;
+import gov.nasa.jpf.util.Reflection;
+import gov.nasa.jpf.util.TypeRef;
+import gov.nasa.jpf.vm.ExceptionInfo;
+import gov.nasa.jpf.vm.NoUncaughtExceptionsProperty;
+import gov.nasa.jpf.vm.NotDeadlockedProperty;
 
 /**
  * base class for JPF unit tests. TestJPF mostly includes JPF invocations

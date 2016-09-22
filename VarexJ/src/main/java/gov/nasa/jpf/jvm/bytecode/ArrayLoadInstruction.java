@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -36,6 +37,9 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 
+	private Conditional<?> pushValue = One.valueOf(0);
+	private FeatureExpr pushCtx;
+	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
@@ -43,55 +47,71 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 		// we need to get the object first, to check if it is shared
 		Conditional<Integer> aref = frame.peek(ctx, 1); // ..,arrayRef,idx
 		final ArrayLoadInstruction instruction = this;
-		return aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		pushCtx = ctx;
+		Conditional<Instruction> next = aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {
-
 				if (aref == MJIEnv.NULL) {
+					pushCtx = pushCtx.andNot(ctx);
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
 				}
 
 				final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
 				if (isNewPorBoundary(e, ti)) {
 					if (createAndSetArrayCG(e, ti, aref, peekIndex(ctx, ti), true)) {
+						pushCtx = pushCtx.andNot(ctx);
 						return new One<Instruction>(instruction);
 					}
 				}
+				return new One<Instruction>(null);
+			}
+		});
 
-				index = frame.pop(ctx);
+		index = frame.pop(ctx);
+		// we should not set 'arrayRef' before the CG check
+		// (this would kill the CG loop optimization)
+		arrayRef = frame.pop(ctx);
+		next = ChoiceFactory.create(pushCtx, arrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-				// we should not set 'arrayRef' before the CG check
-				// (this would kill the CG loop optimization)
-				arrayRef = frame.pop(ctx);
-				
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {
+				final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
 				return index.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 					@Override
 					public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
 						try {
-							push(ctx, frame, e, index);
-		
-							Object attr = e.getElementAttr(index);
-							if (attr != null) {
-								if (getElementSize() == 1) {
-									frame.setOperandAttr(attr);
-								} else {
-									frame.setLongOperandAttr(attr);
-								}
-							}
-		
+							final Conditional push = getPushValue(ctx, frame, e, index);
+							pushValue = ChoiceFactory.create(ctx, push, pushValue);
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
-							return new One<Instruction>(new EXCEPTION(thisInstruction, java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));
+							pushCtx = pushCtx.andNot(ctx);
+							return new One<Instruction>(new EXCEPTION(thisInstruction,
+									java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));
 						}
 					}
-					
-				});
 
+				});
 			}
 
-		});
+		}), next);
+
+		frame.push(pushCtx, pushValue, isReference());
+		
+		if (index.isOne() && aref.isOne()) {
+			// TODO
+			final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref.getValue());
+			Object attr = e.getElementAttr(index.getValue());
+			if (attr != null) {
+				if (getElementSize() == 1) {
+					frame.setOperandAttr(attr);
+				} else {
+					frame.setLongOperandAttr(attr);
+				}
+			}
+		}
+		return next;
 	}
 
 	protected boolean isReference() {
@@ -113,7 +133,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 		return ti.getTopFrame().peek(ctx);
 	}
 
-	protected abstract void push(FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException;
+	protected abstract Conditional<?> getPushValue(FeatureExpr ctx, StackFrame frame, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException;
 
 	@Override
 	public boolean isRead() {

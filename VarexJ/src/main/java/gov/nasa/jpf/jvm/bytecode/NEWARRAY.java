@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -40,19 +41,23 @@ public class NEWARRAY extends NewArrayInstruction {
 	public NEWARRAY(int typeCode) {
 		type = Types.getElementDescriptorOfType(typeCode);
 	}
+	
+	private Conditional<Integer> pushRef = One.valueOf(0);
+	private FeatureExpr pushCtx; 
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayLength = frame.pop(ctx);
 		final Heap heap = ti.getHeap();
-
-		return arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		pushCtx = ctx;
+		final Conditional<Instruction> returnInstruction = arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayLength) {
 
 				if (arrayLength < 0) {
+					pushCtx = pushCtx.andNot(ctx);
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
 				}
 
@@ -67,19 +72,21 @@ public class NEWARRAY extends NewArrayInstruction {
 				}
 
 				if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
+					pushCtx = pushCtx.andNot(ctx);
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.OutOfMemoryError", "trying to allocate new " + getTypeName() + "[" + arrayLength + "]"));
 				}
 
 				ElementInfo eiArray = heap.newArray(ctx, type, arrayLength, ti);
 				int arrayRef = eiArray.getObjectRef();
-
-				frame.pushRef(ctx, arrayRef);
+				pushRef = ChoiceFactory.create(ctx, One.valueOf(arrayRef), pushRef);
 
 				return getNext(ctx, ti);
 
 			}
 
 		});
+		frame.pushRef(pushCtx, pushRef);
+		return returnInstruction;
 	}
 
 	public int getLength() {

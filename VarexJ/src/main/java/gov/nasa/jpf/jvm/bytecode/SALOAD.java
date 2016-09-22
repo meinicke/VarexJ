@@ -30,10 +30,9 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class SALOAD extends ArrayLoadInstruction {
 
-  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    Conditional<Short> value = ei.getShortElement(index);
-    frame.push(ctx, value);
+    return ei.getShortElement(index);
   }
 
 

@@ -30,10 +30,9 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class LALOAD extends LongArrayLoadInstruction {
 
-  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    Conditional<Long> value = ei.getLongElement(index);
-    frame.push(ctx, value);
+    return ei.getLongElement(index);
   }
 
 

@@ -31,17 +31,17 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class DALOAD extends LongArrayLoadInstruction {
 
-  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     Conditional<Double> value = ei.getDoubleElement(index);
-    frame.push(ctx, value.map(new Function<Double, Long>() {
+    return value.map(new Function<Double, Long>() {
 
 		@Override
 		public Long apply(Double value) {
 			return Double.doubleToLongBits(value);
 		}
     	
-    }));
+    });
   }
 
   public int getByteCode () {

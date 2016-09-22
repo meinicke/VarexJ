@@ -31,17 +31,17 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class FALOAD extends ArrayLoadInstruction {
 
-  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     Conditional<Float> value = ei.getFloatElement(index);
-    frame.push(ctx, value.map(new Function<Float, Integer>() {
+    return value.map(new Function<Float, Integer>() {
 
 		@Override
 		public Integer apply(Float v) {
 			return Float.floatToIntBits(v);
 		}
     	
-    }));
+    });
   }
 
   public int getByteCode () {
