@@ -28,6 +28,16 @@ public class Store {
 
 	private static List<Measurement> measures = new ArrayList<>();
 
+	enum MesurePrperty {
+		time, memory
+	}
+
+	private static final MesurePrperty[] MeasureThis = {
+			MesurePrperty.time,
+//			MesurePrperty.memory 
+			};
+
+	private static final char DELIMITER = ',';
 	private static PrintWriter writer;
 	static {
 		// ObjectSizeMeasure.VERBOUS = true;
@@ -39,10 +49,12 @@ public class Store {
 			File file = new File("stacklog.csv");
 			System.out.println(file.getAbsolutePath());
 			writer = new PrintWriter(file);
-			writer.print(';');
-			for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
-				writer.print(factory);
-				writer.print(';');
+			writer.print(DELIMITER);
+			for (int i = 0; i < MeasureThis.length; i++) {
+				for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
+					writer.print(factory);
+					writer.print(DELIMITER);
+				}
 			}
 			writer.println();
 		} catch (FileNotFoundException e) {
@@ -84,10 +96,10 @@ public class Store {
 
 			@Override
 			public int compare(Measurement o1, Measurement o2) {
-				int compare = Long.compare(o1.measurement[SHFactory.Hybid.ordinal()], o2.measurement[SHFactory.Hybid.ordinal()]);
+				int compare = Long.compare(o1.memory[SHFactory.Hybid.ordinal()], o2.memory[SHFactory.Hybid.ordinal()]);
 				if (compare == 0) {
-					compare = Long.compare(o1.measurement[SHFactory.Default.ordinal()],
-							o2.measurement[SHFactory.Default.ordinal()]);
+					compare = Long.compare(o1.memory[SHFactory.Default.ordinal()],
+							o2.memory[SHFactory.Default.ordinal()]);
 				}
 				return compare;
 			}
@@ -101,10 +113,6 @@ public class Store {
 	}
 
 	private synchronized static void reexecuteFrame(List<LogEntry> entry) {
-		// if (!entry.get(0).methodName.equals("testGetChars")) {
-		// continue;
-		// }
-
 		if (verbose) {
 			System.out.println(entry.get(0).methodName);
 			for (LogEntry logEntry : entry) {
@@ -117,43 +125,62 @@ public class Store {
 
 		Measurement measurement = new Measurement(entry.get(0).methodName);
 		measures.add(measurement);
-		for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
-//			if (factory != SHFactory.Hybid) {
-//				continue;
-//			}
-			StackHandlerFactory.setFactory(factory);
-			IStackHandler checkStack;
-			try {
-				checkStack = StackHandlerFactory.createStack2((FeatureExpr) initArgs[0], (int) initArgs[1],
-						(int) initArgs[2]);
-			} catch (ArrayIndexOutOfBoundsException e) {
-				continue;
-			}
-
-//			long start = System.nanoTime();
-
-			long bytes = ObjectSizeMeasure.getSizeInByte(checkStack);
-			for (LogEntry logEntry : entry) {
-				if (logEntry.stackInstruction == null) {
-					// case constructor
-					continue;
+		for (MesurePrperty p : MeasureThis) {
+			for (SHFactory factory : StackHandlerFactory.SHFactory.values()) {
+//				 if (factory != SHFactory.Hybid) {
+//					 continue;
+//				 }
+				int rounds = 1;
+				long[] median = null;
+				if (p == MesurePrperty.time) {
+					rounds = 5;
+					median = new long[rounds];
 				}
-				try {
-					if (verbose) {
-						System.out.print("invoke: " + logEntry.stackInstruction.getName());
-						System.out.println(" args: " + Arrays.toString(logEntry.args));
+				ROUNDS: for (int i = 0; i < rounds; i++) {
+					StackHandlerFactory.setFactory(factory);
+					long start = System.nanoTime();
+					IStackHandler checkStack;
+					try {
+						checkStack = StackHandlerFactory.createStack2((FeatureExpr) initArgs[0], (int) initArgs[1],
+								(int) initArgs[2]);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						continue;
 					}
-					logEntry.stackInstruction.invoke(checkStack, logEntry.args);
-					bytes = Math.max(bytes, ObjectSizeMeasure.getSizeInByte(checkStack));
-				} catch (SecurityException | IllegalAccessException | InvocationTargetException e) {
-//					start = 0;
-					break;
+
+					if (p == MesurePrperty.memory) {
+						start = ObjectSizeMeasure.getSizeInByte(checkStack);
+					}
+					for (LogEntry logEntry : entry) {
+						if (logEntry.stackInstruction == null) {
+							// case constructor
+							continue;
+						}
+						try {
+							if (verbose) {
+								System.out.print("invoke: " + logEntry.stackInstruction.getName());
+								System.out.println(" args: " + Arrays.toString(logEntry.args));
+							}
+							logEntry.stackInstruction.invoke(checkStack, logEntry.args);
+							if (p == MesurePrperty.memory) {
+								start = Math.max(start, ObjectSizeMeasure.getSizeInByte(checkStack));
+							}
+						} catch (SecurityException | IllegalAccessException | InvocationTargetException e) {
+							break ROUNDS;
+						}
+					}
+					if (p == MesurePrperty.memory) {
+						measurement.memory[factory.ordinal()] = start;
+					} else if (p == MesurePrperty.time) {
+						long end = System.nanoTime();
+						long duration = (end - start);
+						median[i] = duration;
+					}
+				}
+				if (p == MesurePrperty.time) {
+					Arrays.sort(median);
+					measurement.time[factory.ordinal()] = median[rounds / 2];
 				}
 			}
-//			long end = System.nanoTime();
-//			long duration = (end - start);
-//			measurement.measurement[factory.ordinal()] = duration;
-			measurement.measurement[factory.ordinal()] = bytes;
 		}
 	}
 
@@ -174,7 +201,8 @@ public class Store {
 
 		String methodName;
 
-		long[] measurement = new long[3];
+		long[] memory = new long[3];
+		long[] time = new long[3];
 
 		public Measurement(String methodName) {
 			this.methodName = methodName;
@@ -184,11 +212,23 @@ public class Store {
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append(methodName);
-			for (int i = 0; i < measurement.length; i++) {
-				builder.append(';');
-				builder.append(measurement[i]);
+
+			for (MesurePrperty mesurePrperty : MeasureThis) {
+				if (mesurePrperty == (MesurePrperty.memory)) {
+					for (int i = 0; i < memory.length; i++) {
+						builder.append(DELIMITER);
+						builder.append(memory[i]);
+					}
+				}
+				if (mesurePrperty == (MesurePrperty.time)) {
+					for (int i = 0; i < time.length; i++) {
+						builder.append(DELIMITER);
+						builder.append(time[i]);
+					}
+				}
 			}
 			return builder.toString();
 		}
+
 	}
 }
