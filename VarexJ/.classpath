@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry excluding="d4j/" kind="src" path="src/test/java"/>
-	<classpathentry kind="src" path="src/test/resources"/>
-	<classpathentry kind="src" path="src/annotations/java"/>
-	<classpathentry kind="src" path="src/classes/java"/>
-	<classpathentry excluding="CommonMath.java" kind="src" path="src/examples/java"/>
-	<classpathentry kind="src" path="src/nhandler/java"/>
-	<classpathentry kind="src" path="src/peers/java"/>
+	<classpathentry kind="src" output="build/classes/main" path="src/main/java"/>
+	<classpathentry excluding="d4j/" kind="src" output="build/classes/test" path="src/test/java"/>
+	<classpathentry kind="src" output="build/resources/test" path="src/test/resources"/>
+	<classpathentry kind="src" output="build/classes/annotations" path="src/annotations/java"/>
+	<classpathentry kind="src" output="build/classes/classes" path="src/classes/java"/>
+	<classpathentry excluding="CommonMath.java" kind="src" output="build/classes/examples" path="src/examples/java"/>
+	<classpathentry kind="src" output="build/classes/nhandler" path="src/nhandler/java"/>
+	<classpathentry kind="src" output="build/classes/peers" path="src/peers/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-io.jar"/>
 	<classpathentry kind="lib" path="lib/commons-jxpath-1.3.jar"/>

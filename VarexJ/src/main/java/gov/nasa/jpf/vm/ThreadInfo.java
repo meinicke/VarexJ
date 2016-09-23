@@ -31,7 +31,6 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -2010,34 +2009,25 @@ public class ThreadInfo extends InfoObject
 	        	}
 	        	time = System.currentTimeMillis();
 	        }
-        	Instruction i = null;
+	        Instruction i = null;
  	        FeatureExpr ctx = top.stack.getCtx();
- 	        if (pc instanceof One) {
+ 	        if (pc.isOne()) {
  	        	i = pc.getValue();
  	        } else {
- 		    	Map<Instruction, FeatureExpr> map = pc.simplify(ctx).toMap();// XXX jens why simplify
- 		    	int minPos = Integer.MAX_VALUE;
- 		    	MethodInfo m = top.getMethodInfo();
- 		    	
- 		    	if (map.size() == 1) {
- 		    		for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
- 		    			i = e.getKey();
- 		    		}
- 		    	} else {
- 			   		for (Entry<Instruction, FeatureExpr> e : map.entrySet()) {
- 			   			final Instruction key = e.getKey();
- 						if (!(key instanceof ReturnInstruction)){
- 			    			if (key.position < minPos && key.mi == m) {
- 			    				minPos = key.position;
- 			    				i = key;
- 			    			}
- 			   			} else if (i == null && key.mi == m) {
- 			   				i = key;
- 			   			}
- 			   		}
- 			   		ctx = map.get(i).and(ctx);
- 		    	}
- 	        }	
+ 		    	final Map<Instruction, FeatureExpr> map = pc.toMap();
+	    		int minPos = Integer.MAX_VALUE;
+		   		for (final Instruction ins : map.keySet()) {
+					if (!(ins instanceof ReturnInstruction)){
+		    			if (ins.position < minPos) {
+		    				minPos = ins.position;
+		    				i = ins;
+		    			}
+		   			} else if (i == null) {
+		   				i = ins;
+		   			}
+		   		}
+		   		ctx = map.get(i).and(ctx);
+ 	        }
  	        	
      		if (RuntimeConstants.debug) {
      			System.out.print(top.getDepth());
@@ -2060,18 +2050,22 @@ public class ThreadInfo extends InfoObject
      		
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
-    			nextPc = next;
+    			nextPc = next.simplify(top.stack.getCtx());
 	    		if (stackDepth > RuntimeConstants.MAX_FRAMES) {
 	            	nextPc = ChoiceFactory.create(ctx, 
 	            			new One<Instruction>(new EXCEPTION(StackOverflowError.class.getName(), "Too many frames (more than " + RuntimeConstants.MAX_FRAMES + ")")), 
-	            			next).simplify();
+	            			next).simplify(top.stack.getCtx());
             	}
     		} else if (i instanceof ReturnInstruction) {
-    			// instructions already joined at ReturnInstruction#getNext() 
-    			nextPc = next;
+    			// instructions already joined at ReturnInstruction#getNext()
+    			if (top == null) {
+    				nextPc = next;
+    			} else {
+    				nextPc = next.simplify(top.stack.getCtx());
+    			}
     		} else if (i instanceof ATHROW || i instanceof EXCEPTION || (poped > 0 && stackTraceMember(oldStack, top))) {
     			// some instruction (e.g., IDIV with div by zero) just pop frames but do not throw exceptions
-    			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify();
+    			nextPc = ChoiceFactory.create(ctx, next, getPC()).simplify(top.stack.getCtx());
     			popedFrames = poped;
 				int k = 0;
 				StackFrame stackPointer = oldStack;
@@ -2079,7 +2073,9 @@ public class ThreadInfo extends InfoObject
 				while (k < popedFrames) {
 					FeatureExpr newCtx = stackPointer.stack.getCtx().andNot(ctx);
 					stackPointer.stack.setCtx(newCtx);
+					stackPointer.pc = stackPointer.pc.simplify(newCtx);
 					stackPointer = stackPointer.prev;
+					
 					k++;
 				}
     		} else {
@@ -2120,28 +2116,12 @@ public class ThreadInfo extends InfoObject
   			// return to the current method after the chatch clause is set after an exception
   			pushFrames(oldStack, popedFrames);
   		}
-      return nextPc;
+      return getPC();
     } else {
       return (Conditional<Instruction>) One.NULL;
     }
   }
 
-    static Conditional<Integer> combine(final Conditional<Integer> a, final Conditional<Integer> b) {
-		return a.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-			@Override
-			public Conditional<Integer> apply(FeatureExpr c, final Integer y) {
-				return b.mapf(c, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-					@Override
-					public Conditional<Integer> apply(FeatureExpr c, final Integer z) {
-						return new One(y+z);
-					}
-					
-				});
-			}
-			
-		}).simplify();
-	}
-    
     private static int countGc = 0;
     private final static long maxMemory = Runtime.getRuntime().maxMemory();
 	private static boolean checkGcNeeded(int instructions) {

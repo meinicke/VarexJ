@@ -1721,9 +1721,7 @@ public abstract class ElementInfo implements Cloneable {
   public void checkArrayBounds(FeatureExpr ctx, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     if (fields instanceof ArrayFields) {
       if (index < 0 || index >= ((ArrayFields)fields).arrayLength().getValue()){
-        throw new ArrayIndexOutOfBoundsExecutiveException(
-              ThreadInfo.getCurrentThread().createAndThrowException(
-              ctx, "java.lang.ArrayIndexOutOfBoundsException", Integer.toString(index)));
+    	  throw new ArrayIndexOutOfBoundsException(index);
       }
     } else {
       throw new JPFException("object is not an array: " + this);

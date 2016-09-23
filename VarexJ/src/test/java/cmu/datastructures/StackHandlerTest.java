@@ -21,6 +21,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.va.BufferedStackHandler;
+import gov.nasa.jpf.vm.va.HybridStackHandler;
 import gov.nasa.jpf.vm.va.IStackHandler;
 import gov.nasa.jpf.vm.va.StackHandlerFactory;
 import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
@@ -87,7 +88,7 @@ public class StackHandlerTest {
 		stack.push(f1, n2, false);
 		assertTrue(stack.getStackWidth() <= 2);
 		stack.push(f1.not(), n2, false);
-		if (!(stack instanceof BufferedStackHandler)) {
+		if (!(stack instanceof BufferedStackHandler) && !(stack instanceof HybridStackHandler)) {
 			assertEquals(1, stack.getStackWidth());
 		}
 	}

@@ -160,7 +160,11 @@ public class CoverageClass {
 			text += "\n";
 			text += ((HybridStackHandler) stack).getStackHandler();
 			if (((HybridStackHandler) stack).isLifted()) {
-				interaction = 10;
+				if (stack.getStackWidth() > 1) {
+					interaction = stack.getStackWidth() + 4;
+				} else {
+					interaction = 2;
+				}
 			} else {
 				interaction = 1;
 			}

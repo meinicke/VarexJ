@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -41,6 +42,8 @@ public class ANEWARRAY extends NewArrayInstruction {
 	public ANEWARRAY(String typeDescriptor) {
 		type = Types.getTypeSignature(typeDescriptor, true);
 	}
+	
+	private Conditional<Integer> pushValue = One.valueOf(0);
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		// resolve the component class first
@@ -66,7 +69,7 @@ public class ANEWARRAY extends NewArrayInstruction {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayLength = frame.pop(ctx);
-		return arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		final Conditional<Instruction> next = arrayLength.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayLength) {
@@ -84,12 +87,16 @@ public class ANEWARRAY extends NewArrayInstruction {
 				int aRef = eiArray.getObjectRef();
 
 				// pushes the object reference on the top stack frame
-				frame.push(ctx, aRef, true);
+				
+				pushValue = ChoiceFactory.create(ctx, One.valueOf(aRef), pushValue);
 
 				return getNext(ctx, ti);
 			}
 
 		});
+		
+		frame.pushRef(ctx, pushValue);
+		return next;
 	}
 
 	public int getLength() {

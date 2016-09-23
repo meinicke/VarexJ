@@ -83,8 +83,8 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 									e.setElementAttrNoClone(index, attr); // <2do> what if the value is the same but not the attr?
 									return getNext(ctx, ti);
 
-								} catch (ArrayIndexOutOfBoundsExecutiveException ex) { // at this point, the AIOBX is already processed
-									return new One<>(ex.getInstruction());
+								} catch (ArrayIndexOutOfBoundsException ex) { // at this point, the AIOBX is already processed
+									return new One<Instruction>(new EXCEPTION(instruction, ArrayIndexOutOfBoundsException.class.getName(), "Array index out of range: " + index));
 								}
 							}
 

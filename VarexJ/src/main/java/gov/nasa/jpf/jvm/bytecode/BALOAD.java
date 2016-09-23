@@ -38,7 +38,7 @@ public class BALOAD extends ArrayLoadInstruction {
 	
 	private static final One<Byte> nullValue = One.valueOf((byte)0);
 
-  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
 
     Conditional<Byte> value;
@@ -58,7 +58,7 @@ public class BALOAD extends ArrayLoadInstruction {
     	value = nullValue;
     }
 
-    frame.push(ctx, value);
+    return value;
   }
 
 

@@ -30,10 +30,9 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class AALOAD extends ArrayLoadInstruction {
 
-  protected void push (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    Conditional<Integer> value = ei.getReferenceElement(index);
-    frame.pushRef(ctx, value);
+    return ei.getReferenceElement(index);
   }
 
 

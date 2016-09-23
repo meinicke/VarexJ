@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.Function;
 import cmu.conditional.One;
@@ -32,6 +33,9 @@ import gov.nasa.jpf.vm.ThreadInfo;
  * Divide int ..., value1, value2 =>..., result
  */
 public class IDIV extends JVMInstruction {
+	
+	private Conditional<Integer> pushValue = One.valueOf(0);
+	private FeatureExpr pushCtx; 
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
@@ -40,28 +44,32 @@ public class IDIV extends JVMInstruction {
 		final Conditional<Integer> v2 = frame.pop(ctx);
 		final IDIV thisInstruction = this;
 
-		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		pushCtx = ctx;
+		final Conditional<Instruction> returnInstruction = v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-				@Override
-				public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
-				    if (v1 == 0){
-				      return new One<Instruction>(new EXCEPTION(thisInstruction, "java.lang.ArithmeticException", "division by zero"));
-				    }
-				    
-					frame.push(ctx, v2.mapr(new Function<Integer, Conditional<Integer>>() {
-
-						@Override
-						public Conditional<Integer> apply(Integer v2) {
-							return new One<>(v2.intValue() / v1.intValue());
+					@Override
+					public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
+						if (v1 == 0) {
+							pushCtx = pushCtx.andNot(ctx);
+							return new One<Instruction>(new EXCEPTION(thisInstruction, "java.lang.ArithmeticException",
+									"division by zero"));
 						}
-						
-					}));
 
-				    return getNext(ctx, ti);
-				}
-		    	
-		    }).simplify();
+						pushValue = ChoiceFactory.create(ctx, v2.mapr(new Function<Integer, Conditional<Integer>>() {
 
+							@Override
+							public Conditional<Integer> apply(Integer v2) {
+								return new One<>(v2.intValue() / v1.intValue());
+							}
+
+						}), pushValue);
+						return getNext(ctx, ti);
+					}
+
+				}).simplify();
+
+		frame.push(pushCtx, pushValue);
+		return returnInstruction;
 	}
 
 	public int getByteCode() {

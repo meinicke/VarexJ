@@ -33,10 +33,10 @@ import gov.nasa.jpf.vm.ThreadInfo;
 public class IADD extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
+    final StackFrame frame = ti.getModifiableTopFrame();
     
-    Conditional<Integer> v1 = frame.pop(ctx);
-    Conditional<Integer> v2 = frame.pop(ctx);
+    final Conditional<Integer> v1 = frame.pop(ctx);
+    final Conditional<Integer> v2 = frame.pop(ctx);
 
     frame.push(ctx, maprInt(v1, v2));
     return getNext(ctx, ti);
