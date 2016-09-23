@@ -2073,7 +2073,7 @@ public String toString () {
   //--- VM independent exception handler setup
   
   public void setExceptionReference (int exRef, FeatureExpr ctx){
-    pushRef(TRUE, exRef);
+    pushRef(ctx, exRef);
   }
   
   public int getExceptionReference (){

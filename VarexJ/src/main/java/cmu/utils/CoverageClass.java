@@ -75,6 +75,11 @@ public class CoverageClass {
 			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {
 				time = System.nanoTime() - time;
 			}
+			StackFrame topFrame = ti.getTopFrame();
+			
+			if (topFrame != null && (topFrame.getMethodInfo() != i.getMethodInfo())) {
+				return;
+			}
 
 			Object newLocal = null;
 			int newLocalSize = localSize;
@@ -85,8 +90,8 @@ public class CoverageClass {
 					index = li.getLocalVariableIndex();
 				}
 				if (index != -1) {
-					newLocal = ti.getTopFrame().stack.getLocal(index);
-					newLocalSize = ti.getTopFrame().stack.getLocal(ti.getTopFrame().stack.getCtx(), index).toMap().size();
+					newLocal = topFrame.stack.getLocal(index);
+					newLocalSize = topFrame.stack.getLocal(topFrame.stack.getCtx(), index).toMap().size();
 				}
 			}
 			performCoverage(i, ctx, time, localSize, oldLocal, newLocalSize, newLocal);
