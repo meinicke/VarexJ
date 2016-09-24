@@ -17,14 +17,8 @@ public class CollectionPrintTest extends TestJPF {
 	@Conditional static boolean a2 = true;
 	@Conditional static boolean a3 = true;
 	@Conditional static boolean a4 = true;
-	@Conditional static boolean a5 = true;
-	@Conditional static boolean a6 = true;
-	@Conditional static boolean a7 = true;
-	@Conditional static boolean a8 = true;
-	@Conditional static boolean a9 = true;
-	@Conditional static boolean a10 = true;
 	@Test
-	public void collectionTests() throws Exception {
+	public void collectionTests() throws Exception {// BUG in JPF_StringBuilder
 		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
 			Collection<Integer> set = new LinkedList<>();
 			int i = 0;
@@ -32,12 +26,6 @@ public class CollectionPrintTest extends TestJPF {
 			if (a2 ) set.add(i); i++;
 			if (a3 ) set.add(i); i++;
 			if (a4 ) set.add(i); i++;
-			if (a5 ) set.add(i); i++;
-			if (a6 ) set.add(i); i++;
-			if (a7 ) set.add(i); i++;
-			if (a8 ) set.add(i); i++;
-			if (a9 ) set.add(i); i++;
-			if (a10) set.add(i); i++;
 			System.out.println(set);
 		}
 	}
