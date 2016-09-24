@@ -47,23 +47,26 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 
 	@Override
 	protected void popOperands1(FeatureExpr ctx, StackFrame frame) {
-		frame.pop(ctx, 2); // .. objref, val => ..
+//		frame.pop(ctx, 2); // .. objref, val => ..
+		popCTX = popCTX.or(ctx);
 	}
 
 	@Override
 	protected void popOperands2(FeatureExpr ctx, StackFrame frame) {
-		frame.pop(ctx, 3); // .. objref, highVal,lowVal => ..
+		popCTX = popCTX.or(ctx);
+//		frame.pop(ctx, 3); // .. objref, highVal,lowVal => ..
 	}
 
+	private FeatureExpr popCTX;
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
-		final StackFrame frame = ti.getTopFrame();
+		final StackFrame frame = ti.getModifiableTopFrame();
 		Conditional<Integer> objRef = frame.peek(ctx, size);
 		lastThis = objRef;
 		
 		final PUTFIELD instruction = this;
-
-		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		popCTX = FeatureExprFactory.False();
+		Conditional<Instruction> next = objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objRef) {
@@ -105,13 +108,21 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 				} else { // re-execution
 					// no need to redo the exception checks, we already had them in the top half
 					ElementInfo ei = ti.getElementInfo(objRef);
-
+					
 					return put(ctx, ti, frame, ei, false); // this might create an exposure CG and cause another re-execution
 				}
 
 			}
 
 		});
+		if (!Conditional.isContradiction(popCTX)) {
+			if (size == 1) {
+		      frame.pop(popCTX, 2);
+		    } else {
+		      frame.pop(popCTX, 3);
+		    }
+		}
+		return next;
 	}
 
 	@Override

@@ -16,6 +16,7 @@ public class BufferedStackHandlerTest extends TestJPF {
 
 	private static String[] JPF_CONFIGURATION = new String[] {
 //			"+interaction=frame", 
+//			"+invocation",
 			"+search.class=.search.RandomSearch", "+choice=MapChoice" };
 
 	@Conditional
@@ -140,7 +141,42 @@ public class BufferedStackHandlerTest extends TestJPF {
 			int i = 1/1;
 		}
 	}
+	private Child[] children = new Child[10];
 	
+	@Test
+	public void referenceTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			initChildren();
+			
+			
+			Child initChild = initChild();
+			int[] thisMin = initChild.minBorder;
+			int j = 0;
+			int i = initChild.i;
+			int k = 1;
+			
+			initChild.minBorder = thisMin;
+		}
+	}
 	
+	private void initChildren() {
+		for (int i = 0; i < children.length; i++) {
+			children[i] = initChild();
+		}
+	}
+
+	private Child initChild() {
+		return b ? new Child() : new Child();
+	}
+
+	class Child {
+		int [] minBorder = new int[10];
+		int i = 0;
+		public Child() {
+//			for (int i = 0; i < minBorder.length; i++) {
+//				minBorder[i] = a ? i : 1;
+//			}
+		}
+	}
 
 }

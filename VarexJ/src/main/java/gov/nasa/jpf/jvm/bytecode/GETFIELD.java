@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.BiFunction;
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -42,29 +43,31 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 	@Override
 	protected void popOperands1(FeatureExpr ctx, StackFrame frame) {
-		frame.pop(ctx); // .. val => ..
+//		frame.pop(ctx); // .. val => ..
 	}
 
 	@Override
 	protected void popOperands2(FeatureExpr ctx, StackFrame frame) {
-		frame.pop(ctx, 2); // .. highVal, lowVal => ..
+//		frame.pop(ctx, 2); // .. highVal, lowVal => ..
 	}
 
+	private FeatureExpr pushCTX;
+	private Conditional pushValue = One.valueOf(0);
+	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
-
 		Conditional<Integer> objRef = frame.peek(ctx); // don't pop yet, we might re-enter
 
 		lastThis = objRef;
 		final GETFIELD thisInstruction = this;
-
-		return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		pushCTX = ctx;
+		Conditional<Instruction> next = objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objRef) {
-
 				if (objRef == MJIEnv.NULL) {
+					pushCTX = pushCTX.andNot(ctx);
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
 				}
 
@@ -72,48 +75,57 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 				FieldInfo fi = getFieldInfo(ctx);
 				if (fi == null) {
+					pushCTX = pushCTX.andNot(ctx);
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
 				}
 
 				// check if this breaks the current transition
 				if (isNewPorFieldBoundary(ti, fi, objRef)) {
 					if (createAndSetSharedFieldAccessCG(ei, ti)) {
+						pushCTX = pushCTX.andNot(ctx);
 						return new One<Instruction>(thisInstruction);
 					}
 				}
+				return (Conditional<Instruction>) One.NULL;
+			}
+		});
+		if (Conditional.isContradiction(pushCTX)) {
+			return next;
+		}
+		frame.pop(pushCTX, 1); // Ok, now we can remove the object ref from the stack
+		next = ChoiceFactory.create(pushCTX, objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
-				frame.pop(ctx); // Ok, now we can remove the object ref from the stack
-				Object attr = ei.getFieldAttr(fi);
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objRef) {
+				ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
+				attr = ei.getFieldAttr(fi);
 
 				// We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
 				if (fi.getStorageSize() == 1) { // 1 slotter
-					Conditional<Integer> ival = ei.get1SlotField(fi);
-					lastValue = ival;
-
-					if (fi.isReference()) {
-						frame.pushRef(ctx, ival);
-
-					} else {
-						frame.push(ctx, ival);
-					}
-
-					if (attr != null) {
-						frame.setOperandAttr(attr);
-					}
-
+					pushValue = ChoiceFactory.create(ctx, ei.get1SlotField(fi), pushValue);
 				} else { // 2 slotter
-					Conditional<Long> lval = ei.get2SlotField(fi).simplify(ctx);
-					lastValue = lval;
-					frame.push(ctx, lval);
-					if (attr != null) {
-						frame.setLongOperandAttr(attr);
-					}
+					pushValue = ChoiceFactory.create(ctx, ei.get2SlotField(fi), pushValue);
 				}
-
 				return getNext(ctx, ti);
 
 			}
-		});
+		}), next);
+		if (fi.isReference()) {
+			frame.pushRef(pushCTX, pushValue);
+		} else {
+			frame.push(pushCTX, pushValue);
+		}
+		if (size == 1) {
+			if (attr != null) {
+				frame.setOperandAttr(attr);
+			}
+		} else {
+			if (attr != null) {
+				frame.setLongOperandAttr(attr);
+			}
+		}
+		
+		return next;
 	}
 
 	public ElementInfo peekElementInfo(ThreadInfo ti) {
