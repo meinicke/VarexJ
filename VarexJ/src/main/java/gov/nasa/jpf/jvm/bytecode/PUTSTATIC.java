@@ -23,7 +23,6 @@ import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -64,7 +63,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 		for (AnnotationInfo ai : annotations) {
 			if (ANNOTATION_CONDITIONAL.equals(ai.getName())) {
 				StackFrame frame = ti.getModifiableTopFrame();
-				FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
+				FeatureExpr feature = Conditional.createFeature(fname);
 				featureNumber++;
 				System.out.println("Found feature #" + featureNumber + " - " + fname);
 				IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));

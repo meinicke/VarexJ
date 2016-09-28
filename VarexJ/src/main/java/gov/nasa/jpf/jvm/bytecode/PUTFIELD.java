@@ -94,7 +94,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 					for (AnnotationInfo ai : annotations) {
 						if (PUTSTATIC.ANNOTATION_CONDITIONAL.equals(ai.getName())) {
 							StackFrame frame = ti.getModifiableTopFrame();
-							FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + className+ "." + fname + "-" + objRef);
+							FeatureExpr feature = Conditional.createFeature(className+ "." + fname + "-" + objRef);
 							PUTSTATIC.featureNumber++;
 							System.out.println("Found feature #" + PUTSTATIC.featureNumber + " - " + className+ "." + fname + "-" + objRef);
 							IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
