@@ -44,7 +44,8 @@ public abstract class Conditional<T> {
 	 * Creates a BDD from the given feature model.
 	 */
 	private static void createBDDFeatureModel() {
-		final IVec<IVecInt> clauses = fm.clauses();
+		@SuppressWarnings("rawtypes")//Gradle compiler bug
+		final IVec clauses = fm.clauses();
 		final scala.collection.immutable.Map<String, Object> vars = fm.variables();
 		
 		java.util.Map<Integer, String> map = new HashMap<>();
@@ -56,7 +57,7 @@ public abstract class Conditional<T> {
 		final int size = clauses.size();
 		FeatureExpr construction = FeatureExprFactory.True();
 		for (int i = 0; i < size; i++) {
-			IVecInt c = clauses.get(i);
+			IVecInt c = (IVecInt) clauses.get(i);
 			IteratorInt iterator = c.iterator();
 			FeatureExpr clause = FeatureExprFactory.False();
 			while (iterator.hasNext()) {
