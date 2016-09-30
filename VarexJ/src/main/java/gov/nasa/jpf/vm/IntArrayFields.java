@@ -44,7 +44,6 @@ public class IntArrayFields extends ArrayFields {
 	public IntArrayFields(int length) {
 		values = new Conditional[length];
 		Arrays.fill(values, init);
-
 	}
 
 	@Override
@@ -52,16 +51,16 @@ public class IntArrayFields extends ArrayFields {
 		return values;
 	}
 
-    @Override
-    public Integer[] asIntArrayConcrete() {
-        Integer[] c_values = new Integer[values.length];
-        for (int i = 0; i < values.length; i++) {
-            c_values[i] = values[i].getValue();
-        }
-        return c_values;
-    }
+	@Override
+	public Integer[] asIntArrayConcrete() {
+		Integer[] c_values = new Integer[values.length];
+		for (int i = 0; i < values.length; i++) {
+			c_values[i] = values[i].getValue();
+		}
+		return c_values;
+	}
 
-    protected void printValue(PrintStream ps, int idx) {
+	protected void printValue(PrintStream ps, int idx) {
 		ps.print(values[idx]);
 	}
 
@@ -143,4 +142,15 @@ public class IntArrayFields extends ArrayFields {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void fill(FeatureExpr ctx, Conditional<?> value) {
+		if (Conditional.isTautology(ctx)) {
+			Arrays.fill(values, value);
+		} else {
+			for (int i = 0; i < values.length; i++) {
+				values[i] = ChoiceFactory.create(ctx, (Conditional<Integer>) value, values[i]).simplify();
+			}
+		}
+	}
 }

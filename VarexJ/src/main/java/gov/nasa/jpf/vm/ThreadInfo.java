@@ -2029,7 +2029,9 @@ public class ThreadInfo extends InfoObject
 		   		ctx = map.get(i).and(ctx);
  	        }
  	        	
-     		if (RuntimeConstants.debug) {
+				if (RuntimeConstants.debug) {
+     			System.out.print(executedInstructions);
+     			System.out.print("  ");
      			System.out.print(top.getDepth());
      			if (top.getDepth() < 10) {
      				System.out.print(" ");

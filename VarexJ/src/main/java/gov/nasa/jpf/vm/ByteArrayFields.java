@@ -34,103 +34,115 @@ import gov.nasa.jpf.util.IntVector;
  */
 public class ByteArrayFields extends ArrayFields {
 
-  Conditional<Byte>[] values;
-  private static final One<Byte> init = One.valueOf((byte)0);
-  
-  @SuppressWarnings("unchecked")
-  public ByteArrayFields (int length) {
-	  values = new Conditional[length];
-	  Arrays.fill(values, init);
-  }
+	Conditional<Byte>[] values;
+	private static final One<Byte> init = One.valueOf((byte) 0);
 
-  public Conditional<Byte>[] asByteArray() {
-    return values;
-  }
+	@SuppressWarnings("unchecked")
+	public ByteArrayFields(int length) {
+		values = new Conditional[length];
+		Arrays.fill(values, init);
+	}
 
-    public Byte[] asByteArrayConcrete(FeatureExpr ctx) {
-        Byte[] cvalues = new Byte[this.values.length];
-        for (int i = 0; i < this.values.length; i++) {
-            cvalues[i] = this.values[i].simplify(ctx).getValue();
-        }
-        return cvalues;
-    }
-  
-  protected void printValue(PrintStream ps, int idx){
-    ps.print(values[idx]);
-  }
-  
-  public Conditional<?> getValues(){
-    return new One<>(values);
-  }
+	public Conditional<Byte>[] asByteArray() {
+		return values;
+	}
 
-  public Conditional<Integer> arrayLength() {
-    return new One<>(values.length);
-  }
+	public Byte[] asByteArrayConcrete(FeatureExpr ctx) {
+		Byte[] cvalues = new Byte[this.values.length];
+		for (int i = 0; i < this.values.length; i++) {
+			cvalues[i] = this.values[i].simplify(ctx).getValue();
+		}
+		return cvalues;
+	}
 
-  public int getHeapSize() {
-    return values.length;
-  }
+	protected void printValue(PrintStream ps, int idx) {
+		ps.print(values[idx]);
+	}
 
-  public boolean equals (Object o) {
-    if (o instanceof ByteArrayFields) {
-      ByteArrayFields other = (ByteArrayFields)o;
+	public Conditional<?> getValues() {
+		return new One<>(values);
+	}
 
-      Conditional<Byte>[] v = values;
-      Conditional<Byte>[] vOther = other.values;
-      if (v.length != vOther.length) {
-        return false;
-      }
+	public Conditional<Integer> arrayLength() {
+		return new One<>(values.length);
+	}
 
-      for (int i=0; i<v.length; i++) {
-        if (!v[i].equals(vOther[i])) {
-          return false;
-        }
-      }
+	public int getHeapSize() {
+		return values.length;
+	}
 
-      return compareAttrs(other);
+	public boolean equals(Object o) {
+		if (o instanceof ByteArrayFields) {
+			ByteArrayFields other = (ByteArrayFields) o;
 
-    } else {
-      return false;
-    }
-  }
+			Conditional<Byte>[] v = values;
+			Conditional<Byte>[] vOther = other.values;
+			if (v.length != vOther.length) {
+				return false;
+			}
 
-  public ByteArrayFields clone(){
-    ByteArrayFields f = (ByteArrayFields)cloneFields();
-    f.values = values.clone();
-    return f;
-  }
+			for (int i = 0; i < v.length; i++) {
+				if (!v[i].equals(vOther[i])) {
+					return false;
+				}
+			}
 
-  @Override
-  public void setByteValue (FeatureExpr ctx, int pos, Conditional<Byte> b) {
-	  if (Conditional.isTautology(ctx)) {
-		  values[pos] = b;
-	  } else {
-		  values[pos] = ChoiceFactory.create(ctx, b, values[pos]).simplify();
-	  }
-  }
+			return compareAttrs(other);
 
-  @Override
-  public Conditional<Byte> getByteValue (int pos) {
-    return values[pos];
-  }
+		} else {
+			return false;
+		}
+	}
 
-  public void appendTo (IntVector v) {
-	  byte [] a = new byte[values.length];
+	public ByteArrayFields clone() {
+		ByteArrayFields f = (ByteArrayFields) cloneFields();
+		f.values = values.clone();
+		return f;
+	}
+
+	@Override
+	public void setByteValue(FeatureExpr ctx, int pos, Conditional<Byte> b) {
+		if (Conditional.isTautology(ctx)) {
+			values[pos] = b;
+		} else {
+			values[pos] = ChoiceFactory.create(ctx, b, values[pos]).simplify();
+		}
+	}
+
+	@Override
+	public Conditional<Byte> getByteValue(int pos) {
+		return values[pos];
+	}
+
+	public void appendTo(IntVector v) {
+		byte[] a = new byte[values.length];
 		for (int i = 0; i < values.length; i++) {
 			for (Byte val : values[i].toList()) {
 				a[i] = val;
 			}
 		}
-    v.appendPacked(a);
-  }
+		v.appendPacked(a);
+	}
 
-  public void hash(HashData hd) {
-    Conditional<Byte>[] v = values;
-    for (int i=0; i < v.length; i++) {
-    	for (Byte b : v[i].toList()) {
-    		hd.add(b);
-    	}
-    }
-  }
+	public void hash(HashData hd) {
+		Conditional<Byte>[] v = values;
+		for (int i = 0; i < v.length; i++) {
+			for (Byte b : v[i].toList()) {
+				hd.add(b);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void fill(FeatureExpr ctx, int from, int to, Conditional<?> value) {
+		if (Conditional.isTautology(ctx)) {
+			Arrays.fill(values, from, to, value);
+		} else {
+			for (int i = from; i <= to; i++) {
+				setByteValue(ctx, i, (Conditional<Byte>) value);
+			}
+		}
+	}
 
 }

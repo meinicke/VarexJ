@@ -143,5 +143,16 @@ public ReferenceArrayFields (int length) {
 	    }
   }
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void fill(FeatureExpr ctx, Conditional<?> value) {
+		if (Conditional.isTautology(ctx)) {
+			Arrays.fill(values, value);
+		} else {
+			for (int i = 0; i < values.length; i++) {
+				setReferenceValue(ctx, i, (Conditional<Integer>) value);
+			}
+		}
+	}
 
 }

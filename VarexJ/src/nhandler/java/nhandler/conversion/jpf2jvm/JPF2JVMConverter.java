@@ -239,7 +239,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
         }
 
         FieldInfo fi = str.getFieldInfo("value");
-        int fieldValueRef = str.getFields().getReferenceValue(fi.getStorageOffset()).getValue();
+        int fieldValueRef = str.getFields().getReferenceValue(fi.getStorageOffset()).simplify(ctx).getValue();
 
         // this is String.value which is of type of char[]
         Object value = this.getJVMObj(fieldValueRef, env, ctx);

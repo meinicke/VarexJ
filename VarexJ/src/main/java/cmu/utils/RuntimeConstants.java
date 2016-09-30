@@ -10,17 +10,17 @@ public interface RuntimeConstants {
 	 * Defines the maximal recursion until a {@link StackOverflowError} is thrown.
 	 */
 	int MAX_FRAMES = 1000;
-	
+
 	/**
 	 * Enables debug output.
 	 */
 	boolean debug = false;
-	
+
 	/**
 	 * Enables debug output.
 	 */
 	boolean debugGC = false;
-	
+
 	/**
 	 * Defines weather the context is part of the console output.
 	 */

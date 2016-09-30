@@ -143,11 +143,11 @@ public abstract class ArrayFields extends Fields {
 		// overridden by subclass
 		throw new JPFException("not a short[]");
 	}
-	
+
 	@Override
 	public void setIntValue(FeatureExpr ctx, int index, Conditional<Integer> newValue) {
 		// overridden by subclass
-		throw new JPFException(getClass() + " not an int[]");		
+		throw new JPFException(getClass() + " not an int[]");
 	}
 
 	@Override
@@ -179,11 +179,11 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a boolean[]");
 	}
 
-    // cpwTODO
-    public Byte[] asByteArrayConcrete(FeatureExpr ctx) {
-        // overridden by subclass
-        throw new JPFException("not a byte[]");
-    }
+	// cpwTODO
+	public Byte[] asByteArrayConcrete(FeatureExpr ctx) {
+		// overridden by subclass
+		throw new JPFException("not a byte[]");
+	}
 
 	public Conditional<Byte>[] asByteArray() {
 		// overridden by subclass
@@ -200,10 +200,10 @@ public abstract class ArrayFields extends Fields {
 		throw new JPFException("not a short[]");
 	}
 
-    public Integer[] asIntArrayConcrete() {
-        // overridden by subclass
-        throw new JPFException("not a int[]");
-    }
+	public Integer[] asIntArrayConcrete() {
+		// overridden by subclass
+		throw new JPFException("not a int[]");
+	}
 
 	public Conditional<Integer>[] asIntArray() {
 		// overridden by subclass
@@ -232,6 +232,14 @@ public abstract class ArrayFields extends Fields {
 
 	public int[] asFieldSlots() {// TODO
 		throw new JPFException("array has no field slots");
+	}
+
+	public void fill(FeatureExpr ctx, Conditional<?> value) {
+		throw new JPFException("fill not implemented for " + getClass().getName());
+	}
+
+	public void fill(FeatureExpr ctx, int from, int to, Conditional<?> value) {
+		throw new JPFException("range-fill not implemented for " + getClass().getName());
 	}
 
 }
