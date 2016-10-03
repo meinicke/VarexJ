@@ -36,7 +36,7 @@ public abstract class Conditional<T> {
 		if (fm != null) {
 			createBDDFeatureModel();
 		} else {
-			bddFM = (BDDFeatureExpr) FeatureExprFactory.True();
+			bddFM = (BDDFeatureExpr) FeatureExprFactory.bdd().True();
 		}
 	}
 
