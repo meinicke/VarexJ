@@ -1987,10 +1987,11 @@ public class Arrays {
      * @param a the array to be filled
      * @param val the value to be stored in all elements of the array
      */
-    public static void fill(char[] a, char val) {
-        for (int i = 0, len = a.length; i < len; i++)
-            a[i] = val;
-    }
+	// public static void fill(char[] a, char val) {
+	// for (int i = 0, len = a.length; i < len; i++)
+	// a[i] = val;
+	// }
+	public native static void fill(char[] a, char val);
 
     /**
      * Assigns the specified char value to each element of the specified

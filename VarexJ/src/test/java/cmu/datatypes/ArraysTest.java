@@ -56,4 +56,28 @@ public class ArraysTest extends TestJPF {// TODO actually test the results
 			}
 		}
 	}
+
+	@Test
+	public void charArraysFillTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			int length = 100;
+			char[] array = new char[length];
+			char[] array2 = new char[length];
+
+			Arrays.fill(array, 'a');
+			if (a) {
+				Arrays.fill(array2, 'b');
+			}
+			if (a) {
+				assertFalse(Arrays.equals(array2, new char[length]));
+			} else {
+				assertTrue(Arrays.equals(array2, new char[length]));
+			}
+			Arrays.fill(array, 'b');
+			if (!a) {
+				Arrays.fill(array2, 'b');
+			}
+			assertTrue(Arrays.equals(array, array2));
+		}
+	}
 }

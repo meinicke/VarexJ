@@ -27,11 +27,16 @@ public class JPF_java_util_Arrays extends NativePeer {
 		if (fromIndex < 0) {
 			throw new ArrayIndexOutOfBoundsException(fromIndex);
 		}
-		int length = env.getArrayLength(ctx, arrayRef);
-		if (toIndex > length) {
+		if (toIndex > env.getArrayLength(ctx, arrayRef)) {
 			throw new ArrayIndexOutOfBoundsException(toIndex);
 		}
 		((ArrayFields) env.heap.getModifiable(arrayRef).fields).fill(ctx, fromIndex, toIndex, One.valueOf(value));
+	}
+
+	@MJI
+	public void fill___3CC__V(MJIEnv env, int _, Conditional<Integer> arrayRef, Conditional<Character> value, FeatureExpr ctx) {
+		final int reference = arrayRef.getValue();
+		((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx, value);
 	}
 
 	@MJI
