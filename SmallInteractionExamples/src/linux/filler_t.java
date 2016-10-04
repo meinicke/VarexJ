@@ -1,4 +1,4 @@
-package linux1;
+package linux;
 
 interface filler_t {
 		int invoke(int i);

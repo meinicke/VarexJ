@@ -1,4 +1,4 @@
-package linux5;
+package linux;
 
 import java.util.Arrays;
 
@@ -13,27 +13,18 @@ import gov.nasa.jpf.annotation.Conditional;
 public class Linux5 {
 
 	@Conditional
-	static boolean CONFIG_DISCONTIGMEM = true;
+	public static boolean CONFIG_DISCONTIGMEM = true;
 	@Conditional
-	static boolean CONFIG_PROC_PAGE_MONITOR = true;
-
-	static boolean configNodesShift;
+	public static boolean CONFIG_PROC_PAGE_MONITOR = true;
+	@Conditional
+	public static boolean CONFIG_PARISC = true;
 	
-	static boolean NODES_SHIFT = configNodesShift;
-
-	public static int maxNumnodes() {
-		return 1 << (NODES_SHIFT ? 1 : 0);
-	}
-
-	private static int node_end_pfn(int nid) {
-		return node_data[nid];
-	}
-
 	public final static int MAX_PHYSMEM_RANGES = 8;
 
 	public static int PFNNID_MAP_MAX;
 
 	public static int[] node_data;
+	
 	public static int max_pfn;
 	
 	static {
@@ -45,6 +36,14 @@ public class Linux5 {
 		} else {
 			max_pfn = 0;
 		}
+	}
+	
+	public static int node_end_pfn(int nid) {
+		return node_data[nid];
+	}
+
+	public static int maxNumnodes() {
+		return 1 << (CONFIG_PARISC ? 3 : 0);
 	}
 
 	public static int NODE_DATA(int nid) {
@@ -69,11 +68,9 @@ public class Linux5 {
 	public static boolean pfn_valid(int pfn) {
 		if (CONFIG_DISCONTIGMEM) {
 			int nid = pfn_to_nid(pfn);
-			System.out.println(nid);
 			if (nid >= 0) {
 				int node_end_pfn = node_end_pfn(nid);
-				System.out.println(node_end_pfn);
-				return pfn < node_end_pfn; // ERROR
+				return pfn < node_end_pfn;
 			}
 			return false;
 		}

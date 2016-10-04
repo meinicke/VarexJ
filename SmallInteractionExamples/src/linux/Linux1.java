@@ -1,4 +1,4 @@
-package linux1;
+package linux;
 
 import gov.nasa.jpf.annotation.Conditional;
 
@@ -8,7 +8,7 @@ import gov.nasa.jpf.annotation.Conditional;
  * @author Jens Meinicke
  *
  */
-public class LinuxArray {
+public class Linux1 {
 
 	@Conditional
 	static boolean CONFIG_TMPFS = false;
@@ -77,7 +77,7 @@ public class LinuxArray {
 	}
 
 	public static void main(String[] args) {
-		LinuxArray la = new LinuxArray();
+		Linux1 la = new Linux1();
 		if (CONFIG_DRM_I915) {
 			la.i915_driver_load();
 		}

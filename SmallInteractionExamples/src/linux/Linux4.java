@@ -1,4 +1,4 @@
-package linux4;
+package linux;
 
 import gov.nasa.jpf.annotation.Conditional;
 

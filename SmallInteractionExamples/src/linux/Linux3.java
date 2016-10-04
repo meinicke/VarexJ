@@ -1,4 +1,4 @@
-package linux3;
+package linux;
 
 import gov.nasa.jpf.annotation.Conditional;
 
@@ -66,6 +66,7 @@ public class Linux3 {
 				if (cache == null)
 					continue;
 
+				@SuppressWarnings("unused")
 				Object n = cache;
 			}
 		} else {

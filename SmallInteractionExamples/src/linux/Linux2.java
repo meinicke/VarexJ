@@ -1,4 +1,4 @@
-package linux2;
+package linux;
 
 import java.util.Arrays;
 
@@ -10,7 +10,7 @@ import gov.nasa.jpf.annotation.Conditional;
  * @author Jens Meinicke
  *
  */
-public class SystemMemory {
+public class Linux2 {
 	@Conditional
 	static boolean CONFIG_PARISC = true;
 	@Conditional
@@ -65,6 +65,6 @@ public class SystemMemory {
 	}
 
 	public static void main(String[] args) {
-		new SystemMemory().main();
+		new Linux2().main();
 	}
 }
