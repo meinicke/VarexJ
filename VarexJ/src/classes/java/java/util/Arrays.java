@@ -2059,10 +2059,11 @@ public class Arrays {
      * @param a the array to be filled
      * @param val the value to be stored in all elements of the array
      */
-    public static void fill(boolean[] a, boolean val) {
-        for (int i = 0, len = a.length; i < len; i++)
-            a[i] = val;
-    }
+//    public static void fill(boolean[] a, boolean val) {
+//        for (int i = 0, len = a.length; i < len; i++)
+//            a[i] = val;
+//    }
+    public static native void fill(boolean[] a, boolean val);
 
     /**
      * Assigns the specified boolean value to each element of the specified

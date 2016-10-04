@@ -132,5 +132,17 @@ public BooleanArrayFields (int length) {
       hd.add(v[i]);
     }
   }
+  
+  @SuppressWarnings("unchecked")
+	@Override
+	public void fill(FeatureExpr ctx, Conditional<?> value) {
+		if (Conditional.isTautology(ctx)) {
+			Arrays.fill(values, value);
+		} else {
+			for (int i = 0; i < values.length; i++) {
+				values[i] = ChoiceFactory.create(ctx, (Conditional<Boolean>) value, values[i]).simplify();
+			}
+		}
+	}
 
 }

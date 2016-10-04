@@ -80,4 +80,18 @@ public class ArraysTest extends TestJPF {// TODO actually test the results
 			assertTrue(Arrays.equals(array, array2));
 		}
 	}
+	
+	@Test
+	public void booleanArraysFillTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			int length = 100;
+			boolean[] array = new boolean[length];
+			boolean[] array2 = new boolean[length];
+
+			Arrays.fill(array, true);
+			if (a) {
+				Arrays.fill(array2, true);
+			}
+		}
+	}
 }
