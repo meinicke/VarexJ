@@ -31,6 +31,7 @@ import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.FieldLockInfo;
 import gov.nasa.jpf.vm.FieldLockInfoFactory;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
@@ -128,7 +129,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
   protected Conditional<Instruction> put1 (FeatureExpr ctx, ThreadInfo ti, StackFrame frame, ElementInfo eiFieldOwner, boolean initStatic) {
     Object attr = frame.getOperandAttr(ctx);
     Conditional<Integer> val;
-    Conditional<Integer> field = eiFieldOwner.get1SlotField(fi);
+    final Conditional<Integer> field = eiFieldOwner.get1SlotField(fi);
 	if (initStatic) {
     	/*
     	 * static fields need to be initialized for all contexts
@@ -188,6 +189,22 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
         eiFieldOwner.set1SlotField(ctx, fi, val);
         eiFieldOwner.setFieldAttr(fi, attr); // see above about overwrite vs. accumulation
       }
+      
+      StringBuilder content = new StringBuilder();
+      content.append("if " + Conditional.getCTXString(ctx) + " then " + fi + " : " + field + " -> " + val.simplify(ctx));
+      try {
+    	  int v = val.simplify(ctx).getValue(true);// no good solution
+    	  if (fi.isReference() && v != MJIEnv.NULL && ti.getEnv().isArray(v)) {
+	    	  content.append("\nArray length = " + ti.getEnv().getArrayLength(ctx, val));
+    	  }
+      }catch (Exception e) {
+    	  e.printStackTrace();
+	}
+      content.append('\n');
+  	  content.append(ti.getStackTrace());
+      
+  	  fi.setLastModified(ctx, content.toString());
+      ti.coverage.coverField2(ctx, content.toString(), frame);
     }
     
     frame = ti.getModifiableTopFrame(); // now we have to modify it

@@ -79,7 +79,9 @@ public class Linux5 {
 
 	public static void setupBootmem() {
 		if (CONFIG_DISCONTIGMEM) {
-			Arrays.fill(pfnnid_map, (char) 0xff);
+//			Arrays.fill(pfnnid_map, (char) 0xff);// real example code
+			Arrays.fill(pfnnid_map, (char) 0x02);// not as in example
+			Arrays.fill(node_data, (char) 0xAB);// not as in example
 		}
 	}
 

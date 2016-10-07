@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -45,7 +46,25 @@ public class ALOAD extends LocalVariableInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
+    LocalVarInfo lvi = frame.getMethodInfo().getLocalVar(index, this.insnIndex);
+    
+    
+    
+    
     frame.pushLocal(ctx, index);
+    String localName = "";
+	if (lvi != null) {
+		localName = lvi.getName() + "=" ;
+	}
+    StringBuilder content = new StringBuilder();
+    content.append(this);
+    content.append('\n');
+    content.append("if " + Conditional.getCTXString(ctx) + " then " + localName + frame.peek(ctx).simplify(ctx));
+    content.append('\n');
+    content.append(ti.getStackTrace());
+    ti.coverage.coverField2(ctx, content.toString(), frame);
+    
+    
     return getNext(ctx, ti);
   }
 

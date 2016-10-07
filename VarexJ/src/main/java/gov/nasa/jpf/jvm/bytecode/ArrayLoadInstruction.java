@@ -26,6 +26,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -99,6 +100,17 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 
 		frame.push(pushCtx, pushValue, isReference());
 		
+		LocalVarInfo lvi = frame.getMethodInfo().getLocalVar(index.getValue(), this.insnIndex);
+		if (lvi != null)
+	    	System.out.println(lvi.getName());
+	    StringBuilder content = new StringBuilder();
+	    content.append(this);
+	    content.append('\n');
+	    content.append("if " + Conditional.getCTXString(ctx) + " then " + frame.peek(ctx).simplify(ctx));
+	    content.append('\n');
+	    content.append(ti.getStackTrace());
+	    ti.coverage.coverField2(ctx, content.toString(), frame);
+	    
 		if (index.isOne() && aref.isOne()) {
 			// TODO
 			final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref.getValue());

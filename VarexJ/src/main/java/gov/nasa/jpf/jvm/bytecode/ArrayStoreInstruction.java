@@ -40,6 +40,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		Conditional<Integer> aref = peekArrayRef(ctx, ti); // need to be poly, could be LongArrayStore
 		final ArrayStoreInstruction instruction = this;
+		
 		return aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
@@ -54,6 +55,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 						return new One<Instruction>(instruction);
 					}
 				}
+				
 
 				int esize = getElementSize();
 				StackFrame frame = ti.getModifiableTopFrame();
@@ -64,7 +66,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 				index = frame.pop(ctx);
 				// don't set 'arrayRef' before we do the CG check (would kill loop optimization)
 				arrayRef = frame.pop(ctx);
-
+				
 				Conditional<Instruction> xInsn = checkArrayStoreException(ctx, ti, e);
 				return xInsn.mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
@@ -79,7 +81,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 							@Override
 							public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
 								try {
-									setField(ctx, e, index);
+									setField(ctx, e, index, ti);
 									e.setElementAttrNoClone(index, attr); // <2do> what if the value is the same but not the attr?
 									return getNext(ctx, ti);
 
@@ -116,7 +118,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 
 	protected abstract void popValue(FeatureExpr ctx, StackFrame frame);
 
-	protected abstract void setField(FeatureExpr ctx, ElementInfo e, int index) throws ArrayIndexOutOfBoundsExecutiveException;
+	protected abstract void setField(FeatureExpr ctx, ElementInfo e, int index, ThreadInfo ti) throws ArrayIndexOutOfBoundsExecutiveException;
 
 	@Override
 	public boolean isRead() {

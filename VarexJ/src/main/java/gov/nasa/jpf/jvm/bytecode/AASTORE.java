@@ -42,9 +42,17 @@ public class AASTORE extends ArrayStoreInstruction {
 		value = frame.pop(ctx);
 	}
 
-	protected void setField(FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+	protected void setField(FeatureExpr ctx, ElementInfo ei, int index, ThreadInfo ti) throws ArrayIndexOutOfBoundsExecutiveException {
 		ei.checkArrayBounds(ctx, index);
+		final Conditional<Integer> oldValue = ei.getReferenceElement(index);
 		ei.setReferenceElement(ctx, index, value);
+		
+		StringBuilder content = new StringBuilder();
+		
+		content.append("if " + Conditional.getCTXString(ctx) + " then " + oldValue + " -> " + ei.getReferenceElement(index));
+		content.append('\n').append('\n');
+		content.append(ti.getStackTrace());
+		ti.coverage.coverField2(ctx, content.toString(), ti.getTopFrame());
 	}
 
 	protected Conditional<Instruction> checkArrayStoreException(FeatureExpr ctx, final ThreadInfo ti, ElementInfo ei) {

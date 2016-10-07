@@ -20,6 +20,9 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.Modifier;
 
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 
@@ -336,4 +339,12 @@ public abstract class FieldInfo extends InfoObject implements GenericSignatureHo
 
     return clone;
   }
+
+  private Conditional<String> lastModified = new One<String>("<init>");
+	public void setLastModified(FeatureExpr ctx, String stackTrace) {
+		lastModified = ChoiceFactory.create(ctx, new One<String>(stackTrace), lastModified);
+	}
+	public Conditional<String> getLastModified() {
+		return lastModified;
+	}
 }

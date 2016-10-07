@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Map.Entry;
+
 import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
@@ -110,6 +112,26 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 			}
 		}), next);
+		
+		StringBuilder content = new StringBuilder();
+		content.append(this);
+		content.append('\n');
+		content.append("if " + Conditional.getCTXString(ctx) + " get \"" +fi + "\" " + pushValue.simplify(ctx).toString());
+		content.append('\n');
+		content.append(ti.getStackTrace());
+		content.append('\n');
+		content.append("Last Modified:");
+		content.append('\n');
+		for (Entry<String, FeatureExpr> e : fi.getLastModified().toMap().entrySet()) {
+			content.append("if " + Conditional.getCTXString(e.getValue()));
+			content.append('\n');
+			content.append((e.getKey()));
+			content.append('\n');
+			content.append('\n');
+		}
+		
+		
+		ti.coverage.coverField2(ctx, content.toString(), frame);
 		if (fi.isReference()) {
 			frame.pushRef(pushCTX, pushValue);
 		} else {

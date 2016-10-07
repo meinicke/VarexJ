@@ -139,6 +139,9 @@ public class CoverageClass {
 				case frame:
 					coverFrame(instruction, file);
 					break;
+				case debugger:
+					// TODO ?
+					break;
 				default:
 					throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
 				}
@@ -398,9 +401,27 @@ public class CoverageClass {
 					} else {
 						text.append(val);
 					}
-
 					CoverageLogger.logInteraction(frame, val.size() - oldValue.size(), text, ctx);
 				}
+			}
+		}
+	}
+	
+	public void coverField2(FeatureExpr ctx, String content, StackFrame frame) {
+		if (JPF.COVERAGE != null) {
+			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.debugger) {
+					StringBuilder text = new StringBuilder();
+					text.append(content);
+					String file = frame.getClassInfo().getSourceFileName();
+					if (file == null) {
+						return;
+					}
+					file = file.substring(file.lastIndexOf('/') + 1);
+					Interaction cov = JPF.COVERAGE.getCoverage(file, frame.getPC().simplify(ctx).getValue(true).getLineNumber());
+					if (cov != null) {
+						text = text.insert(0, cov.getText() + "\n=============\n");
+					}
+					CoverageLogger.logInteraction(frame, 1, text , ctx);
 			}
 		}
 	}

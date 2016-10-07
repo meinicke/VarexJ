@@ -37,7 +37,7 @@ public class PrevaylerTest extends ATestExample {
 	@Conditional
 	public static boolean USE_PAUSABLE_CLOCK = false;
 
-//	@Conditional // TODO not working for tutorialTest()
+	@Conditional // TODO not working for tutorialTest()
 	public static boolean USE_XSTREAM = true;
 	@Conditional
 	public static boolean USE_TRANSIENT_MODE = false;
@@ -47,11 +47,11 @@ public class PrevaylerTest extends ATestExample {
 	@Conditional
 	public static boolean FILE_AGE_THREASHOLD = true;
 
-//	@Conditional // TODO not working
+	@Conditional // TODO not working
 	static boolean FILE_SIZE_THREASHOLD = true;
-//  @Conditional // TODO not working
+    @Conditional // TODO not working
 	static boolean USE_XSTREAM_JOURNAL = true;
-//	@Conditional // TODO not working
+	@Conditional // TODO not working
 	static boolean USE_FILTERING = false;
 
 	@Test

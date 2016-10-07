@@ -18,6 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Map.Entry;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -27,6 +29,7 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
+import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -91,6 +94,8 @@ public class GETSTATIC extends StaticFieldInstruction {
     Object attr = ei.getFieldAttr(fieldInfo);
     StackFrame frame = ti.getModifiableTopFrame();
 
+    
+    
     if (size == 1) {
       Conditional<Integer> ival = ei.get1SlotField(fieldInfo);
       lastValue = ival;
@@ -115,6 +120,33 @@ public class GETSTATIC extends StaticFieldInstruction {
         frame.setLongOperandAttr(attr);
       }
     }
+    
+    StringBuilder content = new StringBuilder();
+	content.append(this);
+	content.append('\n');
+	content.append("if " + Conditional.getCTXString(ctx) + " get \"" +fi + "\" " + lastValue.simplify(ctx).toString());
+	
+	Object v = lastValue.simplify(ctx).getValue(true);// no good solution
+	if (v instanceof Integer) {
+		  if (fi.isReference() && (int)v != MJIEnv.NULL && ti.getEnv().isArray((int) v)) {
+	  	  content.append("\nArray length = " + ti.getEnv().getArrayLength(ctx, (Conditional<Integer>) lastValue.simplify(ctx)));
+		  }
+	}
+	content.append('\n');
+	content.append(ti.getStackTrace());
+	content.append('\n');
+	content.append("Last Modified:");
+	content.append('\n');
+	for (Entry<String, FeatureExpr> e : fi.getLastModified().toMap().entrySet()) {
+		content.append("if " + Conditional.getCTXString(e.getValue()));
+		content.append('\n');
+		content.append((e.getKey()));
+		content.append('\n');
+		content.append('\n');
+	}
+	
+	
+	ti.coverage.coverField2(ctx, content.toString(), frame);
         
     return getNext(ctx, ti);
   }

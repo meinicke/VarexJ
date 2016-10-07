@@ -23,6 +23,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
+import gov.nasa.jpf.vm.ThreadInfo;
 
 /**
  * Store into int array
@@ -36,7 +37,7 @@ public class IASTORE extends ArrayStoreInstruction {
 	    value = frame.pop(ctx);
   }
 
-  protected void setField (FeatureExpr ctx, final ElementInfo ei, final int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected void setField (FeatureExpr ctx, final ElementInfo ei, final int index, ThreadInfo ti) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     ei.setIntElement(ctx, index, value);
   }

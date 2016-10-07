@@ -372,7 +372,7 @@ public class JPF implements Runnable {
   }
   
   public enum COVERAGE_TYPE {
-	  feature, stack, local, context, composedContext, time, interaction, frame
+	  feature, stack, local, context, composedContext, time, interaction, frame, debugger
   }
   
   public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;

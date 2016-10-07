@@ -2,6 +2,7 @@ package gov.nasa.jpf.vm;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -14,9 +15,16 @@ import gov.nasa.jpf.annotation.MJI;
 public class JPF_java_util_Arrays extends NativePeer {
 
 	@MJI
-	public void fill___3II__V(MJIEnv env, int _, Conditional<Integer> arrayRef, Conditional<Integer> value, FeatureExpr ctx) {
-		final int reference = arrayRef.getValue();
-		((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx, value);
+	public void fill___3II__V(final MJIEnv env, int _, Conditional<Integer> arrayRef, final Conditional<Integer> value, FeatureExpr ctx) {
+		final Conditional<Integer> reference = arrayRef;
+		reference.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+
+			@Override
+			public void apply(FeatureExpr ctx, Integer reference) {
+				((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx, value.simplify(ctx));
+			}
+			
+		});
 	}
 
 	@MJI

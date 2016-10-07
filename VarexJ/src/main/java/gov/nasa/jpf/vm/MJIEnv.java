@@ -128,6 +128,17 @@ public VM getVM () {
     return heap.get(objref).isArray();
   }
 
+	public Conditional<Integer> getArrayLength(FeatureExpr ctx, Conditional<Integer> objref) {
+		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+
+			@Override
+			public Conditional<Integer> apply(FeatureExpr ctx, Integer objref) {
+				return new One<>(getArrayLength(ctx, objref));
+			}
+
+		});
+	}
+  
   public int getArrayLength (FeatureExpr ctx, int objref) {
     if (isArray(objref)) {
       return heap.get(objref).arrayLength().getValue();
