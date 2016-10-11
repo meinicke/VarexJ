@@ -34,15 +34,14 @@ public class LCMP extends JVMInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
 
-		Conditional<Long> v1 = frame.popLong(ctx);
-		Conditional<Long> v2 = frame.popLong(ctx);
-
-		frame.push(ctx, mapr(v1, v2));
+		final Conditional<Long> v1 = frame.popLong(ctx);
+		final Conditional<Long> v2 = frame.popLong(ctx);
+		frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> instruction(x1, x2))).simplify());
+		
 		return getNext(ctx, ti);
 	}
 
-	@Override
-	protected Number instruction(Number v1, Number v2) {
+	private static int instruction(Long v1, Long v2) {
 		if (v1.longValue() == v2.longValue()) {
 			return 0;
 		} else if (v2.longValue() > v1.longValue()) {

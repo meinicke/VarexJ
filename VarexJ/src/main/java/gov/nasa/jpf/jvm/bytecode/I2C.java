@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -35,17 +36,12 @@ public class I2C extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     final Conditional<Integer> v = frame.pop(ctx);
-    frame.push( ctx, v.map(x1 -> (int) (char) x1.intValue()).simplify(), false);
+    frame.push(ctx, v.mapr(x1 -> One.valueOf((int) (char) x1.intValue())), false);
 
     return getNext(ctx, ti);
   }
   
-  @Override
-	protected Number instruction(Number v1, Number v2) {
-		return (int) (char) v1.intValue();
-	}
-
-  public int getByteCode () {
+	public int getByteCode () {
     return 0x92;
   }
   

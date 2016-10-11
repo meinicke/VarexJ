@@ -36,17 +36,13 @@ public class FSUB extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    Conditional<Float> v1 = frame.popFloat(ctx);
-    Conditional<Float> v2 = frame.popFloat(ctx);
+    final Conditional<Float> v1 = frame.popFloat(ctx);
+    final Conditional<Float> v2 = frame.popFloat(ctx);
+    frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x2 - x1)).simplify());
     
-    frame.push(ctx, mapr(v1, v2));
     return getNext(ctx, ti);
   }
-  
-  @Override
-	protected Number instruction(Number v1, Number v2) {
-		return v2.floatValue() - v1.floatValue();
-	}
+
   @Override
   public int getByteCode () {
     return 0x66;

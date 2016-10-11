@@ -19,8 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
-import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -32,25 +30,13 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class INEG extends JVMInstruction {
 
-	private static final Function<Integer, Conditional<Integer>> NEG = new Function<Integer, Conditional<Integer>>() {
-		
-		@Override
-		public Conditional<Integer> apply(Integer x) {
-			return new One<>(-x);
-		}
-	};
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
 
-		Conditional<Integer> v = frame.pop(ctx);
-		frame.push(ctx, v.mapr(NEG));
+		final Conditional<Integer> v = frame.pop(ctx);
+		frame.push(ctx, v.map(x -> -x));
 
 		return getNext(ctx, ti);
-	}
-
-	@Override
-	protected Number instruction(Number v1, Number v2) {
-		return -v1.intValue();
 	}
 
 	public int getByteCode() {

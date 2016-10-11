@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
@@ -36,26 +35,13 @@ public class I2B extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    Conditional<Integer> v = frame.pop(ctx);
-    
-    frame.push(ctx, v.mapr(new Function<Integer, Conditional<Byte>>() {
-
-		@Override
-		public Conditional<Byte> apply(final Integer v) {
-			return One.valueOf((byte)v.intValue());
-		}
-
-	}).simplify());
+    final Conditional<Integer> v = frame.pop(ctx);
+    frame.push(ctx, v.mapr(v1 -> One.valueOf((byte)v1.intValue())).simplify());
 
     return getNext(ctx, ti);
   }
   
-  @Override
-	protected Number instruction(Number v1, Number v2) {
-		return (byte)v1.intValue();
-	}
-
-  public int getByteCode () {
+	public int getByteCode () {
     return 0x91;
   }
   

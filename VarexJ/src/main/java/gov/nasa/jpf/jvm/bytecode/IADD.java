@@ -37,8 +37,8 @@ public class IADD extends JVMInstruction {
     
     final Conditional<Integer> v1 = frame.pop(ctx);
     final Conditional<Integer> v2 = frame.pop(ctx);
-
     frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x1 + x2)).simplify());
+    
     return getNext(ctx, ti);
   }
 

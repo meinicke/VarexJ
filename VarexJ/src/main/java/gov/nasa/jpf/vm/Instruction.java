@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.vm;
 
-import java.util.function.Function;
-
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -398,26 +396,7 @@ public abstract class Instruction implements Cloneable {
 
 		return clone;
 	}
-	
-	protected <T, U> Conditional<T> mapr(final Conditional<T> v1, final Conditional<U> v2) {
-		return v2.mapr(new Function<U, Conditional<T>>() {
 
-			@Override
-			public Conditional<T> apply(final U x2) {
-				return mapr2(v1, x2);
-			}
-
-		}).simplify();
-	}
-
-	protected <T, U> Conditional<T> mapr2(final Conditional<T> v1, final U v2) {
-		return v1.mapr(x1 -> new One<>((T) instruction((Number)x1, (Number)v2))).simplify();
-	}
-
-	protected Number instruction(Number v1, Number v2) {
-		throw new RuntimeException("apply not implemented");
-	}
-	
 	@Override
 	public boolean equals(Object o) {
 		if (o == null) {

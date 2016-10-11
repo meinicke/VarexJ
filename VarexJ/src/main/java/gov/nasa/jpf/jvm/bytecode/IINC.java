@@ -43,11 +43,6 @@ public class IINC extends LocalVariableInstruction {
 		return getNext(ctx, ti);
 	}
 	
-	@Override
-	protected Number instruction(Number v1, Number v2) {
-		return v1.intValue() + v2.intValue();
-	}
-
 	public int getLength() {
 		return 3; // opcode, index, const
 	}

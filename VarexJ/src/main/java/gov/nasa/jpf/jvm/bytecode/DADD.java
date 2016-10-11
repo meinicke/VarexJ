@@ -33,16 +33,11 @@ public class DADD extends JVMInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
 
-		Conditional<Double> v1 = frame.popDouble(ctx);
-		Conditional<Double> v2 = frame.popDouble(ctx);
+		final Conditional<Double> v1 = frame.popDouble(ctx);
+		final Conditional<Double> v2 = frame.popDouble(ctx);
+		frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x1 + x2)).simplify());
 
-		frame.push(ctx, mapr(v1, v2));
 		return getNext(ctx, ti);
-	}
-
-	@Override
-	protected Number instruction(Number v1, Number v2) {
-		return v1.doubleValue() + v2.doubleValue();
 	}
 
 	public int getByteCode() {

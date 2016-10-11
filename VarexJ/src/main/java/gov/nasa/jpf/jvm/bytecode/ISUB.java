@@ -37,16 +37,10 @@ public class ISUB extends JVMInstruction {
 
     final Conditional<Integer> v1 = frame.pop(ctx);
     final Conditional<Integer> v2 = frame.pop(ctx);
-    
     frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x2 - x1)).simplify());
 
     return getNext(ctx, ti);
   }
-  
-  @Override
-	protected Number instruction(Number v1, Number v2) {
-		return v2.intValue() - v1.intValue();
-	}
 
   public int getByteCode () {
     return 0x64;
