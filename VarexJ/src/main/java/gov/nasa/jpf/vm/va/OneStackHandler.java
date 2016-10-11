@@ -197,9 +197,6 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 		return pop(ctx, Type.DOUBLE);
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nasa.jpf.vm.IStackHandler#popFloat(de.fosd.typechef.featureexpr.FeatureExpr)
-	 */
 	@Override
 	public Conditional<Float> popFloat(final FeatureExpr ctx) {
 		return pop(ctx, Type.FLOAT);
