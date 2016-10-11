@@ -35,9 +35,10 @@ public class ISUB extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    Conditional<Integer> v1 = frame.pop(ctx);
-    Conditional<Integer> v2 = frame.pop(ctx);
-    frame.push(ctx, maprInt(v1, v2));
+    final Conditional<Integer> v1 = frame.pop(ctx);
+    final Conditional<Integer> v2 = frame.pop(ctx);
+    
+    frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x2 - x1)).simplify());
 
     return getNext(ctx, ti);
   }

@@ -38,14 +38,9 @@ public class IADD extends JVMInstruction {
     final Conditional<Integer> v1 = frame.pop(ctx);
     final Conditional<Integer> v2 = frame.pop(ctx);
 
-    frame.push(ctx, maprInt(v1, v2));
+    frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x1 + x2)).simplify());
     return getNext(ctx, ti);
   }
-  
-  @Override
-	protected Number instruction(Number v1, Number v2) {
-		return v1.intValue() + v2.intValue();
-	}
 
   public int getByteCode () {
     return 0x60;
