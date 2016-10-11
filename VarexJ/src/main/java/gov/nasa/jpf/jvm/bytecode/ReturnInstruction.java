@@ -20,7 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.Iterator;
 
-import cmu.conditional.BiFunction;
+import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;

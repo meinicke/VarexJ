@@ -1,8 +1,10 @@
 package nhandler.conversion.jvm2jpf;
 
+import java.util.Iterator;
+import java.util.function.BiConsumer;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayFields;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -12,9 +14,6 @@ import gov.nasa.jpf.vm.DynamicElementInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StaticElementInfo;
-
-import java.util.Iterator;
-
 import nhandler.conversion.ConversionException;
 import nhandler.conversion.ConverterBase;
 
@@ -291,10 +290,10 @@ public abstract class JVM2JPFConverter extends ConverterBase {
 					for (int i = 0; i < arrSize; i++) {
 						Conditional<Integer> conditionalElementValueRef = dei.getReferenceElement(i).simplify(ctx);
 						final int currentI = i;
-						conditionalElementValueRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+						conditionalElementValueRef.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 							@Override
-							public void apply(FeatureExpr ctx, Integer elementValueRef) {
+							public void accept(FeatureExpr ctx, Integer elementValueRef) {
 								try {
 									if (arrObj[currentI] == null) {
 										elementValueRef = MJIEnv.NULL;

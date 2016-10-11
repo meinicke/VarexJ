@@ -19,7 +19,7 @@
 
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Function;
+import java.util.function.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 

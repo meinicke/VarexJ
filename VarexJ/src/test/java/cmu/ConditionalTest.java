@@ -11,11 +11,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import cmu.conditional.BiFunction;
+import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
+import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.AbstractFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;

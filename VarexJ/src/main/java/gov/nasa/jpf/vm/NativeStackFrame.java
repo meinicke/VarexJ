@@ -22,7 +22,7 @@ package gov.nasa.jpf.vm;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import cmu.conditional.Function;
+import java.util.function.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.NATIVERETURN;

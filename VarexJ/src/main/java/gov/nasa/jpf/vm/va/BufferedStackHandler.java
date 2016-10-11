@@ -3,13 +3,13 @@ package gov.nasa.jpf.vm.va;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -117,10 +117,10 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 		bufferCTX = FeatureExprFactory.False();
 		while (!buffer.isEmpty()) {
 			final Tuple value = buffer.removeLast();
-			value.value.mapf(ctx, new VoidBiFunction<FeatureExpr, Object>() {
+			value.value.mapf(ctx, new BiConsumer<FeatureExpr, Object>() {
 
 				@Override
-				public void apply(final FeatureExpr ctx, final Object v) {
+				public void accept(final FeatureExpr ctx, final Object v) {
 					superPush(ctx, v, value.isRef);
 				}
 

@@ -29,12 +29,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import cmu.utils.CoverageClass;
 import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
@@ -1678,10 +1678,10 @@ public class ThreadInfo extends InfoObject
 
         } else { // fall back to use the snapshot stored in the exception object
             Conditional<Integer> VAaRef = env.getReferenceField(ctx, objRef, "snapshot");
-            VAaRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+            VAaRef.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
                 @Override
-                public void apply(FeatureExpr ctx, Integer aRef) {
+                public void accept(FeatureExpr ctx, Integer aRef) {
                     int[] snapshot = env.getIntArrayObject(ctx, aRef);
                     int len = snapshot.length / 2;
 

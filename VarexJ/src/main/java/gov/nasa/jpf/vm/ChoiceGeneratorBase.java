@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.Random;
 
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
+import java.util.function.Function;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.ObjectList;
 

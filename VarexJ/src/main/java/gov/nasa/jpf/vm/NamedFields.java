@@ -20,13 +20,13 @@
 package gov.nasa.jpf.vm;
 
 import java.util.Arrays;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.util.HashData;
@@ -272,10 +272,10 @@ public class NamedFields extends Fields {
 
 	@Override
 	public void setLongValue(FeatureExpr ctx, final int index, Conditional<Long> newValue) {
-		newValue.mapf(ctx, new VoidBiFunction<FeatureExpr, Long>() {
+		newValue.mapf(ctx, new BiConsumer<FeatureExpr, Long>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Long newValue) {
+			public void accept(FeatureExpr ctx, Long newValue) {
 				if (Conditional.isTautology(ctx)) {
 					values[index] = new One<>(Types.hiLong(newValue));
 					values[index + 1] = new One<>(Types.loLong(newValue));
@@ -292,10 +292,10 @@ public class NamedFields extends Fields {
 
 	@Override
 	public void setDoubleValue(FeatureExpr ctx, final int index, Conditional<Double> newValue) {
-		newValue.mapf(ctx, new VoidBiFunction<FeatureExpr, Double>() {
+		newValue.mapf(ctx, new BiConsumer<FeatureExpr, Double>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Double newValue) {
+			public void accept(FeatureExpr ctx, Double newValue) {
 				if (Conditional.isTautology(ctx)) {
 					values[index] = new One<>(Types.hiDouble(newValue));
 					values[index + 1] = new One<>(Types.loDouble(newValue));

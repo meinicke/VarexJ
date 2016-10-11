@@ -19,7 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
+import java.util.function.Function;
 import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
 

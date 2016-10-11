@@ -22,10 +22,10 @@ package gov.nasa.jpf.vm;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-import cmu.conditional.BiFunction;
+import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
+import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.util.HashData;

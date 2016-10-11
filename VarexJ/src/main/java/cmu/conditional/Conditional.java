@@ -3,6 +3,9 @@ package cmu.conditional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
@@ -110,54 +113,30 @@ public abstract class Conditional<T> {
 	// def map[U](f: T => U): Conditional[U] = mapr(x => One(f(x)))
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <U> Conditional<U> map(final Function<T, U> f) {
-		return mapfr(null, new BiFunction<FeatureExpr, T, Conditional<U>>() {
-
-			public Conditional<U> apply(final FeatureExpr c, T x) {
-				return new One(f.apply(x));
-			}
-
-		});
+		return mapfr(null, (FeatureExpr c, T x) -> new One(f.apply(x)));
 	}
 
 	// def mapr[U](f: T => Conditional[U]): Conditional[U] = mapfr(True, (c, x)
 	// => f(x))
 	public <U> Conditional<U> mapr(final Function<T, Conditional<U>> f) {
-		return mapfr(FeatureExprFactory.True(), new BiFunction<FeatureExpr, T, Conditional<U>>() {
-
-			public Conditional<U> apply(final FeatureExpr c, final T x) {
-				return f.apply(x);
-			}
-
-		});
+		return mapfr(FeatureExprFactory.True(), (FeatureExpr c, T x) -> f.apply(x));
 	}
 
 	// def mapf[U](inFeature: FeatureExpr, f: (FeatureExpr, T) => U):
 	// Conditional[U] = mapfr(inFeature, (c, x) => One(f(c, x)))
 	public <U> Conditional<U> mapf(FeatureExpr inFeature, final BiFunction<FeatureExpr, T, Conditional<U>> f) {
-		return mapfr(inFeature, new BiFunction<FeatureExpr, T, Conditional<U>>() {
-
-			public Conditional<U> apply(final FeatureExpr c, final T x) {
-				return f.apply(c, x);
-			}
-
-		});
+		return mapfr(inFeature, f::apply);
 	}
 
-	public void mapf(FeatureExpr inFeature, final VoidBiFunction<FeatureExpr, T> f) {
-		mapfr(inFeature, new VoidBiFunction<FeatureExpr, T>() {
-
-			public void apply(final FeatureExpr c, final T x) {
-				f.apply(c, x);
-			}
-
-		});
+	public void mapf(FeatureExpr inFeature, final BiConsumer<FeatureExpr, T> f) {
+		mapfr(inFeature, f::accept);
 	}
 
 	// def mapfr[U](inFeature: FeatureExpr, f: (FeatureExpr, T) =>
 	// Conditional[U]): Conditional[U]
 	public abstract <U> Conditional<U> mapfr(FeatureExpr inFeature, BiFunction<FeatureExpr, T, Conditional<U>> f);
 
-	public abstract void mapfr(FeatureExpr inFeature, VoidBiFunction<FeatureExpr, T> f);
+	public abstract void mapfr(FeatureExpr inFeature, BiConsumer<FeatureExpr, T> f);
 
 	public abstract Conditional<T> simplifyValues();
 

@@ -24,7 +24,7 @@ import java.io.StringWriter;
 import java.util.Iterator;
 
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
+import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;

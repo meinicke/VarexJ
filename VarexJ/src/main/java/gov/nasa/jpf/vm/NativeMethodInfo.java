@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import cmu.conditional.BiFunction;
+import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
+import java.util.function.Function;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;

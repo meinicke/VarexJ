@@ -18,11 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.BiFunction;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -47,21 +48,21 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	int appendString(FeatureExpr ctx, final MJIEnv env, final int objref, final Conditional<String> conditionalS) {
 		Conditional<Integer> condAref = env.getReferenceField(ctx, objref, "value");
 
-		condAref.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+		condAref.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, final Integer aref) {
-				conditionalS.mapf(ctx, new VoidBiFunction<FeatureExpr, String>() {
+			public void accept(FeatureExpr ctx, final Integer aref) {
+				conditionalS.mapf(ctx, new BiConsumer<FeatureExpr, String>() {
 
 					@Override
-					public void apply(FeatureExpr ctx, final String s) {
+					public void accept(FeatureExpr ctx, final String s) {
 						final int slen = s.length();
 						final int alen = env.getArrayLength(ctx, aref);
 						Conditional<Integer> count = env.getIntField(objref, "count");
-						count.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+						count.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 							@Override
-							public void apply(FeatureExpr ctx, Integer count) {
+							public void accept(FeatureExpr ctx, Integer count) {
 								if (Conditional.isContradiction(ctx)) {
 									return;
 								}
@@ -109,10 +110,10 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 
 	@MJI
 	public void $init__I__V(final MJIEnv env, final int objref, Conditional<Integer> len, FeatureExpr ctx) {
-		len.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+		len.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Integer len) {
+			public void accept(FeatureExpr ctx, Integer len) {
 				int aref = env.newCharArray(ctx, len);
 				env.setReferenceField(ctx, objref, "value", aref);
 			}
@@ -122,10 +123,10 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 	@MJI
 	// TODO can be improved
 	public void $init__Ljava_lang_String_2__V(final MJIEnv env, final int objref, Conditional<Integer> sRef, FeatureExpr ctx) {
-		sRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+		sRef.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Integer sRef) {
+			public void accept(FeatureExpr ctx, Integer sRef) {
 				if (sRef.intValue() == MJIEnv.NULL) {
 					env.throwException(ctx, "java.lang.NullPointerException");
 					return;
@@ -133,10 +134,10 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 
 				Conditional<char[]> src = env.getStringChars(sRef);
 
-				src.mapf(ctx, new VoidBiFunction<FeatureExpr, char[]>() {
+				src.mapf(ctx, new BiConsumer<FeatureExpr, char[]>() {
 
 					@Override
-					public void apply(final FeatureExpr ctx, final char[] src) {
+					public void accept(final FeatureExpr ctx, final char[] src) {
 						if (Conditional.isContradiction(ctx)) {
 							return;
 						}
@@ -359,10 +360,10 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 		final Integer aref = env.getReferenceField(ctx, objref, "value").getValue();
 		Conditional<Integer> count = env.getIntField(objref, "count");
 		final int diff = endIndex - beginIndex;
-		count.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+		count.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Integer count) {
+			public void accept(FeatureExpr ctx, Integer count) {
 				for (int i = beginIndex, j = endIndex; i < count; i++, j++) {
 					if (j < count) {
 						env.setCharArrayElement(ctx, aref, i, env.getCharArrayElement(aref, j));

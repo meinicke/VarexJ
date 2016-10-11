@@ -3,6 +3,8 @@ package cmu.conditional;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -41,7 +43,7 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 	}
 	
 	@Override
-	public void mapfr(final FeatureExpr inFeature, final VoidBiFunction<FeatureExpr, T> f) {
+	public void mapfr(final FeatureExpr inFeature, final BiConsumer<FeatureExpr, T> f) {
 		if (inFeature == null) {
 			thenBranch.mapfr(null, f);
 			elseBranch.mapfr(null, f);

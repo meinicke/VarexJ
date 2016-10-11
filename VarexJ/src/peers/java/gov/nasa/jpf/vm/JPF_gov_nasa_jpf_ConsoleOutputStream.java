@@ -20,11 +20,11 @@ package gov.nasa.jpf.vm;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
@@ -47,10 +47,10 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void print__C__V(final MJIEnv env, final int objref, Conditional<Character> c, FeatureExpr ctx) {
-		c.mapf(ctx, new VoidBiFunction<FeatureExpr, Character>() {
+		c.mapf(ctx, new BiConsumer<FeatureExpr, Character>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Character c) {
+			public void accept(FeatureExpr ctx, Character c) {
 				if (RuntimeConstants.ctxOutput) {
 					env.getVM().print("(<" + c + "> : " + Conditional.getCTXString(ctx) + ")");
 				} else {
@@ -139,10 +139,10 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void println__D__V(final MJIEnv env, int objref, Conditional<Double> d, FeatureExpr ctx) {
-		d.mapf(ctx, new VoidBiFunction<FeatureExpr, Double>() {
+		d.mapf(ctx, new BiConsumer<FeatureExpr, Double>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Double d) {
+			public void accept(FeatureExpr ctx, Double d) {
 				if (RuntimeConstants.ctxOutput) {
 					env.getVM().println("<" + d + "> : " + Conditional.getCTXString(ctx));
 				} else {
@@ -157,10 +157,10 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void println__F__V(final MJIEnv env, int objref, Conditional<Float> f, FeatureExpr ctx) {
-		f.mapf(ctx, new VoidBiFunction<FeatureExpr, Float>() {
+		f.mapf(ctx, new BiConsumer<FeatureExpr, Float>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Float f) {
+			public void accept(FeatureExpr ctx, Float f) {
 				if (RuntimeConstants.ctxOutput) {
 					env.getVM().println("<" + f + "> : " + Conditional.getCTXString(ctx));
 				} else {
@@ -175,10 +175,10 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void println__I__V(final MJIEnv env, int objref, Conditional<Integer> i, FeatureExpr ctx) {
-		i.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+		i.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Integer i) {
+			public void accept(FeatureExpr ctx, Integer i) {
 				if (RuntimeConstants.ctxOutput) {
 					env.getVM().println("<" + i + "> : " + Conditional.getCTXString(ctx));
 				} else {
@@ -193,10 +193,10 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void println__J__V(final MJIEnv env, int objref, Conditional<Long> l, FeatureExpr ctx) {
-		l.mapf(ctx, new VoidBiFunction<FeatureExpr, Long>() {
+		l.mapf(ctx, new BiConsumer<FeatureExpr, Long>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Long l) {
+			public void accept(FeatureExpr ctx, Long l) {
 				if (RuntimeConstants.ctxOutput) {
 					env.getVM().println("<" + l + "> : " + Conditional.getCTXString(ctx));
 				} else {
@@ -263,10 +263,10 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public void println__Z__V(final MJIEnv env, int objref, Conditional<Boolean> z, FeatureExpr ctx) {
-		z.mapf(ctx, new VoidBiFunction<FeatureExpr, Boolean>() {
+		z.mapf(ctx, new BiConsumer<FeatureExpr, Boolean>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, Boolean z) {
+			public void accept(FeatureExpr ctx, Boolean z) {
 				if (RuntimeConstants.ctxOutput) {
 					env.getVM().println("<" + z + "> : " + Conditional.getCTXString(ctx));
 				} else {

@@ -18,10 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -56,21 +57,21 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 	int appendString(final MJIEnv env, final int objref, final Conditional<String> s, FeatureExpr ctx) {
 		try {
 			final Conditional<Integer> aref = env.getReferenceField(ctx, objref, "value");
-			aref.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+			aref.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 	
 				@Override
-				public void apply(FeatureExpr ctx, final Integer aref) {
+				public void accept(FeatureExpr ctx, final Integer aref) {
 					final int alen = env.getArrayLength(ctx, aref);
-					s.mapf(ctx, new VoidBiFunction<FeatureExpr, String>() {
+					s.mapf(ctx, new BiConsumer<FeatureExpr, String>() {
 	
 						@Override
-						public void apply(FeatureExpr ctx, final String s) {
+						public void accept(FeatureExpr ctx, final String s) {
 							final int slen = s.length();
 							Conditional<Integer> count = env.getIntField(objref, "count");
-							count.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+							count.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 	
 								@Override
-								public void apply(FeatureExpr ctx, Integer count) {
+								public void accept(FeatureExpr ctx, Integer count) {
 									if (Conditional.isContradiction(ctx)) {
 										return;
 									}

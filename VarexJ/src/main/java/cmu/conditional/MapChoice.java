@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -91,9 +93,9 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	}
 	
 	@Override
-	public void mapfr(FeatureExpr inFeature, VoidBiFunction<FeatureExpr, T> f) {
+	public void mapfr(FeatureExpr inFeature, BiConsumer<FeatureExpr, T> f) {
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
-			f.apply(inFeature == null ? e.getValue() : e.getValue().and(inFeature), e.getKey());
+			f.accept(inFeature == null ? e.getValue() : e.getValue().and(inFeature), e.getKey());
 		}
 	}
 

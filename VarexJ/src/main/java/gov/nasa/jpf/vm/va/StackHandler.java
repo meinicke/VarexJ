@@ -3,13 +3,13 @@ package gov.nasa.jpf.vm.va;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -158,10 +158,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 		if (value == null) {
 			value = new One<>(new Entry(MJIEnv.NULL, false));
 		}
-		value.mapf(ctx, new VoidBiFunction<FeatureExpr, Entry>() {
+		value.mapf(ctx, new BiConsumer<FeatureExpr, Entry>() {
 
 			@Override
-			public void apply(final FeatureExpr ctx, final Entry entry) {
+			public void accept(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, entry.isRef);
 			}
 		});
@@ -176,10 +176,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 		if (value == null) {
 			value = new One<>(new Entry(0, false));
 		}
-		value.mapf(ctx, new VoidBiFunction<FeatureExpr, Entry>() {
+		value.mapf(ctx, new BiConsumer<FeatureExpr, Entry>() {
 
 			@Override
-			public void apply(final FeatureExpr ctx, final Entry entry) {
+			public void accept(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, false);
 			}
 		});
@@ -187,10 +187,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 		if (value == null) {
 			value = new One<>(new Entry(0, false));
 		}
-		value.mapf(ctx, new VoidBiFunction<FeatureExpr, Entry>() {
+		value.mapf(ctx, new BiConsumer<FeatureExpr, Entry>() {
 
 			@Override
-			public void apply(final FeatureExpr ctx, final Entry entry) {
+			public void accept(final FeatureExpr ctx, final Entry entry) {
 				push(ctx, entry.value, false);
 			}
 		});
@@ -237,10 +237,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public void storeLongOperand(final FeatureExpr ctx, final int index) {
-		stack.mapf(ctx, new VoidBiFunction<FeatureExpr, Stack>() {
+		stack.mapf(ctx, new BiConsumer<FeatureExpr, Stack>() {
 
 			@Override
-			public void apply(final FeatureExpr f, final Stack stack) {
+			public void accept(final FeatureExpr f, final Stack stack) {
 				if (Conditional.isContradiction(f)) {
 					return;
 				}
@@ -258,10 +258,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public void setLocal(FeatureExpr ctx, final int index, final Conditional<Integer> value, final boolean isRef) {
-		value.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+		value.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 			@Override
-			public void apply(final FeatureExpr x, final Integer value) {
+			public void accept(final FeatureExpr x, final Integer value) {
 				setLocal(x, index, value, isRef);
 			}
 
@@ -387,10 +387,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@SuppressWarnings("unchecked")
 	public void push(final FeatureExpr ctx, final Object value, final boolean isRef) {
 		if (value instanceof Conditional) {
-			((Conditional<Object>) value).mapf(ctx, new VoidBiFunction<FeatureExpr, Object>() {
+			((Conditional<Object>) value).mapf(ctx, new BiConsumer<FeatureExpr, Object>() {
 
 				@Override
-				public void apply(final FeatureExpr ctx, final Object value) {
+				public void accept(final FeatureExpr ctx, final Object value) {
 					push(ctx, value, isRef);
 				}
 

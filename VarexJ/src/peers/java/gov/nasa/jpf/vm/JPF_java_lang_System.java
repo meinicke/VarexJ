@@ -22,11 +22,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.annotation.MJI;
@@ -39,18 +39,18 @@ public class JPF_java_lang_System extends NativePeer {
 	@MJI
 	public void arraycopy__Ljava_lang_Object_2ILjava_lang_Object_2II__V(final MJIEnv env, int clsObjRef, Conditional<Integer> srcArrayRef, final Conditional<Integer> srcIdx,
 			final Conditional<Integer> dstArrayRef, final Conditional<Integer> dstIdx, final Conditional<Integer> length, FeatureExpr ctx) {
-		srcArrayRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+		srcArrayRef.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, final Integer srcArrayRef) {
-				dstArrayRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+			public void accept(FeatureExpr ctx, final Integer srcArrayRef) {
+				dstArrayRef.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 					@Override
-					public void apply(FeatureExpr ctx, final Integer dstArrayRef) {
-						length.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+					public void accept(FeatureExpr ctx, final Integer dstArrayRef) {
+						length.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 							@Override
-							public void apply(FeatureExpr ctx, final Integer length) {
+							public void accept(FeatureExpr ctx, final Integer length) {
 								if (ctx.isContradiction()) {
 									return;
 								}
@@ -62,14 +62,14 @@ public class JPF_java_lang_System extends NativePeer {
 								final ElementInfo eiSrc = env.getElementInfo(srcArrayRef);
 								final ElementInfo eiDst = env.getModifiableElementInfo(dstArrayRef);
 								try {
-									srcIdx.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+									srcIdx.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 										@Override
-										public void apply(FeatureExpr ctx, final Integer srcIdx) {
-											dstIdx.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+										public void accept(FeatureExpr ctx, final Integer srcIdx) {
+											dstIdx.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 												@Override
-												public void apply(FeatureExpr ctx, Integer dstIdx) {
+												public void accept(FeatureExpr ctx, Integer dstIdx) {
 													if (ctx.isContradiction()) {
 														return;
 													}

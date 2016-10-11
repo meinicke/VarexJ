@@ -20,10 +20,10 @@ package gov.nasa.jpf.vm;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.function.BiConsumer;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -59,10 +59,10 @@ public class JPF_java_lang_Throwable extends NativePeer {
   // native because we don't want to waste states
   @MJI
   public void printStackTrace____V (final MJIEnv env, Conditional<Integer> objRef, FeatureExpr ctx) {
-	  objRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+	  objRef.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 		@Override
-		public void apply(FeatureExpr ctx, Integer objRef) {
+		public void accept(FeatureExpr ctx, Integer objRef) {
 			env.getThreadInfo().printStackTrace(ctx, objRef);
 		}
 		  

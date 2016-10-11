@@ -21,7 +21,7 @@ package gov.nasa.jpf.vm;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
-import cmu.conditional.BiFunction;
+import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;

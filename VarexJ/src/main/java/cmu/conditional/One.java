@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -42,8 +44,8 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	}
 
 	@Override
-	public void mapfr(FeatureExpr inFeature, VoidBiFunction<FeatureExpr, T> f) {
-		f.apply(inFeature, value);
+	public void mapfr(FeatureExpr inFeature, BiConsumer<FeatureExpr, T> f) {
+		f.accept(inFeature, value);
 	}
 
 	@Override

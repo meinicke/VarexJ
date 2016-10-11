@@ -20,12 +20,12 @@ package gov.nasa.jpf.vm;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import cmu.conditional.BiFunction;
 import cmu.conditional.Conditional;
-import cmu.conditional.Function;
 import cmu.conditional.One;
-import cmu.conditional.VoidBiFunction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -142,27 +142,27 @@ public class JPF_java_lang_String extends NativePeer {
 	@MJI
 	public void getChars__II_3CI__V(final MJIEnv env, final Conditional<Integer> objRef, Conditional<Integer> srcBegin, final Conditional<Integer> srcEnd, final Conditional<Integer> dstRef,
 			final Conditional<Integer> dstBegin, FeatureExpr ctx) {
-		srcBegin.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+		srcBegin.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 			@Override
-			public void apply(FeatureExpr ctx, final Integer srcBegin) {
-				srcEnd.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+			public void accept(FeatureExpr ctx, final Integer srcBegin) {
+				srcEnd.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 					@Override
-					public void apply(FeatureExpr ctx, final Integer srcEnd) {
-						dstRef.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+					public void accept(FeatureExpr ctx, final Integer srcEnd) {
+						dstRef.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 							@Override
-							public void apply(FeatureExpr ctx, final Integer dstRef) {
-								dstBegin.mapf(ctx, new VoidBiFunction<FeatureExpr, Integer>() {
+							public void accept(FeatureExpr ctx, final Integer dstRef) {
+								dstBegin.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 
 									@Override
-									public void apply(FeatureExpr ctx, final Integer dstBegin) {
+									public void accept(FeatureExpr ctx, final Integer dstBegin) {
 										final Conditional<String> obj = env.getStringObjectNew(ctx, objRef.getValue());
-										obj.mapf(ctx, new VoidBiFunction<FeatureExpr, String>() {
+										obj.mapf(ctx, new BiConsumer<FeatureExpr, String>() {
 
 											@Override
-											public void apply(FeatureExpr ctx, String obj) {
+											public void accept(FeatureExpr ctx, String obj) {
 												if (Conditional.isContradiction(ctx)) {
 													return;
 												}

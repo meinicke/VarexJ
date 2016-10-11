@@ -26,7 +26,7 @@
 //import java.util.List;
 //import java.util.Map.Entry;
 //
-//import cmu.conditional.BiFunction;
+//import java.util.function.BiFunction;
 //import cmu.conditional.Conditional;
 //import cmu.conditional.IChoice;
 //import cmu.conditional.One;
