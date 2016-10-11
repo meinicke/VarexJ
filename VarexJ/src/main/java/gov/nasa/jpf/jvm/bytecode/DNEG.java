@@ -34,15 +34,10 @@ public class DNEG extends JVMInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
 
-		Conditional<Double> v1 = frame.popDouble(ctx);
+		final Conditional<Double> v1 = frame.popDouble(ctx);
 
-		frame.push(ctx, mapr2(v1, null));
+		frame.push(ctx, v1.map(x1 -> -x1));
 		return getNext(ctx, ti);
-	}
-
-	@Override
-	protected Number instruction(Number v1, Number v2) {
-		return -v1.doubleValue();
 	}
 
 	@Override

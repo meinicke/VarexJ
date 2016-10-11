@@ -411,15 +411,7 @@ public abstract class Instruction implements Cloneable {
 	}
 
 	protected <T, U> Conditional<T> mapr2(final Conditional<T> v1, final U v2) {
-		return v1.mapr(new Function<T, Conditional<T>>() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public Conditional<T> apply(final T x1) {
-				return new One<>((T) instruction((Number)x1, (Number)v2));
-			}
-
-		}).simplify();
+		return v1.mapr(x1 -> new One<>((T) instruction((Number)x1, (Number)v2))).simplify();
 	}
 
 	protected Number instruction(Number v1, Number v2) {

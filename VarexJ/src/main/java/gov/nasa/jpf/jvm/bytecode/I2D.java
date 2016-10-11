@@ -35,17 +35,11 @@ public class I2D extends JVMInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-    Conditional<Integer> ival = frame.pop(ctx);
-    
-    frame.push(ctx, mapr2(ival, null));
+    final Conditional<Integer> ival = frame.pop(ctx);
+    frame.push(ctx, ival.map(x1 -> (double) x1).simplify());
 
     return getNext(ctx, ti);
   }
-  
-  @Override
-	protected Number instruction(Number v1, Number v2) {
-		return (double)v1.intValue();
-	}
 
   public int getByteCode () {
     return 0x87;

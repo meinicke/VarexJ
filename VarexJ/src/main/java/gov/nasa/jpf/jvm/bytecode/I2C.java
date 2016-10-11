@@ -34,9 +34,8 @@ public class I2C extends JVMInstruction {
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    Conditional<Integer> v = frame.pop(ctx);
-    
-    frame.push( ctx, mapr2(v, null), false);
+    final Conditional<Integer> v = frame.pop(ctx);
+    frame.push( ctx, v.map(x1 -> (int) (char) x1.intValue()).simplify(), false);
 
     return getNext(ctx, ti);
   }

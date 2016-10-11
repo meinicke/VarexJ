@@ -35,17 +35,12 @@ public class I2L extends JVMInstruction {
 public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
-     Conditional<Integer> v = frame.pop(ctx);
-    
-    frame.push(ctx, mapr2(v, null));
+    final Conditional<Integer> v = frame.pop(ctx);
+    frame.push(ctx, v.map(x1 -> (long) x1).simplify());
 
     return getNext(ctx, ti);
   }
   
-  @Override
-	protected Number instruction(Number v1, Number v2) {
-		return (long) v1.intValue();
-	}
 
   public int getByteCode () {
     return 0x85;
