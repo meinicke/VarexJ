@@ -133,9 +133,9 @@ public class ConsolePublisher extends Publisher {
   }
 
   protected void publishJPF() {
-    out.println(reporter.getJPFBanner());
-    out.println();
-    out.println("    VarexJ v0.5 (" + FeatureExprFactory.dflt().getClass().getSimpleName().substring(0, 3)
+//    out.println(reporter.getJPFBanner());
+//    out.println();
+    out.println("    VarexJ v1.0 (" + FeatureExprFactory.dflt().getClass().getSimpleName().substring(0, 3)
     		+ ", " + ChoiceFactory.getCurrent()
     		+ ", " + StackHandlerFactory.getCurrent() + ")");
     out.println();

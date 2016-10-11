@@ -1,21 +1,20 @@
-//
-// Copyright (C) 2010 United States Government as represented by the
-// Administrator of the National Aeronautics and Space Administration
-// (NASA).  All Rights Reserved.
-//
-// This software is distributed under the NASA Open Source Agreement
-// (NOSA), version 1.3.  The NOSA has been approved by the Open Source
-// Initiative.  See the file NOSA-1.3-JPF at the top of the distribution
-// directory tree for the complete NOSA document.
-//
-// THE SUBJECT SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY OF ANY
-// KIND, EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT
-// LIMITED TO, ANY WARRANTY THAT THE SUBJECT SOFTWARE WILL CONFORM TO
-// SPECIFICATIONS, ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR
-// A PARTICULAR PURPOSE, OR FREEDOM FROM INFRINGEMENT, ANY WARRANTY THAT
-// THE SUBJECT SOFTWARE WILL BE ERROR FREE, OR ANY WARRANTY THAT
-// DOCUMENTATION, IF PROVIDED, WILL CONFORM TO THE SUBJECT SOFTWARE.
-//
+/*
+ * Copyright (C) 2014, United States Government, as represented by the
+ * Administrator of the National Aeronautics and Space Administration.
+ * All rights reserved.
+ *
+ * The Java Pathfinder core (jpf-core) platform is licensed under the
+ * Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ *        http://www.apache.org/licenses/LICENSE-2.0. 
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ */
 
 package gov.nasa.jpf.jvm;
 
@@ -156,16 +155,49 @@ public class ClassFileReaderAdapter implements ClassFileReader {
   public void setInnerClassesDone(ClassFile cf, Object tag) {}
   
   @Override
+  public void setBootstrapMethodCount (ClassFile cf, Object tag, int count) {}
+  
+  @Override
+  public void setBootstrapMethod (ClassFile cf, Object tag, int idx, int refKind, String cls, String mth, String descriptor, int[] cpArgs){}
+  
+  @Override
+  public void setBootstrapMethodsDone (ClassFile cf, Object tag) {}
+  
+  @Override
   public void setEnclosingMethod(ClassFile cf, Object tag, String enclosingClass, String enclosingMethod, String descriptor) {}
 
   @Override
   public void setAnnotationCount(ClassFile cf, Object tag, int annotationCount){}
-
+  @Override
+  public void setAnnotation(ClassFile cf, Object tag, int annotationIndex, String annotationType){}
   @Override
   public void setAnnotationsDone(ClassFile cf, Object tag) {}
 
+  //--- Java 8 type annotations
   @Override
-  public void setAnnotation(ClassFile cf, Object tag, int annotationIndex, String annotationType){}
+  public void setTypeAnnotationCount(ClassFile cf, Object tag, int annotationCount){}
+  @Override
+  public void setTypeParameterAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, int typeIndex, short[] typePath, String annotationType){}
+  @Override
+  public void setSuperTypeAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, int superTypeIdx, short[] typePath, String annotationType){}
+  @Override
+  public void setTypeParameterBoundAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, int typeParamIdx, int boundIdx, short[] typePath, String annotationType){}
+  @Override
+  public void setTypeAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, short[] typePath, String annotationType){}
+  @Override
+  public void setFormalParameterAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, int formalParamIdx, short[] typePath, String annotationType){}
+  @Override
+  public void setThrowsAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, int throwsTypeIdx, short[] typePath, String annotationType){}
+  @Override
+  public void setVariableAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, long[] scopeEntries, short[] typePath, String annotationType){}
+  @Override
+  public void setExceptionParameterAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, int exceptionIndex, short[] typePath, String annotationType){}
+  @Override
+  public void setBytecodeAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, int offset, short[] typePath, String annotationType){}
+  @Override
+  public void setBytecodeTypeParameterAnnotation(ClassFile cf, Object tag, int annotationIndex, int targetType, int offset, int typeArgIdx, short[] typePath, String annotationType){}
+  @Override
+  public void setTypeAnnotationsDone(ClassFile cf, Object tag) {}
 
   @Override
   public void setAnnotationValueCount(ClassFile cf, Object tag, int annotationIndex, int annotationCount) {}

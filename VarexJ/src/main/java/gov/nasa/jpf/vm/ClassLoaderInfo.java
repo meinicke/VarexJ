@@ -21,7 +21,10 @@ package gov.nasa.jpf.vm;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -439,7 +442,24 @@ public class ClassLoaderInfo
 
     return ci;
   }
-
+  
+  /**
+   * This method returns a type which implements the given functional interface 
+   * and contains a method that captures the behavior of the lambda expression.
+   */
+  public ClassInfo getResolvedFuncObjType (int bsIdx, ClassInfo fiClassInfo, String samUniqueName, BootstrapMethodInfo bmi, String[] freeVariableTypeNames) {
+    String typeName = bmi.enclosingClass.getName() + "$$Lambda$" + bsIdx;
+    
+    ClassInfo funcObjType = resolvedClasses.get( typeName);
+    
+    if (funcObjType == null) {
+      funcObjType = fiClassInfo.createFuncObjClassInfo(bmi, typeName, samUniqueName, freeVariableTypeNames);
+      resolvedClasses.put( typeName, funcObjType);
+    }
+    
+    return funcObjType;
+  }
+  
   protected ClassInfo getAlreadyResolvedClassInfo(String cname) {
     return resolvedClasses.get(cname);
   }

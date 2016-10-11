@@ -281,4 +281,5 @@ public class Unsafe {
 
 	public native void setMemory(long address, long bytes, byte value);
 
+	public native int getAndAddInt(Object src, long address, int val);
 }

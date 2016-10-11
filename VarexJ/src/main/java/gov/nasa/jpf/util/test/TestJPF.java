@@ -646,7 +646,6 @@ public abstract class TestJPF implements JPFShell  {
     Object target = testCls.newInstance();
     
     Method method = testCls.getMethod(testMthName);
-
     try {
       method.invoke(target);
     } catch (InvocationTargetException e) {

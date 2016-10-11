@@ -196,6 +196,16 @@ public class MethodInfo extends InfoObject implements GenericSignatureHolder  {
   }
   
   /**
+   * This is used to create synthetic methods of function object types
+   */
+  public MethodInfo(String name, String signature, int modifiers, int nLocals, int nOperands) {
+    this( name, signature, modifiers);
+    maxLocals = nLocals;
+    maxStack = nOperands;
+    localVars = EMPTY;
+  }
+  
+  /**
    * for NativeMethodInfo creation 
    */
   public MethodInfo (MethodInfo mi) {

@@ -584,4 +584,12 @@
        </triggerPoints>
     </navigatorContent>
  </extension>
+ <extension
+       point="org.eclipse.jdt.ui.javaEditorTextHovers">
+    <hover
+          activate="true"
+          class="coverageplugin.JavaEditorTextHover2"
+          id="CoveragePlugin.hover2">
+    </hover>
+ </extension>
 </plugin>

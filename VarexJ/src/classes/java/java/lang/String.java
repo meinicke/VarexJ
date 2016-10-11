@@ -100,7 +100,10 @@ implements java.io.Serializable, Comparable<String>, CharSequence {
 		this(ascii, hibyte, 0, ascii.length);
 	}
 
-
+	String(char[] value, boolean share) {
+        // assert share : "unshared not supported";
+        this.value = value;
+    }
 
 	public String(byte bytes[], int offset, int length, String charsetName){
 		String proxy=init(bytes,offset,length,charsetName);

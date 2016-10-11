@@ -71,7 +71,7 @@ public class INVOKECLINIT extends INVOKESTATIC {
     } else { // re-execution after being blocked
       // if we got here, we can enter, and have the lock but there still might have been
       // another thread that passed us with the clinit
-      if (!ci.needsInitialization()) {
+      if (!ci.needsInitialization(ti)) {
         return new One<>(getNext());
       }
     }

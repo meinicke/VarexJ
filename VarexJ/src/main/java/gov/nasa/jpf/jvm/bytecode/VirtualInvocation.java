@@ -169,10 +169,13 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return null;
 				}
 				invokedMethod = cci.getMethod(mname, true);
-				// here we could catch the NoSuchMethodError
 				if (invokedMethod == null) {
-					lastObj = MJIEnv.NULL;
-					lastCalleeCi = null;
+			        invokedMethod = cci.getDefaultMethod(mname);
+					// here we could catch the NoSuchMethodError
+					if (invokedMethod == null) {
+						lastObj = MJIEnv.NULL;
+						lastCalleeCi = null;
+					}
 				}
 			}
 

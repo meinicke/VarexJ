@@ -19,11 +19,17 @@
 
 package gov.nasa.jpf.jvm;
 
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.Misc;
+import gov.nasa.jpf.util.StringSetMatcher;
 import gov.nasa.jpf.vm.AnnotationInfo;
+import gov.nasa.jpf.vm.BootstrapMethodInfo;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.ClassParseException;
@@ -67,22 +73,64 @@ public class JVMClassInfo extends ClassInfo {
 
     @Override
     public void setClassAttribute (ClassFile cf, int attrIndex, String name, int attrLength) {
-      if (name == ClassFile.SOURCE_FILE_ATTR) {
-        cf.parseSourceFileAttr(this, null);
+    	if (name == ClassFile.SOURCE_FILE_ATTR) {
+            cf.parseSourceFileAttr(this, null);
 
-      } else if (name == ClassFile.SIGNATURE_ATTR) {
-        cf.parseSignatureAttr(this, JVMClassInfo.this);
+          } else if (name == ClassFile.SIGNATURE_ATTR) {
+            cf.parseSignatureAttr(this, JVMClassInfo.this);
 
-      } else if (name == ClassFile.RUNTIME_VISIBLE_ANNOTATIONS_ATTR) {
-        cf.parseAnnotationsAttr(this, JVMClassInfo.this);
+          } else if (name == ClassFile.RUNTIME_VISIBLE_ANNOTATIONS_ATTR) {
+            cf.parseAnnotationsAttr(this, JVMClassInfo.this);
 
-      } else if (name == ClassFile.RUNTIME_INVISIBLE_ANNOTATIONS_ATTR) {
-        //cf.parseAnnotationsAttr(this, ClassInfo.this);
-      } else if (name == ClassFile.INNER_CLASSES_ATTR) {
-        cf.parseInnerClassesAttr(this, JVMClassInfo.this);
+          } else if (name == ClassFile.RUNTIME_INVISIBLE_ANNOTATIONS_ATTR) {
+            //cf.parseAnnotationsAttr(this, ClassInfo.this);
+            
+          } else if (name == ClassFile.RUNTIME_VISIBLE_TYPE_ANNOTATIONS_ATTR) {
+            cf.parseTypeAnnotationsAttr(this, JVMClassInfo.this);
+            
+          } else if (name == ClassFile.INNER_CLASSES_ATTR) {
+            cf.parseInnerClassesAttr(this, JVMClassInfo.this);
 
-      } else if (name == ClassFile.ENCLOSING_METHOD_ATTR) {
-        cf.parseEnclosingMethodAttr(this, JVMClassInfo.this);
+          } else if (name == ClassFile.ENCLOSING_METHOD_ATTR) {
+            cf.parseEnclosingMethodAttr(this, JVMClassInfo.this);
+            
+          } else if (name == ClassFile.BOOTSTRAP_METHOD_ATTR) {
+            cf.parseBootstrapMethodAttr(this, JVMClassInfo.this);
+            
+          }
+    }
+    
+    @Override
+    public void setBootstrapMethodCount (ClassFile cf, Object tag, int count) {
+      bootstrapMethods = new BootstrapMethodInfo[count];
+    }
+    
+    @Override
+    public void setBootstrapMethod (ClassFile cf, Object tag, int idx, int refKind, String cls, String mth, String descriptor, int[] cpArgs) {    
+   
+      int lambdaRefKind = cf.mhRefTypeAt(cpArgs[1]);
+      
+      int mrefIdx = cf.mhMethodRefIndexAt(cpArgs[1]);
+      String clsName = cf.methodClassNameAt(mrefIdx).replace('/', '.');
+      ClassInfo eclosingLambdaCls;
+      
+      if(!clsName.equals(JVMClassInfo.this.getName())) {
+        eclosingLambdaCls = ClassLoaderInfo.getCurrentResolvedClassInfo(clsName);
+      } else {
+        eclosingLambdaCls = JVMClassInfo.this;
+      }
+      
+      assert (eclosingLambdaCls!=null);
+      
+      String mthName = cf.methodNameAt(mrefIdx);
+      String signature = cf.methodDescriptorAt(mrefIdx);
+      
+      MethodInfo lambdaBody = eclosingLambdaCls.getMethod(mthName + signature, false);
+      
+      String samDescriptor = cf.methodTypeDescriptorAt(cpArgs[2]);
+            
+      if(lambdaBody!=null) {
+        bootstrapMethods[idx] = new BootstrapMethodInfo(lambdaRefKind, JVMClassInfo.this, lambdaBody, samDescriptor);
       }
     }
     
@@ -463,6 +511,21 @@ public class JVMClassInfo extends ClassInfo {
     }
   }
   
+	// since nested class init locking can explode the state space, we make it optional and controllable
+	protected static boolean nestedInit;
+	protected static StringSetMatcher includeNestedInit;
+	protected static StringSetMatcher excludeNestedInit;
+
+	protected static boolean init(Config config) {
+		nestedInit = config.getBoolean("jvm.nested_init", false);
+		if (nestedInit) {
+			includeNestedInit = StringSetMatcher.getNonEmpty(config.getStringArray("jvm.nested_init.include"));
+			excludeNestedInit = StringSetMatcher.getNonEmpty(config.getStringArray("jvm.nested_init.exclude"));
+		}
+
+		return true;
+	}
+  
   JVMClassInfo (FeatureExpr ctx, String name, ClassLoaderInfo cli, ClassFile cf, String srcUrl, JVMCodeBuilder cb) throws ClassParseException {
     super( name, cli, srcUrl);
     
@@ -485,6 +548,114 @@ public class JVMClassInfo extends ClassInfo {
     super( ciAnnotation, proxyName, cli, url);
   }
 
+  /**
+   * This is called on the functional interface type. It creates a synthetic type which 
+   * implements the functional interface and contains a method capturing the behavior 
+   * of the lambda expression.
+   */
+  @Override
+  protected ClassInfo createFuncObjClassInfo (BootstrapMethodInfo bootstrapMethod, String name, String samUniqueName, String[] fieldTypesName) {
+    return new JVMClassInfo(this, bootstrapMethod, name, samUniqueName, fieldTypesName);
+  }
+  
+  protected JVMClassInfo (ClassInfo funcInterface, BootstrapMethodInfo bootstrapMethod, String name, String samUniqueName, String[] fieldTypesName) {
+    super(funcInterface, bootstrapMethod, name, fieldTypesName);
+    
+    // creating a method corresponding to the single abstract method of the functional interface
+    methods = new HashMap<String, MethodInfo>();
+    
+    MethodInfo fiMethod = funcInterface.getInterfaceAbstractMethod();
+    int modifiers = fiMethod.getModifiers() & (~Modifier.ABSTRACT);
+    int nLocals = fiMethod.getArgumentsSize();
+    int nOperands = this.nInstanceFields + nLocals;
+
+    MethodInfo mi = new MethodInfo(fiMethod.getName(), fiMethod.getSignature(), modifiers, nLocals, nOperands);
+    mi.linkToClass(this);
+    
+    methods.put(mi.getUniqueName(), mi);
+    
+    setLambdaDirectCallCode(mi, bootstrapMethod);
+    
+    try {
+      resolveAndLink(null);
+    } catch (ClassParseException e) {
+      // we do not even get here - this a synthetic class, and at this point
+      // the interfaces are already loaded.
+    }
+  }
+
+  /**
+   * perform initialization of this class and its not-yet-initialized superclasses (top down),
+   * which includes calling clinit() methods
+   *
+   * This is overridden here to model a questionable yet consequential behavior of hotspot, which
+   * is holding derived class locks when initializing base classes. The generic implementation in
+   * ClassInfo uses non-nested locks (i.e. A.clinit() only synchronizes on A.class) and hence cannot
+   * produce the same static init deadlocks as hotspot. In order to catch such defects we implement
+   * nested locking here.
+   *
+   * The main difference is that the generic implementation only pushes DCSFs for required clinits
+   * and otherwise doesn't lock anything. Here, we create one static init specific DCSF which wraps
+   * all clinits in nested monitorenter/exits. We create this even if there is no clinit so that we
+   * mimic hotspot locking.
+   *
+   * Note this scheme also enables us to get rid of the automatic clinit sync (they don't have
+   * a 0x20 sync modifier in classfiles)
+   *
+   * @return true if client needs to re-execute because we pushed DirectCallStackFrames
+   */
+  @Override
+  public boolean initializeClass(FeatureExpr ctx, ThreadInfo ti) {
+    if (needsInitialization(ti)) {
+      if (nestedInit && StringSetMatcher.isMatch(name, includeNestedInit, excludeNestedInit)) {
+        registerClass(ctx, ti); // this is recursively upwards
+        int nOps = 2 * (getNumberOfSuperClasses() + 1); // this is just an upper bound for the number of operands we need
+
+        MethodInfo miInitialize = new MethodInfo("[initializeClass]", "()V", Modifier.STATIC, 0, nOps);
+        JVMDirectCallStackFrame frame = new JVMDirectCallStackFrame(ctx, miInitialize, null);
+        JVMCodeBuilder cb = getSystemCodeBuilder(null, miInitialize);
+
+        addClassInit(ti, frame, cb); // this is recursively upwards until we hit a initialized superclass
+        cb.directcallreturn();
+        cb.installCode();
+
+        // this is normally initialized in the ctor, but at that point we don't have the code yet
+        frame.setPC(new One<>(miInitialize.getFirstInsn()));
+
+        ti.pushFrame(frame);
+        return true; // client has to re-execute, we pushed a stackframe
+
+
+      } else { // use generic initialization without nested locks (directly calling clinits)
+        return super.initializeClass(ctx, ti);
+      }
+
+    } else {
+      return false; // nothing to do
+    }
+  }
+
+  protected void addClassInit (ThreadInfo ti, JVMDirectCallStackFrame frame, JVMCodeBuilder cb){
+    int clsObjRef = getClassObjectRef();
+
+    frame.pushRef(null, new One<>(clsObjRef));
+    cb.monitorenter();
+
+    if (superClass != null && superClass.needsInitialization(ti)) {
+      ((JVMClassInfo) superClass).addClassInit(ti, frame, cb);      // go recursive
+    }
+
+    if (getMethod("<clinit>()V", false) != null) { // do we have a clinit
+      cb.invokeclinit(this);
+    } else {
+      cb.finishclinit(this);
+      // we can't just do call ci.setInitialized() since that has to be deferred
+    }
+
+    frame.pushRef(null, new One<>(clsObjRef));
+    cb.monitorexit();
+  }
+  
   //--- call processing
   
   protected JVMCodeBuilder getSystemCodeBuilder (ClassFile cf, MethodInfo mi){
@@ -562,6 +733,94 @@ public class JVMClassInfo extends ClassInfo {
     cb.installCode();    
   }
   
+  /**
+   * This method creates the body of the function object method that captures the 
+   * lambda behavior.
+   */
+  @Override
+  protected void setLambdaDirectCallCode (MethodInfo miDirectCall, BootstrapMethodInfo bootstrapMethod) {
+    
+    MethodInfo miCallee = bootstrapMethod.getLambdaBody();
+    String samSignature = bootstrapMethod.getSamDescriptor();
+    JVMCodeBuilder cb = getSystemCodeBuilder(null, miDirectCall);
+    
+    String calleeName = miCallee.getName();
+    String calleeSig = miCallee.getSignature();
+    
+    ClassInfo callerCi = miDirectCall.getClassInfo();
+    
+    // loading free variables, which are used in the body of the lambda 
+    // expression and captured by the lexical scope. These variables  
+    // are stored by the fields of the synthetic function object class
+    int n = callerCi.getNumberOfInstanceFields();
+    for(int i=0; i<n; i++) {
+      cb.aload(0);
+      FieldInfo fi = callerCi.getInstanceField(i);
+      
+      cb.getfield(fi.getName(), callerCi.getName(), Types.getTypeSignature(fi.getSignature(), false));
+    }
+
+    // adding bytecode instructions to load input parameters of the lambda expression
+    n = miDirectCall.getArgumentsSize();
+    for(int i=1; i<n; i++) {
+      cb.aload(i);
+    }
+    
+    String calleeClass = miCallee.getClassName(); 
+    
+    // adding the bytecode instruction to invoke lambda method
+    switch (bootstrapMethod.getLambdaRefKind()) {
+    case ClassFile.REF_INVOKESTATIC:
+      cb.invokestatic(calleeClass, calleeName, calleeSig);
+      break;
+    case ClassFile.REF_INVOKEINTERFACE:
+      cb.invokeinterface(calleeClass, calleeName, calleeSig);
+      break;
+    case ClassFile.REF_INVOKEVIRTUAL:
+      cb.invokevirtual(calleeClass, calleeName, calleeSig);
+      break;
+    case ClassFile.REF_NEW_INVOKESPECIAL:
+      cb.new_(calleeClass);
+      cb.invokespecial(calleeClass, calleeName, calleeSig);
+      break;
+    case ClassFile.REF_INVOKESPECIAL:
+      cb.invokespecial(calleeClass, calleeName, calleeSig);
+      break;
+    }
+    
+    String returnType = Types.getReturnTypeSignature(samSignature);
+    int  len = returnType.length();
+    char c = returnType.charAt(0);
+
+    // adding a return statement for function object method
+    if (len == 1) {
+      switch (c) {
+      case 'B':
+      case 'I':
+      case 'C':
+      case 'Z':
+      case 'S':
+        cb.ireturn();
+        break;
+      case 'D':
+        cb.dreturn();
+        break;
+      case 'J':
+        cb.lreturn();
+        break;
+      case 'F':
+        cb.freturn();
+        break;
+      case 'V':
+        cb.return_();
+        break;
+      }
+    } else {
+      cb.areturn();
+    }
+    
+    cb.installCode();
+  }
 
   // create a stack frame that has properly initialized arguments
   @Override

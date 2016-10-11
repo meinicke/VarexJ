@@ -205,6 +205,7 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
   protected String enclosingMethodName;
 
   protected String[] innerClassNames = EMPTY_STRING_ARRAY;
+  protected BootstrapMethodInfo[] bootstrapMethods;
     
   /** direct ifcs implemented by this class */
   protected String[] interfaceNames;
@@ -598,6 +599,10 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     // to be overridden by VM specific class
   }
   
+	protected void setLambdaDirectCallCode(MethodInfo miDirectCall, BootstrapMethodInfo bootstrapMethod) {
+		// to be overridden by VM specific class
+	}
+  
   protected void setNativeCallCode (NativeMethodInfo miNative){
     // to be overridden by VM specific class
   }
@@ -658,6 +663,46 @@ public class ClassInfo extends InfoObject implements Iterable<MethodInfo>, Gener
     classFileUrl = url;
     linkFields();
   }
+  
+//used to create synthetic classes that implement functional interfaces
+  protected ClassInfo createFuncObjClassInfo (BootstrapMethodInfo bootstrapMethod, String name, String samUniqueName, String[] fieldTypesName) {
+   return null;
+ }
+ 
+ protected ClassInfo (ClassInfo funcInterface, BootstrapMethodInfo bootstrapMethod, String name, String[] fieldTypesName) {
+   ClassInfo enclosingClass = bootstrapMethod.enclosingClass;
+   this.classLoader = enclosingClass.classLoader;
+
+   this.name = name;
+   isClass = true;
+
+   superClassName = "java.lang.Object";
+
+   interfaceNames = new String[]{ funcInterface.name };    
+   packageName = enclosingClass.getPackageName();
+
+   // creating fields used to capture free variables
+   int n = fieldTypesName.length;
+   
+   iFields = new FieldInfo[n];
+   nInstanceFields = n;
+   
+   sFields = new FieldInfo[0];
+   staticDataSize = 0;
+   
+   int idx = 0;
+   int off = 0;  // no super class
+   
+   int i = 0;
+   for(String type: fieldTypesName) {
+     FieldInfo fi = FieldInfo.create("arg" + i++, type, 0);
+     fi.linkToClass(this, idx, off);
+     iFields[idx++] = fi;
+     off += fi.getStorageSize();
+   }
+   
+   linkFields();
+ }
   
   // since id and hence uniqueId are not set before this class is registered, we can't use them
   
@@ -1014,6 +1059,60 @@ public String getGenericSignature() {
     return mi;
   }
 
+  public MethodInfo getDefaultMethod (String uniqueName) {
+	    MethodInfo mi = null;
+	    
+	    for (ClassInfo ci = this; ci != null; ci = ci.superClass){
+	      for (ClassInfo ciIfc : ci.interfaces){
+	        MethodInfo miIfc = ciIfc.getMethod(uniqueName, true);
+	        if (miIfc != null && !miIfc.isAbstract()){
+	          if (mi != null && mi != miIfc){
+	            // this has to throw a IncompatibleClassChangeError in the client since Java prohibits ambiguous default methods
+	            String msg = "Conflicting default methods: " + mi.getFullName() + ", " + miIfc.getFullName();
+	            throw new ClassChangeException(msg);
+	          } else {
+	            mi = miIfc;
+	          }
+	        }
+	      }
+	    }
+	    
+	    return mi;
+	  }
+	  
+	  /**
+	   * This retrieves the SAM from this functional interface. Note that this is only
+	   * called on functional interface expecting to have a SAM. This shouldn't expect 
+	   * this interface to have only one method which is abstract, since:
+	   *    1. functional interface can declare the abstract methods from the java.lang.Object 
+	   *       class.
+	   *    2. functional interface can extend another interface which is functional, but it 
+	   *       should not declare any new abstract methods.
+	   *    3. functional interface can have one abstract method and any number of default
+	   *       methods.
+	   * 
+	   * To retrieve the SAM, this method iterates over the methods of this interface and its 
+	   * superinterfaces, and it returns the first method which is abstract and it does not 
+	   * declare a method in java.lang.Object.
+	   */
+	  public MethodInfo getInterfaceAbstractMethod () {
+	    ClassInfo objCi = ClassLoaderInfo.getCurrentResolvedClassInfo("java.lang.Object");
+	    
+	    for(MethodInfo mi: this.methods.values()) {
+	      if(mi.isAbstract() && objCi.getMethod(mi.getUniqueName(), false)==null) {
+	        return mi;
+	      }
+	    }
+	    
+	    for (ClassInfo ifc : this.interfaces){
+	      MethodInfo mi = ifc.getInterfaceAbstractMethod();
+	      if(mi!=null) {
+	        return mi;
+	      }
+	    }
+	    
+	    return null;
+	  }
 
   /**
    * almost the same as above, except of that Class.getMethod() doesn't specify
@@ -1334,6 +1433,14 @@ public String getGenericSignature() {
       return null;
     }
   }
+  
+	public int getNumberOfSuperClasses() {
+		int n = 0;
+		for (ClassInfo ci = superClass; ci != null; ci = ci.superClass) {
+			n++;
+		}
+		return n;
+	}
   
   /**
    * beware - this loads (but not yet registers) the enclosing class
@@ -1755,6 +1862,9 @@ public String getGenericSignature() {
     return innerClassInfos;
   }
   
+	public BootstrapMethodInfo getBootstrapMethodInfo(int index) {
+		return bootstrapMethods[index];
+	}
 
   public ClassInfo getComponentClassInfo () {
     if (isArray()) {
@@ -2020,10 +2130,17 @@ public String getGenericSignature() {
     return (!isObjectClassInfo() && superClass != null);
   }
 
-  public boolean needsInitialization () {
-    StaticElementInfo sei = getStaticElementInfo();
-    return ((sei == null) || (sei.getStatus() > INITIALIZED));
-  }
+	public boolean needsInitialization(ThreadInfo ti) {
+		StaticElementInfo sei = getStaticElementInfo();
+		if (sei != null) {
+			int status = sei.getStatus();
+			if (status == INITIALIZED || status == ti.getId()) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 
   public void setInitializing(ThreadInfo ti) {
     StaticElementInfo sei = getModifiableStaticElementInfo();
@@ -2071,33 +2188,45 @@ public String getGenericSignature() {
    * needs to be re-executed
    */
   public boolean initializeClass (FeatureExpr ctx, ThreadInfo ti) {
-    int pushedFrames = 0;
+	  int pushedFrames = 0;
 
-    // push clinits of class hierarchy (upwards, since call stack is LIFO)
-    for (ClassInfo ci = this; ci != null; ci = ci.getSuperClass()) {
-      if (ci.pushClinit(ctx, ti)) {
-        
-        // note - we don't treat registration/initialization of a class as
-        // a sharedness-changing operation since it is done automatically by
-        // the VM and the triggering action in the SUT (e.g. static field access or method call)
-        // is the one that should update sharedness and/or break the transition accordingly
-        
-        // we can't do setInitializing() yet because there is no global lock that
-        // covers the whole clinit chain, and we might have a context switch before executing
-        // a already pushed subclass clinit - there can be races as to which thread
-        // does the static init first. Note this case is checked in INVOKECLINIT
-        // (which is one of the reasons why we have it).
-        pushedFrames++;
-      }
-    }
+	    // push clinits of class hierarchy (upwards, since call stack is LIFO)
+	    for (ClassInfo ci = this; ci != null; ci = ci.getSuperClass()) {
+	      StaticElementInfo sei = ci.getStaticElementInfo();
+	      if (sei == null){
+	        sei = ci.registerClass(ctx, ti);
+	      }
 
-    if (pushedFrames > 0){
-      // caller needs to reexecute the insn that caused the initialization
-      return true;
+	      int status = sei.getStatus();
+	      if (status != INITIALIZED){
+	        // we can't do setInitializing() yet because there is no global lock that
+	        // covers the whole clinit chain, and we might have a context switch before executing
+	        // a already pushed subclass clinit - there can be races as to which thread
+	        // does the static init first. Note this case is checked in INVOKECLINIT
+	        // (which is one of the reasons why we have it).
 
-    } else {
-      return false;
-    }
+	        if (status != ti.getId()) {
+	          // even if it is already initializing - if it does not happen in the current thread
+	          // we have to sync, which we do by calling clinit
+	          MethodInfo mi = ci.getMethod("<clinit>()V", false);
+	          if (mi != null) {
+	            DirectCallStackFrame frame = ci.createDirectCallStackFrame(ctx, ti, mi, 0);
+	            ti.pushFrame( frame);
+	            pushedFrames++;
+
+	          } else {
+	            // it has no clinit, we can set it initialized
+	            ci.setInitialized();
+	          }
+	        } else {
+	          // ignore if it's already being initialized  by our own thread (recursive request)
+	        }
+	      } else {
+	        break; // if this class is initialized, so are its superclasses
+	      }
+	    }
+
+	    return (pushedFrames > 0);
   }
 
   /**

@@ -83,7 +83,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     }
     return false;
   }
-
+  
   @MJI
   public boolean compareAndSwapLong__Ljava_lang_Object_2JJJ__Z (MJIEnv env, int unsafeRef,
                                                                        int objRef, long fieldOffset, long expect, long update, FeatureExpr ctx) {
@@ -532,6 +532,14 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
     } else {
       ei.setDoubleElement(ctx, (int)fieldOffset, new One<>(val));
     }
+  }
+  
+
+  @MJI
+  public int getAndAddInt__Ljava_lang_Object_2JI__I(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, int val, FeatureExpr ctx) {
+    int actual = getInt__Ljava_lang_Object_2J__I(env, unsafeRef, objRef, fieldOffset, ctx);
+    putInt__Ljava_lang_Object_2JI__V(env, unsafeRef, objRef, fieldOffset, actual + val, ctx);
+    return actual + val;
   }
 
   @MJI

@@ -1,21 +1,20 @@
-//
-// Copyright (C) 2010 United States Government as represented by the
-// Administrator of the National Aeronautics and Space Administration
-// (NASA).  All Rights Reserved.
-//
-// This software is distributed under the NASA Open Source Agreement
-// (NOSA), version 1.3.  The NOSA has been approved by the Open Source
-// Initiative.  See the file NOSA-1.3-JPF at the top of the distribution
-// directory tree for the complete NOSA document.
-//
-// THE SUBJECT SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY OF ANY
-// KIND, EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT
-// LIMITED TO, ANY WARRANTY THAT THE SUBJECT SOFTWARE WILL CONFORM TO
-// SPECIFICATIONS, ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR
-// A PARTICULAR PURPOSE, OR FREEDOM FROM INFRINGEMENT, ANY WARRANTY THAT
-// THE SUBJECT SOFTWARE WILL BE ERROR FREE, OR ANY WARRANTY THAT
-// DOCUMENTATION, IF PROVIDED, WILL CONFORM TO THE SUBJECT SOFTWARE.
-//
+/*
+ * Copyright (C) 2014, United States Government, as represented by the
+ * Administrator of the National Aeronautics and Space Administration.
+ * All rights reserved.
+ *
+ * The Java Pathfinder core (jpf-core) platform is licensed under the
+ * Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ *        http://www.apache.org/licenses/LICENSE-2.0. 
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ */
 
 package gov.nasa.jpf.jvm;
 
@@ -43,7 +42,19 @@ public class ClassFile extends BinaryClassSource {
   public static final int METHOD_REF = 10;
   public static final int INTERFACE_METHOD_REF = 11;
   public static final int NAME_AND_TYPE = 12;
+  public static final int METHOD_HANDLE = 15;
+  public static final int METHOD_TYPE = 16;
+  public static final int INVOKE_DYNAMIC = 18;
 
+  public static final int REF_GETFIELD = 1;
+  public static final int REF_GETSTATIC = 2;
+  public static final int REF_PUTFIELD = 3;
+  public static final int REF_PUTSTATIC = 4;
+  public static final int REF_INVOKEVIRTUAL = 5;
+  public static final int REF_INVOKESTATIC = 6;
+  public static final int REF_INVOKESPECIAL = 7;
+  public static final int REF_NEW_INVOKESPECIAL = 8;
+  public static final int REF_INVOKEINTERFACE = 9;
 
   // used to store types in cpValue[]
   public static enum CpInfo {
@@ -59,7 +70,13 @@ public class ClassFile extends BinaryClassSource {
     FieldRef,                 // 9
     MethodRef,                // 10
     InterfaceMethodRef,       // 11
-    NameAndType;              // 12
+    NameAndType,              // 12
+    Unused_13,
+    Unused_14,
+    MethodHandle,             // 15
+    MethodType,               // 16
+    Unused_17,
+    InvokeDynamic             // 18
   }
 
   // <2do> this is going away
@@ -133,13 +150,14 @@ public class ClassFile extends BinaryClassSource {
   public static final String SIGNATURE_ATTR = "Signature";
   public static final String RUNTIME_INVISIBLE_ANNOTATIONS_ATTR = "RuntimeInvisibleAnnotations";
   public static final String RUNTIME_VISIBLE_ANNOTATIONS_ATTR = "RuntimeVisibleAnnotations";
+  public static final String RUNTIME_VISIBLE_TYPE_ANNOTATIONS_ATTR = "RuntimeVisibleTypeAnnotations";
 
   //--- standard field attributes
   public static final String CONST_VALUE_ATTR = "ConstantValue";
 
   protected final static String[] stdFieldAttrs = {
     CONST_VALUE_ATTR, SYNTHETIC_ATTR, DEPRECATED_ATTR, SIGNATURE_ATTR,
-    RUNTIME_INVISIBLE_ANNOTATIONS_ATTR, RUNTIME_VISIBLE_ANNOTATIONS_ATTR };
+    RUNTIME_INVISIBLE_ANNOTATIONS_ATTR, RUNTIME_VISIBLE_ANNOTATIONS_ATTR, RUNTIME_VISIBLE_TYPE_ANNOTATIONS_ATTR };
 
 
   //--- standard method attributes
@@ -154,6 +172,7 @@ public class ClassFile extends BinaryClassSource {
     RUNTIME_INVISIBLE_ANNOTATIONS_ATTR, RUNTIME_VISIBLE_ANNOTATIONS_ATTR,
     RUNTIME_INVISIBLE_PARAMETER_ANNOTATIONS_ATTR,
     RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS_ATTR,
+    RUNTIME_VISIBLE_TYPE_ANNOTATIONS_ATTR,
     ANNOTATIONDEFAULT_ATTR
   };
 
@@ -162,17 +181,19 @@ public class ClassFile extends BinaryClassSource {
   public static final String LINE_NUMBER_TABLE_ATTR = "LineNumberTable";
   public static final String LOCAL_VAR_TABLE_ATTR = "LocalVariableTable";
 
-  protected final static String[] stdCodeAttrs = { LINE_NUMBER_TABLE_ATTR, LOCAL_VAR_TABLE_ATTR };
+  protected final static String[] stdCodeAttrs = { LINE_NUMBER_TABLE_ATTR, LOCAL_VAR_TABLE_ATTR, RUNTIME_VISIBLE_TYPE_ANNOTATIONS_ATTR };
 
 
   //--- standard class attributes
   public static final String  SOURCE_FILE_ATTR = "SourceFile";
   public static final String  INNER_CLASSES_ATTR = "InnerClasses";
   public static final String  ENCLOSING_METHOD_ATTR = "EnclosingMethod";
-
+  public static final String  BOOTSTRAP_METHOD_ATTR = "BootstrapMethods";
+  
   protected final static String[] stdClassAttrs = {
     SOURCE_FILE_ATTR, DEPRECATED_ATTR, INNER_CLASSES_ATTR, DEPRECATED_ATTR, SIGNATURE_ATTR,
-    RUNTIME_INVISIBLE_ANNOTATIONS_ATTR, RUNTIME_VISIBLE_ANNOTATIONS_ATTR, ENCLOSING_METHOD_ATTR };
+    RUNTIME_INVISIBLE_ANNOTATIONS_ATTR, RUNTIME_VISIBLE_ANNOTATIONS_ATTR, RUNTIME_VISIBLE_TYPE_ANNOTATIONS_ATTR,
+    ENCLOSING_METHOD_ATTR, BOOTSTRAP_METHOD_ATTR };
 
 
   protected String internStdAttrName(int cpIdx, String name, String[] stdNames){
@@ -242,6 +263,13 @@ public class ClassFile extends BinaryClassSource {
     return utf8At( u2( cpPos[ u2(cpPos[cpIdx]+3)]+3));
   }
 
+  public int mhRefTypeAt (int methodHandleInfoIdx){
+    return u1(cpPos[methodHandleInfoIdx]+1);
+  }
+  public int mhMethodRefIndexAt  (int methodHandleInfoIdx){
+    return u2(cpPos[methodHandleInfoIdx]+2);
+  }
+  
   // those could check ref types
   public String fieldClassNameAt(int fieldRefInfoIdx){
     //assert data[cpPos[fieldRefInfoIdx]] == 9 : "not a Fieldref_info tag";
@@ -264,6 +292,10 @@ public class ClassFile extends BinaryClassSource {
     return utf8At( u2( cpPos[ u2(cpPos[methodRefInfoIdx]+3)]+3));
   }
 
+  public String methodTypeDescriptorAt (int methodTypeInfoIdx){
+    return utf8At( u2(cpPos[methodTypeInfoIdx]+1));
+  }
+  
   public String interfaceMethodClassNameAt(int ifcMethodRefInfoIdx){
     return (String) cpValue[ u2(cpPos[ifcMethodRefInfoIdx]+1)];
   }
@@ -273,7 +305,33 @@ public class ClassFile extends BinaryClassSource {
   public String interfaceMethodDescriptorAt(int ifcMethodRefInfoIdx){
     return utf8At( u2( cpPos[ u2(cpPos[ifcMethodRefInfoIdx]+3)]+3));
   }
-
+  
+  public int bootstrapMethodIndex (int cpInvokeDynamicIndex){
+    return u2(cpPos[cpInvokeDynamicIndex]+1);
+  }
+  public String samMethodNameAt(int cpInvokeDynamicIndex) {
+    return utf8At( u2( cpPos[ u2(cpPos[cpInvokeDynamicIndex]+3)]+1)); 
+  }
+  public String callSiteDescriptor(int cpInvokeDynamicIndex) {
+    return utf8At( u2( cpPos[ u2(cpPos[cpInvokeDynamicIndex]+3)]+3)); 
+  }
+  
+  public String getRefTypeName (int refCode){
+    switch (refCode){
+      case REF_GETFIELD:      return "getfield";
+      case REF_GETSTATIC:     return "getstatic";
+      case REF_PUTFIELD:      return "putfield";
+      case REF_PUTSTATIC:     return "putstatic";
+      case REF_INVOKEVIRTUAL: return "invokevirtual";
+      case REF_INVOKESTATIC:  return "invokestatic";
+      case REF_INVOKESPECIAL: return "invokespecial";
+      case REF_NEW_INVOKESPECIAL: return "new-invokespecial";
+      case REF_INVOKEINTERFACE: return "invokeinterface";
+      default:
+        return "<unknown>";
+    }
+  }
+  
   public String getTypeName (int typeCode){
     switch(typeCode){
       case 4: return "boolean";
@@ -289,6 +347,7 @@ public class ClassFile extends BinaryClassSource {
     }
   }
 
+  @Override
   public int getPos(){
     return pos;
   }
@@ -587,6 +646,24 @@ public class ClassFile extends BinaryClassSource {
     reader.setSourceFile( this, tag, pathName);
     pos = p;
   }
+  
+  private void setBootstrapMethodCount (ClassFileReader reader, Object tag, int bootstrapMethodCount){
+    int p = pos;
+    reader.setBootstrapMethodCount( this, tag, bootstrapMethodCount);
+    pos = p;    
+  }
+  private void setBootstrapMethod (ClassFileReader reader, Object tag, int idx, 
+                                   int refKind, String cls, String mth, String descriptor, int[] cpArgs){
+    int p = pos;
+    reader.setBootstrapMethod( this, tag, idx, refKind, cls, mth, descriptor, cpArgs);
+    pos = p;    
+  }
+  private void setBootstrapMethodsDone (ClassFileReader reader, Object tag){
+    int p = pos;
+    reader.setBootstrapMethodsDone( this, tag);
+    pos = p;    
+  }
+  
   private void setInnerClassCount(ClassFileReader reader, Object tag, int innerClsCount){
     int p = pos;
     reader.setInnerClassCount( this, tag, innerClsCount);
@@ -614,17 +691,29 @@ public class ClassFile extends BinaryClassSource {
     reader.setAnnotationCount( this, tag, annotationCount);
     pos = p;
   }
+  private void setAnnotation(ClassFileReader reader, Object tag, int annotationIndex, String annotationType){
+    int p = pos;
+    reader.setAnnotation( this, tag, annotationIndex, annotationType);
+    pos = p;
+  }
   private void setAnnotationsDone(ClassFileReader reader, Object tag){
     int p = pos;
     reader.setAnnotationsDone(this, tag);
     pos = p;
   }
 
-  private void setAnnotation(ClassFileReader reader, Object tag, int annotationIndex, String annotationType){
+  private void setTypeAnnotationCount(ClassFileReader reader, Object tag, int annotationCount){
     int p = pos;
-    reader.setAnnotation( this, tag, annotationIndex, annotationType);
+    reader.setTypeAnnotationCount( this, tag, annotationCount);
     pos = p;
   }
+  private void setTypeAnnotationsDone(ClassFileReader reader, Object tag){
+    int p = pos;
+    reader.setTypeAnnotationsDone(this, tag);
+    pos = p;
+  }
+
+  
   private void setAnnotationValueCount(ClassFileReader reader, Object tag, int annotationIndex, int nValuePairs){
     int p = pos;
     reader.setAnnotationValueCount( this, tag, annotationIndex, nValuePairs);
@@ -747,8 +836,8 @@ public class ClassFile extends BinaryClassSource {
       }
 
       // we don't do much with the version numbers yet
-      @SuppressWarnings("unused") int minor = readU2();
-      @SuppressWarnings("unused") int major = readU2();
+      int minor = readU2();
+      int major = readU2();
 
       // get the const pool
       int cpCount = readU2();
@@ -935,8 +1024,28 @@ public class ClassFile extends BinaryClassSource {
           j += 5;
           break;
 
+        //--- the Java 8 ones
+          
+        case METHOD_HANDLE: // MethodHandle_info { u1 tag; u1 reference_kind; u2 reference_index<mthref>; }
+          dataIdx[i] = j;
+          values[i] = CpInfo.MethodHandle;
+          j += 4;
+          break;
+          
+        case METHOD_TYPE:  // MethodType_info { u1 tag;  u2 descriptor_index<utf8>; }
+          dataIdx[i] = j;
+          values[i] = CpInfo.MethodType;
+          j += 3;
+          break;
+
+        case INVOKE_DYNAMIC: //  InvokeDynamic_info { u1 tag; u2 bootstrap_method_attr_index; u2 name_and_type_index; }
+          dataIdx[i] = j;
+          values[i] = CpInfo.InvokeDynamic;
+          j += 5;
+          break;
+          
         default:
-          error("illegal constpool tag");
+          error("illegal constpool tag: " + data[j]);
       }
     }
 
@@ -1093,7 +1202,7 @@ public class ClassFile extends BinaryClassSource {
     int maxStack = readU2();
     int maxLocals = readU2();
     int codeLength = readI4();  // no code length > 2GB supported
-//    int codeStartPos = pos;
+    int codeStartPos = pos;
 
     setCode(reader, tag, maxStack, maxLocals, codeLength);
 
@@ -1214,12 +1323,17 @@ public class ClassFile extends BinaryClassSource {
   /**
    * (optionally) called by ClassFileReader from within setClassAttribute() notification
    *
-   * InnerClass { u2 nameIdx<utf8>; u4 length;
-   *                u2 classCount;
-   *                { u2 innerCls<cls>; u2 outerCls<cls>;
-   *                  u2 innerName<utf8>; u2 innerAccessFlags;
-   *                } classes[classCount] }
-   *
+   * InnerClass { 
+   *    u2 nameIdx<utf8>; 
+   *    u4 length;
+   *    u2 classCount;
+   *    { u2 innerCls<cls>;
+   *      u2 outerCls<cls>;
+   *      u2 innerName<utf8>; 
+   *      u2 innerAccessFlags;
+   *    } classes[classCount] }
+   * }
+   * 
    * pos is at classCount
    */
   public void parseInnerClassesAttr(ClassFileReader reader, Object tag){
@@ -1268,9 +1382,51 @@ public class ClassFile extends BinaryClassSource {
     setEnclosingMethod(reader, tag, enclosingClass, enclosedMethod, descriptor);
   }
   
-  String nameAt (int nameTypeInfoIdx){	
-	  return utf8At( u2( cpPos[nameTypeInfoIdx]+1));
-	}
+  /**
+   * BootstrapMethods_attribute {
+   *     u2 attribute_name_index;
+   *     u4 attribute_length;
+   *     u2 num_bootstrap_methods;
+   *     {   u2 bootstrap_method_ref; -> MethodHandle
+   *         u2 num_bootstrap_arguments;
+   *         u2 bootstrap_arguments[num_bootstrap_arguments];
+   *     } bootstrap_methods[num_bootstrap_methods];
+   * }
+   * 
+   * pos is at num_bootstrap_methods
+  */
+  public void parseBootstrapMethodAttr (ClassFileReader reader, Object tag){
+    int nBootstrapMethods = readU2();
+    
+    setBootstrapMethodCount(reader, tag, nBootstrapMethods);
+    
+    for (int i=0; i<nBootstrapMethods; i++){
+      int cpMhIdx = readU2();
+      int nArgs = readU2();
+      int[] bmArgs = new int[nArgs];
+      for (int j=0; j<nArgs; j++){
+        bmArgs[j] = readU2();
+      }
+      
+      // kind of this method handle
+      int refKind = mhRefTypeAt(cpMhIdx);
+      
+      // CONSTANT_Methodref_info structure
+      int mrefIdx = mhMethodRefIndexAt(cpMhIdx);
+      
+      String clsName = methodClassNameAt(mrefIdx);
+      String mthName = methodNameAt(mrefIdx);
+      String descriptor = methodDescriptorAt(mrefIdx);
+      
+      setBootstrapMethod(reader, tag, i, refKind, clsName, mthName, descriptor, bmArgs);
+    }
+    
+    setBootstrapMethodsDone( reader, tag);
+  }
+  
+  String nameAt(int nameTypeInfoIdx) {
+    return utf8At(u2(cpPos[nameTypeInfoIdx] + 1));
+  }
   
   String descriptorAt (int nameTypeInfoIdx){
     return utf8At( u2( cpPos[nameTypeInfoIdx]+3));
@@ -1382,7 +1538,7 @@ public class ClassFile extends BinaryClassSource {
    *     } element_value_pairs[num_element_value_pairs]
    *   }
    */
-  void parseAnnotation(ClassFileReader reader, Object tag, int annotationIndex, boolean isParameterAnnotation){
+  void parseAnnotation (ClassFileReader reader, Object tag, int annotationIndex, boolean isParameterAnnotation){
     int cpIdx = readU2();
     String annotationType = (String)cpValue[cpIdx];
 
@@ -1392,18 +1548,22 @@ public class ClassFile extends BinaryClassSource {
       setAnnotation(reader, tag, annotationIndex, annotationType);
     }
 
+    parseAnnotationValues(reader, tag, annotationIndex);
+  }
+
+  void parseAnnotationValues (ClassFileReader reader, Object tag, int annotationIndex){
     int nValuePairs = readU2();
     setAnnotationValueCount(reader, tag, annotationIndex, nValuePairs);
 
     for (int i=0; i<nValuePairs; i++){
-      cpIdx = readU2();
+      int cpIdx = readU2();
       String elementName = (String)cpValue[cpIdx];
       parseAnnotationValue(reader, tag, annotationIndex, i, elementName, -1);
     }
 
     setAnnotationValuesDone(reader, tag, annotationIndex);
   }
-
+  
   /*
    * class, field, method annotation attributes (only one per target)
    *
@@ -1414,9 +1574,7 @@ public class ClassFile extends BinaryClassSource {
    *     annotation annotations[num_annotations];
    *   }
    */
-
   public void parseAnnotationsAttr (ClassFileReader reader, Object tag){
-
     int numAnnotations = readU2();
     setAnnotationCount(reader, tag, numAnnotations);
 
@@ -1427,6 +1585,316 @@ public class ClassFile extends BinaryClassSource {
     setAnnotationsDone(reader, tag);
   }
 
+  
+  // JSR 308 type annotation target types
+  public static final int CLASS_TYPE_PARAMETER                 = 0x00;
+  public static final int METHOD_TYPE_PARAMETER                = 0x01;
+  public static final int CLASS_EXTENDS                        = 0x10;
+  public static final int CLASS_TYPE_PARAMETER_BOUND           = 0x11;
+  public static final int METHOD_TYPE_PARAMETER_BOUND          = 0x12;
+  public static final int FIELD                                = 0x13;
+  public static final int METHOD_RETURN                        = 0x14;
+  public static final int METHOD_RECEIVER                      = 0x15;
+  public static final int METHOD_FORMAL_PARAMETER              = 0x16;
+  public static final int THROWS                               = 0x17;
+  public static final int LOCAL_VARIABLE                       = 0x40;
+  public static final int RESOURCE_VARIABLE                    = 0x41;
+  public static final int EXCEPTION_PARAMETER                  = 0x42;
+  public static final int INSTANCEOF                           = 0x43;
+  public static final int NEW                                  = 0x44;
+  public static final int CONSTRUCTOR_REFERENCE                = 0x45;
+  public static final int METHOD_REFERENCE                     = 0x46;
+  public static final int CAST                                 = 0x47;
+  public static final int CONSTRUCTOR_INVOCATION_TYPE_ARGUMENT = 0x48;
+  public static final int METHOD_INVOCATION_TYPE_ARGUMENT      = 0x49;
+  public static final int CONSTRUCTOR_REFERENCE_TYPE_ARGUMENT  = 0x4a;
+  public static final int METHOD_REFERENCE_TYPE_ARGUMENT       = 0x4b;  
+  
+  public static String getTargetTypeName (int targetType){
+    switch (targetType){
+      case CLASS_TYPE_PARAMETER: return "class type parameter";
+      case METHOD_TYPE_PARAMETER: return "method type parameter";
+      case CLASS_EXTENDS: return "super class";
+      case CLASS_TYPE_PARAMETER_BOUND: return "class type parameter bound";
+      case METHOD_TYPE_PARAMETER_BOUND: return "method type parameter bound";
+      case FIELD: return "field";
+      case METHOD_RETURN: return "method return";
+      case METHOD_RECEIVER: return "method receiver";
+      case METHOD_FORMAL_PARAMETER: return "method formal parameter";
+      case THROWS: return "throws";
+      case LOCAL_VARIABLE: return "local variable";
+      case RESOURCE_VARIABLE: return "resource variable";
+      case EXCEPTION_PARAMETER: return "exception parameter";
+      case INSTANCEOF: return "instanceof";
+      case NEW: return "new";
+      case CONSTRUCTOR_REFERENCE: return "ctor reference";
+      case METHOD_REFERENCE: return "method reference";
+      case CAST: return "case";
+      case METHOD_INVOCATION_TYPE_ARGUMENT: return "method invocation type argument";
+      case CONSTRUCTOR_REFERENCE_TYPE_ARGUMENT: return "ctor reference type argument";
+      case METHOD_REFERENCE_TYPE_ARGUMENT: return "method reference type argument";
+      default:
+        return "<unknown target type 0x" + Integer.toHexString(targetType);
+    }
+  }
+  
+  public static String getTypePathEncoding (short[] typePath){
+    if (typePath == null){
+      return "()";
+    }
+    
+    StringBuffer sb = new StringBuffer();
+    for (int i=0; i<typePath.length;i++){
+      int e = typePath[i];
+      sb.append('(');
+      sb.append( Integer.toString((e>>8) & 0xff));
+      sb.append( Integer.toString(e & 0xff));
+      sb.append(')');
+    }
+    
+    return sb.toString();
+  }
+  
+  public static String getScopeEncoding (long[] scopeEntries){
+    StringBuffer sb = new StringBuffer();
+    for (int i=0; i<scopeEntries.length;i++){
+      long e = scopeEntries[i];
+      int slotIndex = (int)(e & 0xffff);
+      int length = (int)((e >> 16) & 0xffff);
+      int startPc = (int)((e >> 32) & 0xffff);
+      
+      if (i>0){
+        sb.append(',');
+      }
+      
+      sb.append('[');
+      sb.append( Integer.toString(startPc));
+      sb.append("..");
+      sb.append( Integer.toString(startPc + length-1));
+      sb.append("]#");
+      sb.append(slotIndex);
+    }
+    
+    return sb.toString();
+  }
+  
+  // JSR 308 type annotation, which adds 3 fields to the old annotation structure
+  //
+  //  type_annotation {
+  //      u1 target_type;        // targeted program element (sec 3.2)
+  //      union {                // ?? this is probably packed - variable size unions make no sense
+  //          type_parameter_target;
+  //          supertype_target;
+  //          type_parameter_bound_target;
+  //          empty_target;
+  //          method_formal_parameter_target;
+  //          throws_target;
+  //          localvar_target;
+  //          catch_target;
+  //          offset_target;
+  //          type_argument_target;
+  //      } target_info;         // targeted program element (sec 3.3)
+  //
+  //      type_path target_path; // encoding of annotation position in compound type (array, generic, etc., sec 3.4)
+  //
+  //                             // standard annotation fields
+  //      u2 type_index;         // the annotation type
+  //      u2 num_element_value_pairs;
+  //      {
+  //          u2 element_name_index;
+  //          element_value value;
+  //      } element_value_pairs[num_element_value_pairs];
+  //  }
+  //
+  //  struct type_path {
+  //    u1              path_length;
+  //    type_path_entry path[path_length];
+  //  }
+  //
+  //  struct type_path_entry {
+  //    u1 type_path_kind;
+  //        // 0: deeper in array type
+  //        // 1: deeper in nested type
+  //        // 2: bound of wildcard typearg
+  //        // 3: type argument of parameterized type
+  //    u1 type_argument_index;
+  //        // 0, if type_path_kind == 0,1,2
+  //        // 0-based index of type arg in parameterized type if type_path_kind i== 3
+  //  }
+  
+  int getTargetInfoSize (int targetType){
+    int len = 3; // max static length are xx_TYPE_ARGUMENTs
+    if (targetType == LOCAL_VARIABLE || targetType == RESOURCE_VARIABLE){
+      len = Math.max( len, u2(pos) * 6); // three u2 values per entry
+    }
+    
+    return len;
+  }
+
+  int getTypePathSize (short[] typePath){
+    int typePathSize = 1;
+    if (typePath != null) {
+      typePathSize += typePath.length * 2;
+    }
+    return typePathSize;
+  }
+  
+  
+  short[] readTypePath (){
+    short[] typePath = null;
+    
+    int pathLength = readUByte();
+    if (pathLength > 0){
+      typePath = new short[pathLength];
+      for (int i=0; i<pathLength; i++){
+        int pathKind = (short)readUByte();
+        int argIdx = (short)readUByte();
+        typePath[i]= (short)((pathKind << 8) | argIdx);
+      }
+    }
+    
+    return typePath;
+  }
+
+  String readAnnotationType (){
+    int cpIdx = readU2();
+    String annotationType = (String)cpValue[cpIdx];
+    return annotationType;
+  }
+
+  void setTypeAnnotation (ClassFileReader reader, Object tag, int annotationIndex) {
+    int targetType = readUByte();
+    
+    switch (targetType){
+      case CLASS_TYPE_PARAMETER:
+      case METHOD_TYPE_PARAMETER: {
+        // type_parameter_target { u1 type_parameter_index; }
+        int typeParamIdx = readUByte();
+        reader.setTypeParameterAnnotation( this, tag, annotationIndex, targetType, typeParamIdx, readTypePath(), readAnnotationType());
+        break;
+      } 
+      case CLASS_EXTENDS: {
+        // supertype_target { u2 supertype_index; }
+        int superTypeIdx = readU2();
+        reader.setSuperTypeAnnotation( this, tag, annotationIndex, targetType, superTypeIdx, readTypePath(), readAnnotationType());
+        break;
+      }
+      case CLASS_TYPE_PARAMETER_BOUND:
+      case METHOD_TYPE_PARAMETER_BOUND: {
+        // type_parameter_bound_target { u1 type_parameter_index; u1 bound_index; }
+        int typeParamIdx = readUByte();
+        int boundIdx = readUByte();
+        reader.setTypeParameterBoundAnnotation(this, tag, annotationIndex, targetType, typeParamIdx, boundIdx, readTypePath(), readAnnotationType());
+        break;
+      }
+      case METHOD_RETURN:
+      case METHOD_RECEIVER:
+      case FIELD:
+        // empty_target {}
+        reader.setTypeAnnotation( this, tag, annotationIndex, targetType, readTypePath(), readAnnotationType());
+        break;
+        
+      case METHOD_FORMAL_PARAMETER: {
+        // method_formal_parameter_target { u1 method_formal_parameter_index; }
+        int formalParamIdx = readUByte();
+        reader.setFormalParameterAnnotation( this, tag, annotationIndex, targetType, formalParamIdx, readTypePath(), readAnnotationType());
+        break;
+      }
+      case THROWS: {
+        // throws_target { u2 throws_type_index; }
+        int throwsTypeIdx = readU2();
+        reader.setThrowsAnnotation( this, tag, annotationIndex, targetType, throwsTypeIdx, readTypePath(), readAnnotationType());        
+        break;
+      } 
+      case LOCAL_VARIABLE:
+      case RESOURCE_VARIABLE: {
+        // this can't just refer to a LocalVarInfo since those depend on debug compile options
+        //
+        //  localvar_target {
+        //      u2 table_length;  // number of entries, not bytes
+        //      {
+        //          u2 start_pc;
+        //          u2 length; // bytecode offset length
+        //          u2 index;  // local var idx
+        //      } table[table_length];
+        //  }
+        int tableLength = readU2();
+        long[] scopeEntries = new long[tableLength];
+        for (int i=0; i<tableLength; i++){
+          int startPc = readU2();
+          int length = readU2();
+          int slotIdx = readU2();
+          scopeEntries[i] = ((long)startPc << 32) | ((long)length << 16) | slotIdx;
+        }
+        reader.setVariableAnnotation( this, tag, annotationIndex, targetType, scopeEntries, readTypePath(), readAnnotationType());
+        break;
+      }
+      case EXCEPTION_PARAMETER: {
+        // catch_target { u2 exception_table_index; }
+        int exceptionIdx = readU2();
+        reader.setExceptionParameterAnnotation( this, tag, annotationIndex, targetType, exceptionIdx, readTypePath(), readAnnotationType());        
+        break;
+      }
+      case INSTANCEOF:
+      case METHOD_REFERENCE:
+      case CONSTRUCTOR_REFERENCE:
+      case NEW: {
+        // offset_target { u2 offset; }   // insn offset within bytecode
+        int offset = readU2();
+        reader.setBytecodeAnnotation(this, tag, annotationIndex, targetType, offset, readTypePath(), readAnnotationType());
+        break;
+      }
+      case CAST:
+      case CONSTRUCTOR_INVOCATION_TYPE_ARGUMENT:
+      case METHOD_INVOCATION_TYPE_ARGUMENT:
+      case CONSTRUCTOR_REFERENCE_TYPE_ARGUMENT:
+      case METHOD_REFERENCE_TYPE_ARGUMENT: {
+        //  type_argument_target {
+        //      u2 offset;
+        //      u1 type_argument_index;
+        //  }
+        int offset = readU2();
+        int typeArgIdx = readUByte();
+        reader.setBytecodeTypeParameterAnnotation(this, tag, annotationIndex, targetType, offset, typeArgIdx, readTypePath(), readAnnotationType());
+        break;
+      }
+      
+      default:
+        // <2do - report this to the reader
+        throw new RuntimeException("unknown type annotation target: 0x" + Integer.toHexString(targetType));
+    }
+  }
+
+  
+  void parseTypeAnnotation (ClassFileReader reader, Object tag, int annotationIndex) {
+   
+    // this does the respective setXTypeAnnotation() reader callback
+    //dumpData(pos, 16);
+    setTypeAnnotation(reader, tag, annotationIndex);
+    
+    // now set the annotation value pairs
+    parseAnnotationValues( reader, tag, annotationIndex);
+  }
+  
+  /*
+   * Runtime[In]VisibleTypeAnnotations_attribute {
+   *    u2 attribute_name_index;
+   *    u4 attribute_length;
+   *    u2 num_annotations;
+   *    type_annotation annotations[num_annotations];
+   * }
+   */
+  public void parseTypeAnnotationsAttr (ClassFileReader reader, Object tag) {
+    int numAnnotations = readU2();
+    setTypeAnnotationCount(reader, tag, numAnnotations);
+
+    for (int i=0; i<numAnnotations; i++){
+      parseTypeAnnotation(reader, tag, i);
+    }
+
+    setTypeAnnotationsDone(reader, tag);
+  }
+  
   /*
    *   RuntimeInvisibleParameterAnnotations_attribute {
    *     u2 attribute_name_index;
@@ -2143,8 +2611,11 @@ public class ClassFile extends BinaryClassSource {
           int zero = readUByte(); // must be 0
           reader.invokeinterface(cpIdx, count, zero);
           break;
-        case 186: // reserved for historical reasons
-          reader.unknown(opcode);
+        case 186: // invokedynamic
+          cpIdx = readU2(); // CP index of bootstrap method
+          readUByte();  // 0
+          readUByte(); //  0
+          reader.invokedynamic(cpIdx);
           break;
         case 187: // new
           cpIdx = readU2();
@@ -2207,6 +2678,8 @@ public class ClassFile extends BinaryClassSource {
           offset = readI4();
           reader.jsr_w(offset);
           break;
+          
+          
         default:
           reader.unknown(opcode);
       }

@@ -14,7 +14,6 @@ import de.fosd.typechef.featureexpr.SingleFeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureModel;
 import scala.Tuple2;
-import scala.collection.Iterator;
 
 /**
  * Representation of a values that depend on {@link FeatureExpr}.
@@ -47,12 +46,9 @@ public abstract class Conditional<T> {
 		@SuppressWarnings("rawtypes")//Gradle compiler bug
 		final IVec clauses = fm.clauses();
 		final scala.collection.immutable.Map<String, Object> vars = fm.variables();
-		
 		java.util.Map<Integer, String> map = new HashMap<>();
-		Iterator<Tuple2<String, Object>> varsIterator = vars.iterator();
-		while (varsIterator.hasNext()) {
-			Tuple2<String, Object> next = varsIterator.next();
-			map.put((Integer)next._2, next._1);
+		for (Tuple2<String, Object> tuple : scala.collection.JavaConversions.asJavaCollection(vars)) {
+			map.put((Integer)tuple._2, tuple._1);
 		}
 		final int size = clauses.size();
 		FeatureExpr construction = FeatureExprFactory.True();

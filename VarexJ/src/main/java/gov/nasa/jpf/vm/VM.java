@@ -80,6 +80,8 @@ public abstract class VM {
   }
 
   protected SystemState ss;
+  
+  protected FunctionObjectFactory funcObjFactory = new FunctionObjectFactory();
 
   // <2do> - if you are confused about the various pieces of state and its
   // storage/backtrack structures, I'm with you. It's mainly an attempt to
@@ -1342,6 +1344,10 @@ public abstract class VM {
   public StateSet getStateSet() {
     return stateSet;
   }
+  
+	public FunctionObjectFactory getFunctionObjectFacotry() {
+		return funcObjFactory;
+	}
 
   /**
    * return the last registered SystemState's ChoiceGenerator object

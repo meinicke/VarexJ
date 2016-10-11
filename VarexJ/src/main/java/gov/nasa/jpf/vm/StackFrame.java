@@ -29,6 +29,7 @@ import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.util.BitSet64;
 import gov.nasa.jpf.util.FixedBitSet;
 import gov.nasa.jpf.util.HashData;
@@ -185,6 +186,21 @@ public int nLocals;
   public boolean isNative() {
     return false;
   }
+  
+	public StackFrame getCallerFrame() {
+		MethodInfo callee = mi;
+		for (StackFrame frame = getPrevious(); frame != null; frame = frame.getPrevious()) {
+			Instruction insn = frame.getPC().getValue();
+			if (insn instanceof InvokeInstruction) {
+				InvokeInstruction call = (InvokeInstruction) insn;
+				if (call.getInvokedMethod() == callee) {
+					return frame;
+				}
+			}
+		}
+
+		return null;
+	}
   
   /**
    * return the object reference for an instance method to be called (we are still in the
@@ -852,6 +868,98 @@ public int nLocals;
     }
 
     return -1;
+  }
+  
+  /**
+   * this retrieves the argument values from the caller, i.e. the previous stackframe 
+   * 
+   * references are returned as ElementInfos or null
+   * primitive values are returned as box objects (e.g. int -> Integer)
+   */
+  public Object[] getArgumentValues (ThreadInfo ti){
+    StackFrame callerFrame = getCallerFrame();
+    if (callerFrame != null){
+      return callerFrame.getCallArguments(ti);
+    } else {
+      // <2do> what about main(String[] args) ?
+    }
+    
+    return null;
+  }
+  
+  /**
+   * get the arguments of the executed call
+   * Note - this throws an exception if the StackFrame pc is not an InvokeInstruction
+   */
+  public Object[] getCallArguments (ThreadInfo ti){
+    if (pc == null || !(pc.getValue() instanceof InvokeInstruction)){
+      throw new JPFException("stackframe not executing invoke: " + pc);
+    }
+    
+    InvokeInstruction call = (InvokeInstruction) pc.getValue();    
+    MethodInfo callee = call.getInvokedMethod();
+
+    byte[] argTypes = callee.getArgumentTypes();
+
+    return getArgumentsValues(ti, argTypes);
+  }
+
+  public Object[] getArgumentsValues (ThreadInfo ti, byte[] argTypes){
+    int n = argTypes.length;
+    Object[] args = new Object[n];
+    FeatureExpr ctx = null;
+    for (int i=n-1, off=0; i>=0; i--) {
+      switch (argTypes[i]) {
+      case Types.T_ARRAY:
+      //case Types.T_OBJECT:
+      case Types.T_REFERENCE:
+        int ref = peek(ctx, off).getValue();
+        if (ref != MJIEnv.NULL) {
+          args[i] = ti.getElementInfo(ref);
+        } else {
+          args[i] = null;
+        }
+        off++;
+        break;
+
+      case Types.T_LONG:
+        args[i] = new Long(peekLong(ctx, off).getValue());
+        off+=2;
+        break;
+      case Types.T_DOUBLE:
+        args[i] = new Double(Types.longToDouble(peekLong(ctx, off).getValue()));
+        off+=2;
+        break;
+
+      case Types.T_BOOLEAN:
+        args[i] = new Boolean(peek(ctx, off).getValue().intValue() != 0);
+        off++;
+        break;
+      case Types.T_BYTE:
+        args[i] = new Byte((byte)peek(ctx, off).getValue().intValue());
+        off++;
+        break;
+      case Types.T_CHAR:
+        args[i] = new Character((char)peek(ctx, off).getValue().intValue());
+        off++;
+        break;
+      case Types.T_SHORT:
+        args[i] = new Short((short)peek(ctx, off).getValue().intValue());
+        off++;
+        break;
+      case Types.T_INT:
+        args[i] = new Integer(peek(ctx, off).getValue().intValue());
+        off++;
+        break;
+      case Types.T_FLOAT:
+        args[i] = new Float(Types.intToFloat(peek(ctx, off).getValue().intValue()));
+        off++;
+        break;
+      default:
+        // error, unknown argument type
+      }
+    }
+    return args;
   }
   
   /**

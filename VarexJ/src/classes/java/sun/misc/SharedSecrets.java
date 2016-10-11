@@ -58,6 +58,7 @@ public class SharedSecrets {
   private static JavaNioAccess javaNioAccess;
   private static JavaAWTAccess javaAWTAccess;
     private static JavaUtilZipFileAccess javaUtilZipFileAccess;
+	private static JavaObjectInputStreamAccess javaObjectInputStreamAccess;
 
   // (required for EnumSet ops)
   public static JavaLangAccess getJavaLangAccess() {
@@ -149,5 +150,9 @@ public class SharedSecrets {
     }
     public static JavaUtilZipFileAccess getJavaUtilZipFileAccess(){
         return javaUtilZipFileAccess;
+    }
+//    Method setJavaObjectInputStreamAccess(Lsun/misc/JavaObjectInputStreamAccess;)V in class ClassInfo[name=sun.misc.SharedSecrets] not found
+    public static void setJavaObjectInputStreamAccess(JavaObjectInputStreamAccess joisa){
+    	javaObjectInputStreamAccess = joisa;
     }
 }

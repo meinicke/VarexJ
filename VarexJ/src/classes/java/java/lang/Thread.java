@@ -27,6 +27,19 @@ import sun.nio.ch.Interruptible;
  * ThreadInfos (the ThreadList might not store terminated threads)
  */
 public class Thread implements Runnable {
+	
+	/** The current seed for a ThreadLocalRandom */
+//    @sun.misc.Contended("tlr")
+    long threadLocalRandomSeed;
+
+    /** Probe hash value; nonzero if threadLocalRandomSeed initialized */
+//    @sun.misc.Contended("tlr")
+    int threadLocalRandomProbe;
+
+    /** Secondary seed isolated from public ThreadLocalRandom sequence */
+//    @sun.misc.Contended("tlr")
+    int threadLocalRandomSecondarySeed;
+	
 	// TODO not implemented yet
 	private volatile Interruptible blocker;
 	private final Object blockerLock = new Object();
