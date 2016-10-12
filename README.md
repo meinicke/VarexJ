@@ -8,9 +8,9 @@
 
 # Overview
 
-VarexJ is a variability-aware interpreter for Java(7) bytecode based on Java Pathfinder v7.0 (rev 1155+) see: http://javapathfinder.sourceforge.net/.
+VarexJ is a variability-aware interpreter for Java(8) bytecode based on Java Pathfinder v7.0 (rev 1155+) see: http://javapathfinder.sourceforge.net/.
 
-JDK 7 is required.
+JDK 8 is required.
 
 # Build:
 
