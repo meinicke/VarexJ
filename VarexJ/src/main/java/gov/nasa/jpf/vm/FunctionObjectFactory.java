@@ -37,14 +37,13 @@ public class FunctionObjectFactory {
     Heap heap = ti.getHeap();
     ElementInfo ei = heap.newObject(ctx, funcObjType, ti);
     
-    setFuncObjFields(ei, bmi, freeVariableTypeNames, freeVariableValues);
+    setFuncObjFields(ctx, ei, bmi, freeVariableTypeNames, freeVariableValues);
     
     return ei.getObjectRef();
   }
   
-  public void setFuncObjFields(ElementInfo funcObj, BootstrapMethodInfo bmi, String[] freeVarTypeNames, Object[] freeVarValues) {
+  public void setFuncObjFields(FeatureExpr ctx, ElementInfo funcObj, BootstrapMethodInfo bmi, String[] freeVarTypeNames, Object[] freeVarValues) {
     Fields fields = funcObj.getFields();
-    FeatureExpr ctx = null;
     for(int i = 0; i<freeVarTypeNames.length; i++) {
       String typeName = freeVarTypeNames[i];
       if (typeName.equals("byte")) {
