@@ -81,8 +81,8 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		if ((JPF.SHARE_INVOCATIONS && classes.size() > 1) || (!JPF.SHARE_INVOCATIONS && map.size() > 1)) {
 			splitRef = true;
 		}
+		ti.getTopFrame().node.addSetField(Conditional.getCTXString(ctx) + " invoke " + map);
 		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
-			
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;

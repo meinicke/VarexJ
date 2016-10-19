@@ -42,7 +42,10 @@ public class Linux4 {
 	}
 
 	public static void main(String[] args) {
-		inputAddUeventModaliasVar();
+		try {
+			inputAddUeventModaliasVar();
+		} catch (Exception e) {
+		}
 		System.out.println(new String(buf));
 	}
 	

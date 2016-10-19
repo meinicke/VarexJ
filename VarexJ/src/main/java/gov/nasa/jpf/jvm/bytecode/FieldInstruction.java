@@ -143,6 +143,8 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     	}
     }
     lastValue = val;
+    
+    frame.node.addSetField(Conditional.getCTXString(ctx) + " : " + fi.getName() + " " + field + " -> " + val);
 
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter

@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.vagraph.VANode;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -36,7 +37,7 @@ public class IASTORE extends ArrayStoreInstruction {
 	    value = frame.pop(ctx);
   }
 
-  protected void setField (FeatureExpr ctx, final ElementInfo ei, final int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected void setField (FeatureExpr ctx, final ElementInfo ei, final int index, VANode node) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     ei.setIntElement(ctx, index, value);
   }

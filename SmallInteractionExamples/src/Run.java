@@ -5,7 +5,7 @@ import gov.nasa.jpf.JPF;
 public class Run {
 
 	enum example {
-		Linux1, Linux2, Linux3, Linux4, Linux5
+		Linux1, Linux2, Linux3, Linux4, Linux5, Example
 	}
 	
 	public static void main(String[] _) {
@@ -13,7 +13,7 @@ public class Run {
 		final String[] args = {
 				"+classpath=" + path + "/bin",
 				"+search.class=.search.RandomSearch",
-				"linux." + example.Linux5
+				"linux." + example.Linux1
 		};
 		
 		JPF.main(args);

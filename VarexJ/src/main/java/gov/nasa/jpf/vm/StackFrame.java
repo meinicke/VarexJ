@@ -22,10 +22,12 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.function.Function;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
+import cmu.vagraph.VAGraph;
+import cmu.vagraph.VANode;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
@@ -128,11 +130,21 @@ public int nLocals;
   
   
 
+  public VANode node;
   protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){
-    mi = callee;
-    pc = new One<>(mi.getInstruction(0)); // ???
-    this.nLocals = nLocals;
-    stackBase = nLocals;
+		mi = callee;
+
+		node = new VANode(callee, ctx);
+
+		VAGraph.frames.add(node);
+		if (VAGraph.rootNode == null) {
+			VAGraph.rootNode = node;
+		}
+
+		pc = new One<>(mi.getInstruction(0)); // ???
+		this.nLocals = nLocals;
+		stackBase = nLocals;
+		
 //    int top() = nLocals-1;
 
     stack = StackHandlerFactory.createStack(ctx, nLocals, nOperands);
@@ -236,6 +248,12 @@ public int nLocals;
    */
   public void setPrevious (StackFrame frame){
     prev = frame;
+    
+    if (frame != null) {
+		VANode parentNode = frame.node;
+		node.setParent(parentNode);
+		node.setInstruction(frame.getPC().simplify(node.ctx).getValue(true));// TODO
+	}
   }
 
   public Object getLocalOrFieldValue (String id) {

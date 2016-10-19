@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -84,8 +85,11 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 						try {
 							final Conditional push = getPushValue(ctx, frame, e, index);
 							pushValue = ChoiceFactory.create(ctx, push, pushValue);
+							
+							frame.node.addSetField(" [" + e.getArrayType() + "@" + e.getObjectRef() + " [" + index + "] <- " +pushValue.simplify(ctx) + "");
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
+							frame.node.addSetField(" [" + e.getArrayType() + "@" + e.getObjectRef() + " [" + index + "] -size = " + (e.getArrayFields()).arrayLength().getValue() + " -> " + ArrayIndexOutOfBoundsException.class.getName());
 							pushCtx = pushCtx.andNot(ctx);
 							return new One<Instruction>(new EXCEPTION(thisInstruction,
 									java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));
@@ -96,6 +100,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 			}
 
 		}), next);
+		
 
 		frame.push(pushCtx, pushValue, isReference());
 		

@@ -4,7 +4,6 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/VarexJ"/>
 	<classpathentry kind="lib" path="lib/AJStats.jar"/>
 	<classpathentry kind="lib" path="lib/BankAccount.jar"/>
 	<classpathentry kind="lib" path="lib/Elevator.jar"/>
@@ -20,11 +19,12 @@
 	<classpathentry kind="lib" path="lib/prevayler/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler/log4j-api-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler/log4j-core-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/prevayler/prevayler-core-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler/prevayler-core-2.5.jar" sourcepath="/prevayler"/>
 	<classpathentry kind="lib" path="lib/prevayler/prevayler-factory-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler/prevayler-log4j-2.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler/prevayler-xstream-2.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler/Prevayler.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler/xstream-1.4.7.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/VarexJ-VarexJ"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 import cmu.conditional.Conditional;
 import java.util.function.Function;
 import cmu.conditional.One;
+import cmu.vagraph.VANode;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;
@@ -48,7 +49,7 @@ public class BASTORE extends ArrayStoreInstruction {
     });
   }
 
-  protected void setField (FeatureExpr ctx, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, VANode node) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
 
     Fields f = ei.getFields();

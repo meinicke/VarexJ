@@ -20,7 +20,6 @@
 package gov.nasa.jpf.jvm;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.NativeMethodInfo;
@@ -57,50 +56,22 @@ public class JVMNativeStackFrame extends NativeStackFrame {
       switch (argTypes[k]) {
       case Types.T_BOOLEAN:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.mapr(new Function<Integer, Conditional<Boolean>>() {
-
-			@Override
-			public Conditional<Boolean> apply(Integer ival) {
-				return One.valueOf(Types.intToBoolean(ival));
-			}
-        	
-        });
+        a[j] = ival.mapr(ival1 -> One.valueOf(Types.intToBoolean(ival1)));
         break;
 
       case Types.T_BYTE:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.mapr(new Function<Integer, Conditional<Byte>>() {
-
-			@Override
-			public Conditional<Byte> apply(Integer ival) {
-				return One.valueOf((byte) ival.intValue());
-			}
-        	
-        });
+        a[j] = ival.mapr(ival1 -> One.valueOf((byte) ival1.intValue()));
         break;
 
       case Types.T_CHAR:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.mapr(new Function<Integer, Conditional<Character>>() {
-
-			@Override
-			public Conditional<Character> apply(Integer ival) {
-				return One.valueOf((char) ival.intValue());
-			}
-        	
-        });
+        a[j] = ival.mapr(ival1 -> One.valueOf((char) ival1.intValue()));
         break;
 
       case Types.T_SHORT:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.map(new Function<Integer, Short>() {
-
-			@Override
-			public Short apply(Integer ival) {
-				return (short) ival.intValue();
-			}
-        	
-        });
+        a[j] = ival.map(ival1 -> (short) ival1.intValue());
         break;
 
       case Types.T_INT:
@@ -116,27 +87,13 @@ public class JVMNativeStackFrame extends NativeStackFrame {
 
       case Types.T_FLOAT:
         ival = callerFrame.peek(ctx, stackOffset);
-        a[j] = ival.map(new Function<Integer, Float>() {
-
-			@Override
-			public Float apply(Integer ival) {
-				return Types.intToFloat(ival);
-			}
-        	
-        });
+        a[j] = ival.map(ival1 -> Types.intToFloat(ival1));
         break;
 
       case Types.T_DOUBLE:
         lval = callerFrame.peekLong(ctx, stackOffset);
         stackOffset++; // 2 stack words
-        a[j] = lval.map(new Function<Long, Double>() {
-
-			@Override
-			public Double apply(Long lval) {
-				return Double.valueOf(Types.longToDouble(lval));
-			}
-        	
-        });
+        a[j] = lval.map(lval1 -> Double.valueOf(Types.longToDouble(lval1)));
         break;
 
       default:
@@ -145,7 +102,6 @@ public class JVMNativeStackFrame extends NativeStackFrame {
         ival = callerFrame.peek(ctx, stackOffset);
         a[j] = ival;
       }
-
       stackOffset++;
     }
 
