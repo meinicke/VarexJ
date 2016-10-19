@@ -175,8 +175,16 @@ public class VANode {
 	// TODO what to do here
 	List<String> setFields = new ArrayList<>();
 	
+	List<Operation> operations = new ArrayList<>();
+	
+	public void setField(int reference, String fieldName, Object newValue, Instruction instruction) {
+		SetField e = new SetField(reference, fieldName, newValue, this, instruction);
+		operations.add(e);
+		VAGraph.addOperation(reference, e);
+	}
+	
 	public void addSetField(String name) {
-		setFields.add(name);	
+		setFields.add(name);
 	}
 
 	public int getSize(String[] filter) {
