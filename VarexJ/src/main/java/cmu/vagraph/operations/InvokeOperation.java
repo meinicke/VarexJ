@@ -13,11 +13,8 @@ import gov.nasa.jpf.vm.Instruction;
 public class InvokeOperation extends Operation {
 	
 	public Integer reference;
-	Instruction instruction;
-	FeatureExpr ctx;
 
 	public InvokeOperation(Integer reference, Instruction virtualInvocation, VANode vaNode, FeatureExpr ctx) {
-		System.out.println("InvokeOperation.InvokeOperation()" + virtualInvocation);
 		this.reference = reference;
 		this.instruction = virtualInvocation;
 		this.ctx = ctx;

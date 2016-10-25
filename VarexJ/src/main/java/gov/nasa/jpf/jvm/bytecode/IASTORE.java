@@ -37,7 +37,7 @@ public class IASTORE extends ArrayStoreInstruction {
 	    value = frame.pop(ctx);
   }
 
-  protected void setField (FeatureExpr ctx, final ElementInfo ei, final int index, VANode node) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected void setField (FeatureExpr ctx, final ElementInfo ei, final int index, VANode node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     ei.setIntElement(ctx, index, value);
   }

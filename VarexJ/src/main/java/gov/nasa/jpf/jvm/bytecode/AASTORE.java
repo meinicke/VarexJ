@@ -45,8 +45,8 @@ public class AASTORE extends ArrayStoreInstruction {
 		value = frame.pop(ctx);
 	}
 
-	protected void setField(FeatureExpr ctx, ElementInfo ei, int index, VANode node) throws ArrayIndexOutOfBoundsExecutiveException {
-		node.addOperation(new SetReferenceArrayElementOperation(ei.getObjectRef(), ei.getType() + " [" + index + "]", value.simplify(), node, this, ctx));
+	protected void setField(FeatureExpr ctx, ElementInfo ei, int index, VANode node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
+		node.addOperation(new SetReferenceArrayElementOperation(ei.getObjectRef(), ei.getType() + " [" + index + "]", value.simplify(), node, this, ctx), frame);
 		
 		
 		ei.checkArrayBounds(ctx, index);

@@ -19,9 +19,11 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vagraph.operations.IfOperation;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
@@ -82,6 +84,19 @@ public abstract class IfInstruction extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     conditionValue = popConditionValue(ctx, frame);
+    
+    Conditional<Integer> targets = conditionValue.mapf(ctx, (FeatureExpr x, Boolean condition) -> {
+		if (condition) {
+	      return new One<>(getTarget().getPosition());
+	    } else {
+	      return new One<>(getNext(x, ti).getValue().getPosition());
+	    }
+	}).simplify();
+    if (targets.size() > 1) {
+        IfOperation vaNode = new IfOperation(frame.node, ctx, this, targets);
+		frame.node.addChild(vaNode);
+		frame.node = vaNode;
+    }
     return conditionValue.mapf(ctx, new BiFunction<FeatureExpr, Boolean, Conditional<Instruction>>() {
 
 		@Override

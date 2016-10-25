@@ -86,7 +86,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 //		ti.getTopFrame().node.addSetField(Conditional.getCTXString(ctx) + " invoke " + map);
 		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
 			Integer objRef = objRefEntry.getKey();
-			ti.getTopFrame().node.addOperation(new InvokeOperation(objRef, this, ti.getTopFrame().node, objRefEntry.getValue().and(ctx)));
+			ti.getTopFrame().node.addOperation(new InvokeOperation(objRef, this, ti.getTopFrame().node, objRefEntry.getValue().and(ctx)), ti.getTopFrame());
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
 				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();

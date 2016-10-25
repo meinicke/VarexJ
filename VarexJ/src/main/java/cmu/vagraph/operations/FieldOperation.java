@@ -15,8 +15,6 @@ public class FieldOperation extends Operation {
 	public int reference;
 	String fieldName;
 	public Object newValue;
-	Instruction instruction;
-	FeatureExpr ctx;
 
 	public FieldOperation(int reference, String fieldName, Object newValue, VANode vaNode, Instruction instruction, FeatureExpr ctx) {
 		this.reference = reference;
@@ -41,7 +39,7 @@ public class FieldOperation extends Operation {
 			lineNumber = instruction.getLineNumber();
 		}
 		String eclipseReference = ", at " + className + '.' + methodName + "(" + sourceFileName + ":" + lineNumber + ")";
-		return "if " + Conditional.getCTXString(ctx) + " " + getClass().getSimpleName() + " [reference=" + reference + ", fieldName=" + fieldName + ", newValue=" + newValue + ", node=" + node + eclipseReference;
+		return "if " + Conditional.getCTXString(ctx) + " " + getClass().getSimpleName() + " [reference=" + reference + ", fieldName=" + fieldName + ", newValue=" + newValue + ", node=" + node + eclipseReference + " " + instruction.getPosition();
 	}
 
 	@Override

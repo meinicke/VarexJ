@@ -14,7 +14,7 @@ public interface RuntimeConstants {
 	/**
 	 * Enables debug output.
 	 */
-	boolean debug = true;
+	boolean debug = false;
 
 	/**
 	 * Enables debug output.

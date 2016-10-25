@@ -22,6 +22,7 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.vagraph.VANode;
+import cmu.vagraph.operations.SetArrayElementOperation;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -47,7 +48,8 @@ public class CASTORE extends ArrayStoreInstruction {
     });
   }
 
-  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, VANode node) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, VANode node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
+	  node.addOperation(new SetArrayElementOperation(ei.getObjectRef(), ei.getType() + " [" + index + "]", value.simplify(), node, this, ctx), frame);
     ei.checkArrayBounds(ctx, index);
     ei.setCharElement(ctx, index, value);
   }

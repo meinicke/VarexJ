@@ -46,7 +46,7 @@ public class SASTORE extends ArrayStoreInstruction {
     });
   }
 
-  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, VANode node) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, VANode node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     ei.setShortElement(ctx, index, value);
   }

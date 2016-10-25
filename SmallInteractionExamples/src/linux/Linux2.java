@@ -1,7 +1,5 @@
 package linux;
 
-import java.util.Arrays;
-
 import gov.nasa.jpf.annotation.Conditional;
 
 /**
@@ -21,7 +19,7 @@ public class Linux2 {
 	/**
 	 * support 512GB
 	 */
-	static final int PFNNID_MAP_MAX = 512;
+	static final int PFNNID_MAP_MAX = 2;//512;
 
 	char[] pfnnid_map = new char[PFNNID_MAP_MAX];
 	static final long max_pfn = PFNNID_MAP_MAX;
@@ -52,7 +50,13 @@ public class Linux2 {
 
 	protected void setup_bootsmem() {
 		if (CONFIG_DISCONTIGMEM) {
-			Arrays.fill(pfnnid_map, (char) 0xff);
+			fill(pfnnid_map, (char) 0xff);
+		}
+	}
+
+	private void fill(char[] array, char c) {
+		for (int i = 0; i < array.length; i++) {
+			array[i] = c;
 		}
 	}
 

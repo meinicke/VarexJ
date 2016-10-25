@@ -40,7 +40,7 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
   try {  
-		frame.node.addOperation(new SetLocalRef(frame.getThis(), getLocalVariableName(), frame.peek(ctx), frame.node, this, ctx));
+		frame.node.addOperation(new SetLocalRef(frame.getThis(), getLocalVariableName(), frame.peek(ctx), frame.node, this, ctx), frame);
   } catch (Exception e) {
 	System.out.println(e);
 }

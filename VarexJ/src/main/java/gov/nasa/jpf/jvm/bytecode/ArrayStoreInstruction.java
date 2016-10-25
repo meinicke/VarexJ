@@ -81,7 +81,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 							@Override
 							public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
 								try {
-									setField(ctx, e, index, frame.node);
+									setField(ctx, e, index, frame.node, frame);
 									e.setElementAttrNoClone(index, attr); // <2do> what if the value is the same but not the attr?
 									return getNext(ctx, ti);
 
@@ -118,7 +118,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 
 	protected abstract void popValue(FeatureExpr ctx, StackFrame frame);
 
-	protected abstract void setField(FeatureExpr ctx, ElementInfo e, int index, VANode node) throws ArrayIndexOutOfBoundsExecutiveException;
+	protected abstract void setField(FeatureExpr ctx, ElementInfo e, int index, VANode node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException;
 
 	@Override
 	public boolean isRead() {

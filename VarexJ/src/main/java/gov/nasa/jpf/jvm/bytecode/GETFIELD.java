@@ -110,7 +110,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 					pushValue = ChoiceFactory.create(ctx, ei.get2SlotField(fi), pushValue);
 				}
 				
-				frame.node.addOperation(new GetField(objRef, ei.getType() + "#" + fi.getName(), pushValue.simplify(ctx), frame.node, thisInstruction, ctx));
+				frame.node.addOperation(new GetField(objRef, ei.getType() + "#" + fi.getName(), pushValue.simplify(ctx), frame.node, thisInstruction, ctx), frame);
 				return getNext(ctx, ti);
 
 			}

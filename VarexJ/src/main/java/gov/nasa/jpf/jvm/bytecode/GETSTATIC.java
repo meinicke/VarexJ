@@ -94,7 +94,7 @@ public class GETSTATIC extends StaticFieldInstruction {
 
     if (size == 1) {
       Conditional<Integer> ival = ei.get1SlotField(fieldInfo);
-      frame.node.addOperation(new GetField(0, ei.getType() + "#" + fi.getName(), ival.simplify(), frame.node, this, ctx));
+      frame.node.addOperation(new GetField(0, ei.getType() + "#" + fi.getName(), ival.simplify(), frame.node, this, ctx), frame);
       lastValue = ival;
 
       if (fieldInfo.isReference()) {

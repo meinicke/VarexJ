@@ -95,7 +95,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							} else {
 								op = new GetArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
 							}
-							frame.node.addOperation(op);
+							frame.node.addOperation(op, frame);
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
 							Operation op;
@@ -104,7 +104,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							} else {
 								op = new GetArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
 							}
-							frame.node.addOperation(op);
+							frame.node.addOperation(op, frame);
 							pushCtx = pushCtx.andNot(ctx);
 							return new One<Instruction>(new EXCEPTION(thisInstruction,
 									java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));

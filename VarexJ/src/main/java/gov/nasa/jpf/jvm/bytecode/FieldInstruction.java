@@ -147,9 +147,9 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     lastValue = val;
     
     if (fi.isReference()) {
-    	frame.node.addOperation(new SetReferenceFieldOperation(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val.simplify(), frame.node, this, ctx));
+    	frame.node.addOperation(new SetReferenceFieldOperation(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val.simplify(), frame.node, this, ctx), frame);
     } else {
-    	frame.node.addOperation(new SetFieldOperation(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val.simplify(), frame.node, this, ctx));
+    	frame.node.addOperation(new SetFieldOperation(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val.simplify(), frame.node, this, ctx), frame);
     }
 
     // we only have to modify the field owner if the values have changed, and only

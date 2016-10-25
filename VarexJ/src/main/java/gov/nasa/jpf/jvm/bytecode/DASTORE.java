@@ -47,7 +47,7 @@ public class DASTORE extends LongArrayStoreInstruction {
     });
   }
 
-  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, VANode node) throws ArrayIndexOutOfBoundsExecutiveException {
+  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, VANode node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     ei.setDoubleElement(ctx, index, value);
   }

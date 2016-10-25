@@ -11,14 +11,15 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.StackFrame;
 
 public class VANode implements GraphOperation {
 
 	public final FeatureExpr ctx;
 	public VANode parent;
-	MethodInfo methodInfo;
-	private Instruction instruction;
-	Collection<GraphOperation> operations = new ArrayList<>();
+	public final MethodInfo methodInfo;
+	protected Instruction instruction;
+	protected Collection<GraphOperation> operations = new ArrayList<>();
 	
 	public void setParent(VANode parent) {
 		this.parent = parent;
@@ -35,14 +36,8 @@ public class VANode implements GraphOperation {
 		this.parent = parent;
 	}
 
-	public VANode(@NonNull MethodInfo methodInfo, Instruction instruction, FeatureExpr ctx, VANode currentNode) {
-		this(methodInfo, ctx, currentNode);
-		this.instruction = instruction;
-	}
-
 	public VANode(MethodInfo callee, FeatureExpr ctx2) {
-		this.methodInfo = callee;
-		ctx = ctx2;
+		this(callee, ctx2, null);
 	}
 
 
@@ -52,21 +47,13 @@ public class VANode implements GraphOperation {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-//		String sourceFileName = instruction.getMethodInfo().getSourceFileName();
-//		if (sourceFileName != null) {
-//			sourceFileName = sourceFileName.substring(sourceFileName.lastIndexOf('/') + 1);
-//		}
-//		sb.append(instruction.getMethodInfo().getName() + "---");
-//		sb.append(instruction.getMethodInfo().getClassName() + '(' + sourceFileName + ":" + instruction.getLineNumber() + ')');
-//		sb.append(" -" + Conditional.getCTXString(ctx) + "-> ");
-		sb.append(methodInfo.getName());
-		return sb.toString();
+		return methodInfo.getName();
 	}
 	
 	static int margin1 = 80;
 	static int margin2 = 150;
 	
+	@Override
 	public void print(int depth, String... filter) {
 		for (String f : filter) {
 			if (methodInfo.getFullName().startsWith(f)) {
@@ -75,12 +62,7 @@ public class VANode implements GraphOperation {
 			}
 		}
 		
-		String line = "";
-		if (instruction != null) {
-			String sourceFileName = instruction.getMethodInfo().getSourceFileName();
-			sourceFileName = sourceFileName.substring(sourceFileName.indexOf('/') + 1);
-			line = "at " + instruction.getMethodInfo().getClassName() + '.' + instruction.getMethodInfo().getName() + "(" + sourceFileName + ":" + instruction.getLineNumber() + ")";
-		}
+		String line = getEclipseConsoleLink();
 		
 		String output = depth + "\t" + new String(new char[depth]) + methodInfo.getFullName();
 		if (output.length() >= margin1) {
@@ -96,6 +78,15 @@ public class VANode implements GraphOperation {
 		for (GraphOperation vaNode : operations) {
 			vaNode.print(depth + 1, filter);
 		}
+	}
+
+	protected String getEclipseConsoleLink() {
+		if (instruction != null) {
+			String sourceFileName = instruction.getMethodInfo().getSourceFileName();
+			sourceFileName = sourceFileName.substring(sourceFileName.indexOf('/') + 1);
+			return "at " + instruction.getMethodInfo().getClassName() + '.' + instruction.getMethodInfo().getName() + "(" + sourceFileName + ":" + instruction.getLineNumber() + ")";
+		}
+		return "";
 	}
 	
 	String thisString = "";
@@ -125,13 +116,13 @@ public class VANode implements GraphOperation {
 	}
 	
 
-	public void addOperation(Operation op) {
+	public void addOperation(Operation op, StackFrame frame) {
 		operations.add(op);
 		for (Integer ref: op.getReferences()) {
 			JPF.vaGraph.addOperation(ref, op);
 		}
 	}
-	
+		
 	public int getSize(String[] filter) {
 		for (String f : filter) {
 			if (methodInfo.getFullName().startsWith(f)) {
@@ -161,12 +152,16 @@ public class VANode implements GraphOperation {
 				return node;
 			}
 		}
-		VANode newNode = new VANode(methodInfo, ctx, parent);
+		VANode newNode = getSimpleClone(parent);
 		if (parent != null) {
 			parent.addChild(newNode);
 		}
 		nodes.add(newNode);
 		return newNode;
+	}
+
+	protected VANode getSimpleClone(VANode parent) {
+		return new VANode(methodInfo, ctx, parent);
 	}
 
 }
