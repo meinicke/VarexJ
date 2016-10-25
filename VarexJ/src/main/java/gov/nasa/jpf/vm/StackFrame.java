@@ -26,10 +26,10 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vagraph.VAGraph;
 import cmu.vagraph.VANode;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.util.BitSet64;
@@ -136,9 +136,9 @@ public int nLocals;
 
 		node = new VANode(callee, ctx);
 
-		VAGraph.frames.add(node);
-		if (VAGraph.rootNode == null) {
-			VAGraph.rootNode = node;
+		JPF.vaGraph.frames.add(node);
+		if (JPF.vaGraph.rootNode == null) {
+			JPF.vaGraph.rootNode = node;
 		}
 
 		pc = new One<>(mi.getInstruction(0)); // ???

@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
+import cmu.vagraph.VAGraph;
 import coverage.Coverage;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.report.Publisher;
@@ -58,6 +59,8 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory;
  * instantiates the Search and VM objects, and kicks off the Search
  */
 public class JPF implements Runnable {
+	
+	public static VAGraph vaGraph = new VAGraph(); 
 	
 	public static List<Resetable> resetable = new ArrayList<>();
 	

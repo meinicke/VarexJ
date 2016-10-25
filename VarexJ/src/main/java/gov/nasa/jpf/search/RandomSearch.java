@@ -25,7 +25,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import cmu.utils.TraceComparator;
-import cmu.vagraph.VAGraph;
 import coverage.Interaction;
 import coverage.XMLWriter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -165,7 +164,7 @@ public class RandomSearch extends Search {
 				TraceComparator.clear();
 			}
 			
-			VAGraph.print();
+			JPF.vaGraph.print();
 		}
 	}
 }

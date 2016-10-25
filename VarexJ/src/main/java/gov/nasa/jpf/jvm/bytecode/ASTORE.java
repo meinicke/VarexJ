@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.vagraph.operations.SetLocalRef;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
@@ -38,7 +39,11 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    frame.node.addSetField(getLocalVariableName() + " = " +  Conditional.getCTXString(ctx) + " " + frame.peek(ctx));
+  try {  
+		frame.node.addOperation(new SetLocalRef(frame.getThis(), getLocalVariableName(), frame.peek(ctx), frame.node, this, ctx));
+  } catch (Exception e) {
+	System.out.println(e);
+}
     frame.storeOperand(ctx, index);
     return getNext(ctx, ti);
   }

@@ -1,25 +1,28 @@
 package cmu.vagraph;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNull;
 
 import cmu.conditional.Conditional;
+import cmu.vagraph.operations.Operation;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 
-public class VANode {
+public class VANode implements GraphOperation {
 
 	public final FeatureExpr ctx;
 	public VANode parent;
 	MethodInfo methodInfo;
 	private Instruction instruction;
+	Collection<GraphOperation> operations = new ArrayList<>();
 	
 	public void setParent(VANode parent) {
 		this.parent = parent;
-		parent.children.add(this);
+		parent.operations.add(this);
 	}
 	
 	public void setInstruction(Instruction instruction) {
@@ -42,10 +45,9 @@ public class VANode {
 		ctx = ctx2;
 	}
 
-	Collection<VANode> children = new ArrayList<>();
 
-	public void addChild(VANode vaNode) {
-		children.add(vaNode);
+	public void addChild(GraphOperation vaNode) {
+		operations.add(vaNode);
 	}
 
 	@Override
@@ -89,104 +91,47 @@ public class VANode {
 			margin2 = output.length() + outputLine.length() + 20; 
 		}
 		String outputCTX = new String(new char[margin2 - (output.length() + outputLine.length())])+ Conditional.getCTXString(ctx);
-		System.out.println(output + outputLine + outputCTX + setFields);
+		System.out.println(output + outputLine + outputCTX);
 		
-		for (VANode vaNode : children) {
+		for (GraphOperation vaNode : operations) {
 			vaNode.print(depth + 1, filter);
 		}
 	}
 	
 	String thisString = "";
-	
-	void makeString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this);
-
-		String child = null;
-		int loops = 1;
-		for (VANode vaNode : children) {
-			vaNode.makeString();
-			if (child == null) {
-				child = vaNode.thisString;
-				continue;
-			}
-			if (child.equals(vaNode.thisString)) {
-				loops++;
-				continue;
-			} else { 
-				if (loops > 1) {
-					sb.append("\n>>>>>>>>>>>>>>>>>>>>>>>>");
-				}
-				sb.append("\n " + loops + "x ");
-				sb.append(child);
-				if (loops > 1) {
-					sb.append("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-				}
-				loops = 1;
-				child = vaNode.thisString;
-			}
-		}
-		if (child != null) {
-			if (loops > 1) {
-				sb.append("\n>>>>>>>>>>>>>>>>>>>>>>>>");
-			}
-			sb.append("\n " + loops + "x ");
-			sb.append(child);
-			if (loops > 1) {
-				sb.append("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-			}
-		}
-		thisString = sb.toString();
-	}
-	
-	public void print(int times, int depth) {
-		makeString();
-		System.out.println("     " + thisString);
-	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return this.toString().equals(obj.toString());
-//		if (this == obj)
-//			return true;
-//		if (obj == null)
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		VANode other = (VANode) obj;
-//		if (children == null) {
-//			if (other.children != null)
-//				return false;
-//		} else if (!children.equals(other.children))
-//			return false;
-//		if (ctx == null) {
-//			if (other.ctx != null)
-//				return false;
-//		} else if (!ctx.equals(other.ctx))
-//			return false;
-//		if (name == null) {
-//			if (other.name != null)
-//				return false;
-//		} else if (!name.equals(other.name))
-//			return false;
-//		return true;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VANode other = (VANode) obj;
+		if (ctx == null) {
+			if (other.ctx != null)
+				return false;
+		} else if (!ctx.equals(other.ctx)) {
+			return false;
+		} else if (methodInfo != other.methodInfo){
+			return false;
+		} else if (parent == null && other.parent == null){
+			return true;
+		} else if (!parent.equals(other.parent)) {
+			return false;
+		}
+		return true;
 	}
+	
 
-	// TODO what to do here
-	List<String> setFields = new ArrayList<>();
-	
-	List<Operation> operations = new ArrayList<>();
-	
-	public void setField(int reference, String fieldName, Object newValue, Instruction instruction) {
-		SetField e = new SetField(reference, fieldName, newValue, this, instruction);
-		operations.add(e);
-		VAGraph.addOperation(reference, e);
+	public void addOperation(Operation op) {
+		operations.add(op);
+		for (Integer ref: op.getReferences()) {
+			JPF.vaGraph.addOperation(ref, op);
+		}
 	}
 	
-	public void addSetField(String name) {
-		setFields.add(name);
-	}
-
 	public int getSize(String[] filter) {
 		for (String f : filter) {
 			if (methodInfo.getFullName().startsWith(f)) {
@@ -194,10 +139,34 @@ public class VANode {
 			}
 		}
 		int size = 1;
-		for (VANode child : children) {
+		for (GraphOperation child : operations) {
 			size += child.getSize(filter);
 		}
 		return size;
+	}
+
+	public void printTrace() {
+		VANode node = this;
+		while (node != null) {
+			System.out.println(node.methodInfo.getFullName());
+			node = node.parent;
+		}
+	}
+	
+	@Override
+	public GraphOperation getSimpleTrace(Set<GraphOperation> nodes) {
+		VANode parent = this.parent == null ? null : (VANode)this.parent.getSimpleTrace(nodes);
+		for (GraphOperation node : nodes) {
+			if (node.equals(this)) {
+				return node;
+			}
+		}
+		VANode newNode = new VANode(methodInfo, ctx, parent);
+		if (parent != null) {
+			parent.addChild(newNode);
+		}
+		nodes.add(newNode);
+		return newNode;
 	}
 
 }

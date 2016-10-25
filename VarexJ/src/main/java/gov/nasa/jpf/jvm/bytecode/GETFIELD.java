@@ -19,9 +19,11 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vagraph.operations.GetField;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -100,12 +102,15 @@ public class GETFIELD extends InstanceFieldInstruction {
 				ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 				attr = ei.getFieldAttr(fi);
 
+				
 				// We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
 				if (fi.getStorageSize() == 1) { // 1 slotter
 					pushValue = ChoiceFactory.create(ctx, ei.get1SlotField(fi), pushValue);
 				} else { // 2 slotter
 					pushValue = ChoiceFactory.create(ctx, ei.get2SlotField(fi), pushValue);
 				}
+				
+				frame.node.addOperation(new GetField(objRef, ei.getType() + "#" + fi.getName(), pushValue.simplify(ctx), frame.node, thisInstruction, ctx));
 				return getNext(ctx, ti);
 
 			}

@@ -23,6 +23,9 @@ import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vagraph.operations.GetArrayElementOperation;
+import cmu.vagraph.operations.GetReferenceArrayElementOperation;
+import cmu.vagraph.operations.Operation;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -86,10 +89,22 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							final Conditional push = getPushValue(ctx, frame, e, index);
 							pushValue = ChoiceFactory.create(ctx, push, pushValue);
 							
-							frame.node.addSetField(" [" + e.getArrayType() + "@" + e.getObjectRef() + " [" + index + "] <- " +pushValue.simplify(ctx) + "");
+							Operation op;
+							if (e.isReferenceArray()) {
+								op = new GetReferenceArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
+							} else {
+								op = new GetArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
+							}
+							frame.node.addOperation(op);
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
-							frame.node.addSetField(" [" + e.getArrayType() + "@" + e.getObjectRef() + " [" + index + "] -size = " + (e.getArrayFields()).arrayLength().getValue() + " -> " + ArrayIndexOutOfBoundsException.class.getName());
+							Operation op;
+							if (e.isReferenceArray()) {
+								op = new GetReferenceArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
+							} else {
+								op = new GetArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
+							}
+							frame.node.addOperation(op);
 							pushCtx = pushCtx.andNot(ctx);
 							return new One<Instruction>(new EXCEPTION(thisInstruction,
 									java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));

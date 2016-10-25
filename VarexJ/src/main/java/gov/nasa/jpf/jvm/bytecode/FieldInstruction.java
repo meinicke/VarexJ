@@ -21,6 +21,8 @@ package gov.nasa.jpf.jvm.bytecode;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vagraph.operations.SetFieldOperation;
+import cmu.vagraph.operations.SetReferenceFieldOperation;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
@@ -144,8 +146,11 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     }
     lastValue = val;
     
-    frame.node.addSetField(Conditional.getCTXString(ctx) + " : " + fi.getName() + " " + field + " -> " + val);
-    frame.node.setField(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val, this);
+    if (fi.isReference()) {
+    	frame.node.addOperation(new SetReferenceFieldOperation(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val.simplify(), frame.node, this, ctx));
+    } else {
+    	frame.node.addOperation(new SetFieldOperation(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val.simplify(), frame.node, this, ctx));
+    }
 
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter
