@@ -10,4 +10,8 @@ public class SetReferenceArrayElementOperation extends ReferencesFieldOperation 
 		super(reference, fieldName, newValue, vaNode, instruction, ctx);
 	}
 	
+	@Override
+	public String toGraphString() {
+		return "set " + fieldName + " => (" + newValue + ")";
+	}
 }

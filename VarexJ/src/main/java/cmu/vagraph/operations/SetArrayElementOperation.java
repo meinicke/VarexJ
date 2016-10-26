@@ -10,4 +10,9 @@ public class SetArrayElementOperation extends FieldOperation {
 		super(reference, fieldName, newValue, vaNode, instruction, ctx);
 	}
 	
+	@Override
+	public String toGraphString() {
+		return "set " + fieldName + " => (" + newValue + ")";
+	}
+	
 }

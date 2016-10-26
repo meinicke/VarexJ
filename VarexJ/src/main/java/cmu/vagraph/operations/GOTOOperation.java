@@ -33,5 +33,10 @@ public class GOTOOperation extends Operation {
 		return Arrays.asList(0);
 	}
 
+	@Override
+	public String toGraphString() {
+		return "GOTO";
+	}
+
 	
 }

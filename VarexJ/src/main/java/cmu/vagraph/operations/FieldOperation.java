@@ -33,7 +33,9 @@ public class FieldOperation extends Operation {
 		int lineNumber = -1;
 		if (instruction != null) {
 			sourceFileName = instruction.getMethodInfo().getSourceFileName();
-			sourceFileName = sourceFileName.substring(sourceFileName.indexOf('/') + 1);
+			if (sourceFileName != null) {
+				sourceFileName = sourceFileName.substring(sourceFileName.indexOf('/') + 1);
+			}
 			className = instruction.getMethodInfo().getClassName();
 			methodName = instruction.getMethodInfo().getName();
 			lineNumber = instruction.getLineNumber();
@@ -57,5 +59,10 @@ public class FieldOperation extends Operation {
 	@Override
 	public List<Integer> getReferences() {
 		return Arrays.asList(reference);
+	}
+
+	@Override
+	public String toGraphString() {
+		return getClass().getSimpleName() + "_" + fieldName + ">" + newValue;
 	}
 }

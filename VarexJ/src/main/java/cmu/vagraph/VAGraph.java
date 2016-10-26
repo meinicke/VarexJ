@@ -25,18 +25,19 @@ public class VAGraph {
 	
 	public void print() {
 		rootNode.print(0, new String[]{"java."});
+		final VAGraph vaGraph = getSlice(573);
+		vaGraph.rootNode.print(0, new String[]{"java."});
+	}
+	
+	public VAGraph getSlice(int ref) {
 		final VAGraph vaGraph = new VAGraph();
 		vaGraph.rootNode = (VANode) rootNode.getSimpleTrace(vaGraph.nodes);
-		System.out.println("\nVAGraph, size = "  + rootNode.getSize(new String[]{"java."}));
-		
-		int objID = 573;
-		System.out.println("SLICE of: " + objID);
-		
-		for (GraphOperation o : operations.get(objID)) {
-			o.getSimpleTrace(vaGraph.nodes);
+		if (operations.containsKey(ref)) {
+			for (GraphOperation o : operations.get(ref)) {
+				o.getSimpleTrace(vaGraph.nodes);
+			}
 		}
-		
-		vaGraph.rootNode.print(0, new String[]{"java."});
+		return vaGraph; 
 	}
 	
 	Set<GraphOperation> nodes = new HashSet<>();

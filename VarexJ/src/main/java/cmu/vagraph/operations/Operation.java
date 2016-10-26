@@ -19,4 +19,16 @@ public abstract class Operation implements GraphOperation {
 	
 	public abstract List<Integer> getReferences();
 
+	@Override
+	public FeatureExpr getCtx() {
+		return ctx;
+	}
+	
+	static int ID = 0;
+	private final int id = ID++;
+	
+	@Override
+	public int getID() {
+		return id;
+	}
 }

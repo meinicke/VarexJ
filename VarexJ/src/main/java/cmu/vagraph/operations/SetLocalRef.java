@@ -10,4 +10,8 @@ public class SetLocalRef extends ReferencesFieldOperation {
 		super(reference, localName, newValue, vaNode, instruction, ctx);
 	}
 	
+	@Override
+	public String toGraphString() {
+		return "set " + fieldName + " => (" + newValue + ")";
+	}
 }

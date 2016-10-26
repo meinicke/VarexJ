@@ -52,5 +52,9 @@ public class IfOperation extends VANode {
 	protected VANode getSimpleClone(VANode parent) {
 		return new IfOperation(parent, ctx, (IfInstruction) instruction, condition);
 	}
-	
+
+	@Override
+	public String toGraphString() {
+		return "if " + condition;
+	}
 }

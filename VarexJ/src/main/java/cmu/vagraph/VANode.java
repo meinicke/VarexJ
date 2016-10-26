@@ -1,6 +1,6 @@
 package cmu.vagraph;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -19,8 +19,16 @@ public class VANode implements GraphOperation {
 	public VANode parent;
 	public final MethodInfo methodInfo;
 	protected Instruction instruction;
-	protected Collection<GraphOperation> operations = new ArrayList<>();
+	protected List<GraphOperation> operations = new ArrayList<>();
 	
+	static int ID = 0;
+	private final int id = ID++;
+	
+	@Override
+	public int getID() {
+		return id;
+	}
+		
 	public void setParent(VANode parent) {
 		this.parent = parent;
 		parent.operations.add(this);
@@ -162,6 +170,21 @@ public class VANode implements GraphOperation {
 
 	protected VANode getSimpleClone(VANode parent) {
 		return new VANode(methodInfo, ctx, parent);
+	}
+
+	@Override
+	public List<GraphOperation> getChildren() {
+		return operations;
+	}
+
+	@Override
+	public String toGraphString() {
+		return methodInfo.getFullName();
+	}
+
+	@Override
+	public FeatureExpr getCtx() {
+		return ctx;
 	}
 
 }

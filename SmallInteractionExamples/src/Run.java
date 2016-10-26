@@ -13,7 +13,7 @@ public class Run {
 		final String[] args = {
 				"+classpath=" + path + "/bin",
 				"+search.class=.search.RandomSearch",
-				"linux." + example.Example
+				"linux." + example.Linux2
 		};
 		
 		JPF.main(args);

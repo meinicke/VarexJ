@@ -1,6 +1,10 @@
 package cmu.vagraph;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public interface GraphOperation {
 
@@ -12,4 +16,13 @@ public interface GraphOperation {
 
 	GraphOperation getSimpleTrace(Set<GraphOperation> nodes);
 
+	default List<GraphOperation> getChildren() {
+		return Collections.emptyList();
+	}
+
+	String toGraphString();
+	
+	FeatureExpr getCtx();
+	
+	int getID();
 }
