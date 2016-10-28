@@ -3,6 +3,7 @@ package cmu.vagraph.export;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
@@ -10,7 +11,9 @@ import cmu.conditional.One;
 import cmu.vagraph.GraphOperation;
 import cmu.vagraph.VAGraph;
 import cmu.vagraph.VANode;
+import cmu.vagraph.operations.IfOperation;
 import cmu.vagraph.operations.InvokeOperation;
+import cmu.vagraph.operations.Operation;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class GrapVizExportTrace {
@@ -41,6 +44,10 @@ public class GrapVizExportTrace {
 //			pw.println("rankdir=\"LR\";");
 			pw.println();
 			print(null, node, pw);
+			while (!clusters.isEmpty()) {
+				clusters.pop();
+				pw.println('}');
+			}
 			pw.println("}");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -60,6 +67,8 @@ public class GrapVizExportTrace {
 	private static final String getString(GraphOperation node) {
 		return '\"' + node.toGraphString() + node.getID() + "\"";
 	}
+	
+	private LinkedList<VANode> clusters = new LinkedList<>();
 
 	private Conditional<GraphOperation> print(Conditional<GraphOperation> parent, GraphOperation node, PrintWriter pw) {
 		if (node instanceof InvokeOperation) {
@@ -70,11 +79,27 @@ public class GrapVizExportTrace {
 		if (nodeCall.startsWith("\"get this")) {
 			return parent;
 		}
+		
+		
+		{
+			VANode currentCluster = clusters.peek();
+			VANode parentNode;
+			if (node instanceof VANode) {
+				parentNode = ((VANode) node).parent;
+			} else {
+				parentNode = ((Operation) node).getNode();
+			}
+			while (currentCluster != parentNode && !clusters.isEmpty()) {
+				clusters.pop();
+				currentCluster = clusters.peek();
+				pw.println('}');
+			}
+		}
+		
 		if (node instanceof VANode) {
 			pw.println(nodeCall + " [fillcolor=\"#ffffff\"]");
-		} else {
-			pw.println(nodeCall);
-		}
+		} 
+
 		if (parent != null) {
 			parent.mapf(node.getCtx(), (FeatureExpr ctx, GraphOperation p) -> {
 				pw.print(getString(p));
@@ -86,10 +111,30 @@ public class GrapVizExportTrace {
 					pw.print(Conditional.getCTXString(ctx));
 					pw.print('\"');
 					pw.print(", color=\"red\"");
-					pw.print("]");
+					pw.println("]");
 				}
 			});
 		}
+		
+		if (node instanceof VANode) {
+//			pw.println(nodeCall + " [fillcolor=\"#ffffff\"]");
+			pw.println("subgraph cluster" + node.getID() + " {");
+			clusters.push((VANode) node);
+			if (node instanceof IfOperation) {
+				pw.println("label = \"IF" + ((VANode) node).methodInfo.getName() + '\"');
+			} else {
+				pw.println("label = \"" + ((VANode) node).methodInfo.getName() + '\"');
+			}
+		} else {
+//			VANode currentCluster = clusters.peek();
+//			VANode parentNode = ((Operation)node).getNode();
+//			while (currentCluster != parentNode && !clusters.isEmpty()) {
+//				currentCluster = clusters.pop();
+//				pw.println('}');
+//			}
+		}
+		
+//		pw.println('}');
 
 		Conditional<GraphOperation> previous = new One<>(node);
 		for (GraphOperation child : node.getChildren()) {
