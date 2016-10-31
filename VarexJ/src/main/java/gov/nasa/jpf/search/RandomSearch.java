@@ -25,7 +25,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import cmu.utils.TraceComparator;
-import cmu.vagraph.export.GrapVizExportTrace;
+import cmu.vagraph.export.GrapVizExportTrace2;
 import coverage.Interaction;
 import coverage.XMLWriter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -167,7 +167,7 @@ public class RandomSearch extends Search {
 			
 			JPF.vaGraph.print();
 			
-			GrapVizExportTrace exporter = new GrapVizExportTrace("graph", JPF.vaGraph);
+			GrapVizExportTrace2 exporter = new GrapVizExportTrace2("graph", JPF.vaGraph);
 			exporter.write();
 		}
 	}

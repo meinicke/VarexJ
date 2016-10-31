@@ -188,6 +188,8 @@ public abstract class Conditional<T> {
 		} else if ((context.length() > 300 && context.contains("|"))) {
 			context = (context.substring(0, context.indexOf('|')) + " | ...");
 		}
+		context = context.replaceAll("!", "\u00AC");
+				
 
 		return context;
 	}

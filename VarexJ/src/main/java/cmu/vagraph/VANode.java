@@ -179,7 +179,10 @@ public class VANode implements GraphOperation {
 
 	@Override
 	public String toGraphString() {
-		return methodInfo.getFullName();
+		if (methodInfo.getName().equals("<init>")) {
+			return "new " + methodInfo.getClassInfo().getSimpleName();
+		}
+		return methodInfo.getName();
 	}
 
 	@Override
