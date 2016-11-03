@@ -60,7 +60,7 @@ public class Linux2 {
 		}
 	}
 
-	public int main() {
+	public int run() {
 		setup_bootsmem();
 		if (CONFIG_PROC_PAGE_MONITOR) {
 			kpageflags_read();
@@ -69,6 +69,6 @@ public class Linux2 {
 	}
 
 	public static void main(String[] args) {
-		new Linux2().main();
+		new Linux2().run();
 	}
 }
