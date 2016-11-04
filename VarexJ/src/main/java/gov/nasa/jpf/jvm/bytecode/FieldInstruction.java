@@ -21,6 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vatrace.FieldPutStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -146,9 +147,11 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     }
     lastValue = val;
     
-    Statement statement = new Statement(this.toString(), frame.method);
-    JPF.vatrace.addStatement(ctx, statement);
-	frame.method.addMethodElement(statement);
+    if (!field.equals(val)) {
+	    Statement statement = new FieldPutStatement(field, val, frame.method, fi);
+	    JPF.vatrace.addStatement(ctx, statement);
+		frame.method.addMethodElement(statement);
+    }
 
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter

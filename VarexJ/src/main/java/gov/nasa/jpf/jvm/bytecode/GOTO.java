@@ -20,9 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
@@ -44,9 +42,9 @@ public class GOTO extends JVMInstruction {
   }
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo th) {
-	  Statement statement = new Statement(this.toString(), th.getTopFrame().method);
-	    JPF.vatrace.addStatement(ctx, statement);
-		th.getTopFrame().method.addMethodElement(statement);
+//	  Statement statement = new Statement(this.toString(), th.getTopFrame().method);
+//	    JPF.vatrace.addStatement(ctx, statement);
+//		th.getTopFrame().method.addMethodElement(statement);
     return new One<>(getTarget());
   }
 

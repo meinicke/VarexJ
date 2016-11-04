@@ -25,7 +25,7 @@ public class Edge {
 			System.out.println();
 		}
 		StringBuilder edge = new StringBuilder(); 
-		edge.append(from).append(" -> ").append(to);
+		edge.append(from.getID()).append(" -> ").append(to.getID());
 		if (!Conditional.isTautology(ctx)) {
 			edge.append(" [label=\"").append(Conditional.getCTXString(ctx)).append("\"");
 			edge.append(", color=\"red\"").append("]");

@@ -23,6 +23,7 @@ import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vatrace.ArrayLoadStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
@@ -88,7 +89,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							final Conditional push = getPushValue(ctx, frame, e, index);
 							pushValue = ChoiceFactory.create(ctx, push, pushValue);
 							
-							Statement statement = new Statement(this.toString(), frame.method);
+							Statement statement = new ArrayLoadStatement(frame.method, index, push, e);
 						    JPF.vatrace.addStatement(ctx, statement);
 							frame.method.addMethodElement(statement);
 							

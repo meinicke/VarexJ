@@ -23,6 +23,7 @@ import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vatrace.FieldGetStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -111,7 +112,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 					pushValue = ChoiceFactory.create(ctx, ei.get2SlotField(fi), pushValue);
 				}
 				
-				Statement statement = new Statement(this.toString(), frame.method);
+				Statement statement = new FieldGetStatement(pushValue.simplify(ctx), frame.method, fi);
 			    JPF.vatrace.addStatement(ctx, statement);
 				frame.method.addMethodElement(statement);
 				

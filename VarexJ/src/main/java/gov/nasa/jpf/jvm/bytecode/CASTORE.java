@@ -21,7 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
-import cmu.vatrace.Method;
+import cmu.vatrace.ArrayStoreStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
@@ -49,13 +49,18 @@ public class CASTORE extends ArrayStoreInstruction {
     });
   }
 
-  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, Method node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
-	  Statement statement = new Statement(this.toString(), frame.method);
-	    JPF.vatrace.addStatement(ctx, statement);
+	protected void setField(FeatureExpr ctx, ElementInfo ei, int index, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
+		ei.checkArrayBounds(ctx, index);
+
+		Conditional<Character> oldValue = ei.getCharElement(index).simplify();
+	
+		ei.setCharElement(ctx, index, value);
+		
+		Conditional<Character> newValue = ei.getCharElement(index).simplify();
+		Statement statement = new ArrayStoreStatement(frame.method, index, oldValue, newValue, ei);
+		JPF.vatrace.addStatement(ctx, statement);
 		frame.method.addMethodElement(statement);
-    ei.checkArrayBounds(ctx, index);
-    ei.setCharElement(ctx, index, value);
-  }
+	}
 
   public int getByteCode () {
     return 0x55;

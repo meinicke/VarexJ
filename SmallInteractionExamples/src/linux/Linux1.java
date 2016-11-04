@@ -77,9 +77,13 @@ public class Linux1 {
 	}
 
 	public static void main(String[] args) {
-		Linux1 la = new Linux1();
-		if (CONFIG_DRM_I915) {
-			la.i915_driver_load();
+		try {
+			Linux1 la = new Linux1();
+			if (CONFIG_DRM_I915) {
+				la.i915_driver_load();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

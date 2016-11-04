@@ -90,14 +90,14 @@ public class ExceptionInfo {
     
     return null;
   }
-  public String getCauseDetails() {
-    int causeRef = ei.getReferenceField("cause").getValue();
+  public String getCauseDetails(FeatureExpr ctx) {
+    int causeRef = ei.getReferenceField("cause").simplify(ctx).simplify(getCtx()).getValue();
     if (causeRef != MJIEnv.NULL){
       ElementInfo eiCause = ti.getElementInfo(causeRef);
-      int msgRef = eiCause.getReferenceField("detailMessage").getValue();
+      int msgRef = eiCause.getReferenceField("detailMessage").simplify(ctx).simplify(getCtx()).getValue();
       if (msgRef != MJIEnv.NULL){
         ElementInfo eiMsg = ti.getElementInfo(msgRef);
-        return eiMsg.asString().getValue();
+        return eiMsg.asString().simplify(ctx).simplify(getCtx()).getValue();
       }
     }
 

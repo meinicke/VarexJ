@@ -19,10 +19,12 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.vatrace.LocalStoreStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -41,9 +43,12 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     
-    Statement statement = new Statement(this.toString(), frame.method);
-    JPF.vatrace.addStatement(ctx, statement);
-	frame.method.addMethodElement(statement);
+    LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
+    if (localVarInfo != null) {
+		Statement statement = new LocalStoreStatement(frame.method, frame.getLocalVariable(ctx, index), frame.peek(ctx), localVarInfo);
+	    JPF.vatrace.addStatement(ctx, statement);
+		frame.method.addMethodElement(statement);
+    }
     
 	frame.storeOperand(ctx, index);
     return getNext(ctx, ti);

@@ -94,9 +94,11 @@ public abstract class IfInstruction extends JVMInstruction {
 	    }
 	}).simplify();
     
-    Statement statement = new Statement(this.toString(), frame.method);
-    JPF.vatrace.addStatement(ctx, statement);
-	frame.method.addMethodElement(statement);
+    if (targets.simplify(ctx).toList().size() > 1) {
+	    Statement statement = new Statement(this.toString(), frame.method);
+	    JPF.vatrace.addStatement(ctx, statement);
+		frame.method.addMethodElement(statement);
+    }
     
     return conditionValue.mapf(ctx, new BiFunction<FeatureExpr, Boolean, Conditional<Instruction>>() {
 

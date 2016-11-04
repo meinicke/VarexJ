@@ -14,7 +14,7 @@ public class IFBranch extends Method {
 	public void print(PrintWriter pw) {
 		pw.println("subgraph \"cluster_" + name + "\" {");
 		for (MethodElement element : execution) {
-			element.print(pw);
+			element.printLabel(pw);
 		}
 		pw.println("label = \"" + name + "\";");
 		pw.println("color = red;");
