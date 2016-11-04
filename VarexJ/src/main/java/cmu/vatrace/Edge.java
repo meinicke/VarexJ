@@ -1,5 +1,7 @@
 package cmu.vatrace;
 
+import java.io.PrintWriter;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 import cmu.conditional.Conditional;
@@ -18,18 +20,37 @@ public class Edge {
 
 	@Override
 	public String toString() {
-		if (from == null) {
-			System.out.println();
-		}
-		if (to == null) {
-			System.out.println();
-		}
 		StringBuilder edge = new StringBuilder(); 
-		edge.append(from.getID()).append(" -> ").append(to.getID());
+		edge.append(from.getID()).append("->").append(to.getID());
 		if (!Conditional.isTautology(ctx)) {
-			edge.append(" [label=\"").append(Conditional.getCTXString(ctx)).append("\"");
-			edge.append(", color=\"red\"").append("]");
+			edge.append("[label=\"").append(Conditional.getCTXString(ctx)).append("\"");
+			edge.append(",color=\"red\"").append("]\n");
 		}
 		return edge.toString();
+	}
+	
+	public void print(PrintWriter pw, Edge previous) {
+		StringBuilder edge = new StringBuilder(); 
+		if (previous == null || previous.hasLabel()) {
+			edge.append(from.getID());
+		} else {
+			if (previous.to != from) {
+				pw.println();
+				edge.append(from.getID());
+			}	
+		}
+			
+		edge.append("->").append(to.getID());
+		if (!Conditional.isTautology(ctx)) {
+			edge.append("[label=\"").append(Conditional.getCTXString(ctx)).append("\"");
+			edge.append(",color=\"red\"").append("]");
+			pw.println(edge);
+		} else {
+			pw.print(edge);
+		}
+	}
+
+	private boolean hasLabel() {
+		return !Conditional.isTautology(ctx);
 	}
 }

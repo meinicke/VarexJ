@@ -5,10 +5,10 @@ import java.io.PrintWriter;
 import org.eclipse.jdt.annotation.NonNull;
 
 public class Statement implements MethodElement {
-	
+
 	private static int ID = 0;
-	
-	protected final int id = ID++;
+
+	private final int id = ID++;
 	Object op;
 	Method m;
 
@@ -16,22 +16,22 @@ public class Statement implements MethodElement {
 		this.m = m;
 		this.op = op;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "\"" + op.toString() + "\"";
 	}
-	
+
 	@Override
 	public void printLabel(PrintWriter out) {
-		out.print(id);
-		out.print(" [label=");
+		out.print(getID());
+		out.print("[label=");
 		out.print(this);
 		out.println(']');
 	}
-	
+
 	public String getID() {
-		return Integer.toString(id);
+		return TraceUtils.toShortID(id);
 	}
 
 }

@@ -29,15 +29,11 @@ public class ExceptionStatement extends Statement {
 	
 	@Override
 	public void printLabel(PrintWriter out) {
-		out.print(id);
+		out.print(getID());
 		out.print(" [label=");
 		out.print(this);
 		out.print(",color=firebrick1");
 		out.println(']');
 	}
 	
-	public String getID() {
-		return Integer.toString(id);
-	}
-
 }

@@ -37,17 +37,23 @@ public class Trace {
 		
 		addStatement(FeatureExprFactory.True(),	END);
 
+		pw.println("// Edges");
+		Edge previous = null;
 		for (Edge e : edges) {
-			pw.println(e);
+			e.print(pw, previous);
+			previous = e;
 		}
-
-		main.printLabel(pw);
+		pw.println();
+		pw.println("// clusters");
 		
 		START.printLabel(pw);
-		END.printLabel(pw);
 		pw.println(START.getID() + " [shape=Mdiamond]");
+		
+		main.printLabel(pw);
+			
+		END.printLabel(pw);
 		pw.println(END.getID() + " [shape=Msquare]");
-		pw.println("}");
+		pw.println('}');
 
 	}
 

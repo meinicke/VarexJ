@@ -8,8 +8,13 @@ import gov.nasa.jpf.vm.MethodInfo;
 
 public class Method implements MethodElement {
 
+	private static int ID = 0;
+	private final int id = ID++;
+	
 	List<MethodElement> execution = new ArrayList<>();
 	MethodInfo mi;
+	
+	
 	
 	public Method() {
 		this.mi = null;
@@ -31,22 +36,13 @@ public class Method implements MethodElement {
 		}
 		execution.add(e);
 	}
-
-	public void printID(PrintWriter pw) {
-		pw.println("subgraph \"cluster_" + mi.getName() + "\" {");
-		for (MethodElement element : execution) {
-			element.printLabel(pw);
-		}
-		pw.println("label = \"" + mi.getName() + "\";");
-		pw.println("}");
-	}
 	
 	public void printLabel(PrintWriter pw) {
-		pw.println("subgraph \"cluster_" + mi.getName() + "\" {");
+		pw.println("subgraph \"cluster_" + TraceUtils.toShortID(id) + "\" {");
 		for (MethodElement element : execution) {
 			element.printLabel(pw);
 		}
-		pw.println("label = \"" + mi.getName() + "\";");
+		pw.println("label = \"" + mi.getFullName() + "\";");
 		pw.println("}");
 	}
 
