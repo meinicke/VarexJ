@@ -19,8 +19,9 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import cmu.vagraph.operations.GetLocalRef;
+import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
@@ -47,7 +48,9 @@ public class ALOAD extends LocalVariableInstruction {
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushLocal(ctx, index);
-   	frame.node.addOperation(new GetLocalRef(frame.getThis(), getLocalVariableName(), frame.peek(ctx), frame.node, this, ctx), frame);
+    Statement statement = new Statement(this.toString(), frame.method);
+    JPF.vatrace.addStatement(ctx, statement);
+	frame.method.addMethodElement(statement);
     return getNext(ctx, ti);
   }
 

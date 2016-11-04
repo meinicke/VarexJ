@@ -23,9 +23,10 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vagraph.operations.IfOperation;
+import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.BooleanChoiceGenerator;
 import gov.nasa.jpf.vm.Instruction;
@@ -92,11 +93,11 @@ public abstract class IfInstruction extends JVMInstruction {
 	      return new One<>(getNext(x, ti).getValue().getPosition());
 	    }
 	}).simplify();
-    if (targets.size() > 1) {
-        IfOperation vaNode = new IfOperation(frame.node, ctx, this, targets);
-		frame.node.addChild(vaNode);
-		frame.node = vaNode;
-    }
+    
+    Statement statement = new Statement(this.toString(), frame.method);
+    JPF.vatrace.addStatement(ctx, statement);
+	frame.method.addMethodElement(statement);
+    
     return conditionValue.mapf(ctx, new BiFunction<FeatureExpr, Boolean, Conditional<Instruction>>() {
 
 		@Override

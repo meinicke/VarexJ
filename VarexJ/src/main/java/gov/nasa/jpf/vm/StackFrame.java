@@ -26,7 +26,7 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vagraph.VANode;
+import cmu.vatrace.Method;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
@@ -130,15 +130,14 @@ public int nLocals;
   
   
 
-  public VANode node;
+  public Method method;
   protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){
 		mi = callee;
 
-		node = new VANode(callee, ctx);
+		method = new Method(mi);
 
-		JPF.vaGraph.frames.add(node);
-		if (JPF.vaGraph.rootNode == null) {
-			JPF.vaGraph.rootNode = node;
+		if (!JPF.vatrace.hasMain()) {
+			JPF.vatrace.setMain(method);
 		}
 
 		pc = new One<>(mi.getInstruction(0)); // ???
@@ -250,9 +249,8 @@ public int nLocals;
     prev = frame;
     
     if (frame != null) {
-		VANode parentNode = frame.node;
-		node.setParent(parentNode);
-		node.setInstruction(frame.getPC().simplify(node.ctx).getValue(true));// TODO
+		Method parentNode = frame.method;
+		parentNode.addMethodElement(method);
 	}
   }
 

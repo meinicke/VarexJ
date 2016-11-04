@@ -1,4 +1,4 @@
-package cmu.vagraph.export;
+package cmu.vatrace.export;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,17 +6,20 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import cmu.utils.CommandLineRunner;
-import cmu.vagraph.VAGraph;
-import cmu.vagraph.trace.Trace;
+import cmu.vatrace.Trace;
 
-public class GrapVizExportTrace2 {
+public class GrapVizExport {
+	
+	enum Format {
+		pdf
+	}
 
 	private String fileName;
-	private VAGraph graph;
+	private Trace trace;
 
-	public GrapVizExportTrace2(String fileName, VAGraph graph) {
+	public GrapVizExport(String fileName, Trace vatrace) {
 		this.fileName = fileName;
-		this.graph = graph;// .getSlice(574);
+		this.trace = vatrace;// .getSlice(574);
 		// this.graph = graph.getSlice(573);//example
 		// this.graph = graph.getSlice(579);//linux1
 		// this.graph = graph.getSlice(574);//linux2
@@ -28,15 +31,16 @@ public class GrapVizExportTrace2 {
 
 	public void write() {
 		final File file = new File(fileName + ".gv");
+		System.out.print("create file: " + file.getAbsolutePath());
+		System.out.flush();
 		try (PrintWriter pw = new PrintWriter(file, "UTF-8")) {
-			Trace trace = Trace.GraphToTrace(graph, filter);
-			trace.print(pw);
-
+			trace.print(pw, filter);
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
-		callGraphviz(file, "pdf");
+		System.out.print(" > " + fileName + "." + Format.pdf);
+		callGraphviz(file, Format.pdf.toString());
 	}
 
 	private void callGraphviz(final File file, final String format) {

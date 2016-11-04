@@ -13,6 +13,7 @@ public class Run {
 		final String[] args = {
 				"+classpath=" + path + "/bin",
 				"+search.class=.search.RandomSearch",
+				"+interaction=interaction",
 				"linux." + example.Example
 		};
 		

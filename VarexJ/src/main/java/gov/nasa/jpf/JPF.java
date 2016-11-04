@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
+import cmu.vatrace.Trace;
 import cmu.conditional.Conditional;
-import cmu.vagraph.VAGraph;
 import coverage.Coverage;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.report.Publisher;
@@ -60,7 +60,7 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory;
  */
 public class JPF implements Runnable {
 	
-	public static VAGraph vaGraph = new VAGraph(); 
+	public static Trace vatrace = new Trace(); 
 	
 	public static List<Resetable> resetable = new ArrayList<>();
 	

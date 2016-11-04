@@ -23,9 +23,10 @@ import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vagraph.operations.GetField;
+import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -110,7 +111,10 @@ public class GETFIELD extends InstanceFieldInstruction {
 					pushValue = ChoiceFactory.create(ctx, ei.get2SlotField(fi), pushValue);
 				}
 				
-				frame.node.addOperation(new GetField(objRef, ei.getType() + "#" + fi.getName(), pushValue.simplify(ctx), frame.node, thisInstruction, ctx), frame);
+				Statement statement = new Statement(this.toString(), frame.method);
+			    JPF.vatrace.addStatement(ctx, statement);
+				frame.method.addMethodElement(statement);
+				
 				return getNext(ctx, ti);
 
 			}

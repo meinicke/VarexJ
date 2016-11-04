@@ -23,10 +23,9 @@ import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vagraph.operations.GetArrayElementOperation;
-import cmu.vagraph.operations.GetReferenceArrayElementOperation;
-import cmu.vagraph.operations.Operation;
+import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -89,22 +88,17 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							final Conditional push = getPushValue(ctx, frame, e, index);
 							pushValue = ChoiceFactory.create(ctx, push, pushValue);
 							
-							Operation op;
-							if (e.isReferenceArray()) {
-								op = new GetReferenceArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
-							} else {
-								op = new GetArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
-							}
-							frame.node.addOperation(op, frame);
+							Statement statement = new Statement(this.toString(), frame.method);
+						    JPF.vatrace.addStatement(ctx, statement);
+							frame.method.addMethodElement(statement);
+							
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
-							Operation op;
-							if (e.isReferenceArray()) {
-								op = new GetReferenceArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
-							} else {
-								op = new GetArrayElementOperation(e.getObjectRef(), " [" + e.getArrayType()  + " [" + index + "]", pushValue.simplify(ctx), frame.node, instruction, ctx);
-							}
-							frame.node.addOperation(op, frame);
+							
+							Statement statement = new Statement(this.toString(), frame.method);
+						    JPF.vatrace.addStatement(ctx, statement);
+							frame.method.addMethodElement(statement);
+							
 							pushCtx = pushCtx.andNot(ctx);
 							return new One<Instruction>(new EXCEPTION(thisInstruction,
 									java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));

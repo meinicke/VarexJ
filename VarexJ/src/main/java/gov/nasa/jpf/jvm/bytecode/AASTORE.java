@@ -22,9 +22,10 @@ import java.util.function.BiFunction;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vagraph.VANode;
-import cmu.vagraph.operations.SetReferenceArrayElementOperation;
+import cmu.vatrace.Method;
+import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -45,9 +46,10 @@ public class AASTORE extends ArrayStoreInstruction {
 		value = frame.pop(ctx);
 	}
 
-	protected void setField(FeatureExpr ctx, ElementInfo ei, int index, VANode node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
-		node.addOperation(new SetReferenceArrayElementOperation(ei.getObjectRef(), ei.getType() + " [" + index + "]", value.simplify(), node, this, ctx), frame);
-		
+	protected void setField(FeatureExpr ctx, ElementInfo ei, int index, Method node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
+		Statement statement = new Statement(this.toString(), frame.method);
+	    JPF.vatrace.addStatement(ctx, statement);
+		frame.method.addMethodElement(statement);
 		
 		ei.checkArrayBounds(ctx, index);
 		ei.setReferenceElement(ctx, index, value);

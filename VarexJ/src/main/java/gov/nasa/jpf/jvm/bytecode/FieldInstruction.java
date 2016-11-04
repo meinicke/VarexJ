@@ -21,11 +21,11 @@ package gov.nasa.jpf.jvm.bytecode;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vagraph.operations.SetFieldOperation;
-import cmu.vagraph.operations.SetReferenceFieldOperation;
+import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -146,11 +146,9 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     }
     lastValue = val;
     
-    if (fi.isReference()) {
-    	frame.node.addOperation(new SetReferenceFieldOperation(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val.simplify(), frame.node, this, ctx), frame);
-    } else {
-    	frame.node.addOperation(new SetFieldOperation(eiFieldOwner.getObjectRef(), eiFieldOwner.getType() + "#" + fi.getName(), val.simplify(), frame.node, this, ctx), frame);
-    }
+    Statement statement = new Statement(this.toString(), frame.method);
+    JPF.vatrace.addStatement(ctx, statement);
+	frame.method.addMethodElement(statement);
 
     // we only have to modify the field owner if the values have changed, and only
     // if this is a modified reference do we might have to potential exposure re-enter

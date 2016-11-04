@@ -22,7 +22,7 @@ import java.util.function.BiFunction;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vagraph.VANode;
+import cmu.vatrace.Method;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -81,7 +81,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 							@Override
 							public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
 								try {
-									setField(ctx, e, index, frame.node, frame);
+									setField(ctx, e, index, frame.method, frame);
 									e.setElementAttrNoClone(index, attr); // <2do> what if the value is the same but not the attr?
 									return getNext(ctx, ti);
 
@@ -118,7 +118,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 
 	protected abstract void popValue(FeatureExpr ctx, StackFrame frame);
 
-	protected abstract void setField(FeatureExpr ctx, ElementInfo e, int index, VANode node, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException;
+	protected abstract void setField(FeatureExpr ctx, ElementInfo e, int index, Method method, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException;
 
 	@Override
 	public boolean isRead() {
