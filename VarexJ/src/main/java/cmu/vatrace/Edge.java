@@ -30,27 +30,26 @@ public class Edge {
 	}
 	
 	public void print(PrintWriter pw, Edge previous) {
-		StringBuilder edge = new StringBuilder(); 
-		if (previous == null || previous.hasLabel()) {
-			edge.append(from.getID());
-		} else {
-			if (previous.to != from) {
-				pw.println();
-				edge.append(from.getID());
-			}	
+		if (previous == null) {
+			pw.print(from.getID() + "->" + to.getID());
+			return;
 		}
-			
-		edge.append("->").append(to.getID());
-		if (!Conditional.isTautology(ctx)) {
-			edge.append("[label=\"").append(Conditional.getCTXString(ctx)).append("\"");
-			edge.append(",color=\"red\"").append("]");
-			pw.println(edge);
+		if (!previous.ctx.equals(ctx)) {
+			if (!Conditional.isTautology(previous.ctx)) {
+				previous.printLabel(pw);
+			} else {
+				pw.println();
+			}
+			pw.print(from.getID() + "->" + to.getID());
+			return;
 		} else {
-			pw.print(edge);
+			pw.print("->" + to.getID());
+			return;
 		}
 	}
 
-	private boolean hasLabel() {
-		return !Conditional.isTautology(ctx);
+	public void printLabel(PrintWriter pw) {
+		pw.println("[label=\"" + Conditional.getCTXString(ctx) + "\",color=\"red\"]");
 	}
+
 }

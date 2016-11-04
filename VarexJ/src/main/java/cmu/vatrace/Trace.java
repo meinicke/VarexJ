@@ -43,6 +43,9 @@ public class Trace {
 			e.print(pw, previous);
 			previous = e;
 		}
+		if (!Conditional.isTautology(previous.ctx)) {
+			previous.printLabel(pw);
+		}
 		pw.println();
 		pw.println("// clusters");
 		
