@@ -32,12 +32,22 @@ public class Method implements MethodElement {
 		execution.add(e);
 	}
 
-	public void print(PrintWriter pw) {
+	public void printID(PrintWriter pw) {
 		pw.println("subgraph \"cluster_" + mi.getName() + "\" {");
 		for (MethodElement element : execution) {
-			element.print(pw);
+			element.printLabel(pw);
 		}
 		pw.println("label = \"" + mi.getName() + "\";");
 		pw.println("}");
 	}
+	
+	public void printLabel(PrintWriter pw) {
+		pw.println("subgraph \"cluster_" + mi.getName() + "\" {");
+		for (MethodElement element : execution) {
+			element.printLabel(pw);
+		}
+		pw.println("label = \"" + mi.getName() + "\";");
+		pw.println("}");
+	}
+
 }

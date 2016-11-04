@@ -95,9 +95,13 @@ public class Linux5 {
 	}
 
 	public static void main(String[] args) {
-		setupBootmem();
-		if (CONFIG_PROC_PAGE_MONITOR) {
-			kpageflagsRead();
+		try {
+			setupBootmem();
+			if (CONFIG_PROC_PAGE_MONITOR) {
+				kpageflagsRead();
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 

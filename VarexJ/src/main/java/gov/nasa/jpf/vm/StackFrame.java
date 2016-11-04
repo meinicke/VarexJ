@@ -1138,8 +1138,8 @@ public int nLocals;
     return mi.getLocalVar(name, pc.getValue().getPosition()+pc.getValue().getLength());
   }
 
-  public LocalVarInfo getLocalVarInfo (int idx){
-    return mi.getLocalVar(idx, pc.getValue().getPosition()+pc.getValue().getLength());
+  public LocalVarInfo getLocalVarInfo (int idx, FeatureExpr ctx){
+    return mi.getLocalVar(idx, pc.simplify(ctx).getValue().getPosition()+pc.simplify(ctx).getValue().getLength());
   }
 
 

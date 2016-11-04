@@ -53,6 +53,7 @@ public class NoUncaughtExceptionsProperty extends GenericProperty {
 
   public String getErrorMessage () {
     if (uncaughtXi != null) {
+    	
       StringWriter sw = new StringWriter();
       uncaughtXi.printOn(new PrintWriter(sw));
       return sw.toString();

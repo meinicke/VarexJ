@@ -4,5 +4,6 @@ import java.io.PrintWriter;
 
 public interface MethodElement {
 
-	public void print(PrintWriter pw);
+	public void printLabel(PrintWriter pw);
+
 }

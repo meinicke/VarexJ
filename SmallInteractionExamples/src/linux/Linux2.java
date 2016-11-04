@@ -69,6 +69,10 @@ public class Linux2 {
 	}
 
 	public static void main(String[] args) {
-		new Linux2().run();
+		try { 
+			new Linux2().run();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }

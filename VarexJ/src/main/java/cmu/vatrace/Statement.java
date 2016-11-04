@@ -6,27 +6,32 @@ import org.eclipse.jdt.annotation.NonNull;
 
 public class Statement implements MethodElement {
 	
-	static int ID = 0;
+	private static int ID = 0;
 	
-	int id = ID++;
+	protected final int id = ID++;
 	Object op;
 	Method m;
 
 	public Statement(@NonNull Object op, Method m) {
-		if (op == null) {
-			System.out.println();
-		}
 		this.m = m;
 		this.op = op;
 	}
 	
 	@Override
 	public String toString() {
-		return "\"" + op.toString() + "-" +id + "\"";
+		return "\"" + op.toString() + "\"";
+	}
+	
+	@Override
+	public void printLabel(PrintWriter out) {
+		out.print(id);
+		out.print(" [label=");
+		out.print(this);
+		out.println(']');
+	}
+	
+	public String getID() {
+		return Integer.toString(id);
 	}
 
-	@Override
-	public void print(PrintWriter out) {
-		out.println(this);
-	}
 }

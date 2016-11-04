@@ -99,7 +99,7 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "Choice(" + getCTXString(featureExpr) + ", " + thenBranch + ", " + elseBranch + ")";
+		return "V(" + getCTXString(featureExpr) + ", " + thenBranch + ", " + elseBranch + ")";
 	}
 
 	@SuppressWarnings("unchecked")

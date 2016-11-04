@@ -27,7 +27,6 @@ import java.util.TreeMap;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
@@ -86,11 +85,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 //		ti.getTopFrame().node.addSetField(Conditional.getCTXString(ctx) + " invoke " + map);
 		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
 			Integer objRef = objRefEntry.getKey();
-			
-			Statement statement = new Statement(this.toString(), ti.getTopFrame().method);
-		    JPF.vatrace.addStatement(ctx, statement);
-			ti.getTopFrame().method.addMethodElement(statement);
-			
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
 				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();

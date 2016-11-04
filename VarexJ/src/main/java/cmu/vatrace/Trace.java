@@ -41,12 +41,12 @@ public class Trace {
 			pw.println(e);
 		}
 
-		main.print(pw);
-
-		pw.println(START);
-		pw.println(END);
-		pw.println(START + " [shape=Mdiamond]");
-		pw.println(END + " [shape=Msquare]");
+		main.printLabel(pw);
+		
+		START.printLabel(pw);
+		END.printLabel(pw);
+		pw.println(START.getID() + " [shape=Mdiamond]");
+		pw.println(END.getID() + " [shape=Msquare]");
 		pw.println("}");
 
 	}

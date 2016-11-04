@@ -50,7 +50,7 @@ public class One<T> extends Conditional<T> implements Cloneable {
 
 	@Override
 	public String toString() {
-		String s = "One(";
+		String s = "";
 		if (value instanceof int[]) {
 			s += Arrays.toString((int[]) value);
 		} else if (value instanceof long[]) {
@@ -64,7 +64,7 @@ public class One<T> extends Conditional<T> implements Cloneable {
 		} else {
 			s += value;
 		}
-		return s + ')';
+		return s;
 	}
 
 	@Override
