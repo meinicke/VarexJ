@@ -49,7 +49,7 @@ public class Edge {
 	}
 
 	public void printLabel(PrintWriter pw) {
-		pw.println("[label=\"" + Conditional.getCTXString(ctx) + "\",color=\"red\"]");
+		pw.println("[label=\"" + Conditional.getCTXString(ctx) + "\",color=\"tomato\"]");
 	}
 
 }

@@ -308,7 +308,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 			if (stackCTX.equivalentTo(f)) {
 				return new One<>(clone);
 			}
-			return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
+			return ChoiceFactory.create(f, new One<>(clone), new One<>(stack));
 		}).simplify();
 	}
 

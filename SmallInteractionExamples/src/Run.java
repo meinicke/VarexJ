@@ -14,7 +14,7 @@ public class Run {
 				"+classpath=" + path + "/bin",
 				"+search.class=.search.RandomSearch",
 				"+interaction=interaction",
-				"linux." + example.Example
+				"linux." + example.Linux4
 		};
 		
 		JPF.main(args);

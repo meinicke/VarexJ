@@ -148,7 +148,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     lastValue = val;
     
     if (!field.equals(val)) {
-	    Statement statement = new FieldPutStatement(field, val, frame.method, fi);
+	    Statement statement = new FieldPutStatement(field, ChoiceFactory.create(ctx, val, field).simplify(), frame.method, fi);
 	    JPF.vatrace.addStatement(ctx, statement);
 		frame.method.addMethodElement(statement);
     }

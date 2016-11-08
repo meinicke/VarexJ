@@ -23,7 +23,6 @@ import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -59,18 +58,14 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
-		AnnotationInfo[] annotations = getFieldInfo(ctx).getAnnotations();
-		for (AnnotationInfo ai : annotations) {
-			if (ANNOTATION_CONDITIONAL.equals(ai.getName())) {
-				StackFrame frame = ti.getModifiableTopFrame();
-				FeatureExpr feature = Conditional.createFeature(fname);
-				featureNumber++;
-				System.out.println("Found feature #" + featureNumber + " - " + fname);
-				IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
-				frame.pop(ctx);
-				frame.push(ctx, create);
-				break;
-			}
+		if (getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL) != null) {
+			StackFrame frame = ti.getModifiableTopFrame();
+			FeatureExpr feature = Conditional.createFeature(fname);
+			featureNumber++;
+			System.out.println("Found feature #" + featureNumber + " - " + fname);
+			IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
+			frame.pop(ctx);
+			frame.push(ctx, create);
 		}
 		
 		if (!ti.isFirstStepInsn()) { // top half

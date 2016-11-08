@@ -22,6 +22,7 @@ import java.util.function.BiFunction;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vatrace.ArrayStoreStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;
@@ -46,11 +47,19 @@ public class AASTORE extends ArrayStoreInstruction {
 	}
 
 	protected void setField(FeatureExpr ctx, ElementInfo ei, int index, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
-		Statement statement = new Statement(this.toString(), frame.method);
+		try {
+			ei.checkArrayBounds(ctx, index);
+		} catch (ArrayIndexOutOfBoundsExecutiveException e) {
+			Statement statement = new Statement(this.toString(), frame.method);
+		    JPF.vatrace.addStatement(ctx, statement);
+			frame.method.addMethodElement(statement);
+			throw e;
+		}
+
+		Statement statement = new ArrayStoreStatement(frame.method, index, ei.getReferenceElement(index), value, ei);
 	    JPF.vatrace.addStatement(ctx, statement);
 		frame.method.addMethodElement(statement);
 		
-		ei.checkArrayBounds(ctx, index);
 		ei.setReferenceElement(ctx, index, value);
 	}
 

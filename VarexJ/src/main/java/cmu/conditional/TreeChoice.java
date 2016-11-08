@@ -107,7 +107,11 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 	public boolean equals(Object obj) {
 		if (obj instanceof TreeChoice) {
 			TreeChoice<T> c = (TreeChoice<T>) obj;
-			return c.thenBranch.equals(thenBranch) && c.elseBranch.equals(elseBranch) && c.featureExpr.equivalentTo(featureExpr);
+			if (c.thenBranch.equals(thenBranch) && c.elseBranch.equals(elseBranch) && c.featureExpr.equivalentTo(featureExpr)) {
+				return true;
+			} else if (c.featureExpr.not().equivalentTo(featureExpr) && c.elseBranch.equals(thenBranch) && c.thenBranch.equals(elseBranch)) {
+				return true;
+			}
 		}
 		return false;
 	}

@@ -1,5 +1,6 @@
 package cmu.vatrace;
 
+import java.io.PrintWriter;
 import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -41,6 +42,31 @@ public class FieldPutStatement extends Statement {
 	public String toString() {
 		Conditional<String> oldString = oldValue.map(f);
 		Conditional<String> newString = newValue.map(f);
-		return "\"" + fi.getFullName() + ": " + oldString + " \u2192 " + newString + '\"';
+		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) != null) {
+			return "\"" + fi.getFullName() + " = " + newString + '\"';
+		} else {
+			return "\"" + fi.getFullName() + ": " + oldString + " \u2192 " + newString + '\"';
+		}
+	}
+	
+	@Override
+	public void printLabel(PrintWriter out) {
+		out.print(getID());// TODO dont create this node
+		if (oldValue.equals(newValue)) {
+			out.print("[label=X]");
+			return; 
+		}
+		
+		out.print("[label=");
+		out.print(this);
+		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) != null) {
+			out.println(']');
+			return;
+		}
+		if (oldValue.toMap().size() < newValue.toMap().size()) {
+			out.print(", color=tomato");
+		}
+		
+		out.println(']');
 	}
 }

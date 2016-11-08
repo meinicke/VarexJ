@@ -1,5 +1,6 @@
 package cmu.vatrace;
 
+import java.io.PrintWriter;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
@@ -28,6 +29,12 @@ public class ArrayStoreStatement extends Statement {
 		if (ei.getArrayType().equals("C")) {
 			return "0x" + String.format("%02x", (int)((Character)val).charValue());
 		}
+		if (ei.isReferenceArray()) {
+			if ((Integer)val == 0) {
+				return "null";
+			}
+			return '@' + val.toString();
+		}
 		
 		return val.toString();
 	};
@@ -35,5 +42,16 @@ public class ArrayStoreStatement extends Statement {
 	@Override
 	public String toString() {
 		return "\"[" + ei.getArrayType() + " [" + index + "] : " + oldValue.map(f) + " \u2192 " + newValue.map(f) + '\"';
+	}
+	
+	@Override
+	public void printLabel(PrintWriter out) {
+		out.print(getID());
+		out.print("[label=");
+		out.print(this);
+		if (oldValue.toMap().size() < newValue.toMap().size()) {
+			out.print(", color=tomato");
+		}
+		out.println(']');
 	}
 }

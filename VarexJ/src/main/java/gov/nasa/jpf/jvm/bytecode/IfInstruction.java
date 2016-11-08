@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vatrace.IFBranch;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -95,7 +96,7 @@ public abstract class IfInstruction extends JVMInstruction {
 	}).simplify();
     
     if (targets.simplify(ctx).toList().size() > 1) {
-	    Statement statement = new Statement(this.toString(), frame.method);
+	    Statement statement = new IFBranch(this, frame.method);
 	    JPF.vatrace.addStatement(ctx, statement);
 		frame.method.addMethodElement(statement);
     }

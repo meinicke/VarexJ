@@ -1,5 +1,6 @@
 package cmu.vatrace;
 
+import java.io.PrintWriter;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
@@ -41,5 +42,15 @@ public class LocalStoreStatement extends Statement {
 			return "\"set unknown: " + oldValue + " \u2192 " + newValue + '\"';
 		}
 		return "\"set " + li.getType() + " " + li.getName() + ": " + oldValue.map(f) + " \u2192 " + newValue.map(f) + '\"';
+	}
+	
+	@Override
+	public void printLabel(PrintWriter out) {
+		out.print(getID());// TODO dont create this node
+		if (oldValue.equals(newValue)) {
+			out.print("[label=X]");
+			return; 
+		}
+		super.printLabel(out);
 	}
 }

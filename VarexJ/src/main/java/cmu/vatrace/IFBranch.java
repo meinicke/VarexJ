@@ -2,22 +2,23 @@ package cmu.vatrace;
 
 import java.io.PrintWriter;
 
-public class IFBranch extends Method {
+import gov.nasa.jpf.jvm.bytecode.IfInstruction;
 
-	private String name;
+public class IFBranch extends Statement {
 
-	public IFBranch(String name) {
-		super();
-		this.name = name;
+	private IFBranch(Object op, Method m) {
+		super(op, m);
 	}
 	
-	public void print(PrintWriter pw) {
-		pw.println("subgraph \"cluster_" + name + "\" {");
-		for (MethodElement element : execution) {
-			element.printLabel(pw);
-		}
-		pw.println("label = \"" + name + "\";");
-		pw.println("color = red;");
-		pw.println("}");
+	public IFBranch(IfInstruction op, Method m) {
+		super(op, m);
+	}
+	
+	@Override
+	public void printLabel(PrintWriter out) {
+		out.print(getID());
+		out.print("[label=\"");
+		out.print(((IfInstruction)op).getClass().getSimpleName());
+		out.println("\",shape=Mdiamond]");
 	}
 }

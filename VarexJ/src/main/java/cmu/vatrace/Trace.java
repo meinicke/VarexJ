@@ -50,7 +50,7 @@ public class Trace {
 		pw.println("// clusters");
 		
 		START.printLabel(pw);
-		pw.println(START.getID() + " [shape=Mdiamond]");
+		pw.println(START.getID() + " [shape=Msquare]");
 		
 		main.printLabel(pw);
 			
