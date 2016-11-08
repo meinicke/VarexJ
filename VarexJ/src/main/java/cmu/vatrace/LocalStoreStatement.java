@@ -46,8 +46,8 @@ public class LocalStoreStatement extends Statement {
 	
 	@Override
 	public void printLabel(PrintWriter out) {
-		out.print(getID());// TODO dont create this node
 		if (oldValue.equals(newValue)) {
+			out.print(getID());// TODO dont create this node
 			out.print("[label=X]");
 			return; 
 		}
