@@ -19,13 +19,16 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.Iterator;
-
 import java.util.function.BiFunction;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vatrace.ReturnStatement;
+import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -166,9 +169,17 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     }
 
     StackFrame frame = ti.getModifiableTopFrame();
+
+    if (getReturnTypeSize() > 0) {
+	    Statement statement = new ReturnStatement(frame.method, frame.peek(ctx));
+	    JPF.vatrace.addStatement(ctx, statement);
+	    frame.method.addMethodElement(statement);
+    }
+    
     returnFrame = frame;
     Object attr = getReturnedOperandAttr(ctx, frame); // the return attr - get this before we pop
     getAndSaveReturnValue(frame, ctx);
+    
     
     // note that this is never the first frame, since we start all threads (incl. main)
     // through a direct call
@@ -177,6 +188,9 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     // (DirectCallStackFrames don't use this)
     frame.removeArguments(ctx, mi);
     pushReturnValue(ctx, frame);
+    
+    
+    
     if (attr != null) {
       setReturnAttr(ti, attr);
     }
