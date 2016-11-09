@@ -51,12 +51,7 @@ public class FieldPutStatement extends Statement {
 	
 	@Override
 	public void printLabel(PrintWriter out) {
-		out.print(getID());// TODO dont create this node
-		if (oldValue.equals(newValue)) {
-			out.print("[label=X]");
-			return; 
-		}
-		
+		out.print(getID());
 		out.print("[label=");
 		out.print(this);
 		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) != null) {
