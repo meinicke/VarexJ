@@ -73,7 +73,7 @@ public class BoxObjectCacheManager {
     int n = (byteHigh - byteLow) + 1;
     
     Heap heap = ti.getHeap();
-    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Byte", n, ti, ANCHOR);
+    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Byte", n, ti, ANCHOR, ctx);
     int arrayRef = eiArray.getObjectRef();
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Byte");
@@ -113,7 +113,7 @@ public class BoxObjectCacheManager {
     int n = charHigh + 1;
     
     Heap heap = ti.getHeap();    
-    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Character", n, ti, ANCHOR);
+    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Character", n, ti, ANCHOR, ctx);
     int arrayRef = eiArray.getObjectRef();
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Character");
@@ -156,7 +156,7 @@ public class BoxObjectCacheManager {
     int n = (shortHigh - shortLow) + 1;
     
     Heap heap = ti.getHeap();    
-    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Short", n, ti, ANCHOR);
+    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Short", n, ti, ANCHOR, ctx);
     int arrayRef = eiArray.getObjectRef();
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Short");
@@ -198,7 +198,7 @@ public class BoxObjectCacheManager {
     int n = (intHigh - intLow) + 1;
     
     Heap heap = ti.getHeap();    
-    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Integer", n, ti, ANCHOR);
+    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Integer", n, ti, ANCHOR, ctx);
     int arrayRef = eiArray.getObjectRef();
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Integer");
@@ -245,7 +245,7 @@ public class BoxObjectCacheManager {
     int n = (longHigh - longLow) + 1;
     
     Heap heap = ti.getHeap();    
-    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Long", n, ti, ANCHOR);
+    ElementInfo eiArray = heap.newSystemArray("Ljava/lang/Long", n, ti, ANCHOR, ctx);
     int arrayRef = eiArray.getObjectRef();
 
     ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Long");

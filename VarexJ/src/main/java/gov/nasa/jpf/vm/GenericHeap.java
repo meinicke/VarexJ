@@ -147,8 +147,8 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   }
 
 
-  protected DynamicElementInfo createElementInfo (int objref, ClassInfo ci, Fields f, Monitor m, ThreadInfo ti){
-    return new DynamicElementInfo( objref,ci,f,m,ti);
+  protected DynamicElementInfo createElementInfo (int objref, ClassInfo ci, Fields f, Monitor m, ThreadInfo ti, FeatureExpr ctx){
+    return new DynamicElementInfo( objref,ci,f,m,ti, ctx);
   }
   
   //--- pinDown handling
@@ -255,7 +255,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     // create the thing itself
     Fields f = ci.createInstanceFields();
     Monitor m = new Monitor();
-    ElementInfo ei = createElementInfo( objref, ci, f, m, ti);
+    ElementInfo ei = createElementInfo( objref, ci, f, m, ti, ctx);
     
     set(objref, ei);
 
@@ -291,11 +291,11 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     return ei;
   }
   
-  protected ElementInfo createArray (String elementType, int nElements, ClassInfo ci, ThreadInfo ti, int objref) {
+  protected ElementInfo createArray (String elementType, int nElements, ClassInfo ci, ThreadInfo ti, int objref, FeatureExpr ctx) {
 
     Fields f = ci.createArrayFields(ci.getName(), nElements, Types.getTypeSize(elementType), Types.isReference(elementType));
     Monitor m = new Monitor();
-    DynamicElementInfo ei = createElementInfo( objref, ci, f, m, ti);
+    DynamicElementInfo ei = createElementInfo( objref, ci, f, m, ti, ctx);
 
     set(objref, ei);
 
@@ -327,19 +327,19 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     AllocationContext ctx = getSUTAllocationContext(fexpr, ci, ti);
     
     int index = getNewElementInfoIndex( ctx);
-    ElementInfo ei = createArray( elementType, nElements, ci, ti, index);
+    ElementInfo ei = createArray( elementType, nElements, ci, ti, index, fexpr);
 
     return ei;
   }
 
   @Override
-  public ElementInfo newSystemArray(String elementType, int nElements, ThreadInfo ti, int anchor) {
+  public ElementInfo newSystemArray(String elementType, int nElements, ThreadInfo ti, int anchor, FeatureExpr fexpr) {
     // see newObject for OOM simulation
     ClassInfo ci = getArrayClassInfo(ti, elementType);
     AllocationContext ctx = getSystemAllocationContext( ci, ti, anchor);
     
     int index = getNewElementInfoIndex( ctx);
-    ElementInfo ei = createArray( elementType, nElements, ci, ti, index);
+    ElementInfo ei = createArray( elementType, nElements, ci, ti, index, fexpr);
 
     return ei;
   }
@@ -367,7 +367,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     //--- its char[] array
     ctx = ctx.extend(ciChars, sRef);
     int vRef = getNewElementInfoIndex( ctx);
-    createArray( "C", str.length(), ciChars, ti, vRef);
+    createArray( "C", str.length(), ciChars, ti, vRef, fexpr);
     
     ElementInfo ei = initializeStringObject(fexpr, str, sRef, vRef);      
     return ei;
@@ -423,7 +423,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 		// --- its char[] array
 		ctx = ctx.extend(ciChars, sRef);
 		int vRef = getNewElementInfoIndex(ctx);
-		createArray("C", length, ciChars, ti, vRef);
+		createArray("C", length, ciChars, ti, vRef, fexpr);
 		ElementInfo ei = null;
 		Map<String, FeatureExpr> map = str.toMap();
 		for (Entry<String, FeatureExpr> sEntry : map.entrySet()) {
@@ -504,7 +504,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
     ClassInfo ciSnap = getArrayClassInfo(ti, "I");
     AllocationContext ctxSnap = ctx.extend(ciSnap, xRef);
     int snapRef = getNewElementInfoIndex( ctxSnap);
-    ElementInfo eiSnap = createArray( "I", stackSnapshot.length, ciSnap, ti, snapRef);
+    ElementInfo eiSnap = createArray( "I", stackSnapshot.length, ciSnap, ti, snapRef, fexpr);
 //    Conditional<Integer>[] array = eiSnap.asIntArray();
 //    int[] snap = new int[array.length];
 //    for (int i = 0; i < array.length; i++) {

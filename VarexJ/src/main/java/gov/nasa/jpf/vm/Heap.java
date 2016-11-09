@@ -42,7 +42,7 @@ public interface Heap extends Iterable<ElementInfo> {
   ElementInfo newArray (FeatureExpr ctx, String elementType, int nElements, ThreadInfo ti);
   ElementInfo newObject (FeatureExpr ctx, ClassInfo ci, ThreadInfo ti);
   
-  ElementInfo newSystemArray (String elementType, int nElements, ThreadInfo ti, int anchor);
+  ElementInfo newSystemArray (String elementType, int nElements, ThreadInfo ti, int anchor, FeatureExpr ctx);
   ElementInfo newSystemObject (FeatureExpr ctx, ClassInfo ci, ThreadInfo ti, int anchor);
 
   //--- convenience allocators that avoid constructor calls

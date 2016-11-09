@@ -19,6 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.HashData;
 
@@ -42,7 +43,7 @@ public final class StaticElementInfo extends ElementInfo {
   }
 
   public StaticElementInfo (int id, ClassInfo ci, Fields f, Monitor m, ThreadInfo ti, ElementInfo eiClsObj) {
-    super(id, ci, f, m, ti);
+    super(id, ci, f, m, ti, FeatureExprFactory.True());
 
     if (eiClsObj != null) {
       classObjectRef = eiClsObj.getObjectRef();

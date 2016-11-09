@@ -20,9 +20,9 @@ package gov.nasa.jpf.vm;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.function.Function;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -41,7 +41,7 @@ import gov.nasa.jpf.util.Processor;
  */
 public abstract class ElementInfo implements Cloneable {
 
-
+	public final FeatureExpr ctx;
   //--- the lower 2 bytes of the attribute field are sticky (state stored/restored)
 
   // object attribute flag values
@@ -172,7 +172,8 @@ public abstract class ElementInfo implements Cloneable {
     return true;
   }
 
-  protected ElementInfo (int id, ClassInfo c, Fields f, Monitor m, ThreadInfo ti) {
+  protected ElementInfo (int id, ClassInfo c, Fields f, Monitor m, ThreadInfo ti, FeatureExpr ctx) {
+	  this.ctx = ctx;
     objRef = id;
     
     ci = c;
@@ -192,6 +193,7 @@ public abstract class ElementInfo implements Cloneable {
   public abstract boolean hasFinalizer();
   
   protected ElementInfo() {
+	  this.ctx = null;
   }
 
   public boolean hasChanged() {
@@ -990,6 +992,9 @@ public abstract class ElementInfo implements Cloneable {
 
     if (fi.isReference()) {
       int offset = fi.getStorageOffset();
+      if (ctx.equivalentTo(this.ctx)) {
+    	  ctx = FeatureExprFactory.True();
+      }
       fields.setReferenceValue( ctx, offset, newValue);
     } else {
       throw new JPFException("not a reference field: " + fi.getName());
@@ -1000,6 +1005,9 @@ public abstract class ElementInfo implements Cloneable {
     checkIsModifiable();
 
     if (fi.is1SlotField()) {
+    	if (ctx.equivalentTo(this.ctx)) {
+      	  ctx = FeatureExprFactory.True();
+        }
       int offset = fi.getStorageOffset();
       fields.setIntValue( ctx, offset, val);
     } else {

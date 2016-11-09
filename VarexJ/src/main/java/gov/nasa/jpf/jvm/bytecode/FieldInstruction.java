@@ -132,7 +132,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     Object attr = frame.getOperandAttr(ctx);
     Conditional<Integer> val;
     Conditional<Integer> field = eiFieldOwner.get1SlotField(fi);
-	if (initStatic) {
+    if (initStatic) {
     	/*
     	 * static fields need to be initialized for all contexts
     	 * because the static class objects are only initialized once 
@@ -144,11 +144,14 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     	} else {
     		val = ChoiceFactory.create(ctx, frame.peek(ctx), field).simplify();
     	}
+    	if (!eiFieldOwner.ctx.isTautology()) {
+    		val = val.simplify(eiFieldOwner.ctx);
+    	}
     }
     lastValue = val;
     
-    if (!field.equals(val) && getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
-	    Statement statement = new FieldPutStatement(field, ChoiceFactory.create(ctx, val, field).simplify(), frame.method, fi);
+    if (!field.equals(val) && getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {    	
+	    Statement statement = new FieldPutStatement(field, ChoiceFactory.create(ctx, val, field).simplify(eiFieldOwner.ctx), frame.method, fi);
 	    JPF.vatrace.addStatement(ctx, statement);
 		frame.method.addMethodElement(statement);
     }

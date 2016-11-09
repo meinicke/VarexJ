@@ -18,9 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 
 /**
@@ -32,9 +34,8 @@ public class DynamicElementInfo extends ElementInfo {
     // for restoration
   }
 
-  public DynamicElementInfo (int objref, ClassInfo ci, Fields f, Monitor m, ThreadInfo ti) {
-    super(objref, ci, f, m, ti);
-
+  public DynamicElementInfo (int objref, ClassInfo ci, Fields f, Monitor m, ThreadInfo ti, FeatureExpr ctx) {
+    super(objref, ci, f, m, ti, ctx);
     attributes = ci.getElementInfoAttrs();
 
     // <2do> not ideal, should be in superclass (but doesn't work for SEIs)
