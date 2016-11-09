@@ -28,7 +28,6 @@ public class Method implements MethodElement {
 		if (e instanceof Method) {
 			Method m = (Method)e;
 			if (m.mi.getClassName().startsWith("java.") ||
-					m.mi.getClassName().startsWith("java.") ||
 					m.mi.getClassName().startsWith("sun.") || 
 					m.mi.getClassName().startsWith("gov.")) {
 				return;

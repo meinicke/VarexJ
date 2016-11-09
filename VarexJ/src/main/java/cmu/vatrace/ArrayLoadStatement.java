@@ -27,7 +27,6 @@ public class ArrayLoadStatement extends Statement {
 		if (ei.getArrayType().equals("C")) {
 			return "0x" + String.format("%02x", val);
 		}
-		
 		return val.toString();
 	};
 	

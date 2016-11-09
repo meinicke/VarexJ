@@ -1,8 +1,13 @@
 package cmu.vatrace;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class TraceUtils {
 	
 	private TraceUtils() {}
+	
+	static Map<Integer, String> enums = new HashMap<>();
 
 	public static final String toShortID(int i) {
 		if (i < 0) {

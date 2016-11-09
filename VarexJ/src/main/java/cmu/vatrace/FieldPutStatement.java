@@ -13,6 +13,8 @@ public class FieldPutStatement extends Statement {
 	private Conditional<Integer> oldValue;
 	private Conditional<Integer> newValue;
 	private FieldInfo fi;
+	private Conditional<String> newString;
+	private Conditional<String> oldString;
 
 	private FieldPutStatement(@NonNull Object op, Method m) {
 		super(op, m);
@@ -23,6 +25,8 @@ public class FieldPutStatement extends Statement {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.fi = fi;
+		this.oldString = oldValue.map(f);
+		this.newString = newValue.map(f);
 	}
 
 	private final Function<Integer, String> f = val -> {
@@ -33,6 +37,13 @@ public class FieldPutStatement extends Statement {
 			if (val == 0) {
 				return "null";
 			}
+			if (fi.getClassInfo().isEnum()) {
+				TraceUtils.enums.put(val, fi.getName());
+				return fi.getName();
+			}
+			if (fi.getTypeClassInfo().isEnum()) {
+				return TraceUtils.enums.get(val);
+			}
 			return '@' + val.toString();
 		}
 		return val.toString();
@@ -40,8 +51,9 @@ public class FieldPutStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		Conditional<String> oldString = oldValue.map(f);
-		Conditional<String> newString = newValue.map(f);
+		if (fi.getName().equals("dir")) {
+			System.out.println();
+		}
 		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) != null) {
 			return "\"" + fi.getFullName() + " = " + newString + '\"';
 		} else {

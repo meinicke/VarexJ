@@ -31,6 +31,9 @@ public class FieldGetStatement extends Statement {
 			if (val == 0) {
 				return "null";
 			}
+			if (TraceUtils.enums.containsKey(val)) {
+				return TraceUtils.enums.get(val);
+			}
 			return '@' + val.toString();
 		}
 		return val.toString();
@@ -39,6 +42,6 @@ public class FieldGetStatement extends Statement {
 	@Override
 	public String toString() {
 		Conditional<String> valueString = value.map(f);
-		return "\"get " + fi.getFullName() + ": " + valueString + '\"';
+		return "\"" + fi.getFullName() + ": " + valueString + '\"';
 	}
 }

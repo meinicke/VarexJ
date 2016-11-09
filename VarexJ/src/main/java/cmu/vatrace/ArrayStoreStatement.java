@@ -34,6 +34,12 @@ public class ArrayStoreStatement extends Statement {
 			if ((Integer)val == 0) {
 				return "null";
 			}
+			if (TraceUtils.enums.containsKey(val)) {
+				return TraceUtils.enums.get(val);
+			}
+			if (ei.getClassInfo().isEnum()) {
+				return TraceUtils.enums.get(val);
+			}
 			return '@' + val.toString();
 		}
 		
