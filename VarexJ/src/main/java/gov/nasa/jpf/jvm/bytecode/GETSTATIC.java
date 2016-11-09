@@ -97,9 +97,11 @@ public class GETSTATIC extends StaticFieldInstruction {
     if (size == 1) {
       Conditional<Integer> ival = ei.get1SlotField(fieldInfo);
       
-      Statement statement = new FieldGetStatement(ival, frame.method, fi);
-      JPF.vatrace.addStatement(ctx, statement);
-      frame.method.addMethodElement(statement);
+      if (getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
+	      Statement statement = new FieldGetStatement(ival, frame.method, fi);
+	      JPF.vatrace.addStatement(ctx, statement);
+	      frame.method.addMethodElement(statement);
+      }
       
       lastValue = ival;
 
