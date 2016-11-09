@@ -147,7 +147,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     }
     lastValue = val;
     
-    if (!field.equals(val)) {
+    if (!field.equals(val) && getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
 	    Statement statement = new FieldPutStatement(field, ChoiceFactory.create(ctx, val, field).simplify(), frame.method, fi);
 	    JPF.vatrace.addStatement(ctx, statement);
 		frame.method.addMethodElement(statement);

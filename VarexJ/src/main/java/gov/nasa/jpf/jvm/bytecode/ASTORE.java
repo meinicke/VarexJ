@@ -18,10 +18,12 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.vatrace.LocalStoreStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
@@ -45,8 +47,17 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
     
     LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
     if (localVarInfo != null) {
-		Statement statement = new LocalStoreStatement(frame.method, frame.getLocalVariable(ctx, index), frame.peek(ctx), localVarInfo);
-	    JPF.vatrace.addStatement(ctx, statement);
+		Conditional<Integer> oldValue = frame.getLocalVariable(FeatureExprFactory.True(), index);
+		Conditional<Integer> newValue = ChoiceFactory.create(ctx, frame.peek(ctx), oldValue).simplify();
+		
+		int startPC = localVarInfo.getStartPC();
+		int pos = getPosition();
+		if (pos == startPC - 1) {// init
+			oldValue = null;
+			newValue = newValue.simplify(ctx);
+		}
+		Statement statement = new LocalStoreStatement(frame.method, oldValue, newValue, localVarInfo);
+		JPF.vatrace.addStatement(ctx, statement);
 		frame.method.addMethodElement(statement);
     }
     

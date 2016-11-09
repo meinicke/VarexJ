@@ -22,7 +22,7 @@ public class LocalStoreStatement extends Statement {
 		this.newValue = newValue;
 		this.li = li;
 	}
-	
+
 	private final Function<Integer, String> f = val -> {
 		if (li.isBoolean()) {
 			return Boolean.toString(val == 1);
@@ -41,12 +41,16 @@ public class LocalStoreStatement extends Statement {
 		if (li == null) {
 			return "\"set unknown: " + oldValue + " \u2192 " + newValue + '\"';
 		}
+		if (oldValue == null) {
+			return "\"" + li.getType() + " " + li.getName() + " \u2192 " + newValue.map(f) + '\"';
+		}
+			
 		return "\"" + li.getType() + " " + li.getName() + ": " + oldValue.map(f) + " \u2192 " + newValue.map(f) + '\"';
 	}
 	
 	@Override
 	public void printLabel(PrintWriter out) {
-		if (oldValue.equals(newValue)) {
+		if (newValue.equals(oldValue)) {
 			out.print(getID());// TODO dont create this node
 			out.print("[label=X]");
 			return; 
