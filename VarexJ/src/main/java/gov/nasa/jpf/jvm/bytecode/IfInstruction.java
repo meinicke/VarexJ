@@ -96,7 +96,7 @@ public abstract class IfInstruction extends JVMInstruction {
 	}).simplify();
     
     if (targets.simplify(ctx).toList().size() > 1) {
-	    Statement statement = new IFBranch(this, frame.method);
+	    Statement statement = new IFBranch(this, frame.method, targets);
 	    JPF.vatrace.addStatement(ctx, statement);
 		frame.method.addMethodElement(statement);
     }

@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import gov.nasa.jpf.vm.ElementInfo;
+import gov.nasa.jpf.vm.Types;
 
 public class ArrayStoreStatement extends Statement {
 
@@ -41,7 +42,7 @@ public class ArrayStoreStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		return "\"[" + ei.getArrayType() + " [" + index + "] : " + oldValue.map(f) + " \u2192 " + newValue.map(f) + '\"';
+		return "\"" + Types.getTypeName(ei.getArrayType()) + "[" + index + "] : " + oldValue.map(f) + " \u2192 " + newValue.map(f) + '\"';
 	}
 	
 	@Override
@@ -54,4 +55,5 @@ public class ArrayStoreStatement extends Statement {
 		}
 		out.println(']');
 	}
+	
 }

@@ -39,6 +39,6 @@ public class LocalGetStatement extends Statement {
 	@Override
 	public String toString() {
 		Conditional<String> valueString = value.map(f);
-		return "\"get " + li.getName() + ": " + valueString + '\"';
+		return "\"" + li.getType() + ' ' + li.getName() + ": " + valueString + '\"';
 	}
 }

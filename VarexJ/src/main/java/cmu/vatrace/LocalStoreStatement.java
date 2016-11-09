@@ -41,7 +41,7 @@ public class LocalStoreStatement extends Statement {
 		if (li == null) {
 			return "\"set unknown: " + oldValue + " \u2192 " + newValue + '\"';
 		}
-		return "\"set " + li.getType() + " " + li.getName() + ": " + oldValue.map(f) + " \u2192 " + newValue.map(f) + '\"';
+		return "\"" + li.getType() + " " + li.getName() + ": " + oldValue.map(f) + " \u2192 " + newValue.map(f) + '\"';
 	}
 	
 	@Override

@@ -1,6 +1,8 @@
 package cmu.vatrace;
 
-public class TraceUtils {
+public final class TraceUtils {
+	
+	private TraceUtils() {}
 
 	public static final String toShortID(int i) {
 		if (i < 0) {
@@ -16,6 +18,5 @@ public class TraceUtils {
 			letter = (char) ('A' + (rem - 36));
 		}
 		return toShortID(i / 62 - 1) + letter;
-		
 	}
 }
