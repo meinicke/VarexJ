@@ -25,10 +25,8 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.vatrace.ReturnStatement;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -171,9 +169,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     StackFrame frame = ti.getModifiableTopFrame();
 
     if (getReturnTypeSize() > 0) {
-	    Statement statement = new ReturnStatement(frame.method, frame.peek(ctx));
-	    JPF.vatrace.addStatement(ctx, statement);
-	    frame.method.addMethodElement(statement);
+    	new ReturnStatement(frame.method, frame.peek(ctx), ctx);
     }
     
     returnFrame = frame;

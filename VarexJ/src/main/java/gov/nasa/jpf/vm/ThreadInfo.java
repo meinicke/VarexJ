@@ -39,7 +39,6 @@ import cmu.utils.CoverageClass;
 import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
 import cmu.vatrace.ExceptionStatement;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
@@ -3117,9 +3116,7 @@ public class ThreadInfo extends InfoObject
             throw new UncaughtException(ctx, this, exceptionObjRef);
         }
         
-        Statement s = new ExceptionStatement(exceptionName, pendingException.getCauseDetails(ctx), getTopFrame().method);
-    	getTopFrame().method.addMethodElement(s);
-    	JPF.vatrace.addStatement(ctx, s);
+        new ExceptionStatement(exceptionName, pendingException.getCauseDetails(ctx), getTopFrame().method, ctx);
 
         // check if we find a matching handler, and if we do store it. Leave the
         // stack untouched so that listeners can still inspect it

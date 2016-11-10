@@ -21,10 +21,8 @@ package gov.nasa.jpf.jvm.bytecode;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.vatrace.LocalStoreStatement;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -56,9 +54,7 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
 			oldValue = null;
 			newValue = newValue.simplify(ctx);
 		}
-		Statement statement = new LocalStoreStatement(frame.method, oldValue, newValue, localVarInfo);
-		JPF.vatrace.addStatement(ctx, statement);
-		frame.method.addMethodElement(statement);
+		new LocalStoreStatement(frame.method, oldValue, newValue, localVarInfo, ctx);
     }
     
 	frame.storeOperand(ctx, index);

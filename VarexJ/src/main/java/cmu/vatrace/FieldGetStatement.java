@@ -5,6 +5,7 @@ import java.util.function.Function;
 import org.eclipse.jdt.annotation.NonNull;
 
 import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.FieldInfo;
 
 public class FieldGetStatement extends Statement {
@@ -12,12 +13,12 @@ public class FieldGetStatement extends Statement {
 	private Conditional<Integer> value;
 	private FieldInfo fi;
 
-	private FieldGetStatement(@NonNull Object op, Method m) {
-		super(op, m);
+	private FieldGetStatement(@NonNull Object op, Method m, FeatureExpr ctx) {
+		super(op, m, ctx);
 	}
 
-	public FieldGetStatement(Conditional<Integer> value, Method method, FieldInfo fi) {
-		this(null, method);
+	public FieldGetStatement(Conditional<Integer> value, Method method, FieldInfo fi, FeatureExpr ctx) {
+		this(null, method, ctx);
 		this.value = value;
 		this.fi = fi;
 	}

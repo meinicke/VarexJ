@@ -4,17 +4,19 @@ import java.io.PrintWriter;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import de.fosd.typechef.featureexpr.FeatureExpr;
+
 public class ExceptionStatement extends Statement {
 	
 	private String cname;
 	private String details;
 
-	public ExceptionStatement(@NonNull Object op, Method m) {
-		super(op, m);
+	public ExceptionStatement(@NonNull Object op, Method m, FeatureExpr ctx) {
+		super(op, m, ctx);
 	}
 	
-	public ExceptionStatement(String cname, String details, Method method) {
-		this(null, method);
+	public ExceptionStatement(String cname, String details, Method method, FeatureExpr ctx) {
+		this(null, method, ctx);
 		this.cname = cname;
 		this.details = details;
 	}

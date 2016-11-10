@@ -5,6 +5,7 @@ import java.util.function.Function;
 import org.eclipse.jdt.annotation.NonNull;
 
 import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.LocalVarInfo;
 
 public class LocalGetStatement extends Statement {
@@ -12,12 +13,12 @@ public class LocalGetStatement extends Statement {
 	private Conditional<Integer> value;
 	private LocalVarInfo li;
 
-	private LocalGetStatement(@NonNull Object op, Method m) {
-		super(op, m);
+	private LocalGetStatement(@NonNull Object op, Method m, FeatureExpr ctx) {
+		super(op, m, ctx);
 	}
 
-	public LocalGetStatement(Conditional<Integer> value, Method method,LocalVarInfo li) {
-		this(null, method);
+	public LocalGetStatement(Conditional<Integer> value, Method method,LocalVarInfo li, FeatureExpr ctx) {
+		this(null, method, ctx);
 		this.value = value;
 		this.li = li;
 	}

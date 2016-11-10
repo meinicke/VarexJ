@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Types;
 
@@ -14,12 +15,12 @@ public class ArrayStoreStatement extends Statement {
 	private int index;
 	private ElementInfo ei;
 
-	private ArrayStoreStatement(Object op, Method m) {
-		super(op, m);
+	private ArrayStoreStatement(Object op, Method m, FeatureExpr ctx) {
+		super(op, m, ctx);
 	}
 
-	public ArrayStoreStatement(Method method, int index, Conditional oldValue, Conditional newValue, ElementInfo ei) {
-		this(null, method);
+	public ArrayStoreStatement(Method method, int index, Conditional oldValue, Conditional newValue, ElementInfo ei, FeatureExpr ctx) {
+		this(null, method, ctx);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.index = index;

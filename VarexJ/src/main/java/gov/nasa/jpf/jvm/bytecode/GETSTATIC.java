@@ -21,9 +21,7 @@ package gov.nasa.jpf.jvm.bytecode;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.vatrace.FieldGetStatement;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -98,9 +96,7 @@ public class GETSTATIC extends StaticFieldInstruction {
       Conditional<Integer> ival = ei.get1SlotField(fieldInfo);
       
       if (getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
-	      Statement statement = new FieldGetStatement(ival, frame.method, fi);
-	      JPF.vatrace.addStatement(ctx, statement);
-	      frame.method.addMethodElement(statement);
+	      new FieldGetStatement(ival, frame.method, fi, ctx);
       }
       
       lastValue = ival;

@@ -12,12 +12,12 @@ public class IFBranch extends Statement {
 
 	private Conditional<Integer> targets;
 
-	private IFBranch(Object op, Method m) {
-		super(op, m);
+	private IFBranch(Object op, Method m, FeatureExpr ctx) {
+		super(op, m, ctx);
 	}
 	
-	public IFBranch(IfInstruction op, Method m, Conditional<Integer> targets) {
-		super(op, m);
+	public IFBranch(IfInstruction op, Method m, Conditional<Integer> targets, FeatureExpr ctx) {
+		this(op, m, ctx);
 		this.targets = targets;
 	}
 	

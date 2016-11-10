@@ -22,11 +22,9 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.vatrace.FieldPutStatement;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -153,9 +151,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     if (!field.equals(val) && getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {    	
 	    Conditional<Integer> newValue = ChoiceFactory.create(ctx, val, field).simplify(eiFieldOwner.ctx);
 	    if (!field.equals(newValue)) {
-			Statement statement = new FieldPutStatement(field, newValue, frame.method, fi);
-		    JPF.vatrace.addStatement(ctx, statement);
-			frame.method.addMethodElement(statement);
+			new FieldPutStatement(field, newValue, frame.method, fi, ctx);
 	    }
     }
 

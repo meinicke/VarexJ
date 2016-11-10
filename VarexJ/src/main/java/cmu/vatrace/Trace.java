@@ -12,17 +12,19 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 public class Trace {
-	private static final Statement START = new Statement("Start", null);
-	private static final Statement END = new Statement("End", null);
+	private Statement START;
+	Conditional<Statement> currentStatement;
 
 	List<Edge> edges = new ArrayList<>();
-
+	
 	Method main;
 
-	Conditional<Statement> currentStatement = new One<>(START);
+	public Trace() {
+	}
 
 	public void setMain(Method main) {
 		this.main = main;
+		START = new Statement("Start", null, FeatureExprFactory.True());
 	}
 
 	void addEdge(Edge e) {
@@ -35,7 +37,7 @@ public class Trace {
 		pw.println("graph [ordering=\"out\"];");
 		pw.println("node [style=\"rounded,filled\", width=0, height=0, shape=box, concentrate=true]");
 		
-		addStatement(FeatureExprFactory.True(),	END);
+		Statement END = new Statement("End", null, FeatureExprFactory.True());
 
 		pw.println("// Edges");
 		Edge previous = null;
@@ -78,16 +80,20 @@ public class Trace {
 				return;
 			}
 		}
-		currentStatement.mapf(ctx, new BiConsumer<FeatureExpr, Statement>() {
-
-			@Override
-			public void accept(FeatureExpr ctx, Statement from) {
-				if (!Conditional.isContradiction(ctx)) {
-					edges.add(new Edge(ctx, from, statement));
+		if (currentStatement == null) {
+			currentStatement = new One<>(statement);
+		} else {
+			currentStatement.mapf(ctx, new BiConsumer<FeatureExpr, Statement>() {
+	
+				@Override
+				public void accept(FeatureExpr ctx, Statement from) {
+					if (!Conditional.isContradiction(ctx)) {
+						edges.add(new Edge(ctx, from, statement));
+					}
 				}
-			}
-		});
-		currentStatement = ChoiceFactory.create(ctx, new One<>(statement), currentStatement).simplify();
+			});
+			currentStatement = ChoiceFactory.create(ctx, new One<>(statement), currentStatement).simplify();
+		}
 	}
 
 	public boolean hasMain() {

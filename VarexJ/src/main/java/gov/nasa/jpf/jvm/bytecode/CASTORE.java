@@ -22,9 +22,7 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.vatrace.ArrayStoreStatement;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -57,9 +55,7 @@ public class CASTORE extends ArrayStoreInstruction {
 		ei.setCharElement(ctx, index, value);
 		
 		Conditional<Character> newValue = ei.getCharElement(index).simplify();
-		Statement statement = new ArrayStoreStatement(frame.method, index, oldValue, newValue, ei);
-		JPF.vatrace.addStatement(ctx, statement);
-		frame.method.addMethodElement(statement);
+		new ArrayStoreStatement(frame.method, index, oldValue, newValue, ei, ctx);
 	}
 
   public int getByteCode () {

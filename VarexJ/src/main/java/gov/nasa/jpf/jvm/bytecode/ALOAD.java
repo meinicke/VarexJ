@@ -22,7 +22,6 @@ import cmu.conditional.Conditional;
 import cmu.vatrace.LocalGetStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -54,9 +53,7 @@ public class ALOAD extends LocalVariableInstruction {
     if (index != 0) {// ignore this
 	    LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
 	    if (localVarInfo != null) {
-			Statement statement = new LocalGetStatement(frame.peek(ctx), frame.method, localVarInfo);
-		    JPF.vatrace.addStatement(ctx, statement);
-			frame.method.addMethodElement(statement);
+			Statement statement = new LocalGetStatement(frame.peek(ctx), frame.method, localVarInfo, ctx);
 	    }
 		
     }

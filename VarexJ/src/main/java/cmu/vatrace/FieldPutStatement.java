@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.eclipse.jdt.annotation.NonNull;
 
 import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.FieldInfo;
 
 public class FieldPutStatement extends Statement {
@@ -16,12 +17,12 @@ public class FieldPutStatement extends Statement {
 	private Conditional<String> newString;
 	private Conditional<String> oldString;
 
-	private FieldPutStatement(@NonNull Object op, Method m) {
-		super(op, m);
+	private FieldPutStatement(@NonNull Object op, Method m, FeatureExpr ctx) {
+		super(op, m, ctx);
 	}
 
-	public FieldPutStatement(Conditional<Integer> oldValue, Conditional<Integer> newValue, Method m, FieldInfo fi) {
-		this(null, m);
+	public FieldPutStatement(Conditional<Integer> oldValue, Conditional<Integer> newValue, Method m, FieldInfo fi, FeatureExpr ctx) {
+		this(null, m, ctx);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.fi = fi;

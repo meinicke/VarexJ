@@ -4,18 +4,19 @@ import java.io.PrintWriter;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Types;
 
 public class ReturnStatement extends Statement {
 
 	private Conditional<Integer> returnValue;
 
-	private ReturnStatement(Object op, Method m) {
-		super(op, m);
+	private ReturnStatement(Object op, Method m, FeatureExpr ctx) {
+		super(op, m, ctx);
 	}
 
-	public ReturnStatement(Method method, Conditional<Integer> returnValue) {
-		this(null, method);
+	public ReturnStatement(Method method, Conditional<Integer> returnValue, FeatureExpr ctx) {
+		this(null, method, ctx);
 		this.returnValue = returnValue;
 	}
 	

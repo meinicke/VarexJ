@@ -3,6 +3,7 @@ package cmu.vatrace;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Types;
 
@@ -12,12 +13,12 @@ public class ArrayLoadStatement extends Statement {
 	private int index;
 	private ElementInfo ei;
 
-	private ArrayLoadStatement(Object op, Method m) {
-		super(op, m);
+	private ArrayLoadStatement(Object op, Method m, FeatureExpr ctx) {
+		super(op, m, ctx);
 	}
 
-	public ArrayLoadStatement(Method method, int index, Conditional value,  ElementInfo ei) {
-		this(null, method);
+	public ArrayLoadStatement(Method method, int index, Conditional value,  ElementInfo ei, FeatureExpr ctx) {
+		this(null, method, ctx);
 		this.value = value;
 		this.index = index;
 		this.ei = ei;
