@@ -19,6 +19,7 @@ public class IFBranch extends Statement {
 		this(op, m, ctx);
 		this.targets = targets;
 		setShape(Shape.Mdiamond);
+		setColor(NodeColor.white);
 	}
 		
 	@Override

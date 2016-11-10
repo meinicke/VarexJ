@@ -35,7 +35,11 @@ public class Statement implements MethodElement {
 		out.print("[label=");
 		out.print("\"" + this + "\"");
 		if (color != null) {
-			out.print(",color=\"" + color + '\"');
+			if (color == NodeColor.white) {
+				out.print(",fillcolor=\"" + color + '\"');
+			} else {
+				out.print(",color=\"" + color + '\"');
+			}
 		}
 		if (shape != null) {
 			out.print(",shape=" + shape);
@@ -44,7 +48,7 @@ public class Statement implements MethodElement {
 	}
 	
 	enum NodeColor {
-		firebrick1, red, tomato
+		firebrick1, red, tomato, limegreen, white, black
 	}
 	
 	private NodeColor color = null;

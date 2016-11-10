@@ -27,10 +27,13 @@ public class FieldPutStatement extends Statement {
 		this.fi = fi;
 		this.oldString = oldValue.map(f);
 		this.newString = newValue.map(f);
-		
-		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null &&
-				oldValue.toMap().size() < newValue.toMap().size()) {
-			setColor(NodeColor.tomato);
+
+		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
+			if (oldValue.toMap().size() < newValue.toMap().size()) {
+				setColor(NodeColor.tomato);
+			} else if (oldValue.toMap().size() > newValue.toMap().size()) {
+				setColor(NodeColor.limegreen);
+			}
 		}
 	}
 
@@ -53,7 +56,7 @@ public class FieldPutStatement extends Statement {
 		}
 		return val.toString();
 	};
-	
+
 	@Override
 	public String toString() {
 		if (fi.getName().equals("dir")) {
@@ -65,5 +68,5 @@ public class FieldPutStatement extends Statement {
 			return fi.getFullName() + ": " + oldString + " \u2192 " + newString;
 		}
 	}
-	
+
 }

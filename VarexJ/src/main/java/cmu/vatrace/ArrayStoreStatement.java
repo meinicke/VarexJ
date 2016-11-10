@@ -27,6 +27,8 @@ public class ArrayStoreStatement extends Statement {
 		
 		if (oldValue.toMap().size() < newValue.toMap().size()) {
 			setColor(NodeColor.tomato);
+		} else if (oldValue.toMap().size() > newValue.toMap().size()) {
+			setColor(NodeColor.limegreen);
 		}
 	}
 	
