@@ -1,6 +1,5 @@
 package cmu.vatrace;
 
-import java.io.PrintWriter;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
@@ -18,6 +17,9 @@ public class ReturnStatement extends Statement {
 	public ReturnStatement(Method method, Conditional<Integer> returnValue, FeatureExpr ctx) {
 		this(null, method, ctx);
 		this.returnValue = returnValue;
+		if (returnValue.toMap().size() > 1) {
+			setColor(NodeColor.tomato);
+		}
 	}
 	
 	private final Function<Integer, String> f = val -> {
@@ -30,18 +32,7 @@ public class ReturnStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		return "\"return " + Types.getTypeName(m.mi.getReturnType()) + " " + returnValue.map(f) + '\"';
+		return "return " + Types.getTypeName(m.mi.getReturnType()) + " " + returnValue.map(f);
 	}
-	
-	@Override
-	public void printLabel(PrintWriter out) {
-		out.print(getID());
-		out.print("[label=");
-		out.print(this);
-		if (returnValue.toMap().size() > 1) {
-			out.print(", color=tomato");
-		}
-		out.println(']');
-	}
-	
+		
 }

@@ -1,6 +1,5 @@
 package cmu.vatrace;
 
-import java.io.PrintWriter;
 import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -28,6 +27,11 @@ public class FieldPutStatement extends Statement {
 		this.fi = fi;
 		this.oldString = oldValue.map(f);
 		this.newString = newValue.map(f);
+		
+		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null &&
+				oldValue.toMap().size() < newValue.toMap().size()) {
+			setColor(NodeColor.tomato);
+		}
 	}
 
 	private final Function<Integer, String> f = val -> {
@@ -56,25 +60,10 @@ public class FieldPutStatement extends Statement {
 			System.out.println();
 		}
 		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) != null) {
-			return "\"" + fi.getFullName() + " = " + newString + '\"';
+			return fi.getFullName() + " = " + newString;
 		} else {
-			return "\"" + fi.getFullName() + ": " + oldString + " \u2192 " + newString + '\"';
+			return fi.getFullName() + ": " + oldString + " \u2192 " + newString;
 		}
 	}
 	
-	@Override
-	public void printLabel(PrintWriter out) {
-		out.print(getID());
-		out.print("[label=");
-		out.print(this);
-		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) != null) {
-			out.println(']');
-			return;
-		}
-		if (oldValue.toMap().size() < newValue.toMap().size()) {
-			out.print(", color=tomato");
-		}
-		
-		out.println(']');
-	}
 }

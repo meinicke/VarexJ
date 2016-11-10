@@ -1,6 +1,5 @@
 package cmu.vatrace;
 
-import java.io.PrintWriter;
 import java.util.Map.Entry;
 
 import cmu.conditional.Conditional;
@@ -19,16 +18,12 @@ public class IFBranch extends Statement {
 	public IFBranch(IfInstruction op, Method m, Conditional<Integer> targets, FeatureExpr ctx) {
 		this(op, m, ctx);
 		this.targets = targets;
+		setShape(Shape.Mdiamond);
 	}
-	
-	@Override
-	public void printLabel(PrintWriter out) {
-		out.print(getID());
-		out.print("[label=\"");
 		
-		final FeatureExpr ctx = getTargetContext();
-		out.print("if (" + Conditional.getCTXString(ctx));
-		out.println(")\",shape=Mdiamond]");
+	@Override
+	public String toString() {
+		return "if (" + Conditional.getCTXString(getTargetContext()) + ')';
 	}
 
 	private FeatureExpr getTargetContext() {

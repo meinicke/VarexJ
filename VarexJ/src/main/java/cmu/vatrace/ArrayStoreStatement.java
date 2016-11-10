@@ -1,6 +1,5 @@
 package cmu.vatrace;
 
-import java.io.PrintWriter;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
@@ -25,6 +24,10 @@ public class ArrayStoreStatement extends Statement {
 		this.newValue = newValue;
 		this.index = index;
 		this.ei = ei;
+		
+		if (oldValue.toMap().size() < newValue.toMap().size()) {
+			setColor(NodeColor.tomato);
+		}
 	}
 	
 	private final Function<Object, String> f = val -> {
@@ -49,18 +52,7 @@ public class ArrayStoreStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		return "\"" + Types.getTypeName(ei.getArrayType()) + "[" + index + "] : " + oldValue.map(f) + " \u2192 " + newValue.map(f) + '\"';
-	}
-	
-	@Override
-	public void printLabel(PrintWriter out) {
-		out.print(getID());
-		out.print("[label=");
-		out.print(this);
-		if (oldValue.toMap().size() < newValue.toMap().size()) {
-			out.print(", color=tomato");
-		}
-		out.println(']');
+		return Types.getTypeName(ei.getArrayType()) + "[" + index + "] : " + oldValue.map(f) + " \u2192 " + newValue.map(f);
 	}
 	
 }

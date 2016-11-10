@@ -19,9 +19,6 @@ public class Statement implements MethodElement {
 		if (m != null) {
 			m.addMethodElement(this);
 		}
-		if (op == null) {
-			System.out.println();
-		}
 		this.m = m;
 		this.op = op;
 		JPF.vatrace.addStatement(ctx, this);
@@ -29,18 +26,41 @@ public class Statement implements MethodElement {
 
 	@Override
 	public String toString() {
-		if (op == null) {
-			System.out.println();
-		}
-		return "\"" + op.toString() + "\"";
+		return op.toString();
 	}
 
 	@Override
-	public void printLabel(PrintWriter out) {
+	public final void printLabel(PrintWriter out) {
 		out.print(getID());
 		out.print("[label=");
-		out.print(this);
+		out.print("\"" + this + "\"");
+		if (color != null) {
+			out.print(",color=\"" + color + '\"');
+		}
+		if (shape != null) {
+			out.print(",shape=" + shape);
+		}
 		out.println(']');
+	}
+	
+	enum NodeColor {
+		firebrick1, red, tomato
+	}
+	
+	private NodeColor color = null;
+	
+	void setColor(NodeColor color) {
+		this.color = color;
+	}
+	
+	enum Shape {
+		Mdiamond, Msquare
+	}
+	
+	private Shape shape = null;
+	
+	public void setShape(Shape shape) {
+		this.shape = shape;
 	}
 
 	public String getID() {

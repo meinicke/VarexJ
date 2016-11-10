@@ -5,7 +5,8 @@ import gov.nasa.jpf.JPF;
 public class Run {
 
 	enum example {
-		Linux1, Linux2, Linux3, Linux4, Linux5, Example, OverrideTest, Loop, EnumTest
+		Linux1, Linux2, Linux3, Linux4, Linux5, Example, 
+		OverrideTest, Loop, EnumTest, IfElseTest
 	}
 	
 	public static void main(String[] _) {
@@ -13,10 +14,10 @@ public class Run {
 		final String[] args = {
 				"+classpath=" + path + "/bin",
 				"+search.class=.search.RandomSearch",
-				"+interaction=interaction",
-				"linux." + example.Linux1
+				"linux." + example.IfElseTest
 		};
 		
 		JPF.main(args);
 	}
+
 }

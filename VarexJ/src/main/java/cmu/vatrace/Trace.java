@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vatrace.Statement.Shape;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -25,6 +26,7 @@ public class Trace {
 	public void setMain(Method main) {
 		this.main = main;
 		START = new Statement("Start", null, FeatureExprFactory.True());
+		START.setShape(Shape.Msquare);
 	}
 
 	void addEdge(Edge e) {
@@ -33,11 +35,11 @@ public class Trace {
 
 	public void print(PrintWriter pw, String[] filter) {
 		pw.println("digraph G {");
-
 		pw.println("graph [ordering=\"out\"];");
 		pw.println("node [style=\"rounded,filled\", width=0, height=0, shape=box, concentrate=true]");
 		
 		Statement END = new Statement("End", null, FeatureExprFactory.True());
+		END.setShape(Shape.Msquare);
 
 		pw.println("// Edges");
 		Edge previous = null;
@@ -52,12 +54,9 @@ public class Trace {
 		pw.println("// clusters");
 		
 		START.printLabel(pw);
-		pw.println(START.getID() + " [shape=Msquare]");
-		
 		main.printLabel(pw);
-			
 		END.printLabel(pw);
-		pw.println(END.getID() + " [shape=Msquare]");
+		
 		pw.println('}');
 
 	}

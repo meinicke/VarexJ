@@ -1,7 +1,5 @@
 package cmu.vatrace;
 
-import java.io.PrintWriter;
-
 import org.eclipse.jdt.annotation.NonNull;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -19,23 +17,15 @@ public class ExceptionStatement extends Statement {
 		this(null, method, ctx);
 		this.cname = cname;
 		this.details = details;
+		setColor(NodeColor.firebrick1);
 	}
 
 	@Override
 	public String toString() {
 		if (details == null) {
-			return "\"" + cname + "\"";
+			return cname;
 		}
-		return "\"" + cname +": " + details + "\"";
+		return cname +": " + details;
 	}
-	
-	@Override
-	public void printLabel(PrintWriter out) {
-		out.print(getID());
-		out.print(" [label=");
-		out.print(this);
-		out.print(",color=firebrick1");
-		out.println(']');
-	}
-	
+		
 }
