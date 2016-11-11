@@ -14,7 +14,7 @@ public class Run {
 		final String[] args = {
 				"+classpath=" + path + "/bin",
 				"+search.class=.search.RandomSearch",
-				"linux." + example.IfElseTest
+				"linux." + example.Example
 		};
 		
 		JPF.main(args);

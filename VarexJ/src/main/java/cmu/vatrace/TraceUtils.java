@@ -13,15 +13,13 @@ public final class TraceUtils {
 		if (i < 0) {
 			return "";
 		}
-		final int rem = i % 62;
+		final int rem = i % 52;
 		final char letter;
-		if (rem < 10) {
-			letter = Integer.toString(rem).charAt(0);
-		} else if (rem < 36) {
-			letter = (char) ('a' + (rem - 10));
+		if (rem < 26) {
+			letter = (char) ('a' + (rem));
 		} else {
-			letter = (char) ('A' + (rem - 36));
+			letter = (char) ('A' + (rem - 26));
 		}
-		return toShortID(i / 62 - 1) + letter;
+		return toShortID(i / 52 - 1) + letter;
 	}
 }

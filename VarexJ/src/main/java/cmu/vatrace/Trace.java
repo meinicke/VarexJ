@@ -3,34 +3,33 @@ package cmu.vatrace;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.vatrace.Statement.Shape;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import de.fosd.typechef.featureexpr.bdd.BDDFeatureExprFactory;
 
 public class Trace {
-	private Statement START;
-	Conditional<Statement> currentStatement;
+	private Statement START, END;
+	
+	private Conditional<Statement> lastStatement;
 
-	List<Edge> edges = new ArrayList<>();
+	private List<Edge> edges = new ArrayList<>();
 	
 	Method main;
 
 	public Trace() {
+		START = new Statement("Start", null, BDDFeatureExprFactory.True());
+		START.setShape(Shape.Msquare);
+		
+		END = new Statement("End", null, BDDFeatureExprFactory.True());
+		END.setShape(Shape.Msquare);
 	}
 
 	public void setMain(Method main) {
 		this.main = main;
-		START = new Statement("Start", null, FeatureExprFactory.True());
-		START.setShape(Shape.Msquare);
-	}
-
-	void addEdge(Edge e) {
-		edges.add(e);
 	}
 
 	public void print(PrintWriter pw, String[] filter) {
@@ -38,9 +37,12 @@ public class Trace {
 		pw.println("graph [ordering=\"out\"];");
 		pw.println("node [style=\"rounded,filled\", width=0, height=0, shape=box, concentrate=true]");
 		
-		Statement END = new Statement("End", null, FeatureExprFactory.True());
-		END.setShape(Shape.Msquare);
-
+		main.filterExecution();
+		
+		addStatement(START);
+		main.traverseStatements(this);
+		addStatement(END);
+		
 		pw.println("// Edges");
 		Edge previous = null;
 		for (Edge e : edges) {
@@ -61,37 +63,16 @@ public class Trace {
 
 	}
 
-
-
-	public void addStatement(FeatureExpr ctx, final Statement statement) {
-		if (statement.m != null) {
-			if (statement.m.mi.getClassName().startsWith("java.") ||
-					statement.m.mi.getClassName().startsWith("java.") || 
-					statement.m.mi.getClassName().startsWith("gov.") ||
-				statement.m.mi.getClassName().startsWith("sun.")) {
-				return;
-			}
+	public void addStatement(final Statement statement) {
+		if (lastStatement == null) {
+			lastStatement = new One<>(statement);
 		} else {
-			if (statement.toString().startsWith("java.") ||
-					statement.toString().startsWith("java.") || 
-					statement.toString().startsWith("gov.") ||
-				statement.toString().startsWith("sun.")) {
-				return;
-			}
-		}
-		if (currentStatement == null) {
-			currentStatement = new One<>(statement);
-		} else {
-			currentStatement.mapf(ctx, new BiConsumer<FeatureExpr, Statement>() {
-	
-				@Override
-				public void accept(FeatureExpr ctx, Statement from) {
-					if (!Conditional.isContradiction(ctx)) {
-						edges.add(new Edge(ctx, from, statement));
-					}
+			lastStatement.mapf(statement.getCtx(), (FeatureExpr ctx, Statement from) -> {
+				if (!Conditional.isContradiction(ctx)) {
+					edges.add(new Edge(ctx, from, statement));
 				}
 			});
-			currentStatement = ChoiceFactory.create(ctx, new One<>(statement), currentStatement).simplify();
+			lastStatement = ChoiceFactory.create(statement.getCtx(), new One<>(statement), lastStatement).simplify();
 		}
 	}
 

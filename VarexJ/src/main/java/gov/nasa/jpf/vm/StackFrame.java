@@ -246,12 +246,11 @@ public int nLocals;
    * for non-local gotos, but be warned - that's tricky
    */
   public void setPrevious (StackFrame frame){
-    prev = frame;
-    
-    if (frame != null) {
+    if (prev == null && frame != null) {
 		Method parentNode = frame.method;
 		parentNode.addMethodElement(method);
 	}
+    prev = frame;
   }
 
   public Object getLocalOrFieldValue (String id) {

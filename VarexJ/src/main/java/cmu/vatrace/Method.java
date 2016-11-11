@@ -11,38 +11,36 @@ public class Method implements MethodElement {
 	private static int ID = 0;
 	private final int id = ID++;
 	
-	List<MethodElement> execution = new ArrayList<>();
+	private final List<MethodElement> execution = new ArrayList<>();
 	MethodInfo mi;
-	
-	
-	
-	public Method() {
-		this.mi = null;
-	}
 	
 	public Method(MethodInfo mi) {
 		this.mi = mi;
 	}
 	
 	public void addMethodElement(MethodElement e) {
-		if (e instanceof Method) {
-			Method m = (Method)e;
-			if (m.mi.getClassName().startsWith("java.") ||
-					m.mi.getClassName().startsWith("sun.") || 
-					m.mi.getClassName().startsWith("gov.")) {
-				return;
-			}
-		}
 		execution.add(e);
+	}
+	
+	public boolean filterExecution() {
+		execution.removeIf(MethodElement::filterExecution);
+		return execution.isEmpty();
 	}
 	
 	public void printLabel(PrintWriter pw) {
 		pw.println("subgraph \"cluster_" + TraceUtils.toShortID(id) + "\" {");
-		for (MethodElement element : execution) {
-			element.printLabel(pw);
-		}
 		pw.println("label = \"" + mi.getFullName() + "\";");
+		execution.forEach(e -> e.printLabel(pw));
 		pw.println("}");
+	}
+
+	public void traverseStatements(Trace trace) {
+		execution.forEach(e -> e.traverseStatements(trace));
+	}
+	
+	@Override
+	public String toString() {
+		return mi.getName();
 	}
 
 }

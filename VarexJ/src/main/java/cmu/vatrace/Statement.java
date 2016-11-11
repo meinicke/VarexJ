@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import org.eclipse.jdt.annotation.NonNull;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.JPF;
 
 public class Statement implements MethodElement {
 
@@ -15,13 +14,19 @@ public class Statement implements MethodElement {
 	Object op;
 	Method m;
 
+	private final FeatureExpr ctx;
+	
+	public FeatureExpr getCtx() {
+		return ctx;
+	}
+
 	public Statement(@NonNull Object op, Method m, FeatureExpr ctx) {
 		if (m != null) {
 			m.addMethodElement(this);
 		}
+		this.ctx = ctx;
 		this.m = m;
 		this.op = op;
-		JPF.vatrace.addStatement(ctx, this);
 	}
 
 	@Override
@@ -71,4 +76,14 @@ public class Statement implements MethodElement {
 		return TraceUtils.toShortID(id);
 	}
 
+	@Override
+	public boolean filterExecution() {
+		return color == null || color == NodeColor.white;
+	}
+
+	@Override
+	public void traverseStatements(Trace trace) {
+		trace.addStatement(this);
+	}
+	
 }
