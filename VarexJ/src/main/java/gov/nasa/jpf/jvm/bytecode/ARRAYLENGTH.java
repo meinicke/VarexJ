@@ -41,6 +41,7 @@ public class ARRAYLENGTH extends ArrayInstruction {
 	private FeatureExpr pushCtx; 
 	
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		pushValue = One.valueOf(0);
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayRef = frame.pop(ctx);

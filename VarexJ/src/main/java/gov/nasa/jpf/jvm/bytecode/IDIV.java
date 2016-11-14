@@ -38,6 +38,7 @@ public class IDIV extends JVMInstruction {
 	private FeatureExpr pushCtx; 
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		pushValue = One.valueOf(0);
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Integer> v1 = frame.pop(ctx);
