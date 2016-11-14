@@ -42,4 +42,17 @@ public class LocalGetStatement extends Statement {
 		Conditional<String> valueString = value.map(f);
 		return li.getType() + ' ' + li.getName() + ": " + valueString;
 	}
+	
+	@Override
+	public boolean affectsref(int ref) {
+		if (!li.isNumeric() && !li.isBoolean()) {
+			return value.toMap().containsKey(ref);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean affectsIdentifier(String identifier) {
+		return li.getName().equals(identifier);
+	}
 }

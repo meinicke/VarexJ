@@ -36,4 +36,8 @@ public class ArrayLoadStatement extends Statement {
 		return Types.getTypeName(ei.getArrayType()) + "[" + index + "] : " + value.map(f);
 	}
 	
+	@Override
+	public boolean affectsref(int ref) {
+		return ei.getObjectRef() == ref;
+	}
 }

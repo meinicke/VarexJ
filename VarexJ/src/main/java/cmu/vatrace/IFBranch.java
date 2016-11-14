@@ -24,7 +24,8 @@ public class IFBranch extends Statement {
 		
 	@Override
 	public String toString() {
-		return "if (" + Conditional.getCTXString(getTargetContext()) + ')';
+		return "?";
+//		return "if (" + Conditional.getCTXString(getTargetContext()) + ')';
 	}
 
 	private FeatureExpr getTargetContext() {
@@ -37,5 +38,15 @@ public class IFBranch extends Statement {
 			}
 		}
 		return ctx;
+	}
+	
+	@Override
+	public boolean affectsIdentifier(String identifier) {
+		return true;
+	}
+	
+	@Override
+	public boolean affectsref(int ref) {
+		return true;
 	}
 }

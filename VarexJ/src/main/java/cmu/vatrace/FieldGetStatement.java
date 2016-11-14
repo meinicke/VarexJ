@@ -45,4 +45,17 @@ public class FieldGetStatement extends Statement {
 		Conditional<String> valueString = value.map(f);
 		return fi.getFullName() + ": " + valueString;
 	}
+	
+	@Override
+	public boolean affectsIdentifier(String fieldName) {
+		return fi.getName().equals(fieldName);
+	}
+	
+	@Override
+	public boolean affectsref(int ref) {
+		if (fi.isReference()) {
+			return value.toMap().containsKey(ref);
+		}
+		return false;
+	}
 }

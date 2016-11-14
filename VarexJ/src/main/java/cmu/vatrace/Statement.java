@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class Statement implements MethodElement {
@@ -52,10 +53,6 @@ public class Statement implements MethodElement {
 		out.println(']');
 	}
 	
-	enum NodeColor {
-		firebrick1, red, tomato, limegreen, white, black
-	}
-	
 	private NodeColor color = null;
 	
 	void setColor(NodeColor color) {
@@ -77,13 +74,34 @@ public class Statement implements MethodElement {
 	}
 
 	@Override
-	public boolean filterExecution() {
-		return color == null || color == NodeColor.white;
+	public boolean filterExecution(StatementFilter... filter) {
+		for (StatementFilter f : filter) {
+			if (!f.filter(this)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public void traverseStatements(Trace trace) {
 		trace.addStatement(this);
 	}
+
+	public boolean affectsIdentifier(String identifier) {
+		return false;
+	}
 	
+	public boolean affectsref(int ref) {
+		return false;
+	}
+
+	public boolean isInteraction() {
+		return color != null && color != NodeColor.white;
+	}
+	
+	@Override
+	public int size() {
+		return 1;
+	}
 }

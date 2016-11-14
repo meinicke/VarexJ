@@ -47,4 +47,9 @@ public class LocalStoreStatement extends Statement {
 			
 		return li.getType() + " " + li.getName() + ": " + oldValue.map(f) + " \u2192 " + newValue.map(f);
 	}
+	
+	@Override
+	public boolean affectsIdentifier(String identifier) {
+		return li.getName().equals(identifier);
+	}
 }

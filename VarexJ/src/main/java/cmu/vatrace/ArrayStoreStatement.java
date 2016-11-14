@@ -57,4 +57,8 @@ public class ArrayStoreStatement extends Statement {
 		return Types.getTypeName(ei.getArrayType()) + "[" + index + "] : " + oldValue.map(f) + " \u2192 " + newValue.map(f);
 	}
 	
+	@Override
+	public boolean affectsref(int ref) {
+		return ei.getObjectRef() == ref;
+	}
 }

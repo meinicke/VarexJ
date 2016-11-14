@@ -37,8 +37,22 @@ public class Trace {
 		pw.println("graph [ordering=\"out\"];");
 		pw.println("node [style=\"rounded,filled\", width=0, height=0, shape=box, concentrate=true]");
 		
-		main.filterExecution();
+		main.filterExecution(
+//				new ReferenceFilter(656)
+//				new NameFilter("approx"),
+//				new NameFilter("RANGE_OF_CELL"),
+//				new NameFilter("MAX_VALUE"),
+//				new NameFilter("MIN_VALUE"),
+//				new NameFilter("bitsPerDimension")
+//				new NameFilter("size")
+				
+//				new 	new Not(newNameFilter("methaneLevelCritical","pumpRunning"),
+//				new And(new InteractionFilter(),
+//					 NameFilter("modCount","elementData","size")))
+		);
 		
+		int size = main.size();
+		System.out.println("Size: " + size);
 		addStatement(START);
 		main.traverseStatements(this);
 		addStatement(END);

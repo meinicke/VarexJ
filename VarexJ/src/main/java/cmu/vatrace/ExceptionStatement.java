@@ -2,6 +2,7 @@ package cmu.vatrace;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class ExceptionStatement extends Statement {
@@ -27,5 +28,12 @@ public class ExceptionStatement extends Statement {
 		}
 		return cname +": " + details;
 	}
-		
+	
+	@Override
+	public boolean filterExecution(StatementFilter... filter) {
+		if (cname.equals(java.lang.StackOverflowError.class.getName())) {
+			return true;
+		}
+		return false;
+	}
 }

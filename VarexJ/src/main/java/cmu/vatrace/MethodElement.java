@@ -2,6 +2,8 @@ package cmu.vatrace;
 
 import java.io.PrintWriter;
 
+import cmu.vatrace.filters.StatementFilter;
+
 public interface MethodElement {
 
 	public void printLabel(PrintWriter pw);
@@ -11,7 +13,9 @@ public interface MethodElement {
 	 * 
 	 * @return true if the element should be removed itself. 
 	 */
-	boolean filterExecution();
+	boolean filterExecution(StatementFilter... statementFilter);
 	
 	public void traverseStatements(Trace trace);
+	
+	public int size();
 }

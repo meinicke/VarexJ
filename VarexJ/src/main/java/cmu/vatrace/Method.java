@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cmu.vatrace.filters.StatementFilter;
 import gov.nasa.jpf.vm.MethodInfo;
 
 public class Method implements MethodElement {
@@ -22,8 +23,8 @@ public class Method implements MethodElement {
 		execution.add(e);
 	}
 	
-	public boolean filterExecution() {
-		execution.removeIf(MethodElement::filterExecution);
+	public boolean filterExecution(StatementFilter... filter) {
+		execution.removeIf(e -> e.filterExecution(filter));
 		return execution.isEmpty();
 	}
 	
@@ -41,6 +42,15 @@ public class Method implements MethodElement {
 	@Override
 	public String toString() {
 		return mi.getName();
+	}
+
+	@Override
+	public int size() {
+		int size = 0;
+		for (MethodElement methodElement : execution) {
+			size += methodElement.size();
+		}
+		return size;
 	}
 
 }

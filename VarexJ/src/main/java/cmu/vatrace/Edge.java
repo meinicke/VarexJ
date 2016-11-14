@@ -18,15 +18,10 @@ public class Edge {
 		this.to = to;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder edge = new StringBuilder(); 
-		edge.append(from.getID()).append("->").append(to.getID());
-		if (!Conditional.isTautology(ctx)) {
-			edge.append("[label=\"").append(Conditional.getCTXString(ctx)).append("\"");
-			edge.append(",color=\"red\"").append("]\n");
-		}
-		return edge.toString();
+	private NodeColor color = NodeColor.black;
+	
+	public void setColor(NodeColor color) {
+		this.color = color;
 	}
 	
 	public void print(PrintWriter pw, Edge previous) {
@@ -35,11 +30,7 @@ public class Edge {
 			return;
 		}
 		if (!previous.ctx.equals(ctx)) {
-			if (!Conditional.isTautology(previous.ctx)) {
 				previous.printLabel(pw);
-			} else {
-				pw.println();
-			}
 			pw.print(from.getID() + "->" + to.getID());
 			return;
 		} else {
@@ -49,7 +40,11 @@ public class Edge {
 	}
 
 	public void printLabel(PrintWriter pw) {
-		pw.println("[label=\"" + Conditional.getCTXString(ctx) + "\",color=\"tomato\"]");
+		pw.println("[");
+		if (!Conditional.isTautology(ctx)) {
+			pw.print("label=\"" + Conditional.getCTXString(ctx) + "\",");
+		}
+		pw.println("color=\""+ color +"\"]");
 	}
 
 }
