@@ -46,6 +46,7 @@ public class NEWARRAY extends NewArrayInstruction {
 	private FeatureExpr pushCtx; 
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		pushRef = One.valueOf(0);
 		final StackFrame frame = ti.getModifiableTopFrame();
 
 		arrayLength = frame.pop(ctx);

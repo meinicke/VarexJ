@@ -58,6 +58,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		pushValue = One.valueOf(0);
 		final StackFrame frame = ti.getModifiableTopFrame();
 		Conditional<Integer> objRef = frame.peek(ctx); // don't pop yet, we might re-enter
 

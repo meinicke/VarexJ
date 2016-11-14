@@ -46,6 +46,7 @@ public class ANEWARRAY extends NewArrayInstruction {
 	private Conditional<Integer> pushValue = One.valueOf(0);
 
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		pushValue = One.valueOf(0);
 		// resolve the component class first
 		String compType = Types.getTypeName(type);
 		if (Types.isReferenceSignature(type)) {

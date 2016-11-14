@@ -45,6 +45,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
+		pushValue = One.valueOf(0);
 		final StackFrame frame = ti.getModifiableTopFrame();
 		final Instruction thisInstruction = this;
 		// we need to get the object first, to check if it is shared
