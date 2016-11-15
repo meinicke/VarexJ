@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cmu.vatrace.filters.StatementFilter;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MethodInfo;
 
 public class Method implements MethodElement {
@@ -37,6 +39,19 @@ public class Method implements MethodElement {
 
 	public void traverseStatements(Trace trace) {
 		execution.forEach(e -> e.traverseStatements(trace));
+	}
+	
+	// TODO revise to functional
+	public FeatureExpr getExceptionContext() {
+		FeatureExpr ctx = FeatureExprFactory.False();
+		for (MethodElement methodElement : execution) {
+			if (methodElement instanceof ExceptionStatement) {
+				ctx = ctx.or(((ExceptionStatement) methodElement).getCtx());
+			} else if (methodElement instanceof Method) {
+				ctx = ctx.or(((Method) methodElement).getExceptionContext());
+			}
+		}
+		return ctx;
 	}
 	
 	@Override

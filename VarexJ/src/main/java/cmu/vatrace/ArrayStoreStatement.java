@@ -26,7 +26,7 @@ public class ArrayStoreStatement extends Statement {
 		this.ei = ei;
 		
 		if (oldValue.toMap().size() < newValue.toMap().size()) {
-			setColor(NodeColor.tomato);
+			setColor(NodeColor.darkorange);
 		} else if (oldValue.toMap().size() > newValue.toMap().size()) {
 			setColor(NodeColor.limegreen);
 		}
@@ -35,6 +35,12 @@ public class ArrayStoreStatement extends Statement {
 	private final Function<Object, String> f = val -> {
 		if (ei.getArrayType().equals("C")) {
 			return "0x" + String.format("%02x", (int)((Character)val).charValue());
+		} else if (ei.getArrayType().equals("Z")) {
+			if (val instanceof Byte) {
+				return Boolean.valueOf(((Byte)val) != 0).toString();
+			} else {
+				return val.toString();
+			}
 		}
 		if (ei.isReferenceArray()) {
 			if ((Integer)val == 0) {

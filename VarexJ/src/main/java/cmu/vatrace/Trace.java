@@ -8,6 +8,12 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.vatrace.Statement.Shape;
+import cmu.vatrace.filters.And;
+import cmu.vatrace.filters.InteractionFilter;
+import cmu.vatrace.filters.NameFilter;
+import cmu.vatrace.filters.Not;
+import cmu.vatrace.filters.ReferenceFilter;
+import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureExprFactory;
 
@@ -46,9 +52,10 @@ public class Trace {
 //				new NameFilter("bitsPerDimension")
 //				new NameFilter("size")
 				
-//				new 	new Not(newNameFilter("methaneLevelCritical","pumpRunning"),
-//				new And(new InteractionFilter(),
-//					 NameFilter("modCount","elementData","size")))
+//				new NameFilter("methaneLevelCritical","pumpRunning"),
+				
+				// elevator
+				ELEVATOR_FILTER
 		);
 		
 		int size = main.size();
@@ -56,6 +63,17 @@ public class Trace {
 		addStatement(START);
 		main.traverseStatements(this);
 		addStatement(END);
+		
+		FeatureExpr ctx = main.getExceptionContext();
+		// higlight exception trace
+		for (Edge e : edges) {
+			if (e.ctx.and(ctx).isSatisfiable()) {
+				e.setWidth(2);
+				e.setColor(NodeColor.firebrick1);
+				e.from.setWidth(2);
+				e.to.setWidth(2);
+			}
+		}
 		
 		pw.println("// Edges");
 		Edge previous = null;
@@ -76,6 +94,21 @@ public class Trace {
 		pw.println('}');
 
 	}
+
+	private static final StatementFilter[] ELEVATOR_FILTER = new StatementFilter[] {
+			new NameFilter("floorButtons"), 
+			new ReferenceFilter(685) {//floorButtons
+				@Override
+				public boolean filter(Statement s) {
+					if (s instanceof ArrayLoadStatement) {
+						return true;
+					}
+					return super.filter(s);
+				}
+			},
+			new And(new InteractionFilter(),
+					new Not(new NameFilter("modCount","elementData","size")))
+	};
 
 	public void addStatement(final Statement statement) {
 		if (lastStatement == null) {

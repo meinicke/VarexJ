@@ -27,6 +27,12 @@ public class ArrayLoadStatement extends Statement {
 	private final Function<Object, String> f = val -> {
 		if (ei.getArrayType().equals("C")) {
 			return "0x" + String.format("%02x", val);
+		} else if (ei.getArrayType().equals("Z")) {
+			if (val instanceof Byte) {
+				return Boolean.valueOf(((Byte)val) != 0).toString();
+			} else {
+				return val.toString();
+			}
 		}
 		return val.toString();
 	};

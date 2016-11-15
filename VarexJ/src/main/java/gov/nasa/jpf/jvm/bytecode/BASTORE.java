@@ -22,6 +22,8 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.vatrace.ArrayStoreStatement;
+import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;
@@ -49,24 +51,30 @@ public class BASTORE extends ArrayStoreInstruction {
     });
   }
 
-  protected void setField (FeatureExpr ctx, ElementInfo ei, int index, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
-    ei.checkArrayBounds(ctx, index);
-
-    Fields f = ei.getFields();
-
-    if (f instanceof ByteArrayFields){
-      ei.setByteElement(ctx, index, value);
-
-    } else if (f instanceof BooleanArrayFields){
-      ei.setBooleanElement(ctx, index, value.mapr(new Function<Byte, Conditional<Boolean>>() {
-
-		@Override
-		public Conditional<Boolean> apply(Byte v) {
-			return v != 0 ? One.TRUE : One.FALSE;
+	protected void setField(FeatureExpr ctx, ElementInfo ei, int index, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
+		try {
+			ei.checkArrayBounds(ctx, index);
+		} finally {
+			new Statement(this.toString(), frame.method, ctx);
 		}
-    	  
-      }));
-    }
+
+		Fields f = ei.getFields();
+
+		if (f instanceof ByteArrayFields) {
+			new ArrayStoreStatement(frame.method, index, ei.getByteElement(index), value, ei, ctx);
+			ei.setByteElement(ctx, index, value);
+
+		} else if (f instanceof BooleanArrayFields) {
+			new ArrayStoreStatement(frame.method, index, ei.getBooleanElement(index), value, ei, ctx);
+			ei.setBooleanElement(ctx, index, value.mapr(new Function<Byte, Conditional<Boolean>>() {
+
+				@Override
+				public Conditional<Boolean> apply(Byte v) {
+					return v != 0 ? One.TRUE : One.FALSE;
+				}
+
+			}));
+		}
 
   }
 

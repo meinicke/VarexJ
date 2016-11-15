@@ -30,7 +30,7 @@ public class FieldPutStatement extends Statement {
 
 		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
 			if (oldValue.toMap().size() < newValue.toMap().size()) {
-				setColor(NodeColor.tomato);
+				setColor(NodeColor.darkorange);
 			} else if (oldValue.toMap().size() > newValue.toMap().size()) {
 				setColor(NodeColor.limegreen);
 			}

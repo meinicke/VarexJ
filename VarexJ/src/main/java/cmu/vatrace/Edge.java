@@ -19,9 +19,14 @@ public class Edge {
 	}
 
 	private NodeColor color = NodeColor.black;
+	private int width = 1;;
 	
 	public void setColor(NodeColor color) {
 		this.color = color;
+	}
+	
+	public void setWidth(int width) {
+		this.width  = width;
 	}
 	
 	public void print(PrintWriter pw, Edge previous) {
@@ -40,7 +45,7 @@ public class Edge {
 	}
 
 	public void printLabel(PrintWriter pw) {
-		pw.println("[");
+		pw.println("[penwidth=" + width);
 		if (!Conditional.isTautology(ctx)) {
 			pw.print("label=\"" + Conditional.getCTXString(ctx) + "\",");
 		}

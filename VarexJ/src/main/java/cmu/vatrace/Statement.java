@@ -38,7 +38,8 @@ public class Statement implements MethodElement {
 	@Override
 	public final void printLabel(PrintWriter out) {
 		out.print(getID());
-		out.print("[label=");
+		out.print("[penwidth=" + width);
+		out.print(",label=");
 		out.print("\"" + this + "\"");
 		if (color != null) {
 			if (color == NodeColor.white) {
@@ -52,19 +53,25 @@ public class Statement implements MethodElement {
 		}
 		out.println(']');
 	}
-	
+
 	private NodeColor color = null;
-	
+
+	private int width = 1;
+
 	void setColor(NodeColor color) {
 		this.color = color;
 	}
-	
+
+	public void setWidth(int width) {
+		this.width = Math.max(1, width);
+	}
+
 	enum Shape {
 		Mdiamond, Msquare
 	}
-	
+
 	private Shape shape = null;
-	
+
 	public void setShape(Shape shape) {
 		this.shape = shape;
 	}
@@ -91,7 +98,7 @@ public class Statement implements MethodElement {
 	public boolean affectsIdentifier(String identifier) {
 		return false;
 	}
-	
+
 	public boolean affectsref(int ref) {
 		return false;
 	}
@@ -99,7 +106,7 @@ public class Statement implements MethodElement {
 	public boolean isInteraction() {
 		return color != null && color != NodeColor.white;
 	}
-	
+
 	@Override
 	public int size() {
 		return 1;
