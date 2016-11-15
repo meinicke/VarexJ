@@ -15,7 +15,7 @@ public interface MethodElement {
 	 */
 	boolean filterExecution(StatementFilter... statementFilter);
 	
-	public void traverseStatements(Trace trace);
+	public void addStatements(Trace trace);
 	
 	public int size();
 }

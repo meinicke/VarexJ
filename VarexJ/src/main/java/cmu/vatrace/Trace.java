@@ -15,6 +15,7 @@ import cmu.vatrace.filters.Not;
 import cmu.vatrace.filters.ReferenceFilter;
 import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureExprFactory;
 
 public class Trace {
@@ -61,11 +62,11 @@ public class Trace {
 		int size = main.size();
 		System.out.println("Size: " + size);
 		addStatement(START);
-		main.traverseStatements(this);
+		main.addStatements(this);
 		addStatement(END);
 		
-		FeatureExpr ctx = main.getExceptionContext();
-		// higlight exception trace
+		FeatureExpr ctx = main.accumulate(Method.ExceptionContextAccumulator, FeatureExprFactory.False());
+		// highlight exception trace
 		for (Edge e : edges) {
 			if (e.ctx.and(ctx).isSatisfiable()) {
 				e.setWidth(2);

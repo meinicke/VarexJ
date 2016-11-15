@@ -91,7 +91,7 @@ public class Statement implements MethodElement {
 	}
 
 	@Override
-	public void traverseStatements(Trace trace) {
+	public void addStatements(Trace trace) {
 		trace.addStatement(this);
 	}
 
