@@ -14,9 +14,9 @@ public class NameFilter implements StatementFilter {
 	public boolean filter(Statement s) {
 		for (String n : name) {
 			if (s.affectsIdentifier(n)) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 }

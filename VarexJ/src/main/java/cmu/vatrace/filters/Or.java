@@ -12,10 +12,10 @@ public class Or implements StatementFilter {
 	@Override
 	public boolean filter(Statement s) {
 		for (StatementFilter f : filter) {
-			if (!f.filter(s)) {
-				return false;
+			if (f.filter(s)) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 }

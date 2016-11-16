@@ -49,4 +49,9 @@ public class IFBranch extends Statement {
 	public boolean affectsref(int ref) {
 		return true;
 	}
+	
+	@Override
+	public boolean isInteraction(int degree) {
+		return true;
+	}
 }

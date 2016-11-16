@@ -67,4 +67,9 @@ public class ArrayStoreStatement extends Statement {
 	public boolean affectsref(int ref) {
 		return ei.getObjectRef() == ref;
 	}
+	
+	@Override
+	public boolean isInteraction(int degree) {
+		return newValue.toMap().size() >= degree; 
+	}
 }

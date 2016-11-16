@@ -12,6 +12,7 @@ import cmu.vatrace.filters.And;
 import cmu.vatrace.filters.InteractionFilter;
 import cmu.vatrace.filters.NameFilter;
 import cmu.vatrace.filters.Not;
+import cmu.vatrace.filters.Or;
 import cmu.vatrace.filters.ReferenceFilter;
 import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -44,7 +45,28 @@ public class Trace {
 		pw.println("graph [ordering=\"out\"];");
 		pw.println("node [style=\"rounded,filled\", width=0, height=0, shape=box, concentrate=true]");
 		
+		System.out.println();
+		System.out.print("Filter " + main.size() + " -> ");
+		
 		main.filterExecution(
+				new Or(
+						new StatementFilter() {
+							
+							@Override
+							public boolean filter(Statement s) {
+								return s instanceof IFBranch;
+							}
+						},
+					new And(
+						new Not(new NameFilter("table", "modCount", "size")),
+						new Not(new NameFilter("branchTokenTypes", "cacheKey")),
+//					new ContextFilter(executivefloor),
+						new Or(
+//						new NameFilter("floorButtons"))
+//						new ExceptionFilter(),
+						new InteractionFilter(4)
+//						iffilter
+					)))
 //				new ReferenceFilter(656)
 //				new NameFilter("approx"),
 //				new NameFilter("RANGE_OF_CELL"),
@@ -56,15 +78,20 @@ public class Trace {
 //				new NameFilter("methaneLevelCritical","pumpRunning"),
 				
 				// elevator
-				ELEVATOR_FILTER
+//				ELEVATOR_FILTER
 		);
+		System.out.println(main.size());
 		
-		int size = main.size();
-		System.out.println("Size: " + size);
 		addStatement(START);
 		main.addStatements(this);
 		addStatement(END);
 		
+		// highlight ctx
+		for (Edge e : edges) {
+			if (!e.ctx.isTautology()) {
+				e.setColor(NodeColor.darkorange);
+			}
+		}
 		FeatureExpr ctx = main.accumulate(Method.ExceptionContextAccumulator, FeatureExprFactory.False());
 		// highlight exception trace
 		for (Edge e : edges) {
@@ -107,7 +134,7 @@ public class Trace {
 					return super.filter(s);
 				}
 			},
-			new And(new InteractionFilter(),
+			new And(new InteractionFilter(1),
 					new Not(new NameFilter("modCount","elementData","size")))
 	};
 

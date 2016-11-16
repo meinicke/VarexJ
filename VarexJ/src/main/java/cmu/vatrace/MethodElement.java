@@ -9,11 +9,12 @@ public interface MethodElement {
 	public void printLabel(PrintWriter pw);
 
 	/**
-	 * Removes all sub-elements that should not be shown in the trace.
+	 * Keeps only elements that fulfill the filter and<br>
+	 * removes all sub-elements that should not be shown in the trace.
 	 * 
-	 * @return true if the element should be removed itself. 
+	 * @return false if the element should be removed. 
 	 */
-	boolean filterExecution(StatementFilter... statementFilter);
+	boolean filterExecution(StatementFilter statementFilter);
 	
 	public void addStatements(Trace trace);
 	

@@ -1,5 +1,8 @@
 package cmu.vatrace;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -7,6 +10,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.FieldInfo;
+import scala.collection.Iterator;
 
 public class FieldPutStatement extends Statement {
 
@@ -59,9 +63,6 @@ public class FieldPutStatement extends Statement {
 
 	@Override
 	public String toString() {
-		if (fi.getName().equals("dir")) {
-			System.out.println();
-		}
 		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) != null) {
 			return fi.getFullName() + " = " + newString;
 		} else {
@@ -80,5 +81,10 @@ public class FieldPutStatement extends Statement {
 			return oldValue.toMap().containsKey(ref) || newValue.toMap().containsKey(ref);
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean isInteraction(int degree) {
+		return newValue.toMap().size() >= degree; 
 	}
 }

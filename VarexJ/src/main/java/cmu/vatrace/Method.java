@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import cmu.vatrace.filters.Or;
 import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MethodInfo;
@@ -26,9 +27,17 @@ public class Method implements MethodElement {
 		execution.add(e);
 	}
 	
+	/**
+	 * Keeps elements that fulfill any of the filters and<br>
+	 * removes all elements that fulfill none.
+	 */
 	public boolean filterExecution(StatementFilter... filter) {
-		execution.removeIf(e -> e.filterExecution(filter));
-		return execution.isEmpty();
+		return filterExecution(new Or(filter));
+	}
+	
+	public boolean filterExecution(StatementFilter filter) {
+		execution.removeIf(e -> !e.filterExecution(filter));
+		return !execution.isEmpty();
 	}
 	
 	public void printLabel(PrintWriter pw) {

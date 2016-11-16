@@ -52,4 +52,9 @@ public class LocalStoreStatement extends Statement {
 	public boolean affectsIdentifier(String identifier) {
 		return li.getName().equals(identifier);
 	}
+	
+	@Override
+	public boolean isInteraction(int degree) {
+		return newValue.toMap().size() >= degree; 
+	}
 }

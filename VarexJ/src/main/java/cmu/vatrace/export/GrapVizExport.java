@@ -1,9 +1,11 @@
 package cmu.vatrace.export;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 
 import cmu.utils.CommandLineRunner;
 import cmu.vatrace.Trace;
@@ -45,6 +47,17 @@ public class GrapVizExport {
 
 	private void callGraphviz(final File file, final String format) {
 		final String[] commands = new String[] { "dot", "-T" + format, file.getPath(), "-o", fileName + "." + format};
+		
+		try {
+			Field f = BufferedInputStream.class.getDeclaredField("DEFAULT_BUFFER_SIZE");
+			f.setAccessible(true);
+			System.out.println(f.getInt(null));
+			f.setInt(null, 8192);
+		} catch (IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			e.printStackTrace();
+		}
+		
+		
 		CommandLineRunner.process(commands);
 	}
 

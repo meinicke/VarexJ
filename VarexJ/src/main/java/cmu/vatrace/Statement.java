@@ -81,13 +81,8 @@ public class Statement implements MethodElement {
 	}
 
 	@Override
-	public boolean filterExecution(StatementFilter... filter) {
-		for (StatementFilter f : filter) {
-			if (!f.filter(this)) {
-				return false;
-			}
-		}
-		return true;
+	public boolean filterExecution(StatementFilter filter) {
+		return filter.filter(this);
 	}
 
 	@Override
@@ -103,8 +98,8 @@ public class Statement implements MethodElement {
 		return false;
 	}
 
-	public boolean isInteraction() {
-		return color != null && color != NodeColor.white;
+	public boolean isInteraction(int degree) {
+		return false;
 	}
 
 	@Override
