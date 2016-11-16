@@ -1,5 +1,8 @@
 package nhandler.conversion.jvm2jpf;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -8,10 +11,6 @@ import gov.nasa.jpf.vm.DynamicElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StaticElementInfo;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
 import nhandler.conversion.ConversionException;
 import nhandler.conversion.ConverterBase;
 
@@ -23,58 +22,62 @@ import nhandler.conversion.ConverterBase;
  * @author Nastaran Shafiei
  */
 public class JVM2JPFGenericConverter extends JVM2JPFConverter {
-  @Override
-  protected void setStaticFields(Class<?> JVMCls, StaticElementInfo sei, MJIEnv env, FeatureExpr ctx) throws ConversionException {
-    Field fld[] = JVMCls.getDeclaredFields();
+	@Override
+	protected void setStaticFields(Class<?> JVMCls, StaticElementInfo sei, MJIEnv env, FeatureExpr ctx) throws ConversionException {
+		Field fld[] = JVMCls.getDeclaredFields();
 
-    for (int i = 0; i < fld.length; i++){
-      boolean isStatic = ((Modifier.toString(fld[i].getModifiers())).indexOf("static") != -1);
-      boolean isFinal = ((Modifier.toString(fld[i].getModifiers())).indexOf("final") != -1);
+		for (int i = 0; i < fld.length; i++) {
+			boolean isStatic = ((Modifier.toString(fld[i].getModifiers())).indexOf("static") != -1);
+			boolean isFinal = ((Modifier.toString(fld[i].getModifiers())).indexOf("final") != -1);
 
-      // Provide access to private and final fields
-      fld[i].setAccessible(true);
-      FieldInfo fi = sei.getFieldInfo(fld[i].getName());
+			// Provide access to private and final fields
+			fld[i].setAccessible(true);
+			FieldInfo fi = sei.getFieldInfo(fld[i].getName());
 
-      // Provide access to private and final fields
-      if (fi != null){
-        if (isStatic && !isFinal){
-          // If the current field is of reference type
-          if (fi.isReference()){
-            int JPFfldValue = MJIEnv.NULL;
-            Object JVMfldValue = null;
+			// Provide access to private and final fields
+			if (fi != null) {
+				if (isStatic && !isFinal) {
+					// If the current field is of reference type
+					if (fi.isReference()) {
+						try {
 
-            try{
-              // retrieving the value of the field in JVM
-              JVMfldValue = fld[i].get(JVMCls);
-            } catch (IllegalAccessException e2){
-              e2.printStackTrace();
-            }
+							// retrieving the value of the field in JVM
+							final Object JVMfieldValue = fld[i].get(JVMCls);
+							Conditional<Integer> conditionalJPFfieldValue = sei.getReferenceField(fi).simplify(ctx);
+							conditionalJPFfieldValue = conditionalJPFfieldValue.mapf(ctx, (FeatureExpr ctx1, Integer JPFfieldValue) -> {
+								try {
+									if (JVMfieldValue == null) {
+										JPFfieldValue = MJIEnv.NULL;
+									} else if (JPFfieldValue == MJIEnv.NULL || ConverterBase.objMapJPF2JVM.get(JPFfieldValue) != JVMfieldValue) {
+										JPFfieldValue = obtainJPFObj(JVMfieldValue, env, ctx1);
+									} else if (ConverterBase.objMapJPF2JVM.get(JPFfieldValue) == JVMfieldValue) {
+										updateJPFObj(JVMfieldValue, JPFfieldValue, env, ctx1);
+									} else {
+										throw new ConversionException("Unconsidered case observed! - JVM2JPF.getJPFCls()");
+									}
+								} catch (ConversionException e) {
+									throw new RuntimeException(e);
+								}
+								return One.MJIEnvNULL;
+							});
 
-            JPFfldValue = sei.getReferenceField(fi).getValue();
+							sei.setReferenceField(ctx, fi, conditionalJPFfieldValue);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						}
 
-            if (JVMfldValue == null){
-              JPFfldValue = MJIEnv.NULL;
-            } else if (JPFfldValue == MJIEnv.NULL || ConverterBase.objMapJPF2JVM.get(JPFfldValue) != JVMfldValue){
-              JPFfldValue = obtainJPFObj(JVMfldValue, env, ctx);
-            } else if (ConverterBase.objMapJPF2JVM.get(JPFfldValue) == JVMfldValue){
-              updateJPFObj(JVMfldValue, JPFfldValue, env, ctx);
-            } else{
-              throw new ConversionException("Unconsidered case observed! - JVM2JPF.getJPFCls()");
-            }
-            sei.setReferenceField(ctx, fi, new One<>(JPFfldValue));
-          }
-          // If the current field is of primitive type
-          else{
-            try{
-              Utilities.setJPFPrimitiveField(ctx, sei, fi.getStorageOffset(), fld[i], JVMCls);
-            } catch (IllegalAccessException e){
-              e.printStackTrace();
-            }
-          }
-        }
-      }
-    }
-  }
+					} else {
+						// If the current field is of primitive type
+						try {
+							Utilities.setJPFPrimitiveField(ctx, sei, fi.getStorageOffset(), fld[i], JVMCls);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+	}
 
   @Override
   protected void setInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException {
