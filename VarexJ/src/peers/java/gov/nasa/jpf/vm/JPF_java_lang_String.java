@@ -466,7 +466,7 @@ public class JPF_java_lang_String extends NativePeer {
 
 		int vref = env.getReferenceField(ctx, objref, "value").getValue();
 		ElementInfo ei = env.getElementInfo(vref);
-		char[] values = ((CharArrayFields) ei.getFields()).asCharArray().getValue();
+		char[] values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx).getValue();
 
 		int len = values.length;
 
@@ -496,7 +496,7 @@ public class JPF_java_lang_String extends NativePeer {
 
 		int vref = env.getReferenceField(ctx, objref, "value").getValue();
 		ElementInfo ei = env.getElementInfo(vref);
-		char[] values = ((CharArrayFields) ei.getFields()).asCharArray().getValue();
+		char[] values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx).getValue();
 
 		int len = values.length;
 

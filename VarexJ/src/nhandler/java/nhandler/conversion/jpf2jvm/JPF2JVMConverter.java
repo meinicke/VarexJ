@@ -205,7 +205,7 @@ public abstract class JPF2JVMConverter extends ConverterBase {
                     Conditional<Integer>[] JPFArrConditional = ((ReferenceArrayFields) dei.getFields()).asReferenceArray();
                     int[] JPFArr = new int[JPFArrConditional.length];
                     for (int i = 0; i < JPFArrConditional.length; i++) {
-                        JPFArr[i] = JPFArrConditional[i].getValue();
+                        JPFArr[i] = JPFArrConditional[i].simplify(ctx).getValue();
                     }
 
                     int arrSize = JPFArr.length;
