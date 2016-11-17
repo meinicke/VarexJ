@@ -21,6 +21,7 @@ package gov.nasa.jpf.util;
 
 import org.junit.Test;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.util.test.TestJPF;
 
 /**
@@ -164,6 +165,20 @@ public class IntVectorTest extends TestJPF {
     System.out.println(Integer.toHexString(x));
     assert x == 0xffffffff;
 
+  }
+  
+  /**
+   * Completely fills the vector's array, and removes an element.<br>
+   * 
+   * Bug: {@link ArrayIndexOutOfBoundsException} in {@link IntVector#removeFirst(int)}
+   */
+  @Test
+  public void removeFirstTest() {
+	  IntVector v = new IntVector();
+	  for (int i = 0; i < v.data.length; i++) {
+		  v.add(One.valueOf(i));
+	  }
+	  v.removeFirst(0);
   }
 
 }

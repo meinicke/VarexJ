@@ -367,7 +367,7 @@ public final class IntVector implements Comparable<IntVector>, Cloneable {
   public boolean removeFirst (int x){
     for (int i=0; i<size; i++){
       if (data[i].getValue() == x){
-        System.arraycopy(data,i+1, data,i, size-i);
+        System.arraycopy(data,i+1, data,i, size-i-1);
         size--;
         return true;
       }

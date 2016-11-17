@@ -20,7 +20,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
@@ -142,18 +141,9 @@ public class NATIVERETURN extends ReturnInstruction {
 			switch (retType) {
 			case Types.T_BOOLEAN:
 				if (ret instanceof Conditional) {
-					Conditional<Integer> ival = ((Conditional) ret).mapr(new Function<Object, Conditional<Integer>>() {
-
-						@Override
-						public Conditional<Integer> apply(Object ret) {
-							return One.valueOf(Types.booleanToInt(((Boolean) ret).booleanValue()));
-						}
-						
-					});
-					fr.push(ctx, ival);
+					fr.push(ctx, ((Conditional) ret).map(ret -> Types.booleanToInt(((Boolean) ret).booleanValue())));
 				} else {
-					int ival = Types.booleanToInt(((Boolean) ret).booleanValue());
-					fr.push(ctx, One.valueOf(ival));
+					fr.push(ctx, One.valueOf(Types.booleanToInt(((Boolean) ret).booleanValue())));
 				}
 				break;
 
@@ -163,29 +153,21 @@ public class NATIVERETURN extends ReturnInstruction {
 
 			case Types.T_CHAR:
 				if (ret instanceof Conditional) {
-					Conditional<Integer> ival = ((Conditional) ret).mapr(new Function<Object, Conditional<Integer>>() {
-
-						@Override
-						public Conditional<Integer> apply(Object ret) {
-							return new One<>((int) ((Character) ret).charValue());
-						}
-						
-					});
-					fr.push(ctx, ival);
+					fr.push(ctx, ((Conditional) ret).map(ret -> (int) ((Character) ret).charValue()));
 				} else {
 					fr.push(ctx, One.valueOf((int) ((Character) ret).charValue()));
 				}
 				break;
 
 			case Types.T_SHORT:
-				fr.push(ctx, new One<>((int) ((Short) ret).shortValue()));
+				fr.push(ctx, One.valueOf((int) ((Short) ret).shortValue()));
 				break;
 
 			case Types.T_INT:
 				if (ret instanceof Conditional) {
 					fr.push(ctx, (Conditional) ret);
 				} else {
-					fr.push(ctx, new One<>(((Integer) ret)));
+					fr.push(ctx, One.valueOf(((Integer) ret)));
 				}
 				break;
 
@@ -201,30 +183,15 @@ public class NATIVERETURN extends ReturnInstruction {
 
 			case Types.T_FLOAT:
 				if (ret instanceof Conditional) {
-					fr.push(ctx, ((Conditional) ret).map(new Function<Float, Integer>() {
-
-						@Override
-						public Integer apply(Float x) {
-							return Types.floatToInt(x);
-						}
-
-					}));
-
+					fr.push(ctx, ((Conditional<Float>) ret).map(x -> Types.floatToInt(x)));
 				} else {
-					fr.push(ctx, new One<>(Types.floatToInt((Float) ret)));
+					fr.push(ctx, One.valueOf(Types.floatToInt((Float) ret)));
 				}
 				break;
 
 			case Types.T_DOUBLE:
 				if (ret instanceof Conditional) {
-					fr.push(ctx, ((Conditional) ret).map(new Function<Double, Long>() {
-
-						@Override
-						public Long apply(Double x) {
-							return Types.doubleToLong(x);
-						}
-
-					}));
+					fr.push(ctx, ((Conditional<Double>) ret).map(x -> Types.doubleToLong(x)));
 				} else {
 					long lval = Types.doubleToLong(((Double) ret).doubleValue());
 					fr.push(ctx, new One<>(lval));
