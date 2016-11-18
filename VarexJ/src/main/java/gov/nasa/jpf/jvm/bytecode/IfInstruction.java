@@ -18,7 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
@@ -86,27 +85,15 @@ public abstract class IfInstruction extends JVMInstruction {
     conditionValue = popConditionValue(ctx, frame);
     
     Conditional<Integer> targets = conditionValue.mapf(ctx, (FeatureExpr x, Boolean condition) -> {
-		if (condition) {
-	      return new One<>(getTarget().getPosition());
-	    } else {
-	      return new One<>(getNext(x, ti).getValue().getPosition());
-	    }
+		return condition ? new One<>(getTarget().getPosition()) : new One<>(getNext(x, ti).getValue().getPosition());
 	}).simplify();
     
     if (targets.simplify(ctx).toList().size() > 1) {
 	    new IFBranch(this, frame.method, targets, ctx);
     }
     
-    return conditionValue.mapf(ctx, new BiFunction<FeatureExpr, Boolean, Conditional<Instruction>>() {
-
-		@Override
-		public Conditional<Instruction> apply(FeatureExpr x, Boolean condition) {
-			if (condition) {
-		      return new One<>(getTarget());
-		    } else {
-		      return getNext(x, ti);
-		    }
-		}
+    return conditionValue.mapf(ctx, (FeatureExpr x, Boolean condition) -> {
+		return condition ? new One<>(getTarget()) : getNext(x, ti);
 	}).simplify();
   }
 

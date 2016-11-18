@@ -38,4 +38,9 @@ public class ReturnStatement extends Statement {
 		return "return " + Types.getTypeName(m.mi.getReturnType()) + " " + returnValue.map(f);
 	}
 		
+	
+	@Override
+	public boolean isInteraction(int degree) {
+		return returnValue.toMap().size() >= degree;
+	}
 }

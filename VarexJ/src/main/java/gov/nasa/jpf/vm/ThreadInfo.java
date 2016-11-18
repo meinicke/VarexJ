@@ -39,6 +39,7 @@ import cmu.utils.CoverageClass;
 import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
 import cmu.vatrace.ExceptionStatement;
+import cmu.vatrace.Trace;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
@@ -2068,6 +2069,7 @@ public class ThreadInfo extends InfoObject
     			if (top == null) {
     				nextPc = next;
     			} else {
+    				Trace.filterExecution(top.method);
     				nextPc = next.simplify(top.stack.getCtx());
     			}
     		} else if (i instanceof ATHROW || i instanceof EXCEPTION || (poped > 0 && stackTraceMember(oldStack, top))) {

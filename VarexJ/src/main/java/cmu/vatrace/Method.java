@@ -18,6 +18,7 @@ public class Method implements MethodElement {
 	
 	private final List<MethodElement> execution = new ArrayList<>();
 	final MethodInfo mi;
+	private int lineNumber = -1;
 	
 	public Method(MethodInfo mi) {
 		this.mi = mi;
@@ -42,7 +43,7 @@ public class Method implements MethodElement {
 	
 	public void printLabel(PrintWriter pw) {
 		pw.println("subgraph \"cluster_" + TraceUtils.toShortID(id) + "\" {");
-		pw.println("label = \"" + mi.getFullName() + "\";");
+		pw.println("label = \"" + lineNumber + " " + mi.getFullName() + "\";");
 		execution.forEach(e -> e.printLabel(pw));
 		pw.println("}");
 	}
@@ -81,6 +82,14 @@ public class Method implements MethodElement {
 			}
 		}
 		return value;
+	}
+
+	public void setLine(int lineNumber) {
+		this.lineNumber = lineNumber;
+	}
+	
+	public int getLineNumber() {
+		return lineNumber;
 	}
 	
 }

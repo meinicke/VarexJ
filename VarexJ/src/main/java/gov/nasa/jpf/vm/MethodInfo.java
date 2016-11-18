@@ -743,6 +743,12 @@ public class MethodInfo extends InfoObject implements GenericSignatureHolder  {
     return getInstructionsForLineInterval(lspec.getFromLine(), lspec.getToLine());
   }
 
+  /**
+  * Returns the line number for a given position.
+  */
+  public int getLineNumber (int idx) {
+	  return getInstructionAt(idx).getLineNumber();
+  }
 
   /**
    * Returns the line number for a given position.

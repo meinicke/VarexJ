@@ -192,7 +192,7 @@ public int nLocals;
    */
   public void reset() {
     pc = new One<>(mi.getInstruction(0)); // TODO ???
-  }  
+  }
   
   public boolean isNative() {
     return false;
@@ -247,6 +247,8 @@ public int nLocals;
    */
   public void setPrevious (StackFrame frame){
     if (prev == null && frame != null) {
+    	Instruction pc = frame.getPC().simplify(stack.getCtx()).getValue();
+		method.setLine(frame.mi.getLineNumber(pc));
 		Method parentNode = frame.method;
 		parentNode.addMethodElement(method);
 	}

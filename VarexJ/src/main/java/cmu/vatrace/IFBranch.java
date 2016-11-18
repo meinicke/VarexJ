@@ -1,10 +1,7 @@
 package cmu.vatrace;
 
-import java.util.Map.Entry;
-
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.bytecode.IfInstruction;
 
 public class IFBranch extends Statement {
@@ -24,22 +21,12 @@ public class IFBranch extends Statement {
 		
 	@Override
 	public String toString() {
-		return "?";
+		return ((IfInstruction)op).getLineNumber() + " " + targets.map((t -> m.mi.getLineNumber(t)));
+		
+//		return "?";
 //		return "if (" + Conditional.getCTXString(getTargetContext()) + ')';
 	}
 
-	private FeatureExpr getTargetContext() {
-		int min = Integer.MAX_VALUE;
-		FeatureExpr ctx = FeatureExprFactory.True();
-		for (Entry<Integer, FeatureExpr> e : targets.toMap().entrySet()) {
-			if (e.getKey() < min) {
-				min = e.getKey();
-				ctx = e.getValue();
-			}
-		}
-		return ctx;
-	}
-	
 	@Override
 	public boolean affectsIdentifier(String identifier) {
 		return true;
@@ -54,4 +41,9 @@ public class IFBranch extends Statement {
 	public boolean isInteraction(int degree) {
 		return true;
 	}
+	
+	public Conditional<Integer> getTargets() {
+		return targets;
+	}
+	
 }

@@ -6,7 +6,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class ExceptionStatement extends Statement {
 	
-	private String cname;
+	public String cname;
 	private String details;
 
 	public ExceptionStatement(@NonNull Object op, Method m, FeatureExpr ctx) {

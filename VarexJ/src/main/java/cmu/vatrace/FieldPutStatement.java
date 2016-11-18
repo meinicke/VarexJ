@@ -1,8 +1,5 @@
 package cmu.vatrace;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -10,7 +7,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.FieldInfo;
-import scala.collection.Iterator;
 
 public class FieldPutStatement extends Statement {
 
@@ -85,6 +81,6 @@ public class FieldPutStatement extends Statement {
 	
 	@Override
 	public boolean isInteraction(int degree) {
-		return newValue.toMap().size() >= degree; 
+		return oldValue.toMap().size() != newValue.toMap().size() && newValue.toMap().size() >= degree; 
 	}
 }

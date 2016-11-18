@@ -45,7 +45,7 @@ public class Edge {
 	}
 
 	public void printLabel(PrintWriter pw) {
-		pw.println("[penwidth=" + width);
+		pw.print("[penwidth=" + width + ",");
 		if (!Conditional.isTautology(ctx)) {
 			pw.print("label=\"" + Conditional.getCTXString(ctx) + "\",");
 		}

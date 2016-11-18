@@ -55,6 +55,6 @@ public class LocalStoreStatement extends Statement {
 	
 	@Override
 	public boolean isInteraction(int degree) {
-		return newValue.toMap().size() >= degree; 
+		return oldValue != null && oldValue.toMap().size() != newValue.toMap().size() && newValue.toMap().size() >= degree; 
 	}
 }

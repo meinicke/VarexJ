@@ -9,6 +9,7 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.vatrace.Statement.Shape;
 import cmu.vatrace.filters.And;
+import cmu.vatrace.filters.ExceptionFilter;
 import cmu.vatrace.filters.InteractionFilter;
 import cmu.vatrace.filters.NameFilter;
 import cmu.vatrace.filters.Not;
@@ -39,34 +40,54 @@ public class Trace {
 	public void setMain(Method main) {
 		this.main = main;
 	}
-
-	public void print(PrintWriter pw, String[] filter) {
-		pw.println("digraph G {");
-		pw.println("graph [ordering=\"out\"];");
-		pw.println("node [style=\"rounded,filled\", width=0, height=0, shape=box, concentrate=true]");
+	
+	public static void filterExecution(Method m) {
+		if (m == null || m.size() == 0) {
+			return;
+		}
 		
-		System.out.println();
-		System.out.print("Filter " + main.size() + " -> ");
-		
-		main.filterExecution(
+//		SingleFeatureExpr change1 = Conditional.features.get("change1");
+//		SingleFeatureExpr change2 = Conditional.features.get("change2");
+//		SingleFeatureExpr change3 = Conditional.features.get("change3");
+//		SingleFeatureExpr change4 = Conditional.features.get("change4");
+//		SingleFeatureExpr change5 = Conditional.features.get("change5");
+//		SingleFeatureExpr change6 = Conditional.features.get("change6");
+////				System.out.println(Conditional.features);
+////		change1|¬change2&change5&¬change6|¬change5&change6
+//		if (Conditional.features.isEmpty()) {
+//			return;
+//		}
+//		FeatureExpr ctx = change1.and(change5).and(change6.not());
+//		FeatureExpr fault = change1.not().and(change2);
+		m.filterExecution(
 				new Or(
+//						new NameFilter("interpolatedDerivatives" , "previousState"),
+//						new ReferenceFilter(888),
+//						new NameFilter("tMin", "tb"),
+						new InteractionFilter(2),
+						new ExceptionFilter(), 
 						new StatementFilter() {
-							
-							@Override
-							public boolean filter(Statement s) {
-								return s instanceof IFBranch;
-							}
-						},
-					new And(
-						new Not(new NameFilter("table", "modCount", "size")),
-						new Not(new NameFilter("branchTokenTypes", "cacheKey")),
-//					new ContextFilter(executivefloor),
-						new Or(
-//						new NameFilter("floorButtons"))
-//						new ExceptionFilter(),
-						new InteractionFilter(4)
-//						iffilter
-					)))
+					
+					@Override
+					public boolean filter(Statement s) {
+						return s instanceof IFBranch;
+					}
+				}));
+//						new NameFilter("isEncrypted"),
+//						new StatementFilter() {
+//							
+//							@Override
+//							public boolean filter(Statement s) {
+//								return s instanceof IFBranch;
+//							}
+//						},
+//					new And(
+//						new Not(new NameFilter("modCount", "size", "elementData")),
+////						new Not(new NameFilter("branchTokenTypes", "cacheKey")),
+//						new Or(
+//						new InteractionFilter(2),
+//						new ExceptionFilter()
+//					)))
 //				new ReferenceFilter(656)
 //				new NameFilter("approx"),
 //				new NameFilter("RANGE_OF_CELL"),
@@ -79,8 +100,16 @@ public class Trace {
 				
 				// elevator
 //				ELEVATOR_FILTER
-		);
-		System.out.println(main.size());
+//		);
+	}
+
+	public void print(PrintWriter pw, String[] filter) {
+		filterExecution(main);
+		System.out.println("Number of nodes: " + main.size());
+		
+		pw.println("digraph G {");
+		pw.println("graph [ordering=\"out\"];");
+		pw.println("node [style=\"rounded,filled\", width=0, height=0, shape=box, concentrate=true]");
 		
 		addStatement(START);
 		main.addStatements(this);
