@@ -35,21 +35,9 @@ public class FCMPG extends JVMInstruction {
 
 		final Conditional<Float> v1 = frame.popFloat(ctx);
 		final Conditional<Float> v2 = frame.popFloat(ctx);
-		frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> compare(x1, x2))).simplify());
+		frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> Float.compare(x2, x1))).simplify());
 		
 		return getNext(ctx, ti);
-	}
-
-	private static final int compare(Float v1, Float v2) {
-		if (Float.isNaN(v1.floatValue()) || Float.isNaN(v2.floatValue())) {
-			return 1;
-		} else if (v1.floatValue() == v2.floatValue()) {
-			return 0;
-		} else if (v2.floatValue() > v1.floatValue()) {
-			return 1;
-		} else {
-			return -1;
-		}
 	}
 
 	public int getByteCode() {

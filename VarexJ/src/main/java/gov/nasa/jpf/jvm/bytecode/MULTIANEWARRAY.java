@@ -18,9 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.Arrays;
-
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -86,7 +85,6 @@ public class MULTIANEWARRAY extends JVMInstruction {
 		}
 
 		arrayLengths = new Conditional[dimensions];
-		Arrays.fill(arrayLengths, One.valueOf(0));
 		StackFrame frame = ti.getModifiableTopFrame();
 
 		for (int i = dimensions - 1; i >= 0; i--) {
@@ -100,7 +98,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 			ci.registerClass(ctx, ti);
 			ci.setInitialized();
 		}
-
+		
 		Conditional<Integer> arrayRef = allocateArray(ti.getHeap(), type, arrayLengths, ti, 0);
 
 		// put the result (the array reference) on the stack

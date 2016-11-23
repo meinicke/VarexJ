@@ -32,7 +32,7 @@ public class IALOAD extends ArrayLoadInstruction {
 
   protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    return ei.getIntElement(index);
+    return ei.getFields().getIntValue(index);
   }
 
   public int getByteCode () {

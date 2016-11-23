@@ -32,7 +32,7 @@ public class AALOAD extends ArrayLoadInstruction {
 
   protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    return ei.getReferenceElement(index);
+    return ei.getFields().getReferenceValue(index);
   }
 
 
