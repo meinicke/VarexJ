@@ -151,33 +151,33 @@ test {
 }
 
 ////////////////// Static analyses //////////////////
-apply plugin: "findbugs"
-dependencies {
-    findbugs 'org.codehaus.mojo:findbugs-maven-plugin:3.0.1'
-}
-repositories {
-    mavenCentral()
-    maven {
-        url 'file:'+System.getenv('HOME')+'/.m2/repository'
-    }
-}
-
-findbugs {
-    toolVersion = "3.0.1"
-    sourceSets = [sourceSets.main]
-    ignoreFailures = true
-    reportsDir = file("$project.buildDir/reports/findbugs")
-    effort = "max"
-    reportLevel = "high"
-    //visitors = ["FindSqlInjection", "SwitchFallthrough"]
-    //omitVisitors = ["FindNonShortCircuit"]
-    //includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
-    //excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
-    //excludeBugsFilter = file("$rootProject.projectDir/config/findbugs/excludeBugsFilter.xml")
-}
-apply plugin: 'pmd'
-pmd {
-    ignoreFailures = true
-    sourceSets = [sourceSets.main]
-    reportsDir = file("$project.buildDir/reports/pmd")
-}
+//apply plugin: "findbugs"
+//dependencies {
+//    findbugs 'org.codehaus.mojo:findbugs-maven-plugin:3.0.1'
+//}
+//repositories {
+//    mavenCentral()
+//    maven {
+//        url 'file:'+System.getenv('HOME')+'/.m2/repository'
+//    }
+//}
+//
+//findbugs {
+//    toolVersion = "3.0.1"
+//    sourceSets = [sourceSets.main]
+//    ignoreFailures = true
+//    reportsDir = file("$project.buildDir/reports/findbugs")
+//    effort = "max"
+//    reportLevel = "high"
+//    //visitors = ["FindSqlInjection", "SwitchFallthrough"]
+//    //omitVisitors = ["FindNonShortCircuit"]
+//    //includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
+//    //excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
+//    //excludeBugsFilter = file("$rootProject.projectDir/config/findbugs/excludeBugsFilter.xml")
+//}
+//apply plugin: 'pmd'
+//pmd {
+//    ignoreFailures = true
+//    sourceSets = [sourceSets.main]
+//    reportsDir = file("$project.buildDir/reports/pmd")
+//}
