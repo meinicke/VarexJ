@@ -592,4 +592,18 @@
           id="CoveragePlugin.hover2">
     </hover>
  </extension>
+ <extension
+       point="org.eclipse.ui.views">
+    <category
+          id="varexj"
+          name="VarexJ">
+    </category>
+    <view
+          category="varexj"
+          class="varexj.trace.view.TraceView"
+          id="TraceView"
+          name="TraceView"
+          restorable="true">
+    </view>
+ </extension>
 </plugin>

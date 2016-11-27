@@ -2,6 +2,8 @@ package cmu.vatrace;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -90,6 +92,10 @@ public class Method implements MethodElement {
 	
 	public int getLineNumber() {
 		return lineNumber;
+	}
+	
+	public Collection<MethodElement> getChildren() {
+		return Collections.unmodifiableCollection(execution);
 	}
 	
 }

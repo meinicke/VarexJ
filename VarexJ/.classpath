@@ -29,8 +29,8 @@
 	<classpathentry kind="lib" path="lib/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="lib/org.sat4j.core-2.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/featureexprlib_2.11-0.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jdt.annotation_1.1.100.v20160418-1457.jar"/>
 	<classpathentry kind="lib" path="lib/scala-library-2.11.8.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_102"/>
-	<classpathentry kind="lib" path="org.eclipse.jdt.annotation_2.1.0.v20160418-1457.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -183,4 +183,16 @@ public class Trace {
 	public boolean hasMain() {
 		return main != null;
 	}
+	
+	public Method getMain() {
+		return main;
+	}
+	
+	public Statement getSTART() {
+		return START;
+	}
+	
+	public Statement getEND() {
+		return END;
+	}
 }

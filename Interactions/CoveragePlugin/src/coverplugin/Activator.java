@@ -2,6 +2,8 @@ package coverplugin;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -63,5 +65,19 @@ public class Activator extends AbstractUIPlugin {
 	public static void log(String message) {
 		getDefault().getLog().log(new Status(IStatus.INFO, "COVERAGE", message, new Exception()));
 	}
+
+	public static Image getImage(String name) {
+		if (getDefault() != null) {
+			return getImageDescriptor(name).createImage();
+		}
+		return null;
+	}
+	
+	public static ImageDescriptor getImageDescriptor(String path) {
+		return imageDescriptorFromPlugin(PLUGIN_ID, "images/" + path);
+	}
+	
+	public static ImageDescriptor REFESH_TAB_IMAGE_DESCRIPTOR = getImageDescriptor("refresh_tab.gif");
+	public static Image REFESH_TAB_IMAGE = REFESH_TAB_IMAGE_DESCRIPTOR.createImage();
 
 }
