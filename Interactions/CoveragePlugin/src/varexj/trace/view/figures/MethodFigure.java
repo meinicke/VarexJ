@@ -2,13 +2,11 @@ package varexj.trace.view.figures;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayout;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Color;
 
 import cmu.vatrace.Method;
 import coverageplugin.Constants;
@@ -30,7 +28,7 @@ public class MethodFigure extends Figure {
 		this.method = method;
 		this.setLayoutManager(new FreeformLayout());
 		this.setName(method.toString());
-		setBackgroundColor(Constants.GRAY);
+		setBackgroundColor(Constants.WHITE);
 		setBorder(new LineBorder(Constants.BLACK , 2));
 		this.add(label);
 		this.setOpaque(true);

@@ -3,7 +3,6 @@ package varexj.trace.view.figures;
 import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;

@@ -42,13 +42,9 @@ public class MethodEditPart extends AbstractGraphicalEditPart {
 		setModel(method);
 	}
 
-	public Method getRoleModel() {
-		return (Method) getModel();
-	}
-
 	@Override
 	protected IFigure createFigure() {
-		return new MethodFigure(getRoleModel());
+		return new MethodFigure((Method) getModel());
 	}
 
 	@Override
@@ -63,5 +59,4 @@ public class MethodEditPart extends AbstractGraphicalEditPart {
 		}
 		return children;
 	}
-
 }

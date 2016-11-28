@@ -23,16 +23,13 @@ package varexj.trace.view.editparts;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-import cmu.vatrace.IFBranch;
-import cmu.vatrace.Method;
-import cmu.vatrace.MethodElement;
+import cmu.vatrace.Edge;
 import cmu.vatrace.Statement;
-import gov.nasa.jpf.jvm.bytecode.IfInstruction;
-import varexj.trace.view.figures.IfBranchFigure;
-import varexj.trace.view.figures.MethodFigure;
+import gov.nasa.jpf.JPF;
 import varexj.trace.view.figures.StatementFigure;
 
 /**
@@ -42,6 +39,9 @@ import varexj.trace.view.figures.StatementFigure;
  */
 public class StatementEditPart extends AbstractGraphicalEditPart {
 
+	private ConnectionAnchor sourceAnchor = null;
+	private ConnectionAnchor targetAnchor = null;
+	
 	public StatementEditPart(Statement method) {
 		super();
 		setModel(method);
@@ -54,14 +54,38 @@ public class StatementEditPart extends AbstractGraphicalEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Statement model = getRoleModel();
-		if (model instanceof IFBranch) {
-			return new IfBranchFigure(model);
-		}
-		return new StatementFigure(model);
+		
+//		if (model instanceof IFBranch) {
+//			return new IfBranchFigure(model);
+//		}
+		StatementFigure statementFigure = new StatementFigure(model);
+		
+		sourceAnchor = statementFigure.getSourceAnchor();
+		targetAnchor = statementFigure.getTargetAnchor();
+		return statementFigure;
 	}
 
 	@Override
 	protected void createEditPolicies() {
 	}
-
+	
+	public ConnectionAnchor getSourceAnchor() {
+		return sourceAnchor;
+	}
+	
+	public ConnectionAnchor getTargetAnchor() {
+		return targetAnchor;
+	}
+	
+	@Override
+	protected List<Edge> getModelTargetConnections() {
+		List<Edge> connections = new ArrayList<>();
+		for (Edge edge : JPF.vatrace.getEdges()) {
+			if (edge.getTo() == getModel()) {
+				connections.add(edge);
+			}
+		}
+		return connections;
+	}
+	
 }

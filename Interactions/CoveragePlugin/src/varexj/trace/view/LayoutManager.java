@@ -8,7 +8,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-import varexj.trace.view.editparts.MethodEditPart;
 import varexj.trace.view.editparts.StatementEditPart;
 
 public class LayoutManager {
@@ -31,7 +30,7 @@ public class LayoutManager {
 				layout((AbstractGraphicalEditPart)object);
 				((AbstractGraphicalEditPart)object).getFigure().setLocation(new Point(BORDER_MARGIN, h));
 				h+= ((AbstractGraphicalEditPart)object).getFigure().getSize().height;
-				h += BORDER_MARGIN;
+				h += BORDER_MARGIN * 2;
 			}
 		}
 		

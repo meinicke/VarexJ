@@ -3,6 +3,7 @@ package varexj.trace.view.editparts;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
+import cmu.vatrace.Edge;
 import cmu.vatrace.Method;
 import cmu.vatrace.Statement;
 import cmu.vatrace.Trace;
@@ -24,6 +25,9 @@ public class TraceEditPartFactory implements EditPartFactory {
 		}
 		if (model instanceof Statement) {
 			return new StatementEditPart((Statement) model);
+		}
+		if (model instanceof Edge) {
+			return new EdgeEditPart((Edge) model);
 		}
 		if (model == null) {
 			System.err.println("null argument");

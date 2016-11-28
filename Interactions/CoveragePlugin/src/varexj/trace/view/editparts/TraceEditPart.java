@@ -27,10 +27,9 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.swt.graphics.Color;
 
+import cmu.vatrace.Edge;
 import cmu.vatrace.Trace;
 import coverageplugin.Constants;
 
@@ -40,6 +39,8 @@ import coverageplugin.Constants;
  * @author Jens Meinicke
  */
 public class TraceEditPart extends AbstractGraphicalEditPart {
+
+	private Edge edge;
 
 	public TraceEditPart(Trace model) {
 		super();
@@ -72,7 +73,6 @@ public class TraceEditPart extends AbstractGraphicalEditPart {
 
 	@Override
 	protected void createEditPolicies() {
-		// TODO Auto-generated method stub
-		
 	}
+	
 }

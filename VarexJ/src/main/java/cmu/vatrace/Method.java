@@ -56,7 +56,7 @@ public class Method implements MethodElement {
 	
 	@Override
 	public String toString() {
-		return mi.getName();
+		return mi.getFullName();
 	}
 
 	@Override

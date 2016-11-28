@@ -52,4 +52,20 @@ public class Edge {
 		pw.println("color=\""+ color +"\"]");
 	}
 
+	public Statement getFrom() {
+		return from;
+	}
+	
+	public Statement getTo() {
+		return to;
+	}
+	
+	public FeatureExpr getCtx() {
+		return ctx;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + " " + from + " -> " + to;
+	}
 }

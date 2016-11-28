@@ -64,6 +64,7 @@ public class Trace {
 //						new NameFilter("interpolatedDerivatives" , "previousState"),
 //						new ReferenceFilter(888),
 //						new NameFilter("tMin", "tb"),
+						new NameFilter("field"),
 						new InteractionFilter(2),
 						new ExceptionFilter(), 
 						new StatementFilter() {
@@ -194,5 +195,9 @@ public class Trace {
 	
 	public Statement getEND() {
 		return END;
+	}
+	
+	public List<Edge> getEdges() {
+		return edges;
 	}
 }

@@ -7,7 +7,6 @@ import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -76,7 +75,9 @@ public class TraceView extends ViewPart {
 	
 	public void refresh() {
 		final Trace model = createTrace();
-		
+		if (model.getMain() == null) {
+			return;
+		}
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				viewer.setContents(model);
@@ -90,14 +91,14 @@ public class TraceView extends ViewPart {
 	
 	public static Trace createTrace() {
 		if (trace == null) {
-			final String path = "C:/Users/Jens/git/VarexJ/SmallInteractionExamples";
+			final String path = "C:/Users/Jens Meinicke/git/VarexJ/SmallInteractionExamples";
 			final String[] args = {
 					"+classpath=" + path + "/bin",
 					"+search.class=.search.RandomSearch",
 					"linux.Example"
 			};
 			JPF.main(args);
-			trace = JPF.vatrace;
+			return JPF.vatrace;
 		}
 		return trace;
 	}
