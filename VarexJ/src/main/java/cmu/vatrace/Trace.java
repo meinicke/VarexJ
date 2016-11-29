@@ -7,7 +7,6 @@ import java.util.List;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vatrace.Statement.Shape;
 import cmu.vatrace.filters.And;
 import cmu.vatrace.filters.ExceptionFilter;
 import cmu.vatrace.filters.InteractionFilter;

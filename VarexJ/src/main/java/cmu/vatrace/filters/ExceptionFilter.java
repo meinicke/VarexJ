@@ -19,7 +19,7 @@ public class ExceptionFilter implements StatementFilter {
 	public boolean filter(Statement s) {
 		if (s instanceof ExceptionStatement) {
 			if (exceptionName == null) {
-				return false;
+				return true;
 			}
 			if (((ExceptionStatement)s).cname.contains(exceptionName)) {
 				return false;

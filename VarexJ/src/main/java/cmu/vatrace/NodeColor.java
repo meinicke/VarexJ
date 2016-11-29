@@ -9,6 +9,6 @@ package cmu.vatrace;
  * @author Jens Meinicke
  *
  */
-enum NodeColor {
+public enum NodeColor {
 	firebrick1, red, tomato, limegreen, white, black, darkorange
 }

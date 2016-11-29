@@ -29,7 +29,7 @@ public class MethodFigure extends Figure {
 		this.setLayoutManager(new FreeformLayout());
 		this.setName(method.toString());
 		setBackgroundColor(Constants.WHITE);
-		setBorder(new LineBorder(Constants.BLACK , 2));
+		setBorder(new LineBorder(Constants.BLACK , 1));
 		this.add(label);
 		this.setOpaque(false);
 		Label tooltip = new Label();

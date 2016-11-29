@@ -76,20 +76,18 @@ public class MethodEditPart extends AbstractTraceEditPart {
 				
 				MethodElement model = (MethodElement) childEditPart.getModel();
 				FeatureExpr ctx = model.getCTX();
-				System.out.println("layout " + model); 
 				if (previous != null) {
 					FeatureExpr prevctx = previous.getCTX();
-					if (prevctx.equivalentTo(ctx)) {
-//						previous = model;
-//						previousFigure = childEditPart;
-					} else {
+					if (!prevctx.equivalentTo(ctx)) {
 						if (prevctx.and(ctx).isSatisfiable()) {
 							// True -> a
+							
+							// move to left
 							childEditPart.layout();
 							childEditPart.getFigure().translateToRelative(referencePoint);
 
-							childEditPart.getFigure().setLocation(new Point(BORDER_MARGIN, h));
-							h = childEditPart.getFigure().getBounds().bottom() + BORDER_MARGIN;
+							childEditPart.getFigure().setLocation(new Point(-(childEditPart.getFigure().getBounds().width + BORDER_MARGIN), h));
+							h = childEditPart.getFigure().getBounds().bottom() + BORDER_MARGIN * 4;
 							previous = model;
 							previousFigure = childEditPart;
 							continue;
@@ -99,7 +97,7 @@ public class MethodEditPart extends AbstractTraceEditPart {
 							childEditPart.getFigure().translateToRelative(referencePoint);
 							h = previousFigure.getFigure().getBounds().y;
 							childEditPart.getFigure().setLocation(new Point(previousFigure.getFigure().getBounds().right() + BORDER_MARGIN, h));
-							h = childEditPart.getFigure().getBounds().bottom() + BORDER_MARGIN;
+							h = childEditPart.getFigure().getBounds().bottom() + BORDER_MARGIN * 4;
 							previous = model;
 							previousFigure = childEditPart;
 							continue;
@@ -109,22 +107,31 @@ public class MethodEditPart extends AbstractTraceEditPart {
 				
 				childEditPart.layout();
 				childEditPart.getFigure().translateToRelative(referencePoint);
-
-				int x = BORDER_MARGIN;
-				if (previousFigure != null) {
-					int prevright = previousFigure.getFigure().getBounds().right();
-					if (x + childEditPart.getFigure().getBounds().width  < prevright) {
-						x = previousFigure.getFigure().getBounds().getBottom().x - childEditPart.getFigure().getBounds().width / 2;
-					}
-				}
-				childEditPart.getFigure().setLocation(new Point(x, h));
+				childEditPart.getFigure().setLocation(new Point(-childEditPart.getFigure().getBounds().width / 2, h));
 				h += childEditPart.getFigure().getSize().height;
-				h += BORDER_MARGIN * 2;
+				h += BORDER_MARGIN * 4;
 				
 				previous = model;
 				previousFigure = childEditPart;
 			}
 		}
+		
+		//move all to scope
+		int minX = 0;
+		for (Object object : getChildren()) {
+			if (object instanceof AbstractGraphicalEditPart) {
+				bounds = ((AbstractGraphicalEditPart) object).getFigure().getBounds();
+				minX = Math.min(bounds.x, minX);
+			}
+		}
+		
+		for (Object object : getChildren()) {
+			if (object instanceof AbstractGraphicalEditPart) {
+				Point location = ((AbstractGraphicalEditPart) object).getFigure().getBounds().getTopLeft();
+				((AbstractGraphicalEditPart) object).getFigure().setLocation(new Point(BORDER_MARGIN + location.x - minX, location.y));
+			}
+		}
+		
 		
 		int maxW = bounds.width;
 		int maxH = bounds.height;
@@ -139,17 +146,6 @@ public class MethodEditPart extends AbstractTraceEditPart {
 		int newHeight = maxH - oldbounds.getTop().y;
 
 		bounds = new Rectangle(oldbounds.x, oldbounds.y, maxW + BORDER_MARGIN, newHeight + BORDER_MARGIN);
-		// center
-		for (Object object : getChildren()) {
-			if (object instanceof AbstractTraceEditPart) {
-				AbstractTraceEditPart childEditPart = (AbstractTraceEditPart) object;
-				Rectangle oldbounds2 = childEditPart.getFigure().getBounds();
-				MethodElement model = (MethodElement) childEditPart.getModel();
-				if (((MethodElement)getModel()).getCTX().equivalentTo(model.getCTX())) {
-					childEditPart.getFigure().setLocation(new Point(bounds.getTop().x -oldbounds2.width / 2, oldbounds2.y));
-				}
-			}
-		}
 
 		methodFigure.setBounds(bounds);
 	}

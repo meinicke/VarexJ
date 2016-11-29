@@ -1,12 +1,11 @@
 package varexj.trace.view.figures;
 
 import org.eclipse.draw2d.FreeformLayout;
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.Shape;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import cmu.vatrace.NodeColor;
@@ -19,10 +18,8 @@ import coverageplugin.Constants;
  * @author Jens Meinicke
  *
  */
-public class IfBranchFigure extends Shape {
+public class SquareFigure extends RectangleFigure {
 
-	protected PointList diamond = new PointList(4);
-	
 	private Statement statement;
 	private final Label label = new Label();
 	private SourceAnchor sourceAnchor;
@@ -31,19 +28,21 @@ public class IfBranchFigure extends Shape {
 	private static final int MIN_WIDTH = 20;
 	private static final int BORDER_WIDTH = 2;
 	
-	public IfBranchFigure(Statement statement) {
+	public SquareFigure(Statement statement) {
 		super();
 		this.statement = statement;
 		this.setLayoutManager(new FreeformLayout());
 		setName(statement.toString());
 		NodeColor color = statement.getColor();
 		setBackgroundColor(Constants.getColor(color));
+		setBorder(new LineBorder(Constants.BLACK, BORDER_WIDTH));
 		
 		this.add(label);
 		this.setOpaque(true);
 		
 		sourceAnchor = new SourceAnchor(this, statement);
 		targetAnchor = new TargetAnchor(this, statement);
+		
 	}
 
 	private void setName(String name){
@@ -56,9 +55,11 @@ public class IfBranchFigure extends Shape {
 		label.setSize(labelSize);
 
 		Rectangle bounds = getBounds();
-		bounds.setSize(labelSize.expand(BORDER_MARGIN * 4, BORDER_MARGIN * 4));
+		Dimension expand = labelSize.expand(BORDER_MARGIN, BORDER_MARGIN);
+		int sideLength = Math.max(expand.height, expand.width);
+		bounds.setSize(sideLength, sideLength);
 		setBounds(bounds);
-		label.setLocation(new Point(BORDER_MARGIN * 2, BORDER_MARGIN * 2));
+		label.setLocation(new Point(sideLength / 2 - label.getSize().width / 2, sideLength / 2 - label.getSize().height / 2));
 	}
 
 	public SourceAnchor getSourceAnchor() {
@@ -68,34 +69,4 @@ public class IfBranchFigure extends Shape {
 	public TargetAnchor getTargetAnchor() {
 		return targetAnchor;
 	}
-	
-	@Override
-	protected void fillShape(Graphics g) {
-		g.fillPolygon(diamond);
-	}
-	
-	@Override
-	protected void outlineShape(Graphics g) {
-		g.setLineWidth(statement.getWidth());
-		g.drawPolygon(diamond);
-	}
-
-	@Override
-	public void validate() {
-		Rectangle r = getBounds().getCopy();
-		r.crop(getInsets());
-		r.resize(-1, -1);
-		diamond.removeAllPoints();
-		diamond.addPoint(r.getTop());
-		diamond.addPoint(r.getRight());
-		diamond.addPoint(r.getBottom());
-		diamond.addPoint(r.getLeft());
-	}
-
-	@Override
-	public void primTranslate(int x, int y) {
-		super.primTranslate(x, y);
-		diamond.translate(x, y);
-	}
-
 }

@@ -66,15 +66,19 @@ public class Statement implements MethodElement {
 	public void setWidth(int width) {
 		this.width = Math.max(1, width);
 	}
-
-	enum Shape {
-		Mdiamond, Msquare
+	
+	public int getWidth() {
+		return width;
 	}
 
 	private Shape shape = null;
 
 	public void setShape(Shape shape) {
 		this.shape = shape;
+	}
+	
+	public Shape getShape() {
+		return shape;
 	}
 
 	public String getID() {
@@ -106,5 +110,9 @@ public class Statement implements MethodElement {
 	@Override
 	public int size() {
 		return 1;
+	}
+	
+	public NodeColor getColor() {
+		return color;
 	}
 }

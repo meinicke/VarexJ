@@ -25,10 +25,14 @@ import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.swt.SWT;
 
 import cmu.vatrace.Edge;
+import cmu.vatrace.Shape;
 import cmu.vatrace.Statement;
 import gov.nasa.jpf.JPF;
+import varexj.trace.view.figures.IfBranchFigure;
+import varexj.trace.view.figures.SquareFigure;
 import varexj.trace.view.figures.StatementFigure;
 
 /**
@@ -53,15 +57,32 @@ public class StatementEditPart extends AbstractTraceEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Statement model = getRoleModel();
+		final Shape shape = model.getShape();
+		if (shape == null) {
+			StatementFigure statementFigure = new StatementFigure(model);
+			sourceAnchor = statementFigure.getSourceAnchor();
+			targetAnchor = statementFigure.getTargetAnchor();
+			statementFigure.setAntialias(SWT.ON);
+			return statementFigure;
+		}
 		
-//		if (model instanceof IFBranch) {
-//			return new IfBranchFigure(model);
-//		}
-		StatementFigure statementFigure = new StatementFigure(model);
+		switch (shape) {
+		case Mdiamond:
+			IfBranchFigure ifBranchFigure = new IfBranchFigure(model);
+			sourceAnchor = ifBranchFigure.getSourceAnchor();
+			targetAnchor = ifBranchFigure.getTargetAnchor();
+			ifBranchFigure.setAntialias(SWT.ON);
+			return ifBranchFigure;
+		case Msquare:
+			SquareFigure boxFigure = new SquareFigure(model);
+			boxFigure.setAntialias(SWT.ON);
+			sourceAnchor = boxFigure.getSourceAnchor();
+			targetAnchor = boxFigure.getTargetAnchor();
+			return boxFigure;
+		default:
+			throw new RuntimeException("shape not supported: " + shape);
+		}
 		
-		sourceAnchor = statementFigure.getSourceAnchor();
-		targetAnchor = statementFigure.getTargetAnchor();
-		return statementFigure;
 	}
 
 	public ConnectionAnchor getSourceAnchor() {
@@ -85,7 +106,6 @@ public class StatementEditPart extends AbstractTraceEditPart {
 
 	@Override
 	public void layout() {
-		// TODO Auto-generated method stub
 		
 	}
 	

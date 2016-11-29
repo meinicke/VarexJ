@@ -9,6 +9,7 @@ import cmu.vatrace.Statement;
 import cmu.vatrace.Trace;
 
 /**
+ * TODO description
  * 
  * @author Jens Meinicke
  *

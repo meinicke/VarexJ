@@ -5,7 +5,9 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.MidpointLocator;
+import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.swt.graphics.Color;
 
@@ -41,10 +43,23 @@ public class EdgeEditPart extends AbstractConnectionEditPart {
 		PolylineConnection figure = new PolylineConnection();
 		figure.setSourceAnchor(getSourceConnectionAnchor());
 		figure.setTargetAnchor(getTargetConnectionAnchor());
-
+		figure.setForegroundColor(Constants.getColor(edge.getColor()));
+		figure.setLineWidth(edge.getWidth());
 		if (!Conditional.isTautology(edge.getCtx())) {
 			createLabel(edge, figure);
 		}
+
+		PolygonDecoration decoration = new PolygonDecoration();
+		PointList decorationPointList = new PointList();
+		decorationPointList.addPoint(0, 0);
+		decorationPointList.addPoint(-2, 1);
+		decorationPointList.addPoint(-2, -1);
+		decoration.setTemplate(decorationPointList);
+		
+		decoration.setForegroundColor(Constants.getColor(edge.getColor()));
+		
+		figure.setTargetDecoration(decoration);
+
 		return figure;
 	}
 

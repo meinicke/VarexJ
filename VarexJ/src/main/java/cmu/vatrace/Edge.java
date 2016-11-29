@@ -25,8 +25,16 @@ public class Edge {
 		this.color = color;
 	}
 	
+	public NodeColor getColor() {
+		return color;
+	}
+	
 	public void setWidth(int width) {
 		this.width  = width;
+	}
+	
+	public int getWidth() {
+		return width;
 	}
 	
 	public void print(PrintWriter pw, Edge previous) {

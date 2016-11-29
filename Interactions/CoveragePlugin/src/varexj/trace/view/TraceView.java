@@ -27,6 +27,7 @@ import varexj.trace.view.editparts.TraceEditPartFactory;
 public class TraceView extends ViewPart {
 
 	private ScrollingGraphicalViewer viewer;
+	private ScalableFreeformRootEditPart rootEditPart;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -46,9 +47,8 @@ public class TraceView extends ViewPart {
 		viewer.setEditDomain(new EditDomain());
 		viewer.setEditPartFactory(new TraceEditPartFactory());
 
-		ScalableFreeformRootEditPart rootEditPart = new ScalableFreeformRootEditPart();
+		rootEditPart = new ScalableFreeformRootEditPart();
 		((ConnectionLayer) rootEditPart.getLayer(LayerConstants.CONNECTION_LAYER)).setAntialias(SWT.ON);
-
 		viewer.setRootEditPart(rootEditPart);
 		refresh();
 
@@ -80,7 +80,6 @@ public class TraceView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -94,6 +93,8 @@ public class TraceView extends ViewPart {
 		}
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
+				viewer.getEditPartRegistry().clear();
+				viewer.setRootEditPart(rootEditPart);
 				viewer.setContents(model);
 				viewer.getContents().refresh();
 				lm.layout(viewer.getContents());
@@ -105,11 +106,14 @@ public class TraceView extends ViewPart {
 
 	public static Trace createTrace() {
 		if (trace == null) {
+//			final String path = "C:/Users/Jens Meinicke/workspaceVarexJ/Elevator/";
 			final String path = "C:/Users/Jens Meinicke/git/VarexJ/SmallInteractionExamples";
 			final String[] args = { 
 					"+classpath=" + path + "/bin",
 					"+search.class=.search.RandomSearch",
-					"linux.Example" };
+//					"Main"
+					"linux.Linux2" 
+					};
 			JPF.main(args);
 			return JPF.vatrace;
 		}
