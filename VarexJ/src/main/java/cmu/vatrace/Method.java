@@ -21,9 +21,11 @@ public class Method implements MethodElement {
 	private final List<MethodElement> execution = new ArrayList<>();
 	final MethodInfo mi;
 	private int lineNumber = -1;
+	private FeatureExpr ctx;
 	
-	public Method(MethodInfo mi) {
+	public Method(MethodInfo mi, FeatureExpr ctx) {
 		this.mi = mi;
+		this.ctx = ctx; 
 	}
 	
 	public void addMethodElement(MethodElement e) {
@@ -66,7 +68,7 @@ public class Method implements MethodElement {
 
 	public final static BiFunction<Statement, FeatureExpr, FeatureExpr> ExceptionContextAccumulator = (s, ctx) -> {
 		if (s instanceof ExceptionStatement) {
-			return ctx.or(s.getCtx());
+			return ctx.or(s.getCTX());
 		}
 		return ctx;
 	};
@@ -96,6 +98,11 @@ public class Method implements MethodElement {
 	
 	public Collection<MethodElement> getChildren() {
 		return Collections.unmodifiableCollection(execution);
+	}
+	
+	@Override
+	public FeatureExpr getCTX() {
+		return ctx;
 	}
 	
 }

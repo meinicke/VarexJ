@@ -31,7 +31,7 @@ public class MethodFigure extends Figure {
 		setBackgroundColor(Constants.WHITE);
 		setBorder(new LineBorder(Constants.BLACK , 2));
 		this.add(label);
-		this.setOpaque(true);
+		this.setOpaque(false);
 		Label tooltip = new Label();
 		tooltip.setText(method.toString());
 		setToolTip(tooltip);
@@ -62,11 +62,4 @@ public class MethodFigure extends Figure {
 		setBounds(bounds);
 	}
 	
-	@Override
-	public void setBounds(Rectangle rect) {
-		super.setBounds(rect);
-		// center label
-		Rectangle labelBounds =  label.getBounds();
-		label.setLocation(new Point(rect.width / 2 - labelBounds.width / 2, labelBounds.y));
-	}
 }

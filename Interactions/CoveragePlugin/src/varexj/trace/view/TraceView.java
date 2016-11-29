@@ -8,6 +8,8 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionBars;
@@ -38,41 +40,53 @@ public class TraceView extends ViewPart {
 			}
 		}
 
-
-		
 		viewer = new ScrollingGraphicalViewer();
 		viewer.createControl(parent);
-//		viewer.getControl().setBackground(DIAGRAM_BACKGROUND);
+		// viewer.getControl().setBackground(DIAGRAM_BACKGROUND);
 		viewer.setEditDomain(new EditDomain());
 		viewer.setEditPartFactory(new TraceEditPartFactory());
-		
+
 		ScalableFreeformRootEditPart rootEditPart = new ScalableFreeformRootEditPart();
 		((ConnectionLayer) rootEditPart.getLayer(LayerConstants.CONNECTION_LAYER)).setAntialias(SWT.ON);
 
 		viewer.setRootEditPart(rootEditPart);
 		refresh();
-		
+
 		refreshButton = new Action() {
 			public void run() {
 				refresh();
 			}
 		};
-		
+
 		IActionBars bars = getViewSite().getActionBars();
 		IToolBarManager toolbarManager = bars.getToolBarManager();
 		toolbarManager.add(refreshButton);
 		refreshButton.setImageDescriptor(Activator.REFESH_TAB_IMAGE_DESCRIPTOR);
+
+		viewer.getControl().addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseScrolled(final MouseEvent ev) {
+				if ((ev.stateMask & SWT.CTRL) == 0) {
+					return;
+				}
+				if (ev.count > 0) {
+					((ScalableFreeformRootEditPart) viewer.getRootEditPart()).getZoomManager().zoomOut();
+				} else if (ev.count < 0) {
+					((ScalableFreeformRootEditPart) viewer.getRootEditPart()).getZoomManager().zoomIn();
+				}
+			}
+		});
 	}
 
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	LayoutManager lm = new LayoutManager();
 	private Action refreshButton;
-	
+
 	public void refresh() {
 		final Trace model = createTrace();
 		if (model.getMain() == null) {
@@ -88,19 +102,18 @@ public class TraceView extends ViewPart {
 	}
 
 	private static Trace trace = null;
-	
+
 	public static Trace createTrace() {
 		if (trace == null) {
 			final String path = "C:/Users/Jens Meinicke/git/VarexJ/SmallInteractionExamples";
-			final String[] args = {
+			final String[] args = { 
 					"+classpath=" + path + "/bin",
 					"+search.class=.search.RandomSearch",
-					"linux.Example"
-			};
+					"linux.Example" };
 			JPF.main(args);
 			return JPF.vatrace;
 		}
 		return trace;
 	}
-	
+
 }

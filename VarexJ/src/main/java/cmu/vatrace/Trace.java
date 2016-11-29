@@ -64,6 +64,7 @@ public class Trace {
 //						new NameFilter("interpolatedDerivatives" , "previousState"),
 //						new ReferenceFilter(888),
 //						new NameFilter("tMin", "tb"),
+						new NameFilter("dir"),
 						new NameFilter("field"),
 						new InteractionFilter(2),
 						new ExceptionFilter(), 
@@ -172,12 +173,12 @@ public class Trace {
 		if (lastStatement == null) {
 			lastStatement = new One<>(statement);
 		} else {
-			lastStatement.mapf(statement.getCtx(), (FeatureExpr ctx, Statement from) -> {
+			lastStatement.mapf(statement.getCTX(), (FeatureExpr ctx, Statement from) -> {
 				if (!Conditional.isContradiction(ctx)) {
 					edges.add(new Edge(ctx, from, statement));
 				}
 			});
-			lastStatement = ChoiceFactory.create(statement.getCtx(), new One<>(statement), lastStatement).simplify();
+			lastStatement = ChoiceFactory.create(statement.getCTX(), new One<>(statement), lastStatement).simplify();
 		}
 	}
 

@@ -13,7 +13,7 @@ public class ContextFilter implements StatementFilter {
 	}
 	
 	public boolean filter(Statement s) {
-		return !Conditional.isContradiction(s.getCtx().and(ctx));
+		return !Conditional.isContradiction(s.getCTX().and(ctx));
 	}
 	
 }

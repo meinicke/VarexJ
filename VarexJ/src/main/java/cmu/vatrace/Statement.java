@@ -17,7 +17,8 @@ public class Statement implements MethodElement {
 
 	private final FeatureExpr ctx;
 	
-	public FeatureExpr getCtx() {
+	@Override
+	public FeatureExpr getCTX() {
 		return ctx;
 	}
 

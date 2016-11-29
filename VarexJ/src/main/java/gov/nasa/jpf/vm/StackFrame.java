@@ -134,7 +134,7 @@ public int nLocals;
   protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){
 		mi = callee;
 
-		method = new Method(mi);
+		method = new Method(mi, ctx);
 
 		if (!JPF.vatrace.hasMain()) {
 			JPF.vatrace.setMain(method);

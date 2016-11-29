@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import cmu.vatrace.Edge;
 import cmu.vatrace.Statement;
@@ -37,7 +36,7 @@ import varexj.trace.view.figures.StatementFigure;
  * 
  * @author Jens Meinicke
  */
-public class StatementEditPart extends AbstractGraphicalEditPart {
+public class StatementEditPart extends AbstractTraceEditPart {
 
 	private ConnectionAnchor sourceAnchor = null;
 	private ConnectionAnchor targetAnchor = null;
@@ -65,10 +64,6 @@ public class StatementEditPart extends AbstractGraphicalEditPart {
 		return statementFigure;
 	}
 
-	@Override
-	protected void createEditPolicies() {
-	}
-	
 	public ConnectionAnchor getSourceAnchor() {
 		return sourceAnchor;
 	}
@@ -86,6 +81,12 @@ public class StatementEditPart extends AbstractGraphicalEditPart {
 			}
 		}
 		return connections;
+	}
+
+	@Override
+	public void layout() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

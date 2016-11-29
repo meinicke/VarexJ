@@ -24,10 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import cmu.vatrace.Method;
 import cmu.vatrace.MethodElement;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import varexj.trace.view.figures.MethodFigure;
 
 /**
@@ -35,7 +38,9 @@ import varexj.trace.view.figures.MethodFigure;
  * 
  * @author Jens Meinicke
  */
-public class MethodEditPart extends AbstractGraphicalEditPart {
+public class MethodEditPart extends AbstractTraceEditPart {
+
+	private final static int BORDER_MARGIN = 10;
 
 	public MethodEditPart(Method method) {
 		super();
@@ -48,15 +53,104 @@ public class MethodEditPart extends AbstractGraphicalEditPart {
 	}
 
 	@Override
-	protected void createEditPolicies() {
-	}
-	
-	@Override
 	protected List getModelChildren() {
 		List children = new ArrayList();
-		for (MethodElement child : ((Method)getModel()).getChildren()) {
+		for (MethodElement child : ((Method) getModel()).getChildren()) {
 			children.add(child);
 		}
 		return children;
+	}
+
+	@Override
+	public void layout() {
+		final IFigure methodFigure = getFigure();
+		Rectangle bounds = methodFigure.getBounds();
+		final Point referencePoint = bounds.getTopLeft();
+		int h = 40;
+		
+		MethodElement previous = null; 
+		AbstractTraceEditPart previousFigure = null;
+		for (Object object : getChildren()) {
+			if (object instanceof AbstractTraceEditPart) {
+				AbstractTraceEditPart childEditPart = (AbstractTraceEditPart) object;
+				
+				MethodElement model = (MethodElement) childEditPart.getModel();
+				FeatureExpr ctx = model.getCTX();
+				System.out.println("layout " + model); 
+				if (previous != null) {
+					FeatureExpr prevctx = previous.getCTX();
+					if (prevctx.equivalentTo(ctx)) {
+//						previous = model;
+//						previousFigure = childEditPart;
+					} else {
+						if (prevctx.and(ctx).isSatisfiable()) {
+							// True -> a
+							childEditPart.layout();
+							childEditPart.getFigure().translateToRelative(referencePoint);
+
+							childEditPart.getFigure().setLocation(new Point(BORDER_MARGIN, h));
+							h = childEditPart.getFigure().getBounds().bottom() + BORDER_MARGIN;
+							previous = model;
+							previousFigure = childEditPart;
+							continue;
+						} else {
+							// a -> -a
+							childEditPart.layout();
+							childEditPart.getFigure().translateToRelative(referencePoint);
+							h = previousFigure.getFigure().getBounds().y;
+							childEditPart.getFigure().setLocation(new Point(previousFigure.getFigure().getBounds().right() + BORDER_MARGIN, h));
+							h = childEditPart.getFigure().getBounds().bottom() + BORDER_MARGIN;
+							previous = model;
+							previousFigure = childEditPart;
+							continue;
+						}
+					}
+				}
+				
+				childEditPart.layout();
+				childEditPart.getFigure().translateToRelative(referencePoint);
+
+				int x = BORDER_MARGIN;
+				if (previousFigure != null) {
+					int prevright = previousFigure.getFigure().getBounds().right();
+					if (x + childEditPart.getFigure().getBounds().width  < prevright) {
+						x = previousFigure.getFigure().getBounds().getBottom().x - childEditPart.getFigure().getBounds().width / 2;
+					}
+				}
+				childEditPart.getFigure().setLocation(new Point(x, h));
+				h += childEditPart.getFigure().getSize().height;
+				h += BORDER_MARGIN * 2;
+				
+				previous = model;
+				previousFigure = childEditPart;
+			}
+		}
+		
+		int maxW = bounds.width;
+		int maxH = bounds.height;
+		for (Object object : getChildren()) {
+			if (object instanceof AbstractGraphicalEditPart) {
+				bounds = ((AbstractGraphicalEditPart) object).getFigure().getBounds();
+				maxW = Math.max(maxW, bounds.right());
+				maxH = Math.max(bounds.bottom(), maxH);
+			}
+		}
+		Rectangle oldbounds = methodFigure.getBounds();
+		int newHeight = maxH - oldbounds.getTop().y;
+
+		bounds = new Rectangle(oldbounds.x, oldbounds.y, maxW + BORDER_MARGIN, newHeight + BORDER_MARGIN);
+		// center
+		for (Object object : getChildren()) {
+			if (object instanceof AbstractTraceEditPart) {
+				AbstractTraceEditPart childEditPart = (AbstractTraceEditPart) object;
+				Rectangle oldbounds2 = childEditPart.getFigure().getBounds();
+				MethodElement model = (MethodElement) childEditPart.getModel();
+				if (((MethodElement)getModel()).getCTX().equivalentTo(model.getCTX())) {
+					childEditPart.getFigure().setLocation(new Point(bounds.getTop().x -oldbounds2.width / 2, oldbounds2.y));
+				}
+			}
+		}
+
+		methodFigure.setBounds(bounds);
 	}
 }

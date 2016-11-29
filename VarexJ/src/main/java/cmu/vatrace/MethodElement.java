@@ -3,6 +3,7 @@ package cmu.vatrace;
 import java.io.PrintWriter;
 
 import cmu.vatrace.filters.StatementFilter;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public interface MethodElement {
 
@@ -19,4 +20,6 @@ public interface MethodElement {
 	public void addStatements(Trace trace);
 	
 	public int size();
+	
+	public FeatureExpr getCTX();
 }

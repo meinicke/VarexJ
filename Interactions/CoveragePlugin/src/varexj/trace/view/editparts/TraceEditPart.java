@@ -27,7 +27,8 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import cmu.vatrace.Edge;
 import cmu.vatrace.Trace;
@@ -38,7 +39,7 @@ import coverageplugin.Constants;
  * 
  * @author Jens Meinicke
  */
-public class TraceEditPart extends AbstractGraphicalEditPart {
+public class TraceEditPart extends AbstractTraceEditPart {
 
 	private Edge edge;
 
@@ -70,9 +71,46 @@ public class TraceEditPart extends AbstractGraphicalEditPart {
 		list.add(t.getEND());
 		return list;
 	}
+	
+	private final static int BORDER_MARGIN = 10;
 
+	/**
+	 * TODO remove code clone with {@link MethodEditPart}
+	 */
 	@Override
-	protected void createEditPolicies() {
+	public void layout() {
+		final IFigure methodFigure = getFigure();
+		Rectangle bounds = methodFigure.getBounds();
+		int h = 0;
+		for (Object object : getChildren()) {
+			if (object instanceof AbstractTraceEditPart) {
+				AbstractTraceEditPart childEditPart = (AbstractTraceEditPart) object;
+				childEditPart.layout();
+				childEditPart.getFigure().translateToRelative(bounds.getTopLeft());
+				childEditPart.getFigure().setLocation(new Point(0, h));
+				h += childEditPart.getFigure().getSize().height;
+				h += BORDER_MARGIN * 2;
+			}
+		}
+		
+		// center elements
+		int maxwidth = 0;
+		for (Object object : getChildren()) {
+			if (object instanceof AbstractTraceEditPart) {
+				AbstractTraceEditPart childEditPart = (AbstractTraceEditPart) object;
+				maxwidth = Math.max(childEditPart.getFigure().getBounds().width, maxwidth);
+			}
+		}
+		
+		for (Object object : getChildren()) {
+			if (object instanceof AbstractTraceEditPart) {
+				AbstractTraceEditPart childEditPart = (AbstractTraceEditPart) object;
+				Rectangle childBounds = childEditPart.getFigure().getBounds();
+				
+				int newX = maxwidth / 2 - childBounds.width / 2;
+				childEditPart.getFigure().setLocation(new Point(newX, childBounds.y));
+			}
+		}
 	}
 	
 }
