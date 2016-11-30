@@ -89,7 +89,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							final Conditional push = getPushValue(ctx, frame, e, index);
 							pushValue = ChoiceFactory.create(ctx, push, pushValue);
 							
-							new ArrayLoadStatement(frame.method, index, push, e, ctx);
+							new ArrayLoadStatement(instruction, frame.method, index, push, e, ctx);
 							
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {

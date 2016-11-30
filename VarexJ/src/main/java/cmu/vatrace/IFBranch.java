@@ -1,5 +1,7 @@
 package cmu.vatrace;
 
+import java.util.Map.Entry;
+
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.IfInstruction;
@@ -22,10 +24,21 @@ public class IFBranch extends Statement {
 		
 	@Override
 	public String toString() {
-		return ((IfInstruction)op).getLineNumber() + " " + targets.map((t -> m.mi.getLineNumber(t)));
-		
-//		return "?";
-//		return "if (" + Conditional.getCTXString(getTargetContext()) + ')';
+//		return ((IfInstruction)op).getLineNumber() + " " + targets.map((t -> m.mi.getLineNumber(t)));
+		return "if (" + Conditional.getCTXString(getTargetContext()) + ')';
+	}
+
+	private FeatureExpr getTargetContext() {
+		int minPc = Integer.MAX_VALUE;
+		FeatureExpr ctx = null;
+		for (Entry<Integer, FeatureExpr> entry : targets.toMap().entrySet()) {
+			int pc = entry.getKey();
+			if (pc < minPc) {
+				ctx = entry.getValue();
+				minPc = pc;
+			}
+		}
+		return ctx;
 	}
 
 	@Override

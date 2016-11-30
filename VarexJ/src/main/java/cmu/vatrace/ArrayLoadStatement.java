@@ -18,8 +18,8 @@ public class ArrayLoadStatement extends Statement {
 		super(op, m, ctx);
 	}
 
-	public ArrayLoadStatement(Method method, int index, Conditional value,  ElementInfo ei, FeatureExpr ctx) {
-		this(null, method, ctx);
+	public ArrayLoadStatement(Instruction op, Method method, int index, Conditional value,  ElementInfo ei, FeatureExpr ctx) {
+		this(op, method, ctx);
 		this.value = value;
 		this.index = index;
 		this.ei = ei;

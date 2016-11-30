@@ -9,32 +9,34 @@ import gov.nasa.jpf.vm.Instruction;
 
 public class FieldGetStatement extends Statement {
 
-	private Conditional<Integer> value;
+	private Conditional value;
 	private FieldInfo fi;
 
 	private FieldGetStatement(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 
-	public FieldGetStatement(Instruction op, Conditional<Integer> value, Method method, FieldInfo fi, FeatureExpr ctx) {
+	public FieldGetStatement(Instruction op, Conditional value, Method method, FieldInfo fi, FeatureExpr ctx) {
 		this(op, method, ctx);
 		this.value = value;
 		this.fi = fi;
 	}
 
 	// TODO remove code clone
-	private final Function<Integer, String> f = val -> {
-		if (fi.isBooleanField()) {
-			return Boolean.toString(val == 1);
-		}
-		if (fi.isReference()) {
-			if (val == 0) {
-				return "null";
+	private final Function<Object, String> f = val -> {
+		if (val instanceof Integer) {
+			if (fi.isBooleanField()) {
+				return Boolean.toString((Integer)val == 1);
 			}
-			if (TraceUtils.enums.containsKey(val)) {
-				return TraceUtils.enums.get(val);
+			if (fi.isReference()) {
+				if ((Integer)val == 0) {
+					return "null";
+				}
+				if (TraceUtils.enums.containsKey(val)) {
+					return TraceUtils.enums.get(val);
+				}
+				return '@' + val.toString();
 			}
-			return '@' + val.toString();
 		}
 		return val.toString();
 	};
@@ -51,6 +53,7 @@ public class FieldGetStatement extends Statement {
 	
 	@Override
 	public boolean affectsIdentifier(String fieldName) {
+		System.out.println(fi.getName());
 		return fi.getName().equals(fieldName);
 	}
 	

@@ -12,6 +12,6 @@ public class ReferenceFilter implements StatementFilter {
 
 	@Override
 	public boolean filter(Statement s) {
-		return !s.affectsref(ref);
+		return s.affectsref(ref);
 	}
 }

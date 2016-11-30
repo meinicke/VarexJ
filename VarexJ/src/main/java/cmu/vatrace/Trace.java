@@ -62,8 +62,8 @@ public class Trace {
 //						new NameFilter("interpolatedDerivatives" , "previousState"),
 //						new ReferenceFilter(888),
 //						new NameFilter("tMin", "tb"),
-						new NameFilter("dir"),
-						new NameFilter("field"),
+						new NameFilter("pfnnid_map"),
+						new ReferenceFilter(900),
 						new InteractionFilter(2),
 						new ExceptionFilter(), 
 						new StatementFilter() {
