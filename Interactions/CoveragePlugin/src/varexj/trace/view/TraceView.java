@@ -104,10 +104,12 @@ public class TraceView extends ViewPart {
 
 	private static Trace trace = null;
 
+	public static final String PROJECT_NAME = "SmallInteractionExamples";
+	
 	public static Trace createTrace() {
 		if (trace == null) {
 //			final String path = "C:/Users/Jens Meinicke/workspaceVarexJ/Elevator/";
-			final String path = "C:/Users/Jens Meinicke/git/VarexJ/SmallInteractionExamples";
+			final String path = "C:/Users/Jens Meinicke/git/VarexJ/" + PROJECT_NAME;
 			final String[] args = { 
 					"+classpath=" + path + "/bin",
 					"+search.class=.search.RandomSearch",

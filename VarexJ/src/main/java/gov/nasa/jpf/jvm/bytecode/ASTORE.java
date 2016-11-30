@@ -54,7 +54,7 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
 			oldValue = null;
 			newValue = newValue.simplify(ctx);
 		}
-		new LocalStoreStatement(frame.method, oldValue, newValue, localVarInfo, ctx);
+		new LocalStoreStatement(this, frame.method, oldValue, newValue, localVarInfo, ctx);
     }
     
 	frame.storeOperand(ctx, index);

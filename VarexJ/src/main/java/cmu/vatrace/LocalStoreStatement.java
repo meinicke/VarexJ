@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
 
 public class LocalStoreStatement extends Statement {
@@ -12,12 +13,12 @@ public class LocalStoreStatement extends Statement {
 	private Conditional<Integer> newValue;
 	private LocalVarInfo li;
 
-	private LocalStoreStatement(Object op, Method m, FeatureExpr ctx) {
+	private LocalStoreStatement(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 
-	public LocalStoreStatement(Method method, Conditional<Integer> oldValue, Conditional<Integer> newValue, LocalVarInfo li, FeatureExpr ctx) {
-		this(null, method, ctx);
+	public LocalStoreStatement(Instruction op, Method method, Conditional<Integer> oldValue, Conditional<Integer> newValue, LocalVarInfo li, FeatureExpr ctx) {
+		this(op, method, ctx);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.li = li;

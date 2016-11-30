@@ -4,18 +4,19 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.Types;
 
 public class ReturnStatement extends Statement {
 
 	private Conditional<Integer> returnValue;
 
-	private ReturnStatement(Object op, Method m, FeatureExpr ctx) {
+	private ReturnStatement(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 
-	public ReturnStatement(Method method, Conditional<Integer> returnValue, FeatureExpr ctx) {
-		this(null, method, ctx);
+	public ReturnStatement(Instruction op, Method method, Conditional<Integer> returnValue, FeatureExpr ctx) {
+		this(op, method, ctx);
 		this.returnValue = returnValue;
 		if (returnValue.toMap().size() > 1) {
 			setColor(NodeColor.darkorange);

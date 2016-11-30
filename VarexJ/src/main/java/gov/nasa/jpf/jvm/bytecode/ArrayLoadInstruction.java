@@ -93,7 +93,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
-							new Statement(this.toString(), frame.method, ctx);
+							new Statement(instruction, frame.method, ctx);
 							
 							pushCtx = pushCtx.andNot(ctx);
 							return new One<Instruction>(new EXCEPTION(thisInstruction,

@@ -96,7 +96,7 @@ public class GETSTATIC extends StaticFieldInstruction {
       Conditional<Integer> ival = ei.get1SlotField(fieldInfo);
       
       if (getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
-	      new FieldGetStatement(ival, frame.method, fi, ctx);
+	      new FieldGetStatement(this, ival, frame.method, fi, ctx);
       }
       
       lastValue = ival;

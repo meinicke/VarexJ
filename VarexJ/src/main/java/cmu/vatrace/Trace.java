@@ -17,7 +17,6 @@ import cmu.vatrace.filters.ReferenceFilter;
 import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
-import de.fosd.typechef.featureexpr.bdd.BDDFeatureExprFactory;
 
 public class Trace {
 	private Statement START, END;
@@ -29,10 +28,10 @@ public class Trace {
 	Method main;
 
 	public Trace() {
-		START = new Statement("Start", null, BDDFeatureExprFactory.True());
+		START = new NoStatement("Start");
 		START.setShape(Shape.Msquare);
 		
-		END = new Statement("End", null, BDDFeatureExprFactory.True());
+		END = new NoStatement("End");
 		END.setShape(Shape.Msquare);
 	}
 

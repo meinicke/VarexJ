@@ -2,17 +2,16 @@ package cmu.vatrace;
 
 import java.io.PrintWriter;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.Instruction;
 
 public class Statement implements MethodElement {
 
 	private static int ID = 0;
 
 	private final int id = ID++;
-	Object op;
+	Instruction op;
 	Method m;
 
 	private final FeatureExpr ctx;
@@ -22,7 +21,7 @@ public class Statement implements MethodElement {
 		return ctx;
 	}
 
-	public Statement(@NonNull Object op, Method m, FeatureExpr ctx) {
+	public Statement(Instruction op, Method m, FeatureExpr ctx) {
 		if (m != null) {
 			m.addMethodElement(this);
 		}
@@ -114,5 +113,13 @@ public class Statement implements MethodElement {
 	
 	public NodeColor getColor() {
 		return color;
+	}
+	
+	public Instruction getInstruction() {
+		return op;
+	}
+	
+	public Method getMethod() {
+		return m;
 	}
 }

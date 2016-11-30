@@ -1,20 +1,19 @@
 package cmu.vatrace;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.Instruction;
 
 public class ExceptionStatement extends Statement {
 	
 	public String cname;
 	private String details;
 
-	public ExceptionStatement(@NonNull Object op, Method m, FeatureExpr ctx) {
+	public ExceptionStatement(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 	
-	public ExceptionStatement(String cname, String details, Method method, FeatureExpr ctx) {
-		this(null, method, ctx);
+	public ExceptionStatement(Instruction op, String cname, String details, Method method, FeatureExpr ctx) {
+		this(op, method, ctx);
 		this.cname = cname;
 		this.details = details != null ? details.replaceAll("\"", "-") : null;
 		setColor(NodeColor.firebrick1);

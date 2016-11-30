@@ -2,11 +2,10 @@ package cmu.vatrace;
 
 import java.util.function.Function;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.FieldInfo;
+import gov.nasa.jpf.vm.Instruction;
 
 public class FieldPutStatement extends Statement {
 
@@ -16,12 +15,12 @@ public class FieldPutStatement extends Statement {
 	private Conditional<String> newString;
 	private Conditional<String> oldString;
 
-	private FieldPutStatement(@NonNull Object op, Method m, FeatureExpr ctx) {
+	private FieldPutStatement(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 
-	public FieldPutStatement(Conditional<Integer> oldValue, Conditional<Integer> newValue, Method m, FieldInfo fi, FeatureExpr ctx) {
-		this(null, m, ctx);
+	public FieldPutStatement(Instruction op, Conditional<Integer> oldValue, Conditional<Integer> newValue, Method m, FieldInfo fi, FeatureExpr ctx) {
+		this(op, m, ctx);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.fi = fi;

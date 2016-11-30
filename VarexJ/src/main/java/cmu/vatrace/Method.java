@@ -96,6 +96,10 @@ public class Method implements MethodElement {
 		return lineNumber;
 	}
 	
+	public MethodInfo getMethodInfo() {
+		return mi;
+	}
+	
 	public Collection<MethodElement> getChildren() {
 		return Collections.unmodifiableCollection(execution);
 	}

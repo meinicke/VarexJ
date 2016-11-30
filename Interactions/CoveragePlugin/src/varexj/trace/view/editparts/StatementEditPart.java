@@ -25,12 +25,15 @@ import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.Request;
 import org.eclipse.swt.SWT;
 
 import cmu.vatrace.Edge;
 import cmu.vatrace.Shape;
 import cmu.vatrace.Statement;
 import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.MethodInfo;
 import varexj.trace.view.figures.IfBranchFigure;
 import varexj.trace.view.figures.SquareFigure;
 import varexj.trace.view.figures.StatementFigure;
@@ -107,6 +110,27 @@ public class StatementEditPart extends AbstractTraceEditPart {
 	@Override
 	public void layout() {
 		
+	}
+	
+	public Statement getStatementModel() {
+		return (Statement) getModel();
+	}
+	
+	@Override
+	public void performRequest(Request request) {
+		if ("open".equals(request.getType())) {
+			final Statement statement = getStatementModel();
+			Instruction instruction = statement.getInstruction();
+			if (instruction != null) {
+				EditorHelper.open(instruction.getMethodInfo(), instruction.getLineNumber());
+			} else {
+				MethodInfo method = statement.getMethod().getMethodInfo();
+				EditorHelper.open(method, method.getLineNumber(0));
+			}
+			
+			
+		}
+		super.performRequest(request);
 	}
 	
 }

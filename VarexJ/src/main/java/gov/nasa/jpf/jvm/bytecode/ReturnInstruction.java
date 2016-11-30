@@ -169,7 +169,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     StackFrame frame = ti.getModifiableTopFrame();
 
     if (getReturnTypeSize() > 0) {
-    	new ReturnStatement(frame.method, frame.peek(ctx), ctx);
+    	new ReturnStatement(this, frame.method, frame.peek(ctx), ctx);
     }
     
     returnFrame = frame;

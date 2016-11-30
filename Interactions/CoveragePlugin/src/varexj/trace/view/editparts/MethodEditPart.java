@@ -26,11 +26,13 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import cmu.vatrace.Method;
 import cmu.vatrace.MethodElement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.vm.MethodInfo;
 import varexj.trace.view.figures.MethodFigure;
 
 /**
@@ -67,13 +69,13 @@ public class MethodEditPart extends AbstractTraceEditPart {
 		Rectangle bounds = methodFigure.getBounds();
 		final Point referencePoint = bounds.getTopLeft();
 		int h = 40;
-		
-		MethodElement previous = null; 
+
+		MethodElement previous = null;
 		AbstractTraceEditPart previousFigure = null;
 		for (Object object : getChildren()) {
 			if (object instanceof AbstractTraceEditPart) {
 				AbstractTraceEditPart childEditPart = (AbstractTraceEditPart) object;
-				
+
 				MethodElement model = (MethodElement) childEditPart.getModel();
 				FeatureExpr ctx = model.getCTX();
 				if (previous != null) {
@@ -81,7 +83,7 @@ public class MethodEditPart extends AbstractTraceEditPart {
 					if (!prevctx.equivalentTo(ctx)) {
 						if (prevctx.and(ctx).isSatisfiable()) {
 							// True -> a
-							
+
 							// move to left
 							childEditPart.layout();
 							childEditPart.getFigure().translateToRelative(referencePoint);
@@ -104,19 +106,19 @@ public class MethodEditPart extends AbstractTraceEditPart {
 						}
 					}
 				}
-				
+
 				childEditPart.layout();
 				childEditPart.getFigure().translateToRelative(referencePoint);
 				childEditPart.getFigure().setLocation(new Point(-childEditPart.getFigure().getBounds().width / 2, h));
 				h += childEditPart.getFigure().getSize().height;
 				h += BORDER_MARGIN * 4;
-				
+
 				previous = model;
 				previousFigure = childEditPart;
 			}
 		}
-		
-		//move all to scope
+
+		// move all to scope
 		int minX = 0;
 		for (Object object : getChildren()) {
 			if (object instanceof AbstractGraphicalEditPart) {
@@ -124,15 +126,14 @@ public class MethodEditPart extends AbstractTraceEditPart {
 				minX = Math.min(bounds.x, minX);
 			}
 		}
-		
+
 		for (Object object : getChildren()) {
 			if (object instanceof AbstractGraphicalEditPart) {
 				Point location = ((AbstractGraphicalEditPart) object).getFigure().getBounds().getTopLeft();
 				((AbstractGraphicalEditPart) object).getFigure().setLocation(new Point(BORDER_MARGIN + location.x - minX, location.y));
 			}
 		}
-		
-		
+
 		int maxW = bounds.width;
 		int maxH = bounds.height;
 		for (Object object : getChildren()) {
@@ -149,4 +150,20 @@ public class MethodEditPart extends AbstractTraceEditPart {
 
 		methodFigure.setBounds(bounds);
 	}
+
+	public Method getMethodModel() {
+		return (Method) getModel();
+	}
+
+	@Override
+	public void performRequest(Request request) {
+		if ("open".equals(request.getType())) {
+			final Method method = getMethodModel();
+			final int lineNumber = method.getLineNumber();
+			MethodInfo mi = method.getMethodInfo();
+			EditorHelper.open(mi, lineNumber);
+		}
+		super.performRequest(request);
+	}
+
 }

@@ -49,11 +49,11 @@ public class AASTORE extends ArrayStoreInstruction {
 		try {
 			ei.checkArrayBounds(ctx, index);
 		} catch (ArrayIndexOutOfBoundsExecutiveException e) {
-			Statement statement = new Statement(this.toString(), frame.method, ctx);
+			Statement statement = new Statement(this, frame.method, ctx);
 			throw e;
 		}
 
-		Statement statement = new ArrayStoreStatement(frame.method, index, ei.getReferenceElement(index), value, ei, ctx);
+		Statement statement = new ArrayStoreStatement(this, frame.method, index, ei.getReferenceElement(index), value, ei, ctx);
 		
 		ei.setReferenceElement(ctx, index, value);
 	}

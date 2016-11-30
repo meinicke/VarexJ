@@ -3118,7 +3118,7 @@ public class ThreadInfo extends InfoObject
             throw new UncaughtException(ctx, this, exceptionObjRef);
         }
         
-        new ExceptionStatement(exceptionName, pendingException.getCauseDetails(ctx), getTopFrame().method, ctx);
+        new ExceptionStatement(top.getPC().simplify(ctx).getValue(), exceptionName, pendingException.getCauseDetails(ctx), getTopFrame().method, ctx);
 
         // check if we find a matching handler, and if we do store it. Leave the
         // stack untouched so that listeners can still inspect it

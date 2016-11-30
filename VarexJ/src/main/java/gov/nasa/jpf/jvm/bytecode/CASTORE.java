@@ -55,7 +55,7 @@ public class CASTORE extends ArrayStoreInstruction {
 		ei.setCharElement(ctx, index, value);
 		
 		Conditional<Character> newValue = ei.getCharElement(index).simplify();
-		new ArrayStoreStatement(frame.method, index, oldValue, newValue, ei, ctx);
+		new ArrayStoreStatement(this, frame.method, index, oldValue, newValue, ei, ctx);
 	}
 
   public int getByteCode () {

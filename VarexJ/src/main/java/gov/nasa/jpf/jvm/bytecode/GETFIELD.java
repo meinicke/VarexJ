@@ -112,7 +112,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 					pushValue = ChoiceFactory.create(ctx, ei.get2SlotField(fi), pushValue);
 				}
 				
-				new FieldGetStatement(pushValue.simplify(ctx), frame.method, fi, ctx);
+				new FieldGetStatement(thisInstruction, pushValue.simplify(ctx), frame.method, fi, ctx);
 				
 				return getNext(ctx, ti);
 

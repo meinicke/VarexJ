@@ -53,7 +53,7 @@ public class ALOAD extends LocalVariableInstruction {
     if (index != 0) {// ignore this
 	    LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
 	    if (localVarInfo != null) {
-			Statement statement = new LocalGetStatement(frame.peek(ctx), frame.method, localVarInfo, ctx);
+			Statement statement = new LocalGetStatement(this, frame.peek(ctx), frame.method, localVarInfo, ctx);
 	    }
 		
     }

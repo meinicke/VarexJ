@@ -3,12 +3,13 @@ package cmu.vatrace;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.IfInstruction;
+import gov.nasa.jpf.vm.Instruction;
 
 public class IFBranch extends Statement {
 
 	private Conditional<Integer> targets;
 
-	private IFBranch(Object op, Method m, FeatureExpr ctx) {
+	private IFBranch(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 	

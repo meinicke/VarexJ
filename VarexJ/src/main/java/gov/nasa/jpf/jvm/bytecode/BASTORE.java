@@ -55,17 +55,18 @@ public class BASTORE extends ArrayStoreInstruction {
 		try {
 			ei.checkArrayBounds(ctx, index);
 		} finally {
-			new Statement(this.toString(), frame.method, ctx);
+			// TODO does thus make sense
+			new Statement(this, frame.method, ctx);
 		}
 
 		Fields f = ei.getFields();
 
 		if (f instanceof ByteArrayFields) {
-			new ArrayStoreStatement(frame.method, index, ei.getByteElement(index), value, ei, ctx);
+			new ArrayStoreStatement(this, frame.method, index, ei.getByteElement(index), value, ei, ctx);
 			ei.setByteElement(ctx, index, value);
 
 		} else if (f instanceof BooleanArrayFields) {
-			new ArrayStoreStatement(frame.method, index, ei.getBooleanElement(index), value, ei, ctx);
+			new ArrayStoreStatement(this, frame.method, index, ei.getBooleanElement(index), value, ei, ctx);
 			ei.setBooleanElement(ctx, index, value.mapr(new Function<Byte, Conditional<Boolean>>() {
 
 				@Override
