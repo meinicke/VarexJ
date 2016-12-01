@@ -1,6 +1,5 @@
 package varexj.trace.view.editparts;
 
-import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
@@ -13,7 +12,6 @@ import org.eclipse.swt.graphics.Color;
 
 import cmu.conditional.Conditional;
 import cmu.vatrace.Edge;
-import cmu.vatrace.Statement;
 import coverageplugin.Constants;
 
 /**
@@ -32,17 +30,8 @@ public class EdgeEditPart extends AbstractConnectionEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Edge edge = (Edge) getModel();
-		Statement from = edge.getFrom();
-		Statement to = edge.getTo();
-		StatementEditPart source = (StatementEditPart) getViewer().getEditPartRegistry().get(from);
-		StatementEditPart target = (StatementEditPart) getViewer().getEditPartRegistry().get(to);
-
-		setSource(source);
-		setTarget(target);
-
 		PolylineConnection figure = new PolylineConnection();
-		figure.setSourceAnchor(getSourceConnectionAnchor());
-		figure.setTargetAnchor(getTargetConnectionAnchor());
+		
 		figure.setForegroundColor(Constants.getColor(edge.getColor()));
 		figure.setLineWidth(edge.getWidth());
 		if (!Conditional.isTautology(edge.getCtx())) {
@@ -62,6 +51,15 @@ public class EdgeEditPart extends AbstractConnectionEditPart {
 
 		return figure;
 	}
+	
+	@Override
+	protected void refreshVisuals() {
+		Edge edge = (Edge) getModel();
+		StatementEditPart source = (StatementEditPart) getViewer().getEditPartRegistry().get(edge.getFrom());
+		setSource(source);
+		StatementEditPart target = (StatementEditPart) getViewer().getEditPartRegistry().get(edge.getTo());
+		setTarget(target);
+	}
 
 	private void createLabel(Edge edge, PolylineConnection figure) {
 		MidpointLocator sourceEndpointLocator = new MidpointLocator(figure, 0);
@@ -77,21 +75,10 @@ public class EdgeEditPart extends AbstractConnectionEditPart {
 	protected void createEditPolicies() {
 
 	}
-
+	
 	@Override
-	protected ConnectionAnchor getSourceConnectionAnchor() {
-		Edge edge = (Edge) getModel();
-		Statement from = edge.getFrom();
-		StatementEditPart source = (StatementEditPart) getViewer().getEditPartRegistry().get(from);
-		return source.getSourceAnchor();
-	}
-
-	@Override
-	protected ConnectionAnchor getTargetConnectionAnchor() {
-		Edge edge = (Edge) getModel();
-		Statement to = edge.getTo();
-		StatementEditPart target = (StatementEditPart) getViewer().getEditPartRegistry().get(to);
-		return target.getTargetAnchor();
+	public void deactivate() {
+		getFigure().setVisible(false);
 	}
 
 }
