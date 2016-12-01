@@ -53,7 +53,6 @@ public class FieldGetStatement extends Statement {
 	
 	@Override
 	public boolean affectsIdentifier(String fieldName) {
-		System.out.println(fi.getName());
 		return fi.getName().equals(fieldName);
 	}
 	
