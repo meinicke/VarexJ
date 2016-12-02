@@ -19,7 +19,13 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import cmu.vatrace.IFBranch;
+import cmu.vatrace.Statement;
 import cmu.vatrace.Trace;
+import cmu.vatrace.filters.ExceptionFilter;
+import cmu.vatrace.filters.InteractionFilter;
+import cmu.vatrace.filters.Or;
+import cmu.vatrace.filters.StatementFilter;
 import coverplugin.Activator;
 import gov.nasa.jpf.JPF;
 import varexj.trace.view.editparts.TraceEditPartFactory;
@@ -124,7 +130,28 @@ public class TraceView extends ViewPart {
 //					"SmoothingPolynomialBicubicSplineInterpolatorTest"
 					"SimplexOptimizerNelderMeadTestStarter"
 					};
+			Trace.filter = new Or(
+//					new NameFilter("interpolatedDerivatives" , "previousState"),
+//					new ReferenceFilter(888),
+//					new NameFilter("tMin", "tb"),
+					new InteractionFilter(2),
+					new ExceptionFilter(), 
+					new StatementFilter() {
+				
+				@Override
+				public boolean filter(Statement s) {
+					return s instanceof IFBranch;
+				}
+			});
+			
 			JPF.main(args);
+			
+			// highlight path
+//			SingleFeatureExpr change8 = Conditional.features.get("change8");
+//			SingleFeatureExpr change9 = Conditional.features.get("change9");
+//			FeatureExpr ctx = change8.not().and(change9.not());
+//			JPF.vatrace.highlightContext(ctx, NodeColor.limegreen, 3);
+			
 			return JPF.vatrace;
 		}
 		return trace;

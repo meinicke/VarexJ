@@ -39,68 +39,26 @@ public class Trace {
 		this.main = main;
 	}
 	
+	public static StatementFilter filter = 
+			new Or(
+//					new NameFilter("interpolatedDerivatives" , "previousState"),
+//					new ReferenceFilter(888),
+//					new NameFilter("tMin", "tb"),
+					new InteractionFilter(2),
+					new ExceptionFilter(), 
+					new StatementFilter() {
+				
+				@Override
+				public boolean filter(Statement s) {
+					return s instanceof IFBranch;
+				}
+			});
+	
 	public static void filterExecution(Method m) {
 		if (m == null || m.size() == 0) {
 			return;
 		}
-		
-//		SingleFeatureExpr change1 = Conditional.features.get("change1");
-//		SingleFeatureExpr change2 = Conditional.features.get("change2");
-//		SingleFeatureExpr change3 = Conditional.features.get("change3");
-//		SingleFeatureExpr change4 = Conditional.features.get("change4");
-//		SingleFeatureExpr change5 = Conditional.features.get("change5");
-//		SingleFeatureExpr change6 = Conditional.features.get("change6");
-////				System.out.println(Conditional.features);
-////		change1|¬change2&change5&¬change6|¬change5&change6
-//		if (Conditional.features.isEmpty()) {
-//			return;
-//		}
-//		FeatureExpr ctx = change1.and(change5).and(change6.not());
-//		FeatureExpr fault = change1.not().and(change2);
-		m.filterExecution(
-				new Or(
-//						new NameFilter("interpolatedDerivatives" , "previousState"),
-//						new ReferenceFilter(888),
-//						new NameFilter("tMin", "tb"),
-						new NameFilter("pfnnid_map"),
-						new ReferenceFilter(900),
-						new InteractionFilter(2),
-						new ExceptionFilter(), 
-						new StatementFilter() {
-					
-					@Override
-					public boolean filter(Statement s) {
-						return s instanceof IFBranch;
-					}
-				}));
-//						new NameFilter("isEncrypted"),
-//						new StatementFilter() {
-//							
-//							@Override
-//							public boolean filter(Statement s) {
-//								return s instanceof IFBranch;
-//							}
-//						},
-//					new And(
-//						new Not(new NameFilter("modCount", "size", "elementData")),
-////						new Not(new NameFilter("branchTokenTypes", "cacheKey")),
-//						new Or(
-//						new InteractionFilter(2),
-//						new ExceptionFilter()
-//					)))
-//				new ReferenceFilter(656)
-//				new NameFilter("approx"),
-//				new NameFilter("RANGE_OF_CELL"),
-//				new NameFilter("MAX_VALUE"),
-//				new NameFilter("MIN_VALUE"),
-//				new NameFilter("bitsPerDimension")
-//				new NameFilter("size")
-				
-//				new NameFilter("methaneLevelCritical","pumpRunning"),
-				
-				// elevator
-//				ELEVATOR_FILTER
-//		);
+		m.filterExecution(filter);
 	}
 
 	public void print(PrintWriter pw, String[] filter) {
@@ -115,22 +73,8 @@ public class Trace {
 		main.addStatements(this);
 		addStatement(END);
 		
-		// highlight ctx
-		for (Edge e : edges) {
-			if (!e.ctx.isTautology()) {
-				e.setColor(NodeColor.darkorange);
-			}
-		}
-		FeatureExpr ctx = main.accumulate(Method.ExceptionContextAccumulator, FeatureExprFactory.False());
-		// highlight exception trace
-		for (Edge e : edges) {
-			if (e.ctx.and(ctx).isSatisfiable()) {
-				e.setWidth(2);
-				e.setColor(NodeColor.firebrick1);
-				e.from.setWidth(2);
-				e.to.setWidth(2);
-			}
-		}
+		highlightNotTautology();
+		highlightExceptionContext();
 		
 		pw.println("// Edges");
 		Edge previous = null;
@@ -150,6 +94,32 @@ public class Trace {
 		
 		pw.println('}');
 
+	}
+
+	private void highlightExceptionContext() {
+		FeatureExpr ctx = main.accumulate(Method.ExceptionContextAccumulator, FeatureExprFactory.False());
+		// highlight exception trace
+		highlightContext(ctx, NodeColor.firebrick1, 2);
+	}
+
+	public void highlightContext(FeatureExpr ctx, NodeColor color, int width) {
+		for (Edge e : edges) {
+			if (e.ctx.and(ctx).isSatisfiable()) {
+				e.setWidth(width);
+				e.setColor(color);
+				e.from.setWidth(width);
+				e.to.setWidth(width);
+			}
+		}
+	}
+
+	private void highlightNotTautology() {
+		// highlight ctx
+		for (Edge e : edges) {
+			if (!e.ctx.isTautology()) {
+				e.setColor(NodeColor.darkorange);
+			}
+		}
 	}
 
 	private static final StatementFilter[] ELEVATOR_FILTER = new StatementFilter[] {
