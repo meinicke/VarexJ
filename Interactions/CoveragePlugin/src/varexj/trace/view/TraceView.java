@@ -70,9 +70,9 @@ public class TraceView extends ViewPart {
 					return;
 				}
 				if (ev.count > 0) {
-					((ScalableFreeformRootEditPart) viewer.getRootEditPart()).getZoomManager().zoomOut();
-				} else if (ev.count < 0) {
 					((ScalableFreeformRootEditPart) viewer.getRootEditPart()).getZoomManager().zoomIn();
+				} else if (ev.count < 0) {
+					((ScalableFreeformRootEditPart) viewer.getRootEditPart()).getZoomManager().zoomOut();
 				}
 			}
 		});
@@ -104,17 +104,23 @@ public class TraceView extends ViewPart {
 
 	private static Trace trace = null;
 
-	public static final String PROJECT_NAME = "SmallInteractionExamples";
+	public static final String PROJECT_NAME = "MathBug";
+	public static final String PROJECT_Sources = "MathSources";
+	public static final String PROJECT_Sources_Folder = "Bug6/src/main/java";
 	
 	public static Trace createTrace() {
 		if (trace == null) {
 //			final String path = "C:/Users/Jens Meinicke/workspaceVarexJ/Elevator/";
-			final String path = "C:/Users/Jens Meinicke/git/VarexJ/" + PROJECT_NAME;
+			final String path = "C:/Users/Jens Meinicke/workspaceVarexJ/" + PROJECT_NAME;
+//			final String path = "C:/Users/Jens Meinicke/git/VarexJ/" + PROJECT_NAME;
 			final String[] args = { 
-					"+classpath=" + path + "/bin",
+					"+classpath=" + path + "/bin,${jpf-core}/lib/junit-4.11.jar,${jpf-core}/lib/math6.jar,${jpf-core}/lib/bcel-5.2.jar",
+					"+nhandler.delegateUnhandledNative",
 					"+search.class=.search.RandomSearch",
 //					"Main"
-					"linux.Linux2" 
+//					"linux.Linux2"
+//					"SmoothingPolynomialBicubicSplineInterpolatorTest"
+					"SimplexOptimizerNelderMeadTest"
 					};
 			JPF.main(args);
 			return JPF.vatrace;

@@ -18,11 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.vatrace.LocalStoreStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -44,20 +42,23 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
     StackFrame frame = ti.getModifiableTopFrame();
     
     LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
+    Conditional<Integer> oldValue = null;
     if (localVarInfo != null) {
-		Conditional<Integer> oldValue = frame.getLocalVariable(FeatureExprFactory.True(), index);
-		Conditional<Integer> newValue = ChoiceFactory.create(ctx, frame.peek(ctx), oldValue).simplify();
-		
 		int startPC = localVarInfo.getStartPC();
 		int pos = getPosition();
 		if (pos == startPC - 1) {// init
 			oldValue = null;
-			newValue = newValue.simplify(ctx);
+		} else {
+			oldValue = frame.getLocalVariable(frame.stack.getCtx(), index);
 		}
-		new LocalStoreStatement(this, frame.method, oldValue, newValue, localVarInfo, ctx);
     }
     
 	frame.storeOperand(ctx, index);
+	
+	if (localVarInfo != null) {
+		Conditional<Integer> newValue = frame.getLocalVariable(frame.stack.getCtx(), index);
+		new LocalStoreStatement(this, frame.method, oldValue, newValue, localVarInfo, ctx);
+	}
     return getNext(ctx, ti);
   }
 

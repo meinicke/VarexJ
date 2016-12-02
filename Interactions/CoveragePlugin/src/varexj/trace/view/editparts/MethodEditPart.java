@@ -160,8 +160,11 @@ public class MethodEditPart extends AbstractTraceEditPart {
 		if ("open".equals(request.getType())) {
 			final Method method = getMethodModel();
 			final int lineNumber = method.getLineNumber();
-			MethodInfo mi = method.getMethodInfo();
-			EditorHelper.open(mi, lineNumber);
+			Method parent = method.getParent();
+			if (parent != null) {
+				MethodInfo mi = parent.getMethodInfo();
+				EditorHelper.open(mi, lineNumber);
+			}
 		}
 		super.performRequest(request);
 	}

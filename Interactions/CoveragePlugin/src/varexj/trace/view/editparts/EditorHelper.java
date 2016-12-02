@@ -39,8 +39,13 @@ public class EditorHelper {
 	
 	// TODO revise this
 	private static IFile getFile(MethodInfo mi) {
-		IProject prj = ResourcesPlugin.getWorkspace().getRoot().getProject(TraceView.PROJECT_NAME);
+		IProject prj = ResourcesPlugin.getWorkspace().getRoot().getProject(TraceView.PROJECT_NAME);		
 		IFile file = prj.getFile("src/" + mi.getSourceFileName());
+		if (!file.exists()) {
+			prj = ResourcesPlugin.getWorkspace().getRoot().getProject(TraceView.PROJECT_Sources);		
+			file = prj.getFile(TraceView.PROJECT_Sources_Folder + "/" + mi.getSourceFileName());
+			
+		}
 		return file;
 	}
 

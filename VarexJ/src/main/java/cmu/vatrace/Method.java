@@ -22,10 +22,19 @@ public class Method implements MethodElement {
 	final MethodInfo mi;
 	private int lineNumber = -1;
 	private FeatureExpr ctx;
+	private Method parent;
 	
 	public Method(MethodInfo mi, FeatureExpr ctx) {
 		this.mi = mi;
 		this.ctx = ctx; 
+	}
+	
+	public Method getParent() {
+		return parent;
+	}
+	
+	public void setParent(Method parent) {
+		this.parent = parent;
 	}
 	
 	public void addMethodElement(MethodElement e) {

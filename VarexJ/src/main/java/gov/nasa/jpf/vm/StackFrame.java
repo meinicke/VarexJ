@@ -251,6 +251,7 @@ public int nLocals;
 		method.setLine(frame.mi.getLineNumber(pc));
 		Method parentNode = frame.method;
 		parentNode.addMethodElement(method);
+		method.setParent(parentNode);
 	}
     prev = frame;
   }
