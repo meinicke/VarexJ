@@ -107,6 +107,7 @@ public class TraceView extends ViewPart {
 	public static final String PROJECT_NAME = "MathBug";
 	public static final String PROJECT_Sources = "MathSources";
 	public static final String PROJECT_Sources_Folder = "Bug6/src/main/java";
+	public static final String PROJECT_Sources_Test_Folder = "Bug6/src/test/java";
 	
 	public static Trace createTrace() {
 		if (trace == null) {
@@ -117,10 +118,11 @@ public class TraceView extends ViewPart {
 					"+classpath=" + path + "/bin,${jpf-core}/lib/junit-4.11.jar,${jpf-core}/lib/math6.jar,${jpf-core}/lib/bcel-5.2.jar",
 					"+nhandler.delegateUnhandledNative",
 					"+search.class=.search.RandomSearch",
+					"+invocation",
 //					"Main"
 //					"linux.Linux2"
 //					"SmoothingPolynomialBicubicSplineInterpolatorTest"
-					"SimplexOptimizerNelderMeadTest"
+					"SimplexOptimizerNelderMeadTestStarter"
 					};
 			JPF.main(args);
 			return JPF.vatrace;
