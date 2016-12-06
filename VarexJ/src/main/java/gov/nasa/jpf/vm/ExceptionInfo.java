@@ -21,6 +21,8 @@ package gov.nasa.jpf.vm;
 import java.io.PrintWriter;
 import java.util.HashSet;
 
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 /**
@@ -90,20 +92,22 @@ public class ExceptionInfo {
     
     return null;
   }
-  public String getCauseDetails(FeatureExpr ctx) {
-    int causeRef = ei.getReferenceField("cause").simplify(ctx).simplify(getCtx()).getValue();
-    if (causeRef != MJIEnv.NULL){
-      ElementInfo eiCause = ti.getElementInfo(causeRef);
-      int msgRef = eiCause.getReferenceField("detailMessage").simplify(ctx).simplify(getCtx()).getValue();
-      if (msgRef != MJIEnv.NULL){
-        ElementInfo eiMsg = ti.getElementInfo(msgRef);
-        return eiMsg.asString().simplify(ctx).simplify(getCtx()).getValue();
-      }
-    }
-
-    return null;
-  }
-
+  @SuppressWarnings("unchecked")
+	public Conditional<String> getCauseDetails(FeatureExpr ctx) {
+		int causeRef = ei.getReferenceField("cause").simplify(ctx).simplify(getCtx()).getValue();
+		if (causeRef != MJIEnv.NULL) {
+			ElementInfo eiCause = ti.getElementInfo(causeRef);
+			Conditional<Integer> msgRef = eiCause.getReferenceField("detailMessage").simplify(ctx).simplify(getCtx());
+			return msgRef.mapf(ctx, (FeatureExpr ctx1, Integer msgRef1) -> {
+				if (msgRef1 != MJIEnv.NULL) {
+					ElementInfo eiMsg = ti.getElementInfo(msgRef1);
+					return eiMsg.asString().simplify(ctx1).simplify(getCtx());
+				}
+				return (Conditional<String>) One.NULL;
+			});
+		}
+		return (Conditional<String>) One.NULL;
+	}
   
   public ThreadInfo getThread() {
     return ti;
