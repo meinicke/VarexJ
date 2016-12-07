@@ -9,13 +9,13 @@ import gov.nasa.jpf.vm.Types;
 
 public class ReturnStatement extends Statement {
 
-	private Conditional<Integer> returnValue;
+	private Conditional returnValue;
 
 	private ReturnStatement(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 
-	public ReturnStatement(Instruction op, Method method, Conditional<Integer> returnValue, FeatureExpr ctx) {
+	public ReturnStatement(Instruction op, Method method, Conditional returnValue, FeatureExpr ctx) {
 		this(op, method, ctx);
 		this.returnValue = returnValue;
 		if (returnValue.toMap().size() > 1) {
@@ -23,10 +23,10 @@ public class ReturnStatement extends Statement {
 		}
 	}
 	
-	private final Function<Integer, String> f = val -> {
+	private final Function<Object, String> f = val -> {
 		switch (m.mi.getReturnType()) {
 			case "Z":
-				return Boolean.toString(val == 1);
+				return Boolean.toString((Integer)val == 1);
 		}
 		if (TraceUtils.enums.containsKey(val)) {
 			return TraceUtils.enums.get(val);

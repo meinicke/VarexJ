@@ -33,6 +33,7 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
+import gov.nasa.jpf.vm.Types;
 import gov.nasa.jpf.vm.VM;
 
 
@@ -169,7 +170,18 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     StackFrame frame = ti.getModifiableTopFrame();
 
     if (getReturnTypeSize() > 0) {
-    	new ReturnStatement(this, frame.method, frame.peek(ctx), ctx);
+	    @SuppressWarnings("rawtypes")
+		Conditional stateMentValue;
+	    if (getReturnTypeSize() == 1) {
+	    	stateMentValue = frame.peek(ctx);
+	    } else {
+	    	if (mi.getReturnTypeCode() == Types.T_DOUBLE) {
+	    		stateMentValue = frame.peekLong(ctx).map(v -> Types.longToDouble(v));
+	    	} else {
+	    		stateMentValue = frame.peekLong(ctx);
+	    	}
+	    }
+	    new ReturnStatement(this, frame.method, stateMentValue, ctx);
     }
     
     returnFrame = frame;

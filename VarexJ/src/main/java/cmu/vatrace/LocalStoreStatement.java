@@ -9,27 +9,27 @@ import gov.nasa.jpf.vm.LocalVarInfo;
 
 public class LocalStoreStatement extends Statement {
 
-	private Conditional<Integer> oldValue;
-	private Conditional<Integer> newValue;
+	private Conditional oldValue;
+	private Conditional newValue;
 	private LocalVarInfo li;
 
 	private LocalStoreStatement(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 
-	public LocalStoreStatement(Instruction op, Method method, Conditional<Integer> oldValue, Conditional<Integer> newValue, LocalVarInfo li, FeatureExpr ctx) {
+	public LocalStoreStatement(Instruction op, Method method, Conditional oldValue, Conditional newValue, LocalVarInfo li, FeatureExpr ctx) {
 		this(op, method, ctx);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.li = li;
 	}
 
-	private final Function<Integer, String> f = val -> {
+	private final Function<Object, String> f = val -> {
 		if (li.isBoolean()) {
-			return Boolean.toString(val == 1);
+			return Boolean.toString((Integer)val == 1);
 		}
 		if (!li.isNumeric()) {
-			if (val == 0) {
+			if ((Integer)val == 0) {
 				return "null";
 			}
 			return '@' + val.toString();
