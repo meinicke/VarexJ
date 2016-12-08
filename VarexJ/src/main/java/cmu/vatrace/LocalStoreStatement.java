@@ -28,6 +28,10 @@ public class LocalStoreStatement extends Statement {
 		if (li.isBoolean()) {
 			return Boolean.toString((Integer)val == 1);
 		}
+		if (li.getType().equals("char")) {
+			return "0x" + String.format("%02x", ((Integer)val));
+		}
+		
 		if (!li.isNumeric()) {
 			if ((Integer)val == 0) {
 				return "null";
