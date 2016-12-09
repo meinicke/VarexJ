@@ -3120,9 +3120,7 @@ public class ThreadInfo extends InfoObject
         
         final String eName = exceptionName;
         Conditional<String> causeDetails = pendingException.getCauseDetails(ctx);
-        causeDetails.mapf(ctx, (FeatureExpr ctx1, String cause) -> {
-				new ExceptionStatement(top.getPC().simplify(ctx).getValue(), eName, cause, getTopFrame().method, ctx1);
-		});
+        new ExceptionStatement(top.getPC().simplify(ctx).getValue(), eName, causeDetails, getTopFrame().method, ctx);
 
         // check if we find a matching handler, and if we do store it. Leave the
         // stack untouched so that listeners can still inspect it

@@ -29,7 +29,10 @@ public class ExceptionStatement extends Statement {
 	}
 	
 	@Override
-	public Conditional<String> getNewValue() {
-		return details.map(d -> d.replaceAll("\"", "-"));
+	public Conditional<String> getValue() {
+		if (details == null) {
+			return null;
+		}
+		return details.map(d -> d == null ? null : d.replaceAll("\"", "-"));
 	}
 }

@@ -128,7 +128,7 @@ public class Statement implements MethodElement {
 		return null;
 	}
 	
-	public Conditional<String> getNewValue() {
+	public Conditional<String> getValue() {
 		return null;
 	}
 }

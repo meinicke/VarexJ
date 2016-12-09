@@ -33,7 +33,6 @@ public class StatementFigure extends RoundedRectangle {
 	private TargetAnchor targetAnchor;
 	private static final int BORDER_MARGIN = 10;
 	private static final int MIN_WIDTH = 20;
-	private static final int BORDER_WIDTH = 2;
 	
 	public StatementFigure(Statement statement) {
 		super();
@@ -42,7 +41,7 @@ public class StatementFigure extends RoundedRectangle {
 		NodeColor color = statement.getColor();
 		setBackgroundColor(Constants.getColor(color));
 		setCornerDimensions(new Dimension(20, 20));
-		if (statement.getNewValue() != null) {
+		if (statement.getValue() != null) {
 			createLabelName();
 			if (statement.getOldValue() != null) {
 				this.add(label);
@@ -104,14 +103,14 @@ public class StatementFigure extends RoundedRectangle {
 			for (Entry<String, FeatureExpr> entry : value.toMap().entrySet()) {
 				text.append(entry.getKey());
 				text.append(" : ");
-				text.append(Conditional.getCTXString(entry.getValue().simplify(statement.getMethod().getCTX())));
+				text.append(Conditional.getCTXString(entry.getValue()));
 				text.append('\n');
 			}
 			return text.subSequence(0, text.length() - 1).toString();
 		}
 	}
 	private void createLabelNew(int x) {
-		Conditional<String> newValue = statement.getNewValue();
+		Conditional<String> newValue = statement.getValue();
 		b.setText(createText(newValue));
 		b.setLocation(new Point(x, BORDER_MARGIN));
 		Dimension labelSize = b.getPreferredSize();

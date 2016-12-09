@@ -24,12 +24,17 @@ public class ReturnStatement extends Statement {
 	}
 	
 	private final Function<Object, String> f = val -> {
-		switch (m.mi.getReturnType()) {
-			case "Z":
+		switch (m.mi.getReturnTypeCode()) {
+			case Types.T_BOOLEAN:
 				return Boolean.toString((Integer)val == 1);
-		}
-		if (TraceUtils.enums.containsKey(val)) {
-			return TraceUtils.enums.get(val);
+			case Types.T_REFERENCE:
+				if (TraceUtils.enums.containsKey(val)) {
+					return TraceUtils.enums.get(val);
+				}
+				if ((Integer)val == 0) {
+					return "null";
+				}
+				return "@" + val;
 		}
 		return val.toString();
 	};
@@ -46,7 +51,7 @@ public class ReturnStatement extends Statement {
 	}
 	
 	@Override
-	public Conditional<String> getNewValue() {
+	public Conditional<String> getValue() {
 		return returnValue.map(f);
 	}
 }

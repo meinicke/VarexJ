@@ -66,7 +66,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
 			for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
 				MethodInfo callee = getInvokedMethod(ctx.and(e.getValue()), ti, e.getKey());
-				String methName = callee.getFullName();
+				String methName = callee == null ? "" : callee.getFullName();
 				if (classes.containsKey(methName)) {
 					classes.get(methName).add(e.getValue());
 				} else {

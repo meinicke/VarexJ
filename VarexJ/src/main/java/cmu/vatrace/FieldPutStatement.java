@@ -4,8 +4,11 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.ThreadInfo;
 
 public class FieldPutStatement extends Statement {
 
@@ -51,6 +54,10 @@ public class FieldPutStatement extends Statement {
 			if (fi.getTypeClassInfo().isEnum()) {
 				return TraceUtils.enums.get(val);
 			}
+			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo(val);
+			if (ei.isArray()) {
+				return '@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(FeatureExprFactory.True(), val) + "]";
+			}
 			return '@' + val.toString();
 		}
 		return val.toString();
@@ -58,11 +65,17 @@ public class FieldPutStatement extends Statement {
 
 	@Override
 	public String toString() {
-		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) != null) {
-			return fi.getFullName() + " = " + newString;
-		} else {
-			return fi.getFullName() + ": " + oldString + " \u2192 " + newString;
-		}
+		return fi.getFullName() + " = ";
+	}
+	
+	@Override
+	public Conditional<String> getOldValue() {
+		return oldString;
+	}
+	
+	@Override
+	public Conditional<String> getValue() {
+		return newString;
 	}
 
 	@Override

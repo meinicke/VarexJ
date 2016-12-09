@@ -20,8 +20,8 @@ public class LocalStoreStatement extends Statement {
 
 	public LocalStoreStatement(Instruction op, Method method, Conditional oldValue, Conditional newValue, LocalVarInfo li, FeatureExpr ctx) {
 		this(op, method, ctx);
-		this.oldValue = oldValue;
-		this.newValue = newValue;
+		this.oldValue = oldValue == null ? null : oldValue.simplify(method.getCTX());
+		this.newValue = newValue.simplify(method.getCTX());
 		this.li = li;
 	}
 
@@ -56,7 +56,7 @@ public class LocalStoreStatement extends Statement {
 	
 	@Override
 	public boolean affectsIdentifier(String identifier) {
-		return li.getName().equals(identifier);
+		return li == null ? false : li.getName().equals(identifier);
 	}
 	
 	@Override
@@ -67,13 +67,13 @@ public class LocalStoreStatement extends Statement {
 	@Override
 	public Conditional<String> getOldValue() {
 		if (oldValue == null) {
-			return new One("null");
+			return new One<>("null");
 		}
 		return oldValue.map(f);
 	}
 	
 	@Override
-	public Conditional<String> getNewValue() {
+	public Conditional<String> getValue() {
 		return newValue.map(f);
 	}
 }

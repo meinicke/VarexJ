@@ -113,6 +113,7 @@ public class TraceView extends ViewPart {
 	private static Trace trace = null;
 
 	public static final String PROJECT_NAME = "MathBug";
+//	public static final String PROJECT_NAME = "SmallInteractionExamples";
 //	public static final String PROJECT_Sources = "MathSources";
 //	public static final String PROJECT_Sources_Folder = "Bug6/src/main/java";
 //	public static final String PROJECT_Sources_Test_Folder = "Bug6/src/test/java";
@@ -128,10 +129,11 @@ public class TraceView extends ViewPart {
 			final String[] args = { 
 //					"+classpath=" + path + "/bin,${jpf-core}/lib/junit-4.11.jar,${jpf-core}/lib/math6.jar,${jpf-core}/lib/bcel-5.2.jar",
 					"+classpath=" + path + "/bin,${jpf-core}/lib/junit-4.11.jar,C:/Users/Jens Meinicke/workspaceVarexJ/MathBug/commons-math-2.0-SNAPSHOT.jar,${jpf-core}/lib/bcel-5.2.jar",
-					
+//					"+classpath=" + path + "/bin,${jpf-core}",
 					"+nhandler.delegateUnhandledNative",
 					"+search.class=.search.RandomSearch",
 					"+invocation",
+//					"linux.Example"
 //					"Main"
 //					"linux.Linux2"
 //					"SmoothingPolynomialBicubicSplineInterpolatorTest"
@@ -143,6 +145,7 @@ public class TraceView extends ViewPart {
 //					new ReferenceFilter(888),
 //					new NameFilter("tMin", "tb"),
 					new And(
+							new NameFilter("r"),
 							new NameFilter("ret"),
 							new StatementFilter() {
 								
@@ -164,9 +167,11 @@ public class TraceView extends ViewPart {
 			JPF.main(args);
 			
 			// highlight path
-//			SingleFeatureExpr change8 = Conditional.features.get("change8");
-//			SingleFeatureExpr change9 = Conditional.features.get("change9");
-//			FeatureExpr ctx = change8.not().and(change9.not());
+//			SingleFeatureExpr change26 = Conditional.features.get("patch26");
+//			SingleFeatureExpr change5 = Conditional.features.get( "patch5");
+//			SingleFeatureExpr change42 = Conditional.features.get("patch42");
+//			SingleFeatureExpr change60 = Conditional.features.get("patch60");
+//			FeatureExpr ctx = change26.not().andNot(change5).andNot(change42).andNot(change60);
 //			JPF.vatrace.highlightContext(ctx, NodeColor.limegreen, 3);
 			
 			return JPF.vatrace;
