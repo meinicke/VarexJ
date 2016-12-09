@@ -34,9 +34,6 @@ public class EdgeEditPart extends AbstractConnectionEditPart {
 		
 		figure.setForegroundColor(Constants.getColor(edge.getColor()));
 		figure.setLineWidth(edge.getWidth());
-		if (!Conditional.isTautology(edge.getCtx())) {
-			createLabel(edge, figure);
-		}
 
 		PolygonDecoration decoration = new PolygonDecoration();
 		PointList decorationPointList = new PointList();
@@ -44,11 +41,13 @@ public class EdgeEditPart extends AbstractConnectionEditPart {
 		decorationPointList.addPoint(-2, 1);
 		decorationPointList.addPoint(-2, -1);
 		decoration.setTemplate(decorationPointList);
-		
 		decoration.setForegroundColor(Constants.getColor(edge.getColor()));
-		
 		figure.setTargetDecoration(decoration);
 
+		if (!Conditional.isTautology(edge.getCtx())) {
+			createLabel(edge, figure);
+		}
+		
 		return figure;
 	}
 	

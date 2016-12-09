@@ -2,6 +2,7 @@ package cmu.vatrace;
 
 import java.io.PrintWriter;
 
+import cmu.conditional.Conditional;
 import cmu.vatrace.filters.StatementFilter;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
@@ -121,5 +122,13 @@ public class Statement implements MethodElement {
 	
 	public Method getMethod() {
 		return m;
+	}
+	
+	public Conditional<String> getOldValue() {
+		return null;
+	}
+	
+	public Conditional<String> getNewValue() {
+		return null;
 	}
 }

@@ -17,7 +17,7 @@ public class ReturnStatement extends Statement {
 
 	public ReturnStatement(Instruction op, Method method, Conditional returnValue, FeatureExpr ctx) {
 		this(op, method, ctx);
-		this.returnValue = returnValue;
+		this.returnValue = returnValue.simplify(ctx);
 		if (returnValue.toMap().size() > 1) {
 			setColor(NodeColor.darkorange);
 		}
@@ -36,12 +36,17 @@ public class ReturnStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		return "return " + Types.getTypeName(m.mi.getReturnType()) + " " + returnValue.map(f);
+		return "return " + Types.getTypeName(m.mi.getReturnType());
 	}
 		
 	
 	@Override
 	public boolean isInteraction(int degree) {
 		return returnValue.toMap().size() >= degree;
+	}
+	
+	@Override
+	public Conditional<String> getNewValue() {
+		return returnValue.map(f);
 	}
 }

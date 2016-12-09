@@ -3,6 +3,7 @@ package cmu.vatrace;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
@@ -44,13 +45,13 @@ public class LocalStoreStatement extends Statement {
 	@Override
 	public String toString() {
 		if (li == null) {
-			return "set unknown: " + oldValue + " \u2192 " + newValue;
+			return "set unknown: ";
 		}
-		if (oldValue == null) {
-			return li.getType() + " " + li.getName() + " \u2192 " + newValue.map(f);
-		}
+//		if (oldValue == null) {
+//			return li.getType() + " " + li.getName() + " \u2192 " + newValue.map(f);
+//		}
 			
-		return li.getType() + " " + li.getName() + ": " + oldValue.map(f) + " \u2192 " + newValue.map(f);
+		return li.getType() + " " + li.getName() + ":";
 	}
 	
 	@Override
@@ -61,5 +62,18 @@ public class LocalStoreStatement extends Statement {
 	@Override
 	public boolean isInteraction(int degree) {
 		return oldValue != null && oldValue.toMap().size() != newValue.toMap().size() && newValue.toMap().size() >= degree; 
+	}
+	
+	@Override
+	public Conditional<String> getOldValue() {
+		if (oldValue == null) {
+			return new One("null");
+		}
+		return oldValue.map(f);
+	}
+	
+	@Override
+	public Conditional<String> getNewValue() {
+		return newValue.map(f);
 	}
 }
