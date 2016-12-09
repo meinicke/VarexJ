@@ -1,21 +1,22 @@
 package cmu.vatrace;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
 
 public class ExceptionStatement extends Statement {
 	
 	public String cname;
-	private String details;
+	private Conditional<String> details;
 
 	public ExceptionStatement(Instruction op, Method m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 	
-	public ExceptionStatement(Instruction op, String cname, String details, Method method, FeatureExpr ctx) {
+	public ExceptionStatement(Instruction op, String cname, Conditional<String> causeDetails, Method method, FeatureExpr ctx) {
 		this(op, method, ctx);
 		this.cname = cname;
-		this.details = details != null ? details.replaceAll("\"", "-") : null;
+		this.details = causeDetails;
 		setColor(NodeColor.firebrick1);
 	}
 
@@ -24,7 +25,11 @@ public class ExceptionStatement extends Statement {
 		if (details == null) {
 			return cname;
 		}
-		return cname +": " + details;
+		return cname + ':';
 	}
 	
+	@Override
+	public Conditional<String> getNewValue() {
+		return details.map(d -> d.replaceAll("\"", "-"));
+	}
 }
