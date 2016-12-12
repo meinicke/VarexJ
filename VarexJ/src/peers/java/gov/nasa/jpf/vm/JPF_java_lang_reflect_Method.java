@@ -272,7 +272,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     nArgs         = destTypeNames.length;
     
     // according to the API docs, passing null instead of an empty array is allowed for no args
-    passedCount   = (argsRef != MJIEnv.NULL) ? env.getArrayLength(ctx, argsRef) : 0;
+    passedCount   = (argsRef != MJIEnv.NULL) ? env.getArrayLengthOld(ctx, argsRef) : 0;
     
     if (nArgs != passedCount) {
       env.throwException(ctx, IllegalArgumentException.class.getName(), "Wrong number of arguments passed.  Actual = " + passedCount + ".  Expected = " + nArgs);

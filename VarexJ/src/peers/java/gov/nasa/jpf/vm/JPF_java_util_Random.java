@@ -248,7 +248,7 @@ public class JPF_java_util_Random extends NativePeer {
     // <2do> this one is an even worse state exploder. We could use cascaded CGs,
     // but chances are this really kills us, so we just ignore 'enumerateRandom' for now
     
-    int n = env.getArrayLength(ctx, dataRef);
+    int n = env.getArrayLengthOld(ctx, dataRef);
     byte[] data = new byte[n];
 
     restoreRandomState(ctx, env, objRef, delegatee);

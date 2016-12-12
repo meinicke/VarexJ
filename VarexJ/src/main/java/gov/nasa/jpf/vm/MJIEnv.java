@@ -128,14 +128,17 @@ public VM getVM () {
     return heap.get(objref).isArray();
   }
 
-  public int getArrayLength (FeatureExpr ctx, int objref) {
-    if (isArray(objref)) {
-      return heap.get(objref).arrayLength().getValue();
-    } else {
-      throwException(ctx, "java.lang.IllegalArgumentException");
-
-      return 0;
-    }
+	public Conditional<Integer> getArrayLength(FeatureExpr ctx, int objref) {
+		if (isArray(objref)) {
+			return heap.get(objref).arrayLength().simplify(ctx);
+		} else {
+			throwException(ctx, "java.lang.IllegalArgumentException");
+			return One.valueOf(0);
+		}
+	}
+  
+  public int getArrayLengthOld (FeatureExpr ctx, int objref) {
+	  return getArrayLength(ctx, objref).getValue();
   }
 
   public String getArrayType (int objref) {
@@ -820,7 +823,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     if (aci.isArray()){
       ClassInfo eci = aci.getComponentClassInfo();
       if (eci.getName().equals("java.lang.String")){
-        int len = getArrayLength(ctx, aRef);
+        int len = getArrayLengthOld(ctx, aRef);
         sa = new String[len];
 
         for (int i=0; i<len; i++){
@@ -861,7 +864,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 		return args;
 	}
 
-    int nArgs = getArrayLength(ctx, argRef);
+    int nArgs = getArrayLengthOld(ctx, argRef);
     args = new Object[nArgs];
 
     for (int i=0; i<nArgs; i++){
@@ -1207,7 +1210,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
   public String format (FeatureExpr ctx, int fmtRef, int argRef){
     String format = getStringObject(ctx, fmtRef);
-    int len = argRef == MJIEnv.NULL ? 0 : getArrayLength(ctx, argRef);
+    int len = argRef == MJIEnv.NULL ? 0 : getArrayLengthOld(ctx, argRef);
     Object[] arg = new Object[len];
     for (int i=0; i<len; i++){
       int ref = getReferenceArrayElement(argRef,i).simplify(ctx).getValue();
@@ -1249,7 +1252,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 
   public String format (FeatureExpr ctx,Locale l, int fmtRef, int argRef){
 	    String format = getStringObject(ctx, fmtRef);
-	    int len = getArrayLength(ctx, argRef);
+	    int len = getArrayLengthOld(ctx, argRef);
 	    Object[] arg = new Object[len];
 
 	    for (int i=0; i<len; i++){

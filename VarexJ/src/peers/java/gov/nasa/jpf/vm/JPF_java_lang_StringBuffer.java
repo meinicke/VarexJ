@@ -61,7 +61,7 @@ public class JPF_java_lang_StringBuffer extends NativePeer {
 	
 				@Override
 				public void accept(FeatureExpr ctx, final Integer aref) {
-					final int alen = env.getArrayLength(ctx, aref);
+					final int alen = env.getArrayLengthOld(ctx, aref);
 					s.mapf(ctx, new BiConsumer<FeatureExpr, String>() {
 	
 						@Override

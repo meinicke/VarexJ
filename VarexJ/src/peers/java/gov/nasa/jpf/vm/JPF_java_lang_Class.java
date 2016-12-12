@@ -282,7 +282,7 @@ public class JPF_java_lang_Class extends NativePeer {
 
 		StringBuilder sb = new StringBuilder(mname);
 		sb.append('(');
-		int nParams = argTypesRef != MJIEnv.NULL ? env.getArrayLength(ctx, argTypesRef) : 0;
+		int nParams = argTypesRef != MJIEnv.NULL ? env.getArrayLengthOld(ctx, argTypesRef) : 0;
 		for (int i = 0; i < nParams; i++) {
 			int cRef = env.getReferenceArrayElement(argTypesRef, i).simplify(ctx).getValue();
 			if (cRef == MJIEnv.NULL) {

@@ -572,7 +572,7 @@ static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String 
 
   @MJI
   public static void print___3Ljava_lang_String_2__V (MJIEnv env, int clsRef, int argsRef, FeatureExpr ctx){
-    int n = env.getArrayLength(ctx, argsRef);
+    int n = env.getArrayLengthOld(ctx, argsRef);
     for (int i=0; i<n; i++){
       int aref = env.getReferenceArrayElement(argsRef, i).getValue();
       String s = env.getStringObject(ctx, aref);
@@ -1028,7 +1028,7 @@ static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String 
     if (argRef != MJIEnv.NULL) {
 //      Config conf = env.getConfig();
 
-      int n = env.getArrayLength(ctx, argRef);
+      int n = env.getArrayLengthOld(ctx, argRef);
       for (int i=0; i<n; i++) {
         int pRef = env.getReferenceArrayElement(argRef, i).getValue();
         if (pRef != MJIEnv.NULL) {

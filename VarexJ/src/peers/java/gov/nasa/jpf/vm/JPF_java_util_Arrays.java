@@ -27,7 +27,7 @@ public class JPF_java_util_Arrays extends NativePeer {
 		if (fromIndex < 0) {
 			throw new ArrayIndexOutOfBoundsException(fromIndex);
 		}
-		if (toIndex > env.getArrayLength(ctx, arrayRef)) {
+		if (toIndex > env.getArrayLengthOld(ctx, arrayRef)) {
 			throw new ArrayIndexOutOfBoundsException(toIndex);
 		}
 		((ArrayFields) env.heap.getModifiable(arrayRef).fields).fill(ctx, fromIndex, toIndex, One.valueOf(value));

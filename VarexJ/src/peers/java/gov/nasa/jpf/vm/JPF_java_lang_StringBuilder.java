@@ -57,7 +57,7 @@ public class JPF_java_lang_StringBuilder extends NativePeer {
 					@Override
 					public void accept(FeatureExpr ctx, final String s) {
 						final int slen = s.length();
-						final int alen = env.getArrayLength(ctx, aref);
+						final int alen = env.getArrayLengthOld(ctx, aref);
 						Conditional<Integer> count = env.getIntField(objref, "count");
 						count.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
 

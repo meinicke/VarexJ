@@ -39,7 +39,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       return 0;
     }
 
-    return env.getArrayLength(ctx, objRef);
+    return env.getArrayLengthOld(ctx, objRef);
   }
   
   @MJI
@@ -72,7 +72,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
                                                                                int dimArrayRef, FeatureExpr ctx) {
     ClassInfo ci = env.getReferredClassInfo(ctx, componentTypeRef);
     String clsName = ci.getName();
-    int n = env.getArrayLength(ctx, dimArrayRef);
+    int n = env.getArrayLengthOld(ctx, dimArrayRef);
     int i;
 
     clsName = Types.getTypeSignature(clsName, true);
@@ -166,7 +166,7 @@ public class JPF_java_lang_reflect_Array extends NativePeer {
       env.throwException(ctx, "java.lang.IllegalArgumentException", "argument is not an array");
       return false;
     }
-    if (index < 0 || index >= env.getArrayLength(ctx, aref)) {
+    if (index < 0 || index >= env.getArrayLengthOld(ctx, aref)) {
       env.throwException(ctx, "java.lang.IndexOutOfBoundsException", "index " + index + " is out of bounds");
       return false;
     }

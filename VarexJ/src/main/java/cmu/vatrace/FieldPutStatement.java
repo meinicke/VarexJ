@@ -1,10 +1,10 @@
 package cmu.vatrace;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -27,8 +27,8 @@ public class FieldPutStatement extends Statement {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.fi = fi;
-		this.oldString = oldValue.map(f);
-		this.newString = newValue.map(f);
+		this.oldString = oldValue.mapf(ctx, f);
+		this.newString = newValue.mapf(ctx, f);
 
 		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
 			if (oldValue.toMap().size() < newValue.toMap().size()) {
@@ -39,28 +39,28 @@ public class FieldPutStatement extends Statement {
 		}
 	}
 
-	private final Function<Integer, String> f = val -> {
+	private final BiFunction<FeatureExpr, Integer, Conditional<String>> f = (ctx, val) -> {
 		if (fi.isBooleanField()) {
-			return Boolean.toString(val == 1);
+			return new One<>(Boolean.toString(val == 1));
 		}
 		if (fi.isReference()) {
 			if (val == 0) {
-				return "null";
+				return new One<>("null");
 			}
 			if (fi.getClassInfo().isEnum()) {
 				TraceUtils.enums.put(val, fi.getName());
-				return fi.getName();
+				return new One<>(fi.getName());
 			}
 			if (fi.getTypeClassInfo().isEnum()) {
-				return TraceUtils.enums.get(val);
+				return new One<>(TraceUtils.enums.get(val));
 			}
 			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo(val);
 			if (ei.isArray()) {
-				return '@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(FeatureExprFactory.True(), val) + "]";
+				return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, val) + "]");
 			}
-			return '@' + val.toString();
+			return new One<>('@' + val.toString());
 		}
-		return val.toString();
+		return new One<>(val.toString());
 	};
 
 	@Override

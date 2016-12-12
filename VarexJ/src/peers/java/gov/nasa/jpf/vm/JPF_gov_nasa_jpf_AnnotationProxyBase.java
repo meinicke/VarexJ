@@ -94,7 +94,7 @@ public class JPF_gov_nasa_jpf_AnnotationProxyBase extends NativePeer {
             
         } else if (ft.endsWith("[]")){
           int ar = env.getReferenceField(ctx, objref, fn).getValue();
-          int n = env.getArrayLength(ctx, (ar));
+          int n = env.getArrayLengthOld(ctx, (ar));
 
           sb.append('[');
           
