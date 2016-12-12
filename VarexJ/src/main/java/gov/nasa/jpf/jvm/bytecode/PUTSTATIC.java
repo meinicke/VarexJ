@@ -62,7 +62,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			StackFrame frame = ti.getModifiableTopFrame();
 			FeatureExpr feature = Conditional.createFeature(fname);
 			featureNumber++;
-			System.out.println("Found feature #" + featureNumber + " - " + fname);
+			System.out.println("Found feature #" + featureNumber + " - " + fname + " @" + className);
 			IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
 			frame.pop(ctx);
 			frame.push(ctx, create);

@@ -431,7 +431,7 @@ static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String 
   
   @MJI
   public static int getIntFromList___3I__I (MJIEnv env, int clsObjRef, int valArrayRef, FeatureExpr ctx){
-    int[] values = env.getIntArrayObject(ctx, valArrayRef);
+    int[] values = env.getIntArrayObjectOld(ctx, valArrayRef);
     return getIntFromList( env, values);
   }
 

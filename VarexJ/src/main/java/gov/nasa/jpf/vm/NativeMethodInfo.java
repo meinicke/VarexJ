@@ -25,11 +25,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;
@@ -37,6 +37,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFNativePeerException;
+import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.util.JPFLogger;
 
 /**
@@ -255,7 +256,7 @@ public class NativeMethodInfo extends MethodInfo {
 			// if loading a class throws an exception
 			if (itx.getTargetException() instanceof ClassInfoException) {
 				ClassInfoException cie = (ClassInfoException) itx.getTargetException();
-				return new One<>(ti.createAndThrowException(ctx, cie.getExceptionClass(), cie.getMessage()));
+				return new One<>(new EXCEPTION(cie.getExceptionClass().toString(), cie.getMessage()));
 			}
 
 			if (itx.getTargetException() instanceof UncaughtException) { // Native methods could

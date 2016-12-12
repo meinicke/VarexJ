@@ -19,8 +19,9 @@
 package gov.nasa.jpf.vm;
 
 import java.util.function.BiFunction;
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
@@ -41,8 +42,8 @@ public class JPF_java_lang_Double extends NativePeer {
   }
 
   @MJI
-  public long doubleToRawLongBits__D__J (MJIEnv env, int rcls, Conditional<Double> v0, FeatureExpr ctx) {
-    return Double.doubleToRawLongBits(v0.getValue());
+  public Conditional<Long> doubleToRawLongBits__D__J (MJIEnv env, int rcls, Conditional<Double> v0, FeatureExpr ctx) {
+	  return v0.map(v -> Double.doubleToRawLongBits(v));
   }
 
   @MJI

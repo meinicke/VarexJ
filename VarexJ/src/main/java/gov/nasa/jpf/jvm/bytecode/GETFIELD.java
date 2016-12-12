@@ -62,12 +62,13 @@ public class GETFIELD extends InstanceFieldInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
 		final Conditional<Integer> objRef = frame.peek(ctx); // don't pop yet, we might re-enter
+		lastThis = objRef;
+		
 		if (objRef.isOne()) {
-			return unconditionalGetField(ctx, ti, frame, objRef);
+			return unconditionalGetField(ctx, ti, frame, objRef.getValue());
 		}
 		
 		pushValue = One.valueOf(0);
-		lastThis = objRef;
 		final GETFIELD thisInstruction = this;
 		pushCTX = ctx;
 		Conditional<Instruction> next = objRef.mapf(ctx, (BiFunction<FeatureExpr, Integer, Conditional<Instruction>>) (ctx1, objRef1) -> {
@@ -104,9 +105,8 @@ public class GETFIELD extends InstanceFieldInstruction {
 				ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 				attr = ei.getFieldAttr(fi);
 
-				
 				// We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
-				if (fi.getStorageSize() == 1) { // 1 slotter
+				if (size == 1) { // 1 slotter
 					pushValue = ChoiceFactory.create(ctx, ei.get1SlotField(fi), pushValue);
 				} else { // 2 slotter
 					pushValue = ChoiceFactory.create(ctx, ei.get2SlotField(fi), pushValue);
@@ -118,7 +118,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 			}
 		}), next);
-		if (fi.isReference()) {
+		if (isReferenceField) {
 			frame.pushRef(pushCTX, pushValue);
 		} else {
 			frame.push(pushCTX, pushValue);
@@ -136,14 +136,13 @@ public class GETFIELD extends InstanceFieldInstruction {
 		return next;
 	}
 
-	private final Conditional<Instruction> unconditionalGetField(FeatureExpr ctx, final ThreadInfo ti, final StackFrame frame, final Conditional<Integer> objRef) {
-		final Integer ref = objRef.getValue();
+	private final Conditional<Instruction> unconditionalGetField(FeatureExpr ctx, final ThreadInfo ti, final StackFrame frame, final int ref) {
 		if (ref == MJIEnv.NULL) {
 			return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
 		}
-
-		ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(ref);
-		FieldInfo fi = getFieldInfo(ctx);
+		
+		final ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(ref);
+		final FieldInfo fi = getFieldInfo(ctx);
 		if (fi == null) {
 			return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
 		}
@@ -154,7 +153,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 			}
 		}
 		frame.pop(ctx, 1);
-		attr = ei.getFieldAttr(fi);
+
 		// We could encapsulate the push in ElementInfo, but not the GET, so we keep it at a similiar level
 		if (fi.getStorageSize() == 1) { // 1 slotter
 			frame.push(ctx, ei.get1SlotField(fi), fi.isReference());
@@ -164,15 +163,15 @@ public class GETFIELD extends InstanceFieldInstruction {
 			new FieldGetStatement(this, ei.get2SlotField(fi), frame.method, fi, ctx);
 		}
 		
-		if (size == 1) {
-			if (attr != null) {
+		attr = ei.getFieldAttr(fi);
+		if (attr != null) {
+			if (size == 1) {
 				frame.setOperandAttr(attr);
-			}
-		} else {
-			if (attr != null) {
+			} else {
 				frame.setLongOperandAttr(attr);
 			}
 		}
+		
 		return getNext(ctx, ti);
 	}
 

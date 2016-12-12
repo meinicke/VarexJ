@@ -1684,13 +1684,13 @@ public class ThreadInfo extends InfoObject
 
                 @Override
                 public void accept(FeatureExpr ctx, Integer aRef) {
-                    int[] snapshot = env.getIntArrayObject(ctx, aRef);
+                    Conditional<Integer>[] snapshot = env.getIntArrayObject(ctx, aRef);
                     int len = snapshot.length / 2;
 
                     for (int i = 0, j = 0; i < len; i++) {
-                        int methodId = snapshot[j++];
-                        int pcOffset = snapshot[j++];
-                        StackTraceElement ste = new StackTraceElement(methodId, pcOffset);
+                        Conditional<Integer> methodId = snapshot[j++];
+                        Conditional<Integer> pcOffset = snapshot[j++];
+                        StackTraceElement ste = new StackTraceElement(methodId.getValue(true), pcOffset.getValue(true));
                         ste.printOn(pw);
                     }
                 }
@@ -1699,11 +1699,14 @@ public class ThreadInfo extends InfoObject
 
         }
 
-        int causeRef = env.getReferenceField(ctx, objRef, "cause").getValue();
-        if ((causeRef != objRef) && (causeRef != MJIEnv.NULL)) {
-            print(pw, "Caused by: ");
-            printStackTrace(ctx, pw, causeRef);
-        }
+        Conditional<Integer> causeRef = env.getReferenceField(ctx, objRef, "cause");
+        causeRef.map(ref -> {
+	        if ((ref != objRef) && (ref != MJIEnv.NULL)) {
+	            print(pw, "Caused by: ");
+	            printStackTrace(ctx, pw, ref);
+	        }
+	        return null;
+        });
     }
 
     class StackTraceElement {

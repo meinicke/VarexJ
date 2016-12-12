@@ -26,6 +26,7 @@ import cmu.conditional.One;
 import cmu.vatrace.ArrayLoadStatement;
 import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -58,7 +59,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {
 				if (aref == MJIEnv.NULL) {
 					pushCtx = pushCtx.andNot(ctx);
-					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException"));
+					return new One<>(new EXCEPTION("java.lang.NullPointerException", ""));
 				}
 
 				final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
@@ -71,12 +72,15 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 				return new One<Instruction>(null);
 			}
 		});
+		if (Conditional.isContradiction(pushCtx)) {
+			return next;
+		}
 
 		index = frame.pop(ctx);
 		// we should not set 'arrayRef' before the CG check
 		// (this would kill the CG loop optimization)
-		arrayRef = frame.pop(ctx);
-		next = ChoiceFactory.create(pushCtx, arrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		arrayRef = frame.pop(ctx).simplify(pushCtx);
+		next = ChoiceFactory.create(pushCtx, arrayRef.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {

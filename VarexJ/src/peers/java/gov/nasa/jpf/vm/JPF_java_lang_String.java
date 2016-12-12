@@ -87,7 +87,7 @@ public class JPF_java_lang_String extends NativePeer {
 
 	@MJI
 	public int init___3III__Ljava_lang_String_2(MJIEnv env, int objRef, int codePointsRef, int offset, int count, FeatureExpr ctx) {
-		int[] codePoints = env.getIntArrayObject(ctx, codePointsRef);
+		int[] codePoints = env.getIntArrayObjectOld(ctx, codePointsRef);
 		String result = new String(codePoints, offset, count);
 		return env.newString(ctx, result);
 	}
@@ -158,7 +158,7 @@ public class JPF_java_lang_String extends NativePeer {
 
 									@Override
 									public void accept(FeatureExpr ctx, final Integer dstBegin) {
-										final Conditional<String> obj = env.getStringObjectNew(ctx, objRef.getValue());
+										final Conditional<String> obj = env.getStringObjectNew(ctx, objRef.simplify(ctx).getValue());
 										obj.mapf(ctx, new BiConsumer<FeatureExpr, String>() {
 
 											@Override

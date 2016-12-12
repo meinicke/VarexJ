@@ -21,8 +21,8 @@ package gov.nasa.jpf.vm;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -943,28 +943,30 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     return ei.asShortArray();
   }
 
-  public int[] getIntArrayObject (FeatureExpr ctx, int objref) {// TODO jens
+  public Conditional<Integer>[] getIntArrayObject (FeatureExpr ctx, int objref) {
     ElementInfo ei = getElementInfo(objref);
-    Conditional<Integer>[] array = ei.asIntArray();
-    int[] a = new int[array.length];
-    for (int i = 0; i < array.length; i++) {
-    	a[i] = array[i].simplify(ctx).getValue();
-    }
-    return a;
+    return  ei.asIntArray();
   }
+  
+  @Deprecated
+  public int[] getIntArrayObjectOld (FeatureExpr ctx, int objref) {
+	    ElementInfo ei = getElementInfo(objref);
+	    Conditional<Integer>[] array = ei.asIntArray();
+	    int[] a = new int[array.length];
+	    for (int i = 0; i < array.length; i++) {
+	    	a[i] = array[i].simplify(ctx).getValue();
+	    }
+	    return a;
+	  }
 
   public Conditional<Long>[] getLongArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
-    Conditional<Long>[] a = ei.asLongArray();
-
-    return a;
+    return ei.asLongArray();
   }
 
   public Conditional<Float>[] getFloatArrayObject (int objref) {
     ElementInfo ei = getElementInfo(objref);
-    Conditional<Float>[] a = ei.asFloatArray();
-
-    return a;
+    return ei.asFloatArray();
   }
   
   @Deprecated
