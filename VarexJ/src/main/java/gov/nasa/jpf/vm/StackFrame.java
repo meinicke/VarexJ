@@ -26,7 +26,7 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vatrace.Method;
+import cmu.varviz.trace.Method;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
@@ -130,11 +130,11 @@ public int nLocals;
   
   
 
-  public Method method;
+  public Method<MethodInfo> method;
   protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){
 		mi = callee;
 
-		method = new Method(mi, ctx);
+		method = new Method<>(mi, ctx);
 
 		if (!JPF.vatrace.hasMain()) {
 			JPF.vatrace.setMain(method);
@@ -248,10 +248,8 @@ public int nLocals;
   public void setPrevious (StackFrame frame){
     if (prev == null && frame != null) {
     	Instruction pc = frame.getPC().simplify(stack.getCtx()).getValue();
-		method.setLine(frame.mi.getLineNumber(pc));
-		Method parentNode = frame.method;
-		parentNode.addMethodElement(method);
-		method.setParent(parentNode);
+		method.setLineNumber(frame.mi.getLineNumber(pc));
+		method.setParent(frame.method);
 	}
     prev = frame;
   }

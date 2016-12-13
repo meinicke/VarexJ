@@ -25,7 +25,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import cmu.utils.TraceComparator;
-import cmu.vatrace.export.GrapVizExport;
+import cmu.varviz.trace.export.GrapVizExport;
 import coverage.Interaction;
 import coverage.XMLWriter;
 import de.fosd.typechef.featureexpr.FeatureExpr;

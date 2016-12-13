@@ -1,6 +1,9 @@
 package cmu.vatrace;
 
 import cmu.conditional.Conditional;
+import cmu.varviz.trace.Method;
+import cmu.varviz.trace.NodeColor;
+import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
 

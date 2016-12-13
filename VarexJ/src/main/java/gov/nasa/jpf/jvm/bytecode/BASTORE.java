@@ -22,8 +22,8 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.varviz.trace.Statement;
 import cmu.vatrace.ArrayStoreStatement;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.BooleanArrayFields;

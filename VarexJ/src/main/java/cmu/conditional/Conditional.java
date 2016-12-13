@@ -27,7 +27,7 @@ import scala.Tuple2;
 public abstract class Conditional<T> {
 
 	public static BDDFeatureModel fm = null;
-	public static BDDFeatureExpr bddFM;
+	public static BDDFeatureExpr bddFM = (BDDFeatureExpr) FeatureExprFactory.bdd().True();
 	public static final Map<String, SingleFeatureExpr> features = new HashMap<>(); 
 	private static Map<FeatureExpr, Boolean> cache = new HashMap<>();
 	
@@ -160,23 +160,7 @@ public abstract class Conditional<T> {
 	public abstract Conditional<T> clone() throws CloneNotSupportedException;
 
 	public static String getCTXString(FeatureExpr ctx) {
-		final FeatureExpr originalCTX = ctx;
 		ctx = simplifyCondition(ctx);
-		int start = ctx.toString().length();
-		ctx = simplifyCondition(ctx);
-		int end = ctx.toString().length();
-		
-		if (start > end) {
-			System.out.println("---------------");
-			System.out.println("reduced by " + (start - end));
-			System.out.println(originalCTX);
-			System.out.println(ctx);
-			if (!ctx.equivalentTo(originalCTX, fm)) {
-				throw new RuntimeException();
-			}
-			System.out.println("---------------");
-		}
-		
 		boolean oneSample = ctx instanceof BDDFeatureExpr && ((BDDFeatureExpr) ctx).bdd().pathCount() > 1000;
 		if (oneSample) {
 			ctx = new BDDFeatureExpr(((BDDFeatureExpr) ctx).bdd().satOne());

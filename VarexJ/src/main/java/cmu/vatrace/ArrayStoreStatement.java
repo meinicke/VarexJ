@@ -3,12 +3,15 @@ package cmu.vatrace;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
+import cmu.varviz.trace.Method;
+import cmu.varviz.trace.NodeColor;
+import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.Types;
 
-public class ArrayStoreStatement extends Statement {
+public class ArrayStoreStatement extends Statement<Instruction> {
 
 	private Conditional<Object> oldValue;
 	private Conditional<Object> newValue;

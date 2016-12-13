@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Arrays;
+import java.util.List;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
@@ -56,16 +59,28 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 	static final String ANNOTATION_CONDITIONAL = gov.nasa.jpf.annotation.Conditional.class.getName();
 	static int featureNumber = 0;
 	
+	private static final List<String> IGNORED_FEATURES = Arrays.asList(new String[]{"patch26", "patch5", "patch23"});
+	private static boolean isIgnored(String featureName) {
+		return IGNORED_FEATURES.contains(featureName);
+	}
+	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
+		
 		if (getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL) != null) {
 			StackFrame frame = ti.getModifiableTopFrame();
-			FeatureExpr feature = Conditional.createFeature(fname);
-			featureNumber++;
-			System.out.println("Found feature #" + featureNumber + " - " + fname + " @" + className);
-			IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
-			frame.pop(ctx);
-			frame.push(ctx, create);
+			if (true) {
+				frame.pop(ctx);
+				frame.push(ctx, One.valueOf(0));
+			}
+			if (!isIgnored(fname)) {
+				FeatureExpr feature = Conditional.createFeature(fname);
+				featureNumber++;
+				System.out.println("Found feature #" + featureNumber + " - " + fname + " @" + className);
+				IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
+				frame.pop(ctx);
+				frame.push(ctx, create);
+			}
 		}
 		
 		if (!ti.isFirstStepInsn()) { // top half

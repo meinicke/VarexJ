@@ -4,6 +4,8 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.varviz.trace.Method;
+import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;

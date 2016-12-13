@@ -1,7 +1,7 @@
-package cmu.vatrace.filters;
+package cmu.vatrace;
 
-import cmu.vatrace.ExceptionStatement;
-import cmu.vatrace.Statement;
+import cmu.varviz.trace.Statement;
+import cmu.varviz.trace.filters.StatementFilter;
 
 public class ExceptionFilter implements StatementFilter {
 

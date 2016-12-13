@@ -3,19 +3,23 @@ package cmu.vatrace;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
+import cmu.varviz.trace.Method;
+import cmu.varviz.trace.NodeColor;
+import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.Types;
 
-public class ReturnStatement extends Statement {
+public class ReturnStatement extends Statement<Instruction> {
 
 	private Conditional returnValue;
 
-	private ReturnStatement(Instruction op, Method m, FeatureExpr ctx) {
+	private ReturnStatement(Instruction op, Method<MethodInfo> m, FeatureExpr ctx) {
 		super(op, m, ctx);
 	}
 
-	public ReturnStatement(Instruction op, Method method, Conditional returnValue, FeatureExpr ctx) {
+	public ReturnStatement(Instruction op, Method<MethodInfo> method, Conditional returnValue, FeatureExpr ctx) {
 		this(op, method, ctx);
 		this.returnValue = returnValue.simplify(ctx);
 		if (returnValue.toMap().size() > 1) {
@@ -24,7 +28,7 @@ public class ReturnStatement extends Statement {
 	}
 	
 	private final Function<Object, String> f = val -> {
-		switch (m.mi.getReturnTypeCode()) {
+		switch (getParentMethodInfo().getReturnTypeCode()) {
 			case Types.T_BOOLEAN:
 				return Boolean.toString((Integer)val == 1);
 			case Types.T_REFERENCE:
@@ -38,10 +42,17 @@ public class ReturnStatement extends Statement {
 		}
 		return val.toString();
 	};
+
+	private MethodInfo getParentMethodInfo() {
+		@SuppressWarnings("unchecked")
+		Method<MethodInfo> parent = (Method<MethodInfo>) getParent();
+		MethodInfo mi = parent.getContent();
+		return mi;
+	}
 	
 	@Override
 	public String toString() {
-		return "return " + Types.getTypeName(m.mi.getReturnType());
+		return "return " + Types.getTypeName(getParentMethodInfo().getReturnType());
 	}
 		
 	

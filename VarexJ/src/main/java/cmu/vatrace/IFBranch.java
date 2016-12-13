@@ -3,6 +3,10 @@ package cmu.vatrace;
 import java.util.Map.Entry;
 
 import cmu.conditional.Conditional;
+import cmu.varviz.trace.Method;
+import cmu.varviz.trace.NodeColor;
+import cmu.varviz.trace.Shape;
+import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.bytecode.IfInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -24,7 +28,6 @@ public class IFBranch extends Statement {
 		
 	@Override
 	public String toString() {
-//		return ((IfInstruction)op).getLineNumber() + " " + targets.map((t -> m.mi.getLineNumber(t)));
 		return "if (" + Conditional.getCTXString(getTargetContext()) + ')';
 	}
 

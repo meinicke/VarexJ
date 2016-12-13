@@ -19,8 +19,8 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.varviz.trace.Statement;
 import cmu.vatrace.LocalGetStatement;
-import cmu.vatrace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
