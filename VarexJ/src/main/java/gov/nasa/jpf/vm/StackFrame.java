@@ -135,6 +135,7 @@ public int nLocals;
 		mi = callee;
 
 		method = new Method<>(mi, ctx);
+		method.setFile(mi.getSourceFileName());
 
 		if (!JPF.vatrace.hasMain()) {
 			JPF.vatrace.setMain(method);

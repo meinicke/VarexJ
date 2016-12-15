@@ -80,7 +80,11 @@ public abstract class Conditional<T> {
 	}
 	
 	public static SingleFeatureExpr createFeature(String fname) {
-		final SingleFeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
+		fname = "CONFIG_" + fname;
+		if (features.containsKey(fname)) {
+			return features.get(fname);
+		}
+		final SingleFeatureExpr feature = FeatureExprFactory.createDefinedExternal(fname);
 		features.put(fname, feature);
 		return feature;
 	}
@@ -173,8 +177,7 @@ public abstract class Conditional<T> {
 			context = (context.substring(0, context.indexOf('|')) + " | ...");
 		}
 		context = context.replaceAll("!", "\u00AC");
-				
-
+		context = context.replaceAll("&amp;", "&");
 		return context;
 	}
 	

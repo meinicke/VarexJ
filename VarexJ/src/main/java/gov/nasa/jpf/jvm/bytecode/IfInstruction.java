@@ -22,7 +22,7 @@ import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.vatrace.IFBranch;
+import cmu.varviz.trace.IFStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
@@ -79,6 +79,19 @@ public abstract class IfInstruction extends JVMInstruction {
     return target;
   }
   
+  private static FeatureExpr getTargetContext(Conditional<Integer> targets) {
+		int minPc = Integer.MAX_VALUE;
+		FeatureExpr ctx = null;
+		for (java.util.Map.Entry<Integer, FeatureExpr> entry : targets.toMap().entrySet()) {
+			int pc = entry.getKey();
+			if (pc < minPc) {
+				ctx = entry.getValue();
+				minPc = pc;
+			}
+		}
+		return ctx;
+	}
+  
   public Conditional<Instruction> execute (final FeatureExpr ctx, final ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
@@ -89,7 +102,7 @@ public abstract class IfInstruction extends JVMInstruction {
 	}).simplify();
     
     if (targets.simplify(ctx).toList().size() > 1) {
-	    new IFBranch(this, frame.method, targets, ctx);
+	    new IFStatement<>(this, frame.method, getTargetContext(targets.simplify(ctx)), ctx);
     }
     
     return conditionValue.mapf(ctx, (FeatureExpr x, Boolean condition) -> {
