@@ -7,20 +7,18 @@ import cmu.varviz.trace.Method;
 import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ElementInfo;
+import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.Types;
 
-public class ArrayLoadStatement<Instruction> extends Statement<Instruction> {
+public class ArrayLoadStatement extends Statement<Instruction> {
 
 	private Conditional<Object> value;
 	private int index;
 	private ElementInfo ei;
 
-	private ArrayLoadStatement(Instruction op, Method m, FeatureExpr ctx) {
-		super(op, m, ctx);
-	}
 
 	public ArrayLoadStatement(Instruction op, Method method, int index, Conditional value,  ElementInfo ei, FeatureExpr ctx) {
-		this(op, method, ctx);
+		super(op, method, op.getLineNumber(), ctx);
 		this.value = value;
 		this.index = index;
 		this.ei = ei;

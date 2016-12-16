@@ -16,12 +16,8 @@ public class LocalStoreStatement extends Statement {
 	private Conditional newValue;
 	private LocalVarInfo li;
 
-	private LocalStoreStatement(Instruction op, Method m, FeatureExpr ctx) {
-		super(op, m, ctx);
-	}
-
 	public LocalStoreStatement(Instruction op, Method method, Conditional oldValue, Conditional newValue, LocalVarInfo li, FeatureExpr ctx) {
-		this(op, method, ctx);
+		super(op, method, op.getLineNumber(), ctx);
 		this.oldValue = oldValue == null ? null : oldValue.simplify(method.getCTX());
 		this.newValue = newValue.simplify(method.getCTX());
 		this.li = li;

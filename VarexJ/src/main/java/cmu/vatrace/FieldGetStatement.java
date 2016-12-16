@@ -14,12 +14,8 @@ public class FieldGetStatement extends Statement {
 	private Conditional value;
 	private FieldInfo fi;
 
-	private FieldGetStatement(Instruction op, Method m, FeatureExpr ctx) {
-		super(op, m, ctx);
-	}
-
 	public FieldGetStatement(Instruction op, Conditional value, Method method, FieldInfo fi, FeatureExpr ctx) {
-		this(op, method, ctx);
+		super(op, method, op.getLineNumber(), ctx);
 		this.value = value;
 		this.fi = fi;
 	}

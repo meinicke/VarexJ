@@ -12,12 +12,8 @@ public class ExceptionStatement extends Statement {
 	public String cname;
 	private Conditional<String> details;
 
-	public ExceptionStatement(Instruction op, Method m, FeatureExpr ctx) {
-		super(op, m, ctx);
-	}
-	
 	public ExceptionStatement(Instruction op, String cname, Conditional<String> causeDetails, Method method, FeatureExpr ctx) {
-		this(op, method, ctx);
+		super(op, method, op.getLineNumber(), ctx);
 		this.cname = cname;
 		this.details = causeDetails;
 		setColor(NodeColor.firebrick1);

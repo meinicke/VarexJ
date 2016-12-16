@@ -284,7 +284,6 @@ public class JPF implements Runnable {
    * check for null
    */
   public JPF(Config conf) {
-	  
     config = conf;
 
     setNativeClassPath(config); // before we do anything else

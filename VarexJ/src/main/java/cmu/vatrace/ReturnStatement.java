@@ -15,12 +15,8 @@ public class ReturnStatement extends Statement<Instruction> {
 
 	private Conditional returnValue;
 
-	private ReturnStatement(Instruction op, Method<MethodInfo> m, FeatureExpr ctx) {
-		super(op, m, ctx);
-	}
-
 	public ReturnStatement(Instruction op, Method<MethodInfo> method, Conditional returnValue, FeatureExpr ctx) {
-		this(op, method, ctx);
+		super(op, method, op.getLineNumber(), ctx);
 		this.returnValue = returnValue.simplify(ctx);
 		if (returnValue.toMap().size() > 1) {
 			setColor(NodeColor.darkorange);

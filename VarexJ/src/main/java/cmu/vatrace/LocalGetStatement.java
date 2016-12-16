@@ -14,12 +14,8 @@ public class LocalGetStatement extends Statement {
 	private Conditional<Integer> value;
 	private LocalVarInfo li;
 
-	private LocalGetStatement(Instruction op, Method m, FeatureExpr ctx) {
-		super(op, m, ctx);
-	}
-
 	public LocalGetStatement(Instruction op, Conditional<Integer> value, Method method,LocalVarInfo li, FeatureExpr ctx) {
-		this(op, method, ctx);
+		super(op, method, op.getLineNumber(), ctx);
 		this.value = value;
 		this.li = li;
 	}

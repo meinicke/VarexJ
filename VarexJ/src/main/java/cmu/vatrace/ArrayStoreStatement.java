@@ -18,12 +18,8 @@ public class ArrayStoreStatement extends Statement<Instruction> {
 	private int index;
 	private ElementInfo ei;
 
-	private ArrayStoreStatement(Instruction op, Method m, FeatureExpr ctx) {
-		super(op, m, ctx);
-	}
-
 	public ArrayStoreStatement(Instruction op, Method method, int index, Conditional oldValue, Conditional newValue, ElementInfo ei, FeatureExpr ctx) {
-		this(op, method, ctx);
+		super(op, method, op.getLineNumber(), ctx);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.index = index;

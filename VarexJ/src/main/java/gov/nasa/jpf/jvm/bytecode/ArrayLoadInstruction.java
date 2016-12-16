@@ -26,7 +26,6 @@ import cmu.conditional.One;
 import cmu.varviz.trace.Statement;
 import cmu.vatrace.ArrayLoadStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -80,7 +79,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 		// we should not set 'arrayRef' before the CG check
 		// (this would kill the CG loop optimization)
 		arrayRef = frame.pop(ctx).simplify(pushCtx);
-		next = ChoiceFactory.create(pushCtx, arrayRef.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		next = ChoiceFactory.create(pushCtx, arrayRef.mapf(pushCtx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {

@@ -176,7 +176,10 @@ public abstract class Instruction implements Cloneable {
 	}
 
 	public int getLineNumber() {
-		return mi.getLineNumber(this);
+		if (mi != null) {
+			return mi.getLineNumber(this);
+		} 
+		return -1;
 	}
 
 	public String getSourceLine() {

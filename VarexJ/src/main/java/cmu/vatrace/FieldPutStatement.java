@@ -21,12 +21,8 @@ public class FieldPutStatement extends Statement {
 	private Conditional<String> newString;
 	private Conditional<String> oldString;
 
-	private FieldPutStatement(Instruction op, Method m, FeatureExpr ctx) {
-		super(op, m, ctx);
-	}
-
 	public FieldPutStatement(Instruction op, Conditional<Integer> oldValue, Conditional<Integer> newValue, Method m, FieldInfo fi, FeatureExpr ctx) {
-		this(op, m, ctx);
+		super(op, m, op.getLineNumber(), ctx);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.fi = fi;
