@@ -25,7 +25,9 @@ public class Run {
 		final String[] args = {
 				"+classpath=" + path + "/bin",
 				"+search.class=.search.RandomSearch",
-				"linux." + example.Linux1
+//				"+featuremodel=C:\\Users\\Jens Meinicke\\git\\VarexJ\\SmallInteractionExamples\\model.dimacs",
+//				"+invocation",
+				"debugging.GameScreen"
 		};
 		
 		JPF.main(args);

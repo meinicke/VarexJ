@@ -36,8 +36,8 @@ public class LocalGetStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		Conditional<String> valueString = value.map(f);
-		return li.getType() + ' ' + li.getName() + ": " + valueString;
+		
+		return li.getType() + ' ' + li.getName();
 	}
 	
 	@Override
@@ -51,5 +51,10 @@ public class LocalGetStatement extends Statement {
 	@Override
 	public boolean affectsIdentifier(String identifier) {
 		return li.getName().equals(identifier);
+	}
+	
+	@Override
+	public Conditional<?> getValue() {
+		return value.map(f);
 	}
 }

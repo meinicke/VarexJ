@@ -1258,7 +1258,7 @@ public class MethodInfo extends InfoObject implements GenericSignatureHolder  {
   }
   
   public String toString() {
-    return "MethodInfo[" + getFullName() + ']';
+    return getFullName();
   }
   
   // for debugging purposes

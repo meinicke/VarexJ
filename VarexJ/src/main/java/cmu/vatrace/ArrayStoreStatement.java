@@ -60,7 +60,7 @@ public class ArrayStoreStatement extends Statement<Instruction> {
 	
 	@Override
 	public String toString() {
-		return Types.getTypeName(ei.getArrayType()) + "[" + index + "] : " + oldValue.map(f) + " \u2192 " + newValue.map(f);
+		return Types.getTypeName(ei.getArrayType()) + "[" + index + "]";
 	}
 	
 	@Override
@@ -71,5 +71,15 @@ public class ArrayStoreStatement extends Statement<Instruction> {
 	@Override
 	public boolean isInteraction(int degree) {
 		return newValue.toMap().size() >= degree; 
+	}
+	
+	@Override
+	public Conditional<String> getOldValue() {
+		return oldValue.map(f);
+	}
+	
+	@Override
+	public Conditional<String> getValue() {
+		return newValue.map(f);
 	}
 }

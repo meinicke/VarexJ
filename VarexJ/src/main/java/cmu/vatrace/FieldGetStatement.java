@@ -41,12 +41,7 @@ public class FieldGetStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		try {
-			Conditional<String> valueString = value.map(f);
-			return fi.getFullName() + ": " + valueString;
-		} catch (Exception e) {
-			return fi.getFullName()+ ": " + value;
-		}
+		return fi.getFullName();
 	}
 	
 	@Override
@@ -60,5 +55,14 @@ public class FieldGetStatement extends Statement {
 			return value.toMap().containsKey(ref);
 		}
 		return false;
+	}
+	
+	@Override
+	public Conditional getValue() {
+		try {
+			return value.map(f);
+		} catch (Exception e) {
+			return value;
+		}
 	}
 }

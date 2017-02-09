@@ -39,11 +39,16 @@ public class ArrayLoadStatement extends Statement<Instruction> {
 	
 	@Override
 	public String toString() {
-		return Types.getTypeName(ei.getArrayType()) + "[" + index + "] : " + value.map(f);
+		return Types.getTypeName(ei.getArrayType()) + "[" + index + "]";
 	}
 	
 	@Override
 	public boolean affectsref(int ref) {
 		return ei.getObjectRef() == ref;
+	}
+	
+	@Override
+	public Conditional<?> getValue() {
+		return value.map(f);
 	}
 }
