@@ -26,6 +26,7 @@ import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -59,27 +60,26 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 	static final String ANNOTATION_CONDITIONAL = gov.nasa.jpf.annotation.Conditional.class.getName();
 	static int featureNumber = 0;
 	
-	private static final List<String> IGNORED_FEATURES = Arrays.asList(new String[]{"patch26", "patch5", "patch23"});
-	private static boolean isIgnored(String featureName) {
-		return IGNORED_FEATURES.contains(featureName);
-	}
-	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		
 		if (getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL) != null) {
 			StackFrame frame = ti.getModifiableTopFrame();
-			if (true) {
-				frame.pop(ctx);
-				frame.push(ctx, One.valueOf(0));
-			}
-			if (!isIgnored(fname)) {
-				FeatureExpr feature = Conditional.createFeature(fname);
-				featureNumber++;
+			
+			FeatureExpr feature = Conditional.createFeature(fname);
+			featureNumber++;
+			Integer pop = frame.pop(ctx).getValue();
+			if (JPF.ignoredFeatures.containsKey(feature)) {
+				if (JPF.ignoredFeatures.get(feature) != null) {
+					pop = JPF.ignoredFeatures.get(feature) ? 1 : 0;
+					System.out.println("Set feature " + fname + " to " + (pop == 0 ? "false" : "true"));
+				} else {
+					System.out.println("Set feature " + fname + " to " + (pop == 0 ? "false" : "true"));
+				}
+				frame.push(ctx, One.valueOf(pop));
+			} else {
 				System.out.println("Found feature #" + featureNumber + " - " + fname + " @" + className);
-				IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
-				frame.pop(ctx);
-				frame.push(ctx, create);
+				frame.push(ctx, ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0)));
 			}
 		}
 		

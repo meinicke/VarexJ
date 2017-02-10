@@ -88,6 +88,8 @@ public abstract class Conditional<T> {
 		features.put(fname, feature);
 		return feature;
 	}
+	
+	public static FeatureExpr additionalConstraint = FeatureExprFactory.True();
 
 	public static boolean isContradiction(final FeatureExpr f) {
 		if (!cache.containsKey(f)) {
@@ -96,12 +98,16 @@ public abstract class Conditional<T> {
 			} else if (f.isTautology()) {
 				cache.put(f, Boolean.FALSE);
 			} else if (fm != null) {
-				cache.put(f, f.isContradiction(fm));
+				cache.put(f, f.and(additionalConstraint).isContradiction(fm));
 			} else {
 				cache.put(f, Boolean.FALSE);
 			}
 		}
 		return cache.get(f);
+	}
+	
+	public static boolean isSatisfiable(final FeatureExpr f) {
+		return !isContradiction(f);
 	}
 
 	public static boolean isTautology(final FeatureExpr f) {

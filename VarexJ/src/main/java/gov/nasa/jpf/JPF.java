@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -34,6 +35,7 @@ import cmu.varviz.trace.filters.InteractionFilter;
 import cmu.varviz.trace.filters.Or;
 import cmu.vatrace.ExceptionFilter;
 import coverage.Coverage;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.report.Publisher;
 import gov.nasa.jpf.report.PublisherExtension;
@@ -66,6 +68,9 @@ public class JPF implements Runnable {
 	static {
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 	}
+	
+	public static Map<FeatureExpr, Boolean> ignoredFeatures = new HashMap<>();
+	
 	public static Trace vatrace = new Trace();
 	static {
 		vatrace.setFilter(new Or(
