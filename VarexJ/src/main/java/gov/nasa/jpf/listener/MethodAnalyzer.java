@@ -345,7 +345,7 @@ public class MethodAnalyzer extends ListenerAdapter {
 
       if (isAnalyzedMethod(mi)) {
         if (!mi.isStatic()) {
-          int ref = frame.getThis();
+          int ref = frame.getThis().getValue();
           if (ref != MJIEnv.NULL) {
             ei = ti.getElementInfo(ref);
           }

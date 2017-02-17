@@ -146,21 +146,42 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
       ti.leave();  // takes care of unlocking before potentially creating a CG
 
       if (mi.isSynchronized()) {
-        int objref = mi.isStatic() ? mi.getClassInfo().getClassObjectRef() : ti.getThis();
-        ElementInfo ei = ti.getElementInfo(objref);
-
-        if (ei.getLockCount() == 0){
-          ei = ei.getInstanceWithUpdatedSharedness(ti); 
-          if (ei.isShared()) {
-            VM vm = ti.getVM();
-            ChoiceGenerator<ThreadInfo> cg = vm.getSchedulerFactory().createSyncMethodExitCG(ei, ti);
-            if (cg != null) {
-              if (vm.setNextChoiceGenerator(cg)) {
-                ti.skipInstructionLogging();
-                return new One<Instruction>(this); // re-enter
-              }
-            }
-          }
+    	  final Conditional<Integer> objref = mi.isStatic() ? One.valueOf(mi.getClassInfo().getClassObjectRef()) : ti.getThis();
+          if (objref.isOne()) {
+          	ElementInfo ei = ti.getElementInfo(objref.getValue());
+  	        if (ei.getLockCount() == 0){
+  	          ei = ei.getInstanceWithUpdatedSharedness(ti); 
+  	          if (ei.isShared()) {
+  	            VM vm = ti.getVM();
+  	            ChoiceGenerator<ThreadInfo> cg = vm.getSchedulerFactory().createSyncMethodExitCG(ei, ti);
+  	            if (cg != null) {
+  	              if (vm.setNextChoiceGenerator(cg)) {
+  	                ti.skipInstructionLogging();
+  	                return new One<Instruction>(this); // re-enter
+  	              }
+  	            }
+  	          }
+  	        }
+  	     } else {
+  	    	 objref.map(ref -> {
+  	    		 ElementInfo ei = ti.getElementInfo(ref);
+  				 if (ei.getLockCount() == 0) {
+  					ei = ei.getInstanceWithUpdatedSharedness(ti);
+  					if (ei.isShared()) {
+  						VM vm = ti.getVM();
+  						ChoiceGenerator<ThreadInfo> cg = vm.getSchedulerFactory().createSyncMethodExitCG(ei, ti);
+  						if (cg != null) {
+  							if (vm.setNextChoiceGenerator(cg)) {
+  								ti.skipInstructionLogging();
+  								// return new One<Instruction>(this); // re-enter
+  								throw new RuntimeException("incomplete lift");
+  								// XXX shouldn't mater for vae
+  							}
+  						}
+  					}
+  				}
+  				return null;
+  			});
         }
       }
     }

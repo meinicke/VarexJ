@@ -175,7 +175,7 @@ public class JPFOutputStream extends OutputStream {
     
     if (!mi.isStatic()){
       ps.print("this:");
-      PrintUtils.printReference(ps, frame.getThis());
+      PrintUtils.printReference(ps, frame.getThis().getValue());
       ps.print(',');
     }
     

@@ -67,7 +67,7 @@ public class DoubleSpec {
         // the name is not found...
       }
       catch (JPFException e){ //not local? try a field!
-        int id = ti.getThis();
+        int id = ti.getThis().getValue();
         if(id>=0){  // in a normal (non-static) method
           ElementInfo ei = vm.getElementInfo(id);
           ret = ei.getDoubleField(varId[0]).getValue();

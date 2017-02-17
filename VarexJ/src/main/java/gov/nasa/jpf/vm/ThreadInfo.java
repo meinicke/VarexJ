@@ -1317,7 +1317,7 @@ public class ThreadInfo extends InfoObject
 
     public boolean isCtorOnStack(int objRef) {
         for (StackFrame f = top; f != null; f = f.getPrevious()) {
-            if (f.getThis() == objRef && f.getMethodInfo().isCtor()) {
+            if (f.getThis().getValue() == objRef && f.getMethodInfo().isCtor()) {
                 return true;
             }
         }
@@ -1436,12 +1436,12 @@ public class ThreadInfo extends InfoObject
     /**
      * Returns the pointer to the object reference of the executing method
      */
-    public int getThis() {
+    public Conditional<Integer> getThis() {
         return top.getThis();
     }
 
     public ElementInfo getThisElementInfo() {
-        return getElementInfo(getThis());
+        return getElementInfo(getThis().getValue());
     }
 
     public boolean isThis(ElementInfo ei) {
@@ -1456,7 +1456,7 @@ public class ThreadInfo extends InfoObject
         if (getTopFrameMethodInfo().isStatic()) {
             return false;
         } else {
-            int thisRef = top.getThis();
+            int thisRef = top.getThis().getValue();
             return ei.getObjectRef() == thisRef;
         }
     }
@@ -1573,7 +1573,7 @@ public class ThreadInfo extends InfoObject
 
         if (xObjRef != MJIEnv.NULL) { // filter out exception method frames
             for (; frame != null; frame = frame.getPrevious()) {
-                if (frame.getThis() != xObjRef) {
+                if (frame.getThis().getValue() != xObjRef) {
                     break;
                 }
                 n--;
@@ -1697,11 +1697,14 @@ public class ThreadInfo extends InfoObject
 
         }
 
-        int causeRef = env.getReferenceField(ctx, objRef, "cause").getValue();
-        if ((causeRef != objRef) && (causeRef != MJIEnv.NULL)) {
-            print(pw, "Caused by: ");
-            printStackTrace(ctx, pw, causeRef);
-        }
+        Conditional<Integer> causeRef = env.getReferenceField(ctx, objRef, "cause");
+        causeRef.map(ref -> {
+	        if ((ref != objRef) && (ref != MJIEnv.NULL)) {
+	            print(pw, "Caused by: ");
+	            printStackTrace(ctx, pw, ref);
+	        }
+	        return null;
+        });
     }
 
     class StackTraceElement {
@@ -2453,7 +2456,7 @@ public class ThreadInfo extends InfoObject
             } else {
                 // NOTE 'inMethod' doesn't work for natives, because getThis() pulls 'this' from the stack frame,
                 // which we don't have (and don't need) for natives
-                objref = isBeforeCall ? getCalleeThis(mi) : getThis();
+                objref = isBeforeCall ? getCalleeThis(mi) : getThis().getValue();
             }
 
             ei = (isModifiable) ? getModifiableElementInfo(objref) : getElementInfo(objref);
@@ -2474,14 +2477,18 @@ public class ThreadInfo extends InfoObject
         MethodInfo mi = top.getMethodInfo();
 
         if (mi.isSynchronized()) {
-            int oref = mi.isStatic() ? mi.getClassInfo().getClassObjectRef() : top.getThis();
-            ElementInfo ei = getModifiableElementInfo(oref);
-
-            ei.lock(this);
-
-            if (mi.isClinit()) {
-                mi.getClassInfo().setInitializing(this);
-            }
+            Conditional<Integer> oref = mi.isStatic() ? One.valueOf(mi.getClassInfo().getClassObjectRef()) : top.getThis();
+            final ThreadInfo ti = this;
+            oref.map(oref1 -> {
+				ElementInfo ei = getModifiableElementInfo(oref1);
+				
+				ei.lock(ti);
+				
+				if (mi.isClinit()) {
+					mi.getClassInfo().setInitializing(ti);
+				}
+				return null;
+			});
         }
 
         vm.notifyMethodEntered(this, mi);
@@ -2501,12 +2508,15 @@ public class ThreadInfo extends InfoObject
         // VMs are allowed to silently fix this, so it might run on some and fail on others)
 
         if (mi.isSynchronized()) {
-            int oref = mi.isStatic() ? mi.getClassInfo().getClassObjectRef() : top.getThis();
-            ElementInfo ei = getElementInfo(oref);
-            if (ei.isLocked()) {
-                ei = ei.getModifiableInstance();
-                ei.unlock(this);
-            }
+            Conditional<Integer> oref = mi.isStatic() ? One.valueOf(mi.getClassInfo().getClassObjectRef()) : top.getThis();
+            oref.map(ref -> {
+            	ElementInfo ei = getElementInfo(ref);
+	            if (ei.isLocked()) {
+	                ei = ei.getModifiableInstance();
+	                ei.unlock(this);
+	            }
+            	return null;
+            });
 
             if (mi.isClinit()) {
                 // we just released the lock on the class object, returning from a clinit
