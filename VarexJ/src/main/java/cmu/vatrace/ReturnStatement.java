@@ -3,6 +3,7 @@ package cmu.vatrace;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import cmu.varviz.trace.Method;
 import cmu.varviz.trace.NodeColor;
 import cmu.varviz.trace.Statement;
@@ -35,6 +36,11 @@ public class ReturnStatement extends Statement<Instruction> {
 					return "null";
 				}
 				return "@" + val;
+			case Types.T_CHAR:
+				if (Character.isJavaIdentifierPart((Integer)val)) {
+					return Character.toString((char)((Integer)val).intValue());
+				}
+				return "0x" + String.format("%02x", ((Integer)val));
 		}
 		return val.toString();
 	};

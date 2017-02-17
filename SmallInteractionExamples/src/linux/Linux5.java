@@ -43,7 +43,11 @@ public class Linux5 {
 	}
 
 	public static int maxNumnodes() {
-		return 1 << (CONFIG_PARISC ? 3 : 0);
+		int maxNum = 1;
+		if (CONFIG_PARISC)  {
+			maxNum = maxNum << 3;
+		}
+		return maxNum;
 	}
 
 	public static int NODE_DATA(int nid) {

@@ -1,6 +1,7 @@
 package cmu.vatrace;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import cmu.varviz.trace.Method;
 import cmu.varviz.trace.NodeColor;
 import cmu.varviz.trace.Statement;
@@ -30,8 +31,8 @@ public class ExceptionStatement extends Statement {
 	@Override
 	public Conditional<String> getValue() {
 		if (details == null) {
-			return null;
+			return new One<>("");
 		}
-		return details.map(d -> d == null ? null : d.replaceAll("\"", "-"));
+		return details.map(d -> d == null ? "" : d.replaceAll("\"", "-"));
 	}
 }
