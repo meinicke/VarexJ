@@ -2,3 +2,7 @@
 
 onthefly/*.class
 /file
+/graph.gv
+/graph.pdf
+/time.csv
+/trace
