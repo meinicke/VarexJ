@@ -39,7 +39,7 @@ public class LocalStoreStatement extends Statement {
 			return new One<>(Boolean.toString((Integer) val == 1));
 		}
 		if (li.getType().equals("char")) {
-			if (Character.isJavaIdentifierPart((Character)val)) {
+			if (Character.isJavaIdentifierPart((Integer)val)) {
 				return new One<>(val.toString());
 			}
 			return new One<>("0x" + String.format("%02x", ((Integer)val)));
