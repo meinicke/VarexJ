@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
@@ -154,12 +153,17 @@ public class NativeMethodInfo extends MethodInfo {
 					} else if (a instanceof IChoice) {
 						// Entry for n-handler with conditional arguments
 						Conditional<Object[]> unconditionalArgs = getUnconditionalArgs(args);
-						ret = unconditionalArgs.map(new Function<Object[], Object>() {
+						ret = unconditionalArgs.mapf(ctx, new BiFunction<FeatureExpr, Object[], Conditional<Object>>() {
 
+							@SuppressWarnings("unchecked")
 							@Override
-							public Object apply(Object[] args) {
+							public Conditional<Object> apply(FeatureExpr ctx, Object[] args) {
 								try {
-									return mth.invoke(peer, args);
+									Object returnValue = mth.invoke(peer, args);
+									if (returnValue instanceof Conditional) {
+										return (Conditional<Object>)returnValue;
+									}
+									return new One<>(returnValue);
 								} catch (IllegalAccessException | InvocationTargetException e) {
 									System.err.println(mth);
 									for (Object a : args) {

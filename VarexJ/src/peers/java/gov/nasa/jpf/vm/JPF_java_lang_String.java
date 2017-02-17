@@ -310,34 +310,39 @@ public class JPF_java_lang_String extends NativePeer {
 						return One.FALSE;
 					}
 
-					Fields f1 = heap.get(s1.getReferenceField("value").simplify(ctx).getValue()).getFields();
-					final Fields f2 = heap.get(s2.getReferenceField("value").simplify(ctx).getValue()).getFields();
-
-					Conditional<char[]> c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx);
-					return c1.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
-
-						@Override
-						public Conditional<Boolean> apply(FeatureExpr ctx, final char[] c1) {
-							return ((CharArrayFields) f2).asCharArray().mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
-
+					Conditional<Integer> value1c = s1.getReferenceField("value").simplify(ctx);
+					return value1c.mapf(ctx, (ctx1, value1)-> {
+						Fields f1 = heap.get(value1).getFields();
+						Conditional<Integer> value2c = s2.getReferenceField("value").simplify(ctx);
+						return value2c.mapf(ctx1, (ctx2, value2) -> {
+							final Fields f2 = heap.get(value2).getFields();
+		
+							Conditional<char[]> c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx2);
+							return c1.mapf(ctx2, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
+		
 								@Override
-								public Conditional<Boolean> apply(FeatureExpr x, char[] c2) {
-									if (c1.length != c2.length) {
-										return One.FALSE;
-									}
-
-									for (int i = 0; i < c1.length; i++) {
-										if (c1[i] != c2[i]) {
-											return One.FALSE;
+								public Conditional<Boolean> apply(FeatureExpr ctx, final char[] c1) {
+									return ((CharArrayFields) f2).asCharArray().mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
+		
+										@Override
+										public Conditional<Boolean> apply(FeatureExpr x, char[] c2) {
+											if (c1.length != c2.length) {
+												return One.FALSE;
+											}
+		
+											for (int i = 0; i < c1.length; i++) {
+												if (c1[i] != c2[i]) {
+													return One.FALSE;
+												}
+											}
+		
+											return One.TRUE;
 										}
-									}
-
-									return One.TRUE;
+		
+									});
 								}
-
 							});
-						}
-
+						});
 					});
 
 				}
@@ -430,60 +435,74 @@ public class JPF_java_lang_String extends NativePeer {
 	public Conditional<Integer> hashCode____I(final MJIEnv env, final int objref, FeatureExpr ctx) {
 		final ElementInfo ei = env.getElementInfo(objref);
 		Conditional<Integer> h = ei.getIntField("hash").simplify(ctx);
-
 		return h.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
 			@Override
-			public Conditional<Integer> apply(FeatureExpr ctx, Integer h) {
+			public Conditional<Integer> apply(FeatureExpr ctx, final Integer h) {
 				if (h == 0) {
-					int vref = env.getReferenceField(ctx, objref, "value").getValue();
-
+					Conditional<Integer> vref = env.getReferenceField(ctx, objref, "value");
 					// now get the char array data, but be aware they are stored as ints
-					ElementInfo eiVal = env.getElementInfo(vref);
-					char[] values = eiVal.asCharArray().simplify(ctx).getValue();
+					return vref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-					for (int i = 0; i < values.length; i++) {
-						h = 31 * h + values[i];
-					}
+						@Override
+						public Conditional<Integer> apply(FeatureExpr ctx, Integer vref) {
+							ElementInfo eiVal = env.getElementInfo(vref);
+							char[] values = eiVal.asCharArray().simplify(ctx).getValue();
+							int newH = h;
+							for (int i = 0; i < values.length; i++) {
+								newH = 31 * newH + values[i];
+							}
 
-					ei.getModifiableInstance().setIntField(ctx, "hash", new One<>(h));
+							ei.getModifiableInstance().setIntField(ctx, "hash", new One<>(newH));
+							return One.valueOf(newH);
+						}
+					});
+					
+					
 				}
 
 				return new One<>(h);
 			}
 
 		}).simplify();
-
 	}
 
 	@MJI
-	public int indexOf__I__I(MJIEnv env, int objref, int c, FeatureExpr ctx) {
+	public Conditional<Integer> indexOf__I__I(MJIEnv env, int objref, int c, FeatureExpr ctx) {
 		return indexOf__II__I(env, objref, c, 0, ctx);
 	}
 
 	@MJI
-	public int indexOf__II__I(MJIEnv env, int objref, int c, int fromIndex, FeatureExpr ctx) {
+	public Conditional<Integer> indexOf__II__I(final MJIEnv env, int objref, int c, final int fromIndexPar, FeatureExpr ctx) {
 
-		int vref = env.getReferenceField(ctx, objref, "value").getValue();
-		ElementInfo ei = env.getElementInfo(vref);
-		char[] values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx).getValue();
+		Conditional<Integer> vref = env.getReferenceField(ctx, objref, "value");
+		return vref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-		int len = values.length;
+			@Override
+			public Conditional<Integer> apply(FeatureExpr ctx, Integer vref) {
+				ElementInfo ei = env.getElementInfo(vref);
+				char[] values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx).getValue();
 
-		if (fromIndex >= len) {
-			return -1;
-		}
-		if (fromIndex < 0) {
-			fromIndex = 0;
-		}
+				int len = values.length;
 
-		for (int i = fromIndex; i < len; i++) {
-			if (values[i] == c) {
-				return i;
+				int fromIndex = fromIndexPar;
+				if (fromIndex >= len) {
+					return One.valueOf(-1);
+				}
+				if (fromIndex < 0) {
+					fromIndex = 0;
+				}
+
+				for (int i = fromIndex; i < len; i++) {
+					if (values[i] == c) {
+						return One.valueOf(i);
+					}
+				}
+
+				return One.valueOf(-1);
 			}
-		}
-
-		return -1;
+			
+		});
 	}
 
 	@MJI

@@ -1310,8 +1310,8 @@ public int nLocals;
    * if this is an instance method, return the reference of the corresponding object
    * (note this only has to be in slot 0 upon entry)
    */
-  public int getThis () {
-    return thisRef.getValue();
+  public Conditional<Integer> getThis () {
+	    return thisRef;
   }
 
   // stack operations
