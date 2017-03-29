@@ -20,6 +20,7 @@ package sun.misc;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.ObjectInputStream;
 import java.util.jar.JarFile;
 
 /**
@@ -57,6 +58,8 @@ public class SharedSecrets {
   private static JavaIOFileDescriptorAccess javaIOFileDescriptorAccess;
   private static JavaNioAccess javaNioAccess;
   private static JavaAWTAccess javaAWTAccess;
+  private static JavaOISAccess javaOISAccess;
+  
     private static JavaUtilZipFileAccess javaUtilZipFileAccess;
 	private static JavaObjectInputStreamAccess javaObjectInputStreamAccess;
 
@@ -104,6 +107,16 @@ public class SharedSecrets {
     return javaIOAccess;
   }
 
+	public static void setJavaOISAccess(JavaOISAccess access) {
+		javaOISAccess = access;
+	}
+
+	public static JavaOISAccess getJavaOISAccess() {
+		if (javaOISAccess == null)
+			unsafe.ensureClassInitialized(ObjectInputStream.class);
+
+		return javaOISAccess;
+	}
   
   public static void setJavaNioAccess(JavaNioAccess a) {
     javaNioAccess = a;
