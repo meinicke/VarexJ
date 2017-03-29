@@ -146,7 +146,6 @@ test {
     include '**/*Test.class'
     include '**/jikesRVM/**/Test*.class'
     exclude '**/jikesRVM/**/Test*$*.class'
-    exclude '**cmu/*.class'
     exclude '**/JPF_*.class'
 }
 
