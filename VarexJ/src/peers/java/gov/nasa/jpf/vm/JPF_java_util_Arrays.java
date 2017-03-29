@@ -46,8 +46,9 @@ public class JPF_java_util_Arrays extends NativePeer {
 	
 	@MJI
 	public void fill___3ZZ__V(MJIEnv env, int __, Conditional<Integer> arrayRef, Conditional<Boolean> value, FeatureExpr ctx) {
-		final int reference = arrayRef.getValue();
-		((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx, value);
+		arrayRef.mapf(ctx, (x, ref) -> {
+			((ArrayFields) env.heap.getModifiable(ref).fields).fill(x, value);
+		});
 	}
 
 }
