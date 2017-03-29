@@ -87,7 +87,8 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
-				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), new One<>(typeSafeClone(mi))).simplify();
+				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), 
+						ChoiceFactory.create(ctx, new One<>(typeSafeClone(mi)), ti.getPC())).simplify();
 			}
 			MethodInfo callee = getInvokedMethod(ctx.and(objRefEntry.getValue()), ti, objRef);
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
@@ -110,13 +111,9 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 				}
 			}
 			
-//			if (!classes.isEmpty() && map.size() > classes.size()) {
-//				System.out.println("VIRTUAL reduce invocations from " + map.size() + " to " + classes.size() + " " + callee);
-//			}
-			
 			if (callee.isSynchronized()) {
 				if (checkSyncCG(ei, ti)) {
-					return new One<Instruction>(this);
+					return new One<>(this);
 				}
 			}
 			setupCallee(ctx, ti, callee);

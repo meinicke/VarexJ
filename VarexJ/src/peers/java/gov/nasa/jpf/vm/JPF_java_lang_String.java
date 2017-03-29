@@ -158,24 +158,26 @@ public class JPF_java_lang_String extends NativePeer {
 
 									@Override
 									public void accept(FeatureExpr ctx, final Integer dstBegin) {
-										final Conditional<String> obj = env.getStringObjectNew(ctx, objRef.simplify(ctx).getValue());
-										obj.mapf(ctx, new BiConsumer<FeatureExpr, String>() {
-
-											@Override
-											public void accept(FeatureExpr ctx, String obj) {
-												if (Conditional.isContradiction(ctx)) {
-													return;
-												}
-												try {
-													for (int index = 0; index < srcEnd - srcBegin; index++) {
-														env.setCharArrayElement(ctx, dstRef, index + dstBegin, new One<>(obj.charAt(srcBegin + index)));
+										objRef.simplify(ctx).mapf(ctx, (ctx2, oref) -> {
+											final Conditional<String> obj = env.getStringObjectNew(ctx, oref);
+											obj.mapf(ctx, new BiConsumer<FeatureExpr, String>() {
+	
+												@Override
+												public void accept(FeatureExpr ctx, String obj) {
+													if (Conditional.isContradiction(ctx)) {
+														return;
 													}
-												} catch (Exception e) {
-													System.out.println(e);
-													env.throwException(ctx, e.getClass().getName(), e.getMessage());
+													try {
+														for (int index = 0; index < srcEnd - srcBegin; index++) {
+															env.setCharArrayElement(ctx, dstRef, index + dstBegin, new One<>(obj.charAt(srcBegin + index)));
+														}
+													} catch (Exception e) {
+														System.out.println(e);
+														env.throwException(ctx, e.getClass().getName(), e.getMessage());
+													}
 												}
-											}
-
+	
+											});
 										});
 									}
 

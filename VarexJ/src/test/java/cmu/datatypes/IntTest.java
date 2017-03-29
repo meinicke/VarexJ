@@ -89,4 +89,48 @@ public class IntTest extends TestJPF {
 			System.out.println(i.intValue());
 		}
 	}
+	
+	@Test
+	public void conditionalNulpointerReturnTest() throws Exception {
+		if (verifyUnhandledException(NullPointerException.class.getName(), JPF_CONFIGURATION)) {
+			conditionalNulpointerReturn();
+		}
+	}
+	
+	private static int conditionalNulpointerReturn() {
+		Integer err = null;
+		if (a) {
+			return err;
+		}
+		return 1;
+	}
+	
+	@Test
+	public void conditionalNulpointerReturnTest2() throws Exception {
+		if (verifyUnhandledException(NullPointerException.class.getName(), JPF_CONFIGURATION)) {
+			conditionalNulpointerReturn2();
+		}
+	}
+	
+	private static int conditionalNulpointerReturn2() {
+		Integer err = null;
+		boolean ipv4 = true;
+		boolean flag = true;
+		
+		if (a) {
+			flag = false;
+		}
+		if (b) {
+			if (flag) {
+				err = -1;
+			}
+		}
+		if (c) {
+			if (ipv4) {
+				return err;
+			}
+		}
+		return 1;
+	}
+	
 }
