@@ -146,6 +146,7 @@ test {
     include '**/*Test.class'
     include '**/jikesRVM/**/Test*.class'
     exclude '**/jikesRVM/**/Test*$*.class'
+    exclude '**/FeatureModelTest.class'
     exclude '**/JPF_*.class'
 }
 
