@@ -82,7 +82,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			splitRef = true;
 		}
 				
-//		ti.getTopFrame().node.addSetField(Conditional.getCTXString(ctx) + " invoke " + map);
 		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {

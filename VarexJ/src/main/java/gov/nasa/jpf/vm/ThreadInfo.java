@@ -1574,7 +1574,7 @@ public class ThreadInfo extends InfoObject
 
         if (xObjRef != MJIEnv.NULL) { // filter out exception method frames
             for (; frame != null; frame = frame.getPrevious()) {
-                if (frame.getThis().getValue() != xObjRef) {
+                if (frame.getThis().simplify(ctx).getValue(true) != xObjRef) {// TODO remove true
                     break;
                 }
                 n--;
@@ -1586,7 +1586,7 @@ public class ThreadInfo extends InfoObject
 
         for (; frame != null; frame = frame.getPrevious()) {
             snap[j++] = frame.getMethodInfo().getGlobalId();
-            snap[j++] = frame.getPC().simplify(ctx).getValue().getInstructionIndex();
+            snap[j++] = frame.getPC().simplify(ctx).getValue(true).getInstructionIndex();// TODO remove true
         }
 
         return snap;

@@ -27,7 +27,7 @@ public class FieldPutStatement extends Statement {
 		this.newValue = newValue;
 		this.fi = fi;
 		this.oldString = oldValue.mapf(ctx, f);
-		this.newString = newValue.mapf(ctx, f);
+		this.newString = newValue.mapf(ctx, f).simplify();
 
 		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
 			if (oldValue.toMap().size() < newValue.toMap().size()) {
@@ -56,6 +56,18 @@ public class FieldPutStatement extends Statement {
 			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo(val);
 			if (ei.isArray()) {
 				return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, val) + "]");
+			}
+			if ((Integer) val == 0) {
+				return new One<>("null");
+			}
+			if (ei.getClassInfo().getName().equals(String.class.getCanonicalName())) {
+				Conditional<Integer> cref = ei.getReferenceField("value");
+				return cref.mapf(ctx, (ctx2, ref) -> {
+					Conditional<char[]> values = ThreadInfo.getCurrentThread().getEnv().getCharArrayObject(ref);
+					return values.mapf(ctx2, (ctx3, v) -> {
+						return new One<>("\"" + new String(v) + "\"");
+					});
+				}).simplify();
 			}
 			return new One<>('@' + val.toString());
 		}

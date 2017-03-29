@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.varviz.trace.Method;
+import cmu.varviz.trace.NodeColor;
 import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -28,7 +29,17 @@ public class LocalStoreStatement extends Statement {
 		
 		this.newValue = newValue.simplify(method.getCTX());
 		this.newValue = this.newValue.mapf(method.getCTX(), f).simplify(method.getCTX());
-		
+		if (oldValue != null) {
+			if (oldValue.toMap().size() < newValue.toMap().size()) {
+				setColor(NodeColor.darkorange);
+			} else if (oldValue.toMap().size() > newValue.toMap().size()) {
+//				setColor(NodeColor.limegreen);
+			}
+		} else {
+			if (newValue.toMap().size() > 1) {
+				setColor(NodeColor.darkorange);
+			}
+		}
 	}
 
 	private final BiFunction<FeatureExpr, Object, Conditional<String>> f = (ctx, val) -> {
@@ -92,6 +103,10 @@ public class LocalStoreStatement extends Statement {
 				return true;
 			}
 			if (Math.abs(oldValue.toMap().size() - newValue.toMap().size()) >= degree - 1) {
+				return true;
+			}
+		} else {
+			if (newValue.toMap().size() >= degree) {
 				return true;
 			}
 		}

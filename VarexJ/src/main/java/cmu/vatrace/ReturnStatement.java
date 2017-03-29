@@ -1,5 +1,6 @@
 package cmu.vatrace;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
@@ -8,8 +9,11 @@ import cmu.varviz.trace.Method;
 import cmu.varviz.trace.NodeColor;
 import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 
 public class ReturnStatement extends Statement<Instruction> {
@@ -24,25 +28,35 @@ public class ReturnStatement extends Statement<Instruction> {
 		}
 	}
 	
-	private final Function<Object, String> f = val -> {
+	private final BiFunction<FeatureExpr, Object, Conditional<String>> f = (ctx, val) -> {
 		switch (getParentMethodInfo().getReturnTypeCode()) {
 			case Types.T_BOOLEAN:
-				return Boolean.toString((Integer)val == 1);
+				return new One<>(Boolean.toString((Integer)val == 1));
 			case Types.T_REFERENCE:
 				if (TraceUtils.enums.containsKey(val)) {
-					return TraceUtils.enums.get(val);
+					return new One<>(TraceUtils.enums.get(val));
 				}
-				if ((Integer)val == 0) {
-					return "null";
+				ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer) val);// TODO this is affected by garbage collection 
+				if (ei == null) {
+					return new One<>("null @" + val);// should never happen
 				}
-				return "@" + val;
+				if (ei.getClassInfo().getName().equals(String.class.getCanonicalName())) {
+					Conditional<Integer> cref = ei.getReferenceField("value");
+					return cref.mapf(ctx, (ctx2, ref) -> {
+						Conditional<char[]> values = ThreadInfo.getCurrentThread().getEnv().getCharArrayObject(ref);
+						return values.mapf(ctx2, (ctx3, v) -> {
+							return new One<>("\"" + new String(v) + "\"");
+						});
+					}).simplify(ctx);
+				}
+				return new One<>('@' + val.toString());
 			case Types.T_CHAR:
 				if (Character.isJavaIdentifierPart((Integer)val)) {
-					return Character.toString((char)((Integer)val).intValue());
+					return new One<>(Character.toString((char)((Integer)val).intValue()));
 				}
-				return "0x" + String.format("%02x", ((Integer)val));
+				return new One<>("0x" + String.format("%02x", ((Integer)val)));
 		}
-		return val.toString();
+		return new One<>(val.toString());
 	};
 
 	private MethodInfo getParentMethodInfo() {
@@ -65,6 +79,6 @@ public class ReturnStatement extends Statement<Instruction> {
 	
 	@Override
 	public Conditional<String> getValue() {
-		return returnValue.map(f);
+		return returnValue.mapf(FeatureExprFactory.True(), f);
 	}
 }

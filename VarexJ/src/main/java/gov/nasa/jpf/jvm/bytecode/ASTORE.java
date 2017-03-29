@@ -48,6 +48,8 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
 		int pos = getPosition();
 		if (pos == startPC - 1) {// init
 			oldValue = null;
+		} else if (getMethodInfo().getInstructionAt(startPC).getLineNumber() >= this.getLineNumber()) {
+			oldValue = null;// TODO this is not clean
 		} else {
 			oldValue = frame.getLocalVariable(frame.stack.getCtx(), index);
 		}

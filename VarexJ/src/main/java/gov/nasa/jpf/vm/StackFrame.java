@@ -1275,7 +1275,7 @@ public int nLocals;
 	  }
 
   ExceptionHandler getHandlerFor (FeatureExpr ctx, ClassInfo ciException){
-    return mi.getHandlerFor(ciException, pc.simplify(ctx).getValue());
+    return mi.getHandlerFor(ciException, pc.simplify(ctx).getValue(true));// TODO remove true
   }
   
   public boolean isFirewall (){
