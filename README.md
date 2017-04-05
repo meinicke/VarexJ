@@ -1,10 +1,3 @@
-
-
-[![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=master)](https://travis-ci.org/meinicke/VarexJ)
-
-[//]: # (![Jenkins Logo](http://mirrors.jenkins-ci.org/art/jenkins-logo/favicon.ico))
-[//]: # ([![Build Status](http://feature.isri.cmu.edu:8080/job/VarexJ/badge/icon)](http://feature.isri.cmu.edu:8080/job/VarexJ/))
-
 # Overview
 
 VarexJ is a variability-aware interpreter for Java(8) bytecode based on Java Pathfinder v7.0 (rev 1155+) see: http://javapathfinder.sourceforge.net/.
