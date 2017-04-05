@@ -37,7 +37,7 @@ public class LocalStoreStatement extends Statement {
 			}
 		} else {
 			if (newValue.toMap().size() > 1) {
-				setColor(NodeColor.darkorange);
+//				setColor(NodeColor.darkorange);
 			}
 		}
 	}
@@ -51,7 +51,7 @@ public class LocalStoreStatement extends Statement {
 		}
 		if (li.getType().equals("char")) {
 			if (Character.isJavaIdentifierPart((Integer)val)) {
-				return new One<>(val.toString());
+				return new One<>(Character.toString((char)((Integer)val).intValue()));
 			}
 			return new One<>("0x" + String.format("%02x", ((Integer)val)));
 		}

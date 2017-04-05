@@ -18,12 +18,12 @@ import gov.nasa.jpf.vm.Types;
 
 public class ReturnStatement extends Statement<Instruction> {
 
-	private Conditional returnValue;
+	private final Conditional returnValue;
 
 	public ReturnStatement(Instruction op, Method<MethodInfo> method, Conditional returnValue, FeatureExpr ctx) {
 		super(op, method, op.getLineNumber(), ctx);
-		this.returnValue = returnValue.simplify(ctx);
-		if (returnValue.toMap().size() > 1) {
+		this.returnValue = returnValue.mapf(ctx, f);
+		if (this.returnValue.toMap().size() > 1) {
 			setColor(NodeColor.darkorange);
 		}
 	}
@@ -79,6 +79,6 @@ public class ReturnStatement extends Statement<Instruction> {
 	
 	@Override
 	public Conditional<String> getValue() {
-		return returnValue.mapf(FeatureExprFactory.True(), f);
+		return returnValue;
 	}
 }
