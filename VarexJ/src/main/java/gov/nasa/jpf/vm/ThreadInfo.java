@@ -2053,6 +2053,8 @@ public class ThreadInfo extends InfoObject
      		}
      		coverage.preExecuteInstruction(i);
 
+     		saveReturnedLines(pc);
+     		
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
      		final Conditional<Instruction> next = i.execute(ctx, this);
@@ -2132,6 +2134,32 @@ public class ThreadInfo extends InfoObject
       return (Conditional<Instruction>) One.NULL;
     }
   }
+
+	private void saveReturnedLines(Conditional<Instruction> pc) {
+		if (getTopFrame() == null) {
+			return;
+		}
+		for (final Entry<Instruction, FeatureExpr> ins : pc.toMap().entrySet()) {
+			if (ins.getKey() instanceof ReturnInstruction) {
+				if (ins.getKey().mi == getTopFrame().mi) { 
+					Conditional<Integer> currentReturn = getTopFrame().returnedLines;
+					final One<Integer> nextReturnLine = new One<>(ins.getKey().getLineNumber());
+					final FeatureExpr nullContext = getNullContext(currentReturn);
+					getTopFrame().returnedLines = ChoiceFactory.create(nullContext, ChoiceFactory.create(ins.getValue(), nextReturnLine, One.valueOf(-1)),
+							currentReturn).simplify();
+					
+				}
+			}
+		}
+	}
+	
+	private static FeatureExpr getNullContext(Conditional<Integer> value) {
+		final Map<Integer, FeatureExpr> map = value.toMap();
+		if (map.containsKey(-1)) {
+			return map.get(-1);
+		} 
+		return FeatureExprFactory.False();
+	}
 
     private static int countGc = 0;
     private final static long maxMemory = Runtime.getRuntime().maxMemory();

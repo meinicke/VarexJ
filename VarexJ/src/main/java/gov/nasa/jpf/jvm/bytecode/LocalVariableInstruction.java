@@ -18,8 +18,15 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.Map.Entry;
+
+import cmu.conditional.Conditional;
+import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
+import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
+import gov.nasa.jpf.vm.StackFrame;
 
 /**
  * class abstracting instructions that access local variables, to keep
@@ -90,6 +97,19 @@ public abstract class LocalVariableInstruction extends JVMInstruction
       return baseMnemonic + " " + index;
     }
   }
+
+  	/**
+  	 * Returns the context of already returned instructions.
+  	 */
+	protected static FeatureExpr getReturnContext(StackFrame frame) {
+		FeatureExpr returnContext = FeatureExprFactory.False();
+		for (Entry<Instruction, FeatureExpr> entry : frame.getPC().toMap().entrySet()) {
+			if (entry.getKey() instanceof ReturnInstruction) {
+				returnContext = returnContext.or(entry.getValue());
+			}
+		}
+		return returnContext;
+	}
 }
 
 

@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.function.BiFunction;
 
 import cmu.conditional.ChoiceFactory;
@@ -202,7 +203,15 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
 	    		stateMentValue = frame.peekLong(ctx);
 	    	}
 	    }
-	    new ReturnStatement(this, frame.method, stateMentValue, ctx);
+	    if (frame.returnedLines != null) {
+	    	frame.returnedLines = frame.returnedLines.simplify(ctx);
+		    for (Entry<Integer, FeatureExpr> line : frame.returnedLines.toMap().entrySet()) {
+		    	ReturnStatement statement = new ReturnStatement(this.typeSafeClone(mi), frame.method, stateMentValue.simplify(line.getValue()), line.getValue().and(ctx));
+		    	statement.setLineNumber(line.getKey());
+		    }
+		} else {
+			new ReturnStatement(this, frame.method, stateMentValue, ctx);
+		}
     }
     
     returnFrame = frame;

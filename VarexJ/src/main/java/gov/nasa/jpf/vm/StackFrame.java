@@ -128,7 +128,10 @@ public int nLocals;
   static final int[] EMPTY_ARRAY = new int[0];
   static final FixedBitSet EMPTY_BITSET = new BitSet64();
   
-  
+  /**
+   * The lines of already returned instructions.
+   */
+  public Conditional<Integer> returnedLines = One.valueOf(-1);
 
   public Method<MethodInfo> method;
   protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){

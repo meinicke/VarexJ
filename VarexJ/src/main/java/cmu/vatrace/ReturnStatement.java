@@ -1,15 +1,16 @@
 package cmu.vatrace;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.varviz.trace.Method;
+import cmu.varviz.trace.MethodElement;
 import cmu.varviz.trace.NodeColor;
 import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
@@ -74,7 +75,16 @@ public class ReturnStatement extends Statement<Instruction> {
 	
 	@Override
 	public boolean isInteraction(int degree) {
-		return returnValue.toMap().size() >= degree;
+		Set<?> allReturnValues = new HashSet<>();
+		for (MethodElement<?> child : parent.getChildren()) {
+			if (child instanceof ReturnStatement) {
+				allReturnValues.addAll(((ReturnStatement) child).returnValue.toMap().keySet());
+			}
+		}
+		if (allReturnValues.size() >= degree) {
+			setColor(NodeColor.darkorange);
+		}
+		return allReturnValues.size() >= degree;
 	}
 	
 	@Override

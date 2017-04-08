@@ -58,6 +58,8 @@ public class ISTORE extends LocalVariableInstruction implements StoreInstruction
     frame.storeOperand(ctx, index);
     if (localVarInfo != null) {
 		Conditional<Integer> newValue = frame.getLocalVariable(frame.stack.getCtx(), index);
+		FeatureExpr returnContext = getReturnContext(frame);
+		newValue = newValue.simplify(returnContext.not());
 		new LocalStoreStatement(this, frame.method, oldValue, newValue, localVarInfo, ctx);
 	}
     return getNext(ctx, ti);
