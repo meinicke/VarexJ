@@ -104,6 +104,9 @@ public class FieldPutStatement extends Statement {
 	
 	@Override
 	public boolean isInteraction(int degree) {
-		return oldValue.toMap().size() != newValue.toMap().size() && newValue.toMap().size() >= degree; 
+		if (oldValue.equals(newString)) {
+			return false;
+		}
+		return /* oldValue.toMap().size() != newValue.toMap().size() &&*/ newValue.toMap().size() >= degree; 
 	}
 }

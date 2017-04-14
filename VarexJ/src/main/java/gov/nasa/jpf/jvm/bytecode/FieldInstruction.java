@@ -150,9 +150,9 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     
     if (getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {    	
 	    Conditional<Integer> newValue = ChoiceFactory.create(ctx, val, field).simplify(eiFieldOwner.ctx);
-//	    if (!field.equals(newValue)) {
+	    if (!field.equals(newValue)) {
 			new FieldPutStatement(this, field, newValue, frame.method, fi, ctx);
-//	    }
+	    }
     }
 
     // we only have to modify the field owner if the values have changed, and only
