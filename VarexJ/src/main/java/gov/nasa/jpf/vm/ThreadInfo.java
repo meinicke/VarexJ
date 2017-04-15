@@ -1679,22 +1679,17 @@ public class ThreadInfo extends InfoObject
 
         } else { // fall back to use the snapshot stored in the exception object
             Conditional<Integer> VAaRef = env.getReferenceField(ctx, objRef, "snapshot");
-            VAaRef.mapf(ctx, new BiConsumer<FeatureExpr, Integer>() {
+            VAaRef.mapf(ctx, (BiConsumer<FeatureExpr, Integer>) (ctx1, aRef1) -> {
+			    Conditional<Integer>[] snapshot = env.getIntArrayObject(ctx1, aRef1);
+			    int len = snapshot.length / 2;
 
-                @Override
-                public void accept(FeatureExpr ctx, Integer aRef) {
-                    Conditional<Integer>[] snapshot = env.getIntArrayObject(ctx, aRef);
-                    int len = snapshot.length / 2;
-
-                    for (int i = 0, j = 0; i < len; i++) {
-                        Conditional<Integer> methodId = snapshot[j++];
-                        Conditional<Integer> pcOffset = snapshot[j++];
-                        StackTraceElement ste = new StackTraceElement(methodId.getValue(true), pcOffset.getValue(true));
-                        ste.printOn(pw);
-                    }
-                }
-
-            });
+			    for (int i = 0, j = 0; i < len; i++) {
+			        Conditional<Integer> methodId = snapshot[j++];
+			        Conditional<Integer> pcOffset = snapshot[j++];
+			        StackTraceElement ste = new StackTraceElement(methodId.simplify(ctx1).getValue(true), pcOffset.simplify(ctx1).getValue(true));
+			        ste.printOn(pw);
+			    }
+			});
 
         }
 
