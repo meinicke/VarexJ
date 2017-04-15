@@ -76,7 +76,11 @@ public class FieldPutStatement extends Statement {
 
 	@Override
 	public String toString() {
-		return fi.getFullName() + " = ";
+		String type = fi.getType();
+		if (type.contains(".")) {
+			type = type.substring(type.lastIndexOf('.') + 1);
+		}
+		return type + " " + fi.getClassInfo().getSimpleName() + "." + fi.getName() + " = ";
 	}
 	
 	@Override
@@ -104,9 +108,6 @@ public class FieldPutStatement extends Statement {
 	
 	@Override
 	public boolean isInteraction(int degree) {
-		if (oldValue.equals(newString)) {
-			return false;
-		}
 		return /* oldValue.toMap().size() != newValue.toMap().size() &&*/ newValue.toMap().size() >= degree; 
 	}
 }

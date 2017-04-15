@@ -52,10 +52,11 @@ public class ReturnStatement extends Statement<Instruction> {
 				}
 				return new One<>('@' + val.toString());
 			case Types.T_CHAR:
-				if (Character.isJavaIdentifierPart((Integer)val)) {
-					return new One<>(Character.toString((char)((Integer)val).intValue()));
-				}
-				return new One<>("0x" + String.format("%02x", ((Integer)val)));
+//				if (Character.isJavaIdentifierPart((Integer)val)) {
+//					return new One<>(Character.toString((char)((Integer)val).intValue()));
+//				}
+//				return new One<>("0x" + String.format("%02x", ((Integer)val)));
+				return new One<>(" ");
 		}
 		return new One<>(val.toString());
 	};
@@ -69,7 +70,11 @@ public class ReturnStatement extends Statement<Instruction> {
 	
 	@Override
 	public String toString() {
-		return "return " + Types.getTypeName(getParentMethodInfo().getReturnType());
+		String type = Types.getTypeName(getParentMethodInfo().getReturnType());
+		if (type.contains(".")) {
+			type = type.substring(type.lastIndexOf('.') + 1);
+		}
+		return "return " + type;
 	}
 		
 	

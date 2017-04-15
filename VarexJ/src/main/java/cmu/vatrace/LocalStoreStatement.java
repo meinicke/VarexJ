@@ -50,10 +50,11 @@ public class LocalStoreStatement extends Statement {
 			return new One<>(Boolean.toString((Integer) val == 1));
 		}
 		if (li.getType().equals("char")) {
-			if (Character.isJavaIdentifierPart((Integer)val)) {
-				return new One<>(Character.toString((char)((Integer)val).intValue()));
-			}
-			return new One<>("0x" + String.format("%02x", ((Integer)val)));
+			return new One<>(" ");
+//			if (Character.isJavaIdentifierPart((Integer)val)) {
+//				return new One<>(Character.toString((char)((Integer)val).intValue()));
+//			}
+//			return new One<>("0x" + String.format("%02x", ((Integer)val)));
 		}
 
 		if (!li.isNumeric()) {
@@ -73,6 +74,12 @@ public class LocalStoreStatement extends Statement {
 					});
 				});
 			}
+			if (ei.getClassInfo().getName().equals(Integer.class.getCanonicalName())) {
+				Conditional<Integer> values = ei.getIntField("value");
+				return values.mapf(ctx, (ctx2, v) -> {
+					return new One<>("\"" + v + "\"");
+				});
+			}
 			return new One<>('@' + val.toString());
 		}
 		return new One<>(val.toString());
@@ -83,12 +90,11 @@ public class LocalStoreStatement extends Statement {
 		if (li == null) {
 			return "set unknown: ";
 		}
-		// if (oldValue == null) {
-		// return li.getType() + " " + li.getName() + " \u2192 " +
-		// newValue.map(f);
-		// }
-
-		return li.getType() + " " + li.getName() + ":";
+		String type = li.getType();
+		if (type.contains(".")) {
+			type = type.substring(type.lastIndexOf('.') + 1);
+		}
+		return type + " " + li.getName() + ":";
 	}
 
 	@Override
@@ -99,6 +105,9 @@ public class LocalStoreStatement extends Statement {
 	@Override
 	public boolean isInteraction(int degree) {
 		if (oldValue != null) {
+			if (oldValue.equals(newValue)) {
+				return false;
+			}
 			if (newValue.toMap().size() >= degree) {
 				return true;
 			}
