@@ -50,7 +50,7 @@ public class ALOAD extends LocalVariableInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     frame.pushLocal(ctx, index);
     
-    if (index != 0) {// ignore "this"
+    if (getMethodInfo().isStatic() || index != 0) {// ignore "this"
 	    LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
 	    if (localVarInfo != null) {
 			Statement statement = new LocalGetStatement(this, frame.peek(ctx), frame.method, localVarInfo, ctx);

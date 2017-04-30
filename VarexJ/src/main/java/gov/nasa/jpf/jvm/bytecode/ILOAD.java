@@ -44,11 +44,9 @@ public class ILOAD extends LocalVariableInstruction {
     
     frame.pushLocal(ctx, index);
 
-    if (index != 0) {// ignore "this"
-	    LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
-	    if (localVarInfo != null) {
-			Statement statement = new LocalGetStatement(this, frame.peek(ctx), frame.method, localVarInfo, ctx);
-	    }
+    LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
+    if (localVarInfo != null) {
+		Statement statement = new LocalGetStatement(this, frame.peek(ctx), frame.method, localVarInfo, ctx);
     }
     
     return getNext(ctx, ti);
