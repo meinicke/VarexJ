@@ -1,10 +1,14 @@
 package cmu.vatrace;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.function.BiFunction;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.varviz.trace.IFStatement;
 import cmu.varviz.trace.Method;
+import cmu.varviz.trace.MethodElement;
 import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -20,7 +24,7 @@ public class LocalGetStatement extends Statement {
 	public LocalGetStatement(Instruction op, Conditional<Integer> value, Method method,LocalVarInfo li, FeatureExpr ctx) {
 		super(op, method, op.getLineNumber(), ctx);
 		this.li = li;
-		this.value = value.mapf(method.getCTX(), f).simplify(method.getCTX());
+		this.value = value.mapf(method.getCTX(), f).simplify(ctx);
 	}
 
 	// TODO remove code clone
@@ -83,8 +87,31 @@ public class LocalGetStatement extends Statement {
 		return value;
 	}
 	
-//	@Override
-//	public boolean isInteraction(int degree) {
-//		return value.size() >= degree;
-//	}
+	@Override
+	public boolean isInteraction(int degree) {
+		return true;
+	}
+	
+	@Override
+	public boolean canBeRemoved() {
+		Collection<MethodElement<?>> instructions = getParent().getChildren();
+		Iterator<MethodElement<?>> iterator = instructions.iterator();
+		
+		// scroll to this instruction
+		while (iterator.next() != this);
+		if (!iterator.hasNext()) {
+			return true;
+		}
+		
+		// scroll to next if statement
+		MethodElement<?> statement = iterator.next();
+		while (!(statement instanceof IFStatement)) {
+			if (!iterator.hasNext()) {
+				return true;
+			}
+			statement = iterator.next();
+		}
+		// check if line is the same
+		return statement.getLineNumber() != lineNumber;
+	}
 }

@@ -29,17 +29,7 @@ public class LocalStoreStatement extends Statement {
 		
 		this.newValue = newValue.simplify(method.getCTX());
 		this.newValue = this.newValue.mapf(method.getCTX(), f).simplify(method.getCTX());
-		if (oldValue != null) {
-			if (oldValue.toMap().size() < newValue.toMap().size()) {
-				setColor(NodeColor.darkorange);
-			} else if (oldValue.toMap().size() > newValue.toMap().size()) {
-//				setColor(NodeColor.limegreen);
-			}
-		} else {
-			if (newValue.toMap().size() > 1) {
-//				setColor(NodeColor.darkorange);
-			}
-		}
+		setColor(NodeColor.darkorange);
 	}
 
 	private final BiFunction<FeatureExpr, Object, Conditional<String>> f = (ctx, val) -> {

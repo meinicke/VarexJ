@@ -19,8 +19,11 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.varviz.trace.Statement;
+import cmu.vatrace.LocalGetStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -41,6 +44,13 @@ public class ILOAD extends LocalVariableInstruction {
     
     frame.pushLocal(ctx, index);
 
+    if (index != 0) {// ignore "this"
+	    LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
+	    if (localVarInfo != null) {
+			Statement statement = new LocalGetStatement(this, frame.peek(ctx), frame.method, localVarInfo, ctx);
+	    }
+    }
+    
     return getNext(ctx, ti);
   }
 

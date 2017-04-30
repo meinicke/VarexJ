@@ -24,9 +24,7 @@ public class ReturnStatement extends Statement<Instruction> {
 	public ReturnStatement(Instruction op, Method<MethodInfo> method, Conditional returnValue, FeatureExpr ctx) {
 		super(op, method, op.getLineNumber(), ctx);
 		this.returnValue = returnValue.mapf(ctx, f);
-		if (this.returnValue.toMap().size() > 1) {
-			setColor(NodeColor.darkorange);
-		}
+		setColor(NodeColor.darkorange);
 	}
 	
 	private final BiFunction<FeatureExpr, Object, Conditional<String>> f = (ctx, val) -> {

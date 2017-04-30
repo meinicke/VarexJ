@@ -29,13 +29,7 @@ public class FieldPutStatement extends Statement {
 		this.oldString = oldValue.mapf(ctx, f);
 		this.newString = newValue.mapf(ctx, f).simplify();
 
-		if (fi.getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {
-			if (oldValue.toMap().size() < newValue.toMap().size()) {
-				setColor(NodeColor.darkorange);
-			} else if (oldValue.toMap().size() > newValue.toMap().size()) {
-				setColor(NodeColor.limegreen);
-			}
-		}
+		setColor(NodeColor.darkorange);
 	}
 
 	private final BiFunction<FeatureExpr, Integer, Conditional<String>> f = (ctx, val) -> {
