@@ -198,9 +198,11 @@ public class Config extends Properties {
    * the standard Config constructor that processes the whole properties stack
    */
   public Config (String[] cmdLineArgs)  {
+	  System.out.println("Config.Config(String[] cmdLineArgs)");
     args = cmdLineArgs;
     String[] a = cmdLineArgs.clone(); // we might nullify some of them
 
+	setDefaultProperties();
     // we need the app properties (*.jpf) pathname upfront because it might define 'site'
     String appProperties = getAppPropertiesLocation(a);
 
@@ -417,6 +419,7 @@ public class Config extends Properties {
           log("loading property file: " + fileName);
 
           setConfigPathProperties(f.getAbsolutePath());
+          
           sources.add(f);
           is = new FileInputStream(f);
           load(is);
@@ -443,6 +446,77 @@ public class Config extends Properties {
     return false;
   }
 
+	private void setDefaultProperties() {
+		
+		final File f = new File(JPF.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		System.out.println(f);
+		System.out.println(f.getAbsolutePath());
+		System.out.println(f.getPath());
+		System.out.println(f.getParent());
+		
+		
+		setDefaultProperty("jpf-core", f.getParent().replace("%20", " "));
+		setDefaultProperty("jpf-core.classpath", "${jpf-core}/jpf-classes.jar");
+		setDefaultProperty("jpf-core.peer_packages", "gov.nasa.jpf.vm,<model>,<default>");
+		setDefaultProperty("vm.class", "gov.nasa.jpf.vm.SingleProcessVM");
+		setDefaultProperty("jpf-core.native_classpath", "${jpf-core}/jpf.jar;", "${jpf-core}/jpf-annotations.jar;", "${jpf-core}/featureexprlib_2.10-0.3.4.jar;", "${jpf-core}/*.jar;");
+		setDefaultProperty("vm.backtracker.class", "gov.nasa.jpf.vm.DefaultBacktracker");
+		setDefaultProperty("vm.classloader.class", "gov.nasa.jpf.jvm.JVMSystemClassLoaderInfo");
+		setDefaultProperty("search.properties", "gov.nasa.jpf.vm.NoUncaughtExceptionsProperty");
+		setDefaultProperty("vm.heap.class", "gov.nasa.jpf.vm.OVHeap");
+		setDefaultProperty("vm.threadlist.class", "gov.nasa.jpf.vm.ThreadList");
+		setDefaultProperty("vm.statics.class", "gov.nasa.jpf.vm.OVStatics");
+		setDefaultProperty("vm.restorer.class", ".vm.DefaultMementoRestorer");
+		setDefaultProperty("vm.boot_classpath", "<system>");
+		setDefaultProperty("jvm.insn_factory.class", "gov.nasa.jpf.jvm.bytecode.InstructionFactory");
+		setDefaultProperty("vm.fields_factory.class", "gov.nasa.jpf.vm.DefaultFieldsFactory");
+		setDefaultProperty("vm.attributor.class", "gov.nasa.jpf.vm.DefaultAttributor");
+		setDefaultProperty("vm.por.shared.class", ".vm.OverlappingContenderPolicy");
+		setDefaultProperty("vm.scheduler_factory.class", "gov.nasa.jpf.vm.DefaultSchedulerFactory");
+		setDefaultProperty("vm.time.class", "gov.nasa.jpf.vm.SystemTime");
+
+		// 3. Report Part
+		setDefaultProperty("log.level", "warning");
+		setDefaultProperty("report.class", "gov.nasa.jpf.report.Reporter");
+		setDefaultProperty("report.publisher", "console");
+		setDefaultProperty("report.console.class", "gov.nasa.jpf.report.ConsolePublisher");
+		setDefaultProperty("report.console.start", "jpf,sut");
+		setDefaultProperty("report.console.transition", "");
+		setDefaultProperty("report.console.constraint", "constraint,snapshot");
+		setDefaultProperty("report.console.probe", "statistics");
+		setDefaultProperty("report.console.property_violation", "error,snapshot");
+		setDefaultProperty("report.console.show_steps", "true");
+		setDefaultProperty("report.console.show_method", "true");
+		setDefaultProperty("report.console.show_code", "false");
+		setDefaultProperty("report.console.finished", "result,statistics");
+		setDefaultProperty("report.xml.class", "gov.nasa.jpf.report.XMLPublisher");
+		setDefaultProperty("report.html.class", "gov.nasa.jpf.report.HTMLPublisher");
+		setDefaultProperty("report.html.start", "jpf,sut,platform,user,dtg,config");
+		setDefaultProperty("report.html.constraint", "constraint");
+		setDefaultProperty("report.html.property_violation", "");
+		setDefaultProperty("report.html.finished", "result,statistics,error,snapshot,output");
+
+		// jpf-nhandler part
+		setDefaultProperty("jpf-nhandler", "${jpf-core}");
+		setDefaultProperty("jpf-nhandler.native_classpath", "${jpf-nhandler}/jpf.jar;", "${jpf-nhandler}/*.jar;");
+		setDefaultProperty("jpf-nhandler.test_classpath", "${jpf-core.test_classpath}");
+		setDefaultProperty("jpf-nhandler.peer_packages", "test.converter");
+		//setProperty("listener", getProperty("listener") + ",gov.nasa.jpf.vm.JVMForwarder");
+		setProperty("nhandler.clean", "false");
+		setProperty("nhandler.resetVMState", "false");
+		setProperty("nhandler.genSource", "false");
+		setProperty("nhandler.addComment", "false");
+		setProperty("nhandler.updateJPFState", "true");
+	}
+	
+	private void setDefaultProperty(String key, String... value) {
+		StringBuilder expandedStrings = new StringBuilder();
+		for (String string : value) {
+			expandedStrings.append(expandString(string));
+		}
+		
+		setProperty(key, expandedStrings.toString());
+	}
 
   /**
    * this holds the policy defining in which order we process directories
@@ -678,7 +752,10 @@ public class Config extends Properties {
     return v;
   }
 
-  
+	protected String expandString(String s) {
+		return expandString(null, s);
+	}
+	
   // our internal expander
   // Note that we need to know the key this came from, to handle recursive expansion
   protected String expandString (String key, String s) {
