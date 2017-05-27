@@ -198,6 +198,8 @@ public class Config extends Properties {
    * the standard Config constructor that processes the whole properties stack
    */
   public Config (String[] cmdLineArgs)  {
+	  setProperty("user-home", System.getProperty("user.home"));
+	  
     args = cmdLineArgs;
     String[] a = cmdLineArgs.clone(); // we might nullify some of them
 

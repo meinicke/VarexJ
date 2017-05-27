@@ -46,9 +46,12 @@ public class LocalGetStatement extends Statement {
 			if ((Integer) val == 0) {
 				return new One<>("null");
 			}
-			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer) val);// TODO this is affected by garbage collection 
+			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer) val);
 			if (ei == null) {
 				return new One<>("null @" + val);// should never happen
+			}
+			if (ei.isArray()) {
+				return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, (Integer)val) + "]");
 			}
 			if (ei.getClassInfo().getName().equals(String.class.getCanonicalName())) {
 				Conditional<Integer> cref = ei.getReferenceField("value");
@@ -103,12 +106,23 @@ public class LocalGetStatement extends Statement {
 			return true;
 		}
 		
+		final Instruction instruction = (Instruction) getContent();
+		final int index = instruction.getInstructionIndex();
+				
 		// scroll to next if statement
 		MethodElement<?> statement = iterator.next();
-		while (!(statement instanceof IFStatement)) {
+		while (!(statement instanceof IFStatement) && !(statement instanceof ExceptionStatement)) {
+			final Object otherContent = statement.getContent();
+			if (otherContent instanceof Instruction) {
+				final int otherIndex = ((Instruction) otherContent).getInstructionIndex();
+				if (otherIndex <= index) {
+					return true;
+				}
+			}		
 			if (!iterator.hasNext()) {
 				return true;
 			}
+			
 			statement = iterator.next();
 		}
 		// check if line is the same

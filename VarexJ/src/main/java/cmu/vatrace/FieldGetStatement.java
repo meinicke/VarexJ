@@ -27,24 +27,24 @@ public class FieldGetStatement extends Statement {
 		this.value = value.mapf(ctx, f).simplify(ctx);
 	}
 
-	private final BiFunction<FeatureExpr, Integer, Conditional<String>> f = (ctx, val) -> {
+	private final BiFunction<FeatureExpr, Number, Conditional<String>> f = (ctx, val) -> {
 		if (fi.isBooleanField()) {
-			return new One<>(Boolean.toString(val == 1));
+			return new One<>(Boolean.toString((Integer)val == 1));
 		}
 		if (fi.isReference()) {
-			if (val == 0) {
+			if ((Integer)val == 0) {
 				return new One<>("null");
 			}
 			if (fi.getClassInfo().isEnum()) {
-				TraceUtils.enums.put(val, fi.getName());
+				TraceUtils.enums.put((Integer)val, fi.getName());
 				return new One<>(fi.getName());
 			}
 			if (fi.getTypeClassInfo().isEnum()) {
 				return new One<>(TraceUtils.enums.get(val));
 			}
-			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo(val);
+			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer)val);
 			if (ei.isArray()) {
-				return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, val) + "]");
+				return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, (Integer)val) + "]");
 			}
 			if ((Integer) val == 0) {
 				return new One<>("null");
@@ -106,12 +106,23 @@ public class FieldGetStatement extends Statement {
 			return true;
 		}
 		
+		final Instruction instruction = (Instruction) getContent();
+		final int index = instruction.getInstructionIndex();
+				
 		// scroll to next if statement
 		MethodElement<?> statement = iterator.next();
-		while (!(statement instanceof IFStatement)) {
+		while (!(statement instanceof IFStatement) && !(statement instanceof ExceptionStatement)) {
+			final Object otherContent = statement.getContent();
+			if (otherContent instanceof Instruction) {
+				final int otherIndex = ((Instruction) otherContent).getInstructionIndex();
+				if (otherIndex <= index) {
+					return true;
+				}
+			}		
 			if (!iterator.hasNext()) {
 				return true;
 			}
+			
 			statement = iterator.next();
 		}
 		// check if line is the same

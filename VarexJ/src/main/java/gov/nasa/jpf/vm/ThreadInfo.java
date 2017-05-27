@@ -38,6 +38,7 @@ import cmu.conditional.One;
 import cmu.utils.CoverageClass;
 import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
+import cmu.varviz.trace.Trace;
 import cmu.vatrace.ExceptionStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -2032,7 +2033,7 @@ public class ThreadInfo extends InfoObject
 		   		ctx = map.get(i).and(ctx);
  	        }
  	        	
-				if (RuntimeConstants.debug) {
+			if (RuntimeConstants.debug) {
      			System.out.print(executedInstructions);
      			System.out.print("  ");
      			System.out.print(top.getDepth());
@@ -2040,7 +2041,6 @@ public class ThreadInfo extends InfoObject
      				System.out.print(" ");
      			}
  				System.out.println(" " + i + " if " + ctx);
- 			
  			}
      		
      		if (RuntimeConstants.tracing) {
@@ -2052,6 +2052,10 @@ public class ThreadInfo extends InfoObject
      		
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
+     		if (i instanceof ReturnInstruction) {
+     			Trace.removeUnnecessaryIfs(top.method);
+     		}
+     		
      		final Conditional<Instruction> next = i.execute(ctx, this);
      		coverage.postExecuteInstruction(i, ctx);
      		

@@ -219,7 +219,7 @@ public class LogHandler extends Handler {
     } else if (ostream == System.out) {
       log.config("logging to System.out");
     } else {
-      log.warning("unknown log destination");
+      log.config("unknown log destination");
     }
   }
 

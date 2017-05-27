@@ -2,6 +2,7 @@ package cmu.vatrace;
 
 import java.util.function.BiFunction;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.varviz.trace.Method;
@@ -28,7 +29,11 @@ public class LocalStoreStatement extends Statement {
 		}
 		
 		this.newValue = newValue.simplify(method.getCTX());
-		this.newValue = this.newValue.mapf(method.getCTX(), f).simplify(method.getCTX());
+		this.newValue = this.newValue.mapf(method.getCTX(), f).simplify(ctx);
+		if (this.oldValue != null) {
+			this.newValue = ChoiceFactory.create(ctx, this.newValue, oldValue).simplify(method.getCTX());
+		}
+		
 		setColor(NodeColor.darkorange);
 	}
 

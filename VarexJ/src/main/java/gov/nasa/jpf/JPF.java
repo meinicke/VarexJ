@@ -20,7 +20,6 @@ package gov.nasa.jpf;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -357,7 +356,6 @@ public class JPF implements Runnable {
 			} else if (stackHandlerFactory.startsWith(HybridStackHandler.class.getSimpleName())) {
 				StackHandlerFactory.activateHybridStackHandler();
 				String[] split = stackHandlerFactory.split("[|]");
-				System.out.println(Arrays.toString(split));
 				if (split.length == 3) {
 					if (split[1].equals("JPF")) {
 						HybridStackHandler.normalStack = NormalStack.JPFStack;
