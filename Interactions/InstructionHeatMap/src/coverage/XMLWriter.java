@@ -48,7 +48,7 @@ public class XMLWriter implements XMLCoverage {
 		root.setAttribute(BASE, Integer.toString(coverage.getBaseValue()));
 		for (String fileName : coverage.getFiles()) {
 			Element file = doc.createElement(FILE);
-			file.setAttribute(FILE_NAME, fileName);
+			file.setAttribute(NAME, fileName);
 			
 			Element coverageElement = doc.createElement(COVERAGE_KEY);
 			Collection<Interaction> coveredLines = coverage.getCoverage(fileName);

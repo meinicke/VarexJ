@@ -30,6 +30,7 @@ import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
 import coverage.Coverage;
+import coverage.CoverageMiguel;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.report.Publisher;
 import gov.nasa.jpf.report.PublisherExtension;
@@ -62,7 +63,7 @@ public class JPF implements Runnable {
 	public static List<Resetable> resetable = new ArrayList<>();
 	
 	public static Coverage COVERAGE;
-	
+	public static CoverageMiguel COVERAGE_MIGUEL = new CoverageMiguel();
 	  
   public static String VERSION = "7.0"; // the major version number
 
@@ -372,7 +373,7 @@ public class JPF implements Runnable {
   }
   
   public enum COVERAGE_TYPE {
-	  feature, stack, local, context, composedContext, time, interaction, frame
+	  feature, stack, local, context, composedContext, time, interaction, frame, miguel
   }
   
   public static COVERAGE_TYPE SELECTED_COVERAGE_TYPE = null;
@@ -422,6 +423,10 @@ public class JPF implements Runnable {
 							break;
 						case frame:
 							COVERAGE.setType("Frame: ");
+							COVERAGE.setBaseValue(0);
+							break;
+						case miguel:
+							COVERAGE_MIGUEL.setType("Features: ");
 							COVERAGE.setBaseValue(0);
 							break;
 						default:

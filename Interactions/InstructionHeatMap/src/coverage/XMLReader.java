@@ -57,7 +57,7 @@ public class XMLReader implements XMLCoverage {
 	
 	private void getCoverage(Coverage coverage, Element fileNode) throws UnsupportedCoverageException {
 		
-		String fileName = fileNode.getAttribute(FILE_NAME);
+		String fileName = fileNode.getAttribute(NAME);
 		Element coverageNode = getElements(fileNode.getElementsByTagName(COVERAGE_KEY)).get(0);
 		for (Element line : getElements(coverageNode.getElementsByTagName(COVERED_LINE))) {
 			try {

@@ -26,7 +26,7 @@ import javax.xml.transform.TransformerException;
 
 import cmu.utils.TraceComparator;
 import coverage.Interaction;
-import coverage.XMLWriter;
+import coverage.XMLWriterMiguel;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
@@ -55,21 +55,21 @@ public class RandomSearch extends Search {
 	@SuppressWarnings("incomplete-switch")
 	public void search() {
 		try {
-			if (JPF.COVERAGE != null) {
-				// XXX some quick fix for coverage
-				File file = new File("coverage.xml");
-				System.out.println("Create file: " + file.getAbsolutePath());
-				XMLWriter writer = new XMLWriter(gov.nasa.jpf.JPF.COVERAGE);
-				try {
-					writer.writeToFile(file);
-				} catch (ParserConfigurationException | TransformerException e) {
-					System.out.println(e.getMessage());
-					for (StackTraceElement element : e.getStackTrace()) {
-						System.out.println(element);
-					}
-					e.printStackTrace();
-				}
-			}
+//			if (JPF.COVERAGE_MIGUEL != null) {
+//				// XXX some quick fix for coverage
+//				File file = new File("coverage.xml");
+//				System.out.println("Create file: " + file.getAbsolutePath());
+//				XMLWriterMiguel writer = new XMLWriterMiguel(gov.nasa.jpf.JPF.COVERAGE_MIGUEL);
+//				try {
+//					writer.writeToFile(file);
+//				} catch (ParserConfigurationException | TransformerException e) {
+//					System.out.println(e.getMessage());
+//					for (StackTraceElement element : e.getStackTrace()) {
+//						System.out.println(element);
+//					}
+//					e.printStackTrace();
+//				}
+//			}
 			
 			ThreadInfo.RUN_SIMPLE = true;
 			int depth = 0;
@@ -125,12 +125,12 @@ public class RandomSearch extends Search {
 			notifySearchFinished();
 		} finally {
 			ThreadInfo.RUN_SIMPLE = false;
-			if (gov.nasa.jpf.JPF.COVERAGE != null) {
+			if (gov.nasa.jpf.JPF.COVERAGE_MIGUEL != null) {
 				
 				
 				switch (JPF.SELECTED_COVERAGE_TYPE) {
 				case composedContext:
-					for (String file : JPF.COVERAGE.getFiles()) {
+					for (String file : JPF.COVERAGE_MIGUEL.getFiles()) {
 						for (Interaction interaction : JPF.COVERAGE.getCoverage(file)) {
 							@SuppressWarnings({ "rawtypes", "unchecked" })
 							HashMap<FeatureExpr, Integer> values = (HashMap) interaction.getValue();
@@ -144,11 +144,11 @@ public class RandomSearch extends Search {
 					break;
 				}
 				
-				JPF.COVERAGE.deleteMinInteraction();
+				JPF.COVERAGE_MIGUEL.deleteMinInteraction();
 				
 				File file = new File("coverage.xml");
 				System.out.println("Create file: " + file.getAbsolutePath());
-				XMLWriter writer = new XMLWriter(gov.nasa.jpf.JPF.COVERAGE);
+				XMLWriterMiguel writer = new XMLWriterMiguel(gov.nasa.jpf.JPF.COVERAGE_MIGUEL);
 				try {
 					writer.writeToFile(file);
 				} catch (ParserConfigurationException | TransformerException e) {

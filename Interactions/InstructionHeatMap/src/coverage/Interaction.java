@@ -10,6 +10,7 @@ public class Interaction implements Comparable<Interaction> {
 	private int line;
 	private int interaction;
 	private Object value = "";
+	private String name;
 	
 //	public Interaction(int line, int interaction) {
 //		this.line = line;
@@ -36,6 +37,14 @@ public class Interaction implements Comparable<Interaction> {
 
 	public void setInteraction(int interaction) {
 		this.interaction = interaction;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	@Override

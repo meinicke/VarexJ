@@ -3,14 +3,17 @@ package cmu.utils;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import cmu.conditional.Conditional;
 import coverage.Interaction;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import de.fosd.typechef.featureexpr.SingleFeatureExpr;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.bytecode.LocalVariableInstruction;
 import gov.nasa.jpf.jvm.bytecode.ReturnInstruction;
@@ -139,6 +142,9 @@ public class CoverageClass {
 				case frame:
 					coverFrame(instruction, file);
 					break;
+				case miguel:
+					coverContextPerInstruction(instruction, ctx, file);
+					break;
 				default:
 					throw new RuntimeException(JPF.SELECTED_COVERAGE_TYPE + " not implemented");
 				}
@@ -252,6 +258,39 @@ public class CoverageClass {
 			initialValue.add(time);
 			values.put(instruction, initialValue);
 			JPF.COVERAGE.setLineCovered(file, instruction.getLineNumber(), (int) (time / modifier), values);
+		}
+	}
+	
+	private void coverContextPerInstruction(Instruction instruction, FeatureExpr ctx, String file) {
+		if (ctx.isTautology() || instruction.getMethodInfo().getClassName().startsWith("java")) {
+			return;
+		}
+		Interaction interaction = JPF.COVERAGE_MIGUEL.getCoverage(file, instruction.getMethodInfo().getName(), instruction.insnIndex);
+		
+		if (interaction != null) {
+			Set<FeatureExpr> values = (Set) interaction.getValue();
+			addAllFeatures(ctx, values);
+		} else {
+			Set<FeatureExpr> values = new HashSet<FeatureExpr>() {
+				
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String toString() {
+					StringBuilder builder = new StringBuilder();
+					forEach(f -> builder.append(',').append(Conditional.getCTXString(f)));
+					return builder.substring(1);
+				}					
+			};
+
+			addAllFeatures(ctx, values);
+			JPF.COVERAGE_MIGUEL.setLineCovered(file, instruction.getMethodInfo().getName(), instruction.insnIndex, 1, values, instruction.getMnemonic());
+		}
+	}
+
+	private void addAllFeatures(FeatureExpr ctx, Set<FeatureExpr> values) {
+		for (scala.collection.Iterator<SingleFeatureExpr> iterator = ctx.collectDistinctFeatureObjects().iterator(); iterator.hasNext();) {
+			values.add(iterator.next());
 		}
 	}
 
