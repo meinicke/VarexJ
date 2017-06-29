@@ -74,6 +74,11 @@ public class CoverageClass {
 	}
 
 	public void postExecuteInstruction(Instruction i, FeatureExpr ctx) {
+		if (JPF.COVERAGE_MIGUEL != null) {
+			performCoverage(i, ctx, time, localSize, oldLocal, 0, null);
+			return;
+		}
+		
 		if (JPF.COVERAGE != null) {
 			if (JPF.SELECTED_COVERAGE_TYPE == JPF.COVERAGE_TYPE.time) {
 				time = System.nanoTime() - time;
@@ -262,7 +267,7 @@ public class CoverageClass {
 	}
 	
 	private void coverContextPerInstruction(Instruction instruction, FeatureExpr ctx, String file) {
-		if (ctx.isTautology() || instruction.getMethodInfo().getClassName().startsWith("java")) {
+		if (Conditional.isTautology(ctx) || instruction.getMethodInfo().getClassName().startsWith("java")) {
 			return;
 		}
 		Interaction interaction = JPF.COVERAGE_MIGUEL.getCoverage(file, instruction.getMethodInfo().getName(), instruction.insnIndex);
@@ -277,6 +282,9 @@ public class CoverageClass {
 
 				@Override
 				public String toString() {
+					if (isEmpty()) {
+						return "TRUE";
+					}
 					StringBuilder builder = new StringBuilder();
 					forEach(f -> builder.append(',').append(Conditional.getCTXString(f)));
 					return builder.substring(1);
