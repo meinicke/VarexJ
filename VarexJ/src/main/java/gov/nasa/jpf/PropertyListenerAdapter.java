@@ -170,4 +170,9 @@ public abstract class PropertyListenerAdapter extends GenericProperty implements
   
   @Override
 	public void resetInstructionCounter() {}
+  
+  	@Override
+	public void setMemory(long memoryConsumption) {
+	  // nothing here
+	}
 }

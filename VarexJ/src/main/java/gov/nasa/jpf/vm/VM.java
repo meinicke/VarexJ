@@ -816,7 +816,6 @@ public abstract class VM {
 
   protected void notifyInstructionExecuted (ThreadInfo ti, Instruction insn, Instruction nextInsn) {
     try {
-      //listener.instructionExecuted(this);
       for (int i = 0; i < listeners.length; i++) {
         listeners[i].instructionExecuted(this, ti, nextInsn, insn);
       }

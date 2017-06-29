@@ -227,5 +227,6 @@ public interface VMListener extends JPFListener {
    */
   void methodExited (VM vm, ThreadInfo currentThread, MethodInfo exitedMethod);
 
+  void setMemory(long memoryConsumption);
 }
 

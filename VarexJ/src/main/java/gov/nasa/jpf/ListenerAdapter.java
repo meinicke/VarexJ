@@ -148,4 +148,9 @@ public abstract class ListenerAdapter implements VMListener, SearchListener, Pub
   @Override
   public void resetInstructionCounter() {}
   
+  
+	@Override
+	public void setMemory(long memoryConsumption) {
+
+	}
 }
