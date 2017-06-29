@@ -117,4 +117,8 @@ public class AssertionProperty extends PropertyListenerAdapter {
   public void reset() {
     msg = null;
   }
+
+	@Override
+	public void setMemory(long memoryConsumption) {
+	}
 }

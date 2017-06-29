@@ -2160,7 +2160,13 @@ public class ThreadInfo extends InfoObject
 		
 		sb.append(insertDots(executedInstructions));
 		sb.append(" @ ");
-		sb.append((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())>>20);
+		
+		final long usedMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())>>20;
+		sb.append(usedMemory);
+		for (int i = 0; i < vm.listeners.length; i++) {
+			vm.listeners[i].setMemory(usedMemory);
+		}
+		
 		sb.append("MB)");
 		System.out.println(sb.toString());
 	}
