@@ -1,6 +1,5 @@
 package cmu.conditional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,8 +154,8 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	}
 
 	@Override
-	public List<T> toList() {
-		return new ArrayList<>(map.keySet());
+	protected void toList(List<T> list) {
+		list.addAll(map.keySet());
 	}
 
 	@Override

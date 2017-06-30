@@ -1,6 +1,5 @@
 package cmu.conditional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -143,20 +142,9 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 	}
 
 	@Override
-	public List<T> toList() {
-		List<T> list = new LinkedList<>();
-		for (T e : thenBranch.toList()) {
-			if (!list.contains(e)) {
-				list.add(e);
-			}
-		}
-
-		for (T e : elseBranch.toList()) {
-			if (!list.contains(e)) {
-				list.add(e);
-			}
-		}
-		return list;
+	protected void toList(List<T> list) {
+		thenBranch.toList(list);
+		elseBranch.toList(list);
 	}
 
 	@Override

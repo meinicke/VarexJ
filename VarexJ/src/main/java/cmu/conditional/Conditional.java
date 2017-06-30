@@ -1,5 +1,6 @@
 package cmu.conditional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,7 +146,26 @@ public abstract class Conditional<T> {
 
 	public abstract Conditional<T> simplify(FeatureExpr ctx);
 
-	public abstract List<T> toList();
+	public final List<T> toList() {
+		final List<T> list = new NoCheckArrayList(size());
+		toList(list);
+		return list;
+	}
+	
+	final class NoCheckArrayList extends ArrayList<T> {
+		private static final long serialVersionUID = 1L;
+
+		public NoCheckArrayList(int initialSize) {
+			super(initialSize);
+		}
+		
+		@Override
+		public void ensureCapacity(int minCapacity) {
+			// avoid checking for capacity
+		}
+	}
+	
+	protected abstract void toList(List<T> list);
 
 	public Map<T, FeatureExpr> toMap() {
 		Map<T, FeatureExpr> map = new HashMap<>();
