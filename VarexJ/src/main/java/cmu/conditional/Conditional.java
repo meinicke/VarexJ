@@ -29,11 +29,12 @@ public abstract class Conditional<T> {
 
 	public static BDDFeatureModel fm = null;
 	public static BDDFeatureExpr bddFM;
-	public static final Map<String, SingleFeatureExpr> features = new HashMap<>(); 
-	private static Map<FeatureExpr, Boolean> cache = new HashMap<>();
+	public static final Map<String, SingleFeatureExpr> features = new HashMap<>();
+	
+	private static Map<FeatureExpr, Boolean> cacheIsSat = new HashMap<>();
 	
 	public static void setFM(final String fmfile) {
-		cache.clear();
+		cacheIsSat.clear();
 		features.clear();
 		fm = (BDDFeatureModel) (fmfile.isEmpty() ? null : FeatureExprFactory.bdd().featureModelFactory().createFromDimacsFile(fmfile));
 		if (fm != null) {
@@ -86,29 +87,17 @@ public abstract class Conditional<T> {
 		return feature;
 	}
 
-	public static boolean isContradiction(final FeatureExpr f) {
-		return cache.computeIfAbsent(f, x -> {
-			if (f.isContradiction()) {
-				return true;
-			} else if (f.isTautology()) {
-				return false;
-			} else if (fm != null) {
-				return f.isContradiction(fm);
-			} else {
-				return false;
-			}
-		});
+	public static final boolean isContradiction(final FeatureExpr f) {
+		return !cacheIsSat.computeIfAbsent(f, x -> f.isSatisfiable(fm));
 	}
 
-	public static boolean isTautology(final FeatureExpr f) {
+	public static final boolean isTautology(final FeatureExpr f) {
 		return isContradiction(f.not());
 	}
 
 	public abstract T getValue();
 
 	public abstract T getValue(boolean ignore);
-
-	// protected static final FeatureExpr True = FeatureExprFactory.True();
 
 	// def map[U](f: T => U): Conditional[U] = mapr(x => One(f(x)))
 	@SuppressWarnings({ "unchecked", "rawtypes" })
