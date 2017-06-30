@@ -1,5 +1,6 @@
 package cmu.conditional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +28,13 @@ import scala.Tuple2;
 public abstract class Conditional<T> {
 
 	public static BDDFeatureModel fm = null;
-	public static BDDFeatureExpr bddFM = (BDDFeatureExpr) FeatureExprFactory.bdd().True();
-	public static final Map<String, SingleFeatureExpr> features = new HashMap<>(); 
-	private static Map<FeatureExpr, Boolean> cache = new HashMap<>();
+	public static BDDFeatureExpr bddFM;
+	public static final Map<String, SingleFeatureExpr> features = new HashMap<>();
+	
+	private static Map<FeatureExpr, Boolean> cacheIsSat = new HashMap<>();
 	
 	public static void setFM(final String fmfile) {
-		cache.clear();
+		cacheIsSat.clear();
 		features.clear();
 		fm = (BDDFeatureModel) (fmfile.isEmpty() ? null : FeatureExprFactory.bdd().featureModelFactory().createFromDimacsFile(fmfile));
 		if (fm != null) {
@@ -91,33 +93,21 @@ public abstract class Conditional<T> {
 	
 	public static FeatureExpr additionalConstraint = FeatureExprFactory.True();
 
-	public static boolean isContradiction(final FeatureExpr f) {
-		return cache.computeIfAbsent(f, x -> {
-			if (f.isContradiction()) {
-				return true;
-			} else if (f.isTautology()) {
-				return false;
-			} else if (fm != null) {
-				return f.isContradiction(fm);
-			} else {
-				return false;
-			}
-		});
+	public static final boolean isContradiction(final FeatureExpr f) {
+		return !cacheIsSat.computeIfAbsent(f, x -> f.isSatisfiable(fm));
 	}
 	
 	public static boolean isSatisfiable(final FeatureExpr f) {
 		return !isContradiction(f);
 	}
 
-	public static boolean isTautology(final FeatureExpr f) {
+	public static final boolean isTautology(final FeatureExpr f) {
 		return isContradiction(f.not());
 	}
 
 	public abstract T getValue();
 
 	public abstract T getValue(boolean ignore);
-
-	// protected static final FeatureExpr True = FeatureExprFactory.True();
 
 	// def map[U](f: T => U): Conditional[U] = mapr(x => One(f(x)))
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -155,7 +145,26 @@ public abstract class Conditional<T> {
 
 	public abstract Conditional<T> simplify(FeatureExpr ctx);
 
-	public abstract List<T> toList();
+	public final List<T> toList() {
+		final List<T> list = new NoCheckArrayList(size());
+		toList(list);
+		return list;
+	}
+	
+	final class NoCheckArrayList extends ArrayList<T> {
+		private static final long serialVersionUID = 1L;
+
+		public NoCheckArrayList(int initialSize) {
+			super(initialSize);
+		}
+		
+		@Override
+		public void ensureCapacity(int minCapacity) {
+			// avoid checking for capacity
+		}
+	}
+	
+	protected abstract void toList(List<T> list);
 
 	public Map<T, FeatureExpr> toMap() {
 		Map<T, FeatureExpr> map = new HashMap<>();

@@ -1,7 +1,6 @@
 package cmu.conditional;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -99,10 +98,8 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	}
 
 	@Override
-	public List<T> toList() {
-		List<T> list = new LinkedList<>();
+	protected void toList(List<T> list) {
 		list.add(value);
-		return list;
 	}
 
 	@Override
