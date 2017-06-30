@@ -86,18 +86,17 @@ public abstract class Conditional<T> {
 	}
 
 	public static boolean isContradiction(final FeatureExpr f) {
-		if (!cache.containsKey(f)) {
+		return cache.computeIfAbsent(f, x -> {
 			if (f.isContradiction()) {
-				cache.put(f, Boolean.TRUE);
+				return true;
 			} else if (f.isTautology()) {
-				cache.put(f, Boolean.FALSE);
+				return false;
 			} else if (fm != null) {
-				cache.put(f, f.isContradiction(fm));
+				return f.isContradiction(fm);
 			} else {
-				cache.put(f, Boolean.FALSE);
+				return false;
 			}
-		}
-		return cache.get(f);
+		});
 	}
 
 	public static boolean isTautology(final FeatureExpr f) {

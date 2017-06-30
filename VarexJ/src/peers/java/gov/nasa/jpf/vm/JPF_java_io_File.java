@@ -287,7 +287,7 @@ public class JPF_java_io_File extends NativePeer {
 		}
 		  
 	  });
-	  if (ctx.isTautology()) {
+	  if (Conditional.isTautology(ctx)) {
 		  file.delete();
 	  }
 	  return returnValue;
