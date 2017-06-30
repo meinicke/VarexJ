@@ -1760,7 +1760,9 @@ public class ThreadInfo extends InfoObject
 
                 ei.setReferenceField(ctx, "clsName", new One<>(heap.newString(ctx, clsName, ThreadInfo.this).getObjectRef()));
                 ei.setReferenceField(ctx, "mthName", new One<>(heap.newString(ctx, mthName, ThreadInfo.this).getObjectRef()));
-                ei.setReferenceField(ctx, "fileName", new One<>(heap.newString(ctx, fileName, ThreadInfo.this).getObjectRef()));
+                if (fileName != null) {
+                	ei.setReferenceField(ctx, "fileName", new One<>(heap.newString(ctx, fileName, ThreadInfo.this).getObjectRef()));
+                }
                 ei.setIntField(ctx, "line", new One<>(line));
 
                 return ei.getObjectRef();
@@ -1795,7 +1797,7 @@ public class ThreadInfo extends InfoObject
                     }
                     print(pw, ")");
                 } else {
-                    //print(pw, "<no source>");
+                    print(pw, "(Unknown Source)");
                 }
 
                 print(pw, "\n");

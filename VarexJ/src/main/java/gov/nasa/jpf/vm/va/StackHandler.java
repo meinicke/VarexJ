@@ -443,12 +443,12 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@Override
 	public void set(final FeatureExpr ctx, final int offset, final int value, final boolean isRef) {
 		stack = stack.mapf(ctx, (FeatureExpr f, Stack stack) -> {
-			if (f.isContradiction()) {
+			if (Conditional.isContradiction(f)) {
 				return new One<>(stack);
 			}
 			Stack clone = stack.copy();
 			clone.set(offset, value, isRef);
-			if (f.isTautology()) {
+			if (Conditional.isTautology(f)) {
 				return new One<>(clone);
 			}
 			return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
