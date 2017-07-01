@@ -19,8 +19,10 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
+import cmu.vatrace.LocalStoreStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.Instruction;
+import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -39,7 +41,31 @@ public class IINC extends LocalVariableInstruction {
 	@Override
 	public Conditional<Instruction> execute(final FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame frame = ti.getModifiableTopFrame();
-		frame.IINC(ctx, index, increment);
+		
+		LocalVarInfo localVarInfo = frame.getLocalVarInfo(index, ctx);
+	    Conditional<Integer> oldValue = null;
+	    if (localVarInfo != null) {
+			int startPC = localVarInfo.getStartPC();
+			int pos = getPosition();
+			if (pos == startPC - 1) {// init
+				oldValue = null;
+			} else if (getMethodInfo().getInstructionAt(startPC).getLineNumber() >= this.getLineNumber()) {
+				oldValue = null;// TODO this is not clean
+			} else {
+				oldValue = frame.getLocalVariable(frame.stack.getCtx(), index);
+			}
+	    }
+	    
+	    frame.IINC(ctx, index, increment);
+
+	    if (localVarInfo != null) {
+			Conditional<Integer> newValue = frame.getLocalVariable(frame.stack.getCtx(), index);
+			FeatureExpr returnContext = getReturnContext(frame);
+			newValue = newValue.simplify(returnContext.not());
+			new LocalStoreStatement(this, frame.method, oldValue, newValue, localVarInfo, ctx);
+		}
+		
+		
 		return getNext(ctx, ti);
 	}
 	
