@@ -16,24 +16,23 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 public class LocalStoreStatement extends Statement {
 
-	private Conditional oldValue;
-	private Conditional newValue;
+	private Conditional<String> oldValue;
+	private Conditional<String> newValue;
 	private LocalVarInfo li;
 
 	public LocalStoreStatement(Instruction op, Method method, Conditional oldValue, Conditional newValue, LocalVarInfo li, FeatureExpr ctx) {
 		super(op, method, op.getLineNumber(), ctx);
 		this.li = li;
 		if (oldValue != null) {
-			this.oldValue = oldValue.simplify(method.getCTX());
-			this.oldValue = this.oldValue.mapf(method.getCTX(), f).simplify(method.getCTX());
+			oldValue = oldValue.simplify(method.getCTX());
+			this.oldValue = oldValue.mapf(method.getCTX(), f).simplify(method.getCTX());
 		}
 		
-		this.newValue = newValue.simplify(method.getCTX());
-		this.newValue = this.newValue.mapf(method.getCTX(), f).simplify(ctx);
+		newValue = newValue.simplify(method.getCTX());
+		this.newValue = newValue.mapf(method.getCTX(), f).simplify(ctx);
 		if (this.oldValue != null) {
-			this.newValue = ChoiceFactory.create(ctx, this.newValue, oldValue).simplify(method.getCTX());
+			this.newValue = ChoiceFactory.create(ctx, this.newValue, this.oldValue).simplify(method.getCTX()).simplifyValues();
 		}
-		
 		setColor(NodeColor.darkorange);
 	}
 
