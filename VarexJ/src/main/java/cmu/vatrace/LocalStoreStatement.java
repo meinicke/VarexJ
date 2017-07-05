@@ -88,7 +88,7 @@ public class LocalStoreStatement extends Statement {
 		if (type.contains(".")) {
 			type = type.substring(type.lastIndexOf('.') + 1);
 		}
-		return type + " " + li.getName() + ":";
+		return type + " " + li.getName() + " = ";
 	}
 
 	@Override
