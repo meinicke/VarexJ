@@ -18,8 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 import cmu.conditional.ChoiceFactory;
@@ -205,9 +207,13 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
 	    }
 	    if (frame.returnedLines != null) {
 	    	frame.returnedLines = frame.returnedLines.simplify(ctx);
-		    for (Entry<Integer, FeatureExpr> line : frame.returnedLines.toMap().entrySet()) {
-		    	ReturnStatement statement = new ReturnStatement(this.typeSafeClone(mi), frame.method, stateMentValue.simplify(line.getValue()), line.getValue().and(ctx));
-		    	statement.setLineNumber(line.getKey());
+	    	final Map<Integer, FeatureExpr> returnMap = frame.returnedLines.toMap();
+			final ArrayList<Integer> orderedLines = new ArrayList<>(returnMap.keySet());
+	    	orderedLines.sort(Comparator.<Integer>naturalOrder());
+		    for (Integer line : orderedLines) {
+		    	final FeatureExpr returnContext = returnMap.get(line);
+		    	ReturnStatement statement = new ReturnStatement(this.typeSafeClone(mi), frame.method, stateMentValue.simplify(returnContext), returnContext.and(ctx));
+		    	statement.setLineNumber(line);
 		    }
 		} else {
 			new ReturnStatement(this, frame.method, stateMentValue, ctx);

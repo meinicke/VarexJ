@@ -38,6 +38,7 @@ import cmu.conditional.One;
 import cmu.utils.CoverageClass;
 import cmu.utils.RuntimeConstants;
 import cmu.utils.TraceComparator;
+import cmu.varviz.trace.Method;
 import cmu.varviz.trace.Trace;
 import cmu.vatrace.ExceptionStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -2054,11 +2055,13 @@ public class ThreadInfo extends InfoObject
      		
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
-     		if (i instanceof ReturnInstruction) {
-     			Trace.removeUnnecessaryIfs(top.method);
-     		}
      		
+     		final Method<MethodInfo> method = top.method;
      		final Conditional<Instruction> next = i.execute(ctx, this);
+     		
+     		if (i instanceof ReturnInstruction) {
+     			Trace.removeUnnecessaryIfs(method);
+     		}
      		coverage.postExecuteInstruction(i, ctx);
      		
     		final int poped = currentStackDepth - stackDepth;
