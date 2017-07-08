@@ -1814,7 +1814,6 @@ pw.print(stack);
   public int getDepth(){
 	  if (prev == this) {
 		  return 0;
-//		  System.out.println();
 	  }
 	  
 	  if (depth != 0) {

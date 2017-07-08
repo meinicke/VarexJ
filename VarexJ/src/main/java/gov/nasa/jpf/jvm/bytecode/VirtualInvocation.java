@@ -62,8 +62,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		
 		Map<Integer, FeatureExpr> map = allRefs.toMap();
 		
-		System.out.println(map);
-		
 		Map<String, List<FeatureExpr>> classes = new TreeMap<>();
 		if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
 			for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
