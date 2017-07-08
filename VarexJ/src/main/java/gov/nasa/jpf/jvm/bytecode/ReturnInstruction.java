@@ -140,7 +140,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
   
   // -- end attribute accessors --
   
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
+  public synchronized Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
 
     if (!ti.isFirstStepInsn()) {
       ti.leave();  // takes care of unlocking before potentially creating a CG
@@ -193,16 +193,23 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     
     // note that this is never the first frame, since we start all threads (incl. main)
     // through a direct call
-    frame = ti.popAndGetModifiableTopFrame(ctx);
+    frame = ti.popAndGetTopFrame(ctx);
     // remove args, push return value and continue with next insn
     // (DirectCallStackFrames don't use this)
+    
+    ThreadInfo currentTI = ti;
+    if (frame == null) {
+    	frame = ti.getParent().getTopFrame();
+    	currentTI = ti.getParent();
+    }
     frame.removeArguments(ctx, mi);
     pushReturnValue(ctx, frame);
     if (attr != null) {
-      setReturnAttr(ti, attr);
+      setReturnAttr(currentTI, attr);
     }
-
-    return getNext(ctx, ti);
+    
+    
+    return getNext(ctx, currentTI);
   }
   
   public void accept(InstructionVisitor insVisitor) {

@@ -54,6 +54,9 @@ public class JVMStackFrame extends StackFrame {
 	 */
 	protected void setCallArguments(FeatureExpr ctx, ThreadInfo ti) {
 		StackFrame caller = ti.getTopFrame();
+		if (caller == null) {
+			caller = ti.getParent().getTopFrame();
+		}
 		MethodInfo miCallee = mi;
 		int nArgSlots = miCallee.getArgumentsSize();
 

@@ -144,7 +144,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
 
   //--- invocation processing
 
-  protected void setupCallee (FeatureExpr ctx, ThreadInfo ti, MethodInfo callee){
+  protected synchronized void setupCallee (FeatureExpr ctx, ThreadInfo ti, MethodInfo callee){
     ClassInfo ciCaller = callee.getClassInfo();
     StackFrame frame = ciCaller.createStackFrame(ctx, ti, callee);
     

@@ -435,6 +435,7 @@ public class ThreadInfo extends InfoObject
   
   public CoverageClass coverage = new CoverageClass(this);
 
+
   /**
    * mainThread ctor called by the VM. Note we don't have a thread object yet (hen-and-egg problem
    * since we can't allocate objects without a ThreadInfo)
@@ -450,6 +451,23 @@ public class ThreadInfo extends InfoObject
     ci = appCtx.getSystemClassLoader().getThreadClassInfo();
     targetRef = MJIEnv.NULL;
     threadData.name = MAIN_NAME.toCharArray();
+  }
+  
+  private FeatureExpr ctx = FeatureExprFactory.True();
+  private ThreadInfo parent;
+  
+  public ThreadInfo getParent() {
+	return parent;
+  }
+  
+  private ThreadInfo (VM vm, int id, ApplicationContext appCtx, FeatureExpr ctx, ThreadInfo parent) {
+	  this(vm, id, appCtx);
+	  this.ctx = ctx;
+	  this.parent = parent;
+  }
+  
+  public ThreadInfo createConditionalThreadInfo(FeatureExpr ctx) {
+	  return new ThreadInfo(getVM(), id, appCtx, ctx, this);
   }
 
     /**
@@ -1963,7 +1981,7 @@ public class ThreadInfo extends InfoObject
         }
     }
 
-    private static int count = 0;
+    private int count = 0;
     private static long time = 0;
     
 
@@ -2009,9 +2027,9 @@ public class ThreadInfo extends InfoObject
 	        	int instructions = count;
 	        	count = 0;
 	        	printSpeedLog(instructions / 10);
-	        	if (checkGcNeeded(instructions)) {
-	        		vm.getSystemState().gcIfNeeded();
-	        	}
+//	        	if (checkGcNeeded(instructions)) {
+//	        		vm.getSystemState().gcIfNeeded();
+//	        	}
 	        	time = System.currentTimeMillis();
 	        }
 	        Instruction i = null;
@@ -2037,7 +2055,7 @@ public class ThreadInfo extends InfoObject
 				if (RuntimeConstants.debug) {
      			System.out.print(executedInstructions);
      			System.out.print("  ");
-     			System.out.print(top.getDepth());
+//     			System.out.print(top.getDepth());
      			if (top.getDepth() < 10) {
      				System.out.print(" ");
      			}
@@ -2125,6 +2143,9 @@ public class ThreadInfo extends InfoObject
   		}
       return getPC();
     } else {
+    	if (parent != null) {
+    		parent.setPC(ChoiceFactory.create(this.ctx, nextPc, parent.getPC()).simplify());
+    	}
       return (Conditional<Instruction>) One.NULL;
     }
   }
@@ -2170,6 +2191,8 @@ public class ThreadInfo extends InfoObject
 		}
 		
 		sb.append("MB)");
+		
+		sb.append(ctx);
 		System.out.println(sb.toString());
 	}
 

@@ -18,10 +18,12 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.RecursiveTask;
 import java.util.TreeMap;
 
 import cmu.conditional.ChoiceFactory;
@@ -35,7 +37,9 @@ import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LoadOnJPFRequired;
+import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.MethodInfo;
+import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
 
@@ -57,15 +61,15 @@ public class INVOKESPECIAL extends InstanceInvocation {
     return 0xB7;
   }
 
-  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
+  public Conditional<Instruction> execute (final FeatureExpr finalCtx, ThreadInfo ti) {
     int argSize = getArgSize();
-    Conditional<Integer> allRefs = ti.getCalleeThis( ctx, argSize);
+    Conditional<Integer> allRefs = ti.getCalleeThis( finalCtx, argSize);
     Map<Integer, FeatureExpr> map = allRefs.toMap();
     
 	Map<String, List<FeatureExpr>> classes = new TreeMap<>();
 	if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
 		for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
-			MethodInfo callee = getInvokedMethod(ctx.and(e.getValue()), ti);
+			MethodInfo callee = getInvokedMethod(finalCtx.and(e.getValue()), ti);
 			String methName = callee.getFullName();
 			if (classes.containsKey(methName)) {
 				classes.get(methName).add(e.getValue());
@@ -81,7 +85,47 @@ public class INVOKESPECIAL extends InstanceInvocation {
 	if ((JPF.SHARE_INVOCATIONS && classes.size() > 1) || (!JPF.SHARE_INVOCATIONS && map.size() > 1)) {
 		splitRef = true;
 	}
+	
+	if (splitRef) {
+		
+			List<RecursiveTask> tasks = new ArrayList<>();
+			
+			Entry<Integer, FeatureExpr> firstEntry = null;
+			for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
+				if (firstEntry == null) {
+					firstEntry = objRefEntry;
+					continue;
+				}
+				
+				RecursiveTask<Object> f0_task = new RecursiveTask<Object>() {
+					protected Object compute() {
+						return invoreAtomic(finalCtx, objRefEntry, ti, classes);
+					}
+				};
+				tasks.add(f0_task);
+			}
+
+			
+		for (RecursiveTask recursiveTask : tasks) {
+			recursiveTask.fork();
+		}
+		
+		invoreAtomic(finalCtx, firstEntry, ti, classes);
+
+		for (RecursiveTask recursiveTask : tasks) {
+			System.out.println(recursiveTask.join());
+		}
+		
+		return ti.getPC();
+//		Conditional<Instruction> returnPC = ti.getPC();
+//		System.out.println(returnPC);
+//		return getNext(finalCtx, ti);
+		
+//		throw new RuntimeException("Something went wrong");
+	} else 
+	
 	for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
+		FeatureExpr ctx = finalCtx;
 		if (splitRef) {
 			ctx = ctx.and(objRefEntry.getValue());
 		}
@@ -191,5 +235,62 @@ public class INVOKESPECIAL extends InstanceInvocation {
   public void accept(InstructionVisitor insVisitor) {
 	  insVisitor.visit(this);
   }
+  
+  private Object invoreAtomic(FeatureExpr finalCtx, Entry<Integer, FeatureExpr> objRefEntry, ThreadInfo ti, Map<String, List<FeatureExpr>> classes) {
+	  System.out.println("run " + objRefEntry);
+		FeatureExpr ctx = finalCtx;
+		ctx = ctx.and(objRefEntry.getValue());
+		ThreadInfo subti = ti.createConditionalThreadInfo(ctx);
+		Integer objRef = objRefEntry.getKey();
+
+		lastObj = objRef;
+
+		// we don't have to check for NULL objects since this is either a ctor, a
+		// private method, or a super method
+
+		MethodInfo callee;
+
+		try {
+			callee = getInvokedMethod(ctx, ti);
+		} catch (LoadOnJPFRequired rre) {
+			return ti.getPC();
+		}
+
+		if (!classes.isEmpty()) {
+			FeatureExpr invocationCtx = FeatureExprFactory.False();
+			for (FeatureExpr e : classes.get(callee.getFullName())) {
+				invocationCtx = invocationCtx.or(e);
+			}
+			ctx = ctx.and(invocationCtx);
+		} else {
+			ctx = ctx.and(objRefEntry.getValue());
+		}
+
+		if (callee == null) {
+			return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchMethodException",
+					"Calling " + cname + '.' + mname));
+		}
+
+		ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
+
+		if (callee.isSynchronized()) {
+			if (checkSyncCG(ei, ti)) {
+				return new One<Instruction>(INVOKESPECIAL.this);
+			}
+		}
+
+		setupCallee(ctx, subti, callee);
+		subti.setPC(subti.getPC().simplify(ctx));
+
+		// because executeMethodAtomic pushes the given frame
+
+		StackFrame top = subti.getTopFrame();
+		subti.popFrame(ctx);
+		subti.executeMethodAtomic(top);
+		// return ChoiceFactory.create(ctx, ti.getPC(), new
+		// One<>(typeSafeClone(mi))).simplify();
+		return null;	
+	}
+  
 
 }

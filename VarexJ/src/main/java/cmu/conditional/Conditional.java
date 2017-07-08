@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -31,7 +32,7 @@ public abstract class Conditional<T> {
 	public static BDDFeatureExpr bddFM;
 	public static final Map<String, SingleFeatureExpr> features = new HashMap<>();
 	
-	private static Map<FeatureExpr, Boolean> cacheIsSat = new HashMap<>();
+	private static Map<FeatureExpr, Boolean> cacheIsSat = new ConcurrentHashMap<>();
 	
 	public static void setFM(final String fmfile) {
 		cacheIsSat.clear();
