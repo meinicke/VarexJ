@@ -18,6 +18,7 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.SingleFeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureModel;
+import net.sf.javabdd.BDD;
 import scala.Tuple2;
 
 /**
@@ -32,7 +33,11 @@ public abstract class Conditional<T> {
 	public static BDDFeatureExpr bddFM;
 	public static final Map<String, SingleFeatureExpr> features = new HashMap<>();
 	
-	private static Map<FeatureExpr, Boolean> cacheIsSat = new ConcurrentHashMap<>();
+	private static Map<BDD, Boolean> cacheIsSat = new ConcurrentHashMap<>();
+	
+	private static Map<BDD, Map<BDD, FeatureExpr>> cacheAnd = new ConcurrentHashMap<>();
+	
+	private static Map<BDD, FeatureExpr> cacheNot = new ConcurrentHashMap<>();
 	
 	public static void setFM(final String fmfile) {
 		cacheIsSat.clear();
@@ -44,6 +49,22 @@ public abstract class Conditional<T> {
 			bddFM = (BDDFeatureExpr) FeatureExprFactory.bdd().True();
 		}
 	}
+	
+	public static FeatureExpr not(FeatureExpr a) {
+		return cacheNot.computeIfAbsent(((BDDFeatureExpr)a).bdd(), x -> a.not());
+	}
+	
+	public static FeatureExpr and(FeatureExpr a, FeatureExpr b) {
+		BDD bddA = ((BDDFeatureExpr)a).bdd();
+		BDD bddB = ((BDDFeatureExpr)b).bdd();
+		Map<BDD, FeatureExpr> aMap = cacheAnd.get(bddA);
+		if (aMap == null) {
+			aMap = new ConcurrentHashMap<>();
+			cacheAnd.put(bddA, aMap);
+		}
+		return aMap.computeIfAbsent(bddB, X -> a.and(b));
+	}
+	
 
 	/**
 	 * Creates a BDD from the given feature model.
@@ -89,11 +110,11 @@ public abstract class Conditional<T> {
 	}
 
 	public static final boolean isContradiction(final FeatureExpr f) {
-		return !cacheIsSat.computeIfAbsent(f, x -> f.isSatisfiable(fm));
+		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)f).bdd(), x -> f.isSatisfiable(fm));
 	}
 
 	public static final boolean isTautology(final FeatureExpr f) {
-		return isContradiction(f.not());
+		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)f).bdd().not(), x -> f.not().isSatisfiable(fm));
 	}
 
 	public abstract T getValue();
