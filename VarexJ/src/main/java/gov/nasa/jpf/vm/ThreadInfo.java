@@ -464,6 +464,7 @@ public class ThreadInfo extends InfoObject
 	  this(vm, id, appCtx);
 	  this.ctx = ctx;
 	  this.parent = parent;
+	  this.env = parent.env;
   }
   
   public ThreadInfo createConditionalThreadInfo(FeatureExpr ctx) {

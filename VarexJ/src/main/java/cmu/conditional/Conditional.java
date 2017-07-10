@@ -65,6 +65,11 @@ public abstract class Conditional<T> {
 		return aMap.computeIfAbsent(bddB, X -> a.and(b));
 	}
 	
+	public static boolean equals(FeatureExpr a, FeatureExpr b) {
+		if (a == b) return true;
+		return ((BDDFeatureExpr)a).bdd().equals(((BDDFeatureExpr)b).bdd());
+	}
+	
 
 	/**
 	 * Creates a BDD from the given feature model.
@@ -110,6 +115,9 @@ public abstract class Conditional<T> {
 	}
 
 	public static final boolean isContradiction(final FeatureExpr f) {
+		if (cacheIsSat.containsKey(((BDDFeatureExpr)f).bdd())) {
+			return !cacheIsSat.get(((BDDFeatureExpr)f).bdd());
+		}
 		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)f).bdd(), x -> f.isSatisfiable(fm));
 	}
 

@@ -81,53 +81,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		if ((JPF.SHARE_INVOCATIONS && classes.size() > 1) || (!JPF.SHARE_INVOCATIONS && map.size() > 1)) {
 			splitRef = true;
 		}
-		
-		if (splitRef) {
-			for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
-				ThreadInfo subti = ti.createConditionalThreadInfo(ctx);
-				Integer objRef = objRefEntry.getKey();
-				if (objRef == MJIEnv.NULL) {
-					lastObj = MJIEnv.NULL;
-					return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), 
-							ChoiceFactory.create(ctx, new One<>(typeSafeClone(mi)), ti.getPC())).simplify();
-				}
-				MethodInfo callee = getInvokedMethod(ctx.and(objRefEntry.getValue()), ti, objRef);
-				ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
-				if (!classes.isEmpty()) {
-					FeatureExpr invocationCtx = FeatureExprFactory.False();
-					for (FeatureExpr e : classes.get(callee.getFullName())) {
-						invocationCtx = invocationCtx.or(e);
-					}
-					ctx = ctx.and(invocationCtx);					
-				} else {
-					ctx = ctx.and(objRefEntry.getValue());
-				}
-
-				if (callee == null) {
-					String clsName = ti.getClassInfo(objRef).getName();
-					return new One<>(ti.createAndThrowException(ctx, java.lang.NoSuchMethodError.class.getName(), clsName + '.' + mname));
-				} else {
-					if (callee.isAbstract()) {
-						return new One<>(ti.createAndThrowException(ctx, java.lang.AbstractMethodError.class.getName(), callee.getFullName() + ", object: " + ei));
-					}
-				}
-				
-				if (callee.isSynchronized()) {
-					if (checkSyncCG(ei, ti)) {
-						return new One<>(this);
-					}
-				}
-				setupCallee(ctx, subti, callee);
-				subti.setPC(ti.getPC().simplify(ctx));
-				subti.executeMethodAtomic(subti.getTopFrame());
-				
-				return ChoiceFactory.create(ctx, ti.getPC(), new One<>(typeSafeClone(mi))).simplify();
-			}
-			throw new RuntimeException("Something went wrong");
-		} else 
-		
-		
-		
 		for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
@@ -161,8 +114,6 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 					return new One<>(this);
 				}
 			}
-			
-			
 			setupCallee(ctx, ti, callee);
 			if (!splitRef) {
 				return ti.getPC();
