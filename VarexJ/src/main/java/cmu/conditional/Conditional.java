@@ -55,8 +55,8 @@ public abstract class Conditional<T> {
 	}
 	
 	public static FeatureExpr and(FeatureExpr a, FeatureExpr b) {
-		BDD bddA = ((BDDFeatureExpr)a).bdd();
-		BDD bddB = ((BDDFeatureExpr)b).bdd();
+		final BDD bddA = ((BDDFeatureExpr)a).bdd();
+		final BDD bddB = ((BDDFeatureExpr)b).bdd();
 		Map<BDD, FeatureExpr> aMap = cacheAnd.get(bddA);
 		if (aMap == null) {
 			aMap = new ConcurrentHashMap<>();
@@ -115,10 +115,12 @@ public abstract class Conditional<T> {
 	}
 
 	public static final boolean isContradiction(final FeatureExpr f) {
-		if (cacheIsSat.containsKey(((BDDFeatureExpr)f).bdd())) {
-			return !cacheIsSat.get(((BDDFeatureExpr)f).bdd());
+		final BDD bdd = ((BDDFeatureExpr)f).bdd();
+		final Boolean value = cacheIsSat.get(bdd);
+		if (value != null) {
+			return !value;
 		}
-		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)f).bdd(), x -> f.isSatisfiable(fm));
+		return !cacheIsSat.computeIfAbsent(bdd, x -> f.isSatisfiable(fm));
 	}
 
 	public static final boolean isTautology(final FeatureExpr f) {
