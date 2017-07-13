@@ -55,12 +55,12 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 
 	@Override
 	public Conditional<T> simplify(FeatureExpr ctx) {
-		FeatureExpr and = ctx.and(featureExpr);
+		FeatureExpr and = Conditional.and(ctx, featureExpr);
 		if (isContradiction(and)) {
 			return elseBranch.simplify(ctx.andNot(featureExpr));
 		}
 
-		FeatureExpr andNot = ctx.andNot(featureExpr);
+		FeatureExpr andNot = Conditional.and(ctx, Conditional.not(featureExpr));
 		if (isContradiction(andNot)) {
 			return thenBranch.simplify(and);
 		}

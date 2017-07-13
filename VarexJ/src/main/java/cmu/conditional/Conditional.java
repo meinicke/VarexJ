@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -17,6 +18,7 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.SingleFeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureModel;
+import net.sf.javabdd.BDD;
 import scala.Tuple2;
 
 /**
@@ -31,7 +33,11 @@ public abstract class Conditional<T> {
 	public static BDDFeatureExpr bddFM;
 	public static final Map<String, SingleFeatureExpr> features = new HashMap<>();
 	
-	private static Map<FeatureExpr, Boolean> cacheIsSat = new HashMap<>();
+	private static Map<BDD, Boolean> cacheIsSat = new ConcurrentHashMap<>();
+	
+	private static Map<BDD, Map<BDD, FeatureExpr>> cacheAnd = new ConcurrentHashMap<>();
+	
+	private static Map<BDD, FeatureExpr> cacheNot = new ConcurrentHashMap<>();
 	
 	public static void setFM(final String fmfile) {
 		cacheIsSat.clear();
@@ -43,6 +49,27 @@ public abstract class Conditional<T> {
 			bddFM = (BDDFeatureExpr) FeatureExprFactory.bdd().True();
 		}
 	}
+	
+	public static FeatureExpr not(FeatureExpr a) {
+		return cacheNot.computeIfAbsent(((BDDFeatureExpr)a).bdd(), x -> a.not());
+	}
+	
+	public static FeatureExpr and(FeatureExpr a, FeatureExpr b) {
+		final BDD bddA = ((BDDFeatureExpr)a).bdd();
+		final BDD bddB = ((BDDFeatureExpr)b).bdd();
+		Map<BDD, FeatureExpr> aMap = cacheAnd.get(bddA);
+		if (aMap == null) {
+			aMap = new ConcurrentHashMap<>();
+			cacheAnd.put(bddA, aMap);
+		}
+		return aMap.computeIfAbsent(bddB, X -> a.and(b));
+	}
+	
+	public static boolean equals(FeatureExpr a, FeatureExpr b) {
+		if (a == b) return true;
+		return ((BDDFeatureExpr)a).bdd().equals(((BDDFeatureExpr)b).bdd());
+	}
+	
 
 	/**
 	 * Creates a BDD from the given feature model.
@@ -88,11 +115,16 @@ public abstract class Conditional<T> {
 	}
 
 	public static final boolean isContradiction(final FeatureExpr f) {
-		return !cacheIsSat.computeIfAbsent(f, x -> f.isSatisfiable(fm));
+		final BDD bdd = ((BDDFeatureExpr)f).bdd();
+		final Boolean value = cacheIsSat.get(bdd);
+		if (value != null) {
+			return !value;
+		}
+		return !cacheIsSat.computeIfAbsent(bdd, x -> f.isSatisfiable(fm));
 	}
 
 	public static final boolean isTautology(final FeatureExpr f) {
-		return isContradiction(f.not());
+		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)f).bdd().not(), x -> f.not().isSatisfiable(fm));
 	}
 
 	public abstract T getValue();
