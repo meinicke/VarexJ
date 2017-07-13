@@ -35,7 +35,7 @@ public class StackHandlerTest {
 		for (Object SHfactory: StackHandlerFactory.asParameter()) {
 			for (Object[] choice : ChoiceFactory.asParameter()) {
 				params.add(new Object[]{SHfactory, choice[0], "BDD"});
-				params.add(new Object[]{SHfactory, choice[0], "SAT"});
+//				params.add(new Object[]{SHfactory, choice[0], "SAT"});
 			}
 		}	
 		return params;

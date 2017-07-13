@@ -42,6 +42,10 @@ public abstract class Conditional<T> {
 	public static void setFM(final String fmfile) {
 		cacheIsSat.clear();
 		features.clear();
+		cacheNot.clear();
+		cacheIsSat.clear();
+		cacheAnd.clear();
+		
 		fm = (BDDFeatureModel) (fmfile.isEmpty() ? null : FeatureExprFactory.bdd().featureModelFactory().createFromDimacsFile(fmfile));
 		if (fm != null) {
 			createBDDFeatureModel();
@@ -54,7 +58,11 @@ public abstract class Conditional<T> {
 		return cacheNot.computeIfAbsent(((BDDFeatureExpr)a).bdd(), x -> a.not());
 	}
 	
-	public static FeatureExpr and(FeatureExpr a, FeatureExpr b) {
+	public static FeatureExpr or(final FeatureExpr a, final FeatureExpr b) {
+		return not(and(not(a), not(b)));
+	}
+	
+	public static FeatureExpr and(final FeatureExpr a, final FeatureExpr b) {
 		final BDD bddA = ((BDDFeatureExpr)a).bdd();
 		final BDD bddB = ((BDDFeatureExpr)b).bdd();
 		Map<BDD, FeatureExpr> aMap = cacheAnd.get(bddA);
@@ -62,7 +70,7 @@ public abstract class Conditional<T> {
 			aMap = new ConcurrentHashMap<>();
 			cacheAnd.put(bddA, aMap);
 		}
-		return aMap.computeIfAbsent(bddB, X -> a.and(b));
+		return aMap.computeIfAbsent(bddB, x -> a.and(b));
 	}
 	
 	public static boolean equals(FeatureExpr a, FeatureExpr b) {
@@ -70,6 +78,13 @@ public abstract class Conditional<T> {
 		return ((BDDFeatureExpr)a).bdd().equals(((BDDFeatureExpr)b).bdd());
 	}
 	
+	public static boolean equivalentTo(FeatureExpr a, FeatureExpr b) {
+		return a.equals(b) || isTautology(equiv(a, b));
+	}
+	
+	private static FeatureExpr equiv(FeatureExpr a, FeatureExpr b) {
+		return or(and(a, b), and(not(a), not(b)));
+	}
 
 	/**
 	 * Creates a BDD from the given feature model.

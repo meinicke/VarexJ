@@ -68,7 +68,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 	Map<String, List<FeatureExpr>> classes = new TreeMap<>();
 	if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
 		for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
-			MethodInfo callee = getInvokedMethod(finalCtx.and(e.getValue()), ti);
+			MethodInfo callee = getInvokedMethod(Conditional.and(finalCtx, e.getValue()), ti);
 			String methName = callee.getFullName();
 			if (classes.containsKey(methName)) {
 				classes.get(methName).add(e.getValue());

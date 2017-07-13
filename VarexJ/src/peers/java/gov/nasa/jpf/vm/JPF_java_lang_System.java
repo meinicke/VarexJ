@@ -51,7 +51,7 @@ public class JPF_java_lang_System extends NativePeer {
 
 							@Override
 							public void accept(FeatureExpr ctx, final Integer length) {
-								if (ctx.isContradiction()) {
+								if (Conditional.isContradiction(ctx)) {
 									return;
 								}
 								if ((srcArrayRef.intValue() == MJIEnv.NULL) || (dstArrayRef.intValue() == MJIEnv.NULL)) {
@@ -70,7 +70,7 @@ public class JPF_java_lang_System extends NativePeer {
 
 												@Override
 												public void accept(FeatureExpr ctx, Integer dstIdx) {
-													if (ctx.isContradiction()) {
+													if (Conditional.isContradiction(ctx)) {
 														return;
 													}
 													eiDst.copyElements(ctx, env.getThreadInfo(), eiSrc, srcIdx, dstIdx, length);
