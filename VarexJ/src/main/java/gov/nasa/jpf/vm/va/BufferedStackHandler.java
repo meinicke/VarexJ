@@ -187,7 +187,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public void storeOperand(FeatureExpr ctx, int index) {
 		if (!buffer.isEmpty()) {
-			if (bufferCTX.equivalentTo(ctx)) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				final Tuple entry = buffer.peek();
 				Object value = entry.value.getValue(true);
 				if (value instanceof Integer || value instanceof Byte 
@@ -230,7 +230,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 		if (buffer.isEmpty()) {
 			bufferCTX = ctx;
 			addToBuffer(((Conditional) value).simplify(ctx), isRef);
-		} else if (ctx.equivalentTo(bufferCTX)) {
+		} else if (Conditional.equivalentTo(bufferCTX, ctx)) {
 			addToBuffer(((Conditional) value).simplify(ctx), isRef);
 		} else {
 			debufferAll();
@@ -243,7 +243,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public <T> Conditional<T> pop(FeatureExpr ctx, Type t) {
 		if (!buffer.isEmpty()) {
-			if (bufferCTX.equivalentTo(ctx)) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				final Object value = buffer.peek().value.getValue(true);
 				switch (t) {
 				case DOUBLE:
@@ -386,7 +386,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 			return;
 		}
 		if (!buffer.isEmpty()) {
-			if (buffer.size() >= n && bufferCTX.equivalentTo(ctx)) {
+			if (buffer.size() >= n && Conditional.equivalentTo(bufferCTX, ctx)) {
 				while (n > 0) {
 					Object value = buffer.peek().value.getValue(true);
 					if (value instanceof Integer || 
@@ -424,7 +424,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public Conditional<Integer> peek(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (bufferCTX.equivalentTo(ctx)) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				Conditional<Integer> peek = buffer.peek().value;
 				if (peek.getValue(true) instanceof Integer) {
 					return peek;
@@ -456,7 +456,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public Conditional<Integer> peek(FeatureExpr ctx, final int offset) {
 		if (!buffer.isEmpty()) {
-			if (getBufferSize() > offset && bufferCTX.equivalentTo(ctx)) {
+			if (getBufferSize() > offset && Conditional.equivalentTo(bufferCTX, ctx)) {
 				int pointer = offset;
 				int n = 0;
 				while (n <= pointer) {
@@ -533,7 +533,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public <T> Conditional<T> peek(FeatureExpr ctx, final int offset, Type t) {
 		if (!buffer.isEmpty()) {
-			if (getBufferSize() > offset && bufferCTX.equivalentTo(ctx)) {
+			if (getBufferSize() > offset && Conditional.equivalentTo(bufferCTX, ctx)) {
 				int pointer = offset;
 				int n = 0;
 				while (n <= pointer) {
@@ -649,7 +649,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public void clear(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (bufferCTX.equivalentTo(ctx)) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				buffer.clear();
 				bufferCTX = FeatureExprFactory.True();
 			} else {
@@ -662,7 +662,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public boolean hasAnyRef(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (bufferCTX.equivalentTo(ctx)) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				for (Tuple entry : buffer) {
 					if (entry.isRef) {
 						return true;
@@ -730,7 +730,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 			addToBuffer(( pushValue), isRef);
 			return;
 		}
-		if (ctx.equivalentTo(bufferCTX)) {
+		if (Conditional.equivalentTo(bufferCTX, ctx)) {
 			addToBuffer((pushValue), isRef);
 			return;
 		} else {
@@ -773,7 +773,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public boolean isRef(FeatureExpr ctx, int offset) {
 		if (!buffer.isEmpty()) {
-			if (bufferCTX.equivalentTo(ctx)) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				if (buffer.size() > offset) {
 					return buffer.get(offset).isRef;
 				} else {
@@ -829,7 +829,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 
 				@Override
 				public Conditional<Integer> apply(FeatureExpr ctx, Integer y) {
-					FeatureExpr context = bufferCTX.and(ctx);
+					FeatureExpr context = Conditional.and(bufferCTX, ctx);
 					if (Conditional.isContradiction(context)) {
 						return One.valueOf(y);
 					}
@@ -845,7 +845,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public void dup(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (bufferCTX.equivalentTo(ctx)) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				Tuple peek = buffer.peek();
 				if (peek.value.getValue(true) instanceof Integer) {
 					buffer.push(peek);
@@ -864,7 +864,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public void dup2(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (buffer.size() >= 2 && bufferCTX.equivalentTo(ctx)) {
+			if (buffer.size() >= 2 && Conditional.equivalentTo(bufferCTX, ctx)) {
 				if (buffer.peek().value.getValue(true) instanceof Integer &&
 						buffer.get(1).value.getValue(true) instanceof Integer) {
 					buffer.push(buffer.get(1));
@@ -881,7 +881,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public void swap(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (buffer.size() >= 2 && bufferCTX.equivalentTo(ctx)) {
+			if (buffer.size() >= 2 && Conditional.equivalentTo(bufferCTX, ctx)) {
 				if (buffer.peek().value.getValue(true) instanceof Integer &&
 					buffer.get(1).value.getValue(true) instanceof Integer) {
 					buffer.add(1, buffer.pop());
@@ -897,7 +897,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public void dup2_x1(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (buffer.size() >= 3 && bufferCTX.equivalentTo(ctx)) {
+			if (buffer.size() >= 3 && Conditional.equivalentTo(bufferCTX, ctx)) {
 				if (buffer.peek().value.getValue(true) instanceof Integer && buffer.get(1).value.getValue(true) instanceof Integer && buffer.get(2).value.getValue(true) instanceof Integer) {
 					buffer.add(3, buffer.get(1));
 					buffer.add(3, buffer.peek());
@@ -913,7 +913,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public void dup2_x2(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (buffer.size() >= 4 && bufferCTX.equivalentTo(ctx)) {
+			if (buffer.size() >= 4 && Conditional.equivalentTo(bufferCTX, ctx)) {
 				if (buffer.peek().value.getValue(true) instanceof Integer && buffer.get(1).value.getValue(true) instanceof Integer && buffer.get(2).value.getValue(true) instanceof Integer
 						&& buffer.get(3).value.getValue(true) instanceof Integer) {
 					buffer.add(4, buffer.get(1));
@@ -931,7 +931,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	public void dup_x1(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
 			if (buffer.size() >= 2) {
-				if (bufferCTX.equivalentTo(ctx)) {
+				if (Conditional.equivalentTo(bufferCTX, ctx)) {
 					if (buffer.peek().value.getValue(true) instanceof Integer && buffer.get(1).value.getValue(true) instanceof Integer) {
 						buffer.add(2, buffer.peek());
 						return;
@@ -947,7 +947,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	@Override
 	public void dup_x2(FeatureExpr ctx) {
 		if (!buffer.isEmpty()) {
-			if (buffer.size() >= 3 && bufferCTX.equivalentTo(ctx)) {
+			if (buffer.size() >= 3 && Conditional.equivalentTo(bufferCTX, ctx)) {
 				buffer.add(3, buffer.peek());
 				return;
 			} else {

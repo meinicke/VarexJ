@@ -65,7 +65,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		Map<String, List<FeatureExpr>> classes = new TreeMap<>();
 		if (JPF.SHARE_INVOCATIONS && map.size() > 1) {
 			for (Entry<Integer, FeatureExpr> e : map.entrySet()) {
-				MethodInfo callee = getInvokedMethod(ctx.and(e.getValue()), ti, e.getKey());
+				MethodInfo callee = getInvokedMethod(Conditional.and(ctx, e.getValue()), ti, e.getKey());
 				String methName = callee == null ? "" : callee.getFullName();
 				if (classes.containsKey(methName)) {
 					classes.get(methName).add(e.getValue());
@@ -85,10 +85,10 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
-				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), 
+				return ChoiceFactory.create(Conditional.and(ctx, objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), 
 						ChoiceFactory.create(ctx, new One<>(typeSafeClone(mi)), ti.getPC())).simplify();
 			}
-			MethodInfo callee = getInvokedMethod(ctx.and(objRefEntry.getValue()), ti, objRef);
+			MethodInfo callee = getInvokedMethod(Conditional.and(ctx, objRefEntry.getValue()), ti, objRef);
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 			if (!classes.isEmpty()) {
 				FeatureExpr invocationCtx = FeatureExprFactory.False();
