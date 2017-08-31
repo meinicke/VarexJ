@@ -27,6 +27,7 @@ import java.util.TreeMap;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.varviz.trace.IFStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
@@ -86,6 +87,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
+				 new IFStatement<>(this, ti.getTopFrame().method, getLineNumber(), objRefEntry.getValue(), ctx);
 				return ChoiceFactory.create(ctx.and(objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), 
 						ChoiceFactory.create(ctx, new One<>(typeSafeClone(mi)), ti.getPC())).simplify();
 			}
