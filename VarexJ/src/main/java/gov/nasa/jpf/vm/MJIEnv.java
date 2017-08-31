@@ -18,11 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -882,36 +883,36 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     return args;
   }
 
-  public Boolean getBooleanObject (int objref){
-    return getBooleanField(objref, "value").getValue();// TODO jens
+  public Conditional<Boolean> getBooleanObject (int objref){
+    return getBooleanField(objref, "value");
   }
 
-  public Byte getByteObject (int objref){
-    return getByteField(objref, "value").getValue();
+  public Conditional<Byte> getByteObject (int objref){
+    return getByteField(objref, "value");
   }
 
-  public Character getCharObject (int objref){
-    return getCharField(objref, "value").getValue();// TODO jens
+  public Conditional<Character> getCharObject (int objref){
+    return getCharField(objref, "value");
   }
 
-  public Short getShortObject (int objref){
-    return getShortField(objref, "value").getValue();// TODO jens
+  public Conditional<Short> getShortObject (int objref){
+    return getShortField(objref, "value");
   }
 
   public Conditional<Integer> getIntegerObject (int objref){
     return getIntField(objref, "value");
   }
 
-  public Long getLongObject (int objref){
-    return getLongField(objref, "value").getValue();// TODO jens
+  public Conditional<Long> getLongObject (int objref){
+    return getLongField(objref, "value");
   }
 
-  public Float getFloatObject (int objref){
-    return getFloatField(objref, "value").getValue();// TODO jens
+  public Conditional<Float> getFloatObject (int objref){
+    return getFloatField(objref, "value");
   }
 
-  public Double getDoubleObject (int objref){
-    return getDoubleField(objref, "value").getValue();// TODO jens
+  public Conditional<Double> getDoubleObject (int objref){
+    return getDoubleField(objref, "value");
   }
 
   // danger - the returned arrays could be used to modify contents of stored objects
@@ -1203,39 +1204,63 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     return newString(FeatureExprFactory.True(), new One<>(s));
   }
 
-  public String format (FeatureExpr ctx, int fmtRef, int argRef){
-    String format = getStringObject(ctx, fmtRef);
-    int len = argRef == MJIEnv.NULL ? 0 : getArrayLength(ctx, argRef);
-    Object[] arg = new Object[len];
-    for (int i=0; i<len; i++){
-      int ref = getReferenceArrayElement(argRef,i).simplify(ctx).getValue();
-      if (ref != NULL) {
-        String clsName = getClassName(ref);
-        if (clsName.equals("java.lang.String")) {
-          arg[i] = getStringObject(ctx, ref);
-        } else if (clsName.equals("java.lang.Byte")) {
-          arg[i] = getByteObject(ref);
-        } else if (clsName.equals("java.lang.Char")) {
-          arg[i] = getCharObject(ref);
-        } else if (clsName.equals("java.lang.Short")) {
-          arg[i] = getShortObject(ref);
-        } else if (clsName.equals("java.lang.Integer")) {
-          arg[i] = createSimpleObj(getIntegerObject(ref), ctx);
-        } else if (clsName.equals("java.lang.Long")) {
-          arg[i] = getLongObject(ref);
-        } else if (clsName.equals("java.lang.Float")) {
-          arg[i] = getFloatObject(ref);
-        } else if (clsName.equals("java.lang.Double")) {
-          arg[i] = getDoubleObject(ref);
-        } else {
-          // need a toString() here
-          arg[i] = "??";
-        }
-      }
-    }
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Conditional<String> format(FeatureExpr ctx, int fmtRef, int argRef) {
+		String format = getStringObject(ctx, fmtRef);
+		int len = argRef == MJIEnv.NULL ? 0 : getArrayLength(ctx, argRef);
+		Conditional<Object>[] arg = new Conditional[len];
+		for (int i = 0; i < len; i++) {
+			Conditional<Integer> ref = getReferenceArrayElement(argRef, i).simplify(ctx);
+			Conditional<Object> argI = ref.mapf(ctx, (BiFunction<FeatureExpr, Integer, Conditional<Object>>) (ctx1, ref1) -> {
+				Object value = null;
+				if (ref1 != NULL) {
+					String clsName = getClassName(ref1);
+					if (clsName.equals("java.lang.String")) {
+						value = getStringObject(ctx1, ref1);
+					} else if (clsName.equals(Byte.class.getCanonicalName())) {
+						return (Conditional) getByteObject(ref1);
+					} else if (clsName.equals(Character.class.getCanonicalName())) {
+						return (Conditional) getCharObject(ref1);
+					} else if (clsName.equals(Short.class.getCanonicalName())) {
+						return (Conditional) getShortObject(ref1);
+					} else if (clsName.equals(Integer.class.getCanonicalName())) {
+						return (Conditional) getIntegerObject(ref1);
+					} else if (clsName.equals(Long.class.getCanonicalName())) {
+						return (Conditional) getLongObject(ref1);
+					} else if (clsName.equals(Float.class.getCanonicalName())) {
+						return (Conditional) getFloatObject(ref1);
+					} else if (clsName.equals(Double.class.getCanonicalName())) {
+						return (Conditional) getDoubleObject(ref1);
+					} else {
+						// need a toString() here
+						value = "??";
+					}
+				}
+				return new One<>(value);
+			});
+			arg[i] = argI;
+		}
 
-    return String.format(format,arg);
-  }
+		return liftFormat(format, arg, new Object[arg.length], 0, ctx);
+	}
+	
+	private final Conditional<String> liftFormat(final String format, final Conditional<Object>[] cargs, final Object[] arg, final int index, final FeatureExpr ctx) {
+		if (index >= cargs.length) {
+			System.out.println(Arrays.toString(arg));
+			return new One<>(String.format(format, arg));
+		}
+		return cargs[index].mapf(ctx, new BiFunction<FeatureExpr, Object, Conditional<String>>() {
+
+			@Override
+			public Conditional<String> apply(FeatureExpr ctx, Object o) {
+				Object[] arg2 = Arrays.copyOf(arg, arg.length);
+				arg2[index] = o;
+				return liftFormat(format, cargs, arg2, index + 1, ctx);
+			}
+			
+		});
+	}
+	
   
   private static Object createSimpleObj(Conditional<?> c, FeatureExpr ctx) {
 	  c = c.simplify(ctx);
@@ -1254,22 +1279,22 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 	      int ref = getReferenceArrayElement(argRef,i).getValue();
 	      if (ref != NULL) {
 	        String clsName = getClassName(ref);
-	        if (clsName.equals("java.lang.String")) {
+	        if (clsName.equals(String.class.getCanonicalName())) {
 	          arg[i] = getStringObject(ctx, ref);
-	        } else if (clsName.equals("java.lang.Byte")) {
-	          arg[i] = getByteObject(ref);
-	        } else if (clsName.equals("java.lang.Char")) {
-	          arg[i] = getCharObject(ref);
-	        } else if (clsName.equals("java.lang.Short")) {
-	          arg[i] = getShortObject(ref);
-	        } else if (clsName.equals("java.lang.Integer")) {
+	        } else if (clsName.equals(Byte.class.getCanonicalName())) {
+	          arg[i] = createSimpleObj(getByteObject(ref), ctx);
+	        } else if (clsName.equals(Character.class.getCanonicalName())) {
+	          arg[i] = createSimpleObj(getCharObject(ref), ctx);
+	        } else if (clsName.equals(Short.class.getCanonicalName())) {
+	          arg[i] = createSimpleObj(getShortObject(ref), ctx);
+	        } else if (clsName.equals(Integer.class.getCanonicalName())) {
 	          arg[i] = createSimpleObj(getIntegerObject(ref), ctx);
-	        } else if (clsName.equals("java.lang.Long")) {
-	          arg[i] = getLongObject(ref);
-	        } else if (clsName.equals("java.lang.Float")) {
-	          arg[i] = getFloatObject(ref);
-	        } else if (clsName.equals("java.lang.Double")) {
-	          arg[i] = getDoubleObject(ref);
+	        } else if (clsName.equals(Long.class.getCanonicalName())) {
+	          arg[i] = createSimpleObj(getLongObject(ref), ctx);
+	        } else if (clsName.equals(Float.class.getCanonicalName())) {
+	          arg[i] = createSimpleObj(getFloatObject(ref), ctx);
+	        } else if (clsName.equals(Double.class.getCanonicalName())) {
+	          arg[i] = createSimpleObj(getDoubleObject(ref), ctx);
 	        } else {
 	          // need a toString() here
 	          arg[i] = "??";

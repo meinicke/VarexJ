@@ -282,7 +282,17 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 	@MJI
 	public int printf__Ljava_lang_String_2_3Ljava_lang_Object_2__Ljava_io_PrintStream_2(MJIEnv env, int objref, int fmtRef, int argRef, FeatureExpr ctx) {
-		env.getVM().print(env.format(ctx, fmtRef, argRef));
+		Conditional<String> formatedString = env.format(ctx, fmtRef, argRef);
+		for (Entry<String, FeatureExpr> s : formatedString.toMap().entrySet()) {
+			if (RuntimeConstants.ctxOutput) {
+				final FeatureExpr and = Conditional.and(s.getValue(), ctx);
+				if (!Conditional.isContradiction(and)) {
+					env.getVM().println('{' + s.getKey() + "} : " + Conditional.getCTXString(and));
+				}
+			} else {
+				env.getVM().println(s.getKey());
+			}
+		}
 		return objref;
 	}
 

@@ -243,6 +243,116 @@ public class StringTest extends TestJPF {
 			assertEquals(x ? 2 : 1, s.length());
 		}
 	}
+	
+	@Test
+	public void printfTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			int i = 0;
+			if (x) {
+				i = 1;
+			}
+			int j = 2;
+			if (y) {
+				j = 3;
+			}
+			System.out.printf("%d%d", i,j);
+			
+		}
+	}
+	
+	@Test
+	public void printfTestFloat() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			float f = 0.12345f;
+			if (x) {
+				f = 0.2f;
+			}
+			int j = 2;
+			if (y) {
+				j = 3;
+			}
+			System.out.printf("%.3f - %d", f, j);
+			
+		}
+	}
+	
+	@Test
+	public void printfTestLong() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			long l = 12345;
+			if (x) {
+				l = 34567;
+			}
+			long l2 = -12345;
+			if (y) {
+				l2 = -34567;
+			}
+			System.out.printf("%d%d", l,l2);
+			
+		}
+	}
+	
+	@Test
+	public void printfTestByte() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			Byte b = 1;
+			if (x) {
+				b = 2;
+			}
+			byte b2 = -3;
+			if (y) {
+				b2 = -4;
+			}
+			System.out.printf("%d%d", b,b2);
+			
+		}
+	}
+	
+	@Test
+	public void printfTestDouble() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			double d = Math.PI;;
+			if (x) {
+				d = 2;
+			}
+			double d2 = -3;
+			if (y) {
+				d2 = -4;
+			}
+			System.out.printf("%f%f", d,d2);
+			
+		}
+	}
+	
+	@Test
+	public void printfTestChar() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			char c = 'a';
+			if (x) {
+				c = 'b';
+			}
+			char c2 = 'A';
+			if (y) {
+				c2 = 'B';
+			}
+			System.out.printf("%c%c", c, c2);
+		}
+	}
+	
+	@Test
+	public void printfTestShort() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			short s = 1;
+			if (x) {
+				s = 2;
+			}
+			short s2 = 3;
+			if (y) {
+				s2 = 4;
+			}
+			System.out.printf("%d%d", s, s2);
+		}
+	}
 }
 
 class Main {
