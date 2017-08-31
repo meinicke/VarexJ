@@ -17,6 +17,7 @@ Within Eclipse you can use the gradle plugin: https://github.com/spring-projects
 * On the "build.gradle" file Run as/Gradle build... Specify "build" at the Gradle Tasks page and press run
 * You may need to generate eclipse project files: Specify "eclipse" at the Gradle Tasks page
 
+For recent versions of Java 8, include the commented lines in src/classes/java/sun.misc.SharedSecrets.java
 
 # JPF options:
 
