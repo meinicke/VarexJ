@@ -44,18 +44,17 @@ public class LocalStoreStatement extends Statement {
 			return new One<>(Boolean.toString((Integer) val == 1));
 		}
 		if (li.getType().equals("char")) {
-			return new One<>(" ");
-//			if (Character.isJavaIdentifierPart((Integer)val)) {
-//				return new One<>(Character.toString((char)((Integer)val).intValue()));
-//			}
-//			return new One<>("0x" + String.format("%02x", ((Integer)val)));
+			if (Character.isJavaIdentifierPart((Integer)val)) {
+				return new One<>(Character.toString((char)((Integer)val).intValue()));
+			}
+			return new One<>("0x" + String.format("%02x", ((Integer)val)));
 		}
 
 		if (!li.isNumeric()) {
 			if ((Integer) val == 0) {
 				return new One<>("null");
 			}
-			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer) val);// TODO this is affected by garbage collection 
+			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer) val);
 			if (ei == null) {
 				return new One<>("null @" + val);// should never happen
 			}
@@ -71,7 +70,7 @@ public class LocalStoreStatement extends Statement {
 			if (ei.getClassInfo().getName().equals(Integer.class.getCanonicalName())) {
 				Conditional<Integer> values = ei.getIntField("value");
 				return values.mapf(ctx, (ctx2, v) -> {
-					return new One<>("\"" + v + "\"");
+					return new One<>(v.toString());
 				});
 			}
 			return new One<>('@' + val.toString());

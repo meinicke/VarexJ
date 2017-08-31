@@ -62,6 +62,12 @@ public class LocalGetStatement extends Statement {
 					});
 				});
 			}
+			if (ei.getClassInfo().getName().equals(Integer.class.getCanonicalName())) {
+				Conditional<Integer> values = ei.getIntField("value");
+				return values.mapf(ctx, (ctx2, v) -> {
+					return new One<>(v.toString());
+				});
+			}
 			return new One<>('@' + val.toString());
 		}
 		return new One<>(val.toString());
@@ -69,7 +75,11 @@ public class LocalGetStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		return li.getType() + ' ' + li.getName();
+		String type = li.getType();
+		if (type.contains(".")) {
+			type = type.substring(type.lastIndexOf('.') + 1);
+		}
+		return type + " " + li.getName();
 	}
 	
 	@Override

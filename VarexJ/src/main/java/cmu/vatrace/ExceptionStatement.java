@@ -25,7 +25,17 @@ public class ExceptionStatement extends Statement {
 		if (details == null) {
 			return cname;
 		}
-		return cname + ':';
+		boolean hasDetail = false;
+		for (String d : details.toList()) {
+			if (d != null && !d.isEmpty()) {
+				hasDetail = true;
+				break;
+			}
+		}
+		if (!hasDetail) {
+			return cname;
+		}
+		return cname + ":";
 	}
 	
 	@Override

@@ -66,7 +66,7 @@ public class Statistics extends ListenerAdapter implements Cloneable {
     public int maxDepth = 0;
 
     public int gcCycles = 0;
-    public long insns = 0;
+    public static long insns = 0;
     public int threadCGs = 0;
     public int sharedAccessCGs = 0;
     public int monitorCGs = 0;
@@ -77,6 +77,10 @@ public class Statistics extends ListenerAdapter implements Cloneable {
     public long nNewObjects = 0;
     public long nReleasedObjects = 0;
     public int maxLiveObjects = 0;
+    
+    public Statistics() {
+		insns = 0;
+	}
 
     public Statistics clone() {
         try {
