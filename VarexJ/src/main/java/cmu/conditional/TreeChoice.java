@@ -36,8 +36,8 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 			return new TreeChoice<>(featureExpr, newResultA, newResultB);
 		}
 
-		Conditional<U> newResultA = thenBranch.mapfr(inFeature.and(featureExpr), f);
-		Conditional<U> newResultB = elseBranch.mapfr(inFeature.and(featureExpr.not()), f);
+		Conditional<U> newResultA = thenBranch.mapfr(and(inFeature, featureExpr), f);
+		Conditional<U> newResultB = elseBranch.mapfr(and(inFeature, not(featureExpr)), f);
 		return new TreeChoice<>(featureExpr, newResultA, newResultB);
 	}
 	
@@ -49,18 +49,18 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 			return;
 		}
 
-		thenBranch.mapfr(inFeature.and(featureExpr), f);
-		elseBranch.mapfr(inFeature.and(featureExpr.not()), f);
+		thenBranch.mapfr(and(inFeature, featureExpr), f);
+		elseBranch.mapfr(and(inFeature, not(featureExpr)), f);
 	}
 
 	@Override
 	public Conditional<T> simplify(FeatureExpr ctx) {
-		FeatureExpr and = ctx.and(featureExpr);
+		FeatureExpr and = and(ctx, featureExpr);
 		if (isContradiction(and)) {
-			return elseBranch.simplify(ctx.andNot(featureExpr));
+			return elseBranch.simplify(and(ctx, not(featureExpr)));
 		}
 
-		FeatureExpr andNot = ctx.andNot(featureExpr);
+		FeatureExpr andNot = and(ctx, not(featureExpr));
 		if (isContradiction(andNot)) {
 			return thenBranch.simplify(and);
 		}
@@ -75,20 +75,20 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 		if (tb instanceof One) {
 			if (eb instanceof TreeChoice) {
 				if (((TreeChoice<T>) eb).thenBranch.equals(tb)) {
-					return new TreeChoice<>(featureExpr.or(featureExpr.not().and(((TreeChoice<T>) eb).featureExpr)), tb, ((TreeChoice<T>) eb).elseBranch);
+					return new TreeChoice<>(or(featureExpr, and(not(featureExpr), ((TreeChoice<T>) eb).featureExpr)), tb, ((TreeChoice<T>) eb).elseBranch);
 				}
 				if (((TreeChoice<T>) eb).elseBranch.equals(tb)) {
-					return new TreeChoice<>(featureExpr.or(featureExpr.not().and(((TreeChoice<T>) eb).featureExpr.not())), tb, ((TreeChoice<T>) eb).thenBranch);
+					return new TreeChoice<>(or(featureExpr, and(not(featureExpr), not(((TreeChoice<T>) eb).featureExpr))), tb, ((TreeChoice<T>) eb).thenBranch);
 				}
 			}
 		}
 		if (eb instanceof One) {
 			if (tb instanceof TreeChoice) {
 				if (((TreeChoice<T>) tb).thenBranch.equals(eb)) {
-					return new TreeChoice<>(featureExpr.not().or(featureExpr.and(((TreeChoice<T>) tb).featureExpr)), eb, ((TreeChoice<T>) tb).elseBranch);
+					return new TreeChoice<>(or(not(featureExpr), and(featureExpr, ((TreeChoice<T>) tb).featureExpr)), eb, ((TreeChoice<T>) tb).elseBranch);
 				}
 				if (((TreeChoice<T>) tb).elseBranch.equals(eb)) {
-					return new TreeChoice<>(featureExpr.not().or(featureExpr.and(((TreeChoice<T>) tb).featureExpr.not())), eb, ((TreeChoice<T>) tb).thenBranch);
+					return new TreeChoice<>(or(not(featureExpr), and(featureExpr, not(((TreeChoice<T>) tb).featureExpr))), eb, ((TreeChoice<T>) tb).thenBranch);
 				}
 			}
 		}
@@ -106,11 +106,7 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 	public boolean equals(Object obj) {
 		if (obj instanceof TreeChoice) {
 			TreeChoice<T> c = (TreeChoice<T>) obj;
-			if (c.thenBranch.equals(thenBranch) && c.elseBranch.equals(elseBranch) && c.featureExpr.equivalentTo(featureExpr)) {
-				return true;
-			} else if (c.featureExpr.not().equivalentTo(featureExpr) && c.elseBranch.equals(thenBranch) && c.thenBranch.equals(elseBranch)) {
-				return true;
-			}
+			return c.thenBranch.equals(thenBranch) && c.elseBranch.equals(elseBranch) && Conditional.equivalentTo(c.featureExpr, featureExpr);
 		}
 		return false;
 	}
@@ -153,8 +149,8 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 
 	@Override
 	protected void toMap(FeatureExpr ctx, Map<T, FeatureExpr> map) {
-		thenBranch.toMap(ctx.and(featureExpr), map);
-		elseBranch.toMap(ctx.andNot(featureExpr), map);
+		thenBranch.toMap(and(ctx, featureExpr), map);
+		elseBranch.toMap(and(ctx, not(featureExpr)), map);
 	}
 
 	@Override
@@ -174,20 +170,20 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 		if (tb instanceof One) {
 			if (eb instanceof TreeChoice) {
 				if (((TreeChoice<T>) eb).thenBranch.equals(tb)) {
-					return new TreeChoice<>(featureExpr.or(featureExpr.not().and(((TreeChoice<T>) eb).featureExpr)), tb, ((TreeChoice<T>) eb).elseBranch);
+					return new TreeChoice<>(or(featureExpr, and(not(featureExpr), ((TreeChoice<T>) eb).featureExpr)), tb, ((TreeChoice<T>) eb).elseBranch);
 				}
 				if (((TreeChoice<T>) eb).elseBranch.equals(tb)) {
-					return new TreeChoice<>(featureExpr.or(featureExpr.not().and(((TreeChoice<T>) eb).featureExpr.not())), tb, ((TreeChoice<T>) eb).thenBranch);
+					return new TreeChoice<>(or(featureExpr, and(not(featureExpr), not(((TreeChoice<T>) eb).featureExpr))), tb, ((TreeChoice<T>) eb).thenBranch);
 				}
 			}
 		}
 		if (eb instanceof One) {
 			if (tb instanceof TreeChoice) {
 				if (((TreeChoice<T>) tb).thenBranch.equals(eb)) {
-					return new TreeChoice<>(featureExpr.not().or(featureExpr.and(((TreeChoice<T>) tb).featureExpr)), eb, ((TreeChoice<T>) tb).elseBranch);
+					return new TreeChoice<>(or(not(featureExpr), and(featureExpr, ((TreeChoice<T>) tb).featureExpr)), eb, ((TreeChoice<T>) tb).elseBranch);
 				}
 				if (((TreeChoice<T>) tb).elseBranch.equals(eb)) {
-					return new TreeChoice<>(featureExpr.not().or(featureExpr.and(((TreeChoice<T>) tb).featureExpr.not())), eb, ((TreeChoice<T>) tb).thenBranch);
+					return new TreeChoice<>(or(not(featureExpr), and(featureExpr, not(((TreeChoice<T>) tb).featureExpr))), eb, ((TreeChoice<T>) tb).thenBranch);
 				}
 			}
 		}

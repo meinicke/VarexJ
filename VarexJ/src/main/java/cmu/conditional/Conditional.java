@@ -17,6 +17,7 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import de.fosd.typechef.featureexpr.SingleFeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
 import de.fosd.typechef.featureexpr.bdd.BDDFeatureModel;
+import net.sf.javabdd.BDD;
 import scala.Tuple2;
 
 /**
@@ -31,17 +32,57 @@ public abstract class Conditional<T> {
 	public static BDDFeatureExpr bddFM;
 	public static final Map<String, SingleFeatureExpr> features = new HashMap<>();
 	
-	private static Map<FeatureExpr, Boolean> cacheIsSat = new HashMap<>();
+	private static final Map<BDD, Boolean> cacheIsSat = new HashMap<>();
+	
+	private static final Map<BDD, Map<BDD, FeatureExpr>> cacheAnd = new HashMap<>();
+	
+	private static final Map<BDD, FeatureExpr> cacheNot = new HashMap<>();
 	
 	public static void setFM(final String fmfile) {
 		cacheIsSat.clear();
 		features.clear();
+		cacheNot.clear();
+		cacheIsSat.clear();
+		cacheAnd.clear();
+		
 		fm = (BDDFeatureModel) (fmfile.isEmpty() ? null : FeatureExprFactory.bdd().featureModelFactory().createFromDimacsFile(fmfile));
 		if (fm != null) {
 			createBDDFeatureModel();
 		} else {
 			bddFM = (BDDFeatureExpr) FeatureExprFactory.bdd().True();
 		}
+	}
+	
+	public static FeatureExpr not(FeatureExpr a) {
+		return cacheNot.computeIfAbsent(((BDDFeatureExpr)a).bdd(), x -> a.not());
+	}
+	
+	public static FeatureExpr or(final FeatureExpr a, final FeatureExpr b) {
+		return not(and(not(a), not(b)));
+	}
+	
+	public static FeatureExpr and(final FeatureExpr a, final FeatureExpr b) {
+		final BDD bddA = ((BDDFeatureExpr)a).bdd();
+		final BDD bddB = ((BDDFeatureExpr)b).bdd();
+		Map<BDD, FeatureExpr> aMap = cacheAnd.get(bddA);
+		if (aMap == null) {
+			aMap = new HashMap<>();
+			cacheAnd.put(bddA, aMap);
+		}
+		return aMap.computeIfAbsent(bddB, x -> a.and(b));
+	}
+	
+	public static boolean equals(FeatureExpr a, FeatureExpr b) {
+		if (a == b) return true;
+		return ((BDDFeatureExpr)a).bdd().equals(((BDDFeatureExpr)b).bdd());
+	}
+	
+	public static boolean equivalentTo(FeatureExpr a, FeatureExpr b) {
+		return a.equals(b) || isTautology(equiv(a, b));
+	}
+	
+	private static FeatureExpr equiv(FeatureExpr a, FeatureExpr b) {
+		return or(and(a, b), and(not(a), not(b)));
 	}
 
 	/**
@@ -94,7 +135,12 @@ public abstract class Conditional<T> {
 	public static FeatureExpr additionalConstraint = FeatureExprFactory.True();
 
 	public static final boolean isContradiction(final FeatureExpr f) {
-		return !cacheIsSat.computeIfAbsent(f, x -> f.isSatisfiable(fm));
+		final BDD bdd = ((BDDFeatureExpr)f).bdd();
+		final Boolean value = cacheIsSat.get(bdd);
+		if (value != null) {
+			return !value;
+		}
+		return !cacheIsSat.computeIfAbsent(bdd, x -> f.isSatisfiable(fm));
 	}
 	
 	public static boolean isSatisfiable(final FeatureExpr f) {
@@ -102,7 +148,7 @@ public abstract class Conditional<T> {
 	}
 
 	public static final boolean isTautology(final FeatureExpr f) {
-		return isContradiction(f.not());
+		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)f).bdd().not(), x -> f.not().isSatisfiable(fm));
 	}
 
 	public abstract T getValue();
@@ -178,7 +224,23 @@ public abstract class Conditional<T> {
 	public abstract Conditional<T> clone() throws CloneNotSupportedException;
 
 	public static String getCTXString(FeatureExpr ctx) {
+		final FeatureExpr originalCTX = ctx;
 		ctx = simplifyCondition(ctx);
+		int start = ctx.toString().length();
+		ctx = simplifyCondition(ctx);
+		int end = ctx.toString().length();
+		
+		if (start > end) {
+			System.out.println("---------------");
+			System.out.println("reduced by " + (start - end));
+			System.out.println(originalCTX);
+			System.out.println(ctx);
+			if (!ctx.equivalentTo(originalCTX, fm)) {
+				throw new RuntimeException();
+			}
+			System.out.println("---------------");
+		}
+		
 		boolean oneSample = ctx instanceof BDDFeatureExpr && ((BDDFeatureExpr) ctx).bdd().pathCount() > 1000;
 		if (oneSample) {
 			ctx = new BDDFeatureExpr(((BDDFeatureExpr) ctx).bdd().satOne());

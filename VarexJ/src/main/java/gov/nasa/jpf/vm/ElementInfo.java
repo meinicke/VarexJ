@@ -1254,7 +1254,7 @@ public abstract class ElementInfo implements Cloneable {
    * @throws java.lang.ArrayStoreException
    */
   public void copyElements( FeatureExpr ctx, ThreadInfo ti, ElementInfo eiSrc, int srcIdx, int dstIdx, int length){
-	if (ctx.isContradiction()) {
+	if (Conditional.isContradiction(ctx)) {
 		return;
 	}
 

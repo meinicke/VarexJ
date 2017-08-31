@@ -58,7 +58,8 @@ public class SharedSecrets {
   private static JavaIOFileDescriptorAccess javaIOFileDescriptorAccess;
   private static JavaNioAccess javaNioAccess;
   private static JavaAWTAccess javaAWTAccess;
-  private static JavaOISAccess javaOISAccess;
+  //XXX include for recent versions of Java 8
+//  private static JavaOISAccess javaOISAccess;
   
     private static JavaUtilZipFileAccess javaUtilZipFileAccess;
 	private static JavaObjectInputStreamAccess javaObjectInputStreamAccess;
@@ -107,16 +108,18 @@ public class SharedSecrets {
     return javaIOAccess;
   }
 
-	public static void setJavaOISAccess(JavaOISAccess access) {
-		javaOISAccess = access;
-	}
+//XXX include for recent versions of Java 8
+//	public static void setJavaOISAccess(JavaOISAccess access) {
+//		javaOISAccess = access;
+//	}
 
-	public static JavaOISAccess getJavaOISAccess() {
-		if (javaOISAccess == null)
-			unsafe.ensureClassInitialized(ObjectInputStream.class);
-
-		return javaOISAccess;
-	}
+//XXX include for recent versions of Java 8
+//	public static JavaOISAccess getJavaOISAccess() {
+//		if (javaOISAccess == null)
+//			unsafe.ensureClassInitialized(ObjectInputStream.class);
+//
+//		return javaOISAccess;
+//	}
   
   public static void setJavaNioAccess(JavaNioAccess a) {
     javaNioAccess = a;

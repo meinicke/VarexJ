@@ -61,7 +61,7 @@ public class JPF_java_lang_String extends NativePeer {
 								@SuppressWarnings("unchecked")
 								@Override
 								public Conditional<String> apply(FeatureExpr ctx, Integer offset) {
-									if (ctx.isContradiction()) {
+									if (Conditional.isContradiction(ctx)) {
 										return (Conditional<String>) One.NULL;
 									}
 									return new One<>(new String(value, offset, count));

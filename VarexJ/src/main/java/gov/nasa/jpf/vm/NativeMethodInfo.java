@@ -308,7 +308,7 @@ public class NativeMethodInfo extends MethodInfo {
 			Map<?, FeatureExpr> map = ((Conditional<?>) arg).toMap();
 			for (Entry<?, FeatureExpr> e : map.entrySet()) {
 				for (Object[] args : unconditionalArgs) {
-					FeatureExpr ctx = ((FeatureExpr)args[args.length - 1]).and(e.getValue());
+					FeatureExpr ctx = Conditional.and(((FeatureExpr)args[args.length - 1]), e.getValue());
 					if (!Conditional.isContradiction(ctx)) {
 						Object[] copy = copy(args);
 						copy[index] = e.getKey();

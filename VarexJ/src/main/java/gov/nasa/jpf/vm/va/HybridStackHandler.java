@@ -359,7 +359,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	}
 	
 	private void checkCTX(FeatureExpr ctx) {
-		if (!lifted && !stackCTX.equals(ctx)) {
+		if (!lifted && !Conditional.equals(stackCTX,ctx)) {
 			createNewStackHandler();
 		}
 	}
