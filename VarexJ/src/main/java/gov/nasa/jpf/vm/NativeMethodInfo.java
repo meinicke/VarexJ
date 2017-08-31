@@ -21,6 +21,7 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -187,7 +188,12 @@ public class NativeMethodInfo extends MethodInfo {
 						if (args[1] instanceof One) {
 							args[1] = ((One<?>)args[1]).getValue();
 						}
-						ret = mth.invoke(peer, args);
+						try {
+							ret = mth.invoke(peer, args);
+						} catch (IllegalArgumentException e) {
+							System.err.println(mth + " - " + Arrays.toString(args));
+							throw e;
+						}
 					} else {
 						ret = mth.invoke(peer, args);
 					}
@@ -251,6 +257,9 @@ public class NativeMethodInfo extends MethodInfo {
 
 		} catch (IllegalArgumentException iax) {
 			logger.warning(iax.toString());
+			for (StackTraceElement method : iax.getStackTrace()) {
+				System.err.println(method);
+			}
 			return new One<>(ti.createAndThrowException(ctx, "java.lang.IllegalArgumentException", "calling " + ci.getName() + '.' + getName()));
 		} catch (IllegalAccessException ilax) {
 			logger.warning(ilax.toString());

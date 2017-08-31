@@ -291,64 +291,69 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public Conditional<Boolean> equals__Ljava_lang_Object_2__Z(final MJIEnv env, final int objRef, Conditional<Integer> argRef, FeatureExpr ctx) {
+	public Conditional<Boolean> equals__Ljava_lang_Object_2__Z(final MJIEnv env, final Conditional<Integer> objRefV, Conditional<Integer> argRef, FeatureExpr ctx) {
 		try {
-			return argRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
-
+			return objRefV.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
 				@Override
-				public Conditional<Boolean> apply(FeatureExpr ctx, Integer argRef) {
-					if (Conditional.isContradiction(ctx)) {
-						return One.TRUE;
-					}
-					if (argRef == MJIEnv.NULL) {
-						return One.FALSE;
-					}
-
-					Heap heap = env.getHeap();
-					ElementInfo s1 = heap.get(objRef);
-					ElementInfo s2 = heap.get(argRef);
-
-					if (!env.isInstanceOf(argRef, "java.lang.String")) {
-						return One.FALSE;
-					}
-
-					Conditional<Integer> value1c = s1.getReferenceField("value").simplify(ctx);
-					return value1c.mapf(ctx, (ctx1, value1)-> {
-						Fields f1 = heap.get(value1).getFields();
-						Conditional<Integer> value2c = s2.getReferenceField("value").simplify(ctx);
-						return value2c.mapf(ctx1, (ctx2, value2) -> {
-							final Fields f2 = heap.get(value2).getFields();
-		
-							Conditional<char[]> c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx2);
-							return c1.mapf(ctx2, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
-		
-								@Override
-								public Conditional<Boolean> apply(FeatureExpr ctx, final char[] c1) {
-									return ((CharArrayFields) f2).asCharArray().mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
-		
-										@Override
-										public Conditional<Boolean> apply(FeatureExpr x, char[] c2) {
-											if (c1.length != c2.length) {
-												return One.FALSE;
-											}
-		
-											for (int i = 0; i < c1.length; i++) {
-												if (c1[i] != c2[i]) {
+				public Conditional<Boolean> apply(FeatureExpr ctx, Integer objRef) {
+				return argRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
+	
+					@Override
+					public Conditional<Boolean> apply(FeatureExpr ctx, Integer argRef) {
+						if (Conditional.isContradiction(ctx)) {
+							return One.TRUE;
+						}
+						if (argRef == MJIEnv.NULL) {
+							return One.FALSE;
+						}
+	
+						Heap heap = env.getHeap();
+						ElementInfo s1 = heap.get(objRef);
+						ElementInfo s2 = heap.get(argRef);
+	
+						if (!env.isInstanceOf(argRef, "java.lang.String")) {
+							return One.FALSE;
+						}
+	
+						Conditional<Integer> value1c = s1.getReferenceField("value").simplify(ctx);
+						return value1c.mapf(ctx, (ctx1, value1)-> {
+							Fields f1 = heap.get(value1).getFields();
+							Conditional<Integer> value2c = s2.getReferenceField("value").simplify(ctx);
+							return value2c.mapf(ctx1, (ctx2, value2) -> {
+								final Fields f2 = heap.get(value2).getFields();
+			
+								Conditional<char[]> c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx2);
+								return c1.mapf(ctx2, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
+			
+									@Override
+									public Conditional<Boolean> apply(FeatureExpr ctx, final char[] c1) {
+										return ((CharArrayFields) f2).asCharArray().mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
+			
+											@Override
+											public Conditional<Boolean> apply(FeatureExpr x, char[] c2) {
+												if (c1.length != c2.length) {
 													return One.FALSE;
 												}
+			
+												for (int i = 0; i < c1.length; i++) {
+													if (c1[i] != c2[i]) {
+														return One.FALSE;
+													}
+												}
+			
+												return One.TRUE;
 											}
-		
-											return One.TRUE;
-										}
-		
-									});
-								}
+			
+										});
+									}
+								});
 							});
 						});
-					});
-
+	
+					}
+	
+				});
 				}
-
 			});
 		} catch (Exception e) {
 			System.out.println(e);
