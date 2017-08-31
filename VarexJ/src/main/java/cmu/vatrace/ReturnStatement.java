@@ -32,10 +32,13 @@ public class ReturnStatement extends Statement<Instruction> {
 			case Types.T_BOOLEAN:
 				return new One<>(Boolean.toString((Integer)val == 1));
 			case Types.T_REFERENCE:
+				if ((Integer) val == 0) {
+					return new One<>("null");
+				}
 				if (TraceUtils.enums.containsKey(val)) {
 					return new One<>(TraceUtils.enums.get(val));
 				}
-				ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer) val);// TODO this is affected by garbage collection 
+				ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer) val); 
 				if (ei == null) {
 					return new One<>("null @" + val);// should never happen
 				}
@@ -48,13 +51,18 @@ public class ReturnStatement extends Statement<Instruction> {
 						});
 					}).simplify(ctx);
 				}
+				if (ei.getClassInfo().getName().equals(Integer.class.getCanonicalName())) {
+					Conditional<Integer> values = ei.getIntField("value");
+					return values.mapf(ctx, (ctx2, v) -> {
+						return new One<>(v.toString());
+					});
+				}
 				return new One<>('@' + val.toString());
 			case Types.T_CHAR:
-//				if (Character.isJavaIdentifierPart((Integer)val)) {
-//					return new One<>(Character.toString((char)((Integer)val).intValue()));
-//				}
-//				return new One<>("0x" + String.format("%02x", ((Integer)val)));
-				return new One<>(" ");
+				if (Character.isJavaIdentifierPart((Integer)val)) {
+					return new One<>(Character.toString((char)((Integer)val).intValue()));
+				}
+				return new One<>("0x" + String.format("%02x", ((Integer)val)));
 		}
 		return new One<>(val.toString());
 	};
