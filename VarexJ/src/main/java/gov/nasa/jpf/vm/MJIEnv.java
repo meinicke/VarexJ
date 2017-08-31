@@ -1246,18 +1246,12 @@ public Conditional<String> getConditionalStringObject (int objRef) {
 	
 	private final Conditional<String> liftFormat(final String format, final Conditional<Object>[] cargs, final Object[] arg, final int index, final FeatureExpr ctx) {
 		if (index >= cargs.length) {
-			System.out.println(Arrays.toString(arg));
 			return new One<>(String.format(format, arg));
 		}
-		return cargs[index].mapf(ctx, new BiFunction<FeatureExpr, Object, Conditional<String>>() {
-
-			@Override
-			public Conditional<String> apply(FeatureExpr ctx, Object o) {
-				Object[] arg2 = Arrays.copyOf(arg, arg.length);
-				arg2[index] = o;
-				return liftFormat(format, cargs, arg2, index + 1, ctx);
-			}
-			
+		return cargs[index].mapf(ctx, (BiFunction<FeatureExpr, Object, Conditional<String>>) (ctx1, o) -> {
+			Object[] arg2 = Arrays.copyOf(arg, arg.length);
+			arg2[index] = o;
+			return liftFormat(format, cargs, arg2, index + 1, ctx1);
 		});
 	}
 	
