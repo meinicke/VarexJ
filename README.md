@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=master)](https://travis-ci.org/meinicke/VarexJ)
+
 # Overview
 
 VarexJ is a variability-aware interpreter for Java(8) bytecode based on Java Pathfinder v7.0 (rev 1155+) see: http://javapathfinder.sourceforge.net/.
@@ -15,6 +17,7 @@ Within Eclipse you can use the gradle plugin: https://github.com/spring-projects
 * On the "build.gradle" file Run as/Gradle build... Specify "build" at the Gradle Tasks page and press run
 * You may need to generate eclipse project files: Specify "eclipse" at the Gradle Tasks page
 
+For recent versions of Java 8, include the commented lines in src/classes/java/sun.misc.SharedSecrets.java
 
 # JPF options:
 
