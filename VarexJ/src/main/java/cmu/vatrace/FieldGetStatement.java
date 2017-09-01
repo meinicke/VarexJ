@@ -16,7 +16,7 @@ import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.ThreadInfo;
 
-public class FieldGetStatement extends Statement {
+public class FieldGetStatement extends VarexJStatement {
 
 	private Conditional value;
 	private FieldInfo fi;
@@ -27,42 +27,6 @@ public class FieldGetStatement extends Statement {
 		this.value = value.mapf(ctx, f).simplify(ctx);
 	}
 
-	private final BiFunction<FeatureExpr, Number, Conditional<String>> f = (ctx, val) -> {
-		if (fi.isBooleanField()) {
-			return new One<>(Boolean.toString((Integer)val == 1));
-		}
-		if (fi.isReference()) {
-			if ((Integer)val == 0) {
-				return new One<>("null");
-			}
-			if (fi.getClassInfo().isEnum()) {
-				TraceUtils.enums.put((Integer)val, fi.getName());
-				return new One<>(fi.getName());
-			}
-			if (fi.getTypeClassInfo().isEnum()) {
-				return new One<>(TraceUtils.enums.get(val));
-			}
-			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer)val);
-			if (ei.isArray()) {
-				return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, (Integer)val) + "]");
-			}
-			if ((Integer) val == 0) {
-				return new One<>("null");
-			}
-			if (ei.getClassInfo().getName().equals(String.class.getCanonicalName())) {
-				Conditional<Integer> cref = ei.getReferenceField("value");
-				return cref.mapf(ctx, (ctx2, ref) -> {
-					Conditional<char[]> values = ThreadInfo.getCurrentThread().getEnv().getCharArrayObject(ref);
-					return values.mapf(ctx2, (ctx3, v) -> {
-						return new One<>("\"" + new String(v) + "\"");
-					});
-				}).simplify();
-			}
-			return new One<>('@' + val.toString());
-		}
-		return new One<>(val.toString());
-	};
-	
 	@Override
 	public String toString() {
 		return fi.getFullName();
@@ -127,5 +91,10 @@ public class FieldGetStatement extends Statement {
 		}
 		// check if line is the same
 		return statement.getLineNumber() != lineNumber;
+	}
+
+	@Override
+	protected Object getInfo() {
+		return fi;
 	}
 }

@@ -14,7 +14,7 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 
-public class LocalStoreStatement extends Statement {
+public class LocalStoreStatement extends VarexJStatement {
 
 	private Conditional<String> oldValue;
 	private Conditional<String> newValue;
@@ -35,48 +35,6 @@ public class LocalStoreStatement extends Statement {
 		}
 		setColor(NodeColor.darkorange);
 	}
-
-	private final BiFunction<FeatureExpr, Object, Conditional<String>> f = (ctx, val) -> {
-		if (Conditional.isContradiction(ctx)) {
-			return new One<>("");
-		}
-		if (li.isBoolean()) {
-			return new One<>(Boolean.toString((Integer) val == 1));
-		}
-		if (li.getType().equals("char")) {
-			if (Character.isJavaIdentifierPart((Integer)val)) {
-				return new One<>(Character.toString((char)((Integer)val).intValue()));
-			}
-			return new One<>("0x" + String.format("%02x", ((Integer)val)));
-		}
-
-		if (!li.isNumeric()) {
-			if ((Integer) val == 0) {
-				return new One<>("null");
-			}
-			ElementInfo ei = ThreadInfo.getCurrentThread().getEnv().getElementInfo((Integer) val);
-			if (ei == null) {
-				return new One<>("null @" + val);// should never happen
-			}
-			if (ei.getClassInfo().getName().equals(String.class.getCanonicalName())) {
-				Conditional<Integer> cref = ei.getReferenceField("value");
-				return cref.mapf(ctx, (ctx2, ref) -> {
-					Conditional<char[]> values = ThreadInfo.getCurrentThread().getEnv().getCharArrayObject(ref);
-					return values.mapf(ctx2, (ctx3, v) -> {
-						return new One<>("\"" + new String(v) + "\"");
-					});
-				});
-			}
-			if (ei.getClassInfo().getName().equals(Integer.class.getCanonicalName())) {
-				Conditional<Integer> values = ei.getIntField("value");
-				return values.mapf(ctx, (ctx2, v) -> {
-					return new One<>(v.toString());
-				});
-			}
-			return new One<>('@' + val.toString());
-		}
-		return new One<>(val.toString());
-	};
 
 	@Override
 	public String toString() {
@@ -127,5 +85,10 @@ public class LocalStoreStatement extends Statement {
 	@Override
 	public Conditional<String> getValue() {
 		return newValue;
+	}
+
+	@Override
+	protected Object getInfo() {
+		return li;
 	}
 }
