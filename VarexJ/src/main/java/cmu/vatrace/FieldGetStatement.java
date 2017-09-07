@@ -1,20 +1,10 @@
 package cmu.vatrace;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.function.BiFunction;
-
 import cmu.conditional.Conditional;
-import cmu.conditional.One;
-import cmu.varviz.trace.IFStatement;
 import cmu.varviz.trace.Method;
-import cmu.varviz.trace.MethodElement;
-import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.ThreadInfo;
 
 public class FieldGetStatement extends VarexJStatement {
 
@@ -56,41 +46,8 @@ public class FieldGetStatement extends VarexJStatement {
 	}
 	
 	@Override
-	public boolean canBeRemoved() {
-		if (fi.getName().contains("$assertionsDisabled")) {
-			return true;
-		}
-		
-		Collection<MethodElement<?>> instructions = getParent().getChildren();
-		Iterator<MethodElement<?>> iterator = instructions.iterator();
-		
-		// scroll to this instruction
-		while (iterator.next() != this);
-		if (!iterator.hasNext()) {
-			return true;
-		}
-		
-		final Instruction instruction = (Instruction) getContent();
-		final int index = instruction.getInstructionIndex();
-				
-		// scroll to next if statement
-		MethodElement<?> statement = iterator.next();
-		while (!(statement instanceof IFStatement) && !(statement instanceof ExceptionStatement)) {
-			final Object otherContent = statement.getContent();
-			if (otherContent instanceof Instruction) {
-				final int otherIndex = ((Instruction) otherContent).getInstructionIndex();
-				if (otherIndex <= index) {
-					return true;
-				}
-			}		
-			if (!iterator.hasNext()) {
-				return true;
-			}
-			
-			statement = iterator.next();
-		}
-		// check if line is the same
-		return statement.getLineNumber() != lineNumber;
+	public boolean canBeRemoved(int line) {
+		return line != lineNumber;
 	}
 
 	@Override

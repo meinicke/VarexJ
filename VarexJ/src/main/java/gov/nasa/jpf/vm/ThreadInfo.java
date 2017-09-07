@@ -2077,7 +2077,7 @@ public class ThreadInfo extends InfoObject
     			if (top == null) {
     				nextPc = next;
     			} else {
-    				JPF.vatrace.filterExecution(top.method);
+    				JPF.vatrace.filterExecution(method);
     				nextPc = next.simplify(top.stack.getCtx());
     			}
     		} else if (i instanceof ATHROW || i instanceof EXCEPTION || (poped > 0 && stackTraceMember(oldStack, top))) {
