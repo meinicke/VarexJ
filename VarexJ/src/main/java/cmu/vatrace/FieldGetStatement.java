@@ -47,6 +47,9 @@ public class FieldGetStatement extends VarexJStatement {
 	
 	@Override
 	public boolean canBeRemoved(int line) {
+		if (fi.getName().contains("$assertionsDisabled")) {
+			return true;
+		}
 		return line != lineNumber;
 	}
 
