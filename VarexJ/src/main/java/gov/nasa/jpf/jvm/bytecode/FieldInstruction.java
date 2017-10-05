@@ -151,7 +151,7 @@ public abstract class FieldInstruction extends JVMInstruction implements Variabl
     if (getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {    	
 	    Conditional<Integer> newValue = ChoiceFactory.create(ctx, val, field).simplify(eiFieldOwner.ctx);
 	    if (!field.equals(newValue)) {
-			new FieldPutStatement(this, field, newValue, frame.method, fi, ctx);
+			new FieldPutStatement(this, field, newValue, frame.method, fi, ctx, eiFieldOwner.ctx);
 	    }
     }
 
@@ -211,6 +211,14 @@ protected Conditional<Instruction> put2 (FeatureExpr ctx, ThreadInfo ti, StackFr
     Conditional<Long> val = frame.peekLong(ctx);
     lastValue = val;
     Conditional<Long> field = eiFieldOwner.get2SlotField(fi);
+    
+    if (getFieldInfo(ctx).getAnnotation(gov.nasa.jpf.annotation.Conditional.class.getName()) == null) {    	
+	    Conditional<Long> newValue = ChoiceFactory.create(ctx, val, field).simplify(eiFieldOwner.ctx);
+	    if (!field.equals(newValue)) {
+			new FieldPutStatement(this, field, newValue, frame.method, fi, ctx, eiFieldOwner.ctx);
+	    }
+    }
+    
 	if ((!field.simplify(ctx).equals(val)) || (eiFieldOwner.getFieldAttr(fi) != attr)) {
     	ti.coverage.coverField(ctx, eiFieldOwner, val, field, frame, ti, fi);
       eiFieldOwner = eiFieldOwner.getModifiableInstance();

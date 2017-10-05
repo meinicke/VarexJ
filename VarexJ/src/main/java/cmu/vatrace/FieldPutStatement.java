@@ -15,13 +15,13 @@ public class FieldPutStatement extends VarexJStatement {
 	private Conditional<String> newString;
 	private Conditional<String> oldString;
 
-	public FieldPutStatement(Instruction op, Conditional oldValue, Conditional newValue, Method m, FieldInfo fi, FeatureExpr ctx) {
+	public FieldPutStatement(Instruction op, Conditional oldValue, Conditional newValue, Method m, FieldInfo fi, FeatureExpr ctx, FeatureExpr ownerCtx) {
 		super(op, m, op.getLineNumber(), ctx);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.fi = fi;
-		this.oldString = oldValue.mapf(ctx, f);
-		this.newString = newValue.mapf(ctx, f).simplify();
+		this.oldString = oldValue.mapf(ownerCtx, f);
+		this.newString = newValue.mapf(ownerCtx, f).simplify();
 
 		setColor(NodeColor.darkorange);
 	}
