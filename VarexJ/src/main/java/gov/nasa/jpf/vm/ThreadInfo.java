@@ -2051,7 +2051,7 @@ public class ThreadInfo extends InfoObject
      		}
      		coverage.preExecuteInstruction(i);
 
-     		saveReturnedLines(pc);
+     		saveReturnedLines(i, ctx);
      		
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
@@ -2139,21 +2139,17 @@ public class ThreadInfo extends InfoObject
     }
   }
 
-	private void saveReturnedLines(Conditional<Instruction> pc) {
-		if (getTopFrame() == null) {
+	private void saveReturnedLines(Instruction i, FeatureExpr ctx) {
+		if (top == null) {
 			return;
 		}
-		for (final Entry<Instruction, FeatureExpr> ins : pc.toMap().entrySet()) {
-			if (ins.getKey() instanceof ReturnInstruction) {
-				if (ins.getKey().mi == getTopFrame().mi) { 
-					Conditional<Integer> currentReturn = getTopFrame().returnedLines;
-					final One<Integer> nextReturnLine = new One<>(ins.getKey().getLineNumber());
-					final FeatureExpr nullContext = getNullContext(currentReturn);
-					getTopFrame().returnedLines = ChoiceFactory.create(nullContext, ChoiceFactory.create(ins.getValue(), nextReturnLine, One.valueOf(-1)),
-							currentReturn).simplify();
-					
-				}
-			}
+		Instruction next = i.getNext();
+		if (next instanceof ReturnInstruction && next.mi == top.mi) { 
+			Conditional<Integer> currentReturn = top.returnedLines;
+			final One<Integer> nextReturnLine = new One<>(next.getLineNumber());
+			final FeatureExpr nullContext = getNullContext(currentReturn);
+			top.returnedLines = ChoiceFactory.create(nullContext, ChoiceFactory.create(ctx, nextReturnLine, One.valueOf(-1)),
+					currentReturn).simplify();
 		}
 	}
 	
