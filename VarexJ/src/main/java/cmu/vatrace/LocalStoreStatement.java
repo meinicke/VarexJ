@@ -1,18 +1,13 @@
 package cmu.vatrace;
 
-import java.util.function.BiFunction;
-
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.varviz.trace.Method;
 import cmu.varviz.trace.NodeColor;
-import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LocalVarInfo;
-import gov.nasa.jpf.vm.ThreadInfo;
 
 public class LocalStoreStatement extends VarexJStatement {
 
@@ -27,7 +22,7 @@ public class LocalStoreStatement extends VarexJStatement {
 			oldValue = oldValue.simplify(method.getCTX());
 			this.oldValue = oldValue.mapf(method.getCTX(), f).simplify(method.getCTX());
 		}
-		
+
 		newValue = newValue.simplify(method.getCTX());
 		this.newValue = newValue.mapf(method.getCTX(), f).simplify(ctx);
 		if (this.oldValue != null) {
@@ -90,5 +85,10 @@ public class LocalStoreStatement extends VarexJStatement {
 	@Override
 	protected Object getInfo() {
 		return li;
+	}
+
+	@Override
+	public boolean isModificationStatement() {
+		return true;
 	}
 }

@@ -34,12 +34,12 @@ public class FieldPutStatement extends VarexJStatement {
 		}
 		return type + " " + fi.getClassInfo().getSimpleName() + "." + fi.getName() + " = ";
 	}
-	
+
 	@Override
 	public Conditional<String> getOldValue() {
 		return oldString;
 	}
-	
+
 	@Override
 	public Conditional<String> getValue() {
 		return newString;
@@ -49,7 +49,7 @@ public class FieldPutStatement extends VarexJStatement {
 	public boolean affectsIdentifier(String fieldName) {
 		return fi.getName().equals(fieldName);
 	}
-	
+
 	@Override
 	public boolean affectsref(int ref) {
 		if (fi.isReference()) {
@@ -57,14 +57,19 @@ public class FieldPutStatement extends VarexJStatement {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean isInteraction(int degree) {
-		return /* oldValue.toMap().size() != newValue.toMap().size() &&*/ newValue.toMap().size() >= degree; 
+		return /* oldValue.toMap().size() != newValue.toMap().size() &&*/ newValue.toMap().size() >= degree;
 	}
 
 	@Override
 	protected Object getInfo() {
 		return fi;
+	}
+
+	@Override
+	public boolean isModificationStatement() {
+		return true;
 	}
 }
