@@ -232,6 +232,9 @@ public abstract class Conditional<T> {
 
 	private static final String PATTERN = "\\((\\w*)\\)";
 
+	/**
+	 * Replaces all "(Feature)" by "Feature"
+	 */
 	private static String trimExpression(String ctx) {
 		return ctx.replaceAll(PATTERN, "$1");
 	}
