@@ -2,10 +2,8 @@ package cmu.conditional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -232,40 +230,10 @@ public abstract class Conditional<T> {
 		return context;
 	}
 
-	private static final Set<Character> signs = new HashSet<>();
-	static {
-		signs.add('&');
-		signs.add('|');
-		signs.add('!');
-		signs.add('(');
-		signs.add(')');
-	}
+	private static final String PATTERN = "\\((\\w*)\\)";
 
-	private static boolean isNameChar(char c) {
-		return !signs.contains(c);
-	}
-	
 	private static String trimExpression(String ctx) {
-		// TODO use REGEX
-		// TODO write tests
-		final StringBuilder sb = new StringBuilder(ctx.length());
-		for (int i = 0; i < ctx.length() - 1; i++) {
-			char current = ctx.charAt(i);
-			char next = ctx.charAt(i + 1);
-			if (current == '(' && isNameChar(next)) {
-				sb.append(next);
-				i++;
-				continue;
-			}
-			if (isNameChar(current) && next == ')') {
-				sb.append(current);
-				i++;
-				continue;
-			}
-			sb.append(current);
-		}
-		sb.append(ctx.charAt(ctx.length() - 1));
-		return sb.toString();
+		return ctx.replaceAll(PATTERN, "$1");
 	}
 
 
