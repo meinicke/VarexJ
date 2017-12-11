@@ -224,29 +224,13 @@ public abstract class Conditional<T> {
 	public abstract Conditional<T> clone() throws CloneNotSupportedException;
 
 	public static String getCTXString(FeatureExpr ctx) {
-		final FeatureExpr originalCTX = ctx;
 		ctx = simplifyCondition(ctx);
-		int start = ctx.toString().length();
-		ctx = simplifyCondition(ctx);
-		int end = ctx.toString().length();
-		
-		if (start > end) {
-			System.out.println("---------------");
-			System.out.println("reduced by " + (start - end));
-			System.out.println(originalCTX);
-			System.out.println(ctx);
-			if (!ctx.equivalentTo(originalCTX, fm)) {
-				throw new RuntimeException();
-			}
-			System.out.println("---------------");
-		}
-		
 		boolean oneSample = ctx instanceof BDDFeatureExpr && ((BDDFeatureExpr) ctx).bdd().pathCount() > 1000;
 		if (oneSample) {
 			ctx = new BDDFeatureExpr(((BDDFeatureExpr) ctx).bdd().satOne());
 		}
-		String context = ctx.toString().replaceAll("CONFIG_", "").replaceAll("__SELECTED_FEATURE_", "")
-				.replaceAll("def\\(", "").replaceAll("\\)", "").replaceAll("\\(", "");
+		String context = ctx.toString().replaceAll("CONFIG_", "").replaceAll("__SELECTED_FEATURE_", "").replaceAll("def\\(", "(");
+		context = trimExpression(context);
 		if (oneSample) {
 			context = context + " | ...";
 		} else if ((context.length() > 300 && context.contains("|"))) {
@@ -256,9 +240,19 @@ public abstract class Conditional<T> {
 		context = context.replaceAll("&amp;", "&");
 		return context;
 	}
-	
+
+	private static final String PATTERN = "\\((\\w*)\\)";
+
+	/**
+	 * Replaces all "(Feature)" by "Feature"
+	 */
+	private static String trimExpression(String ctx) {
+		return ctx.replaceAll(PATTERN, "$1");
+	}
+
+
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx) {
-			return ctx.simplify(bddFM);
+		return ctx.simplify(bddFM);
 	}
 	
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx, FeatureExpr additionalConmstraint) {
