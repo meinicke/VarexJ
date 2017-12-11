@@ -2,9 +2,10 @@ package cmu.conditional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -215,29 +216,13 @@ public abstract class Conditional<T> {
 	public abstract Conditional<T> clone() throws CloneNotSupportedException;
 
 	public static String getCTXString(FeatureExpr ctx) {
-		final FeatureExpr originalCTX = ctx;
 		ctx = simplifyCondition(ctx);
-		int start = ctx.toString().length();
-		ctx = simplifyCondition(ctx);
-		int end = ctx.toString().length();
-		
-		if (start > end) {
-			System.out.println("---------------");
-			System.out.println("reduced by " + (start - end));
-			System.out.println(originalCTX);
-			System.out.println(ctx);
-			if (!ctx.equivalentTo(originalCTX, fm)) {
-				throw new RuntimeException();
-			}
-			System.out.println("---------------");
-		}
-		
 		boolean oneSample = ctx instanceof BDDFeatureExpr && ((BDDFeatureExpr) ctx).bdd().pathCount() > 1000;
 		if (oneSample) {
 			ctx = new BDDFeatureExpr(((BDDFeatureExpr) ctx).bdd().satOne());
 		}
-		String context = ctx.toString().replaceAll("CONFIG_", "").replaceAll("__SELECTED_FEATURE_", "")
-				.replaceAll("def\\(", "").replaceAll("\\)", "").replaceAll("\\(", "");
+		String context = ctx.toString().replaceAll("CONFIG_", "").replaceAll("__SELECTED_FEATURE_", "").replaceAll("def\\(", "(");
+		context = trimExpression(context);
 		if (oneSample) {
 			context = context + " | ...";
 		} else if ((context.length() > 300 && context.contains("|"))) {
@@ -246,9 +231,46 @@ public abstract class Conditional<T> {
 
 		return context;
 	}
+
+	private static final Set<Character> signs = new HashSet<>();
+	static {
+		signs.add('&');
+		signs.add('|');
+		signs.add('!');
+		signs.add('(');
+		signs.add(')');
+	}
+
+	private static boolean isNameChar(char c) {
+		return !signs.contains(c);
+	}
 	
+	private static String trimExpression(String ctx) {
+		// TODO use REGEX
+		// TODO write tests
+		final StringBuilder sb = new StringBuilder(ctx.length());
+		for (int i = 0; i < ctx.length() - 1; i++) {
+			char current = ctx.charAt(i);
+			char next = ctx.charAt(i + 1);
+			if (current == '(' && isNameChar(next)) {
+				sb.append(next);
+				i++;
+				continue;
+			}
+			if (isNameChar(current) && next == ')') {
+				sb.append(current);
+				i++;
+				continue;
+			}
+			sb.append(current);
+		}
+		sb.append(ctx.charAt(ctx.length() - 1));
+		return sb.toString();
+	}
+
+
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx) {
-			return ctx.simplify(bddFM);
+		return ctx.simplify(bddFM);
 	}
 	
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx, FeatureExpr additionalConmstraint) {
