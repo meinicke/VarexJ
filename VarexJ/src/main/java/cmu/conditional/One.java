@@ -192,6 +192,18 @@ public class One<T> extends Conditional<T> implements Cloneable {
 		}
 	}
 
+	public static One<Double> valueOf(double d) {
+		return new One<>(d);
+	}
+
+	public static One<Float> valueOf(float f) {
+		return new One<>(f);
+	}
+
+	public static One<Long> valueOf(long l) {
+		return new One<>(l);
+	}
+
 	@Override
 	public boolean isOne() {
 		return true;
