@@ -127,7 +127,9 @@ public abstract class VarexJStatement extends Statement<Instruction> {
 			if ((Integer) val == 0) {
 				return new One<>("null");
 			}
-			
+			if (ei == null) {// TODO should not happen (BUG!)
+				return new One<>("null");
+			}
 			if (ei.isArray()) {
 				return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, (Integer)val) + "]");
 			}

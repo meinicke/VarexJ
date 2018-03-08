@@ -2143,6 +2143,10 @@ public class ThreadInfo extends InfoObject
 		if (top == null) {
 			return;
 		}
+		
+		if (i.mi == null) {
+			return;
+		}
 		Instruction next = i.getNext();
 		if (next instanceof ReturnInstruction && next.mi == top.mi) { 
 			Conditional<Integer> currentReturn = top.returnedLines;

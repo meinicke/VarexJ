@@ -252,7 +252,12 @@ public abstract class Conditional<T> {
 
 
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx) {
-		return ctx.simplify(bddFM);
+		try {
+			return ctx.simplify(bddFM);
+		} catch (Exception e) {
+			// somehow this may throw NullPointerExceptions
+		}
+		return ctx;
 	}
 	
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx, FeatureExpr additionalConmstraint) {

@@ -379,6 +379,7 @@ public class ConsolePublisher extends Publisher {
     } else {
     	pw.println("instructions/s:     " + ThreadInfo.insertDots((int)(stat.insns/elepsedTime)));
     }
+//    System.out.println("max memory:         " + (stat.maxUsed >> 20) + "MB");
     pw.println("max memory:         " + (stat.maxUsed >> 20) + "MB");
 
     pw.println("loaded code:        classes=" + ClassLoaderInfo.getNumberOfLoadedClasses() + ",methods="
