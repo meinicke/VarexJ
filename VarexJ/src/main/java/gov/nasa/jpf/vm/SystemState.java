@@ -18,12 +18,12 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.io.PrintWriter;
+import java.util.LinkedHashMap;
+
 import cmu.conditional.Conditional;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFException;
-
-import java.io.PrintWriter;
-import java.util.LinkedHashMap;
 
 
 /**

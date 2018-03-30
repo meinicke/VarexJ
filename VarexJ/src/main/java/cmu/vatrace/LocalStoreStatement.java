@@ -11,8 +11,6 @@ import gov.nasa.jpf.vm.LocalVarInfo;
 
 public class LocalStoreStatement extends VarexJStatement {
 
-	private Conditional<String> oldValue;
-	private Conditional<String> newValue;
 	private LocalVarInfo li;
 
 	public LocalStoreStatement(Instruction op, Method method, Conditional oldValue, Conditional newValue, LocalVarInfo li, FeatureExpr ctx) {
@@ -24,9 +22,9 @@ public class LocalStoreStatement extends VarexJStatement {
 		}
 
 		newValue = newValue.simplify(method.getCTX());
-		this.newValue = newValue.mapf(method.getCTX(), f).simplify(ctx);
+		this.value = newValue.mapf(method.getCTX(), f).simplify(ctx);
 		if (this.oldValue != null) {
-			this.newValue = ChoiceFactory.create(ctx, this.newValue, this.oldValue).simplify(method.getCTX()).simplifyValues();
+			this.value = ChoiceFactory.create(ctx, (Conditional<String>)this.value, (Conditional<String>)this.oldValue).simplify(method.getCTX()).simplifyValues();
 		}
 		setColor(NodeColor.darkorange);
 	}
@@ -51,17 +49,17 @@ public class LocalStoreStatement extends VarexJStatement {
 	@Override
 	public boolean isInteraction(int degree) {
 		if (oldValue != null) {
-			if (oldValue.equals(newValue)) {
+			if (oldValue.equals(value)) {
 				return false;
 			}
-			if (newValue.toMap().size() >= degree) {
+			if (value.toMap().size() >= degree) {
 				return true;
 			}
-			if (Math.abs(oldValue.toMap().size() - newValue.toMap().size()) >= degree - 1) {
+			if (Math.abs(oldValue.toMap().size() - value.toMap().size()) >= degree - 1) {
 				return true;
 			}
 		} else {
-			if (newValue.toMap().size() >= degree) {
+			if (value.toMap().size() >= degree) {
 				return true;
 			}
 		}
@@ -74,12 +72,12 @@ public class LocalStoreStatement extends VarexJStatement {
 		if (oldValue == null) {
 			return new One<>("null");
 		}
-		return oldValue;
+		return (Conditional<String>) oldValue;
 	}
 
 	@Override
 	public Conditional<String> getValue() {
-		return newValue;
+		return (Conditional<String>) value;
 	}
 
 	@Override

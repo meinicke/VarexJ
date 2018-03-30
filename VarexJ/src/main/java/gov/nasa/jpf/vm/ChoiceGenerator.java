@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.Comparator;
+
 import cmu.conditional.Conditional;
 import gov.nasa.jpf.util.ObjectList;
-
-import java.util.Comparator;
 
 /**
  * generic interface for configurable choice generators

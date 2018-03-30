@@ -19,6 +19,8 @@
 
 package gov.nasa.jpf.report;
 
+import java.util.List;
+
 import cmu.conditional.Conditional;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
@@ -34,8 +36,6 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadChoiceGenerator;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.util.List;
 
 /**
  * simple structure to hold statistics info created by Reporters/Publishers

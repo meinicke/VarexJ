@@ -8,7 +8,6 @@ import gov.nasa.jpf.vm.LocalVarInfo;
 
 public class LocalGetStatement extends VarexJStatement {
 
-	private Conditional<String> value;
 	private LocalVarInfo li;
 
 	public LocalGetStatement(Instruction op, Conditional value, Method method,LocalVarInfo li, FeatureExpr ctx) {
@@ -37,11 +36,6 @@ public class LocalGetStatement extends VarexJStatement {
 	@Override
 	public boolean affectsIdentifier(String identifier) {
 		return li.getName().equals(identifier);
-	}
-	
-	@Override
-	public Conditional<?> getValue() {
-		return value;
 	}
 	
 	@Override

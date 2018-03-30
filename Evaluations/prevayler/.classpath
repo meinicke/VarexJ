@@ -7,14 +7,14 @@
 	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-core-2.5-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-core-2.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/prevayler-core-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-factory-2.5-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-factory-2.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/prevayler-factory-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-log4j-2.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-xstream-2.7-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/Prevayler.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.7.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/VarexJ"/>
+	<classpathentry kind="lib" path="lib/jpf-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler-core-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler-factory-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler-core-2.5I.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

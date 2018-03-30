@@ -17,13 +17,13 @@
  */
 package gov.nasa.jpf.jvm;
 
+import java.util.List;
+
 import gov.nasa.jpf.util.Invocation;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.NativeMethodInfo;
-
-import java.util.List;
 
 /**
  * interface for bytecode creation

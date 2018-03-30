@@ -1,5 +1,6 @@
 package cmu.datatypes;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,6 +59,28 @@ public class LinkedListTest extends TestJPF {
 			}
 			list.get(0);
 			
+		}
+	}
+	
+	@Test
+	public void testSort() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			LinkedList<Integer> list = new LinkedList<>();
+			list.add(1);
+			if (a) {
+				list.add(0);
+			} else {
+				list.add(2);
+			}
+			for (int i = 10; i< 1000;i++) {
+				list.add(i);
+			}
+			
+			System.out.println(list);
+			
+			list.sort(Comparator.<Integer>naturalOrder());
+			
+			System.out.println(list);
 		}
 	}
 }

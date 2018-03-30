@@ -21,9 +21,9 @@ package gov.nasa.jpf.vm;
 import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.function.Function;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.ObjectList;
 

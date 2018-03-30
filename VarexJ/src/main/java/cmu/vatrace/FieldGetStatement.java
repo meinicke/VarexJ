@@ -8,7 +8,6 @@ import gov.nasa.jpf.vm.Instruction;
 
 public class FieldGetStatement extends VarexJStatement {
 
-	private Conditional value;
 	private FieldInfo fi;
 
 	public FieldGetStatement(Instruction op, Conditional value, Method method, FieldInfo fi, FeatureExpr ctx) {

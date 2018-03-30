@@ -224,7 +224,14 @@ public abstract class Conditional<T> {
 	public abstract Conditional<T> clone() throws CloneNotSupportedException;
 
 	public static String getCTXString(final FeatureExpr originalContext) {
-		FeatureExpr ctx = simplifyCondition(originalContext);
+		return getCTXString(originalContext, true);
+	}
+	
+	public static String getCTXString(final FeatureExpr originalContext, boolean simplify) {
+		FeatureExpr ctx = originalContext;
+		if (simplify) {
+			ctx = simplifyCondition(originalContext);
+		}
 		boolean oneSample = ctx instanceof BDDFeatureExpr && ((BDDFeatureExpr) ctx).bdd().pathCount() > 1000;
 		if (oneSample) {
 			ctx = new BDDFeatureExpr(((BDDFeatureExpr) ctx).bdd().satOne());

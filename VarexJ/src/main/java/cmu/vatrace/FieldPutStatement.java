@@ -9,18 +9,19 @@ import gov.nasa.jpf.vm.Instruction;
 
 public class FieldPutStatement extends VarexJStatement {
 
-	private Conditional oldValue;
-	private Conditional newValue;
 	private FieldInfo fi;
 	private Conditional<String> newString;
 	private Conditional<String> oldString;
+	private final FeatureExpr ownerCtx;
 
 	public FieldPutStatement(Instruction op, Conditional oldValue, Conditional newValue, Method m, FieldInfo fi, FeatureExpr ctx,
 			FeatureExpr ownerCtx) {
 		super(op, m, op.getLineNumber(), ctx);
+		
 		this.oldValue = oldValue;
-		this.newValue = newValue;
+		this.value = newValue;
 		this.fi = fi;
+		this.ownerCtx = ownerCtx;
 		this.oldString = oldValue.mapf(ownerCtx, f);
 		this.newString = newValue.mapf(ownerCtx, f).simplify();
 
@@ -45,6 +46,19 @@ public class FieldPutStatement extends VarexJStatement {
 	public Conditional<String> getValue() {
 		return newString;
 	}
+	
+	@Override
+	public void setValue(Conditional value) {
+		super.setValue(value);
+		newString = value;
+		
+	}
+	
+	@Override
+	public void setOldValue(Conditional oldValue) {
+		super.setOldValue(oldValue);
+		oldString = oldValue;
+	}
 
 	@Override
 	public boolean affectsIdentifier(String fieldName) {
@@ -54,14 +68,14 @@ public class FieldPutStatement extends VarexJStatement {
 	@Override
 	public boolean affectsref(int ref) {
 		if (fi.isReference()) {
-			return oldValue.toMap().containsKey(ref) || newValue.toMap().containsKey(ref);
+			return oldValue.toMap().containsKey(ref) || value.toMap().containsKey(ref);
 		}
 		return false;
 	}
 
 	@Override
 	public boolean isInteraction(int degree) {
-		return newValue.toMap().size() >= degree || oldValue.toMap().size() >= degree;
+		return value.toMap().size() >= degree || oldValue.toMap().size() >= degree;
 		/* oldValue.toMap().size() != newValue.toMap().size() &&*/
 	}
 

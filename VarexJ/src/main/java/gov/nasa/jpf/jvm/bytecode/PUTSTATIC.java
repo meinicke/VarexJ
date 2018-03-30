@@ -18,12 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.Arrays;
-import java.util.List;
-
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPF;

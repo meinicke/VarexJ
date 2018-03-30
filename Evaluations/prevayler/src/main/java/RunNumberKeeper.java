@@ -13,13 +13,15 @@ import org.prevayler.implementation.clock.MachineClock;
 import org.prevayler.implementation.clock.PausableClock;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class RunNumberKeeper {
 
 //	@Conditional
 	public static boolean USE_LOG4J_MONITOR = false;
 	@Conditional
-	public static boolean USE_NULL_MONITOR = false;
+	public static boolean USE_NULL_MONITOR = true;
 //	@Conditional
 	public static boolean USE_BROKEN_CLOCK = false;
 //	@Conditional
@@ -40,35 +42,56 @@ public class RunNumberKeeper {
 	static boolean USE_FILTERING = false;
 	private static String NUMBER_KEEPER = "NumberKeeper";
 
+//	BROKEN_CLOCK
+//	PAUSABLE_CLOCK
+//	XSTREAM
+//	TRANSIENT_MODE
+//	JOURNAL_DISK_SYNC
+	
 	public static void main(String[] args) {
+		
+		if (args.length > 0) {
+			int i = 0;
+			USE_LOG4J_MONITOR = Boolean.valueOf(args[i++]);
+			USE_NULL_MONITOR = Boolean.valueOf(args[i++]);
+			USE_BROKEN_CLOCK = Boolean.valueOf(args[i++]);
+			USE_PAUSABLE_CLOCK = Boolean.valueOf(args[i++]);
+			USE_XSTREAM = Boolean.valueOf(args[i++]);
+//			USE_TRANSIENT_MODE = Boolean.valueOf(args[i++]);
+//			USE_JOURNAL_DISK_SYNC = Boolean.valueOf(args[i++]);
+//			FILE_AGE_THREASHOLD = Boolean.valueOf(args[i++]);
+//			FILE_SIZE_THREASHOLD = Boolean.valueOf(args[i++]);
+		}
+		deleteDirectory(NUMBER_KEEPER);
+		NUMBER_KEEPER = "NumberKeeper";
 		RunNumberKeeper run = new RunNumberKeeper();
 		try {
 			run.runNumberKeeper();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void runNumberKeeper() throws Exception {
 		// clean up
-		deleteDirectory("NumberKeeper");
+		deleteDirectory(NUMBER_KEEPER);
 
 		// delete old counts
-		String folderName = clearTempFolder(NUMBER_KEEPER);
+//		String folderName = new File(NUMBER_KEEPER);//clearTempFolder(NUMBER_KEEPER);
 
 		final NumberKeeper numberKeeper = new NumberKeeper();
 		// final Prevayler prevayler =
 		// PrevaylerFactory.createPrevayler(numberKeeper, folderName);
 		PrevaylerFactory factory = new PrevaylerFactory();
 		factory.configurePrevalentSystem(numberKeeper);
-		factory.configurePrevalenceDirectory(folderName);
-
+		factory.configurePrevalenceDirectory(NUMBER_KEEPER);
+		
 		configureFactory(factory);
 
 		Prevayler prevayler = factory.create();
-
-		final PrimeCalculator primeCalculator = new PrimeCalculator(
-				prevayler);
+		
+		final PrimeCalculator primeCalculator = new PrimeCalculator(prevayler);
 
 		System.out.println("Run the first time");
 		primeCalculator.start();
@@ -77,6 +100,8 @@ public class RunNumberKeeper {
 		System.out.println("Run the second time");
 		primeCalculator.start();
 		System.out.println(prevayler.clock().time());
+		prevayler.close();
+		deleteDirectory(NUMBER_KEEPER);
 	}
 
 	private String clearTempFolder(String folderName) {
@@ -84,31 +109,36 @@ public class RunNumberKeeper {
 		boolean cleared = true;
 		if (tempFolder.exists()) {
 			for (final File file : tempFolder.listFiles()) {
-				if (!file.delete()) {
-					cleared = false;
-					break;
+				try {
+					System.out.println(file);
+					Files.delete(file.toPath());
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+//				if (!file.delete()) {
+//					cleared = false;
+//				}
 			}
-			if (!cleared) {
-				tempFolder = new File(folderName + "_MAP");// some reader/writer
-				// seems not to be
-				// closed
-				if (tempFolder.exists()) {
-					for (final File file2 : tempFolder.listFiles()) {
-						if (!file2.delete()) {
-							throw new RuntimeException("cannot delete file:"
-									+ file2);
-						}
-					}
-				}
-			}
+//			if (!cleared) {
+//				tempFolder = new File(folderName + "_MAP");// some reader/writer
+//				// seems not to be
+//				// closed
+//				if (tempFolder.exists()) {
+//					for (final File file2 : tempFolder.listFiles()) {
+//						if (!file2.delete()) {
+//							throw new RuntimeException("cannot delete file:"
+//									+ file2);
+//						}
+//					}
+//				}
+//			}
 		}
 		return tempFolder.getName();
 	}
 
-	protected String getClassPath() {
-		return "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-1.2.15.jar;lib/xstream-1.4.7.jar;lib/kxml2-2.3.0.jar";
-	}
+//	protected String getClassPath() {
+//		return "lib/Prevayler.jar;lib/prevayler-factory-2.5.jar;lib/prevayler-core-2.5.jar;lib/commons-jxpath-1.3.jar;lib/prevayler-log4j-2.7-SNAPSHOT.jar;lib/prevayler-xstream-2.7-SNAPSHOT.jar;lib/log4j-1.2.15.jar;lib/xstream-1.4.7.jar;lib/kxml2-2.3.0.jar";
+//	}
 
 	protected String getModelFile() {
 		return "";
@@ -155,7 +185,7 @@ public class RunNumberKeeper {
 		}
 	}
 
-	void deleteDirectory(String name) {
+	static void deleteDirectory(String name) {
 		File dir = new File(name);
 		if (dir.exists() && dir.isDirectory()) {
 			File[] list = dir.listFiles();
