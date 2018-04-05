@@ -102,7 +102,7 @@ public abstract class IfInstruction extends JVMInstruction {
 	}).simplify();
     
     if (targets.simplify(ctx).toList().size() > 1) {
-	    new IFStatement<>(this, frame.method, getLineNumber(), getTargetContext(targets.simplify(ctx)), ctx);
+	    new IFStatement(this, frame.method, getLineNumber(), getTargetContext(targets.simplify(ctx)), ctx);
     }
     
     return conditionValue.mapf(ctx, (FeatureExpr x, Boolean condition) -> {

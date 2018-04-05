@@ -11,7 +11,7 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.Types;
 
-public class ArrayStoreStatement extends Statement<Instruction> {
+public class ArrayStoreStatement extends Statement {
 
 	private Conditional<Object> oldValue;
 	private Conditional<Object> newValue;

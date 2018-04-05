@@ -15,7 +15,7 @@ import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.Types;
 
-public abstract class VarexJStatement extends Statement<Instruction> {
+public abstract class VarexJStatement extends Statement {
 
 	public VarexJStatement(Instruction operation, Method method, int line, FeatureExpr ctx) {
 		super(operation, method, line, ctx);

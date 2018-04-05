@@ -133,11 +133,11 @@ public int nLocals;
    */
   public Conditional<Integer> returnedLines = One.valueOf(-1);
 
-  public Method<MethodInfo> method;
+  public Method method;
   protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){
 		mi = callee;
 
-		method = new Method<>(mi, ctx);
+		method = new Method(mi, ctx);
 		method.setFile(mi.getSourceFileName());
 
 		if (!JPF.vatrace.hasMain()) {

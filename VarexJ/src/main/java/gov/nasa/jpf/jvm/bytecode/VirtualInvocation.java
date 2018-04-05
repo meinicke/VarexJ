@@ -87,7 +87,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
-				 new IFStatement<>(this, ti.getTopFrame().method, getLineNumber(), objRefEntry.getValue(), ctx);
+				 new IFStatement(this, ti.getTopFrame().method, getLineNumber(), objRefEntry.getValue(), ctx);
 				return ChoiceFactory.create(Conditional.and(ctx, objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), 
 						ChoiceFactory.create(ctx, new One<>(typeSafeClone(mi)), ti.getPC())).simplify();
 			}

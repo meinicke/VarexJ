@@ -2056,7 +2056,7 @@ public class ThreadInfo extends InfoObject
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
      		
-     		final Method<MethodInfo> method = top.method;
+     		final Method method = top.method;
      		final Conditional<Instruction> next = i.execute(ctx, this);
      		
      		if (i instanceof ReturnInstruction) {

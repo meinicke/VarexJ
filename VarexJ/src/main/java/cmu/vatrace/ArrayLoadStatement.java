@@ -10,7 +10,7 @@ import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.Types;
 
-public class ArrayLoadStatement extends Statement<Instruction> {
+public class ArrayLoadStatement extends Statement {
 
 	private Conditional<Object> value;
 	private int index;

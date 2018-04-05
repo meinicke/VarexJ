@@ -260,7 +260,9 @@ public abstract class Conditional<T> {
 
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx) {
 		try {
-			return ctx.simplify(bddFM);
+			if (bddFM != null) {
+				return ctx.simplify(bddFM);
+			}
 		} catch (Exception e) {
 			// somehow this may throw NullPointerExceptions
 		}

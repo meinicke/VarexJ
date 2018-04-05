@@ -15,7 +15,7 @@ import gov.nasa.jpf.vm.Types;
 public class ReturnStatement extends VarexJStatement {
 
 
-	public ReturnStatement(Instruction op, Method<MethodInfo> method, Conditional returnValue, FeatureExpr ctx) {
+	public ReturnStatement(Instruction op, Method method, Conditional returnValue, FeatureExpr ctx) {
 		super(op, method, op.getLineNumber(), ctx);
 		value = returnValue.mapf(ctx, f);
 		setColor(NodeColor.darkorange);
@@ -23,8 +23,8 @@ public class ReturnStatement extends VarexJStatement {
 
 	private MethodInfo getParentMethodInfo() {
 		@SuppressWarnings("unchecked")
-		Method<MethodInfo> parent = (Method<MethodInfo>) getParent();
-		MethodInfo mi = parent.getContent();
+		Method parent = (Method) getParent();
+		MethodInfo mi = (MethodInfo) parent.getContent();
 		return mi;
 	}
 	
@@ -41,7 +41,7 @@ public class ReturnStatement extends VarexJStatement {
 	@Override
 	public boolean isInteraction(int degree) {
 		Set<?> allReturnValues = new HashSet<>();
-		for (MethodElement<?> child : parent.getChildren()) {
+		for (MethodElement child : parent.getChildren()) {
 			if (child instanceof ReturnStatement) {
 				allReturnValues.addAll(((Conditional)((ReturnStatement) child).value).toMap().keySet());
 			}
