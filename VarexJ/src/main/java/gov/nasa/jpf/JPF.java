@@ -141,6 +141,8 @@ public class JPF implements Runnable {
   /** we use this as safety margin, to be released upon OutOfMemoryErrors */
   byte[] memoryReserve;
 
+  public static String PROJECT_PATH = null;
+
   public static boolean SHARE_INVOCATIONS = false;
   
   private static Logger initLogging(Config conf) {
@@ -322,7 +324,7 @@ public class JPF implements Runnable {
       }
       
       SHARE_INVOCATIONS = config.getBoolean("invocation");
-      
+       PROJECT_PATH = config.getString("project");
       
       processInteractionCommand();
       

@@ -57,7 +57,7 @@ public class RandomSearch extends Search {
 		try {
 			if (JPF.COVERAGE != null) {
 				// XXX some quick fix for coverage
-				File file = new File("coverage.xml");
+				File file = new File(JPF.PROJECT_PATH + "/coverage.xml");
 				System.out.println("Create file: " + file.getAbsolutePath());
 				XMLWriter writer = new XMLWriter(gov.nasa.jpf.JPF.COVERAGE);
 				try {
@@ -146,7 +146,7 @@ public class RandomSearch extends Search {
 				
 				JPF.COVERAGE.deleteMinInteraction();
 				
-				File file = new File("coverage.xml");
+				File file = new File(JPF.PROJECT_PATH + "/coverage.xml");
 				System.out.println("Create file: " + file.getAbsolutePath());
 				XMLWriter writer = new XMLWriter(gov.nasa.jpf.JPF.COVERAGE);
 				try {

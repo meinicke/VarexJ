@@ -22,11 +22,11 @@ public class LOGGER {
 	}
 
 	public static void log(COLOR color, String message) {
-		System.out.println("\u001b[1;3" + color.getValue() + "m" + message + "\u001b[0m");
+//		System.out.println("\u001b[1;3" + color.getValue() + "m" + message + "\u001b[0m");
 	}
 	
 	public static void log(COLOR color, Object obj) {
-		log(color, obj.toString());
+//		log(color, obj.toString());
 	}
 
 }
