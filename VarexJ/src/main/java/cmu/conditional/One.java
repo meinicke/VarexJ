@@ -108,7 +108,7 @@ public class One<T> extends Conditional<T> implements Cloneable {
 		if (ctx == null) {
 			map.put(value, f);
 		} else {
-			map.put(value, f.or(ctx));
+			map.put(value, or(f,ctx));
 		}
 	}
 

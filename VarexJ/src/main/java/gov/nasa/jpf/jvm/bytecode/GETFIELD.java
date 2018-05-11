@@ -72,7 +72,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 		pushCTX = ctx;
 		Conditional<Instruction> next = objRef.mapf(ctx, (BiFunction<FeatureExpr, Integer, Conditional<Instruction>>) (ctx1, objRef1) -> {
 			if (objRef1 == MJIEnv.NULL) {
-				pushCTX = pushCTX.andNot(ctx1);
+				pushCTX = Conditional.andNot(pushCTX,ctx1);
 				return new One<>(ti.createAndThrowException(ctx1, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
 			}
 
@@ -80,14 +80,14 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 			FieldInfo fi = getFieldInfo(ctx1);
 			if (fi == null) {
-				pushCTX = pushCTX.andNot(ctx1);
+				pushCTX = Conditional.andNot(pushCTX,ctx1);
 				return new One<>(ti.createAndThrowException(ctx1, "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
 			}
 
 			// check if this breaks the current transition
 			if (isNewPorFieldBoundary(ti, fi, objRef1)) {
 				if (createAndSetSharedFieldAccessCG(ei, ti)) {
-					pushCTX = pushCTX.andNot(ctx1);
+					pushCTX = Conditional.andNot(pushCTX,ctx1);
 					return new One<Instruction>(thisInstruction);
 				}
 			}

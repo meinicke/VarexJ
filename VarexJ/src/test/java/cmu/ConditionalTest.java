@@ -4,6 +4,8 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -11,11 +13,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.util.function.BiFunction;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.AbstractFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -151,7 +151,7 @@ public class ConditionalTest {
 			}
 			
 		});
-		System.out.println(v1);
+//		System.out.println(v1);
 		v1 = v1.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 			@Override
 			public Conditional<Integer> apply(FeatureExpr c, Integer x) {
@@ -159,7 +159,7 @@ public class ConditionalTest {
 			}
 			
 		});
-		System.out.println(v1);
+//		System.out.println(v1);
 		assertEquals(Choice(fa, Choice((fa.and(fb)), One(3), One(2)), Choice(fb.andNot(fa), One(3), One(1))), v1);
 	}
 	
@@ -234,11 +234,11 @@ public class ConditionalTest {
 		final Conditional<Integer> d = Choice(fb, One(6), Choice(fc, One(7), One(8)));
 //		System.out.println(combine(a,b));
 //		System.out.println(combine(a,b).size());
-		System.out.println(combine(a,c));
+//		System.out.println(combine(a,c));
 		
-		System.out.println(combine(combine(a,c), b).size());
+//		System.out.println(combine(combine(a,c), b).size());
 		
-		System.out.println(combine(combine(combine(a,c), b), d).size());
+//		System.out.println(combine(combine(combine(a,c), b), d).size());
 	}
 	
 	static Conditional<Integer> combine(final Conditional<Integer> a, final Conditional<Integer> b) {

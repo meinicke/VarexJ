@@ -24,6 +24,7 @@ import java.util.HashMap;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import cmu.conditional.Conditional;
 import cmu.utils.TraceComparator;
 import coverage.Interaction;
 import coverage.XMLWriter;
@@ -136,7 +137,7 @@ public class RandomSearch extends Search {
 							HashMap<FeatureExpr, Integer> values = (HashMap) interaction.getValue();
 							FeatureExpr composedContext = FeatureExprFactory.False();
 							for (FeatureExpr entry : values.keySet()) {
-								composedContext = composedContext.or(entry);
+								composedContext = Conditional.or(composedContext, entry);
 							}
 							interaction.setInteraction(composedContext.collectDistinctFeatures().size());
 						}

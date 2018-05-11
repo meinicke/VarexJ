@@ -193,9 +193,9 @@ public class TraceComparator {
 
 			FeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + f.replace("!", ""));
 			if (selection) {
-				ctx = ctx.and(feature);
+				ctx = Conditional.and(ctx,feature);
 			} else {
-				ctx = ctx.andNot(feature);
+				ctx = Conditional.andNot(ctx, feature);
 			}
 		}
 		return ctx;

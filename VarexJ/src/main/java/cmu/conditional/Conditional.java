@@ -42,7 +42,6 @@ public abstract class Conditional<T> {
 		cacheIsSat.clear();
 		features.clear();
 		cacheNot.clear();
-		cacheIsSat.clear();
 		cacheAnd.clear();
 		
 		fm = (BDDFeatureModel) (fmfile.isEmpty() ? null : FeatureExprFactory.bdd().featureModelFactory().createFromDimacsFile(fmfile));
@@ -57,13 +56,34 @@ public abstract class Conditional<T> {
 		return cacheNot.computeIfAbsent(((BDDFeatureExpr)a).bdd(), x -> a.not());
 	}
 	
+	public static FeatureExpr orNot(final FeatureExpr a, final FeatureExpr b) {
+		if (((BDDFeatureExpr)a).bdd() == ((BDDFeatureExpr)b).bdd()) {
+			return FeatureExprFactory.True();
+		}
+		return not(and(not(a), b));
+	}
+	
 	public static FeatureExpr or(final FeatureExpr a, final FeatureExpr b) {
+		if (((BDDFeatureExpr)a).bdd() == ((BDDFeatureExpr)b).bdd()) {
+			return a;
+		}
 		return not(and(not(a), not(b)));
 	}
 	
+	public static FeatureExpr andNot(final FeatureExpr a, final FeatureExpr b) {
+		return and(a, not(b));
+	}
+	
 	public static FeatureExpr and(final FeatureExpr a, final FeatureExpr b) {
-		final BDD bddA = ((BDDFeatureExpr)a).bdd();
-		final BDD bddB = ((BDDFeatureExpr)b).bdd();
+		BDD bddA = ((BDDFeatureExpr)a).bdd();
+		BDD bddB = ((BDDFeatureExpr)b).bdd();
+		if (bddA == bddB) {
+			return a;
+		}
+		if (bddA.hashCode() > bddB.hashCode()) {
+			bddA = bddB;
+			bddB = ((BDDFeatureExpr)a).bdd();
+		}
 		Map<BDD, FeatureExpr> aMap = cacheAnd.get(bddA);
 		if (aMap == null) {
 			aMap = new HashMap<>();
@@ -138,7 +158,7 @@ public abstract class Conditional<T> {
 	}
 
 	public static final boolean isTautology(final FeatureExpr f) {
-		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)f).bdd().not(), x -> f.not().isSatisfiable(fm));
+		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)not(f)).bdd(), x -> f.not().isSatisfiable(fm));
 	}
 
 	public abstract T getValue();
