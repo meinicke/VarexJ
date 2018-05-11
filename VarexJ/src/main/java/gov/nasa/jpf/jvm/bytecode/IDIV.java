@@ -52,8 +52,8 @@ public class IDIV extends JVMInstruction {
 					@Override
 					public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
 						if (v1 == 0) {
-							pushCtx = pushCtx.andNot(ctx);
-							return new One<Instruction>(new EXCEPTION(thisInstruction, "java.lang.ArithmeticException",
+							pushCtx = Conditional.andNot(pushCtx,ctx);
+							return new One<>(new EXCEPTION(thisInstruction, "java.lang.ArithmeticException",
 									"division by zero"));
 						}
 

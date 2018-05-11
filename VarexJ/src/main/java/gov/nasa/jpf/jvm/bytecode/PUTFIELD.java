@@ -49,12 +49,12 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 	@Override
 	protected void popOperands1(FeatureExpr ctx, StackFrame frame) {
 //		frame.pop(ctx, 2); // .. objref, val => ..
-		popCTX = popCTX.or(ctx);
+		popCTX = Conditional.or(popCTX, ctx);
 	}
 
 	@Override
 	protected void popOperands2(FeatureExpr ctx, StackFrame frame) {
-		popCTX = popCTX.or(ctx);
+		popCTX = Conditional.or(popCTX, ctx);
 //		frame.pop(ctx, 3); // .. objref, highVal,lowVal => ..
 	}
 

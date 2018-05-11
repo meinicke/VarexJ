@@ -42,7 +42,7 @@ public class BooleanArrayFields extends ArrayFields {
   private static One<Boolean> nullValue = One.FALSE;
   
   @SuppressWarnings("unchecked")
-public BooleanArrayFields (int length) {
+  public BooleanArrayFields (int length) {
     values = new Conditional[length];
     Arrays.fill(values, nullValue);
   }

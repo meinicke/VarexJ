@@ -1656,7 +1656,7 @@ public class ThreadInfo extends InfoObject
         for (Entry<Integer, FeatureExpr> e : msgRef.toMap().entrySet()) {
             if (e.getKey() != MJIEnv.NULL) {
                 print(pw, ": ");
-                Conditional<String> message = env.getStringObjectNew(e.getValue().and(ctx), e.getKey());
+                Conditional<String> message = env.getStringObjectNew(Conditional.and(e.getValue(),ctx), e.getKey());
                 if (message instanceof One) {
                     print(pw, message.getValue());
                 } else {
@@ -2033,7 +2033,7 @@ public class ThreadInfo extends InfoObject
 		   				i = ins;
 		   			}
 		   		}
-		   		ctx = map.get(i).and(ctx);
+		   		ctx = Conditional.and(map.get(i),ctx);
  	        }
  	        	
 			if (RuntimeConstants.debug) {
@@ -2088,7 +2088,7 @@ public class ThreadInfo extends InfoObject
 				StackFrame stackPointer = oldStack;
 				// set the ctx of popped frames
 				while (k < popedFrames) {
-					FeatureExpr newCtx = stackPointer.stack.getCtx().andNot(ctx);
+					FeatureExpr newCtx = Conditional.andNot(stackPointer.stack.getCtx(),ctx);
 					stackPointer.stack.setCtx(newCtx);
 					stackPointer.pc = stackPointer.pc.simplify(newCtx);
 					stackPointer = stackPointer.prev;

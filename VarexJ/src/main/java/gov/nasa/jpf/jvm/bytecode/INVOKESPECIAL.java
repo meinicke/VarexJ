@@ -83,7 +83,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 	}
 	for (Entry<Integer, FeatureExpr> objRefEntry : map.entrySet()) {
 		if (splitRef) {
-			ctx = ctx.and(objRefEntry.getValue());
+			ctx = Conditional.and(ctx, objRefEntry.getValue());
 		}
 		Integer objRef = objRefEntry.getKey();
     
@@ -103,11 +103,11 @@ public class INVOKESPECIAL extends InstanceInvocation {
 	    if (!classes.isEmpty()) {
 			FeatureExpr invocationCtx = FeatureExprFactory.False();
 			for (FeatureExpr e : classes.get(callee.getFullName())) {
-				invocationCtx = invocationCtx.or(e);
+				invocationCtx = Conditional.or(invocationCtx, e);
 			}
-			ctx = ctx.and(invocationCtx);					
+			ctx = Conditional.and(ctx, invocationCtx);					
 		} else {
-			ctx = ctx.and(objRefEntry.getValue());
+			ctx = Conditional.and(ctx, objRefEntry.getValue());
 		}
 	    
 	    if (callee == null){
@@ -118,7 +118,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 	
 	    if (callee.isSynchronized()){
 	      if (checkSyncCG(ei, ti)){
-	        return new One<Instruction>(this);
+	        return new One<>(this);
 	      }
 	    }
 	    

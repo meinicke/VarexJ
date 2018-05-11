@@ -53,8 +53,8 @@ public class ARRAYLENGTH extends ArrayInstruction {
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayRef) {
 				if (arrayRef == MJIEnv.NULL) {
-					pushCtx = pushCtx.andNot(ctx);
-					return new One<Instruction>(new EXCEPTION(thisInstruction, "java.lang.NullPointerException",
+					pushCtx = Conditional.andNot(pushCtx,ctx);
+					return new One<>(new EXCEPTION(thisInstruction, "java.lang.NullPointerException",
 							"array length of null object"));
 				}
 

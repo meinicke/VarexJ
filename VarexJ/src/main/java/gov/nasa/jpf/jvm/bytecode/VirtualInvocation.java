@@ -96,11 +96,11 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			if (!classes.isEmpty()) {
 				FeatureExpr invocationCtx = FeatureExprFactory.False();
 				for (FeatureExpr e : classes.get(callee.getFullName())) {
-					invocationCtx = invocationCtx.or(e);
+					invocationCtx = Conditional.or(invocationCtx, e);
 				}
-				ctx = ctx.and(invocationCtx);					
+				ctx = Conditional.and(ctx, invocationCtx);					
 			} else {
-				ctx = ctx.and(objRefEntry.getValue());
+				ctx = Conditional.and(ctx, objRefEntry.getValue());
 			}
 
 			if (callee == null) {

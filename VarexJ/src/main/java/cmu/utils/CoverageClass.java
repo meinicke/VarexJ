@@ -276,7 +276,7 @@ public class CoverageClass {
 					StringBuilder builder = new StringBuilder();
 					FeatureExpr composedContext = FeatureExprFactory.False();
 					for (FeatureExpr entry : keySet()) {
-						composedContext = composedContext.or(entry);
+						composedContext = Conditional.or(composedContext, entry);
 					}
 					builder.append("Composed context: ");
 					builder.append(Conditional.getCTXString(composedContext));

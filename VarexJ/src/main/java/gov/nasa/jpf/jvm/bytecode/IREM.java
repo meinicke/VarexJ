@@ -51,8 +51,8 @@ public class IREM extends JVMInstruction {
 				@Override
 				public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
 				    if (v1 == 0){
-				    	pushCtx = pushCtx.andNot(ctx);
-				    	return new One<Instruction>(new EXCEPTION(thisInstruction, java.lang.ArithmeticException.class.getName(), "division by zero"));
+				    	pushCtx = Conditional.andNot(pushCtx,ctx);
+				    	return new One<>(new EXCEPTION(thisInstruction, java.lang.ArithmeticException.class.getName(), "division by zero"));
 				    }
 				    
 				    pushValue = ChoiceFactory.create(ctx, v2.mapr(new Function<Integer, Conditional<Integer>>() {

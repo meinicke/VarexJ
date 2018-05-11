@@ -23,10 +23,10 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	MapChoice(FeatureExpr featureExpr, Conditional<T> thenBranch, Conditional<T> elseBranch) {
 		super(featureExpr, thenBranch, elseBranch);
 		for (Entry<T, FeatureExpr> e : thenBranch.toMap().entrySet()) {
-			FeatureExpr and = e.getValue().and(featureExpr);
+			FeatureExpr and = and(e.getValue(),featureExpr);
 			if (!isContradiction(and)) {
 				if (map.containsKey(e.getKey())) {
-					map.put(e.getKey(), map.get(e.getKey()).or(and));
+					map.put(e.getKey(), or(map.get(e.getKey()), and));
 				} else {
 					map.put(e.getKey(), and);
 				}
@@ -34,10 +34,10 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		}
 
 		for (Entry<T, FeatureExpr> e : elseBranch.toMap().entrySet()) {
-			FeatureExpr andNot = e.getValue().andNot(featureExpr);
+			FeatureExpr andNot = andNot(e.getValue(), (featureExpr));
 			if (!isContradiction(andNot)) {
 				if (map.containsKey(e.getKey())) {
-					map.put(e.getKey(), map.get(e.getKey()).or(andNot));
+					map.put(e.getKey(), or(map.get(e.getKey()), andNot));
 				} else {
 					map.put(e.getKey(), andNot);
 				}
@@ -70,16 +70,16 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	public <U> Conditional<U> mapfr(FeatureExpr inFeature, BiFunction<FeatureExpr, T, Conditional<U>> f) {
 		Map<U, FeatureExpr> newMap = new HashMap<>();
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
-			Conditional<U> result = f.apply(inFeature == null ? e.getValue() : e.getValue().and(inFeature), e.getKey());
+			Conditional<U> result = f.apply(inFeature == null ? e.getValue() : and(e.getValue(), inFeature), e.getKey());
 			if (result == null) {
 				newMap.put(null, e.getValue());
 				continue;
 			}
 			for (Entry<U, FeatureExpr> r : result.toMap().entrySet()) {// ??
-				FeatureExpr and = r.getValue().and(e.getValue());
+				FeatureExpr and = and(r.getValue(), e.getValue());
 				final U key = r.getKey();
 				if (newMap.containsKey(key)) {
-					newMap.put(key, newMap.get(key).or(and));
+					newMap.put(key, or(newMap.get(key), and));
 				} else {
 					if (!isContradiction(and)) {
 						newMap.put(key, and);
@@ -94,7 +94,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	@Override
 	public void mapfr(FeatureExpr inFeature, BiConsumer<FeatureExpr, T> f) {
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
-			f.accept(inFeature == null ? e.getValue() : e.getValue().and(inFeature), e.getKey());
+			f.accept(inFeature == null ? e.getValue() : and(e.getValue(), inFeature), e.getKey());
 		}
 	}
 
@@ -130,9 +130,9 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		Map<T, FeatureExpr> newMap = new HashMap<>();
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
 			final FeatureExpr value = e.getValue();
-			if (!isContradiction(value.and(ctx))) {
+			if (!isContradiction(and(value, ctx))) {
 				T key = e.getKey();
-				if (ctx.equals(value)) {
+				if (equals(ctx, value)) {
 					if (key instanceof Byte) {
 						return (Conditional<T>) One.valueOf((Byte)key);
 					}

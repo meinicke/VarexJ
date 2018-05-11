@@ -57,18 +57,18 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {
 				if (aref == MJIEnv.NULL) {
-					pushCtx = pushCtx.andNot(ctx);
+					pushCtx = Conditional.andNot(pushCtx,ctx);
 					return new One<>(new EXCEPTION("java.lang.NullPointerException", ""));
 				}
 
 				final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
 				if (isNewPorBoundary(e, ti)) {
 					if (createAndSetArrayCG(e, ti, aref, peekIndex(ctx, ti), true)) {
-						pushCtx = pushCtx.andNot(ctx);
-						return new One<Instruction>(instruction);
+						pushCtx = Conditional.andNot(pushCtx,ctx);
+						return new One<>(instruction);
 					}
 				}
-				return new One<Instruction>(null);
+				return new One<>(null);
 			}
 		});
 		if (Conditional.isContradiction(pushCtx)) {
@@ -97,8 +97,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
 							new Statement(instruction, frame.method, ctx);
-							
-							pushCtx = pushCtx.andNot(ctx);
+							pushCtx = Conditional.andNot(pushCtx,ctx);
 							return new One<Instruction>(new EXCEPTION(thisInstruction,
 									java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));
 						}

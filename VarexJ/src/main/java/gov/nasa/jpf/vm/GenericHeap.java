@@ -433,7 +433,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 			} else {
 				ElementInfo eVal = getModifiable(vRef);
 				CharArrayFields cf = (CharArrayFields)eVal.getFields();
-			    cf.setCharValues(sEntry.getValue().and(fexpr), s.toCharArray());
+			    cf.setCharValues(Conditional.and(sEntry.getValue(),fexpr), s.toCharArray());
 			}
 		}
 

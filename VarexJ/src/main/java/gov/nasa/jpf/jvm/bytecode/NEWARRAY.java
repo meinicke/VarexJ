@@ -59,7 +59,7 @@ public class NEWARRAY extends NewArrayInstruction {
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayLength) {
 
 				if (arrayLength < 0) {
-					pushCtx = pushCtx.andNot(ctx);
+					pushCtx = Conditional.andNot(pushCtx,ctx);
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NegativeArraySizeException"));
 				}
 
@@ -74,7 +74,7 @@ public class NEWARRAY extends NewArrayInstruction {
 				}
 
 				if (heap.isOutOfMemory()) { // simulate OutOfMemoryError
-					pushCtx = pushCtx.andNot(ctx);
+					pushCtx = Conditional.andNot(pushCtx,ctx);
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.OutOfMemoryError", "trying to allocate new " + getTypeName() + "[" + arrayLength + "]"));
 				}
 
