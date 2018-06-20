@@ -9,5 +9,5 @@ script:
   - chmod a+x ./.BuildScripts/build.sh
   - ./.BuildScripts/build.sh
 
- after_success:
+after_success:
   - bash <(curl -s https://codecov.io/bash)
