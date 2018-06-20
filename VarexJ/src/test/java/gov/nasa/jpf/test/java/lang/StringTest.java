@@ -335,4 +335,14 @@ public class StringTest extends TestJPF {
 			assertEquals("fo", str.substring(0, 2));
 		}
 	}
+	
+	@Test
+	public void testRenderWrappedTextMultiLine2() {
+		if (verifyNoPropertyViolation()) {
+			String text = "a ";
+			int pos = A ? 1 : 2;
+			String substring = text.substring(0, pos);
+			substring.charAt(pos - 1);
+		}
+	}
 }
