@@ -24,9 +24,11 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -586,8 +588,12 @@ public class JPF_java_lang_String extends NativePeer {
 		return env.newString(ctx, result);
 	}
 
+	private FeatureExpr exceptionCTX = FeatureExprFactory.False();
+	
 	@MJI
-	public int substring__II__Ljava_lang_String_2(final MJIEnv env, int objRef, final Conditional<Integer> beginIndex, final Conditional<Integer> endIndex, FeatureExpr ctx) {
+	public Conditional<Integer> substring__II__Ljava_lang_String_2(final MJIEnv env, int objRef,
+			final Conditional<Integer> beginIndex, final Conditional<Integer> endIndex, FeatureExpr ctx) {
+		exceptionCTX = FeatureExprFactory.False();
 		Conditional<String> obj = env.getStringObjectNew(ctx, objRef);
 		Conditional<String> result = obj.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<String>>() {
 
@@ -605,14 +611,14 @@ public class JPF_java_lang_String extends NativePeer {
 									return new One<>("");
 								}
 								try {
-									String result = obj.substring(beginIndex, endIndex);
-									return new One<>(result);
+									return new One<>(obj.substring(beginIndex, endIndex));
 								} catch (StringIndexOutOfBoundsException e) {
 									String exceptionClass = e.toString();
 									exceptionClass = exceptionClass.substring(0, exceptionClass.indexOf(":"));
-									env.ti.createAndThrowException(ctx, exceptionClass, e.getMessage());
+									env.throwException(ctx, exceptionClass, e.getMessage());
+									exceptionCTX = Conditional.or(exceptionCTX, ctx);
+									return new One<>(null);
 								}
-								return new One<>(null);
 							}
 						});
 
@@ -621,10 +627,9 @@ public class JPF_java_lang_String extends NativePeer {
 				});
 			}
 
-		}).simplify();
-
-		return env.newString(ctx, result);
-
+		}).simplify(Conditional.not(exceptionCTX));
+		return ChoiceFactory.create(exceptionCTX, One.valueOf(-1), new One<>(env.newString(Conditional.not(exceptionCTX),
+				result))).simplify();
 	}
 
 	@MJI

@@ -76,6 +76,7 @@ public class MJIEnv {
   // NOTE: this is only transient - don't expect this to be preserved over
   // transition boundaries
   int                     exceptionRef;
+  FeatureExpr exceptionCTX = FeatureExprFactory.True(); 
 
   protected MJIEnv (ThreadInfo ti) {
     this.ti = ti;
@@ -1460,12 +1461,15 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     ClassInfo ciX = ClassInfo.getInitializedClassInfo(null, clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
     exceptionRef = ti.createException(ctx, ciX, null, NULL);
+    exceptionCTX = ctx;
   }
 
   public void throwException (FeatureExpr ctx, String clsName, String details) {
     ClassInfo ciX = ClassInfo.getInitializedClassInfo(ctx, clsName, ti);
     assert ciX.isInstanceOf("java.lang.Throwable");
     exceptionRef = ti.createException(ctx, ciX, details, NULL);
+    exceptionCTX = ctx;
+    
   }
 
   public void throwAssertion (FeatureExpr ctx, String details) {
@@ -1595,6 +1599,10 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     int ret = exceptionRef;
     exceptionRef = NULL;
     return ret;
+  }
+  
+  public FeatureExpr getExceptionCTX() {
+	return exceptionCTX;
   }
 
   public boolean hasException(){

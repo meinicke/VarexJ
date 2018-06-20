@@ -200,13 +200,18 @@ public class NativeMethodInfo extends MethodInfo {
 				throw e;
 			}
 			
+			Conditional<Instruction> exceptionInstruction = null;
 			if (env.hasException()) {
 				// even though we should prefer throwing normal exceptionHandlers,
 				// sometimes it might be better/required to explicitly throw
 				// something that's not wrapped into a InvocationTargetException
 				// (e.g. InterruptedException), which is why there still is a
 				// MJIEnv.throwException()
-				return new One<>(ti.throwException(ctx, env.popException()));
+				FeatureExpr exceptionCTX = env.getExceptionCTX();
+				exceptionInstruction = new One<>(ti.throwException(exceptionCTX, env.popException()));
+				if (Conditional.equivalentTo(exceptionCTX, ctx)) { 
+					return exceptionInstruction;
+				}
 			}
 
 			StackFrame top = ti.getTopFrame();
@@ -224,7 +229,7 @@ public class NativeMethodInfo extends MethodInfo {
 					nativeFrame.setReturnValue(ret);
 					nativeFrame.setReturnAttr(env.getReturnAttribute());
 
-					return nativeFrame.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+					Conditional<Instruction> instruction = nativeFrame.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
 						@Override
 						public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
@@ -238,7 +243,10 @@ public class NativeMethodInfo extends MethodInfo {
 						}
 
 					}).simplify();
-
+					if (exceptionInstruction != null) {
+						instruction = ChoiceFactory.create(env.getExceptionCTX(), exceptionInstruction, instruction);
+					}
+					return instruction;
 					// return nativeFrame.getPC().getValue().getNext(); // that should be the NATIVERETURN
 				}
 

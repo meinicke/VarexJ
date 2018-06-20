@@ -26,6 +26,7 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
 
@@ -35,7 +36,9 @@ import gov.nasa.jpf.vm.Verify;
 @SuppressWarnings({ "unused" })
 public class StringTest extends TestJPF {
 
-
+	@Conditional
+	public static boolean A = true; 
+	
 	@Test
 	public void testIntern() {
 		if (verifyNoPropertyViolation()) {
@@ -292,14 +295,44 @@ public class StringTest extends TestJPF {
     }
   }
   
-  @Test
-  public void testContentEquals(){
-    if (verifyNoPropertyViolation()){
-      String s = "fortyTwo";
-      StringBuilder sb = new StringBuilder();
-      sb.append("fortyTwo");
-            
-      assertTrue( s.contentEquals(sb));
-    }
-  }
+	@Test
+	public void testContentEquals() {
+		if (verifyNoPropertyViolation()) {
+			String s = "fortyTwo";
+			StringBuilder sb = new StringBuilder();
+			sb.append("fortyTwo");
+
+			assertTrue(s.contentEquals(sb));
+		}
+	}
+
+	@Test
+	public void testSubstring() {
+		if (verifyNoPropertyViolation()) {
+			Verify.setCounter(0, 0);
+			String str = "foo";
+			try {
+				str = str.substring(1, A ? str.length() - 1 : 0);
+				assertEquals("o", str);
+				Verify.incrementCounter(0);
+			} catch (StringIndexOutOfBoundsException e) {
+				Verify.incrementCounter(0);
+			}
+			if (A) {
+				Verify.incrementCounter(0);
+			} else {
+				Verify.incrementCounter(0);
+			}
+			assertEquals(4, Verify.getCounter(0));
+		}
+	}
+
+	@Test
+	public void testSubstring2() {
+		if (verifyNoPropertyViolation()) {
+			Verify.setCounter(0, 0);
+			String str = "foo";
+			assertEquals("fo", str.substring(0, 2));
+		}
+	}
 }
