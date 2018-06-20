@@ -1,7 +1,20 @@
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
+	apply plugin: 'jacoco'
 	sourceCompatibility = JavaVersion.VERSION_1_8
+	
+	repositories {
+    	mavenCentral()
+	}
+	
+	jacocoTestReport {
+	    reports {
+	        xml.enabled = true
+	        html.enabled = true
+	    }
+	}
+	check.dependsOn jacocoTestReport
 }
 
 task wrapper(type: Wrapper) {
