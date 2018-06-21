@@ -193,11 +193,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    // project dependencies
-    // ...
-}
-
 jacocoTestReport {
     reports {
         xml.enabled = true

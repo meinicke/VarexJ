@@ -1,7 +1,7 @@
-apply plugin: 'jacoco'
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
+	apply plugin: 'jacoco'
 	sourceCompatibility = JavaVersion.VERSION_1_8
 	
 	
