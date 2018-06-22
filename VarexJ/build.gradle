@@ -146,7 +146,7 @@ test {
     maxParallelForks = 1
     minHeapSize = "512m"
     maxHeapSize = "1024m"
-    include '**/cmu/*Test.class'
+    include '**/*Test.class'
     //include '**/jikesRVM/**/Test*.class'
     exclude '**/jikesRVM/**/Test*$*.class'
     exclude '**/FeatureModelTest.class'
