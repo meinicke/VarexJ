@@ -55,7 +55,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		if (map.size() == 1) {
 			return map.keySet().iterator().next();
 		}
-		throw new RuntimeException("get Value on choice called" + map);
+		throw new GetValueOfChoiceException("get Value on choice called" + map);
 	}
 
 	@Override

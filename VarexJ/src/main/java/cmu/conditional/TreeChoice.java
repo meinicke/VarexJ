@@ -130,7 +130,7 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 		 }
 		 System.out.println("---------------------------------------------------");
 		// return thenBranch.getValue(true);
-		throw new RuntimeException("Get value of choice called: " + toString());
+		throw new GetValueOfChoiceException("Get value of choice called: " + toString());
 	}
 
 	@Override
