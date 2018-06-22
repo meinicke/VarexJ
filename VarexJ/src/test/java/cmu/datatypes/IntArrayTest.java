@@ -1,5 +1,7 @@
 package cmu.datatypes;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import gov.nasa.jpf.annotation.Conditional;
@@ -102,4 +104,13 @@ public class IntArrayTest extends TestJPF {
 		int i = array[12];
 	}
 
+	@Test
+	public void arraysFillTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			int len = a ? 5 : 3;
+			char[] padding = new char[len];
+			Arrays.fill(padding, ' ');
+		}
+	}
+	
 }

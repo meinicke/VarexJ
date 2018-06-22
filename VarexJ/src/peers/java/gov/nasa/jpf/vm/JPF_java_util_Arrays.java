@@ -15,8 +15,10 @@ public class JPF_java_util_Arrays extends NativePeer {
 
 	@MJI
 	public void fill___3II__V(MJIEnv env, int __, Conditional<Integer> arrayRef, Conditional<Integer> value, FeatureExpr ctx) {
-		final int reference = arrayRef.getValue();
-		((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx, value);
+		arrayRef.mapf(ctx, (ctx1, reference) -> {
+			((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx1, value);
+			return null;
+		});
 	}
 
 	@MJI
@@ -35,19 +37,26 @@ public class JPF_java_util_Arrays extends NativePeer {
 
 	@MJI
 	public void fill___3CC__V(MJIEnv env, int __, Conditional<Integer> arrayRef, Conditional<Character> value, FeatureExpr ctx) {
-		final int reference = arrayRef.getValue();
-		((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx, value);
+		arrayRef.mapf(ctx, (ctx1, reference) -> {
+			((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx1, value);
+			return null;
+		});
+		
 	}
 
 	@MJI
-	public void fill___3Ljava_lang_Object_2Ljava_lang_Object_2__V(MJIEnv env, int __, int arrayRef, int val, FeatureExpr ctx) {
-		((ArrayFields) env.heap.getModifiable(arrayRef).fields).fill(ctx, One.valueOf(val));
+	public void fill___3Ljava_lang_Object_2Ljava_lang_Object_2__V(MJIEnv env, int __, Conditional<Integer> arrayRef, Conditional<Integer> value, FeatureExpr ctx) {
+		arrayRef.mapf(ctx, (ctx1, reference) -> {
+			((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx1, value);
+			return null;
+		});
 	}
 	
 	@MJI
 	public void fill___3ZZ__V(MJIEnv env, int __, Conditional<Integer> arrayRef, Conditional<Boolean> value, FeatureExpr ctx) {
-		arrayRef.mapf(ctx, (x, ref) -> {
-			((ArrayFields) env.heap.getModifiable(ref).fields).fill(x, value);
+		arrayRef.mapf(ctx, (ctx1, reference) -> {
+			((ArrayFields) env.heap.getModifiable(reference).fields).fill(ctx1, value);
+			return null;
 		});
 	}
 

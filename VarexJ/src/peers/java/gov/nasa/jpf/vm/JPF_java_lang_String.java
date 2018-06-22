@@ -432,10 +432,12 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public boolean startsWith__Ljava_lang_String_2__Z(MJIEnv env, int objRef, int prefixRef, FeatureExpr ctx) {
-		String thisStr = env.getStringObject(ctx, objRef);
-		String prefix = env.getStringObject(ctx, prefixRef);
-		return thisStr.startsWith(prefix);
+	public Conditional<Boolean> startsWith__Ljava_lang_String_2__Z(MJIEnv env, int objRef, int prefixRef, FeatureExpr ctx) {
+		Conditional<String> thisStr = env.getStringObjectNew(ctx, objRef);
+		Conditional<String> prefix = env.getStringObjectNew(ctx, prefixRef);
+		return thisStr.mapf(ctx, (context, ts) -> {
+			return prefix.map( p -> ts.startsWith(p) );
+		});
 	}
 
 	@MJI
@@ -787,32 +789,51 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int trim____Ljava_lang_String_2(MJIEnv env, int objRef, FeatureExpr ctx) {
+	public Conditional<Integer> trim____Ljava_lang_String_2(MJIEnv env, int objRef, FeatureExpr ctx) {
 		Heap heap = env.getHeap();
 		ElementInfo thisStr = heap.get(objRef);
 
-		CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value").simplify(ctx).getValue()).getFields();
-		char[] thisChars = thisFields.asCharArray().simplify(ctx).getValue();
-		int thisLength = thisChars.length;
+		Conditional<Integer> referenceField = thisStr.getReferenceField("value").simplify(ctx);
+		return referenceField.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-		int start = 0;
-		int end = thisLength;
+			@Override
+			public Conditional<Integer> apply(FeatureExpr ctx, Integer reference) {
+				CharArrayFields thisFields = (CharArrayFields) heap.get(reference).getFields();
+				Conditional<char[]> charArray = thisFields.asCharArray().simplify(ctx);
+				return charArray.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Integer>>() {
 
-		while ((start < end) && (thisChars[start] <= ' ')) {
-			start++;
-		}
+					@Override
+					public Conditional<Integer> apply(FeatureExpr ctx, char[] charArray) {
+						if (Conditional.isContradiction(ctx)) {
+							return One.valueOf(-1);
+						}
+						int thisLength = charArray.length;
 
-		while ((start < end) && (thisChars[end - 1] <= ' ')) {
-			end--;
-		}
+						int start = 0;
+						int end = thisLength;
 
-		if (start == 0 && end == thisLength) {
-			// if there was no white space, return the string itself
-			return objRef;
-		}
+						while ((start < end) && (charArray[start] <= ' ')) {
+							start++;
+						}
 
-		String result = new String(thisChars, start, end - start);
-		return env.newString(ctx, result);
+						while ((start < end) && (charArray[end - 1] <= ' ')) {
+							end--;
+						}
+
+						if (start == 0 && end == thisLength) {
+							// if there was no white space, return the string itself
+							return One.valueOf(objRef);
+						}
+
+						String result = new String(charArray, start, end - start);
+						return One.valueOf(env.newString(ctx, result));
+					}
+				});
+			}
+			
+		});
+		
+		
 	}
 
 	@MJI

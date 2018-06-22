@@ -1172,7 +1172,7 @@ public abstract class TestJPF implements JPFShell  {
 			}
 		}
 	}
-  
+
 	public static void assertArrayEquals(double[] expected, double[] actual) {
 		assertArrayEquals(null, expected, actual);
 	}
@@ -1270,7 +1270,7 @@ public abstract class TestJPF implements JPFShell  {
 				.replace("#2", expected == null ? "null" : expected.toString())
 				.replace("#3", actual == null ? "null" : actual.toString()));
 	}
-  
+
   public static void assertNotNull(String msg, Object o) {
     if (o == null) {
       fail(msg);
