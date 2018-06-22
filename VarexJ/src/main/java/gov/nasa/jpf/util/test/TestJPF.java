@@ -1122,32 +1122,156 @@ public abstract class TestJPF implements JPFShell  {
                    expected, actual, delta);
   }
 
-  public static void assertArrayEquals(byte[] expected, byte[] actual){
-    if (((expected == null) != (actual == null)) ||
-        (expected.length != actual.length)){
-      fail("array sizes different");
-    }
+	private static final String ARRAY_SIZE_DIFFERENT = "array length different, expected.length=#1 actual.length=#2"; 
+	private static final String ARRAY_ELEMENT_DIFFERENT = "arrays first different at element [#1]; expected <#2> but was:<#3>";
+	
+	public static void assertArrayEquals(boolean[] expected, boolean[] actual) {
+		assertArrayEquals(null, expected, actual);
+	}
+	
+	public static void assertArrayEquals(String msg, boolean[] expected, boolean[] actual) {
+		if (((expected == null) != (actual == null)) || (expected.length != actual.length)) {
+			failArrayLength(msg, expected.length, actual.length);
+		}
 
-    for (int i=0; i<expected.length; i++){
-      if (expected[i] != actual[i]){
-        fail("array element" + i + " different, expected " + expected[i] + ", actual " + actual[i]);
-      }
-    }
-  }
+		for (int i = 0; i < expected.length; i++) {
+			if (expected[i] != actual[i]) {
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+		}
+	}
+	
+	public static void assertArrayEquals(byte[] expected, byte[] actual) {
+		assertArrayEquals(null, expected, actual);
+	}
+	
+	public static void assertArrayEquals(String msg, byte[] expected, byte[] actual) {
+		if (((expected == null) != (actual == null)) || (expected.length != actual.length)) {
+			failArrayLength(msg, expected.length, actual.length);
+		}
+
+		for (int i = 0; i < expected.length; i++) {
+			if (expected[i] != actual[i]) {
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+		}
+	}
+	
+	public static void assertArrayEquals(char[] expected, char[] actual) {
+		assertArrayEquals(null, expected, actual);
+	}
+	
+	public static void assertArrayEquals(String msg, char[] expected, char[] actual) {
+		if (((expected == null) != (actual == null)) || (expected.length != actual.length)) {
+			failArrayLength(msg, expected.length, actual.length);
+		}
+
+		for (int i = 0; i < expected.length; i++) {
+			if (expected[i] != actual[i]) {
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+		}
+	}
+
+	public static void assertArrayEquals(double[] expected, double[] actual) {
+		assertArrayEquals(null, expected, actual);
+	}
+	
+	public static void assertArrayEquals(String msg, double[] expected, double[] actual) {
+		if (((expected == null) != (actual == null)) || (expected.length != actual.length)) {
+			failArrayLength(msg, expected.length, actual.length);
+		}
+
+		for (int i = 0; i < expected.length; i++) {
+			if (expected[i] != actual[i]) {
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+		}
+	}
+	
+	public static void assertArrayEquals(float[] expected, float[] actual) {
+		assertArrayEquals(null, expected, actual);
+	}
+	
+	public static void assertArrayEquals(String msg, float[] expected, float[] actual) {
+		if (((expected == null) != (actual == null)) || (expected.length != actual.length)) {
+			failArrayLength(msg, expected.length, actual.length);
+		}
+
+		for (int i = 0; i < expected.length; i++) {
+			if (expected[i] != actual[i]) {
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+		}
+	}
+	
+	public static void assertArrayEquals(int[] expected, int[] actual) {
+		assertArrayEquals(null, expected, actual);
+	}
+	
+	public static void assertArrayEquals(String msg, int[] expected, int[] actual) {
+		if (((expected == null) != (actual == null)) || (expected.length != actual.length)) {
+			failArrayLength(msg, expected.length, actual.length);
+		}
+
+		for (int i = 0; i < expected.length; i++) {
+			if (expected[i] != actual[i]) {
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+		}
+	}
+
+	public static void assertArrayEquals(long[] expected, long[] actual) {
+		assertArrayEquals(null, expected, actual);
+	}
+	
+	public static void assertArrayEquals(String msg, long[] expected, long[] actual) {
+		if (((expected == null) != (actual == null)) || (expected.length != actual.length)) {
+			failArrayLength(msg, expected.length, actual.length);
+		}
+
+		for (int i = 0; i < expected.length; i++) {
+			if (expected[i] != actual[i]) {
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+		}
+	}
+	
+	public static void assertArrayEquals(Object[] expected, Object[] actual) {
+		assertArrayEquals(null, expected, actual);
+	}
+	
+	public static void assertArrayEquals(String msg, Object[] expected, Object[] actual) {
+		if (((expected == null) != (actual == null)) || (expected.length != actual.length)) {
+			failArrayLength(msg, expected.length, actual.length);
+		}
+		for (int i = 0; i < expected.length; i++) {
+			if (expected[i] == null) {
+				if (actual[i] == null) {
+					continue;
+				}
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+			if (!expected[i].equals(actual[i])) {
+				failArrayElement(msg, i, expected[i], actual[i]);
+			}
+		}
+	}
+	
+	private static void failArrayLength(String msg, int expectedLength, int actualLength) {
+		fail((msg == null ? "" : msg + ':') + ARRAY_SIZE_DIFFERENT
+				.replace("#1", Integer.toString(expectedLength))
+				.replace("#2", Integer.toString(actualLength)));
+	}
+	
+	private static void failArrayElement(String msg, int index, Object expected, Object actual) {
+		fail((msg == null ? "" : msg + ':') + ARRAY_ELEMENT_DIFFERENT
+				.replace("#1", Integer.toString(index))
+				.replace("#2", expected == null ? "null" : expected.toString())
+				.replace("#3", actual == null ? "null" : actual.toString()));
+	}
+
   
-  public static void assertArrayEquals(int[] expected, int[] actual){
-	    if (((expected == null) != (actual == null)) ||
-	        (expected.length != actual.length)){
-	      fail("array sizes different");
-	    }
-
-	    for (int i=0; i<expected.length; i++){
-	      if (expected[i] != actual[i]){
-	        fail("array element" + i + " different, expected " + expected[i] + ", actual " + actual[i]);
-	      }
-	    }
-	  }
-
   public static void assertNotNull(String msg, Object o) {
     if (o == null) {
       fail(msg);
