@@ -432,10 +432,12 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public boolean startsWith__Ljava_lang_String_2__Z(MJIEnv env, int objRef, int prefixRef, FeatureExpr ctx) {
-		String thisStr = env.getStringObject(ctx, objRef);
-		String prefix = env.getStringObject(ctx, prefixRef);
-		return thisStr.startsWith(prefix);
+	public Conditional<Boolean> startsWith__Ljava_lang_String_2__Z(MJIEnv env, int objRef, int prefixRef, FeatureExpr ctx) {
+		Conditional<String> thisStr = env.getStringObjectNew(ctx, objRef);
+		Conditional<String> prefix = env.getStringObjectNew(ctx, prefixRef);
+		return thisStr.mapf(ctx, (context, ts) -> {
+			return prefix.map( p -> ts.startsWith(p) );
+		});
 	}
 
 	@MJI

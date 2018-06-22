@@ -754,16 +754,14 @@ public VM getVM () {
   }
   
   /**
-   * {@link #getStringObjectNew(FeatureExpr, int)}
+   * @deprecated Use {@link #getStringObjectNew(FeatureExpr, int)} instead
    */
   @Deprecated
   public String getStringObject (FeatureExpr ctx, int objRef) {
 	    if (objRef != MJIEnv.NULL) {
 	      ElementInfo ei = getElementInfo(objRef);
-	      
 	      Conditional<String> str = ei.asString();
 	      return str.simplify(ctx).getValue();
-	      
 	    } else {
 	      return null;
 	    }
