@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=master)](https://travis-ci.org/meinicke/VarexJ)
-[![Codecov](https://img.shields.io/codecov/c/github/codecov/example-python.svg)](https://codecov.io/gh/meinicke/VarexJ?branch=travis)
+![Codecov branch](https://img.shields.io/codecov/c/github/meinicke/VarexJ/travis.svg)
+
 
 # Overview
 
