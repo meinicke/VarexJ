@@ -22,6 +22,8 @@ import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.va.BufferedStackHandler;
 import gov.nasa.jpf.vm.va.HybridStackHandler;
+import gov.nasa.jpf.vm.va.HybridStackHandler.LiftedStack;
+import gov.nasa.jpf.vm.va.HybridStackHandler.NormalStack;
 import gov.nasa.jpf.vm.va.IStackHandler;
 import gov.nasa.jpf.vm.va.StackHandlerFactory;
 import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
@@ -29,26 +31,45 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
 @RunWith(Parameterized.class)
 public class StackHandlerTest {
 	
-	@Parameters(name = "ChoiceFactory: {0} ,FeatureExprFactory: {1}")
+	static {
+		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
+	}
+	
+	@Parameters(name = "SHFactory: {0} ,LiftedStack: {1}, NormalStack: {2}, ChoiceFactory {3}")
 	public static List<Object[]> configurations() {
-		List<Object[]> params = new LinkedList<>(); 
-		for (Object SHfactory: StackHandlerFactory.asParameter()) {
-			for (Object[] choice : ChoiceFactory.asParameter()) {
-				params.add(new Object[]{SHfactory, choice[0], "BDD"});
-//				params.add(new Object[]{SHfactory, choice[0], "SAT"});
+		List<Object[]> params = new LinkedList<>();
+		
+		Object[] choice = ChoiceFactory.asParameter().get(0);
+		
+		for (Factory choiceFactory : Factory.values()) {
+			for (SHFactory shFactory : SHFactory.values()) {
+				if (shFactory == SHFactory.Hybid) {
+					for (LiftedStack liftedStack : LiftedStack.values()) {
+						for (NormalStack normalStack : NormalStack.values()) {
+							params.add(new Object[]{shFactory, liftedStack, normalStack, choiceFactory});
+						}
+					}
+				} else {
+					params.add(new Object[]{shFactory, null, null, choice[0]});
+				}
+				
 			}
-		}	
+		}
 		return params;
 	}
 	
-	public StackHandlerTest(SHFactory shFactory, Factory factory, String fexprFeactory) {
-		ChoiceFactory.setDefault(factory);
+	public StackHandlerTest(SHFactory shFactory, LiftedStack liftedStack, NormalStack normalStack, Factory choiceFactory) {
+		ChoiceFactory.setDefault(choiceFactory);
 		StackHandlerFactory.setFactory(shFactory);
-		if ("BDD".equals(fexprFeactory)) {
-			FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
-		} else {
-			FeatureExprFactory.setDefault(FeatureExprFactory.sat());
+		
+		if (normalStack != null) {
+			HybridStackHandler.normalStack = normalStack;
 		}
+		if (liftedStack != null) {
+			HybridStackHandler.liftedStack = liftedStack;
+		}
+		
+		
 		// because JPF is not initializes we have to reset the feature model manually
 		Conditional.setFM("");
 	}
