@@ -497,8 +497,12 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		JPFStackHandler other = (JPFStackHandler) obj;
 		if (length != other.length)
 			return false;
-		if (!Arrays.equals(slots, other.slots))
-			return false;
+		for (int i = 0; i < top; i++) {
+			if (slots[i] != other.slots[i] || isRef[i] != isRef[i]) {
+				return false;
+			}
+		}
+		
 		if (stackCTX == null) {
 			if (other.stackCTX != null)
 				return false;

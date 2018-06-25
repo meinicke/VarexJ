@@ -254,4 +254,27 @@ public class DifferentialStackTest {
 		});
 	}
 	
+	@Test
+	public void TestToString() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+			sh.push(FeatureExprFactory.True(), 42, true);
+			sh.push(FeatureExprFactory.True(), 1337, false);
+			sh.storeOperand(FeatureExprFactory.True(), 0);
+			sh.toString();
+			return "";
+		});
+	}
+	
+	@Test
+	public void TestClone() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+			sh.push(FeatureExprFactory.True(), 42, true);
+			sh.push(FeatureExprFactory.True(), 1337, false);
+			sh.storeOperand(FeatureExprFactory.True(), 0);
+			return sh.equals(sh.clone());
+		});
+	}
+	
 }
