@@ -32,8 +32,6 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	
 	public FeatureExpr stackCTX;
 	
-	static Entry NULL_ENTRY = new Entry(MJIEnv.NULL, false);
-
 	public JPFStackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
 		this.nLocals = nLocals;
 		this.nOperands = nOperands;
@@ -359,6 +357,18 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		slots[s4] = C;
 		slots[s5] = D;
 
+		final boolean refA = isRef[s0];
+ 		final boolean refB = isRef[s1];
+		final boolean refC = isRef[s2];
+		final boolean refD = isRef[s3];
+
+		isRef[s0] = refC;
+		isRef[s1] = refD;
+		isRef[s2] = refA;
+		isRef[s3] = refB;
+		isRef[s4] = refC;
+		isRef[s5] = refD;
+		
 		top += 2;
 	}
 	
@@ -374,29 +384,35 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		slots[top] = A;
 		slots[top + 1] = B;
 		slots[top + 2] = C;
+		
+		boolean refA = isRef[top - 2];
+		boolean refB = isRef[top - 1];
+		boolean refC = isRef[top];
+
+		isRef[top - 2] = refB;
+		isRef[top - 1] = refC;
+		isRef[top] = refA;
+		isRef[top + 1] = refB;
+		isRef[top + 2] = refC;
 
 		top += 2;
 	}
 
 	@Override
 	public void dup2(FeatureExpr ctx) {
-		int A = slots[top - 1];
-		int B = slots[top];
+		slots[top + 1] = slots[top - 1];
+		slots[top + 2] = slots[top];
 
-		slots[top - 1] = A;
-		slots[top] = B;
-		slots[top + 1] = A;
-		slots[top + 2] = B;
-
+		isRef[top + 1] = isRef[top - 1];
+		isRef[top + 2] = isRef[top];
+		
 		top += 2;
 	}
 
 	@Override
 	public void dup(FeatureExpr ctx) {
-		final int src = this.top;
-		final int dst = this.top + 1;
-		slots[dst] = slots[src];
-		isRef[dst] = isRef[src];
+		slots[top + 1] = slots[top];
+		isRef[top + 1] = isRef[top];
 		this.top++;
 	}
 
@@ -411,6 +427,15 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		slots[top] = B;
 		slots[top + 1] = C;
 
+		boolean refA = isRef[top - 2];
+		boolean refB = isRef[top - 1];
+		boolean refC = isRef[top];
+
+		isRef[top - 2] = refC;
+		isRef[top - 1] = refA;
+		isRef[top] = refB;
+		isRef[top + 1] = refC;
+		
 		top++;
 	}
 	
@@ -419,6 +444,10 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		final int A = slots[top - 1];
 		slots[top - 1] = slots[top];
 		slots[top] = A;
+		
+		final boolean ref = isRef[top - 1];
+		isRef[top - 1] = isRef[top];
+		isRef[top] = ref;
 	}
 
 	@Override
