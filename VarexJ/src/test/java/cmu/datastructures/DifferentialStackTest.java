@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
-import cmu.conditional.ChoiceFactory;
+import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.va.HybridStackHandler;
@@ -30,7 +30,6 @@ public class DifferentialStackTest {
 
 	public DifferentialStackTest() {
 
-		Object[] choice = ChoiceFactory.asParameter().get(0);
 		for (SHFactory shFactory : SHFactory.values()) {
 			if (shFactory == SHFactory.Hybid) {
 				for (LiftedStack liftedStack : LiftedStack.values()) {
@@ -39,7 +38,7 @@ public class DifferentialStackTest {
 					}
 				}
 			} else {
-				stackHandlers.add(new Object[] { shFactory, null, null, choice[0] });
+				stackHandlers.add(new Object[] { shFactory, null, null, Factory.MapChoice });
 			}
 		}
 	}
