@@ -48,7 +48,6 @@ import gov.nasa.jpf.vm.va.BufferedStackHandler;
 import gov.nasa.jpf.vm.va.HybridStackHandler;
 import gov.nasa.jpf.vm.va.HybridStackHandler.LiftedStack;
 import gov.nasa.jpf.vm.va.HybridStackHandler.NormalStack;
-import gov.nasa.jpf.vm.va.OneStackHandler;
 import gov.nasa.jpf.vm.va.StackHandler;
 import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
@@ -333,8 +332,6 @@ public class JPF implements Runnable {
 			String stackHandlerFactory = config.getString("stack", "");
 			if (stackHandlerFactory.equals(BufferedStackHandler.class.getSimpleName())) {
 				StackHandlerFactory.activateBufferedStackHandler();
-			} else if (stackHandlerFactory.equals(OneStackHandler.class.getSimpleName())) {
-				StackHandlerFactory.activateOneStackHandler();
 			} else if (stackHandlerFactory.startsWith(HybridStackHandler.class.getSimpleName())) {
 				StackHandlerFactory.activateHybridStackHandler();
 				String[] split = stackHandlerFactory.split("[|]");
