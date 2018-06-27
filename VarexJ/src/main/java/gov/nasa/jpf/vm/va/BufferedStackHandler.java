@@ -251,14 +251,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 						return buffer.pop().value;
 					}
 					if (value instanceof Long) {
-						return buffer.pop().value.map(new Function<Long, Double>() {
-
-							@Override
-							public Double apply(Long x) {
-								return Types.longToDouble(x);
-							}
-							
-						});
+						return buffer.pop().value.map(x -> Types.longToDouble((Long) x));
 					}
 					if (value instanceof Integer) {
 						if (buffer.size() >= 2) {
@@ -266,21 +259,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 							if (value2 instanceof Integer) {
 								final Conditional pop1 = buffer.pop().value;
 								final Conditional pop2 = buffer.pop().value;
-								return pop1.mapr(new Function<Integer, Conditional<Double>>() {
-	
-									@Override
-									public Conditional<Double> apply(final Integer x1) {
-										return pop2.map(new Function<Integer, Double>() {
-	
-											@Override
-											public Double apply(Integer x2) {
-												return Types.intsToDouble(x1, x2);
-											}
-											
-										});
-									}
-									
-								}).simplify();
+								return pop1.mapr(x1 -> pop2.map(x2 -> Types.intsToDouble((Integer) x1, (Integer) x2))).simplify();
 							}
 						}
 						break;
@@ -291,14 +270,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 						return buffer.pop().value;
 					}
 					if (value instanceof Integer) {
-						return  buffer.pop().value.map(new Function<Integer, Float>() {
-
-							@Override
-							public Float apply(Integer x) {
-								return Types.intToFloat(x);
-							}
-							
-						});
+						return  buffer.pop().value.map(x -> Types.intToFloat((Integer) x));
 					}
 					throw new RuntimeException("Type " + value.getClass() + " not supported " + t);
 				case INT:
@@ -307,25 +279,11 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					}
 					if (value instanceof Byte ||
 						value instanceof Short) {
-						return  buffer.pop().value.map(new Function<Number, Integer>() {
-
-							@Override
-							public Integer apply(Number x) {
-								return x.intValue();
-							}
-							
-						});
+						return buffer.pop().value.map(x -> ((Number) x).intValue());
 					}
 					if (value instanceof Float) {
-							return  buffer.pop().value.map(new Function<Float, Integer>() {
-
-								@Override
-								public Integer apply(Float x) {
-									return Types.floatToInt(x);
-								}
-								
-							});
-						}
+						return buffer.pop().value.map(x -> Types.floatToInt((Float) x));
+					}
 
 					throw new RuntimeException("Type " + value.getClass() + " not supported " + t);
 				case LONG:
@@ -333,14 +291,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 						return buffer.pop().value;
 					}
 					if (value instanceof Double) {
-						return buffer.pop().value.map(new Function<Double, Long>() {
-
-							@Override
-							public Long apply(Double x) {
-								return Types.doubleToLong(x);
-							}
-							
-						});
+						return buffer.pop().value.map(x -> Types.doubleToLong((Double) x));
 					}
 					if (value instanceof Integer) {
 						if (buffer.size() >= 2) {
@@ -348,21 +299,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 							if (value2 instanceof Integer) {
 								final Conditional pop1 = buffer.pop().value;
 								final Conditional pop2 = buffer.pop().value;
-								return pop1.mapr(new Function<Integer, Conditional<Long>>() {
-	
-									@Override
-									public Conditional<Long> apply(final Integer x1) {
-										return pop2.map(new Function<Integer, Long>() {
-	
-											@Override
-											public Long apply(Integer x2) {
-												return Types.intsToLong(x1, x2);
-											}
-											
-										});
-									}
-									
-								}).simplify();
+								return pop1.mapr(x1 -> pop2.map(x2 -> Types.intsToLong((Integer) x1, (Integer) x2))).simplify();
 							}
 						}
 						break;
@@ -471,14 +408,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					}
 					if (type instanceof Float) {
 						if (n == offset) {
-							return value.map(new Function<Float, Integer>() {
-
-								@Override
-								public Integer apply(Float x) {
-									return Types.floatToInt(x.floatValue());
-								}
-
-							});
+							return value.map(x -> Types.floatToInt(((Float) x).floatValue()));
 						}
 						n++;
 						continue;
@@ -495,28 +425,14 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					}
 					if (type instanceof Byte) {
 						if (n == offset) {
-							return value.map(new Function<Byte, Integer>() {
-
-								@Override
-								public Integer apply(Byte x) {
-									return (int)x.byteValue();
-								}
-								
-							});
+							return value.map(x -> (int)((Byte)x).byteValue());
 						}
 						n++;
 						continue;
 					}
 					if (type instanceof Short) {
 						if (n == offset) {
-							return value.map(new Function<Short, Integer>() {
-
-								@Override
-								public Integer apply(Short x) {
-									return (int)x;
-								}
-								
-							});
+							return value.map(x -> (int)x);
 						}
 						n++;
 						continue;
@@ -546,24 +462,19 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 							case LONG:
 								if (buffer.size() > n + 1) { 
 									final Conditional value2 = buffer.get(n + 1).value;
-									return value.mapr(new Function<Integer, Conditional<Long>>() {
-	
-										@Override
-										public Conditional<Long> apply(final Integer x1) {
-											return value2.map(new Function<Integer, Long>() {
-	
-												@Override
-												public Long apply(Integer x2) {
-													return Types.intsToLong(x1, x2);
-												}
-	
-											});
-										}
-	
-									});
+									return value.mapr(x1 -> value2.map(x2 -> Types.intsToLong((int)x1, (int) x2)));
 								} else {
 									break;
 								}
+							case DOUBLE:
+								if (buffer.size() > n + 1) { 
+									final Conditional value2 = buffer.get(n + 1).value;
+									return value.mapr(x1 -> value2.map(x2 -> Types.intsToDouble((int)x1, (int) x2)));
+								} else {
+									break;
+								}
+							case FLOAT:
+								return value.map(x1 -> Types.intToFloat((int)x1));
 							default:
 								throw new RuntimeException("type " + type.getClass() + " missed" + t);
 							}
@@ -577,14 +488,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 							case FLOAT:
 								return value;
 							case INT:
-								return value.map(new Function<Float, Integer>() {
-
-									@Override
-									public Integer apply(Float x) {
-										return Types.floatToInt(x.floatValue());
-									}
-
-								});
+								return value.map(x -> Types.floatToInt(((Float) x).floatValue()));
 							default:
 								break;
 							}
@@ -605,28 +509,14 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					}
 					if (type instanceof Byte) {
 						if (n == offset) {
-							return value.map(new Function<Byte, Integer>() {
-
-								@Override
-								public Integer apply(Byte x) {
-									return (int)x.byteValue();
-								}
-								
-							});
+							return value.map(x -> (int) ((Byte) x).byteValue());
 						}
 						n++;
 						continue;
 					}
 					if (type instanceof Short) {
 						if (n == offset) {
-							return value.map(new Function<Short, Integer>() {
-
-								@Override
-								public Integer apply(Short x) {
-									return (int)x;
-								}
-								
-							});
+							return value.map(x -> (int)x);
 						}
 						n++;
 						continue;
@@ -693,7 +583,6 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 
 	@Override
 	public void pushLocal(FeatureExpr ctx, int index) {
-		
 		Conditional<Entry> value = locals[index].simplify(ctx);
 		if (value == null) {
 			value = new One<>(Entry.create(MJIEnv.NULL, false));
@@ -705,25 +594,14 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 				isRef = v.isRef;
 			} else if (isRef != v.isRef) {
 				debufferAll();
-				value.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Object>>() {
-
-					@Override
-					public Conditional<Object> apply(final FeatureExpr ctx, final Entry entry) {
-						push(ctx, entry.value, entry.isRef);
-						return null;
-					}
+				value.mapf(ctx, (BiFunction<FeatureExpr, Entry, Conditional<Object>>) (ctx1, entry) -> {
+					push(ctx1, entry.value, entry.isRef);
+					return null;
 				});
 				return;
 			}
 		}
-		Conditional<Integer> pushValue = value.map(new Function<Entry, Integer>() {
-
-			@Override
-			public Integer apply(Entry x) {
-				return x.value;
-			}
-
-		});
+		Conditional<Integer> pushValue = value.map(x -> x.value);
 		
 		if (buffer.isEmpty()) {
 			bufferCTX = ctx;
@@ -749,25 +627,13 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 			entry = new One<>(new Entry(0, false));
 		}
 		
-		push(ctx, entry.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Integer>>() {
-
-			@Override
-			public One<Integer> apply(final FeatureExpr ctx, final Entry entry) {
-				return new One<>(entry.value);
-			}
-		}), false);
+		push(ctx, entry.mapf(ctx, (BiFunction<FeatureExpr, Entry, Conditional<Integer>>) (ctx1, entry1) -> new One<>(entry1.value)), false);
 		
 		entry = locals[index + 1];
 		if (entry == null) {
 			entry = new One<>(new Entry(0, false));
 		}
-		push(ctx, entry.mapf(ctx, new BiFunction<FeatureExpr, Entry, Conditional<Integer>>() {
-
-			@Override
-			public One<Integer> apply(final FeatureExpr ctx, final Entry entry) {
-				return new One<>(entry.value);
-			}
-		}), false);
+		push(ctx, entry.mapf(ctx, (BiFunction<FeatureExpr, Entry, Conditional<Integer>>) (ctx1, entry1) -> new One<>(entry1.value)), false);
 	}
 
 	@Override
@@ -825,17 +691,12 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 				return ChoiceFactory.create(bufferCTX, new One<>(size), new One<>(-1));
 			}
 			final int finalSize = size;
-			return stackTop.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-				@Override
-				public Conditional<Integer> apply(FeatureExpr ctx, Integer y) {
-					FeatureExpr context = Conditional.and(bufferCTX, ctx);
-					if (Conditional.isContradiction(context)) {
-						return One.valueOf(y);
-					}
-					return ChoiceFactory.create(context, new One<>(y + finalSize + 1), new One<>(y));
+			return stackTop.mapf(FeatureExprFactory.True(), (ctx, y) -> {
+				FeatureExpr context = Conditional.and(bufferCTX, ctx);
+				if (Conditional.isContradiction(context)) {
+					return One.valueOf(y);
 				}
-
+				return ChoiceFactory.create(context, new One<>(y + finalSize + 1), new One<>(y));
 			}).simplify();
 		}
 		return super.getTop();

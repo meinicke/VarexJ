@@ -31,7 +31,7 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 
 	public FeatureExpr stackCTX;
 	
-	static Entry NULL_ENTRY = new Entry(MJIEnv.NULL, false);
+	private static final Entry NULL_ENTRY = new Entry(MJIEnv.NULL, false);
 
 	public OneStackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
 		length = nLocals + nOperands;
@@ -310,7 +310,7 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 				return true;
 			}
 		}
-		for (int i = 0; i < stack.top; i++) {
+		for (int i = 0; i <= stack.top; i++) {
 			if (stack.slots[i].isRef) {
 				return true;
 			}

@@ -109,6 +109,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void storeOperand(FeatureExpr ctx, int index) {
+		assert top >= nLocals;
 		isRef[index] = isRef[top];
 		slots[index] = slots[top--];
 		
@@ -117,6 +118,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void storeLongOperand(FeatureExpr ctx, int index) {
+		assert top > nLocals;
 		slots[index + 1] = slots[top--];
 		slots[index] = slots[top--];
 	}
@@ -130,6 +132,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	@Override
 	public void setLocal(FeatureExpr ctx, int index, int value, boolean isRef) {
 		slots[index] = value;
+		this.isRef[index] = isRef;
 	}
 
 	@Override
@@ -199,6 +202,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public Conditional<Long> popLong(final FeatureExpr ctx) {
+		assert top + 1 > nLocals;
 		return pop(ctx, Type.LONG);
 	}
 
@@ -214,18 +218,20 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	public Conditional<Float> popFloat(final FeatureExpr ctx) {
 		return pop(ctx, Type.FLOAT);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Conditional<T> pop(FeatureExpr ctx, Type t) {
 		Number res;
 		this.isRef[top] = false;
+		assert top >= nLocals; 
 		final int lo = slots[top--];
 		switch (t) {
 		case INT:
 			res = Integer.valueOf(lo);
 			break;
 		case DOUBLE:
+			assert top >= nLocals; 
 			this.isRef[top] = false;
 			res = Types.intsToDouble(lo, slots[top--]);
 			break;
@@ -233,6 +239,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 			res = Types.intToFloat(lo);
 			break;
 		case LONG:
+			assert top >= nLocals; 
 			this.isRef[top] = false;
 			res = Types.intsToLong(lo, slots[top--]);
 			break;
@@ -244,6 +251,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void pop(FeatureExpr ctx, int n) {
+		assert top - n >= nLocals - 1;
 		top -= n;
 	}
 
@@ -254,31 +262,43 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public Conditional<Integer> peek(FeatureExpr ctx, int offset) {
+		if (top - offset < nLocals) {
+			return One.valueOf(-1);
+		}
 		return new One<>(slots[top - offset]);
 	}
 
 	@Override
 	public Conditional<Double> peekDouble(FeatureExpr ctx, int offset) {
-		return new One<>(Types.intsToDouble(slots[top - offset], slots[top - offset - 1]));
+		final int lo = top - offset < nLocals ? -1 : slots[top - offset];
+		final int hi = top - offset - 1 < nLocals ? -1 : slots[top - offset - 1];
+		return new One<>(Types.intsToDouble(lo, hi));
 	}
 
 	@Override
 	public Conditional<Long> peekLong(FeatureExpr ctx, int offset) {
-		return new One<>(Types.intsToLong(slots[top - offset], slots[top - offset - 1]));
+		final int lo = top - offset < nLocals ? -1 : slots[top - offset];
+		final int hi = top - offset - 1 < nLocals ? -1 : slots[top - offset - 1];
+		return new One<>(Types.intsToLong(lo, hi));
 	}
 
 	@Override
 	public Conditional<Float> peekFloat(FeatureExpr ctx, int offset) {
+		if (top - offset < nLocals) {
+			return new One<>(Types.intToFloat(-1));
+		}
 		return new One<>(Types.intToFloat(slots[top - offset]));
 	}
 
 	@Override
 	public boolean isRef(FeatureExpr ctx, int offset) {
+		assert top - offset >= nLocals;
 		return this.isRef[top - offset];
 	}
 
 	@Override
 	public void set(FeatureExpr ctx, int offset, int value, boolean isRef) {
+		assert top - offset >= nLocals; 
 		slots[top - offset] = value;
 		this.isRef[top - offset] = isRef;
 	}
@@ -300,12 +320,16 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public int[] getSlots() {
-		return slots;
+		int[] copy = new int[slots.length];
+		for (int i = 0; i < slots.length; i++) {
+			copy[i] = slots[i];
+		}
+		return copy;
 	}
 
 	@Override
 	public int[] getSlots(FeatureExpr ctx) {
-		return slots;
+		return getSlots();
 	}
 
 	@Override
@@ -320,6 +344,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void dup_x1(FeatureExpr ctx) {
+		assert top > nLocals;
 		int A = slots[top - 1];
 		int B = slots[top];
 		boolean bA = isRef[top - 1];
@@ -339,6 +364,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	 */
 	@Override
 	public void dup2_x2(FeatureExpr ctx) {
+		assert top - 3 >= nLocals;
 		final int s0 = top - 3;
 		final int s1 = s0 + 1;
 		final int s2 = s0 + 2;
@@ -375,6 +401,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void dup2_x1(FeatureExpr ctx) {
+		assert top - 2 >= nLocals;
 		int A = slots[top - 2];
 		int B = slots[top - 1];
 		int C = slots[top];
@@ -400,6 +427,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void dup2(FeatureExpr ctx) {
+		assert top > nLocals;
 		slots[top + 1] = slots[top - 1];
 		slots[top + 2] = slots[top];
 
@@ -411,6 +439,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void dup(FeatureExpr ctx) {
+		assert top >= nLocals;
 		slots[top + 1] = slots[top];
 		isRef[top + 1] = isRef[top];
 		this.top++;
@@ -418,6 +447,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void dup_x2(FeatureExpr ctx) {
+		assert top >= nLocals + 2;
 		int A = slots[top - 2];
 		int B = slots[top - 1];
 		int C = slots[top];
@@ -441,6 +471,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	
 	@Override
 	public void swap(FeatureExpr ctx) {
+		assert top > nLocals;
 		final int A = slots[top - 1];
 		slots[top - 1] = slots[top];
 		slots[top] = A;

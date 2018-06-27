@@ -8,7 +8,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 public class StackHandlerFactory {
 
 	public enum SHFactory {
-		Default, Hybid, Buffered  
+		Default, Buffered, Hybid  
 	}
 	
 	public static List<Object> asParameter() {

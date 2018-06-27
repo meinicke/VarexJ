@@ -27,7 +27,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	
 	public static NormalStack normalStack = NormalStack.OneStack;
 	public enum NormalStack {
-		OneStack, JPFStack;
+		JPFStack, OneStack;
 	}
 	
 	public static LiftedStack liftedStack = LiftedStack.Buffered;

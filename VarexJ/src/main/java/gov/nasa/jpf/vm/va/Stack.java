@@ -81,6 +81,7 @@ public class Stack {
 	}
 
 	public Entry popEntry() {
+		assert top >= 0;
 		return slots[top--];
 	}
 
