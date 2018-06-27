@@ -477,14 +477,22 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 							case LONG:
 								if (buffer.size() > n + 1) { 
 									final Conditional value2 = buffer.get(n + 1).value;
-									return value.mapr(x1 -> value2.map(x2 -> Types.intsToLong(((Number)x1).intValue(), ((Number)x2).intValue())));
+									if (value2.getValue(true) instanceof Double || value2.getValue(true) instanceof Long) {
+										debufferAll();
+										return super.peek(ctx, offset, t);
+									}
+									return value.mapr(x1 -> value2.map(x2 -> Types.intsToLong(NumberToInt((Number)x1), NumberToInt((Number)x2))));
 								} else {
 									break;
 								}
 							case DOUBLE:
 								if (buffer.size() > n + 1) { 
 									final Conditional value2 = buffer.get(n + 1).value;
-									return value.mapr(x1 -> value2.map(x2 -> Types.intsToDouble(((Number)x1).intValue(), ((Number)x2).intValue())));
+									if (value2.getValue(true) instanceof Double || value2.getValue(true) instanceof Long) {
+										debufferAll();
+										return super.peek(ctx, offset, t);
+									}
+									return value.mapr(x1 -> value2.map(x2 -> Types.intsToDouble(NumberToInt((Number)x1), NumberToInt((Number)x2))));
 								} else {
 									break;
 								}

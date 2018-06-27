@@ -101,7 +101,7 @@ public class RandomDifferentialStackTest {
 	
 	public static void main(String[] args) {
 		try {
-			new RandomDifferentialStackTest().runDifferentialTest(34715);
+			new RandomDifferentialStackTest().runDifferentialTest(6441);
 		} catch (Throwable e) {
 			for (String call : calls) {
 				System.out.println(call);
