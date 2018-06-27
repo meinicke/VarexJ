@@ -277,7 +277,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 			((Conditional<Object>) value).mapf(ctx, (FeatureExpr ctx1, Object value1) -> push(ctx1, value1, isRef));
 			return;
 		}
-
+		assert !isRef || value instanceof Integer;
 		stack = stack.mapf(ctx, (FeatureExpr f, Stack stack) -> {
 			if (Conditional.isContradiction(f)) {
 				return new One<>(stack);
@@ -529,6 +529,9 @@ public class StackHandler implements Cloneable, IStackHandler {
 			return false;
 		}
 		StackHandler other = (StackHandler) o;
+		if (locals.length != other.locals.length) {
+			return false;
+		}
 		for (int i = 0; i < locals.length; i++) {
 			Conditional<Entry> l1 = locals[i];
 			Conditional<Entry> l2 = other.locals[i];

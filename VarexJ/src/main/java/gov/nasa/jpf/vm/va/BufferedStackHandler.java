@@ -212,6 +212,8 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 						locals[index] = ChoiceFactory.create(ctx, newValue, locals[index]).simplify();
 					}
 					return;
+				} else if (value instanceof Double|| value instanceof Long) {
+					// TODO implement
 				} else {
 					throw new RuntimeException("Type " + value.getClass() + " not supported ");
 				}
@@ -227,6 +229,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 			push(ctx, new One<>(value), isRef);
 			return;
 		}
+		assert !isRef || ((Conditional) value).getValue(true) instanceof Integer;  
 		if (buffer.isEmpty()) {
 			bufferCTX = ctx;
 			addToBuffer(((Conditional) value).simplify(ctx), isRef);
@@ -264,7 +267,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 						}
 						break;
 					}
-					throw new RuntimeException("Type " + value.getClass() + " not supported " + t);
+					break;
 				case FLOAT:
 					if (value instanceof Float) {
 						return buffer.pop().value;
@@ -272,7 +275,11 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					if (value instanceof Integer) {
 						return  buffer.pop().value.map(x -> Types.intToFloat((Integer) x));
 					}
-					throw new RuntimeException("Type " + value.getClass() + " not supported " + t);
+					if (value == null) {
+						buffer.pop();
+						return (Conditional<T>) new One<>((float)0.0);
+					}
+					break;
 				case INT:
 					if (value instanceof Integer) {
 						return buffer.pop().value;
@@ -284,8 +291,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					if (value instanceof Float) {
 						return buffer.pop().value.map(x -> Types.floatToInt((Float) x));
 					}
-
-					throw new RuntimeException("Type " + value.getClass() + " not supported " + t);
+					break;
 				case LONG:
 					if (value instanceof Long) {
 						return buffer.pop().value;
@@ -293,13 +299,13 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					if (value instanceof Double) {
 						return buffer.pop().value.map(x -> Types.doubleToLong((Double) x));
 					}
-					if (value instanceof Integer) {
+					if (value instanceof Integer || value instanceof Byte || value instanceof Short || value instanceof Float) {
 						if (buffer.size() >= 2) {
 							final Object value2 = buffer.get(1).value.getValue(true);
 							if (value2 instanceof Integer) {
 								final Conditional pop1 = buffer.pop().value;
 								final Conditional pop2 = buffer.pop().value;
-								return pop1.mapr(x1 -> pop2.map(x2 -> Types.intsToLong((Integer) x1, (Integer) x2))).simplify();
+								return pop1.mapr(x1 -> pop2.map(x2 -> Types.intsToLong(NumberToInt((Number)x1), NumberToInt((Number)x2)))).simplify();
 							}
 						}
 						break;
@@ -316,6 +322,13 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 		}
 		return super.pop(ctx, t);
 	}
+	
+	private static int NumberToInt(Number n) {
+		if (n instanceof Float) {
+			return Types.floatToInt((Float)n);
+		}
+		return n.intValue();
+	}
 
 	@Override
 	public void pop(FeatureExpr ctx, int n) {
@@ -329,7 +342,8 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					if (value instanceof Integer || 
 						value instanceof Float || 
 						value instanceof Byte || 
-						value instanceof Short) {
+						value instanceof Short ||
+						value == null) {
 						buffer.removeFirst();
 						n--;
 						continue;
@@ -379,7 +393,8 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 			if (type instanceof Integer ||
 				type instanceof Float ||
 				type instanceof Byte ||
-				type instanceof Short) {
+				type instanceof Short || 
+				type == null) {
 				size++;
 			} else {
 				size += 2;
@@ -432,7 +447,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					}
 					if (type instanceof Short) {
 						if (n == offset) {
-							return value.map(x -> (int)x);
+							return value.map(x -> (int)(short)x);
 						}
 						n++;
 						continue;
@@ -446,6 +461,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 		return super.peek(ctx, offset);
 	}
 
+	// TODO simplify this method!!
 	@Override
 	public <T> Conditional<T> peek(FeatureExpr ctx, final int offset, Type t) {
 		if (!buffer.isEmpty()) {
@@ -458,18 +474,17 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					if (type instanceof Integer) {
 						if (n == offset) {
 							switch (t) {
-							
 							case LONG:
 								if (buffer.size() > n + 1) { 
 									final Conditional value2 = buffer.get(n + 1).value;
-									return value.mapr(x1 -> value2.map(x2 -> Types.intsToLong((int)x1, (int) x2)));
+									return value.mapr(x1 -> value2.map(x2 -> Types.intsToLong(((Number)x1).intValue(), ((Number)x2).intValue())));
 								} else {
 									break;
 								}
 							case DOUBLE:
 								if (buffer.size() > n + 1) { 
 									final Conditional value2 = buffer.get(n + 1).value;
-									return value.mapr(x1 -> value2.map(x2 -> Types.intsToDouble((int)x1, (int) x2)));
+									return value.mapr(x1 -> value2.map(x2 -> Types.intsToDouble(((Number)x1).intValue(), ((Number)x2).intValue())));
 								} else {
 									break;
 								}
@@ -509,17 +524,43 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					}
 					if (type instanceof Byte) {
 						if (n == offset) {
-							return value.map(x -> (int) ((Byte) x).byteValue());
+							switch (t) {
+							case FLOAT:
+								return value.map(x1 -> Types.intToFloat((byte) x1));
+							case DOUBLE:
+								break;
+							case INT:
+								return value.map(x -> (int) ((Byte) x).byteValue());
+							case LONG:
+								break;
+							default:
+								break;
+
+							}
+
 						}
 						n++;
 						continue;
 					}
 					if (type instanceof Short) {
 						if (n == offset) {
-							return value.map(x -> (int)x);
+							switch (t) {
+							case FLOAT:
+								return value.map(x1 -> Types.intToFloat((short) x1));
+							case DOUBLE:
+								break;
+							case INT:
+								return value.map(x1 -> (short) x1);
+							case LONG:
+								break;
+							}
 						}
 						n++;
 						continue;
+					}
+					if (type == null) {
+						debufferAll();
+						break;
 					}
 					throw new RuntimeException("type " + type.getClass() + " missed");
 					
@@ -640,11 +681,28 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	public boolean isRef(FeatureExpr ctx, int offset) {
 		if (!buffer.isEmpty()) {
 			if (Conditional.equivalentTo(bufferCTX, ctx)) {
-				if (buffer.size() > offset) {
-					return buffer.get(offset).isRef;
-				} else {
-					return super.isRef(ctx, offset - buffer.size());
+				for (Tuple entry : buffer) {
+					Object type = entry.value.getValue(true);
+					if (type instanceof Integer ||
+						type instanceof Float ||
+						type instanceof Byte ||
+						type instanceof Short || 
+						type == null) {
+						if (offset == 0) {
+							return entry.isRef;
+						}
+						offset--;
+					} else {
+						if (offset == 0) {
+							return false;
+						}
+						if (offset == 1) {
+							return entry.isRef;
+						}
+						offset -= 2;
+					}
 				}
+				return super.isRef(ctx, offset - buffer.size());
 			}
 			debufferAll();
 		}
@@ -679,6 +737,18 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 				}
 				if (value.getValue(true) instanceof Double) {
 					size += 2;
+					continue;
+				}
+				if (value.getValue(true) instanceof Byte) {
+					size++;
+					continue;
+				}
+				if (value.getValue(true) instanceof Short) {
+					size++;
+					continue;
+				}
+				if (value.getValue(true) == null) {
+					size++;
 					continue;
 				}
 			}
@@ -831,7 +901,11 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object o) {// TODO implement if necessary
+		debufferAll();
+		if (o instanceof BufferedStackHandler) {
+			((BufferedStackHandler) o).debufferAll();
+		}
 		return super.equals(o);
 	}
 

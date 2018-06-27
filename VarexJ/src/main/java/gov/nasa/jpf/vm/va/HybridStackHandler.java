@@ -413,6 +413,11 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	}
 	
 	@Override
+	public int hashCode() {
+		return stackHandler.hashCode();
+	}
+	
+	@Override
 	public String toString() {
 		return stackHandler.toString();
 	}

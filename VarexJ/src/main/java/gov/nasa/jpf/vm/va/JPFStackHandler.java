@@ -118,8 +118,9 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void storeLongOperand(FeatureExpr ctx, int index) {
-		assert top > nLocals;
+		assert top >= nLocals;
 		slots[index + 1] = slots[top--];
+		assert top >= nLocals;
 		slots[index] = slots[top--];
 	}
 
@@ -163,6 +164,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 			push(ctx, ((Conditional) value).simplify(stackCTX).getValue(), isRef);
 			return;
 		}
+		assert !isRef || value instanceof Integer;
 		if (value instanceof Integer) {
 			slots[++top] = ((Integer) value);
 			this.isRef[top] = isRef;
@@ -202,7 +204,6 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public Conditional<Long> popLong(final FeatureExpr ctx) {
-		assert top + 1 > nLocals;
 		return pop(ctx, Type.LONG);
 	}
 
@@ -224,24 +225,24 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	public <T> Conditional<T> pop(FeatureExpr ctx, Type t) {
 		Number res;
 		this.isRef[top] = false;
-		assert top >= nLocals; 
-		final int lo = slots[top--];
 		switch (t) {
 		case INT:
-			res = Integer.valueOf(lo);
+			assert top >= nLocals; 
+			res = Integer.valueOf(slots[top--]);
 			break;
 		case DOUBLE:
-			assert top >= nLocals; 
+			assert top -1 >= nLocals; 
 			this.isRef[top] = false;
-			res = Types.intsToDouble(lo, slots[top--]);
+			res = Types.intsToDouble(slots[top--], slots[top--]);
 			break;
 		case FLOAT:
-			res = Types.intToFloat(lo);
+			assert top >= nLocals; 
+			res = Types.intToFloat(slots[top--]);
 			break;
 		case LONG:
-			assert top >= nLocals; 
+			assert top - 1 >= nLocals; 
 			this.isRef[top] = false;
-			res = Types.intsToLong(lo, slots[top--]);
+			res = Types.intsToLong(slots[top--], slots[top--]);
 			break;
 		default:
 			return null;
@@ -321,7 +322,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	@Override
 	public int[] getSlots() {
 		int[] copy = new int[slots.length];
-		for (int i = 0; i < slots.length; i++) {
+		for (int i = 0; i <= top; i++) {
 			copy[i] = slots[i];
 		}
 		return copy;
@@ -528,11 +529,18 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		JPFStackHandler other = (JPFStackHandler) obj;
 		if (length != other.length)
 			return false;
-		for (int i = 0; i < top; i++) {
-			if (slots[i] != other.slots[i] || isRef[i] != isRef[i]) {
+		if (nLocals != other.nLocals) {
+			return false;
+		}
+		if (top != other.top) {
+			return false;
+		}
+		for (int i = 0; i <= top; i++) {
+			if (slots[i] != other.slots[i] || isRef[i] != other.isRef[i]) {
 				return false;
 			}
 		}
+		
 		
 		if (stackCTX == null) {
 			if (other.stackCTX != null)

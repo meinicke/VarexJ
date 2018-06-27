@@ -715,7 +715,7 @@ public class StackHandlerTest {
 		FeatureExpr ctx = FeatureExprFactory.True();
 		long l = 12345678910L;
 		Conditional<Long> n1 = new One<>(l);
-		stack.push(ctx, n1, true);
+		stack.push(ctx, n1, false);
 		assertEquals(n1, stack.peekLong(ctx, 0));
 		assertEquals(1, stack.getStackWidth());
 
@@ -730,7 +730,7 @@ public class StackHandlerTest {
 		FeatureExpr ctx = FeatureExprFactory.True();
 		double d = 10.12345;
 		Conditional<Double> n1 = new One<>(d);
-		stack.push(ctx, n1, true);
+		stack.push(ctx, n1, false);
 
 		assertEquals(new One<>(d), stack.peekDouble(ctx, 0));
 		assertEquals(1, stack.getStackWidth());
@@ -746,7 +746,7 @@ public class StackHandlerTest {
 		FeatureExpr ctx = FeatureExprFactory.True();
 		float f = 123.4f;
 		Conditional<Float> n1 = new One<>(f);
-		stack.push(ctx, n1, true);
+		stack.push(ctx, n1, false);
 		assertEquals(n1, stack.peekFloat(ctx, 0));
 		assertEquals(1, stack.getStackWidth());
 
@@ -828,8 +828,8 @@ public class StackHandlerTest {
 		long value = 42;
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
-		stack.push(f1, new One<>(value), true);
-		stack.push(f1.not(), new One<>(value), true);
+		stack.push(f1, new One<>(value), false);
+		stack.push(f1.not(), new One<>(value), false);
 		stack.storeLongOperand(f1.not(), 0);
 		assertEquals(new One<>(value), stack.popLong(f1));
 		assertFalse(stack.isRefLocal(f1.not(), 0));
@@ -844,8 +844,8 @@ public class StackHandlerTest {
 		double value = 42;
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
-		stack.push(f1, new One<>(value), true);
-		stack.push(f1.not(), new One<>(value), true);
+		stack.push(f1, new One<>(value), false);
+		stack.push(f1.not(), new One<>(value), false);
 		stack.storeLongOperand(f1.not(), 0);
 		assertEquals(new One<>(value), stack.popDouble(f1));
 		assertFalse(stack.isRefLocal(f1.not(), 0));

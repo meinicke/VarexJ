@@ -100,8 +100,8 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void pushLongLocal(FeatureExpr ctx, int index) {
-		stack.push(locals[index]);
-		stack.push(locals[index + 1]);
+		stack.push(locals[index].value, false);
+		stack.push(locals[index + 1].value, false);
 	}
 
 	@Override
@@ -112,7 +112,9 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 	@Override
 	public void storeLongOperand(FeatureExpr ctx, int index) {
 		locals[index + 1] = stack.popEntry();
+		locals[index + 1].isRef = false;
 		locals[index] = stack.popEntry();
+		locals[index].isRef = false;
 	}
 
 	@Override
@@ -159,6 +161,7 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 			push(ctx, ((Conditional) value).simplify(stackCTX).getValue(true), isRef);
 			return;
 		}
+		assert !isRef || value instanceof Integer;
 		if (value instanceof Integer) {
 			stack.push((Integer) value, isRef);
 		} else if (value instanceof Long) {
@@ -206,20 +209,20 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 	@Override
 	public <T> Conditional<T> pop(FeatureExpr ctx, Type t) {
 		Number res;
-		final int lo = stack.pop();
-
 		switch (t) {
 		case INT:
-			res = Integer.valueOf(lo);
+			res = Integer.valueOf(stack.pop());
 			break;
 		case DOUBLE:
-			res = Types.intsToDouble(lo, stack.pop());
+			assert stack.top >= 1;
+			res = Types.intsToDouble(stack.pop(), stack.pop());
 			break;
 		case FLOAT:
-			res = Types.intToFloat(lo);
+			res = Types.intToFloat(stack.pop());
 			break;
 		case LONG:
-			res = Types.intsToLong(lo, stack.pop());
+			assert stack.top >= 1;
+			res = Types.intsToLong(stack.pop(), stack.pop());
 			break;
 		default:
 			return null;
