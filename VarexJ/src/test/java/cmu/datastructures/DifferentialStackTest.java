@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -49,18 +48,10 @@ public class DifferentialStackTest {
 
 	private void differentalTest(Supplier<Object> action) {
 		Object result = null;
-		System.out.println("-------");
 		for (Object[] params : stackHandlers) {
 			setStackHandler(params);
-			System.out.println(Arrays.toString(params));
 			final Object execute = action.get();
 
-			print(params);
-			if (execute.getClass() == int[].class) {
-				System.out.println(Arrays.toString((int[])execute));
-			} else {
-				System.out.println(execute);
-			}
 			if (result == null) {
 				result = execute;
 			} else if (result.getClass().isArray()){
@@ -74,13 +65,6 @@ public class DifferentialStackTest {
 			}
 		}
 		assertNotNull(result);
-	}
-
-	private void print(Object[] params) {
-		for (Object object : params) {
-			System.out.print(object + " ");
-		}
-		System.out.println();
 	}
 
 	public void setStackHandler(Object[] params) {
