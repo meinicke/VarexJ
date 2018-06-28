@@ -28,12 +28,6 @@ public class Stack {
 		}
 	}
 
-	public void setRef(int index, boolean ref) {
-		if (slots[index] != null) {
-			slots[index].isRef = ref;
-		}
-	}
-
 	public boolean hasAnyRef() {
 		for (Entry e : slots) {
 			if (e != null && e.isRef) {
@@ -51,16 +45,6 @@ public class Stack {
 			}
 		}
 		return clone;
-	}
-
-	public Integer get(int index) {
-		if (index < 0) {
-			return -1;
-		}
-		if (slots[index] != null) {
-			return slots[index].value;
-		}
-		return MJIEnv.NULL;
 	}
 
 	public Integer peek(int offset) {
@@ -109,10 +93,6 @@ public class Stack {
 
 	public void set(int offset, int value, boolean isRef) {
 		slots[top - offset] = new Entry(value, isRef);
-	}
-
-	public void setIndex(int index, Integer value, boolean isRef) {
-		slots[index] = new Entry(value, isRef);
 	}
 
 	Stack copy() {

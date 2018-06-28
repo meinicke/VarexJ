@@ -225,7 +225,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 			}).simplifyValues();
 		} else {
 			final int i = index - locals.length;
-			return stack.map(stack -> stack.get(i));
+			return stack.map(stack -> stack.slots[i] == null ? 0 : stack.slots[i].value);
 		}
 	}
 
