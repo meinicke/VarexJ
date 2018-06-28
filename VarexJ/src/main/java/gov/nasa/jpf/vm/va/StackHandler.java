@@ -241,7 +241,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 				}
 			}
 			return false;
-//			return locals[index].simplify(ctx).map(new IsRefLocal()).simplifyValues().getValue();
 		} else {
 			final int i = index - locals.length;
 			return stack.simplify(ctx).map(stack -> stack.isRefIndex(i)).simplifyValues().getValue();
