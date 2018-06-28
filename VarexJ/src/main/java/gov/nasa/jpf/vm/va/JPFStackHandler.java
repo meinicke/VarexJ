@@ -305,11 +305,6 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public void setTop(FeatureExpr ctx, int i) {
-		top = i;
-	}
-
-	@Override
 	public void clear(FeatureExpr ctx) {
 		top = nLocals - 1;
 	}

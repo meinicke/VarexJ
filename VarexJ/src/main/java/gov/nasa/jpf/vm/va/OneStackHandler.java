@@ -273,11 +273,6 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public void setTop(FeatureExpr ctx, int i) {
-		stack.top = i;
-	}
-
-	@Override
 	public void clear(FeatureExpr ctx) {
 		stack.clear();
 	}

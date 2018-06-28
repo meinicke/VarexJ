@@ -79,17 +79,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 		stackCTX = FeatureExprFactory.True();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public StackHandler(FeatureExpr ctx, Stack stack, Entry[] locals) {
-		stackCTX = ctx;
-		this.stack = new One<>(stack);
-		this.locals = new Conditional[locals.length];
-		for (int i = 0; i < locals.length; i++) {
-			this.locals[i] = new One<>(locals[i]);
-		}
-		length = stack.slots.length + locals.length;
-	}
-	
 	@Override
 	public FeatureExpr getCtx() {
 		return stackCTX;
@@ -461,26 +450,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 		return stack.map(y -> y.top);
 	}
 	
-	@Override
-	public void setTop(final FeatureExpr ctx, final int i) {
-		stack = stack.mapf(ctx, (FeatureExpr f, Stack stack) -> {
-			if (Conditional.isContradiction(f)) {
-				return new One<>(stack);
-			}
-			Stack clone = stack.copy();
-			clone.top = i;
-			
-			if (ctx.equals(f)) {
-				return new One<>(clone); 
-			}
-			if (Conditional.isTautology(f)) {
-				return new One<>(clone);
-			}
-			
-			return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
-		}).simplify();
-	}
-
 	@Override
 	public void clear(final FeatureExpr ctx) {
 		stack = stack.mapf(ctx, (FeatureExpr f, Stack stack) -> {

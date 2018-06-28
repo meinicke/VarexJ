@@ -265,11 +265,6 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public void setTop(FeatureExpr ctx, int i) {
-		stackHandler.setTop(ctx, i);
-	}
-
-	@Override
 	public void clear(FeatureExpr ctx) {
 		checkCTX(ctx);
 		stackHandler.clear(ctx);

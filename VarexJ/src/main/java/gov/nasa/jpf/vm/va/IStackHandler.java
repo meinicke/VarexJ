@@ -102,8 +102,6 @@ public interface IStackHandler {
 
 	public abstract Conditional<Integer> getTop();
 
-	public abstract void setTop(FeatureExpr ctx, int i);
-
 	public abstract void clear(FeatureExpr ctx);
 
 	public abstract int[] getSlots();
