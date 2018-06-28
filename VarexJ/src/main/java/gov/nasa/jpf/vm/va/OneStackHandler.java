@@ -41,12 +41,6 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 		stackCTX = ctx;
 	}
 
-	public OneStackHandler() {
-		stack = new Stack(0);
-		locals = new Entry[0];
-		stackCTX = FeatureExprFactory.True();
-	}
-
 	public OneStackHandler(OneStackHandler oneStackHandler) {
 		length = oneStackHandler.length;
 		locals = new Entry[oneStackHandler.locals.length];

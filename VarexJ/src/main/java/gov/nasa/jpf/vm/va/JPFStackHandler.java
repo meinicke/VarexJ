@@ -43,11 +43,6 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		top = nLocals - 1;
 	}
 
-	public JPFStackHandler() {
-		slots = new int[0];
-		stackCTX = FeatureExprFactory.True();
-	}
-
 	public JPFStackHandler(JPFStackHandler oneStackHandler) {
 		length = oneStackHandler.length;
 		this.nLocals = oneStackHandler.nLocals;
