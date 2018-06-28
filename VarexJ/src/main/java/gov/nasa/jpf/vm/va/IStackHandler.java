@@ -34,8 +34,6 @@ public interface IStackHandler {
 	
 	public abstract int getLength();
 	
-	public abstract Conditional<Stack> getStack();
-
 	/**
 	 * Pushes the local variable at the index position to the stack.
 	 * 

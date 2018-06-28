@@ -620,4 +620,21 @@ public class DifferentialStackTest {
 		});
 	}
 	
+	@Test
+	public void TestLocalWidth() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+			sh.getLocalWidth();
+			return 1;
+		});
+	}
+	
+	@Test
+	public void TestGetMaxLocal() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+			sh.getMaxLocal();
+			return 1;
+		});
+	}
 }

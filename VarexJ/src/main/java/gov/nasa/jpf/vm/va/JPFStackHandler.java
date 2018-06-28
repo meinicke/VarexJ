@@ -92,11 +92,6 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public Conditional<Stack> getStack() {
-		return null;
-	}
-
-	@Override
 	public void pushLocal(FeatureExpr ctx, int index) {
 		push(ctx, slots[index], isRef[index]);
 	}

@@ -89,11 +89,6 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public Conditional<Stack> getStack() {
-		return new One<>(stack);
-	}
-
-	@Override
 	public void pushLocal(FeatureExpr ctx, int index) {
 		stack.push(locals[index]);
 	}

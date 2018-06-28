@@ -123,11 +123,6 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public Conditional<Stack> getStack() {
-		return stackHandler.getStack();
-	}
-
-	@Override
 	public void pushLocal(FeatureExpr ctx, int index) {
 		checkCTX(ctx);
 		stackHandler.pushLocal(ctx, index);

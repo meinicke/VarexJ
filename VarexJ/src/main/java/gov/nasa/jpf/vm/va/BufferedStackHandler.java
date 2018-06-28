@@ -937,15 +937,10 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 		return super.getSlots(ctx);
 	}
 
-	@Override
-	public Conditional<Stack> getStack() {
-		debufferAll();
-		return super.getStack();
-	}
 
 	@Override
 	public int getStackWidth() {
-//		debufferAll();
+		debufferAll();
 		return super.getStackWidth();
 	}
 

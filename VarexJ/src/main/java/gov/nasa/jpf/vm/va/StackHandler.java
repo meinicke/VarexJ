@@ -665,11 +665,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public Conditional<Stack> getStack() {
-		return stack;
-	}
-
-	@Override
 	public Set<Integer> getAllReferences() {
 		Set<Integer> references = new HashSet<>();
 		for (Conditional<Entry> cl : locals) {
