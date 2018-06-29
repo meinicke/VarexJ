@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -23,13 +25,13 @@ import gov.nasa.jpf.vm.Types;
 public class OneStackHandler implements Cloneable, IStackHandler {
 
 	/** Locals are directly accessed with index **/
-	protected Entry[] locals;
+	protected @Nonnull Entry[] locals;
 
-	protected Stack stack;
+	protected @Nonnull Stack stack;
 
 	protected int length = 0;
 
-	public FeatureExpr stackCTX;
+	public @Nonnull FeatureExpr stackCTX;
 	
 	private static final Entry NULL_ENTRY = new Entry(MJIEnv.NULL, false);
 

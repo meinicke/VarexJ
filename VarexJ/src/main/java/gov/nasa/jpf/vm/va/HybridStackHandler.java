@@ -174,36 +174,28 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 		stackHandler.push(ctx, value, isRef);
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nasa.jpf.vm.IStackHandler#pop(de.fosd.typechef.featureexpr.FeatureExpr)
-	 */
 	@Override
 	public Conditional<Integer> pop(final FeatureExpr ctx) {
-		return pop(ctx, Type.INT);
+		checkCTX(ctx);
+		return stackHandler.pop(ctx);
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nasa.jpf.vm.IStackHandler#popLong(de.fosd.typechef.featureexpr.FeatureExpr)
-	 */
 	@Override
 	public Conditional<Long> popLong(final FeatureExpr ctx) {
-		return pop(ctx, Type.LONG);
+		checkCTX(ctx);
+		return stackHandler.popLong(ctx);
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nasa.jpf.vm.IStackHandler#popDouble(de.fosd.typechef.featureexpr.FeatureExpr)
-	 */
 	@Override
 	public Conditional<Double> popDouble(final FeatureExpr ctx) {
-		return pop(ctx, Type.DOUBLE);
+		checkCTX(ctx);
+		return stackHandler.popDouble(ctx);
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nasa.jpf.vm.IStackHandler#popFloat(de.fosd.typechef.featureexpr.FeatureExpr)
-	 */
 	@Override
 	public Conditional<Float> popFloat(final FeatureExpr ctx) {
-		return pop(ctx, Type.FLOAT);
+		checkCTX(ctx);
+		return stackHandler.popFloat(ctx);
 	}
 
 	@Override
