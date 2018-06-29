@@ -489,9 +489,9 @@ public class StackHandler implements Cloneable, IStackHandler {
 				slots[i++] = MJIEnv.NULL;
 				continue;
 			}
-			slots[i++] = l.simplify(ctx).getValue(true).value;
+			slots[i++] = l.simplify(Conditional.and(stackCTX, ctx)).getValue(true).value;
 		}
-		for (int o : stack.simplify(ctx).getValue(true).getSlots()) {
+		for (int o : stack.simplify(Conditional.and(stackCTX, ctx)).getValue(true).getSlots()) {
 			slots[i++] = o;
 		}
 

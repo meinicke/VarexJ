@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -31,9 +32,10 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
 public class RandomDifferentialStackTest {
 
 	private static final int ROUNDS = 100_000;
-	private static final int METHOD_CALLS = 3;
+	private static final int METHOD_CALLS = 4;
 	static {
 		Conditional.setFM("");
+		ChoiceFactory.setDefault(Factory.MapChoice);
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 	}
 	
@@ -93,7 +95,7 @@ public class RandomDifferentialStackTest {
 					}
 					if (result.get(i).getClass().isArray()) {
 						if (result.get(i).getClass() == int[].class) {
-							assertArrayEquals(Arrays.toString(params)+ result + execute, (int[]) result.get(i), (int[]) execute.get(i));
+							assertArrayEquals(Arrays.toString(params), (int[]) result.get(i), (int[]) execute.get(i));
 							continue;
 						}
 					}
@@ -106,7 +108,7 @@ public class RandomDifferentialStackTest {
 	
 	public static void main(String[] args) {
 		try {
-			new RandomDifferentialStackTest().runDifferentialTest(21522);
+			new RandomDifferentialStackTest().runDifferentialTest(52076);
 		} catch (Throwable e) {
 			for (String call : calls) {
 				System.out.println(call);
@@ -114,8 +116,9 @@ public class RandomDifferentialStackTest {
 			throw e;
 		}
 	}
-
+	
 	private int seed = 0;
+	
 	@Test
 	public void runDifferentialTest() {
 		try {

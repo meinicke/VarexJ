@@ -286,6 +286,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public int[] getSlots(FeatureExpr ctx) {
+		checkCTX(ctx);
 		return stackHandler.getSlots(ctx);
 	}
 
@@ -359,9 +360,6 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	}
 	
 	private void checkCTX(FeatureExpr ctx) {
-		if (stackCTX == null || ctx == null) {
-			System.out.println("HybridStackHandler.checkCTX()");
-		}
 		if (!lifted && !Conditional.equals(stackCTX,ctx)) {
 			createNewStackHandler();
 		}

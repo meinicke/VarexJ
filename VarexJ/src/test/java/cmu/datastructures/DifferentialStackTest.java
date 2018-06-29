@@ -782,5 +782,15 @@ public class DifferentialStackTest {
 		});
 	}
 	
+	@Test
+	public void TestGetAllReferences2() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.IINC(FeatureExprFactory.True(),0,1);
+			sh.setCtx(A.not());
+			return sh.getSlots(FeatureExprFactory.True());
+		});
+	}
+	
 	
 }
