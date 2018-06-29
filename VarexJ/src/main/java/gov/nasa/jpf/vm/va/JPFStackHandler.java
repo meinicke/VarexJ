@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -24,13 +26,13 @@ import gov.nasa.jpf.vm.Types;
 public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	protected int top;
-	protected int[] slots;
+	protected @Nonnull int[] slots;
 	protected int length = 0;
-	protected boolean[] isRef;
+	protected @Nonnull boolean[] isRef;
 	protected int nLocals = 0;
 	private int nOperands = 0;
 	
-	public FeatureExpr stackCTX;
+	public @Nonnull FeatureExpr stackCTX;
 	
 	public JPFStackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
 		this.nLocals = nLocals;
@@ -526,14 +528,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 				return false;
 			}
 		}
-		
-		
-		if (stackCTX == null) {
-			if (other.stackCTX != null)
-				return false;
-		} else if (!stackCTX.equals(other.stackCTX))
-			return false;
-		return true;
+		return stackCTX.equals(other.stackCTX);
 	}
 	
 	@Override
