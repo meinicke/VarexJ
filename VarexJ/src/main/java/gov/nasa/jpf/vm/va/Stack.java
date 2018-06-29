@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import gov.nasa.jpf.vm.MJIEnv;
-
-
 /**
  * 
  * @author Jens
@@ -51,28 +48,23 @@ public class Stack {
 		if (top < offset) {
 			return -1;
 		}
-		if (slots[top - offset] == null) {
-			return MJIEnv.NULL;
-		}
 		return slots[top - offset].value;
 	}
 
 	public Integer pop() {
-		Integer res = slots[top] == null ? MJIEnv.NULL : slots[top].value;
-		slots[top] = null;
-		top--;
+		Integer res = slots[top].value;
+		slots[top--] = null;
 		return res;
 	}
 
 	public Entry popEntry() {
-		assert top >= 0;
 		return slots[top--];
 	}
 
 	public void push(Integer value, boolean isRef) {
 		slots[++top] = new Entry(value, isRef);
 	}
-	
+
 	public void push(Entry entry) {
 		slots[++top] = entry;
 	}
@@ -116,26 +108,18 @@ public class Stack {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Stack) {
-			if (((Stack) o).top != top) {
+	public boolean equals(Object obj) {
+		Stack stack = (Stack) obj;
+		if (stack.top != top) {
+			return false;
+		}
+		
+		for (int i = 0; i <= top; i++) {
+			if (!stack.slots[i].equals(slots[i])) {
 				return false;
 			}
-			for (int i = 0; i <= top; i++) {
-				if (((Stack) o).slots[i] == null) {
-					if (slots[i] == null) {
-						continue;
-					} else {
-						return false;
-					}
-				}
-				if (!((Stack) o).slots[i].equals(slots[i])) {
-					return false;
-				}
-			}
-			return true;
 		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -294,17 +278,17 @@ class Entry {
 	public int hashCode() {
 		return value;
 	}
-	
+
 	static Entry[] references = new Entry[128];
 	static Entry[] values = new Entry[128];
-	
+
 	static {
-		for (int i = 0; i < 128;i++) {
+		for (int i = 0; i < 128; i++) {
 			references[i] = new Entry(i - 1, true);
 			values[i] = new Entry(i - 1, false);
 		}
 	}
-	
+
 	static Entry create(int value, boolean isRef) {
 		if (value >= -1 && value < 127) {
 			if (isRef) {
@@ -313,6 +297,6 @@ class Entry {
 				return values[value + 1];
 			}
 		}
-		return new Entry(value, isRef); 
+		return new Entry(value, isRef);
 	}
 }
