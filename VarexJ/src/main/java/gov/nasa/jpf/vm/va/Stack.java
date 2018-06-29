@@ -81,13 +81,6 @@ public class Stack {
 		return slots[top - offset].isRef;
 	}
 
-	public boolean isRefIndex(int index) {
-		if (slots[index] != null) {
-			return slots[index].isRef;
-		}
-		return false;
-	}
-
 	public void set(int offset, int value, boolean isRef) {
 		slots[top - offset] = new Entry(value, isRef);
 	}
