@@ -396,13 +396,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final HybridStackHandler other = (HybridStackHandler) obj;
-		if (stackHandler == null) {
-			if (other.stackHandler != null)
-				return false;
-		} else if (!stackHandler.equals(other.stackHandler))
-			return false;
-		return true;
+		return stackHandler.equals(((HybridStackHandler) obj).stackHandler);
 	}
 	
 	@Override
