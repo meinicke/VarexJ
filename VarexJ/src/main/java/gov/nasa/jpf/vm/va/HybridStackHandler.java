@@ -84,14 +84,6 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 		this.lifted = stackHandler.lifted;
 	}
 
-	public HybridStackHandler() {
-		stackHandler = createNomalStack(FeatureExprFactory.True(), 0, 0);
-		stackCTX = FeatureExprFactory.True();
-		this.nLocals = 0;
-		this.nOperands = 0;
-		this.lifted = false;
-	}
-
 	@Override
 	public FeatureExpr getCtx() {
 		return stackCTX;
