@@ -149,11 +149,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 		final boolean isRef;
 
 		private Tuple(Conditional value, boolean isRef) {
-			if (value instanceof Conditional) {
-				this.value = value;
-			} else {
-				this.value = new One<>(value);
-			}
+			this.value = value;
 			this.isRef = isRef;
 		}
 
