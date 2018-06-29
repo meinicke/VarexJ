@@ -393,17 +393,10 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 			return false;
 		if (!Arrays.equals(locals, other.locals))
 			return false;
-		if (stack == null) {
-			if (other.stack != null)
-				return false;
-		} else if (!stack.equals(other.stack))
+		if (!stack.equals(other.stack)) {
 			return false;
-		if (stackCTX == null) {
-			if (other.stackCTX != null)
-				return false;
-		} else if (!stackCTX.equals(other.stackCTX))
-			return false;
-		return true;
+		}
+		return Conditional.equals(stackCTX, other.stackCTX);
 	}
 	
 	@Override
