@@ -158,32 +158,6 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 			return "Tuple [value=" + value + ", isRef=" + isRef + "]";
 		}
 
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + (isRef ? 1231 : 1237);
-			return prime * result + ((value == null) ? 0 : value.hashCode());
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Tuple other = (Tuple) obj;
-			if (isRef != other.isRef)
-				return false;
-			if (value == null) {
-				if (other.value != null)
-					return false;
-			} else if (!value.equals(other.value))
-				return false;
-			return true;
-		}
 	}
 
 	@Override
