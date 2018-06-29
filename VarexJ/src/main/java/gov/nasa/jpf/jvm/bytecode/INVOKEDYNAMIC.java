@@ -119,7 +119,7 @@ public class INVOKEDYNAMIC extends JVMInstruction {
       VM vm = VM.getVM();
       FunctionObjectFactory funcObjFactory = vm.getFunctionObjectFacotry();
       
-      Object[] freeVariableValues = frame.getArgumentsValues(ti, freeVariableTypes);
+      Object[] freeVariableValues = frame.getArgumentsValues(ctx, ti, freeVariableTypes);
       
       funcObjRef = funcObjFactory.getFunctionObject(ctx, bootstrapMethodIndex, ti, fiClassInfo, samMethodName, bmi, freeVariableTypeNames, freeVariableValues);
       lastFuncObj = ti.getHeap().get(funcObjRef);

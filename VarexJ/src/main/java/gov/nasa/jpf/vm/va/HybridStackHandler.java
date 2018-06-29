@@ -130,6 +130,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void pushLongLocal(FeatureExpr ctx, int index) {
+		checkCTX(ctx);
 		stackHandler.pushLongLocal(ctx, index);
 	}
 
@@ -141,6 +142,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void storeLongOperand(FeatureExpr ctx, int index) {
+		checkCTX(ctx);
 		stackHandler.storeLongOperand(ctx, index);
 	}
 
@@ -169,6 +171,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public <T> void push(FeatureExpr ctx, T value) {
+		checkCTX(ctx);
 		stackHandler.push(ctx, value);
 	}
 
@@ -225,26 +228,31 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public Conditional<Integer> peek(FeatureExpr ctx) {
+		checkCTX(ctx);
 		return stackHandler.peek(ctx);
 	}
 
 	@Override
 	public Conditional<Integer> peek(FeatureExpr ctx, int offset) {
+		checkCTX(ctx);
 		return stackHandler.peek(ctx, offset);
 	}
 
 	@Override
 	public Conditional<Double> peekDouble(FeatureExpr ctx, int offset) {
+		checkCTX(ctx);
 		return stackHandler.peekDouble(ctx, offset);
 	}
 
 	@Override
 	public Conditional<Long> peekLong(FeatureExpr ctx, int offset) {
+		checkCTX(ctx);
 		return stackHandler.peekLong(ctx, offset);
 	}
 
 	@Override
 	public Conditional<Float> peekFloat(FeatureExpr ctx, int offset) {
+		checkCTX(ctx);
 		return stackHandler.peekFloat(ctx, offset);
 	}
 
@@ -256,6 +264,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void set(FeatureExpr ctx, int offset, int value, boolean isRef) {
+		checkCTX(ctx);
 		stackHandler.set(ctx, offset, value, isRef);
 	}
 
@@ -340,6 +349,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void IINC(FeatureExpr ctx, int index, int increment) {
+		checkCTX(ctx);
 		stackHandler.IINC(ctx, index, increment);
 	}
 
@@ -349,6 +359,9 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	}
 	
 	private void checkCTX(FeatureExpr ctx) {
+		if (stackCTX == null || ctx == null) {
+			System.out.println("HybridStackHandler.checkCTX()");
+		}
 		if (!lifted && !Conditional.equals(stackCTX,ctx)) {
 			createNewStackHandler();
 		}

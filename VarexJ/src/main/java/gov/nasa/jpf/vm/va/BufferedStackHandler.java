@@ -56,6 +56,12 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 
 		return string.toString();
 	}
+	
+	@Override
+	public void setCtx(FeatureExpr ctx) {
+		debufferAll();
+		super.setCtx(ctx);
+	}
 
 	public BufferedStackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
 		if (ctx == null) {
@@ -225,19 +231,22 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 
 	@Override
 	public void push(FeatureExpr ctx, Object value, boolean isRef) {
+		if (Conditional.isContradiction(Conditional.and(ctx, stackCTX))) {
+			return;
+		}
 		if (!(value instanceof Conditional)) {
 			push(ctx, new One<>(value), isRef);
 			return;
 		}
 		assert !isRef || ((Conditional) value).getValue(true) instanceof Integer;  
 		if (buffer.isEmpty()) {
-			bufferCTX = ctx;
+			bufferCTX = Conditional.and(stackCTX, ctx);
 			addToBuffer(((Conditional) value).simplify(ctx), isRef);
-		} else if (Conditional.equivalentTo(bufferCTX, ctx)) {
+		} else if (Conditional.equivalentTo(bufferCTX, Conditional.and(stackCTX, ctx))) {
 			addToBuffer(((Conditional) value).simplify(ctx), isRef);
 		} else {
 			debufferAll();
-			bufferCTX = ctx;
+			bufferCTX = Conditional.and(stackCTX, ctx);
 			addToBuffer(((Conditional) value).simplify(ctx), isRef);
 		}
 		
@@ -307,6 +316,9 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 								final Conditional pop2 = buffer.pop().value;
 								return pop1.mapr(x1 -> pop2.map(x2 -> Types.intsToLong(NumberToInt((Number)x1), NumberToInt((Number)x2)))).simplify();
 							}
+						} else {
+							debufferAll();
+							return super.pop(ctx, t);
 						}
 						break;
 					}
@@ -632,7 +644,10 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 
 	@Override
 	public void pushLocal(FeatureExpr ctx, int index) {
-		Conditional<Entry> value = locals[index].simplify(ctx);
+		if (Conditional.isContradiction(Conditional.and(ctx, stackCTX))) {
+			return;
+		}
+		Conditional<Entry> value = locals[index].simplify(Conditional.and(ctx, stackCTX));
 		if (value == null) {
 			value = new One<>(Entry.create(MJIEnv.NULL, false));
 		}
@@ -710,7 +725,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 						offset -= 2;
 					}
 				}
-				return super.isRef(ctx, offset - buffer.size());
+				return super.isRef(ctx, offset);
 			}
 			debufferAll();
 		}
@@ -766,7 +781,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 				if (Conditional.isTautology(bufferCTX)) {
 					return One.valueOf(size);
 				}
-				return ChoiceFactory.create(bufferCTX, new One<>(size), new One<>(-1));
+				return ChoiceFactory.create(bufferCTX, new One<>(size), new One<>(-1)).simplify(stackCTX);
 			}
 			final int finalSize = size;
 			return stackTop.mapf(FeatureExprFactory.True(), (ctx, y) -> {
@@ -775,7 +790,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 					return One.valueOf(y);
 				}
 				return ChoiceFactory.create(context, new One<>(y + finalSize + 1), new One<>(y));
-			}).simplify();
+			}).simplify(stackCTX);
 		}
 		return super.getTop();
 	}
@@ -909,7 +924,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 	}
 
 	@Override
-	public boolean equals(Object o) {// TODO implement if necessary
+	public boolean equals(Object o) {
 		debufferAll();
 		if (o instanceof BufferedStackHandler) {
 			((BufferedStackHandler) o).debufferAll();

@@ -151,7 +151,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 	}
 
 	private Conditional<Entry> popEntry(FeatureExpr ctx, final boolean copyRef) {
-		Conditional<Entry> result = stack.simplify(ctx).mapf(ctx, (FeatureExpr f, Stack s) -> {
+		Conditional<Entry> result = stack.simplify(Conditional.and(ctx, stackCTX)).mapf(ctx, (FeatureExpr f, Stack s) -> {
+			if (Conditional.isContradiction(Conditional.and(ctx, stackCTX))) {
+				return null;
+			}
 			Stack clone = s.copy();
 			boolean ref = copyRef ? clone.isRef(0) : false;
 			int res = clone.pop();
@@ -261,6 +264,9 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void push(final FeatureExpr ctx, final Object value, final boolean isRef) {
+		if (Conditional.isContradiction(Conditional.and(ctx, stackCTX))) {
+			return;
+		}
 		if (value instanceof Conditional) {
 			((Conditional<Object>) value).mapf(ctx, (FeatureExpr ctx1, Object value1) -> push(ctx1, value1, isRef));
 			return;
@@ -323,7 +329,10 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@Override
 	public <T> Conditional<T> pop(final FeatureExpr ctx, final Type t) {
 		@SuppressWarnings("unchecked")
-		Conditional<T> result = stack.simplify(ctx).mapf(ctx, (FeatureExpr f, Stack s) -> {
+		Conditional<T> result = stack.simplify(Conditional.and(stackCTX, ctx)).mapf(ctx, (FeatureExpr f, Stack s) -> {
+			if (Conditional.isContradiction(ctx)) {
+				return null;
+			}
 			Stack clone = s.copy();
 			Number res;
 			final int lo = clone.pop();
@@ -401,6 +410,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	}
 
 	protected <T> Conditional<T> peek(FeatureExpr ctx, final int offset, final Type t) {
+		assert !Conditional.isContradiction(Conditional.and(stackCTX, ctx));
 		return stack.simplify(ctx).map(new Function<Stack, T>() {
 
 			@SuppressWarnings("unchecked")
@@ -446,7 +456,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public Conditional<Integer> getTop() {
-		return stack.map(y -> y.top);
+		return stack.map(y -> y.top).simplify(stackCTX);
 	}
 	
 	@Override
@@ -585,6 +595,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	}
 
 	void function(final FeatureExpr ctx, final StackInstruction instruction) {
+		assert !Conditional.isContradiction(Conditional.and(ctx, stackCTX));
 		stack = stack.mapf(ctx, (FeatureExpr f, Stack stack) -> {
 			if (Conditional.isContradiction(f)) {
 				return new One<>(stack);

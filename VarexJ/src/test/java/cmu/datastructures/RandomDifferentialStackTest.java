@@ -32,11 +32,12 @@ public class RandomDifferentialStackTest {
 
 	private static final int ROUNDS = 100_000;
 	private static final int METHOD_CALLS = 3;
-	
 	static {
 		Conditional.setFM("");
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 	}
+	
+	private static final FeatureExpr A = Conditional.createFeature("A");
 
 	private final List<Object[]> stackHandlers = new ArrayList<>();
 
@@ -83,16 +84,20 @@ public class RandomDifferentialStackTest {
 					if (result.get(i) == execute.get(i)) {
 						continue;
 					}
+					if (result.get(i) == null) {
+						assertEquals(Arrays.toString(params) + result + execute,  result.get(i), execute.get(i));
+						continue;
+					}
 					if (result.get(i) instanceof Exception && execute.get(i) instanceof Exception) {
 						continue;
 					}
 					if (result.get(i).getClass().isArray()) {
 						if (result.get(i).getClass() == int[].class) {
-							assertArrayEquals((int[]) result.get(i), (int[]) execute.get(i));
+							assertArrayEquals(Arrays.toString(params)+ result + execute, (int[]) result.get(i), (int[]) execute.get(i));
 							continue;
 						}
 					}
-					assertEquals(result.get(i), execute.get(i));
+					assertEquals(Arrays.toString(params), result.get(i), execute.get(i));
 				}
 			}
 		}
@@ -101,7 +106,7 @@ public class RandomDifferentialStackTest {
 	
 	public static void main(String[] args) {
 		try {
-			new RandomDifferentialStackTest().runDifferentialTest(6441);
+			new RandomDifferentialStackTest().runDifferentialTest(21522);
 		} catch (Throwable e) {
 			for (String call : calls) {
 				System.out.println(call);
@@ -114,9 +119,14 @@ public class RandomDifferentialStackTest {
 	@Test
 	public void runDifferentialTest() {
 		try {
-			for (int i = 0; i < ROUNDS; i++) {
-				seed = i;
+			for (; seed < ROUNDS; seed++) {
 				runDifferentialTest(seed);
+				if (seed != 0 && seed % (ROUNDS / 100) == 0) {
+					System.out.print('*');
+					if (seed % (ROUNDS / 10) == 0) {
+						System.out.println(seed);
+					}
+				}
 			}
 			StackHandlerFactory.setFactory(SHFactory.Hybid);
 			HybridStackHandler.normalStack = NormalStack.OneStack;
@@ -138,7 +148,11 @@ public class RandomDifferentialStackTest {
 
 			List<Object> returnValues = new ArrayList<>(METHOD_CALLS);
 			for (int j = 0; j < METHOD_CALLS; j++) {
-				returnValues.add(applyStackOp(sh, r));
+				Object applyStackOp = applyStackOp(sh, r);
+				returnValues.add(applyStackOp);
+				if (applyStackOp instanceof Exception) {
+					break;
+				}
 			}
 			return returnValues;
 		});
@@ -147,6 +161,7 @@ public class RandomDifferentialStackTest {
 	static Set<String> ignoredMethods = new HashSet<>();
 	static {
 		ignoredMethods.add("getLocalWidth");
+		ignoredMethods.add("getStackWidth");
 		ignoredMethods.add("getMaxLocal");
 		ignoredMethods.add("clone");
 		ignoredMethods.add("toString");
@@ -195,7 +210,18 @@ public class RandomDifferentialStackTest {
 		for (int i = 0; i < parameterTypes.length; i++) {
 			Class<?> type = parameterTypes[i];
 			if (type == FeatureExpr.class) {
-				args[i] = FeatureExprFactory.True();// TODO randomize				
+				int var = r.nextInt(3);
+				switch (var) {
+				case 0:
+					args[i] = FeatureExprFactory.True();
+					break;
+				case 1:
+					args[i] = A;
+					break;
+				case 2:
+					args[i] = A.not();
+					break;
+				}
 			} else if (type == int.class) {
 				args[i] = r.nextInt(2);// TODO randomize		
 			} else if (type == boolean.class) {

@@ -13,6 +13,7 @@ import org.junit.Test;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.va.HybridStackHandler;
 import gov.nasa.jpf.vm.va.HybridStackHandler.LiftedStack;
@@ -30,6 +31,7 @@ public class DifferentialStackTest {
 	}
 
 	private final List<Object[]> stackHandlers = new ArrayList<>();
+	private static final FeatureExpr A = Conditional.createFeature("A");
 
 	public DifferentialStackTest() {
 
@@ -461,7 +463,6 @@ public class DifferentialStackTest {
 			try {
 				sh.peek(FeatureExprFactory.True(),0);
 			} catch (Throwable e) {
-				e.printStackTrace();
 				throw e;
 			}
 			return -1;
@@ -503,7 +504,6 @@ public class DifferentialStackTest {
 			try {
 				sh.storeOperand(FeatureExprFactory.True(),1);	
 			} catch (Throwable e) {
-				System.out.println(e);
 				sh.clear(FeatureExprFactory.True());
 				return 1;
 			}
@@ -637,4 +637,150 @@ public class DifferentialStackTest {
 			return 1;
 		});
 	}
+	
+	@Test
+	public void TestIsRef2() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+			sh.push(FeatureExprFactory.True(), new One<>(1));
+			try {
+				sh.pop(FeatureExprFactory.True(),Type.LONG);
+			} catch (Throwable e) {
+			}
+			sh.pushLocal(FeatureExprFactory.True(),0);
+			return sh.isRef(FeatureExprFactory.True(),1);
+		});
+	}
+	
+	
+	
+	@Test
+	public void TestPopFloat() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+			sh.push(A.not(),new One<>(0.23042600130976298));
+			try {
+				return sh.popFloat(A);
+			} catch (Throwable e) {
+				return 1;
+			}
+		});
+	}
+	
+	@Test
+	public void TestSetCtx() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.pushLongLocal(A,0);
+			try {
+				sh.swap(FeatureExprFactory.True());
+			} catch (Throwable e) {
+				return 1;
+			}
+			return -1;
+		});
+	}
+	
+	@Test
+	public void TestGetSlots3() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.IINC(A.not(),1,1);
+			return sh.getSlots(A);
+		});
+	}
+	
+	@Test
+	public void TestSetCtx2() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.pushLocal(A,1);
+			sh.setCtx(A);
+			try {
+				return sh.pop(FeatureExprFactory.True());
+			} catch (Exception e) {
+				return - 2;
+			}
+		});
+	}
+	
+	@Test
+	public void TestSwap2() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.peek(FeatureExprFactory.True(),1);
+			sh.pushLongLocal(A,1);
+			try {
+				sh.swap(A);
+			} catch (Throwable e) {
+				return 1;
+			}
+			return -1;
+		});
+	}
+	
+	@Test
+	public void TestSet() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.push(FeatureExprFactory.True(),new One<>(1401278654),true);
+			sh.set(A,0,0,false);
+			return sh.popFloat(FeatureExprFactory.True());
+		});
+	}
+	
+	@Test
+	public void TestPeekLong3() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.push(FeatureExprFactory.True(), new One<>(4415632693732573881l));
+			sh.storeLongOperand(A.not(),0);
+			return sh.peekLong(FeatureExprFactory.True(),0);
+		});
+	}
+	
+	@Test
+	public void TestPeek() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.pushLocal(A,1);
+			sh.setCtx(A);
+			try {
+				return sh.peek(A.not());
+			} catch (Throwable e) {
+				return -1;
+			}
+		});
+	}
+	
+	@Test
+	public void TestPop() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.setLocal(A,1,1,true);
+			try {
+				sh.pushLocal(A.not(),1);
+			} catch (Throwable e) {
+				return -1;
+			}
+			return sh.pop(A.not(),Type.INT);
+		});
+	}
+	
+	@Test
+	public void TestStoreOperand() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			sh.setCtx(A.not());
+			sh.push(A, new One<>(0.4148501545754978));
+			try {
+				sh.storeOperand(A,1);
+			} catch (Throwable e) {
+				return 1;
+			}
+			return -1;
+		});
+	}
+	
+	
 }

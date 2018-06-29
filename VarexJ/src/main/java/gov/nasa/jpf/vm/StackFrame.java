@@ -22,9 +22,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.function.Function;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -901,13 +901,13 @@ public int nLocals;
 
     byte[] argTypes = callee.getArgumentTypes();
 
-    return getArgumentsValues(ti, argTypes);
+    return getArgumentsValues(stack.getCtx()/* TODO */, ti, argTypes);
   }
 
-  public Object[] getArgumentsValues (ThreadInfo ti, byte[] argTypes){
+
+public Object[] getArgumentsValues (FeatureExpr ctx, ThreadInfo ti, byte[] argTypes){
     int n = argTypes.length;
     Object[] args = new Object[n];
-    FeatureExpr ctx = null;
     for (int i=n-1, off=0; i>=0; i--) {
       switch (argTypes[i]) {
       case Types.T_ARRAY:

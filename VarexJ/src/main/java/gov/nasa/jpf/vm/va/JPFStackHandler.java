@@ -214,10 +214,10 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	@Override
 	public <T> Conditional<T> pop(FeatureExpr ctx, Type t) {
 		Number res;
-		this.isRef[top] = false;
 		switch (t) {
 		case INT:
 			assert top >= nLocals; 
+			this.isRef[top] = false;
 			res = Integer.valueOf(slots[top--]);
 			break;
 		case DOUBLE:
@@ -227,6 +227,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 			break;
 		case FLOAT:
 			assert top >= nLocals; 
+			this.isRef[top] = false;
 			res = Types.intToFloat(slots[top--]);
 			break;
 		case LONG:
