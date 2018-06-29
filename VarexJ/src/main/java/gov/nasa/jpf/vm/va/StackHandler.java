@@ -430,7 +430,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 				}
 			}
 
-		}).simplifyValues();
+		}).simplify(stackCTX);
 	}
 
 	@Override
@@ -483,6 +483,9 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@Override
 	public int[] getSlots(FeatureExpr ctx) {
 		int[] slots = new int[length];
+		if (Conditional.isContradiction(Conditional.and(ctx, stackCTX))) {
+			return slots;
+		}
 		int i = 0;
 		for (Conditional<Entry> l : locals) {
 			if (l == null) {

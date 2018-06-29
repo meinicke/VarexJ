@@ -211,7 +211,7 @@ public class BufferedStackHandler extends StackHandler implements Cloneable, ISt
 		assert !isRef || ((Conditional) value).getValue(true) instanceof Integer;  
 		if (buffer.isEmpty()) {
 			bufferCTX = Conditional.and(stackCTX, ctx);
-			addToBuffer(((Conditional) value).simplify(ctx), isRef);
+			addToBuffer(((Conditional) value).simplify(bufferCTX), isRef);
 		} else if (Conditional.equivalentTo(bufferCTX, Conditional.and(stackCTX, ctx))) {
 			addToBuffer(((Conditional) value).simplify(ctx), isRef);
 		} else {
