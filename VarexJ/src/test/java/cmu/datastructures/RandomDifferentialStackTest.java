@@ -260,7 +260,7 @@ public class RandomDifferentialStackTest {
 			} else if (type == IStackHandler.Type.class) {
 				args[i] = IStackHandler.Type.values()[r.nextInt(IStackHandler.Type.values().length)];
 			} else if (type == Conditional.class) {
-
+				args[i] = One.valueOf(r.nextInt(10));
 			} else {
 				throw new RuntimeException(type.toString());
 			}
