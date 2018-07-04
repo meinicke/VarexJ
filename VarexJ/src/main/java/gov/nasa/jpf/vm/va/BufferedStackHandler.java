@@ -672,17 +672,17 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 	@Override
 	public Conditional<Integer> getTop() {
 		if (!buffer.isEmpty()) {
-			int size = -1;
+			int size = 0;
 			for (Tuple entry : buffer) {
 				size += entry.size;
 			}
 
-			Conditional<Integer> stackTop = stackHandler.getTop();
+			final Conditional<Integer> stackTop = stackHandler.getTop();
 			if (stackTop.equals(One.valueOf(-1))) {
 				if (Conditional.isTautology(bufferCTX)) {
-					return One.valueOf(size);
+					return One.valueOf(size - 1);
 				}
-				return ChoiceFactory.create(bufferCTX, new One<>(size), new One<>(-1)).simplify(stackHandler.stackCTX);
+				return ChoiceFactory.create(bufferCTX, new One<>(size - 1), new One<>(-1)).simplify(stackHandler.stackCTX);
 			}
 			final int finalSize = size;
 			return stackTop.mapf(FeatureExprFactory.True(), (ctx, y) -> {

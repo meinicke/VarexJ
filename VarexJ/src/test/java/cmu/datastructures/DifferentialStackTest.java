@@ -372,6 +372,17 @@ public class DifferentialStackTest {
 	}
 
 	@Test
+	public void testGetTop() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 2, 2);
+			sh.pushDouble(A, new One<>(0.0));
+			sh.pushDouble(A.not(), new One<>(0.0));
+			System.out.println(sh);
+			return sh.getTop();
+		});
+	}
+
+	@Test
 	public void TestGetTop() {
 		differentalTest(() -> {
 			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 20, 20);
@@ -912,7 +923,7 @@ public class DifferentialStackTest {
 			return -1;
 		});
 	}
-
+	
 	@Test
 	public void testStoreOperand_1() {
 		differentalTest(() -> {
