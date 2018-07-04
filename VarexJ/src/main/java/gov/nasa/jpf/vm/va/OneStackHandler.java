@@ -176,7 +176,7 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 			long v = Double.doubleToLongBits((Double) value);
 			stack.push((int) (v >> 32), isRef);
 			stack.push((int) v, isRef);
-		} else if (value instanceof Float) {
+		} else {
 			stack.push(Float.floatToIntBits((Float) value), isRef);
 		}
 	}
@@ -380,8 +380,8 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 		int result = 1;
 		result = prime * result + length;
 		result = prime * result + Arrays.hashCode(locals);
-		result = prime * result + ((stack == null) ? 0 : stack.hashCode());
-		result = prime * result + ((stackCTX == null) ? 0 : stackCTX.hashCode());
+		result = prime * result + stack.hashCode();
+		result = prime * result + stackCTX.hashCode();
 		return result;
 	}
 

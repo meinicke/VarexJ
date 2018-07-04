@@ -11,7 +11,6 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
-import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.Types;
 
 /**
@@ -185,20 +184,9 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 			this.isRef[top] = isRef;
 			slots[++top] = ((int) v);
 			this.isRef[top] = isRef;
-		} else if (value instanceof Float) {
+		} else {
 			slots[++top] = (Float.floatToIntBits((Float) value));
 			this.isRef[top] = isRef;
-		} else if (value instanceof Byte) {
-			slots[++top] = (((Byte) value).intValue());
-			this.isRef[top] = isRef;
-		} else if (value instanceof Short) {
-			slots[++top] = ((int) (Short) value);
-			this.isRef[top] = isRef;
-		} else if (value == null) {
-			slots[++top] = (MJIEnv.NULL);
-			this.isRef[top] = isRef;
-		} else {
-			throw new RuntimeException(value + " of type " + value.getClass() + " cannot be pushed to the stack.");
 		}
 	}
 
