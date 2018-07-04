@@ -903,11 +903,10 @@ public class DifferentialStackTest {
 		differentalTest(() -> {
 			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 10, 10);
 			sh.setCtx(A.not());
-			sh.pushDouble(A, new One<>(0.4148501545754978));
+			sh.pushDouble(A.not(), new One<>(0.4148501545754978));
 			try {
-				sh.storeOperand(A, 1);
+				sh.storeOperand(A.not(), 1);
 			} catch (Throwable e) {
-				e.printStackTrace();
 				return 1;
 			}
 			return -1;
