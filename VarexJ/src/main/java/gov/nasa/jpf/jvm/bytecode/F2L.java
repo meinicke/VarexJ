@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -37,14 +36,7 @@ public class F2L extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     Conditional<Float> f = frame.popFloat(ctx);
     
-    frame.push(ctx, f.map(new Function<Float, Long>() {
-
-		@Override
-		public Long apply(Float f) {
-			return (long)f.floatValue();
-		}
-    	
-	}));
+    frame.pushLong(ctx, f.map(f1 -> (long)f1.floatValue()));
     
     return getNext(ctx, ti);
   }

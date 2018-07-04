@@ -139,20 +139,33 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 		}
 		return stack.slots[index - locals.length].isRef;
 	}
-
+	
 	@Override
-	public <T> void push(FeatureExpr ctx, T value) {
-		push(ctx, value, false);
+	public void push(FeatureExpr ctx, Conditional<Integer> value) {
+		push(value.simplify(stackCTX).getValue(), false);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void push(FeatureExpr ctx, Object value, boolean isRef) {
-		if (value instanceof Conditional) {
-			push(ctx, ((Conditional) value).simplify(stackCTX).getValue(true), isRef);
-			return;
-		}
-		assert !isRef || value instanceof Integer;
+	public void pushFloat(FeatureExpr ctx, Conditional<Float> value) {
+		push(value.simplify(stackCTX).getValue(), false);
+	}
+
+	@Override
+	public void pushLong(FeatureExpr ctx, Conditional<Long> value) {
+		push(value.simplify(stackCTX).getValue(), false);
+	}
+
+	@Override
+	public void pushDouble(FeatureExpr ctx, Conditional<Double> value) {
+		push(value.simplify(stackCTX).getValue(), false);
+	}
+
+	@Override
+	public void push(FeatureExpr ctx, Conditional<Integer> value, boolean isRef) {
+		push(value.simplify(stackCTX).getValue(), isRef);
+	}
+
+	public void push(Number value, boolean isRef) {
 		if (value instanceof Integer) {
 			stack.push((Integer) value, isRef);
 		} else if (value instanceof Long) {
@@ -165,14 +178,6 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 			stack.push((int) v, isRef);
 		} else if (value instanceof Float) {
 			stack.push(Float.floatToIntBits((Float) value), isRef);
-		} else if (value instanceof Byte) {
-			stack.push(((Byte) value).intValue(), isRef);
-		} else if (value instanceof Short) {
-			stack.push((int) (Short) value, isRef);
-		} else if (value == null) {
-			stack.push(MJIEnv.NULL, isRef);
-		} else {
-			throw new RuntimeException(value + " of type " + value.getClass() + " cannot be pushed to the stack.");
 		}
 	}
 
@@ -413,4 +418,5 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 		string.append(stack);
 		return string.toString();
 	}
+
 }

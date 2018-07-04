@@ -156,7 +156,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 			if (size == 1) {
 				frame.push(ctx, ei.get1SlotField(fi));
 			} else {
-				frame.push(ctx, ei.get2SlotField(fi));
+				frame.pushLong(ctx, ei.get2SlotField(fi));
 			}
 		}
 

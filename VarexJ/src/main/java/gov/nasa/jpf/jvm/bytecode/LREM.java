@@ -38,7 +38,7 @@ public class LREM extends JVMInstruction {
     
     final Conditional<Long> v1 = frame.popLong(ctx);
     final Conditional<Long> v2 = frame.popLong(ctx);
-    frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x2 % x1)).simplify());
+    frame.pushLong(ctx, v2.mapr(x2 -> v1.map(x1 -> x2 % x1)).simplify());
     
     return getNext(ctx, ti);
   }

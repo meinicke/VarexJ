@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -39,14 +38,7 @@ public class L2F extends JVMInstruction {
     
     Conditional<Long> v = frame.popLong(ctx);
     
-    frame.push(ctx, v.map(new Function<Long, Float>() {
-
-		@Override
-		public Float apply(Long f) {
-			return (float)f.longValue();
-		}
-    	
-	}));
+    frame.pushFloat(ctx, v.map(f -> (float)f.longValue()));
 
     return getNext(ctx, ti);
   }

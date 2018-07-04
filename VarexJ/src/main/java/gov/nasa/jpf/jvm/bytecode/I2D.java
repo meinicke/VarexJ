@@ -36,7 +36,7 @@ public class I2D extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     final Conditional<Integer> ival = frame.pop(ctx);
-    frame.push(ctx, ival.map(x1 -> (double) x1).simplify());
+    frame.pushDouble(ctx, ival.map(x1 -> (double) x1).simplify());
 
     return getNext(ctx, ti);
   }

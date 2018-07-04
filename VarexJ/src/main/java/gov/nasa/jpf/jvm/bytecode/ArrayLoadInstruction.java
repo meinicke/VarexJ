@@ -39,7 +39,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 
-	private Conditional<?> pushValue = One.valueOf(0);
+	private Conditional pushValue = One.valueOf(0);
 	private FeatureExpr pushCtx;
 	
 	@Override
@@ -93,7 +93,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
 							pushCtx = Conditional.andNot(pushCtx,ctx);
-							return new One<Instruction>(new EXCEPTION(thisInstruction,
+							return new One<>(new EXCEPTION(thisInstruction,
 									java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));
 						}
 					}
@@ -103,7 +103,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 
 		}), next);
 
-		frame.push(pushCtx, pushValue, isReference());
+		pushValue(pushCtx, frame, pushValue);
 		
 		if (index.isOne() && aref.isOne()) {
 			// TODO
@@ -119,6 +119,8 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 		}
 		return next;
 	}
+
+	protected abstract void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value);
 
 	protected boolean isReference() {
 		return false;
@@ -150,4 +152,5 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 	public void accept(InstructionVisitor insVisitor) {
 		insVisitor.visit(this);
 	}
+	
 }

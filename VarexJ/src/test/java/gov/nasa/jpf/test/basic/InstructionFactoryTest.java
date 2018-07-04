@@ -53,7 +53,7 @@ public class InstructionFactoryTest extends TestJPF {
       System.out.println(" ..but we negate it just for kicks..");
       r = -r;
 
-      frame.push(ctx, new One<>(r));
+      frame.pushDouble(ctx, new One<>(r));
 
       return getNext(ctx, ti);
     }

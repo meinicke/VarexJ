@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -62,13 +63,11 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	public boolean isLifted() {
 		return lifted;
 	}
-	public FeatureExpr stackCTX;
 	private final int nLocals;
 	private final int nOperands;
 	
 	public HybridStackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
 		stackHandler = createNomalStack(ctx, nLocals, nOperands);
-		stackCTX = ctx;
 		this.nLocals = nLocals;
 		this.nOperands = nOperands;
 	}
@@ -78,7 +77,6 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	 */
 	public HybridStackHandler(HybridStackHandler stackHandler) {
 		this.stackHandler = stackHandler.stackHandler.clone();
-		this.stackCTX= this.stackHandler.getCtx();
 		this.nLocals = stackHandler.nLocals;
 		this.nOperands = stackHandler.nOperands;
 		this.lifted = stackHandler.lifted;
@@ -86,7 +84,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public FeatureExpr getCtx() {
-		return stackCTX;
+		return stackHandler.getCtx();
 	}
 
 	@Override
@@ -160,15 +158,37 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	public boolean isRefLocal(FeatureExpr ctx, int index) {
 		return stackHandler.isRefLocal(ctx, index);
 	}
+	
+	@Override
+	public void pushFloat(FeatureExpr ctx, Conditional<Float> value) {
+		checkCTX(ctx);
+		checkValueO(value, ctx);
+		stackHandler.pushFloat(ctx, value);
+	}
 
 	@Override
-	public <T> void push(FeatureExpr ctx, T value) {
+	public void pushLong(FeatureExpr ctx, Conditional<Long> value) {
 		checkCTX(ctx);
+		checkValueO(value, ctx);
+		stackHandler.pushLong(ctx, value);
+	}
+
+	@Override
+	public void pushDouble(FeatureExpr ctx, Conditional<Double> value) {
+		checkCTX(ctx);
+		checkValueO(value, ctx);
+		stackHandler.pushDouble(ctx, value);
+	}
+
+	@Override
+	public void push(FeatureExpr ctx, Conditional<Integer> value) {
+		checkCTX(ctx);
+		checkValueO(value, ctx);
 		stackHandler.push(ctx, value);
 	}
 
 	@Override
-	public void push(FeatureExpr ctx, Object value, boolean isRef) {
+	public void push(FeatureExpr ctx, Conditional<Integer> value, boolean isRef) {
 		checkCTX(ctx);
 		checkValueO(value, ctx);
 		stackHandler.push(ctx, value, isRef);
@@ -276,6 +296,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public boolean hasAnyRef(FeatureExpr ctx) {
+		checkCTX(ctx);
 		return stackHandler.hasAnyRef(ctx);
 	}
 
@@ -323,7 +344,6 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void setCtx(FeatureExpr ctx) {
-		stackCTX = ctx;
 		stackHandler.setCtx(ctx);
 	}
 
@@ -344,14 +364,14 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	}
 	
 	private void checkCTX(FeatureExpr ctx) {
-		if (!lifted && !Conditional.equals(stackCTX,ctx)) {
+		if (!lifted && !Conditional.equals(stackHandler.getCtx(),ctx)) {
 			createNewStackHandler();
 		}
 	}
 	
 	private void checkValue(Conditional<?> value) {
 		if (!lifted && !value.isOne()) {
-			if (!((Conditional<?>)value).simplify(stackCTX).isOne()) {
+			if (!((Conditional<?>)value).simplify(stackHandler.getCtx()).isOne()) {
 				createNewStackHandler();
 			}
 		}
@@ -359,7 +379,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	
 	private void checkValueO(Object value, FeatureExpr ctx) {
 		if (!lifted && value instanceof IChoice<?>) {
-			if (!((Conditional<?>)value).simplify(ctx).simplify(stackCTX).isOne()) {
+			if (!((Conditional<?>)value).simplify(ctx).simplify(stackHandler.getCtx()).isOne()) {
 				createNewStackHandler();
 			}
 		}
@@ -367,14 +387,14 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 
 	private void createNewStackHandler() {
 		lifted = true;
-		final IStackHandler newStackHandler = createLiftedStack(stackCTX, nLocals, nOperands);
+		final IStackHandler newStackHandler = createLiftedStack(stackHandler.getCtx(), nLocals, nOperands);
 		int i = 0; 
 		final int[] slots = stackHandler.getSlots();
 		for (;i < nLocals;i++) {
-			newStackHandler.setLocal(stackCTX, i, slots[i], stackHandler.isRefLocal(FeatureExprFactory.True(), i));
+			newStackHandler.setLocal(stackHandler.getCtx(), i, slots[i], stackHandler.isRefLocal(FeatureExprFactory.True(), i));
 		}
 		for (;i <= nLocals + stackHandler.getTop().getValue();i++) {
-			newStackHandler.push(stackCTX, slots[i], stackHandler.isRefLocal(FeatureExprFactory.True(), i));
+			newStackHandler.push(stackHandler.getCtx(), One.valueOf(slots[i]), stackHandler.isRefLocal(FeatureExprFactory.True(), i));
 		}
 		stackHandler = newStackHandler;
 		

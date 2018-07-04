@@ -2065,11 +2065,19 @@ public String toString () {
 //    top() -=2;
   }
   
-  public <T> void push (FeatureExpr ctx, Conditional<T> v, boolean ref){
-	  stack.push(ctx, v, ref);
+  public void pushFloat(FeatureExpr ctx, Conditional<Float> v){
+	  stack.pushFloat(ctx, v);
+  }
+  
+  public void pushLong(FeatureExpr ctx, Conditional<Long> v){
+	  stack.pushLong(ctx, v);
+  }
+  
+  public void pushDouble(FeatureExpr ctx, Conditional<Double> v){
+	  stack.pushDouble(ctx, v);
   }
 
-  public <T> void push (FeatureExpr ctx, Conditional<T> v){
+  public void push (FeatureExpr ctx, Conditional<Integer> v){
 	  stack.push(ctx, v, false);
 //    top++;
 //    slots[top()] = v.getValue();
@@ -2096,7 +2104,7 @@ public String toString () {
   }
 
   public void push (FeatureExpr ctx, int v, boolean ref) {
-	  stack.push(ctx, v, ref);
+	  stack.push(ctx, One.valueOf(v), ref);
 //    top++;
 //    slots[top()] = v;
 //    isRef.set(top, ref);
@@ -2138,7 +2146,7 @@ public String toString () {
   }
   
   public void setResult (long r, Object attr){
-    push(TRUE, new One<>(r));
+    stack.pushLong(TRUE, new One<>(r));
     if (attr != null){
       setLongOperandAttr(attr);
     }    

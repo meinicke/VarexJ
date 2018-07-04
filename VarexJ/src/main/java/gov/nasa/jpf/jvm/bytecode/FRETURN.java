@@ -45,7 +45,7 @@ public class FRETURN extends ReturnInstruction {
   }
   
   protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
-    frame.push(ctx, ret);
+    frame.pushFloat(ctx, ret);
   }
   
   public Conditional<Float> getReturnValue () {

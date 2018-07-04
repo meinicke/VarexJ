@@ -196,4 +196,5 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	public boolean isOne() {
 		return true;
 	}
+
 }

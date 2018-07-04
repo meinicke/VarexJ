@@ -32,7 +32,7 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
 public class RandomDifferentialStackTest {
 
 	private static final int ROUNDS = 100_000;
-	private static final int METHOD_CALLS = 5;
+	private static int METHOD_CALLS = 1;
 	static {
 		Conditional.setFM("");
 		ChoiceFactory.setDefault(Factory.MapChoice);
@@ -108,7 +108,7 @@ public class RandomDifferentialStackTest {
 	
 	public static void main(String[] args) {
 		try {
-			new RandomDifferentialStackTest().runDifferentialTest(52076);
+			new RandomDifferentialStackTest().runDifferentialTest(95521);
 		} catch (Throwable e) {
 			for (String call : calls) {
 				System.out.println(call);
@@ -127,7 +127,8 @@ public class RandomDifferentialStackTest {
 				if (seed != 0 && seed % (ROUNDS / 100) == 0) {
 					System.out.print('*');
 					if (seed % (ROUNDS / 10) == 0) {
-						System.out.println(seed);
+						METHOD_CALLS++;
+						System.out.println(seed + " " + METHOD_CALLS);
 					}
 				}
 			}
@@ -147,7 +148,7 @@ public class RandomDifferentialStackTest {
 		differentalTest(() -> {
 			calls.clear();
 			Random r = new Random(seed);
-			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 10);
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 15);
 
 			List<Object> returnValues = new ArrayList<>(METHOD_CALLS);
 			for (int j = 0; j < METHOD_CALLS; j++) {
@@ -186,6 +187,12 @@ public class RandomDifferentialStackTest {
 		}
 		try {
 			Object[] args = createArgs(method, r);
+			if (method.getName().equals("setCtx")) {
+				args[0] = Conditional.and(sh.getCtx(), (FeatureExpr) args[0]);
+			}
+			
+			args = checkStackCTX(sh, args);
+			
 			StringBuilder sb = new StringBuilder();
 			sb.append("sh.");
 			sb.append(method.getName());
@@ -207,12 +214,29 @@ public class RandomDifferentialStackTest {
 
 	}
 
+	private static Object[] checkStackCTX(IStackHandler sh, Object[] args) {
+		for (int i = 0; i < args.length; i++) {
+			Object object = args[i];
+			if (object instanceof FeatureExpr) {
+				if (!Conditional.isContradiction(Conditional.and(Conditional.not(sh.getCtx()), (FeatureExpr) object))) {
+					args[i] = sh.getCtx();
+					break;
+				}
+			}
+		}
+		return args;
+	}
+
 	private static Object[] createArgs(Method method, Random r) {
 		Class<?>[] parameterTypes = method.getParameterTypes();
 		Object[] args = new Object[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; i++) {
 			Class<?> type = parameterTypes[i];
 			if (type == FeatureExpr.class) {
+				if (method.getName().equals("setCtx")) {
+					args[i] = A;
+					continue;
+				}
 				int var = r.nextInt(3);
 				switch (var) {
 				case 0:
@@ -225,37 +249,28 @@ public class RandomDifferentialStackTest {
 					args[i] = A.not();
 					break;
 				}
+				
 			} else if (type == int.class) {
 				args[i] = r.nextInt(2);// TODO randomize		
 			} else if (type == boolean.class) {
 				args[i] = r.nextBoolean();
-			} else if (type == Object.class) {
-				if ("push".equals(method.getName())) {
-					int t = r.nextInt(6);
-					switch (t) {
-					case 0:// Integer
-						args[i] = One.valueOf(r.nextInt());
-						break;
-					case 1:// Long
-						args[i] = new One<>(r.nextLong());
-						break;
-					case 2:// Double
-						args[i] = new One<>(r.nextDouble());
-						break;
-					case 3:// Float
-						args[i] = new One<>(r.nextFloat());
-						break;
-					case 4:// Byte
-						args[i] = new One<>((byte)r.nextInt());
-						break;
-					case 5:// Short
-						args[i] = new One<>((short)r.nextInt());
-						break;
-					default:
-						break;
-					}
-				} else {
-					throw new RuntimeException(type.toString());
+			} else if (type == Conditional.class) {
+				switch (method.getName()) {
+				case "push":
+				case "setLocal":
+					args[i] = One.valueOf(r.nextInt());
+					break;
+				case "pushFloat":
+					args[i] = new One<>(r.nextFloat());
+					break;
+				case "pushLong":
+					args[i] = new One<>(r.nextLong());
+					break;
+				case "pushDouble":
+					args[i] = new One<>(r.nextDouble());
+					break;
+				default:
+					throw new RuntimeException(type.toString() + " " + method.getName());
 				}
 			} else if (type == IStackHandler.Type.class) {
 				args[i] = IStackHandler.Type.values()[r.nextInt(IStackHandler.Type.values().length)];

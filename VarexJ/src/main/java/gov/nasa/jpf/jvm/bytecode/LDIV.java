@@ -19,8 +19,9 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
@@ -48,7 +49,7 @@ public class LDIV extends JVMInstruction {
 				      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
 				    }
 				    
-					frame.push(ctx, v2.map(new Function<Long, Long>() {
+					frame.pushLong(ctx, v2.map(new Function<Long, Long>() {
 
 						@Override
 						public Long apply(Long v2) {

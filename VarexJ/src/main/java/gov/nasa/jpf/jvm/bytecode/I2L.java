@@ -36,7 +36,7 @@ public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
 
     final Conditional<Integer> v = frame.pop(ctx);
-    frame.push(ctx, v.map(x1 -> (long) x1).simplify());
+    frame.pushLong(ctx, v.map(x1 -> (long) x1).simplify());
 
     return getNext(ctx, ti);
   }

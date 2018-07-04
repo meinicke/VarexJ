@@ -51,7 +51,7 @@ public class LDC2_W extends JVMInstruction {
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     StackFrame frame = ti.getModifiableTopFrame();
-    frame.push(ctx, new One<>(value));
+    frame.pushLong(ctx, new One<>(value));
     return getNext(ctx, ti);
   }
 

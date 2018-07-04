@@ -42,4 +42,10 @@ public class IALOAD extends ArrayLoadInstruction {
   public void accept(InstructionVisitor insVisitor) {
 	  insVisitor.visit(this);
   }
+  
+  	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
+		frame.push(ctx, value);
+	}
 }

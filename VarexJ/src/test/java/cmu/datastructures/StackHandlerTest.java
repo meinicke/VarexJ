@@ -323,7 +323,6 @@ public class StackHandlerTest {
 
 	@Test
 	public void cloneEqualsTest2() throws Exception {
-
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
 		int m = 2;
 		int n = 1;
@@ -715,7 +714,7 @@ public class StackHandlerTest {
 		FeatureExpr ctx = FeatureExprFactory.True();
 		long l = 12345678910L;
 		Conditional<Long> n1 = new One<>(l);
-		stack.push(ctx, n1, false);
+		stack.pushLong(ctx, n1);
 		assertEquals(n1, stack.peekLong(ctx, 0));
 		assertEquals(1, stack.getStackWidth());
 
@@ -730,7 +729,7 @@ public class StackHandlerTest {
 		FeatureExpr ctx = FeatureExprFactory.True();
 		double d = 10.12345;
 		Conditional<Double> n1 = new One<>(d);
-		stack.push(ctx, n1, false);
+		stack.pushDouble(ctx, n1);
 
 		assertEquals(new One<>(d), stack.peekDouble(ctx, 0));
 		assertEquals(1, stack.getStackWidth());
@@ -746,7 +745,7 @@ public class StackHandlerTest {
 		FeatureExpr ctx = FeatureExprFactory.True();
 		float f = 123.4f;
 		Conditional<Float> n1 = new One<>(f);
-		stack.push(ctx, n1, false);
+		stack.pushFloat(ctx, n1);
 		assertEquals(n1, stack.peekFloat(ctx, 0));
 		assertEquals(1, stack.getStackWidth());
 
@@ -759,7 +758,7 @@ public class StackHandlerTest {
 	public void doubleTest() throws Exception {
 		Double d = 42.0;
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 2);
-		stack.push(FeatureExprFactory.True(), new One<>(42.0), false);
+		stack.pushDouble(FeatureExprFactory.True(), new One<>(42.0));
 		Double res = stack.popDouble(FeatureExprFactory.True()).getValue();
 		assertEquals(d, res);
 	}
@@ -767,8 +766,8 @@ public class StackHandlerTest {
 	@Test
 	public void doubleTest_2() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 4);
-		stack.push(FeatureExprFactory.True(), new One<>(42.0), false);
-		stack.push(FeatureExprFactory.True(), new One<>(42.0), false);
+		stack.pushDouble(FeatureExprFactory.True(), new One<>(42.0));
+		stack.pushDouble(FeatureExprFactory.True(), new One<>(42.0));
 		Double res = stack.popDouble(FeatureExprFactory.True()).getValue();
 		Double res2 = stack.popDouble(FeatureExprFactory.True()).getValue();
 		assertEquals(res2, res);
@@ -779,7 +778,7 @@ public class StackHandlerTest {
 	@Test
 	public void doubleTest_3() throws Exception {
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 0, 4);
-		stack.push(FeatureExprFactory.True(), new One<>(42.0), false);
+		stack.pushDouble(FeatureExprFactory.True(), new One<>(42.0));
 		Double res = stack.popDouble(FeatureExprFactory.True()).getValue();
 		assertEquals(fd, res);
 	}
@@ -828,8 +827,8 @@ public class StackHandlerTest {
 		long value = 42;
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
-		stack.push(f1, new One<>(value), false);
-		stack.push(f1.not(), new One<>(value), false);
+		stack.pushLong(f1, new One<>(value));
+		stack.pushLong(f1.not(), new One<>(value));
 		stack.storeLongOperand(f1.not(), 0);
 		assertEquals(new One<>(value), stack.popLong(f1));
 		assertFalse(stack.isRefLocal(f1.not(), 0));
@@ -844,8 +843,8 @@ public class StackHandlerTest {
 		double value = 42;
 		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
 		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1");
-		stack.push(f1, new One<>(value), false);
-		stack.push(f1.not(), new One<>(value), false);
+		stack.pushDouble(f1, new One<>(value));
+		stack.pushDouble(f1.not(), new One<>(value));
 		stack.storeLongOperand(f1.not(), 0);
 		assertEquals(new One<>(value), stack.popDouble(f1));
 		assertFalse(stack.isRefLocal(f1.not(), 0));

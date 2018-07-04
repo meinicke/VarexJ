@@ -107,7 +107,7 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   
   @Override
   public int setLongArgument (int slotIdx, long v, Object attr){
-    push(TRUE, new One<>(v));
+    pushLong(TRUE, new One<>(v));
     if (attr != null){
       setLongOperandAttr(attr);
     } 

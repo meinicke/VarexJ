@@ -36,7 +36,7 @@ public class I2F extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     final Conditional<Integer> v = frame.pop(ctx);
-    frame.push(ctx, v.map(x1 -> (float) x1).simplify());
+    frame.pushFloat(ctx, v.map(x1 -> (float) x1).simplify());
 
     return getNext(ctx, ti);
   }

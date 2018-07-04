@@ -32,7 +32,7 @@ public class SALOAD extends ArrayLoadInstruction {
 
   protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
-    return ei.getShortElement(index);
+    return ei.getShortElement(index).map(Short::intValue);
   }
 
 
@@ -43,4 +43,11 @@ public class SALOAD extends ArrayLoadInstruction {
   public void accept(InstructionVisitor insVisitor) {
 	  insVisitor.visit(this);
   }
+  
+  
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
+		frame.push(ctx, value);
+	}
 }

@@ -19,8 +19,8 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -45,14 +45,7 @@ public class DREM extends JVMInstruction {
 
 		@Override
 		public Conditional<Instruction> apply(FeatureExpr ctx, final Double v1) {
-			frame.push(ctx, v2.map(new Function<Double, Double>() {
-
-				@Override
-				public Double apply(Double v2) {	
-					return v2.doubleValue() % v1.doubleValue();
-				}
-				
-			}));
+			frame.pushDouble(ctx, v2.map(v21 -> v21.doubleValue() % v1.doubleValue()));
 
 		    return getNext(ctx, ti);
 		}

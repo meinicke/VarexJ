@@ -193,7 +193,9 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 			content.append(e.getKey());
 			content.append(" ; ");
 		}
-		content.delete(content.length() - 3, content.length() - 1);
+		if (!map.isEmpty()) {
+			content.delete(content.length() - 3, content.length() - 1);
+		}
 		content.append('}');
 		return content.toString();
 	}

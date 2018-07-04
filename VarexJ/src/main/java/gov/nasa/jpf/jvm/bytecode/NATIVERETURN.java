@@ -129,7 +129,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
 	// <2do> this should use the getResult..() methods of NativeStackFrame
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked" })
 	@Override
 	protected void pushReturnValue(FeatureExpr ctx, StackFrame fr) {
 		int retSize = 1;
@@ -141,7 +141,7 @@ public class NATIVERETURN extends ReturnInstruction {
 			switch (retType) {
 			case Types.T_BOOLEAN:
 				if (ret instanceof Conditional) {
-					fr.push(ctx, ((Conditional) ret).map(ret -> Types.booleanToInt(((Boolean) ret).booleanValue())));
+					fr.push(ctx, ((Conditional<Boolean>) ret).map(b -> Types.booleanToInt(b.booleanValue())));
 				} else {
 					fr.push(ctx, One.valueOf(Types.booleanToInt(((Boolean) ret).booleanValue())));
 				}
@@ -153,7 +153,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
 			case Types.T_CHAR:
 				if (ret instanceof Conditional) {
-					fr.push(ctx, ((Conditional) ret).map(ret -> (int) ((Character) ret).charValue()));
+					fr.push(ctx, ((Conditional<Character>) ret).map(c -> (int) c.charValue()));
 				} else {
 					fr.push(ctx, One.valueOf((int) ((Character) ret).charValue()));
 				}
@@ -165,7 +165,7 @@ public class NATIVERETURN extends ReturnInstruction {
 
 			case Types.T_INT:
 				if (ret instanceof Conditional) {
-					fr.push(ctx, (Conditional) ret);
+					fr.push(ctx, (Conditional<Integer>) ret);
 				} else {
 					fr.push(ctx, One.valueOf(((Integer) ret)));
 				}
@@ -173,17 +173,16 @@ public class NATIVERETURN extends ReturnInstruction {
 
 			case Types.T_LONG:
 				if (ret instanceof Conditional) {
-					fr.push(ctx, ((Conditional) ret));
+					fr.pushLong(ctx, ((Conditional<Long>) ret));
 				} else {
-					fr.push(ctx, new One<>((Long) ret));
-					retSize = 2;
+					fr.pushLong(ctx, new One<>((Long) ret));
 				}
 				retSize = 2;
 				break;
 
 			case Types.T_FLOAT:
 				if (ret instanceof Conditional) {
-					fr.push(ctx, ((Conditional<Float>) ret).map(x -> Types.floatToInt(x)));
+					fr.push(ctx, ((Conditional<Float>) ret).map(Types::floatToInt));
 				} else {
 					fr.push(ctx, One.valueOf(Types.floatToInt((Float) ret)));
 				}
@@ -191,10 +190,10 @@ public class NATIVERETURN extends ReturnInstruction {
 
 			case Types.T_DOUBLE:
 				if (ret instanceof Conditional) {
-					fr.push(ctx, ((Conditional<Double>) ret).map(x -> Types.doubleToLong(x)));
+					fr.pushLong(ctx, ((Conditional<Double>) ret).map(Types::doubleToLong));
 				} else {
 					long lval = Types.doubleToLong(((Double) ret).doubleValue());
-					fr.push(ctx, new One<>(lval));
+					fr.pushLong(ctx, new One<>(lval));
 					
 				}
 				retSize = 2;
@@ -203,9 +202,9 @@ public class NATIVERETURN extends ReturnInstruction {
 			default:
 				// everything else is supposed to be a reference
 				if (ret instanceof Conditional) {
-					fr.push(ctx, (Conditional) ret, true);
+					fr.pushRef(ctx, (Conditional<Integer>) ret);
 				} else {
-					fr.push(ctx, ((Integer) ret).intValue(), true);
+					fr.pushRef(ctx, ((Integer) ret).intValue());
 				}
 			}
 

@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -34,14 +33,7 @@ public class FALOAD extends ArrayLoadInstruction {
   protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     Conditional<Float> value = ei.getFloatElement(index);
-    return value.map(new Function<Float, Integer>() {
-
-		@Override
-		public Integer apply(Float v) {
-			return Float.floatToIntBits(v);
-		}
-    	
-    });
+    return value.map(Float::floatToIntBits);
   }
 
   public int getByteCode () {
@@ -51,4 +43,11 @@ public class FALOAD extends ArrayLoadInstruction {
   public void accept(InstructionVisitor insVisitor) {
 	  insVisitor.visit(this);
   }
+  
+  	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
+		frame.pushFloat(ctx, value);
+	}
+  
 }

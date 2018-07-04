@@ -19,8 +19,8 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -36,27 +36,11 @@ public class FREM extends JVMInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
-		Conditional<Float> v1 = frame.popFloat(ctx);
+		final Conditional<Float> v1 = frame.popFloat(ctx);
 		final Conditional<Float> v2 = frame.popFloat(ctx);
 
-		return v1.mapf(ctx, new BiFunction<FeatureExpr, Float, Conditional<Instruction>>() {
-
-			@Override
-			public Conditional<Instruction> apply(FeatureExpr ctx, final Float v1) {
-				frame.push(ctx, v2.map(new Function<Float, Float>() {
-
-					@Override
-					public Float apply(Float v2) {
-						return v2.floatValue() % v1.floatValue();
-					}
-					
-				}));
-
-			    return getNext(ctx, ti);
-			}
-	    	
-	    });
-		
+		frame.pushFloat(ctx, v1.mapf(ctx, (BiFunction<FeatureExpr, Float, Conditional<Float>>) (ctx1, v11) -> v2.map(v21 -> v21.floatValue() % v11.floatValue())));
+		return getNext(ctx, ti);
 	}
 
 	@Override

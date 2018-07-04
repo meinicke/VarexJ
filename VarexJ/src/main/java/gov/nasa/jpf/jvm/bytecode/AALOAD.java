@@ -47,4 +47,11 @@ public class AALOAD extends ArrayLoadInstruction {
   public void accept(InstructionVisitor insVisitor) {
 	  insVisitor.visit(this);
   }
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
+		frame.pushRef(ctx, value);
+	}
+
 }

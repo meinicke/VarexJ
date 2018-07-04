@@ -36,7 +36,7 @@ public class I2S extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
 
     final Conditional<Integer> v = frame.pop(ctx);
-    frame.push( ctx, v.map(x1 -> (int) (short) x1.intValue()).simplify(), false);
+    frame.push( ctx, v.map(x1 -> (int) (short) x1.intValue()).simplify());
 
     return getNext(ctx, ti);
   }

@@ -38,7 +38,7 @@ public class FNEG extends JVMInstruction {
     
     final Conditional<Float> v = frame.popFloat(ctx);
     
-    frame.push(ctx, v.map(x1 -> -x1));
+    frame.pushFloat(ctx, v.map(x1 -> -x1));
     return getNext(ctx, ti);
   }
 

@@ -35,7 +35,7 @@ public class DADD extends JVMInstruction {
 
 		final Conditional<Double> v1 = frame.popDouble(ctx);
 		final Conditional<Double> v2 = frame.popDouble(ctx);
-		frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x1 + x2)).simplify());
+		frame.pushDouble(ctx, v2.mapr(x2 -> v1.map(x1 -> x1 + x2)).simplify());
 
 		return getNext(ctx, ti);
 	}

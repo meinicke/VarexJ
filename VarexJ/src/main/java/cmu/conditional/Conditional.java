@@ -273,5 +273,4 @@ public abstract class Conditional<T> {
 	public boolean isOne() {
 		return false;
 	}
-	
 }

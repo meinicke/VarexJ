@@ -64,7 +64,10 @@ public interface IStackHandler {
 	// TODO change to conditional
 	public abstract boolean isRefLocal(FeatureExpr ctx, int index);
 
-	public abstract <T> void push(FeatureExpr ctx, T value);
+	public abstract void push(FeatureExpr ctx, Conditional<Integer> value);
+	public abstract void pushFloat(FeatureExpr ctx, Conditional<Float> value);
+	public abstract void pushLong(FeatureExpr ctx, Conditional<Long> value);
+	public abstract void pushDouble(FeatureExpr ctx, Conditional<Double> value);
 
 	/**
 	 * 
@@ -72,8 +75,8 @@ public interface IStackHandler {
 	 * @param value Can be a {@link Conditional}, or an int, double, or long.
 	 * @param isRef Sets the new value to be a reference or not.
 	 */
-	public abstract void push(FeatureExpr ctx, Object value, boolean isRef);
-
+	public abstract void push(FeatureExpr ctx, Conditional<Integer> value, boolean isRef);
+	
 	public abstract Conditional<Integer> pop(FeatureExpr ctx);
 
 	public abstract Conditional<Long> popLong(FeatureExpr ctx);

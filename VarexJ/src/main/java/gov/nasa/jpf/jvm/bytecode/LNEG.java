@@ -37,7 +37,7 @@ public class LNEG extends JVMInstruction {
     StackFrame frame = ti.getModifiableTopFrame();
     
     final Conditional<Long> v = frame.popLong(ctx);
-    frame.push(ctx, v.map(x1 -> -x1));
+    frame.pushLong(ctx, v.map(x1 -> -x1));
     return getNext(ctx, ti);
   }
   

@@ -36,7 +36,7 @@ public class DNEG extends JVMInstruction {
 
 		final Conditional<Double> v1 = frame.popDouble(ctx);
 
-		frame.push(ctx, v1.map(x1 -> -x1));
+		frame.pushDouble(ctx, v1.map(x1 -> -x1));
 		return getNext(ctx, ti);
 	}
 

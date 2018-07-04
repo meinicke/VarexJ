@@ -46,7 +46,7 @@ public abstract class LongReturn extends ReturnInstruction {
   }
 
   protected void pushReturnValue (FeatureExpr ctx, StackFrame frame) {
-    frame.push(ctx, ret);
+    frame.pushLong(ctx, ret);
   }
 
   //--- attribute accessors 

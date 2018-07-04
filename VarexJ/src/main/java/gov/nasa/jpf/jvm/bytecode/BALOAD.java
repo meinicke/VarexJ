@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
@@ -36,24 +35,17 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class BALOAD extends ArrayLoadInstruction {
 	
-	private static final One<Byte> nullValue = One.valueOf((byte)0);
+	private static final One<Integer> nullValue = One.valueOf(0);
 
   protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
 
-    Conditional<Byte> value;
+    Conditional<Integer> value;
     Fields f = ei.getFields();
     if (f instanceof ByteArrayFields){
-      value = ei.getByteElement(index);
+      value = ei.getByteElement(index).map(Byte::intValue);
     } else if (f instanceof BooleanArrayFields){
-    	value = ei.getBooleanElement(index).mapr(new Function<Boolean, Conditional<Byte>>() {
-
-			@Override
-			public Conditional<Byte> apply(Boolean v) {
-				return One.valueOf((byte) (v ? 1 : 0));
-			}
-    		
-    	}).simplify();
+    	value = ei.getBooleanElement(index).mapr(v -> One.valueOf((int)(v ? 1 : 0))).simplify();
     } else {
     	value = nullValue;
     }
@@ -69,4 +61,11 @@ public class BALOAD extends ArrayLoadInstruction {
   public void accept(InstructionVisitor insVisitor) {
 	  insVisitor.visit(this);
   }
+  
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
+		frame.push(ctx, value);
+	}
+
 }

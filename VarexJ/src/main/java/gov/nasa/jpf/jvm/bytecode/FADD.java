@@ -37,7 +37,7 @@ public class FADD extends JVMInstruction {
     
     final Conditional<Float> v1 = frame.popFloat(ctx);
     final Conditional<Float> v2 = frame.popFloat(ctx);
-    frame.push(ctx, v2.mapr(x2 -> v1.map(x1 -> x1 + x2)).simplify());
+    frame.pushFloat(ctx, v2.mapr(x2 -> v1.map(x1 -> x1 + x2)).simplify());
     
     return getNext(ctx, ti);
   }

@@ -90,13 +90,13 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void pushLocal(FeatureExpr ctx, int index) {
-		push(ctx, slots[index], isRef[index]);
+		push(slots[index], isRef[index]);
 	}
 
 	@Override
 	public void pushLongLocal(FeatureExpr ctx, int index) {
-		push(ctx, slots[index], false);
-		push(ctx, slots[index + 1], false);
+		push(slots[index], false);
+		push(slots[index + 1], false);
 	}
 
 	@Override
@@ -145,18 +145,31 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public <T> void push(FeatureExpr ctx, T value) {
-		push(ctx, value, false);
+	public void push(FeatureExpr ctx, Conditional<Integer> value) {
+		push(value.simplify(stackCTX).getValue(), false);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void push(FeatureExpr ctx, Object value, boolean isRef) {
-		if (value instanceof Conditional) {
-			push(ctx, ((Conditional) value).simplify(stackCTX).getValue(), isRef);
-			return;
-		}
-		assert !isRef || value instanceof Integer;
+	public void pushFloat(FeatureExpr ctx, Conditional<Float> value) {
+		push(value.simplify(stackCTX).getValue(), false);
+	}
+
+	@Override
+	public void pushLong(FeatureExpr ctx, Conditional<Long> value) {
+		push(value.simplify(stackCTX).getValue(), false);
+	}
+
+	@Override
+	public void pushDouble(FeatureExpr ctx, Conditional<Double> value) {
+		push(value.simplify(stackCTX).getValue(), false);
+	}
+
+	@Override
+	public void push(FeatureExpr ctx, Conditional<Integer> value, boolean isRef) {
+		push(value.simplify(stackCTX).getValue(), isRef);
+	}
+	
+	public void push(Number value, boolean isRef) {
 		if (value instanceof Integer) {
 			slots[++top] = ((Integer) value);
 			this.isRef[top] = isRef;
