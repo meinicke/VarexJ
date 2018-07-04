@@ -690,7 +690,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 				if (Conditional.isContradiction(context)) {
 					return One.valueOf(y);
 				}
-				return ChoiceFactory.create(context, new One<>(y + finalSize + 1), new One<>(y));
+				return ChoiceFactory.create(context, new One<>(y + finalSize), new One<>(y));
 			}).simplify(stackHandler.stackCTX);
 		}
 		return stackHandler.getTop();
@@ -805,12 +805,14 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 		if (!buffer.isEmpty()) {
 			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				if (buffer.size() >= 2) {
-					if (buffer.get(1).getSize() == 2) {
-						buffer.add(2, buffer.peek());
-						return;
-					} else if (buffer.size() >= 3) {
-						buffer.add(3, buffer.peek());
-						return;
+					if (buffer.peek().size == 1) {
+						if (buffer.get(1).getSize() == 2) {
+							buffer.add(2, buffer.peek());
+							return;
+						} else if (buffer.size() >= 3) {
+							buffer.add(3, buffer.peek());
+							return;
+						}
 					}
 				}
 				

@@ -32,7 +32,7 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
 public class RandomDifferentialStackTest {
 
 	private static final int ROUNDS = 100_000;
-	private static int METHOD_CALLS = 1;
+	private static final int METHOD_CALLS = 1;
 	static {
 		Conditional.setFM("");
 		ChoiceFactory.setDefault(Factory.MapChoice);
@@ -108,7 +108,7 @@ public class RandomDifferentialStackTest {
 	
 	public static void main(String[] args) {
 		try {
-			new RandomDifferentialStackTest().runDifferentialTest(95521);
+			new RandomDifferentialStackTest().runDifferentialTest(22796);
 		} catch (Throwable e) {
 			for (String call : calls) {
 				System.out.println(call);
@@ -127,8 +127,7 @@ public class RandomDifferentialStackTest {
 				if (seed != 0 && seed % (ROUNDS / 100) == 0) {
 					System.out.print('*');
 					if (seed % (ROUNDS / 10) == 0) {
-						METHOD_CALLS++;
-						System.out.println(seed + " " + METHOD_CALLS);
+						System.out.println(seed);
 					}
 				}
 			}
@@ -148,7 +147,7 @@ public class RandomDifferentialStackTest {
 		differentalTest(() -> {
 			calls.clear();
 			Random r = new Random(seed);
-			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 15);
+			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 20);
 
 			List<Object> returnValues = new ArrayList<>(METHOD_CALLS);
 			for (int j = 0; j < METHOD_CALLS; j++) {
