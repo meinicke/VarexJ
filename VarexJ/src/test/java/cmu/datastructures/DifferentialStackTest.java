@@ -66,12 +66,12 @@ public class DifferentialStackTest {
 				result = execute;
 			} else if (result.getClass().isArray()) {
 				if (result.getClass() == int[].class) {
-					assertArrayEquals((int[]) result, (int[]) execute);
+					assertArrayEquals(Arrays.toString(params), (int[]) result, (int[]) execute);
 				} else {
 					throw new RuntimeException(result.getClass() + " not implemented");
 				}
 			} else {
-				assertEquals(result, execute);
+				assertEquals(Arrays.toString(params), result, execute);
 			}
 		}
 		assertNotNull(result);
@@ -102,8 +102,6 @@ public class DifferentialStackTest {
 			sh.push(TRUE, new One<>(1));
 			sh.dup_x2(TRUE);
 			int[] slots = sh.getSlots();
-			System.out.println(sh);
-			System.out.println(Arrays.toString(slots));
 			return slots;
 		});
 	}
@@ -909,6 +907,7 @@ public class DifferentialStackTest {
 			try {
 				sh.storeOperand(A, 1);
 			} catch (Throwable e) {
+				e.printStackTrace();
 				return 1;
 			}
 			return -1;
