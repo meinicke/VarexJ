@@ -217,11 +217,10 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 			res = Types.intToFloat(stack.pop());
 			break;
 		case LONG:
+		default:
 			assert stack.top >= 1;
 			res = Types.intsToLong(stack.pop(), stack.pop());
 			break;
-		default:
-			return null;
 		}
 		return (Conditional<T>) new One<>(res);
 	}
