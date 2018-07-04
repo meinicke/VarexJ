@@ -386,10 +386,10 @@ public class DifferentialStackTest {
 	public void TestGetTop() {
 		differentalTest(() -> {
 			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 20, 20);
-			sh.pushLocal(A,0);
+			sh.pushLocal(A, 0);
 			sh.pushFloat(A, new One<>(0.22170204f));
-			sh.pushLongLocal(A.not(),1);
-			sh.IINC(A,0,0);
+			sh.pushLongLocal(A.not(), 1);
+			sh.IINC(A, 0, 0);
 			sh.pushDouble(A, new One<>(0.1778490612404653));
 			sh.pushLong(A, new One<>(6048125184237463937l));
 			sh.getTop();
@@ -446,6 +446,19 @@ public class DifferentialStackTest {
 			} catch (Throwable e) {
 				return 1;
 			}
+		});
+	}
+
+	@Test
+	public void TestHasAnyRef4() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 1, 3);
+			sh.pushDouble(TRUE, new One<>(0.0872318551136596));
+			sh.hasAnyRef(TRUE);
+			sh.push(TRUE, new One<>(1), true);
+			sh.hasAnyRef(TRUE);
+			sh.storeOperand(TRUE, 0);
+			return sh.hasAnyRef(TRUE);
 		});
 	}
 
@@ -923,7 +936,7 @@ public class DifferentialStackTest {
 			return -1;
 		});
 	}
-	
+
 	@Test
 	public void testStoreOperand_1() {
 		differentalTest(() -> {
@@ -978,7 +991,7 @@ public class DifferentialStackTest {
 			return sh.popLong(TRUE);
 		});
 	}
-	
+
 	@Test
 	public void TestSwap2() {
 		differentalTest(() -> {
@@ -993,7 +1006,7 @@ public class DifferentialStackTest {
 			return -1;
 		});
 	}
-	
+
 	@Test
 	public void TestToString() {
 		differentalTest(() -> {
@@ -1005,6 +1018,5 @@ public class DifferentialStackTest {
 			return "";
 		});
 	}
-	
 
 }
