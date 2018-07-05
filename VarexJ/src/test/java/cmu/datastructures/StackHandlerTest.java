@@ -849,5 +849,54 @@ public class StackHandlerTest {
 		assertEquals(new One<>(value), stack.popDouble(f1));
 		assertFalse(stack.isRefLocal(f1.not(), 0));
 	}
+	
+	@Test
+	public void equalsTest() throws Exception {
+		IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		IStackHandler other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		assertEquals(stack, stack);
+		assertEquals(stack, stack.clone());
+		
+		assertNotEquals(stack, null);
+		assertNotEquals(stack, new Object());
+
+		FeatureExpr f1 = FeatureExprFactory.createDefinedExternal("f1" + System.currentTimeMillis());
+		other.push(f1, new One<>(1));
+		assertNotEquals(stack, other);
+		assertNotEquals(other, stack);
+		
+		other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		other.setLocal(FeatureExprFactory.True(), 0, new One<>(1), true);
+		assertNotEquals(stack, other);
+	
+		other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 1, 3);
+		assertNotEquals(stack, other);
+		
+		other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 1, 2);
+		assertNotEquals(stack, other);
+		
+		other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		other.push(FeatureExprFactory.True(), new One<>(1));
+		assertNotEquals(stack, other);
+		
+		other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 1);
+		assertNotEquals(stack, other);
+		
+		other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		other.push(FeatureExprFactory.True(), new One<>(1), true);
+		
+		assertNotEquals(stack, other);
+		
+		other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		other.push(FeatureExprFactory.True(), new One<>(1), true);
+		stack.push(FeatureExprFactory.True(), new One<>(1), false);
+		assertNotEquals(stack, other);
+		
+		other = StackHandlerFactory.createStack(FeatureExprFactory.True(), 2, 2);
+		other.push(FeatureExprFactory.True(), new One<>(1), false);
+		other.push(FeatureExprFactory.True(), new One<>(1), true);
+		stack.push(FeatureExprFactory.True(), new One<>(1), false);
+		assertNotEquals(stack, other);
+	}
 
 }

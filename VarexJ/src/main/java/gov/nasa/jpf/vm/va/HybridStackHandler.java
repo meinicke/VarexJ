@@ -5,6 +5,7 @@ import java.util.Collection;
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
+import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
@@ -413,8 +414,9 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 	
 	@Override
 	public int hashCode() {
-		return stackHandler.hashCode();
+		throw new MethodNotImplementedException();
 	}
+
 	
 	@Override
 	public String toString() {

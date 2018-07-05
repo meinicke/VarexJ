@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -375,21 +376,12 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + length;
-		result = prime * result + Arrays.hashCode(locals);
-		result = prime * result + stack.hashCode();
-		result = prime * result + stackCTX.hashCode();
-		return result;
+		throw new MethodNotImplementedException();
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		OneStackHandler other = (OneStackHandler) obj;

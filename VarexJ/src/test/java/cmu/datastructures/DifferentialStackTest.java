@@ -466,7 +466,11 @@ public class DifferentialStackTest {
 	public void TestHashCode() {
 		differentalTest(() -> {
 			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 10, 10);
-			sh.hashCode();
+			try {
+				sh.hashCode();
+			} catch (Exception e) {
+				return 1;
+			}
 			return -1;
 		});
 	}

@@ -32,7 +32,7 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
 public class RandomDifferentialStackTest {
 
 	private static final int ROUNDS = 100_000;
-	private static final int METHOD_CALLS = 1;
+	private static final int METHOD_CALLS = 10;
 	static {
 		Conditional.setFM("");
 		ChoiceFactory.setDefault(Factory.MapChoice);

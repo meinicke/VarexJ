@@ -8,6 +8,7 @@ import java.util.function.Function;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -518,22 +519,16 @@ public class StackHandler implements Cloneable, IStackHandler {
 			if (l1 == l2) {
 				continue;
 			}
-			if (l1 == null) {
-				return false;
-			}
 			if (!l1.equals(l2)) {
 				return false;
 			}
 		}
-		if (!other.stack.equals(stack)) {
-			return false;
-		}
-		return true;
+		return  other.stack.equals(stack);
 	}
 	
 	@Override
 	public int hashCode() {
-		return 42;
+		throw new MethodNotImplementedException();
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import java.util.function.Function;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
+import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -842,6 +843,11 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 			return stackHandler.equals(((BufferedStackHandler) o).stackHandler);
 		}
 		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		throw new MethodNotImplementedException();
 	}
 
 	@Override

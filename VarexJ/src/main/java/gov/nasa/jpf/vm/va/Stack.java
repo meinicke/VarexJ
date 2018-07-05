@@ -114,6 +114,10 @@ public class Stack {
 			return false;
 		}
 		
+		if (stack.slots.length != slots.length) {
+			return false;
+		}
+		
 		for (int i = 0; i <= top; i++) {
 			if (!stack.slots[i].equals(slots[i])) {
 				return false;
