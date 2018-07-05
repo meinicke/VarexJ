@@ -70,6 +70,24 @@ public class DifferentialStackTest {
 				} else {
 					throw new RuntimeException(result.getClass() + " not implemented");
 				}
+			} else if (result instanceof List) {
+				@SuppressWarnings("unchecked")
+				List<Object> resultList = (List<Object>) result;
+				@SuppressWarnings("unchecked")
+				List<Object> executeList = (List<Object>) execute;
+				for (int i = 0; i < resultList.size(); i++) {
+					Object r = resultList.get(i);
+					Object e = executeList.get(i);
+					if (r.getClass().isArray()) {
+						if (r.getClass() == int[].class) {
+							assertArrayEquals(Arrays.toString(params), (int[]) r, (int[]) e);
+						} else {
+							throw new RuntimeException(result.getClass() + " not implemented");
+						}
+					} else {
+						assertEquals(Arrays.toString(params), r, e);
+					}
+				}
 			} else {
 				assertEquals(Arrays.toString(params), result, execute);
 			}
@@ -377,7 +395,6 @@ public class DifferentialStackTest {
 			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 2, 2);
 			sh.pushDouble(A, new One<>(0.0));
 			sh.pushDouble(A.not(), new One<>(0.0));
-			System.out.println(sh);
 			return sh.getTop();
 		});
 	}
@@ -1023,4 +1040,22 @@ public class DifferentialStackTest {
 		});
 	}
 
+	@Test
+	public void TestGetSlots5() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 20, 20);
+			List<Object> results = new ArrayList<>();
+			sh.pushLong(TRUE, new One<>(-7280404317159513543l));
+		    results.add(sh.peekFloat(A.not(),1));
+		    sh.pop(A,1);
+		    sh.IINC(TRUE,1,0);
+		    sh.pushLong(A.not(), new One<>(6182806544056491709l));
+		    sh.clear(A.not());
+		    results.add(sh.getSlots());
+		    sh.pushLocal(TRUE,1);
+		    results.add(sh.getSlots());
+		    return results;
+		});
+	}
+	
 }

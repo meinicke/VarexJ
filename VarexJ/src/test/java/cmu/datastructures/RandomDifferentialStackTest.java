@@ -95,7 +95,20 @@ public class RandomDifferentialStackTest {
 					}
 					if (result.get(i).getClass().isArray()) {
 						if (result.get(i).getClass() == int[].class) {
-							assertArrayEquals(Arrays.toString(params), (int[]) result.get(i), (int[]) execute.get(i));
+							try {
+								assertArrayEquals(Arrays.toString(params), (int[]) result.get(i), (int[]) execute.get(i));
+							} catch (Throwable e) {
+								System.out.println("Expected:");
+								for (Object object : result) {
+									print(object);
+								}
+								
+								System.out.println("Actual:");
+								for (Object object : execute) {
+									print(object);
+								}
+								throw e;
+							}
 							continue;
 						}
 					}
@@ -106,6 +119,17 @@ public class RandomDifferentialStackTest {
 		assertNotNull(result);
 	}
 	
+	private void print(Object object) {
+		if (object == null ) {
+			System.out.println("null");
+		} else if (object instanceof int[]){
+			System.out.println(Arrays.toString((int[]) object));
+		} else {
+			System.out.println(object);
+		}
+		
+	}
+
 	public static void main(String[] args) {
 		try {
 			new RandomDifferentialStackTest().runDifferentialTest(22796);
