@@ -230,10 +230,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 	// TODO change to conditional
 	@Override
 	public boolean isRefLocal(FeatureExpr ctx, final int index) {
-		if (index < 0) {
-			return false;
-		}
-
 		if (index < locals.length) {
 			if (locals[index] == null) {
 				return false;

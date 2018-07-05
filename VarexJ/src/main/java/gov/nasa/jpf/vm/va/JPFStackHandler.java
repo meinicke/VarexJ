@@ -137,9 +137,6 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public boolean isRefLocal(FeatureExpr ctx, int index) {
-		if (index < 0) {
-			return false;
-		}
 		return isRef[index];
 	}
 
