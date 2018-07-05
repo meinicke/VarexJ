@@ -197,6 +197,7 @@ public class RandomDifferentialStackTest {
 		ignoredMethods.add("getLocal");
 		ignoredMethods.add("setTop");
 		ignoredMethods.add("getStack");
+		ignoredMethods.add("getSlots");
 	}
 
 	private static List<String> calls = new ArrayList<>(2);

@@ -1051,9 +1051,8 @@ public class DifferentialStackTest {
 		    sh.IINC(TRUE,1,0);
 		    sh.pushLong(A.not(), new One<>(6182806544056491709l));
 		    sh.clear(A.not());
-		    results.add(sh.getSlots());
-		    sh.pushLocal(TRUE,1);
-		    results.add(sh.getSlots());
+		    results.add(sh.getSlots(A));
+		    results.add(sh.getSlots(A.not()));
 		    return results;
 		});
 	}
