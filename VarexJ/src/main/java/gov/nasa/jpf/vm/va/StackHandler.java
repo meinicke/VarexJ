@@ -99,9 +99,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 		clone.locals = new Conditional[locals.length];
 		for (int i = 0; i < locals.length; i++) {
 			Conditional<Entry> local = locals[i];
-			if (local != null) {
-				clone.locals[i] = local.map(entry -> entry.copy());
-			}
+			clone.locals[i] = local.map(entry -> entry.copy());
 		}
 
 		clone.stack = stack.map(stack -> stack.copy());
@@ -119,23 +117,14 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@Override
 	public void pushLocal(final FeatureExpr ctx, final int index) {
 		Conditional<Entry> value = locals[index];
-		if (value == null) {
-			value = new One<>(new Entry(MJIEnv.NULL, false));
-		}
 		value.mapf(ctx, (FeatureExpr ctx1, Entry entry) -> push(ctx1, entry.value, entry.isRef));
 	}
 
 	@Override
 	public void pushLongLocal(FeatureExpr ctx, int index) {
 		Conditional<Entry> value = locals[index];
-		if (value == null) {
-			value = new One<>(new Entry(0, false));
-		}
 		value.mapf(ctx, (FeatureExpr ctx1, Entry entry) -> push(ctx1, entry.value, false));
 		value = locals[index + 1];
-		if (value == null) {
-			value = new One<>(new Entry(0, false));
-		}
 		value.mapf(ctx, (FeatureExpr ctx1, Entry entry) -> push(ctx1, entry.value, false));
 	}
 
@@ -144,9 +133,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 		if (Conditional.isTautology(ctx)) {
 			locals[index] = popEntry(ctx, true);
 		} else {
-			if (locals[index] == null) {
-				locals[index] = new One<>(new Entry(MJIEnv.NULL, false));
-			}
 			locals[index] = ChoiceFactory.create(ctx, popEntry(ctx, true), locals[index]).simplify();
 		}
 	}
@@ -194,9 +180,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 		if (Conditional.isTautology(ctx)) {
 			locals[index] = new One<>(new Entry(value, isRef));
 		} else {
-			if (locals[index] == null) {
-				locals[index] = new One<>(new Entry(0, false));
-			}
 			locals[index] = ChoiceFactory.create(ctx, new One<>(new Entry(value, isRef)), locals[index]).simplify();
 		}
 	}
@@ -207,13 +190,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 			return new One<>(-1);
 		}
 		if (index < locals.length) {
-			if (locals[index] == null) {
-				return One.MJIEnvNULL;
-			}
 			return locals[index].simplify(ctx).map(x -> {
-				if (x == null) {
-					return MJIEnv.NULL;
-				}
 				return x.value;
 			}).simplifyValues();
 		} else {
@@ -231,10 +208,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@Override
 	public boolean isRefLocal(FeatureExpr ctx, final int index) {
 		if (index < locals.length) {
-			if (locals[index] == null) {
-				return false;
-			}
-			// TODO check calls of isRefLocal
 			for (boolean b : locals[index].simplify(ctx).map(y -> y.isRef).toList()) {
 				if (b) {
 					return true;
@@ -289,12 +262,9 @@ public class StackHandler implements Cloneable, IStackHandler {
 				long v2 = Double.doubleToLongBits((Double) value);
 				clone.push((int) (v2 >> 32), isRef);
 				clone.push((int) v2, isRef);
-			} else if (value instanceof Float) {
-				clone.push(Float.floatToIntBits((Float) value), isRef);
 			} else {
-				throw new RuntimeException(value + " of type " + value.getClass() + " cannot be pushed to the stack.");
+				clone.push(Float.floatToIntBits((Float) value), isRef);
 			}
-
 			if (stackCTX.equivalentTo(f)) {
 				return new One<>(clone);
 			}
@@ -420,9 +390,8 @@ public class StackHandler implements Cloneable, IStackHandler {
 				case INT:
 					return (T) stack.peek(offset);
 				case LONG:
-					return (T) (Long) Types.intsToLong(stack.peek(offset), stack.peek(offset + 1));
 				default:
-					return null;
+					return (T) (Long) Types.intsToLong(stack.peek(offset), stack.peek(offset + 1));
 				}
 			}
 
@@ -484,10 +453,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 		}
 		int i = 0;
 		for (Conditional<Entry> l : locals) {
-			if (l == null) {
-				slots[i++] = MJIEnv.NULL;
-				continue;
-			}
 			slots[i++] = l.simplify(Conditional.and(stackCTX, ctx)).getValue(true).value;
 		}
 		for (int o : stack.simplify(Conditional.and(stackCTX, ctx)).getValue(true).getSlots()) {
@@ -533,9 +498,6 @@ public class StackHandler implements Cloneable, IStackHandler {
 			return false;
 		}
 		for (Conditional<Entry> local : locals) {
-			if (local == null) {
-				continue;
-			}
 			for (Entry entry : local.simplify(ctx).toList()) {
 				if (entry.isRef) {
 					return true;
