@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -31,7 +33,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 
 	protected int length = 0;
 
-	public FeatureExpr stackCTX;
+	protected FeatureExpr stackCTX;
 	
 	@Override
 	public int getStackWidth() {
@@ -55,13 +57,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	protected static final One<Entry> nullValue = new One<>(new Entry(MJIEnv.NULL, false)); 
 
 	@SuppressWarnings("unchecked")
-	public StackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
-		if (ctx == null) {
-			// if loading class inside jetty, the ctx is null
-			System.err.println("CAUTIOUS! CTX == NULL, creating True");
-			ctx = FeatureExprFactory.True();
-//			throw new RuntimeException("CTX == NULL");
-		}
+	public StackHandler(@Nonnull FeatureExpr ctx, int nLocals, int nOperands) {
 		length = nLocals + nOperands;
 		locals = new Conditional[nLocals];
 		Arrays.fill(locals, nullValue);

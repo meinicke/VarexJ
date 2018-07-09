@@ -36,7 +36,7 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 	
 	private static final Entry NULL_ENTRY = new Entry(MJIEnv.NULL, false);
 
-	public OneStackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
+	public OneStackHandler(@Nonnull FeatureExpr ctx, int nLocals, int nOperands) {
 		length = nLocals + nOperands;
 		locals = new Entry[nLocals];
 		Arrays.fill(locals, NULL_ENTRY);

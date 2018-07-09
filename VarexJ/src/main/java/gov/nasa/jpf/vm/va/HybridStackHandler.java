@@ -2,6 +2,8 @@ package gov.nasa.jpf.vm.va;
 
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
@@ -37,7 +39,7 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 		Default, Buffered
 	}
 	
-	private static IStackHandler createNomalStack(FeatureExpr ctx, int nLocals, int nOperands) {
+	private static IStackHandler createNomalStack(@Nonnull FeatureExpr ctx, int nLocals, int nOperands) {
 		switch (normalStack) {
 		case JPFStack:
 			return new JPFStackHandler(ctx, nLocals, nOperands);

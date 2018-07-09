@@ -33,7 +33,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 	
 	public @Nonnull FeatureExpr stackCTX;
 	
-	public JPFStackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
+	public JPFStackHandler(@Nonnull FeatureExpr ctx, int nLocals, int nOperands) {
 		this.nLocals = nLocals;
 		this.nOperands = nOperands;
 		length = nLocals + nOperands;

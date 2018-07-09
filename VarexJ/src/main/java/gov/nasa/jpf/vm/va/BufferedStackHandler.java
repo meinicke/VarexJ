@@ -6,6 +6,8 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -62,10 +64,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 		stackHandler.setCtx(ctx);
 	}
 
-	public BufferedStackHandler(FeatureExpr ctx, int nLocals, int nOperands) {
-		if (ctx == null) {
-			throw new RuntimeException("CTX == NULL");
-		}
+	public BufferedStackHandler(@Nonnull FeatureExpr ctx, int nLocals, int nOperands) {
 		stackHandler = new StackHandler(ctx, nLocals, nOperands);
 		maxStackSize = nOperands;
 	}

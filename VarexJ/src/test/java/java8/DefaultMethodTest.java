@@ -17,12 +17,9 @@
  */
 package java8;
 
-import gov.nasa.jpf.annotation.MJI;
-import gov.nasa.jpf.util.test.TestJPF;
-import gov.nasa.jpf.vm.MJIEnv;
-import gov.nasa.jpf.vm.NativePeer;
-import gov.nasa.jpf.vm.Verify;
 import org.junit.Test;
+
+import gov.nasa.jpf.util.test.TestJPF;
 
 /**
  * regression test for Java 8 default methods
