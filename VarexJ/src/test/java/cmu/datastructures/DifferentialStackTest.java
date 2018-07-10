@@ -693,6 +693,19 @@ public class DifferentialStackTest {
 	}
 
 	@Test
+	public void TestPopN3() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 10, 10);
+			List<Object> results = new ArrayList<>();
+			sh.pushLong(TRUE, new One<>(6859552039610887379l));
+		    sh.pushLong(A, new One<>(-8248707928221085233l));
+		    sh.pop(A,1);
+		    results.add(sh.peekDouble(A,1));
+			return results;
+		});
+	}
+
+	@Test
 	public void testPush() {
 		differentalTest(() -> {
 			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 0, 1);
@@ -1042,7 +1055,8 @@ public class DifferentialStackTest {
 			return sh.pop(TRUE);
 		});
 	}
-
+	
+	
 	@Test
 	public void TestSwap() {
 		differentalTest(() -> {
@@ -1053,7 +1067,6 @@ public class DifferentialStackTest {
 			return sh.popLong(TRUE);
 		});
 	}
-	
 	
 	@Test
 	public void TestSwap2() {
@@ -1069,7 +1082,7 @@ public class DifferentialStackTest {
 			return -1;
 		});
 	}
-	
+
 	@Test
 	public void TestToString() {
 		differentalTest(() -> {
@@ -1082,4 +1095,6 @@ public class DifferentialStackTest {
 		});
 	}
 	
+	
+
 }

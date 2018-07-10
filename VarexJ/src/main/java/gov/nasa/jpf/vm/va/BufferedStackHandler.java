@@ -349,13 +349,16 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 		}
 		if (!buffer.isEmpty()) {
 			if (Conditional.equivalentTo(bufferCTX, ctx)) {
-				while (n > 0 && !buffer.isEmpty()) {
+				while (n >= 1 && !buffer.isEmpty()) {
 					if (buffer.peek().size == 1) {
 						buffer.removeFirst();
 						n--;
-					} else {
+					} else if (n >= 2) {
 						buffer.removeFirst();
 						n = n - 2;
+					} else { 
+						debufferAll();
+						break;
 					}
 				}
 				if (n == 0) {
