@@ -390,6 +390,23 @@ public class DifferentialStackTest {
 	}
 
 	@Test
+	public void TestGetSlots5() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 20, 20);
+			List<Object> results = new ArrayList<>();
+			sh.pushLong(TRUE, new One<>(-7280404317159513543l));
+		    results.add(sh.peekFloat(A.not(),1));
+		    sh.pop(A,1);
+		    sh.IINC(TRUE,1,0);
+		    sh.pushLong(A.not(), new One<>(6182806544056491709l));
+		    sh.clear(A.not());
+		    results.add(sh.getSlots(A));
+		    results.add(sh.getSlots(A.not()));
+		    return results;
+		});
+	}
+
+	@Test
 	public void testGetTop() {
 		differentalTest(() -> {
 			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 2, 2);
@@ -648,6 +665,30 @@ public class DifferentialStackTest {
 			} catch (Throwable e) {
 				return 1;
 			}
+		});
+	}
+
+	@Test
+	public void TestPopN() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 20, 20);
+			sh.push(TRUE, new One<>(1));
+			sh.pushLong(TRUE, new One<>(1l));
+			sh.pop(TRUE, 2);
+			return sh.getSlots();
+		});
+	}
+
+	@Test
+	public void TestPopN2() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 20, 20);
+			sh.push(TRUE, new One<>(1));
+			sh.push(A, new One<>(2));
+			sh.push(A.not(), new One<>(4));
+			sh.pushLong(TRUE, new One<>(1l));
+			sh.pop(TRUE, 4);
+			return sh.getSlots();
 		});
 	}
 
@@ -1012,7 +1053,8 @@ public class DifferentialStackTest {
 			return sh.popLong(TRUE);
 		});
 	}
-
+	
+	
 	@Test
 	public void TestSwap2() {
 		differentalTest(() -> {
@@ -1027,7 +1069,7 @@ public class DifferentialStackTest {
 			return -1;
 		});
 	}
-
+	
 	@Test
 	public void TestToString() {
 		differentalTest(() -> {
@@ -1037,23 +1079,6 @@ public class DifferentialStackTest {
 			sh.storeOperand(TRUE, 0);
 			sh.toString();
 			return "";
-		});
-	}
-
-	@Test
-	public void TestGetSlots5() {
-		differentalTest(() -> {
-			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 20, 20);
-			List<Object> results = new ArrayList<>();
-			sh.pushLong(TRUE, new One<>(-7280404317159513543l));
-		    results.add(sh.peekFloat(A.not(),1));
-		    sh.pop(A,1);
-		    sh.IINC(TRUE,1,0);
-		    sh.pushLong(A.not(), new One<>(6182806544056491709l));
-		    sh.clear(A.not());
-		    results.add(sh.getSlots(A));
-		    results.add(sh.getSlots(A.not()));
-		    return results;
 		});
 	}
 	

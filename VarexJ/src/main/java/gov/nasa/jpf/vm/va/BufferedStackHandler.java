@@ -175,9 +175,6 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 					if (Conditional.isTautology(ctx)) {
 						stackHandler.locals[index] = newValue;
 					} else {
-						if (stackHandler.locals[index] == null) {
-							stackHandler.locals[index] = new One<>(Entry.create(MJIEnv.NULL, false));
-						}
 						stackHandler.locals[index] = ChoiceFactory.create(ctx, newValue, stackHandler.locals[index]).simplify();
 					}
 					return;
@@ -300,10 +297,6 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 					if (value instanceof Integer) {
 						return  buffer.pop().value.map(x -> Types.intToFloat((Integer) x));
 					}
-					if (value == null) {
-						buffer.pop();
-						return (Conditional<T>) new One<>((float)0.0);
-					}
 					break;
 				case INT:
 					if (value instanceof Integer) {
@@ -314,6 +307,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 					}
 					break;
 				case LONG:
+				default:
 					if (value instanceof Long) {
 						return buffer.pop().value;
 					} else if (value instanceof Double) {
@@ -332,10 +326,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 						}
 						break;
 					}
-				default:
-					throw new RuntimeException("Type " + value.getClass() + " not supported " + t);
 				}
-				
 				debufferAll();
 			} else {
 				debufferAll();
@@ -357,32 +348,24 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 			return;
 		}
 		if (!buffer.isEmpty()) {
-			if (buffer.size() >= n && Conditional.equivalentTo(bufferCTX, ctx)) {
-				while (n > 0) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
+				while (n > 0 && !buffer.isEmpty()) {
 					if (buffer.peek().size == 1) {
 						buffer.removeFirst();
 						n--;
-						continue;
 					} else {
-						if (n > 1) {
-							buffer.removeFirst();
-							buffer.removeFirst();
-							n = n - 2;
-							continue;
-						} else {
-							debufferAll();
-							stackHandler.pop(ctx, n);
-							return;
-						}
+						buffer.removeFirst();
+						n = n - 2;
 					}
+				}
+				if (n == 0) {
+					return;
 				}
 			} else {
 				debufferAll();
-				stackHandler.pop(ctx, n);
 			}
-		} else {
-			stackHandler.pop(ctx, n);
 		}
+		stackHandler.pop(ctx, n);
 	}
 
 	@Override
