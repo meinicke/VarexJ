@@ -148,7 +148,7 @@ test {
     maxHeapSize = "1024m"
     include '**/*Test.class'
     include '**/jikesRVM/**/Test*.class'
-    //exclude '**/jikesRVM/**/Test*$*.class'
+    exclude '**/jikesRVM/**/Test*$*.class'
     exclude '**/JPF_*.class'
 }
 
