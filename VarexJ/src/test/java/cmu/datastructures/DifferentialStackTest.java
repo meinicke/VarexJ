@@ -1105,5 +1105,23 @@ public class DifferentialStackTest {
 		});
 	}
 	
+	@Test
+	public void TestIsRefLocal() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 0, 2);
+			sh.push(TRUE, new One<>(42), true);
+			return sh.isRefLocal(TRUE, 0);
+		});
+	}
+	
+	@Test
+	public void TestIsRef3() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 0, 3);
+			sh.push(TRUE, new One<>(1), true);
+			sh.pushLong(TRUE, new One<>(1000l));
+			return sh.isRef(TRUE, 2);
+		});
+	}
 
 }

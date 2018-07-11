@@ -135,7 +135,7 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 		if (index < locals.length) {
 			return locals[index].isRef;
 		}
-		return stack.slots[index - locals.length].isRef;
+		return false;
 	}
 	
 	@Override
