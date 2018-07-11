@@ -28,10 +28,15 @@ public class FeatureModelTest {
 		System.out.println("TEST FILE EXISTS");
 		System.out.println(PATH.getPath() + " " + PATH.exists());
 		System.out.println(PATH.getAbsoluteFile());
+		File[] children = PATH.listFiles();
+		for (File file : children) {
+			System.out.println(file.getAbsolutePath());
+		}
 	}
 	
 	@Test
 	public void testSimpleModel() throws Exception {
+		System.out.println("FeatureModelTest.testSimpleModel()");
 		FeatureExprFactory.setDefault(FeatureExprFactory.sat());
 		
 		FeatureExpr a = FeatureExprFactory.createDefinedExternal("CONFIG_A");
@@ -48,6 +53,7 @@ public class FeatureModelTest {
 	
 	@Test
 	public void testBankAccount() throws Exception {
+		System.out.println("FeatureModelTest.testBankAccount()");
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 		FeatureExpr bankaccount = FeatureExprFactory.createDefinedExternal("CONFIG_bankaccount");
 		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(new File(PATH, "BAmodel.dimacs").getPath().toString());
@@ -58,6 +64,7 @@ public class FeatureModelTest {
 	
 	@Test
 	public void testElevator() throws Exception {
+		System.out.println("FeatureModelTest.testElevator()");
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 		FeatureExpr Base = FeatureExprFactory.createDefinedExternal("CONFIG_Base");
 		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(new File(PATH, "Elevator.dimacs").getPath().toString());
@@ -67,6 +74,7 @@ public class FeatureModelTest {
 	
 	@Test
 	public void testElevator2() throws Exception {
+		System.out.println("FeatureModelTest.testElevator2()");
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 		FeatureExpr TwoThirdsFull = FeatureExprFactory.createDefinedExternal("CONFIG_TwoThirdsFull");
 		FeatureExpr ExecutiveFloor = FeatureExprFactory.createDefinedExternal("CONFIG_ExecutiveFloor");
