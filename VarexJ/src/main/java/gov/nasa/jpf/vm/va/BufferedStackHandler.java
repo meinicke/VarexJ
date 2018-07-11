@@ -420,14 +420,8 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 						n++;
 						continue;
 					} else {
-						if (n - pointer > 1) {
-							n++;
-							pointer--;
-							continue;
-						} else {
-							debufferAll();
-							return stackHandler.peek(ctx, offset);
-						}
+						debufferAll();
+						return stackHandler.peek(ctx, offset);
 					}
 					
 				}
