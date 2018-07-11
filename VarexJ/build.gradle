@@ -146,11 +146,10 @@ test {
     maxParallelForks = 1
     minHeapSize = "512m"
     maxHeapSize = "1024m"
-    //include '**/*Test.class'
-    //include '**/jikesRVM/**/Test*.class'
-    include '**/FeatureModelTest.class'
+    include '**/*Test.class'
+    include '**/jikesRVM/**/Test*.class'
     //exclude '**/jikesRVM/**/Test*$*.class'
-    //exclude '**/JPF_*.class'
+    exclude '**/JPF_*.class'
 }
 
 
