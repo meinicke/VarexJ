@@ -144,6 +144,7 @@ jar {
 test {
     scanForTestClasses = false
     failFast = true
+    maxParallelForks = 8
     minHeapSize = "512m"
     maxHeapSize = "1024m"
     include '**/*Test.class'
