@@ -1096,5 +1096,14 @@ public class DifferentialStackTest {
 	}
 	
 	
+	@Test
+	public void TestGetLocal2() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 0, 2);
+			sh.push(TRUE, new One<>(42), true);
+			return sh.getLocal(TRUE, 0);
+		});
+	}
+	
 
 }
