@@ -396,8 +396,9 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 		for (;i < nLocals;i++) {
 			newStackHandler.setLocal(stackHandler.getCtx(), i, slots[i], stackHandler.isRefLocal(FeatureExprFactory.True(), i));
 		}
-		for (;i <= nLocals + stackHandler.getTop().getValue();i++) {
-			newStackHandler.push(stackHandler.getCtx(), One.valueOf(slots[i]), stackHandler.isRefLocal(FeatureExprFactory.True(), i));
+		Integer top = stackHandler.getTop().getValue();
+		for (i = 0;i <= top;i++) {
+			newStackHandler.push(stackHandler.getCtx(), One.valueOf(slots[i + nLocals]), stackHandler.isRef(FeatureExprFactory.True(), top -i));
 		}
 		stackHandler = newStackHandler;
 		

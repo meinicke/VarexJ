@@ -1110,7 +1110,11 @@ public class DifferentialStackTest {
 		differentalTest(() -> {
 			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 0, 2);
 			sh.push(TRUE, new One<>(42), true);
-			return sh.isRefLocal(TRUE, 0);
+			try {
+				return sh.isRefLocal(TRUE, 0);
+			} catch (Throwable e) {
+				return 1;
+			}
 		});
 	}
 	

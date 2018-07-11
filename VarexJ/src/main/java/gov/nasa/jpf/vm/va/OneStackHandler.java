@@ -132,10 +132,8 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public boolean isRefLocal(FeatureExpr ctx, int index) {
-		if (index < locals.length) {
-			return locals[index].isRef;
-		}
-		return false;
+		assert index < locals.length : "index larger than locals";
+		return locals[index].isRef;
 	}
 	
 	@Override

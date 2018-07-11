@@ -1158,14 +1158,9 @@ public Object[] getArgumentsValues (FeatureExpr ctx, ThreadInfo ti, byte[] argTy
     thisRef = thisRef2;
   }
   
-
-  public void visitReferenceSlots (ReferenceProcessor visitor){ 
-    for (int i=0; i>=0 && i<=top(); i++){
-    	if (stack.isRefLocal(TRUE, i)) {
-    		visitor.processReference(stack.getLocal(TRUE, i).getValue());
-    	}
-    }
-  }
+	public void visitReferenceSlots(ReferenceProcessor visitor) {
+		stack.getAllReferences().forEach(visitor::processReference);
+	}
 
   public void setLongLocalVariable (FeatureExpr ctx, int index, long v) {//JM UNUSED
     // WATCH OUT: apparently, slots can change type, so we have to
@@ -1223,7 +1218,7 @@ public Object[] getArgumentsValues (FeatureExpr ctx, ThreadInfo ti, byte[] argTy
   }
 
   public boolean isOperandRef (int offset) {
-    return stack.isRef(TRUE, 0);//isRef.get(top()-offset);
+    return stack.isRef(TRUE, offset);
   }
 
   public boolean isOperandRef () {

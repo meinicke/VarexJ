@@ -485,8 +485,14 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 						n++;
 						continue;
 					} else {
-						debufferAll();
-						return stackHandler.peek(ctx, offset, t);
+						if (n - pointer > 1) {
+							n++;
+							pointer--;
+							continue;
+						} else {
+							debufferAll();
+							return stackHandler.peek(ctx, offset, t);
+						}
 					}
 				}
 			}
@@ -619,9 +625,6 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public boolean isRefLocal(FeatureExpr ctx, int index) {
-		if (index >= stackHandler.locals.length) {
-			debufferAll();
-		}
 		return stackHandler.isRefLocal(ctx, index);
 	}
 

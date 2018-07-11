@@ -203,14 +203,8 @@ public class StackHandler implements Cloneable, IStackHandler {
 	// TODO change to conditional
 	@Override
 	public boolean isRefLocal(FeatureExpr ctx, final int index) {
-		if (index < locals.length) {
-			for (boolean b : locals[index].simplify(ctx).map(y -> y.isRef).toList()) {
-				if (b) {
-					return true;
-				}
-			}
-		}
-		return false;
+		assert index < locals.length : "index larger than locals";
+		return locals[index].simplify(ctx).map(y -> y.isRef).toMap().containsKey(Boolean.TRUE);
 	}
 	
 	/*
@@ -395,7 +389,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	}
 
 	@Override
-	public boolean isRef(final FeatureExpr ctx, final int offset) {// change to Conditional<Boolean>
+	public boolean isRef(final FeatureExpr ctx, final int offset) {// change to Conditional<Boolean> - should always be the same
 		return stack.simplify(ctx).map(y -> y.isRef(offset)).simplifyValues().getValue();
 	}
 

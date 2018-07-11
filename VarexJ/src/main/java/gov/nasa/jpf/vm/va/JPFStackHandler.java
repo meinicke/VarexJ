@@ -137,10 +137,8 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public boolean isRefLocal(FeatureExpr ctx, int index) {
-		if (index < nLocals) {
-			return isRef[index];
-		}
-		return false;
+		assert index < nLocals : "index larger than locals";
+		return isRef[index];
 	}
 
 	@Override
