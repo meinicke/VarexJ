@@ -202,22 +202,9 @@ public abstract class Conditional<T> {
 	public abstract Conditional<T> simplify(FeatureExpr ctx);
 
 	public final List<T> toList() {
-		final List<T> list = new NoCheckArrayList(size());
+		final List<T> list = new ArrayList<>(size());
 		toList(list);
 		return list;
-	}
-	
-	final class NoCheckArrayList extends ArrayList<T> {
-		private static final long serialVersionUID = 1L;
-
-		public NoCheckArrayList(int initialSize) {
-			super(initialSize);
-		}
-		
-		@Override
-		public void ensureCapacity(int minCapacity) {
-			// avoid checking for capacity
-		}
 	}
 	
 	protected abstract void toList(List<T> list);
@@ -259,15 +246,10 @@ public abstract class Conditional<T> {
 		return ctx.replaceAll(PATTERN, "$1");
 	}
 
-
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx) {
 		return ctx.simplify(bddFM);
 	}
 	
-	public static FeatureExpr simplifyCondition(FeatureExpr ctx, FeatureExpr additionalConmstraint) {
-		return ctx.simplify(bddFM.and(additionalConmstraint));
-	}
-
 	public abstract int size();
 
 	public boolean isOne() {

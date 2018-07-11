@@ -43,7 +43,6 @@ public class ConditionalTest {
 		List<Object[]> params = new LinkedList<>(); 
 		for (Object[] choice : ChoiceFactory.asParameter()) {
 			params.add(new Object[]{choice[0], FeatureExprFactory.bdd()});
-//			params.add(new Object[]{choice[0], FeatureExprFactory.sat()});
 			break;
 		}
 		return params;
@@ -151,7 +150,6 @@ public class ConditionalTest {
 			}
 			
 		});
-//		System.out.println(v1);
 		v1 = v1.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 			@Override
 			public Conditional<Integer> apply(FeatureExpr c, Integer x) {
@@ -159,17 +157,9 @@ public class ConditionalTest {
 			}
 			
 		});
-//		System.out.println(v1);
 		assertEquals(Choice(fa, Choice((fa.and(fb)), One(3), One(2)), Choice(fb.andNot(fa), One(3), One(1))), v1);
 	}
 	
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	@Test
-//	public void simplify1() {
-//		Conditional<Integer> v1 = new One(One(1));
-//		assertEquals(One(1), v1.simplify());
-//	}
-//	
 	@Test
 	public void simplify2() {
 		Conditional<Integer> v1 = Choice(fa, One(1), One(1));
@@ -232,13 +222,6 @@ public class ConditionalTest {
 		final Conditional<Integer> b = Choice(fa, One(2), One(3));
 		final Conditional<Integer> c = Choice(fb, One(4), One(5));
 		final Conditional<Integer> d = Choice(fb, One(6), Choice(fc, One(7), One(8)));
-//		System.out.println(combine(a,b));
-//		System.out.println(combine(a,b).size());
-//		System.out.println(combine(a,c));
-		
-//		System.out.println(combine(combine(a,c), b).size());
-		
-//		System.out.println(combine(combine(combine(a,c), b), d).size());
 	}
 	
 	static Conditional<Integer> combine(final Conditional<Integer> a, final Conditional<Integer> b) {
@@ -257,5 +240,18 @@ public class ConditionalTest {
 		}).simplify();
 	}
 	
+	@Test
+	public void testOrNot() throws Exception {
+		FeatureExpr expected = fa.orNot(fb);
+		FeatureExpr actual = Conditional.orNot(fa, fb);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testOrNot2() throws Exception {
+		FeatureExpr expected = fa.orNot(fa);
+		FeatureExpr actual = Conditional.orNot(fa, fa);
+		assertEquals(expected, actual);
+	}
 	
 }
