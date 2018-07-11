@@ -25,7 +25,9 @@ public class FeatureModelTest {
 	private final static File PATH;
 	static {
 		PATH = new File(RES_PATH);
-		System.out.println(PATH);
+		System.out.println("TEST FILE EXISTS");
+		System.out.println(PATH.getPath() + " " + PATH.exists());
+		System.out.println(PATH.getAbsoluteFile());
 	}
 	
 	@Test

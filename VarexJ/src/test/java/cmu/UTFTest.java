@@ -41,6 +41,8 @@ public class UTFTest extends TestJPF {
 			// copy the "messages.properties" file in the build folder @ classes 
 			final File messeges = new File("src" + File.separator + "test" + File.separator + 
 					"resources" + File.separator + "cmu" + File.separator + "messages.properties");
+			System.out.println("TEST FILE EXISTS");
+			System.out.println(messeges.getPath() + " " + messeges.exists());
 			final File target = new File("build" + File.separator + "classes" + File.separator + 
 					"test" + File.separator + "cmu" + File.separator + "messages.properties");
 			Files.copy(messeges.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
