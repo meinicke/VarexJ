@@ -22,6 +22,11 @@ public class FeatureModelTest {
 	
 	private final static String SEPARATOR = File.separator;
 	private final static String RES_PATH = "src" + SEPARATOR + "test" + SEPARATOR + "resources" + SEPARATOR;
+	private final static File PATH;
+	static {
+		PATH = new File(RES_PATH);
+		System.out.println(PATH);
+	}
 	
 	@Test
 	public void testSimpleModel() throws Exception {
@@ -31,7 +36,7 @@ public class FeatureModelTest {
 		FeatureExpr b = FeatureExprFactory.createDefinedExternal("CONFIG_B");
 		FeatureExpr c = FeatureExprFactory.createDefinedExternal("CONFIG_C");
 		
-		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(RES_PATH + "model.dimacs");
+		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(new File(PATH, "model.dimacs").getPath().toString());
 		assertFalse(a.and(b.not()).isContradiction());
 		assertTrue(a.and(b.not()).isContradiction(model));
 		
@@ -43,7 +48,7 @@ public class FeatureModelTest {
 	public void testBankAccount() throws Exception {
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 		FeatureExpr bankaccount = FeatureExprFactory.createDefinedExternal("CONFIG_bankaccount");
-		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(RES_PATH + "BAmodel.dimacs");
+		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(new File(PATH, "BAmodel.dimacs").getPath().toString());
 		assertFalse(bankaccount.not().isContradiction());
 		assertTrue(bankaccount.not().isContradiction(model));
 		
@@ -53,7 +58,7 @@ public class FeatureModelTest {
 	public void testElevator() throws Exception {
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 		FeatureExpr Base = FeatureExprFactory.createDefinedExternal("CONFIG_Base");
-		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(RES_PATH + "Elevator.dimacs");
+		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(new File(PATH, "Elevator.dimacs").getPath().toString());
 		assertFalse(Base.not().isContradiction());
 		assertTrue(Base.not().isContradiction(model));
 	}
@@ -65,7 +70,7 @@ public class FeatureModelTest {
 		FeatureExpr ExecutiveFloor = FeatureExprFactory.createDefinedExternal("CONFIG_ExecutiveFloor");
 		FeatureExpr Weight = FeatureExprFactory.createDefinedExternal("CONFIG_Weight");
 		FeatureExpr Overloaded = FeatureExprFactory.createDefinedExternal("CONFIG_Overloaded");
-		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(RES_PATH + "Elevator.dimacs");
+		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(new File(PATH, "Elevator.dimacs").getPath().toString());
 		FeatureExpr ctx = FeatureExprFactory.True();
 		ctx = ctx.and(Overloaded);
 		ctx = ctx.and(ExecutiveFloor.not());
