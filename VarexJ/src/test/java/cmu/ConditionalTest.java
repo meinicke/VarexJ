@@ -224,22 +224,6 @@ public class ConditionalTest {
 		final Conditional<Integer> d = Choice(fb, One(6), Choice(fc, One(7), One(8)));
 	}
 	
-	static Conditional<Integer> combine(final Conditional<Integer> a, final Conditional<Integer> b) {
-		return a.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-			@Override
-			public Conditional<Integer> apply(FeatureExpr c, final Integer y) {
-				return b.mapf(c, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-					@Override
-					public Conditional<Integer> apply(FeatureExpr c, final Integer z) {
-						return new One<>(y+z);
-					}
-					
-				});
-			}
-			
-		}).simplify();
-	}
-	
 	@Test
 	public void testOrNot() throws Exception {
 		FeatureExpr expected = fa.orNot(fb);
@@ -252,6 +236,11 @@ public class ConditionalTest {
 		FeatureExpr expected = fa.orNot(fa);
 		FeatureExpr actual = Conditional.orNot(fa, fa);
 		assertEquals(expected, actual);
+	}
+	
+	@Test(expected = AssertionError.class)
+	public void testNullCTX() throws Exception {
+		ChoiceFactory.create(null, new One<>(1), new One<>(2));
 	}
 	
 }
