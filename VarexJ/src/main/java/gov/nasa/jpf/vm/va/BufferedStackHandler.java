@@ -14,7 +14,6 @@ import cmu.conditional.One;
 import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
-import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.Types;
 
 /**
@@ -473,9 +472,8 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 									break;
 								}
 							case FLOAT:
-								return value.map(x1 -> Types.intToFloat((int)x1));
 							default:
-								throw new RuntimeException("type " + type.getClass() + " missed" + t);
+								return value.map(x1 -> Types.intToFloat((int)x1));
 							}
 						}
 						n++;
@@ -485,8 +483,6 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 							switch (t) {
 							case FLOAT:
 								return value;
-							case INT:
-								return value.map(x -> Types.floatToInt(((Float) x).floatValue()));
 							default:
 								break;
 							}
@@ -564,14 +560,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public void pushLocal(FeatureExpr ctx, int index) {
-		if (Conditional.isContradiction(Conditional.and(ctx, stackHandler.stackCTX))) {
-			return;
-		}
 		Conditional<Entry> value = stackHandler.locals[index].simplify(Conditional.and(ctx, stackHandler.stackCTX));
-		if (value == null) {
-			value = new One<>(Entry.create(MJIEnv.NULL, false));
-		}
-		
 		Boolean isRef = null;
 		for (Entry v : value.toList()) {
 			if (isRef == null) {
@@ -607,16 +596,9 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 	@Override
 	public void pushLongLocal(FeatureExpr ctx, int index) {
 		Conditional<Entry> entry = stackHandler.locals[index];
-		if (entry == null) {
-			entry = new One<>(new Entry(0, false));
-		}
-		
 		push(ctx, entry.mapf(ctx, (BiFunction<FeatureExpr, Entry, Conditional<Integer>>) (ctx1, entry1) -> new One<>(entry1.value)), false, Type.INT);
-		
+
 		entry = stackHandler.locals[index + 1];
-		if (entry == null) {
-			entry = new One<>(new Entry(0, false));
-		}
 		push(ctx, entry.mapf(ctx, (BiFunction<FeatureExpr, Entry, Conditional<Integer>>) (ctx1, entry1) -> new One<>(entry1.value)), false, Type.INT);
 	}
 
