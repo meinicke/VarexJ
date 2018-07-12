@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.jvm;
 
+import gov.nasa.jpf.jvm.bytecode.InstructionVisitor;
 import gov.nasa.jpf.jvm.bytecode.InstructionVisitorAcceptor;
 import gov.nasa.jpf.vm.Instruction;
 
@@ -27,5 +28,9 @@ import gov.nasa.jpf.vm.Instruction;
  * This is the common root class for all Java bytecodes
  */
 public abstract class JVMInstruction extends Instruction implements InstructionVisitorAcceptor {
-  // nothing in here
+	
+	@Override
+	public void accept(InstructionVisitor insVisitor) {
+		insVisitor.visit(this);
+	}
 }

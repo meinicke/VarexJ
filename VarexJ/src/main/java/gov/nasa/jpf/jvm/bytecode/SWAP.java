@@ -46,8 +46,4 @@ public class SWAP extends JVMInstruction {
     return 0x5F;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

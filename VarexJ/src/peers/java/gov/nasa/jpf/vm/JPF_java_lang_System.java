@@ -301,11 +301,11 @@ public class JPF_java_lang_System extends NativePeer {
   /**
    * policy of how to initialize system properties of the system under test
    */
-  static enum SystemPropertyPolicy {
+  enum SystemPropertyPolicy {
     SELECTED,  // copy host values for keys specified in  
     FILE, 
     HOST
-  };
+  }
 
   @MJI
   public int getKeyValuePairs_____3Ljava_lang_String_2 (MJIEnv env, int clsObjRef, FeatureExpr ctx){
