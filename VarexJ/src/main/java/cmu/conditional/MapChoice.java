@@ -25,11 +25,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		for (Entry<T, FeatureExpr> e : thenBranch.toMap().entrySet()) {
 			FeatureExpr and = and(e.getValue(),featureExpr);
 			if (!isContradiction(and)) {
-				if (map.containsKey(e.getKey())) {
-					map.put(e.getKey(), or(map.get(e.getKey()), and));
-				} else {
-					map.put(e.getKey(), and);
-				}
+				map.put(e.getKey(), and);
 			}
 		}
 
@@ -60,10 +56,10 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 
 	@Override
 	public T getValue(final boolean ignore) {
-		if (map.isEmpty()) {
-			return null;
+		if (ignore) {
+			return map.keySet().iterator().next();
 		}
-		return map.keySet().iterator().next();
+		return getValue();
 	}
 
 	@Override

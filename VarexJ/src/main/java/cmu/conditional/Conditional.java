@@ -247,7 +247,10 @@ public abstract class Conditional<T> {
 	}
 
 	public static FeatureExpr simplifyCondition(FeatureExpr ctx) {
-		return ctx.simplify(bddFM);
+		if (bddFM != null) {
+			return ctx.simplify(bddFM);
+		}
+		return ctx;
 	}
 	
 	public abstract int size();

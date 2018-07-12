@@ -1,6 +1,7 @@
 package cmu;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.junit.runners.Parameterized.Parameters;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
+import cmu.conditional.GetValueOfChoiceException;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.AbstractFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -43,7 +45,6 @@ public class ConditionalTest {
 		List<Object[]> params = new LinkedList<>(); 
 		for (Object[] choice : ChoiceFactory.asParameter()) {
 			params.add(new Object[]{choice[0], FeatureExprFactory.bdd()});
-			break;
 		}
 		return params;
 	}
@@ -243,4 +244,35 @@ public class ConditionalTest {
 		ChoiceFactory.create(null, new One<>(1), new One<>(2));
 	}
 	
+	@Test(expected = GetValueOfChoiceException.class)
+	public void testGetValue() throws Exception {
+		Conditional<Integer> a = Choice(fa, One(0), One(1));
+		a.getValue(false);
+	}
+	
+	@Test
+	public void testGetValue2() throws Exception {
+		Conditional<Integer> a = Choice(fa, One(0), One(1));
+		a.getValue(true);
+	}
+
+	@Test
+	public void testSimplifyValues() throws Exception {
+		Conditional<Integer> a = Choice(fa, new One<>(0x0), new One<>(0x1));
+		a = a.simplify(fa);
+		assertTrue((a.simplifyValues() instanceof One));
+	}
+	
+	
+	@Test
+	public void testClone() throws Exception {
+		Conditional<Integer> a = Choice(fa, new One<>(0x0), new One<>(0x1));
+		assertEquals(a, a.clone());
+	}
+	
+	@Test
+	public void testToSting() throws Exception {
+		Conditional<Integer> a = Choice(fa, new One<>(0x0), new One<>(0x1));
+		a.toString();
+	}
 }
