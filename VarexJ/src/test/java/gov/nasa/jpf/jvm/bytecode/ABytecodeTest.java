@@ -50,9 +50,9 @@ public abstract class ABytecodeTest {
 	    return stackFrame;
 	}
 	
-	protected JVMStackFrame createStackFrame(Instruction... code) {
+	protected JVMStackFrame createStackFrame(int nOperands, Instruction... code) {
 		String signature = "()V";
-	    MethodInfo mi = new MethodInfo("test", signature, 0, 0, 2);
+	    MethodInfo mi = new MethodInfo("test", signature, 0, 0, nOperands);
 	    for (int i = 0; i < code.length; i++) {
 			code[i].insnIndex = i;
 		}

@@ -149,6 +149,7 @@ test {
     include '**/jikesRVM/**/Test*.class'
     exclude '**/jikesRVM/**/Test*$*.class'
     exclude '**/JPF_*.class'
+    exclude '**/ABytecodeTest.class 
 }
 
 

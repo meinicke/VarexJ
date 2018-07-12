@@ -16,7 +16,7 @@ public class SWAPTest extends ABytecodeTest {
 	    final One<Integer> first = One.valueOf(3);
 		final One<Integer> second = One.valueOf(3);
 
-		StackFrame stackFrame = createStackFrame(getInstruction());
+		StackFrame stackFrame = createStackFrame(2, getInstruction());
 	    stackFrame.push(FeatureExprFactory.True(), first);
 	    stackFrame.push(FeatureExprFactory.True(), second);
    		executedCode(stackFrame);

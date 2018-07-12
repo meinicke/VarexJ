@@ -15,7 +15,7 @@ public class NOPTest extends ABytecodeTest {
 	public void testNOP() throws Exception {
 	    final One<Integer> first = One.valueOf(3);
 		
-	    StackFrame stackFrame = createStackFrame(getInstruction());
+	    StackFrame stackFrame = createStackFrame(2, getInstruction());
 	    stackFrame.push(FeatureExprFactory.True(), first);
    		executedCode(stackFrame);
    		
