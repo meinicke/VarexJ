@@ -211,7 +211,7 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 	}
 	
 	public static String testIdentifyer = "test";
-	public static Map<String, BDDFeatureExpr> testExpressions = new HashMap<>(); 
+	public static Map<String, FeatureExpr> testExpressions = new HashMap<>(); 
 
 	@MJI
 	public void println__Ljava_lang_String_2__V(final MJIEnv env, int objRef, Conditional<Integer> strRef, FeatureExpr ctx) {
