@@ -27,7 +27,9 @@ import gov.nasa.jpf.vm.ThreadInfo;
 
 
 /**
- * DOCUMENT ME!
+ * Duplicate two words and insert beneath third word (see explanation above).
+ * value3, {value2, value1} --> {value2, value1}, value3, {value2, value1}	
+ * 
  */
 public class DUP2_X1 extends JVMInstruction {
 
@@ -43,7 +45,4 @@ public class DUP2_X1 extends JVMInstruction {
     return 0x5D;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }
