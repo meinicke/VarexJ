@@ -12,7 +12,7 @@ import gov.nasa.jpf.vm.StackFrame;
 public class D2FTest extends ABytecodeTest {
 	
 	@Test
-	public void testSWAP() throws Exception {
+	public void testD2F() throws Exception {
 	    double value = 3.3;
 		final One<Double> doubleValue = new One<>(value);
 		final One<Float> floatValue = new One<>((float)value);
