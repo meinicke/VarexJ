@@ -32,7 +32,7 @@ public class SWAPTest extends ABytecodeTest {
 
 	@Override
 	protected Instruction getInstruction() {
-		return new SWAP();
+		return InstructionFactory.getFactory().swap();
 	}
 
 	@Override

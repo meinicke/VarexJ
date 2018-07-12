@@ -33,7 +33,7 @@ public class LSTORE_0Test extends ABytecodeTest {
 
 	@Override
 	protected Instruction getInstruction() {
-		return new LSTORE(getIndex());
+		return InstructionFactory.getFactory().lstore_0();
 	}
 
 	@Override

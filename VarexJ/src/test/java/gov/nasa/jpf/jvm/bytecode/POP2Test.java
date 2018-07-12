@@ -50,9 +50,9 @@ public class POP2Test extends ABytecodeTest {
 
 	@Override
 	protected Instruction getInstruction() {
-		return new POP2();
+		return InstructionFactory.getFactory().pop2();
 	}
-
+	
 	@Override
 	protected String getExpectedMnemonic() {
 		return "pop2";

@@ -1,5 +1,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
+import gov.nasa.jpf.vm.Instruction;
+
 public class LSTORETest extends LSTORE_0Test {
 
 	@Override
@@ -10,6 +12,11 @@ public class LSTORETest extends LSTORE_0Test {
 	@Override
 	public int expectedOpCode() {
 		return 0x37;
+	}
+	
+	@Override
+	protected Instruction getInstruction() {
+		return InstructionFactory.getFactory().lstore(4);
 	}
 
 	@Override

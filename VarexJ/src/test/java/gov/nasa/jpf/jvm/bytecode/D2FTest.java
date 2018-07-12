@@ -31,7 +31,7 @@ public class D2FTest extends ABytecodeTest {
 
 	@Override
 	protected Instruction getInstruction() {
-		return new D2F();
+		return InstructionFactory.getFactory().d2f();
 	}
 
 	@Override

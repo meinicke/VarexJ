@@ -26,11 +26,12 @@ public class NOPTest extends ABytecodeTest {
 	protected int expectedOpCode() {
 		return 0x00;
 	}
-
+	
 	@Override
 	protected Instruction getInstruction() {
-		return new NOP();
+		return InstructionFactory.getFactory().nop();
 	}
+
 
 	@Override
 	protected String getExpectedMnemonic() {

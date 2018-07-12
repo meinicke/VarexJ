@@ -37,7 +37,7 @@ public class DUP2_X1Test extends ABytecodeTest {
 
 	@Override
 	protected Instruction getInstruction() {
-		return new DUP2_X1();
+		return InstructionFactory.getFactory().dup_x1();
 	}
 
 	@Override
