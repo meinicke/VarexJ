@@ -10,26 +10,31 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 
 public class NOPTest extends ABytecodeTest {
-	
+
 	@Test
 	public void testNOP() throws Exception {
-	    final One<Integer> first = One.valueOf(3);
-		
-	    StackFrame stackFrame = createStackFrame(2, getInstruction());
-	    stackFrame.push(FeatureExprFactory.True(), first);
-   		executedCode(stackFrame);
-   		
-   		assertEquals(first, stackFrame.pop(FeatureExprFactory.True()));
+		final One<Integer> first = One.valueOf(3);
+
+		StackFrame stackFrame = createStackFrame(2, 0, getInstruction());
+		stackFrame.push(FeatureExprFactory.True(), first);
+		executedCode(stackFrame);
+
+		assertEquals(first, stackFrame.pop(FeatureExprFactory.True()));
 	}
 
 	@Override
-	int expectedOpCode() {
+	protected int expectedOpCode() {
 		return 0x00;
 	}
 
 	@Override
-	Instruction getInstruction() {
+	protected Instruction getInstruction() {
 		return new NOP();
 	}
-	
+
+	@Override
+	protected String getExpectedMnemonic() {
+		return "nop";
+	}
+
 }

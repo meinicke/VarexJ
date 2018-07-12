@@ -10,28 +10,33 @@ import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 
 public class D2FTest extends ABytecodeTest {
-	
+
 	@Test
 	public void testD2F() throws Exception {
-	    double value = 3.3;
+		double value = 3.3;
 		final One<Double> doubleValue = new One<>(value);
-		final One<Float> floatValue = new One<>((float)value);
+		final One<Float> floatValue = new One<>((float) value);
 
-		StackFrame stackFrame = createStackFrame(2, getInstruction());
-	    stackFrame.pushDouble(FeatureExprFactory.True(), doubleValue);
-   		executedCode(stackFrame);
-   		
-   		assertEquals(floatValue, stackFrame.popFloat(FeatureExprFactory.True()));
+		StackFrame stackFrame = createStackFrame(2, 0, getInstruction());
+		stackFrame.pushDouble(FeatureExprFactory.True(), doubleValue);
+		executedCode(stackFrame);
+
+		assertEquals(floatValue, stackFrame.popFloat(FeatureExprFactory.True()));
 	}
 
 	@Override
-	int expectedOpCode() {
+	protected int expectedOpCode() {
 		return 0x90;
 	}
 
 	@Override
-	Instruction getInstruction() {
+	protected Instruction getInstruction() {
 		return new D2F();
 	}
-	
+
+	@Override
+	public String getExpectedMnemonic() {
+		return "d2f";
+	}
+
 }
