@@ -46,8 +46,4 @@ public class POP2 extends JVMInstruction {
     return 0x58;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }
