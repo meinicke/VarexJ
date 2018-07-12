@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;
@@ -27,6 +28,7 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -207,6 +209,9 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 
 		});
 	}
+	
+	public static String testIdentifyer = "test";
+	public static Map<String, BDDFeatureExpr> testExpressions = new HashMap<>(); 
 
 	@MJI
 	public void println__Ljava_lang_String_2__V(final MJIEnv env, int objRef, Conditional<Integer> strRef, FeatureExpr ctx) {
@@ -222,7 +227,11 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 			if (RuntimeConstants.ctxOutput) {
 				final FeatureExpr and = Conditional.and(s.getValue(), ctx);
 				if (!Conditional.isContradiction(and)) {
-					env.getVM().println('{' + s.getKey() + "} : " + Conditional.getCTXString(and));
+					if (s.getKey().startsWith("test")) {
+						testExpressions.put(s.getKey(), (BDDFeatureExpr) and);
+					} else {
+						env.getVM().println('{' + s.getKey() + "} : " + Conditional.getCTXString(and));
+					}
 				}
 			} else {
 				env.getVM().println(s.getKey());
