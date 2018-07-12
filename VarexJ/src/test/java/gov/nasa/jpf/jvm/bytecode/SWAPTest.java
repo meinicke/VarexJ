@@ -13,18 +13,16 @@ public class SWAPTest extends ABytecodeTest {
 	
 	@Test
 	public void testSWAP() throws Exception {
-	    final int first = 3;
-		final int second = 4;
-		Instruction instr = getInstruction();
-		instr.getByteCode();
-		Instruction[] code = new Instruction[] {
-		    new ICONST(first),
-		    new ICONST(second),
-		    instr
-	    };
-	    StackFrame stackFrame = executedCode(0, 2, code);
-	    assertEquals(One.valueOf(first), stackFrame.pop(FeatureExprFactory.True()));
-	    assertEquals(One.valueOf(second), stackFrame.pop(FeatureExprFactory.True()));
+	    final One<Integer> first = One.valueOf(3);
+		final One<Integer> second = One.valueOf(3);
+
+		StackFrame stackFrame = createStackFrame(getInstruction());
+	    stackFrame.push(FeatureExprFactory.True(), first);
+	    stackFrame.push(FeatureExprFactory.True(), second);
+   		executedCode(stackFrame);
+   		
+   		assertEquals(first, stackFrame.pop(FeatureExprFactory.True()));
+	    assertEquals(second, stackFrame.pop(FeatureExprFactory.True()));
 	}
 
 	@Override

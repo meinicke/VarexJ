@@ -13,15 +13,13 @@ public class NOPTest extends ABytecodeTest {
 	
 	@Test
 	public void testNOP() throws Exception {
-	    final int first = 3;
-		Instruction instr = getInstruction();
-		instr.getByteCode();
-		Instruction[] code = new Instruction[] {
-		    new ICONST(first),
-		    instr
-	    };
-	    StackFrame stackFrame = executedCode(0, 1, code);
-	    assertEquals(One.valueOf(first), stackFrame.pop(FeatureExprFactory.True()));
+	    final One<Integer> first = One.valueOf(3);
+		
+	    StackFrame stackFrame = createStackFrame(getInstruction());
+	    stackFrame.push(FeatureExprFactory.True(), first);
+   		executedCode(stackFrame);
+   		
+   		assertEquals(first, stackFrame.pop(FeatureExprFactory.True()));
 	}
 
 	@Override

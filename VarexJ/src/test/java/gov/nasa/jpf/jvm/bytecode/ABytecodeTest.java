@@ -41,7 +41,16 @@ public abstract class ABytecodeTest {
 	    }
 	}
 	
-	protected StackFrame executedCode(int nLocals, int nOperands, Instruction[] code) {
+	protected StackFrame executedCode(StackFrame stackFrame) {
+	    ti.setTopFrame(stackFrame);
+	    ti.setPC(stackFrame.getPC());
+	    while (ti.getPC().getValue() != null) {
+	    	ti.executeInstruction();
+	    }
+	    return stackFrame;
+	}
+	
+	protected JVMStackFrame createStackFrame(Instruction... code) {
 		String signature = "()V";
 	    MethodInfo mi = new MethodInfo("test", signature, 0, 0, 2);
 	    for (int i = 0; i < code.length; i++) {
@@ -49,11 +58,6 @@ public abstract class ABytecodeTest {
 		}
 	    mi.setCode(code);
 	    JVMStackFrame stackFrame = new JVMStackFrame(mi);
-	    ti.setTopFrame(stackFrame);
-	    ti.setPC(stackFrame.getPC());
-	    while (ti.getPC().getValue() != null) {
-	    	ti.executeInstruction();
-	    }
-	    return stackFrame;
+		return stackFrame;
 	}
 }
