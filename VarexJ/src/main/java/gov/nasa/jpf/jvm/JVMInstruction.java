@@ -33,11 +33,11 @@ public abstract class JVMInstruction extends Instruction implements InstructionV
 
 	@Override
 	public final void accept(InstructionVisitor insVisitor) {
-		try {
-			InstructionVisitor.class.getMethod("visit", this.getClass()).invoke(insVisitor, this);
-		} catch (ReflectiveOperationException | SecurityException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
+			try {
+				InstructionVisitor.class.getMethod("visit", this.getClass()).invoke(insVisitor, this);
+			} catch (IllegalAccessException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
 	}
 
 }
