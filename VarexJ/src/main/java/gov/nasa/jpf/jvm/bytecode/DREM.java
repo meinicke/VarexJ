@@ -61,8 +61,4 @@ public class DREM extends JVMInstruction {
     return 0x73;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

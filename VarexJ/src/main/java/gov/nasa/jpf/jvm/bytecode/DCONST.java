@@ -62,8 +62,4 @@ public class DCONST extends JVMInstruction {
     return value == 0.0 ? 0x0E : 0x0F;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

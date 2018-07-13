@@ -65,8 +65,4 @@ public class FCONST extends JVMInstruction {
 		return value == 0.0f ? 0x0B : (value == 1.0f ? 0x0C : 0x0D);
 	}
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

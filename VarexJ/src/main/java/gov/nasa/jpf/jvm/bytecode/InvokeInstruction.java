@@ -369,12 +369,6 @@ public abstract class InvokeInstruction extends JVMInstruction {
     return false;
   }
 
-
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-
   @Override
   public Instruction typeSafeClone(MethodInfo mi) {
     InvokeInstruction clone = null;

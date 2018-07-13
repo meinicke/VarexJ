@@ -72,7 +72,4 @@ public class ALOAD extends LocalVariableInstruction {
     return "aload";
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -115,10 +115,6 @@ public class MULTIANEWARRAY extends JVMInstruction {
 		return 0xC5;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
-
 	public String getType() {
 		return type;
 	}

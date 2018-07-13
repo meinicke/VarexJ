@@ -46,8 +46,4 @@ public class DCMPL extends DoubleCompareInstruction {
     return 0x97;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -45,7 +45,4 @@ public class F2D extends JVMInstruction {
     return 0x8D;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

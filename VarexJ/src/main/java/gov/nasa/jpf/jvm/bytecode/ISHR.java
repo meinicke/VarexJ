@@ -47,7 +47,4 @@ public class ISHR extends JVMInstruction {
     return 0x7A;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

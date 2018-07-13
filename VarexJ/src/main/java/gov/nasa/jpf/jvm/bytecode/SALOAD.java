@@ -40,10 +40,6 @@ public class SALOAD extends ArrayLoadInstruction {
     return 0x35;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-  
   
   @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override

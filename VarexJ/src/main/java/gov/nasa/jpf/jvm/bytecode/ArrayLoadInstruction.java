@@ -148,9 +148,4 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 		return true;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
-	
 }

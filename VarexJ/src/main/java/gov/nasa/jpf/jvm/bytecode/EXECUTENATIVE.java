@@ -61,9 +61,6 @@ public class EXECUTENATIVE extends JVMInstruction {
     executedMethod = mi;
   }
 
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
 

@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -108,7 +109,4 @@ public class ANEWARRAY extends NewArrayInstruction {
 		return 0xBD;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

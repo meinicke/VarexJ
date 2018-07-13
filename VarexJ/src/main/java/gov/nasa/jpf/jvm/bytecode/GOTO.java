@@ -68,10 +68,6 @@ public class GOTO extends JVMInstruction {
     return super.toString() + " " + targetPosition;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-
   @Override
   public Instruction typeSafeClone(MethodInfo mi) {
     GOTO clone = null;

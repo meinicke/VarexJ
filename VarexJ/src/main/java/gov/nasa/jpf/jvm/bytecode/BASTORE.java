@@ -18,8 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
@@ -71,10 +72,6 @@ public class BASTORE extends ArrayStoreInstruction {
 
   public int getByteCode () {
     return 0x54;
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
   }
   
   public byte getValue(){

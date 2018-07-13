@@ -46,7 +46,4 @@ public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
     return 0x85;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

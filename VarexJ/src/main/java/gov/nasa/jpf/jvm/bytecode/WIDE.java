@@ -49,7 +49,4 @@ public class WIDE extends JVMInstruction {
     return getNext(ctx, ti);
   }
 
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -56,8 +56,4 @@ public class LCMP extends JVMInstruction {
 		return 0x94;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

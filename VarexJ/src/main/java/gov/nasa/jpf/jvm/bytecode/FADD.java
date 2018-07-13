@@ -46,7 +46,4 @@ public class FADD extends JVMInstruction {
     return 0x62;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -44,7 +44,4 @@ public class DUP extends JVMInstruction {
     return 0x59;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

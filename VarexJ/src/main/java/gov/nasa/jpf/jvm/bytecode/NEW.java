@@ -98,10 +98,6 @@ public class NEW extends JVMInstruction implements AllocInstruction {
     return 0xBB;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-
   public int getNewObjectRef() {
     return newObjRef;
   }

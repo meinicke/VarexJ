@@ -47,8 +47,4 @@ public class ACONST_NULL extends JVMInstruction {
     return 0x01;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

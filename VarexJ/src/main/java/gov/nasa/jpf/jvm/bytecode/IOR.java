@@ -45,7 +45,4 @@ public class IOR extends JVMInstruction {
     return 0x80;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -49,8 +49,4 @@ public class LADD extends JVMInstruction {
     return 0x61;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

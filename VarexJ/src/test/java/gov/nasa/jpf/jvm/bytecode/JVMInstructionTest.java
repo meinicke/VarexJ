@@ -13,6 +13,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
+import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
 
 /**
@@ -22,7 +23,7 @@ import gov.nasa.jpf.vm.Instruction;
  *
  */
 @RunWith(Parameterized.class)
-public class OpCodeTest {
+public class JVMInstructionTest {
 
 	@Parameters(name = "{0} , {1}")
 	public static List<Object[]> data() {
@@ -252,5 +253,18 @@ public class OpCodeTest {
 	@Test
 	public void checkMnemonic() throws Exception {
 		assertEquals(expectedMnemonic, instr.getMnemonic());
+	}
+	
+	@Test
+	public void testVisitor() throws Exception {
+		((JVMInstruction)instr).accept(Visitor.instance);
+	}
+	
+	static class Visitor extends InstructionVisitorAdapter {
+		static Visitor instance = new Visitor();
+		
+		private Visitor() {
+			// empty constuctor
+		}
 	}
 }

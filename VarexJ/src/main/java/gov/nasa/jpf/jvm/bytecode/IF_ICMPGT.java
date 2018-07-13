@@ -46,7 +46,4 @@ public class IF_ICMPGT extends IfInstruction {
 		return 0xA3;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

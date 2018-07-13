@@ -18,8 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -55,7 +56,4 @@ public class DASTORE extends LongArrayStoreInstruction {
     return 0x52;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

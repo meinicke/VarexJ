@@ -40,10 +40,6 @@ public class LALOAD extends LongArrayLoadInstruction {
     return 0x2F;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-  
   	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {

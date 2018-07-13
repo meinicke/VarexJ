@@ -20,6 +20,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -50,16 +51,9 @@ public class DIRECTCALLRETURN extends JVMInstruction implements gov.nasa.jpf.vm.
     return true;
   }
 
-  public static final int OPCODE = 261;
-
   @Override
   public int getByteCode () {
-    return OPCODE;
-  }
-
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
+    return 261;
   }
 
   @SuppressWarnings("unchecked")

@@ -54,10 +54,6 @@ public class EXCEPTION extends JVMInstruction {
 		return 0;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-
-	}
-
 	@Override
 	public String toString() {
 		return cname + " " + details;

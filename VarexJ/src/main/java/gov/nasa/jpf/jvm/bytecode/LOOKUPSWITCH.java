@@ -43,7 +43,4 @@ public class LOOKUPSWITCH extends SwitchInstruction implements gov.nasa.jpf.vm.L
     return 0xAB;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

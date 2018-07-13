@@ -58,7 +58,4 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
     return ti.getTopFrame().peek(ctx, 2);
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

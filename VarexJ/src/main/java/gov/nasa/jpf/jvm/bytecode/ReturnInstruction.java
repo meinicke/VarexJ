@@ -19,8 +19,8 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.Iterator;
-
 import java.util.function.BiFunction;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -203,10 +203,6 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
     }
 
     return getNext(ctx, ti);
-  }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
   }
   
   @Override

@@ -67,7 +67,4 @@ public class ILOAD extends LocalVariableInstruction {
     return "iload";
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -48,7 +48,4 @@ public class IFNULL extends IfInstruction {
     return 0xC6;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

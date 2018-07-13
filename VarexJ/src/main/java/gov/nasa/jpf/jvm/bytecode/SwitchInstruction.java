@@ -20,6 +20,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -132,10 +133,6 @@ public abstract class SwitchInstruction extends JVMInstruction {
     return matches[idx];
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-
   public int getTarget() {
 	return target;
   }

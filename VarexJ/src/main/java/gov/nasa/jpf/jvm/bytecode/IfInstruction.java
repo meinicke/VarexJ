@@ -19,8 +19,9 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -142,10 +143,6 @@ public abstract class IfInstruction extends JVMInstruction {
     return 3; // usually opcode, bb1, bb2
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-
   @Override
   public Instruction typeSafeClone(MethodInfo mi) {
     IfInstruction clone = null;

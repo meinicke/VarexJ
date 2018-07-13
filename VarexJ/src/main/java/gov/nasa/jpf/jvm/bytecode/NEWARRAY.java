@@ -99,10 +99,6 @@ public class NEWARRAY extends NewArrayInstruction {
 		return 0xBC;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
-
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("newarray ");

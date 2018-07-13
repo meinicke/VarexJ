@@ -52,11 +52,6 @@ public class IINC extends LocalVariableInstruction {
 		return 0x84; // ?? wide
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
-
 	public int getIndex() {
 		return index;
 	}

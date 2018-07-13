@@ -50,10 +50,6 @@ public class CALOAD extends ArrayLoadInstruction {
     return 0x34;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-  
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {

@@ -46,8 +46,4 @@ public class DDIV extends JVMInstruction {
 		return 0x6F;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

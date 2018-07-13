@@ -19,6 +19,8 @@
 
 package gov.nasa.jpf.jvm;
 
+import java.lang.reflect.InvocationTargetException;
+
 import gov.nasa.jpf.jvm.bytecode.InstructionVisitor;
 import gov.nasa.jpf.jvm.bytecode.InstructionVisitorAcceptor;
 import gov.nasa.jpf.vm.Instruction;
@@ -28,9 +30,14 @@ import gov.nasa.jpf.vm.Instruction;
  * This is the common root class for all Java bytecodes
  */
 public abstract class JVMInstruction extends Instruction implements InstructionVisitorAcceptor {
-	
+
 	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
+	public final void accept(InstructionVisitor insVisitor) {
+		try {
+			InstructionVisitor.class.getMethod("visit", this.getClass()).invoke(insVisitor, this);
+		} catch (ReflectiveOperationException | SecurityException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
+
 }

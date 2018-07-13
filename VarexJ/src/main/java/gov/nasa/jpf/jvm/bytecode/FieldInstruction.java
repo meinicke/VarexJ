@@ -363,10 +363,6 @@ protected Conditional<Instruction> put2 (FeatureExpr ctx, ThreadInfo ti, StackFr
       }
     }
   }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 
 }
 

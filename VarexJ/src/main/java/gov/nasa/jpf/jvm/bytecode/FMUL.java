@@ -45,7 +45,4 @@ public class FMUL extends JVMInstruction {
 		return 0x6A;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

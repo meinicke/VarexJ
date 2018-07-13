@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -38,14 +37,7 @@ public class D2I extends JVMInstruction {
     
 	Conditional<Double> v = frame.popDouble(ctx);
 
-	frame.push(ctx, v.map(new Function<Double, Integer>() {
-
-		@Override
-		public Integer apply(Double l) {
-			return (int) l.floatValue();
-		}
-
-	}));
+	frame.push(ctx, v.map(l -> (int) l.floatValue()));
 
     
     return getNext(ctx, ti);
@@ -55,7 +47,4 @@ public class D2I extends JVMInstruction {
     return 0x8E;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

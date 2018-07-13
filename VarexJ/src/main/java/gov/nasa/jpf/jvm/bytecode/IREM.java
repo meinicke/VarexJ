@@ -76,7 +76,4 @@ public class IREM extends JVMInstruction {
 		return 0x70;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

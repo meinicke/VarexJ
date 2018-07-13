@@ -46,7 +46,4 @@ public class IUSHR extends JVMInstruction {
     return 0x7C;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

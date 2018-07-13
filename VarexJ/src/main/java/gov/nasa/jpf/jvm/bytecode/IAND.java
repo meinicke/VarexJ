@@ -46,7 +46,4 @@ public class IAND extends JVMInstruction {
     return 0x7E;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

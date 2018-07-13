@@ -48,8 +48,4 @@ public class LOR extends JVMInstruction {
     return 0x81;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

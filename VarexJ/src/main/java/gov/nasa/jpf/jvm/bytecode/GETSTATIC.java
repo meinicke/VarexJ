@@ -131,7 +131,4 @@ public class GETSTATIC extends StaticFieldInstruction {
     return true;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -45,7 +45,4 @@ public class I2F extends JVMInstruction {
     return 0x86;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

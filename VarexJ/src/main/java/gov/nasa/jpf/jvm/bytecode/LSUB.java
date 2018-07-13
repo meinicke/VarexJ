@@ -48,8 +48,4 @@ public class LSUB extends JVMInstruction {
     return 0x65;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -46,7 +46,4 @@ public class ISHL extends JVMInstruction {
     return 0x78;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

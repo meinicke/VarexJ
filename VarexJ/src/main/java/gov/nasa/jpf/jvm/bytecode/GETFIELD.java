@@ -191,7 +191,4 @@ public class GETFIELD extends InstanceFieldInstruction {
 		return true;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

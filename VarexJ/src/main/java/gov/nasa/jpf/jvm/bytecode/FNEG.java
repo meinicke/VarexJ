@@ -47,8 +47,4 @@ public class FNEG extends JVMInstruction {
     return 0x76;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

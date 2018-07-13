@@ -18,8 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.StackFrame;
@@ -48,7 +49,4 @@ public class IFEQ extends IfInstruction {
 		return 0x99;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

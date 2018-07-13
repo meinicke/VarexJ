@@ -65,9 +65,4 @@ public class ASTORE extends LocalVariableInstruction implements StoreInstruction
     return "astore";
   }
   
-  
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

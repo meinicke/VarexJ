@@ -44,7 +44,4 @@ public class DADD extends JVMInstruction {
 		return 0x63;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

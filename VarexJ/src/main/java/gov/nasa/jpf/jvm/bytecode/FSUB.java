@@ -48,8 +48,4 @@ public class FSUB extends JVMInstruction {
     return 0x66;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

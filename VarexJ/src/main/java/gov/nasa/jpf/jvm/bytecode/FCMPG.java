@@ -56,7 +56,4 @@ public class FCMPG extends JVMInstruction {
 		return 0x96;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

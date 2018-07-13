@@ -18,8 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -50,7 +51,4 @@ public class IFNONNULL extends IfInstruction {
     return 0xC7;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

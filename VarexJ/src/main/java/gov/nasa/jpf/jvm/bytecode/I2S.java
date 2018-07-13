@@ -45,7 +45,4 @@ public class I2S extends JVMInstruction {
     return 0x93;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

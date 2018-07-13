@@ -43,8 +43,5 @@ public class DUP_X1 extends JVMInstruction {
   public int getByteCode () {
     return 0x5A;
   }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
+
 }

@@ -49,10 +49,6 @@ public class DALOAD extends LongArrayLoadInstruction {
     return 0x31;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-  
   	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {

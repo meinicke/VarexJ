@@ -62,8 +62,4 @@ public class BIPUSH extends JVMInstruction {
     return 0x10;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

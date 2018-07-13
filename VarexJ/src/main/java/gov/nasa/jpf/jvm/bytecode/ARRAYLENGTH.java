@@ -75,11 +75,6 @@ public class ARRAYLENGTH extends ArrayInstruction {
   }
   
   @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-
-  @Override
   protected Conditional<Integer> peekArrayRef (FeatureExpr ctx, ThreadInfo ti) {
     return ti.getTopFrame().peek(FeatureExprFactory.True());
   }

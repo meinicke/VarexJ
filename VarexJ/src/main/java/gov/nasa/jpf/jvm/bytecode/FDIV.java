@@ -45,7 +45,4 @@ public class FDIV extends JVMInstruction {
 		return 0x6E;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

@@ -46,8 +46,4 @@ public class DSUB extends JVMInstruction {
 		return 0x67;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

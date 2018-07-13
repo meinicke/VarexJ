@@ -67,9 +67,4 @@ public class ISTORE extends LocalVariableInstruction implements StoreInstruction
   public String getBaseMnemonic() {
     return "istore";
   }
-  
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

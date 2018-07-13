@@ -58,7 +58,4 @@ public class RUNSTART extends JVMInstruction {
     return true;
   }
 
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

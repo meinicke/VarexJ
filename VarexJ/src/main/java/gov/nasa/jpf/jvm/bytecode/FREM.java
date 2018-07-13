@@ -48,8 +48,4 @@ public class FREM extends JVMInstruction {
 		return 0x72;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

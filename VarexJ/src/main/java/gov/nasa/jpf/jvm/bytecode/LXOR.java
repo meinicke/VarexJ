@@ -48,8 +48,4 @@ public class LXOR extends JVMInstruction {
     return 0x83;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

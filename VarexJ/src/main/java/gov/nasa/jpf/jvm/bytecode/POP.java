@@ -43,7 +43,4 @@ public class POP extends JVMInstruction {
     return 0x57;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

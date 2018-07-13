@@ -45,7 +45,4 @@ public class IMUL extends JVMInstruction {
     return 0x68;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }
