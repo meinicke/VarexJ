@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -26,6 +27,20 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 		this.thenBranch = thenBranch;
 		this.elseBranch = elseBranch;
 		
+	}
+	
+	@Override
+	public <U> Conditional<U> map(Function<T, U> f) {
+		Conditional<U> newResultA = thenBranch.map(f);
+		Conditional<U> newResultB = elseBranch.map(f);
+		return new TreeChoice<>(featureExpr, newResultA, newResultB);
+	}
+	
+	@Override
+	public <U> Conditional<U> mapr(Function<T, Conditional<U>> f) {
+		Conditional<U> newResultA = thenBranch.mapr(f);
+		Conditional<U> newResultB = elseBranch.mapr(f);
+		return new TreeChoice<>(featureExpr, newResultA, newResultB);
 	}
 
 	@Override
