@@ -17,14 +17,7 @@ import gov.nasa.jpf.vm.VM;
 
 public abstract class ABytecodeTest {
 
-	protected abstract int expectedOpCode();
-
 	protected abstract Instruction getInstruction();
-
-	@Test
-	public void testOpCode() {
-		assertEquals(expectedOpCode(), getInstruction().getByteCode());
-	}
 
 	@Test
 	public void testMnemonic() {

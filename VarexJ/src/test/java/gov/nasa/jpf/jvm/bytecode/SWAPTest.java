@@ -26,11 +26,6 @@ public class SWAPTest extends ABytecodeTest {
 	}
 
 	@Override
-	protected int expectedOpCode() {
-		return 0x5f;
-	}
-
-	@Override
 	protected Instruction getInstruction() {
 		return InstructionFactory.getFactory().swap();
 	}

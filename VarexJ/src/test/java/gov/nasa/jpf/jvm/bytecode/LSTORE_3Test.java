@@ -10,11 +10,6 @@ public class LSTORE_3Test extends LSTORE_0Test {
 	}
 
 	@Override
-	public int expectedOpCode() {
-		return 0x42;
-	}
-	
-	@Override
 	protected Instruction getInstruction() {
 		return InstructionFactory.getFactory().lstore_3();
 	}

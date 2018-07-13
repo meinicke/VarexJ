@@ -44,11 +44,6 @@ public class POP2Test extends ABytecodeTest {
 	}
 
 	@Override
-	protected int expectedOpCode() {
-		return 0x58;
-	}
-
-	@Override
 	protected Instruction getInstruction() {
 		return InstructionFactory.getFactory().pop2();
 	}

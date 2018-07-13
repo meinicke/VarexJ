@@ -27,11 +27,6 @@ public class LLOAD_0Test extends ABytecodeTest {
 	}
 
 	@Override
-	public int expectedOpCode() {
-		return 0x1e;
-	}
-
-	@Override
 	protected Instruction getInstruction() {
 		return InstructionFactory.getFactory().lload_0();
 	}

@@ -25,11 +25,6 @@ public class D2FTest extends ABytecodeTest {
 	}
 
 	@Override
-	protected int expectedOpCode() {
-		return 0x90;
-	}
-
-	@Override
 	protected Instruction getInstruction() {
 		return InstructionFactory.getFactory().d2f();
 	}

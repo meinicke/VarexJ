@@ -27,11 +27,6 @@ public class LSTORE_0Test extends ABytecodeTest {
 	}
 
 	@Override
-	public int expectedOpCode() {
-		return 0x3f;
-	}
-
-	@Override
 	protected Instruction getInstruction() {
 		return InstructionFactory.getFactory().lstore_0();
 	}

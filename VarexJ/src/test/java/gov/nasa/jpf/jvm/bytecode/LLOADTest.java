@@ -10,11 +10,6 @@ public class LLOADTest extends LLOAD_0Test {
 	}
 
 	@Override
-	public int expectedOpCode() {
-		return 0x16;
-	}
-	
-	@Override
 	protected Instruction getInstruction() {
 		return InstructionFactory.getFactory().lload(4);
 	}

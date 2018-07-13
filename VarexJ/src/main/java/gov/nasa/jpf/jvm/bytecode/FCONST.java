@@ -54,10 +54,16 @@ public class FCONST extends JVMInstruction {
 	  return value;
   }
   
-  @Override
-  public int getByteCode () {
-    return 0x0B; // ?? FCONST_0, _1, _2
-  }
+
+	@Override
+	public String getMnemonic() {
+		return super.getMnemonic() + "_" + (value == 0.0f ? "0" : value == 1.0f ? "1" : "2");
+	}
+
+	@Override
+	public int getByteCode() {
+		return value == 0.0f ? 0x0B : (value == 1.0f ? 0x0C : 0x0D);
+	}
   
   @Override
   public void accept(InstructionVisitor insVisitor) {

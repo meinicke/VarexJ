@@ -31,11 +31,6 @@ public class DUP2_X1Test extends ABytecodeTest {
 	}
 
 	@Override
-	protected int expectedOpCode() {
-		return 0x5d;
-	}
-
-	@Override
 	protected Instruction getInstruction() {
 		return InstructionFactory.getFactory().dup2_x1();
 	}

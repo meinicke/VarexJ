@@ -66,6 +66,11 @@ public class IINC extends LocalVariableInstruction {
 	}
 
 	@Override
+	public String getMnemonic() {
+		return "iinc";
+	}
+
+	@Override
 	public String getBaseMnemonic() {
 		return "iinc";
 	}

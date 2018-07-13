@@ -65,12 +65,9 @@ public abstract class LocalVariableInstruction extends JVMInstruction
     return mi.getClassInfo().getName() + '.' + mi.getUniqueName() + '.' + getLocalVariableName();
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-  
   public abstract String getBaseMnemonic();
   
+  @Override
   public String getMnemonic(){
     String baseMnemonic = getBaseMnemonic();
     
