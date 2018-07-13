@@ -24,14 +24,10 @@ import java.util.function.BiFunction;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
-import gov.nasa.jpf.vm.KernelState;
 import gov.nasa.jpf.vm.StackFrame;
-import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.ThreadInfo;
-import gov.nasa.jpf.vm.choice.IntIntervalGenerator;
 
 /**
  * common root class for LOOKUPSWITCH and TABLESWITCH insns
@@ -87,61 +83,5 @@ public abstract class SwitchInstruction extends JVMInstruction {
     // this can be overridden by subclasses, so we have to delegate the conditional execution
     // to avoid getting recursive in executeAllBranches()
     return executeConditional(ctx, ti);
-  }
-
-  /** useful for symbolic execution modes */
-  public Instruction executeAllBranches (SystemState ss, KernelState ks, ThreadInfo ti) {
-    if (!ti.isFirstStepInsn()) {
-      IntIntervalGenerator cg = new IntIntervalGenerator("switchAll", 0,matches.length);
-      if (ss.setNextChoiceGenerator(cg)){
-        return this;
-
-      } else {
-        // listener did override CG, fall back to conditional execution
-        return executeConditional(FeatureExprFactory.True(), ti).getValue();
-      }
-      
-    } else {
-      IntIntervalGenerator cg = ss.getCurrentChoiceGenerator("switchAll", IntIntervalGenerator.class);
-      assert (cg != null) : "no IntIntervalGenerator";
-      
-      StackFrame frame = ti.getModifiableTopFrame();
-      int idx = frame.pop(FeatureExprFactory.True()).getValue(); // but we are not using it
-      idx = cg.getNextChoice();
-      
-      if (idx == matches.length){ // default branch
-        lastIdx = DEFAULT;
-        return mi.getInstructionAt(target);
-      } else {
-        lastIdx = idx;
-        return mi.getInstructionAt(targets[idx]);
-      }
-    }
-  }
-
-  //--- a little inspection, but only post exec yet
-  
-  public int getLastTargetIndex () {
-    return lastIdx;
-  }
-  
-  public int getNumberOfTargets () {
-    return matches.length;
-  }
-  
-  public int getMatchConst (int idx){
-    return matches[idx];
-  }
-  
-  public int getTarget() {
-	return target;
-  }
-
-  public int[] getTargets() {
-	return targets;
-  }
-
-  public int[] getMatches() {
-	return matches;
   }
 }
