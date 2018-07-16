@@ -67,7 +67,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	public <U> Conditional<U> mapfr(FeatureExpr inFeature, BiFunction<FeatureExpr, T, Conditional<U>> f) {
 		Map<U, FeatureExpr> newMap = new HashMap<>();
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
-			Conditional<U> result = f.apply(inFeature == null ? e.getValue() : and(e.getValue(), inFeature), e.getKey());
+			Conditional<U> result = f.apply(and(e.getValue(), inFeature), e.getKey());
 			if (result == null) {
 				newMap.put(null, e.getValue());
 				continue;
@@ -127,7 +127,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	@Override
 	public void mapfr(FeatureExpr inFeature, BiConsumer<FeatureExpr, T> f) {
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
-			f.accept(inFeature == null ? e.getValue() : and(e.getValue(), inFeature), e.getKey());
+			f.accept(and(e.getValue(), inFeature), e.getKey());
 		}
 	}
 
