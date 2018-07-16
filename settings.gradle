@@ -1,2 +1,2 @@
-include 'VarexJ', 'Evaluations:prevayler'
+include 'VarexJ'
 rootProject.name = 'VarexJ-Root'
