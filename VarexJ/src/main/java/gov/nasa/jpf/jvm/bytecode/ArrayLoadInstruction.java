@@ -37,6 +37,7 @@ import gov.nasa.jpf.vm.ThreadInfo;
  *
  * ..., array, index => ..., value
  */
+@SuppressWarnings("rawtypes")
 public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 
 	private Conditional pushValue = One.valueOf(0);
@@ -85,6 +86,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 				final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
 				return index.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
+					@SuppressWarnings("unchecked")
 					@Override
 					public Conditional<Instruction> apply(FeatureExpr ctx, Integer index) {
 						try {

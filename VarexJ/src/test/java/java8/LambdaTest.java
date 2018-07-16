@@ -64,6 +64,7 @@ public class LambdaTest extends TestJPF{
       
       assertTrue(fi != null);
       
+      @SuppressWarnings("rawtypes")
       Class cls = fi.getClass();
       
       assertEquals(cls.getInterfaces().length, 1);
