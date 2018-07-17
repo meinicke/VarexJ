@@ -18,11 +18,8 @@
 
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.List;
-
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.JVMInstructionFactory;
-import gov.nasa.jpf.util.Invocation;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
@@ -1077,13 +1074,6 @@ public class InstructionFactory extends JVMInstructionFactory {
   @Override
   public Instruction wide() {
     return new WIDE();
-  }
-
-  
-  //--- the JPF specific ones (only used in synthetic methods)
-  @Override
-  public Instruction invokecg(List<Invocation> invokes) {
-    return new INVOKECG(invokes);
   }
 
   @Override
