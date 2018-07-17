@@ -151,14 +151,6 @@ public int nLocals;
 	  this( ctx, callee, callee.getMaxLocals(), callee.getMaxStack());
   }
 
-
-
-  /**
-   * Creates an empty stack frame. Used by clone.
-   */
-  protected StackFrame () {
-  }
-
   /**
    * creates callerSlots dummy Stackframe for testing of operand/local operations
    * NOTE - TESTING ONLY! this does not have a MethodInfo
