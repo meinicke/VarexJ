@@ -19,10 +19,8 @@
 package gov.nasa.jpf.jvm;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import gov.nasa.jpf.JPFException;
-import gov.nasa.jpf.util.Invocation;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.LookupSwitchInstruction;
@@ -1284,13 +1282,6 @@ public class JVMCodeBuilder implements JVMByteCodeReader {
 
   @Override public void unknown(int bytecode) {
     throw new JPFException("unknown bytecode: " + Integer.toHexString(bytecode));
-  }
-
-
-  //--- the JPF specific ones (only used in synthetic methods)
-  public void invokecg(List<Invocation> invokes) {
-    add (insnFactory.invokecg(invokes));
-    pc++;
   }
 
   public void invokeclinit(ClassInfo ci) {
