@@ -20,7 +20,6 @@ package gov.nasa.jpf.vm;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.function.BiFunction;
 
@@ -1905,35 +1904,4 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   public int valueOfLong(FeatureExpr ctx, long l) {
     return BoxObjectCacheManager.valueOfLong(ctx, ti, l);
   }
-
-  	/**
-  	 * Contains objects created and handles by the host JVM.
-  	 */
-	private static HashMap<Integer, Object> JVMObjects = new HashMap<>();
-
-	/**
-	 * Add a HostJVM object.
-	 * @param objref The object reference of VarexJ
-	 * @param object The object of the HostJVM
-	 */
-	public void addJVMObject(int objref, Object object) {
-		JVMObjects.put(objref, object);
-	}
-
-	/**
-	 * Get a HostJVM object.
-	 * @param objref The object reference of VarexJ
-	 * @return The object of the HostJVM
-	 */
-	public Object getJVMObject(int objref) {
-		return JVMObjects.get(objref);
-	}
-
-	/**
-	 * Remove a HostJVM object.
-	 * @param objref The object reference of VarexJ
-	 */
-	public void removeJVMObject(int objref) {// TODO add to garbage collection
-		JVMObjects.remove(objref);
-	}
 }
