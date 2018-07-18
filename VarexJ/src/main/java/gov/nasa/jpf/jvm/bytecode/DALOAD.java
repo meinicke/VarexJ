@@ -52,6 +52,6 @@ public class DALOAD extends LongArrayLoadInstruction {
   	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
-		frame.pushDouble(ctx, value);
+		frame.pushLong(ctx, value.simplify(ctx));
 	}
 }
