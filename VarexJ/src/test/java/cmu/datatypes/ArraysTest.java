@@ -94,4 +94,35 @@ public class ArraysTest extends TestJPF {// TODO actually test the results
 			}
 		}
 	}
+	
+
+	@Test
+	public void doublenArraysFillTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION, "+stack=StackHandler")) {
+			int length = 100;
+			double[] array = new double[length];
+			double[] array2 = new double[length];
+
+			Arrays.fill(array, 2.2);
+			if (a) {
+				Arrays.fill(array2, 2.1);
+			}
+			for (int i = 0; i < array2.length; i++) {
+				array[i] = array2[i];
+			}
+		}
+	}
+	
+	@Test
+	public void doublenArraysTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION, "+stack=StackHandler")) {
+			double[] array = new double[a ? 10: 12];
+			array[0] = 1.0;
+			assertEquals(array[0], 1.0);
+			assertEquals(array[1], 0.0);
+			double x = array[0];
+			array[0] = x;
+			assertEquals(array[0], 1.0);
+		}
+	}
 }
