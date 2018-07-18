@@ -44,7 +44,4 @@ public class LSHL extends JVMInstruction {
 		return 0x79;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

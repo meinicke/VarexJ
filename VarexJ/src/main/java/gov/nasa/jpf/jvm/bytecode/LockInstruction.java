@@ -45,7 +45,4 @@ public abstract class LockInstruction extends JVMInstruction {
     return ei.getLockingThread() == ti;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

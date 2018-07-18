@@ -45,7 +45,4 @@ public class F2L extends JVMInstruction {
     return 0x8C;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

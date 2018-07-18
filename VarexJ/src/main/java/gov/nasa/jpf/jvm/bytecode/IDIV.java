@@ -78,7 +78,4 @@ public class IDIV extends JVMInstruction {
 		return 0x6C;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

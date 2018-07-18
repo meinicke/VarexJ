@@ -48,8 +48,4 @@ public class L2D extends JVMInstruction {
     return 0x8A;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

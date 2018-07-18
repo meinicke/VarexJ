@@ -58,16 +58,12 @@ public class LLOAD extends LocalVariableInstruction {
       case 1: return 0x1f;
       case 2: return 0x20;
       case 3: return 0x21;
+      default: return 0x16; // ?? wide 
     }
-    
-    return 0x16; // ?? wide
   }
   
   public String getBaseMnemonic() {
     return "lload";
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

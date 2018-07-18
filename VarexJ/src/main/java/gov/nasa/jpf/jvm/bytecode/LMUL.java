@@ -46,8 +46,4 @@ public class LMUL extends JVMInstruction {
 		return 0x69;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

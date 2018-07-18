@@ -45,7 +45,4 @@ public class I2D extends JVMInstruction {
     return 0x87;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

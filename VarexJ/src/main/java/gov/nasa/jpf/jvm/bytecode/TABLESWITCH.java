@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -93,7 +94,4 @@ public class TABLESWITCH extends SwitchInstruction implements gov.nasa.jpf.vm.Ta
 		return 0xAA;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

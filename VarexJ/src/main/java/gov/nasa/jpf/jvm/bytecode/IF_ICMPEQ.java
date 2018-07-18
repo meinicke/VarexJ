@@ -46,7 +46,4 @@ public class IF_ICMPEQ extends IfInstruction {
 		return 0x9F;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -35,6 +36,16 @@ public class One<T> extends Conditional<T> implements Cloneable {
 
 	public T getValue(final boolean ignore) {
 		return getValue();
+	}
+	
+	@Override
+	public <U> Conditional<U> map(Function<T, U> f) {
+		return new One<>(f.apply(value));
+	}
+	
+	@Override
+	public <U> Conditional<U> mapr(Function<T, Conditional<U>> f) {
+		return f.apply(value);
 	}
 
 	@Override

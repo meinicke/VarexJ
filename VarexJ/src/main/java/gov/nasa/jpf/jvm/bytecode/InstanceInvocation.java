@@ -54,9 +54,5 @@ public abstract class InstanceInvocation extends InvokeInstruction {
       return null;
     }
   }
-  
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 
 }

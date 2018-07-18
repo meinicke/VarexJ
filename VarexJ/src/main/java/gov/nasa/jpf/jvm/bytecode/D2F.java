@@ -37,17 +37,13 @@ public class D2F extends JVMInstruction {
     
 		Conditional<Double> v = frame.popDouble(ctx);
 
-		frame.pushFloat(ctx, v.map(l -> l.floatValue()));
+		frame.pushFloat(ctx, v.map(Double::floatValue));
         
     return getNext(ctx, ti);
   }
-
 
   public int getByteCode () {
     return 0x90;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -46,8 +46,4 @@ public class LAND extends JVMInstruction {
 		return 0x7F;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

@@ -46,8 +46,4 @@ public class DMUL extends JVMInstruction {
 		return 0x6B;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

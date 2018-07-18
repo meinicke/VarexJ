@@ -46,7 +46,4 @@ public class IADD extends JVMInstruction {
     return 0x60;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -92,7 +92,4 @@ public class INVOKECLINIT extends INVOKESTATIC {
     return OPCODE;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

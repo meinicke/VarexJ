@@ -58,8 +58,4 @@ public class FCMPL extends JVMInstruction {
 		return 0x95;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

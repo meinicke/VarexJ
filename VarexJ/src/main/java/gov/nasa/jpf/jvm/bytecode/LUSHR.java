@@ -44,7 +44,4 @@ public class LUSHR extends JVMInstruction {
 		return 0x7D;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

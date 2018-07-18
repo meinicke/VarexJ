@@ -43,7 +43,4 @@ public class NOP extends JVMInstruction {
     return 0x00;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -46,8 +46,4 @@ public class LNEG extends JVMInstruction {
     return 0x75;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

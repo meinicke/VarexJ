@@ -47,7 +47,4 @@ public class LASTORE extends LongArrayStoreInstruction {
     return 0x50;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

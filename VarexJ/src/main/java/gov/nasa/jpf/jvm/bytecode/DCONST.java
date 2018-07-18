@@ -51,14 +51,15 @@ public class DCONST extends JVMInstruction {
   public double getValue(){
 	  return value;
   }
+  
+  	@Override
+	public String getMnemonic() {
+  		return super.getMnemonic() + "_" + (value == 0.0 ? "0" : "1");
+	}
 
   @Override
   public int getByteCode () {
-    return 0x0E;  // ? DCONST_0 0x0E , DCONST_1 0x0F
+    return value == 0.0 ? 0x0E : 0x0F;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

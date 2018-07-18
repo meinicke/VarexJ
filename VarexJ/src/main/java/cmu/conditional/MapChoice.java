@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
@@ -61,12 +62,12 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		}
 		return getValue();
 	}
-
+	
 	@Override
 	public <U> Conditional<U> mapfr(FeatureExpr inFeature, BiFunction<FeatureExpr, T, Conditional<U>> f) {
 		Map<U, FeatureExpr> newMap = new HashMap<>();
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
-			Conditional<U> result = f.apply(inFeature == null ? e.getValue() : and(e.getValue(), inFeature), e.getKey());
+			Conditional<U> result = f.apply(and(e.getValue(), inFeature), e.getKey());
 			if (result == null) {
 				newMap.put(null, e.getValue());
 				continue;
@@ -88,9 +89,45 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	}
 	
 	@Override
+	public <U> Conditional<U> map(Function<T, U> f) {
+		Map<U, FeatureExpr> newMap = new HashMap<>();
+		for (Entry<T, FeatureExpr> e : map.entrySet()) {
+			U result = f.apply(e.getKey());
+			FeatureExpr existingValue = newMap.get(result);
+			if (existingValue != null) {
+				newMap.put(result, or(existingValue, e.getValue()));
+			} else {
+				newMap.put(result, e.getValue());
+			}
+		}
+		return new MapChoice<>(newMap);
+	}
+	
+	@Override
+	public <U> Conditional<U> mapr(Function<T, Conditional<U>> f) {
+		Map<U, FeatureExpr> newMap = new HashMap<>();
+		for (Entry<T, FeatureExpr> e : map.entrySet()) {
+			Conditional<U> result = f.apply(e.getKey());
+			for (Entry<U, FeatureExpr> r : result.toMap().entrySet()) {
+				FeatureExpr and = and(r.getValue(), e.getValue());
+				final U key = r.getKey();
+				if (newMap.containsKey(key)) {
+					newMap.put(key, or(newMap.get(key), and));
+				} else {
+					if (!isContradiction(and)) {
+						newMap.put(key, and);
+					}
+				}
+			}
+		}
+
+		return new MapChoice<>(newMap);
+	}
+	
+	@Override
 	public void mapfr(FeatureExpr inFeature, BiConsumer<FeatureExpr, T> f) {
 		for (Entry<T, FeatureExpr> e : map.entrySet()) {
-			f.accept(inFeature == null ? e.getValue() : and(e.getValue(), inFeature), e.getKey());
+			f.accept(and(e.getValue(), inFeature), e.getKey());
 		}
 	}
 
@@ -206,4 +243,5 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		return map.size();
 	}
 
+	
 }

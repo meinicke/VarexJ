@@ -46,7 +46,4 @@ public class IXOR extends JVMInstruction {
     return 0x82;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

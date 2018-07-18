@@ -49,7 +49,4 @@ public class IFLT extends IfInstruction {
     return 0x9B;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

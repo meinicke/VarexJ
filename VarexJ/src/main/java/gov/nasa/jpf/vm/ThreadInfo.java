@@ -35,9 +35,7 @@ import java.util.logging.Level;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
-import cmu.utils.CoverageClass;
 import cmu.utils.RuntimeConstants;
-import cmu.utils.TraceComparator;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
@@ -433,7 +431,6 @@ public class ThreadInfo extends InfoObject
     globalTids.put(objRef, id);
   }
   
-  public CoverageClass coverage = new CoverageClass(this);
 
   /**
    * mainThread ctor called by the VM. Note we don't have a thread object yet (hen-and-egg problem
@@ -1967,7 +1964,6 @@ public class ThreadInfo extends InfoObject
     private static long time = 0;
     
 
-    public static boolean logtrace = false;
     public static boolean RUN_SIMPLE = false;
 
     /**
@@ -2045,15 +2041,9 @@ public class ThreadInfo extends InfoObject
  			
  			}
      		
-     		if (RuntimeConstants.tracing) {
-     			performTracing(i, ctx);
-     		}
-     		coverage.preExecuteInstruction(i);
-
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
      		final Conditional<Instruction> next = i.execute(ctx, this);
-     		coverage.postExecuteInstruction(i, ctx);
      		
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {
@@ -2199,27 +2189,7 @@ public class ThreadInfo extends InfoObject
         return String.valueOf(value);
     }
 
-  /**
-   * Log trace for trace comparison.
-   * @param instruction The instruction to log.
-   * @param ctx
-   */
-  	private void performTracing(Instruction instruction, FeatureExpr ctx) {
-  		if (logtrace) {
- 			if (!(instruction instanceof InvokeInstruction)) {
- 				MethodInfo mi = instruction.getMethodInfo();
- 				if (mi == null || mi.getFullName().contains("clinit") || mi.getFullName().contains("java.lang.Class.desiredAssertionStatus")) {
- 					// ignore class initializations
- 				} else {
- 					TraceComparator.putInstruction(ctx, mi.getFullName() + " " + instruction.getMnemonic() +  " " + instruction.getFileLocation());
- 				}
- 			}
- 		} else if (JPF.traceMethod != null && instruction.getMethodInfo().getFullName().equals(JPF.traceMethod)) {
- 			logtrace = true;
- 		}
-  	}
-	
-	/**
+    /**
   	 * Checks whether the the new top stack is part of the trace of the current stack.
   	 */
 	private boolean stackTraceMember(final StackFrame current, final StackFrame newTop) {

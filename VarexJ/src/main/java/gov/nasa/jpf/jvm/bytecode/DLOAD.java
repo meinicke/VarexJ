@@ -65,7 +65,4 @@ public class DLOAD extends LocalVariableInstruction {
     return "dload";
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

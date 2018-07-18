@@ -120,7 +120,4 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 		return false;
 	}
 
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

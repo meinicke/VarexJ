@@ -56,8 +56,4 @@ public class FINISHCLINIT extends JVMInstruction {
     return OPCODE;
   }
 
-@Override
-public void accept(InstructionVisitor insVisitor) {
-	insVisitor.visit(this);
-}
 }

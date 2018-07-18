@@ -26,5 +26,4 @@ public interface RuntimeConstants {
 	 */
 	boolean ctxOutput = true;
 
-	boolean tracing = false;
 }

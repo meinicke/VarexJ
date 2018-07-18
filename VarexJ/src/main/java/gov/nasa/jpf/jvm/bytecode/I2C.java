@@ -45,7 +45,4 @@ public class I2C extends JVMInstruction {
     return 0x92;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

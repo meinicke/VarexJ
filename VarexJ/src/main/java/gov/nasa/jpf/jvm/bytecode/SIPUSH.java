@@ -56,11 +56,6 @@ public class SIPUSH extends JVMInstruction {
     return 0x11;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-
   public int getValue() {
 	return value;
   }

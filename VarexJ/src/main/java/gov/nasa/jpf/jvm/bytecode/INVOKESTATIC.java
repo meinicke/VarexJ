@@ -192,10 +192,6 @@ public class INVOKESTATIC extends InvokeInstruction {
     return getClassInfo().getStaticFieldValueObject(id);
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-
   @Override
   public Instruction typeSafeClone(MethodInfo mi) {
     INVOKESTATIC clone = null;

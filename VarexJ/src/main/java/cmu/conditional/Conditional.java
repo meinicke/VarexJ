@@ -166,16 +166,11 @@ public abstract class Conditional<T> {
 	public abstract T getValue(boolean ignore);
 
 	// def map[U](f: T => U): Conditional[U] = mapr(x => One(f(x)))
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public <U> Conditional<U> map(final Function<T, U> f) {
-		return mapfr(null, (FeatureExpr c, T x) -> new One(f.apply(x)));
-	}
+	public abstract <U> Conditional<U> map(final Function<T, U> f);
 
 	// def mapr[U](f: T => Conditional[U]): Conditional[U] = mapfr(True, (c, x)
 	// => f(x))
-	public <U> Conditional<U> mapr(final Function<T, Conditional<U>> f) {
-		return mapfr(FeatureExprFactory.True(), (FeatureExpr c, T x) -> f.apply(x));
-	}
+	public abstract <U> Conditional<U> mapr(final Function<T, Conditional<U>> f);
 
 	// def mapf[U](inFeature: FeatureExpr, f: (FeatureExpr, T) => U):
 	// Conditional[U] = mapfr(inFeature, (c, x) => One(f(c, x)))

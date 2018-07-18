@@ -107,7 +107,10 @@ public class NativePeer implements Cloneable {
         Class<?> peerCls = loader.loadClass(pcn);
         
         if ((peerCls.getModifiers() & Modifier.PUBLIC) == 0) {
-          logger.warning("non-public peer class: ", pcn);
+        	if (!pcn.contains("$")) {// avoid warning for inner classes
+        		logger.warning("non-public peer class: ", pcn);
+        	}
+          
           continue; // pointless to use this one, it would just create IllegalAccessExceptions
         }
         

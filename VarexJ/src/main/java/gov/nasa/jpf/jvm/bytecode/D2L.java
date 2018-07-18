@@ -47,7 +47,4 @@ public class D2L extends JVMInstruction {
     return 0x8F;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

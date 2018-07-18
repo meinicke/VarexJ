@@ -44,8 +44,4 @@ public class DCMPG extends DoubleCompareInstruction {
     return 0x98;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

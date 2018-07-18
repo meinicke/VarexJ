@@ -131,10 +131,4 @@ public class INVOKEDYNAMIC extends JVMInstruction {
     return getNext(ctx, ti);
   }
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
-
-
 }

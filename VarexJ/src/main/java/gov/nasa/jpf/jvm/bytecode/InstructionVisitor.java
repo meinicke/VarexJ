@@ -18,22 +18,15 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import gov.nasa.jpf.vm.Instruction;
-
 public interface InstructionVisitor {
 
-	public void visit(Instruction ins);
 	public void visit(AALOAD ins);
 	public void visit(AASTORE ins);
 	public void visit(ACONST_NULL ins);
 	public void visit(ALOAD ins);
 	public void visit(ANEWARRAY ins);
 	public void visit(ARETURN ins);
-	public void visit(ArrayInstruction ins);
-	public void visit(ArrayElementInstruction ins);
 	public void visit(ARRAYLENGTH ins);
-	public void visit(ArrayLoadInstruction ins);
-	public void visit(ArrayStoreInstruction ins);
 	public void visit(ASTORE ins);
 	public void visit(ATHROW ins);
 	public void visit(BALOAD ins);
@@ -52,7 +45,6 @@ public interface InstructionVisitor {
 	public void visit(DCMPL ins);
 	public void visit(DCONST ins);
 	public void visit(DDIV ins);
-  public void visit(DIRECTCALLRETURN ins);
 	public void visit(DLOAD ins);
 	public void visit(DMUL ins);
 	public void visit(DNEG ins);
@@ -66,7 +58,6 @@ public interface InstructionVisitor {
 	public void visit(DUP2_X1 ins);
 	public void visit(DUP2_X2 ins);
 	public void visit(DUP2 ins);
-  public void visit(EXECUTENATIVE ins);
 	public void visit(F2D ins);
 	public void visit(F2I ins);
 	public void visit(FADD ins);
@@ -75,7 +66,6 @@ public interface InstructionVisitor {
 	public void visit(FCMPL ins);
 	public void visit(FCONST ins);
 	public void visit(FDIV ins);
-	public void visit(FieldInstruction ins);
 	public void visit(FLOAD ins);
 	public void visit(FMUL ins);
 	public void visit(FNEG ins);
@@ -110,7 +100,6 @@ public interface InstructionVisitor {
 	public void visit(IFEQ ins);
 	public void visit(IFGE ins);
 	public void visit(IFGT ins);
-	public void visit(IfInstruction ins);
 	public void visit(IFLE ins);
 	public void visit(IFLT ins);
 	public void visit(IFNE ins);
@@ -120,12 +109,7 @@ public interface InstructionVisitor {
 	public void visit(ILOAD ins);
 	public void visit(IMUL ins);
 	public void visit(INEG ins);
-	public void visit(InstanceFieldInstruction ins);
-	public void visit(InstanceInvocation ins);
 	public void visit(INSTANCEOF ins);
-	public void visit(INVOKECG ins);
-	public void visit(INVOKECLINIT ins);
-	public void visit(InvokeInstruction ins);
 	public void visit(INVOKEINTERFACE ins);
 	public void visit(INVOKESPECIAL ins);
 	public void visit(INVOKESTATIC ins);
@@ -157,10 +141,6 @@ public interface InstructionVisitor {
 	public void visit(LLOAD ins);
 	public void visit(LMUL ins);
 	public void visit(LNEG ins);
-	public void visit(LocalVariableInstruction ins);
-	public void visit(LockInstruction ins);
-	public void visit(LongArrayLoadInstruction ins);
-	public void visit(LongArrayStoreInstruction ins);
 	public void visit(LOOKUPSWITCH ins);
 	public void visit(LOR ins);
 	public void visit(LREM ins);
@@ -174,7 +154,6 @@ public interface InstructionVisitor {
 	public void visit(MONITORENTER ins);
 	public void visit(MONITOREXIT ins);
 	public void visit(MULTIANEWARRAY ins);
-  public void visit(NATIVERETURN ins);
 	public void visit(NEW ins);
 	public void visit(NEWARRAY ins);
 	public void visit(NOP ins);
@@ -184,16 +163,12 @@ public interface InstructionVisitor {
 	public void visit(PUTSTATIC ins);
 	public void visit(RET ins);
 	public void visit(RETURN ins);
-	public void visit(ReturnInstruction ins);
 	public void visit(SALOAD ins);
 	public void visit(SASTORE ins);
 	public void visit(SIPUSH ins);
-	public void visit(StaticFieldInstruction ins);
 	/**public void visit(StoreInstruction ins);**/ // neha: this is just an interface, not implemented
 	public void visit(SWAP ins);
-	public void visit(SwitchInstruction ins);
 	public void visit(TABLESWITCH ins);
 	/**public void visit(VariableAccessor ins);**/ // neha: this is just an interface, not implemented
-	public void visit(VirtualInvocation ins);
 	public void visit(WIDE ins);
 }

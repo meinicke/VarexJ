@@ -61,8 +61,4 @@ public class DSTORE extends LocalVariableInstruction implements StoreInstruction
     return "dstore";
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

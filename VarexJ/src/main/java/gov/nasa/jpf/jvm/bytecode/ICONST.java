@@ -75,8 +75,4 @@ public class ICONST extends JVMInstruction {
     }
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

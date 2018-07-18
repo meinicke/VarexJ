@@ -41,8 +41,4 @@ public class INVOKEVIRTUAL extends VirtualInvocation {
     return super.toString() + " " + cname + '.' + mname;
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
-  
 }

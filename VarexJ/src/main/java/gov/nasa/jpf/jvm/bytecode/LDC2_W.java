@@ -80,8 +80,4 @@ public class LDC2_W extends JVMInstruction {
     return value;
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

@@ -46,8 +46,4 @@ public abstract class ArrayInstruction extends JVMInstruction {
 
   abstract protected Conditional<Integer> peekArrayRef (FeatureExpr ctx, ThreadInfo ti);
 
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

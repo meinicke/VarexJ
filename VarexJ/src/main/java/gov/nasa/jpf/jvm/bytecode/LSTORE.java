@@ -52,23 +52,24 @@ public class LSTORE extends LocalVariableInstruction implements StoreInstruction
     }
   }
   
-  @Override
-  public int getByteCode () {
-    switch (index) {
-    case 0: return 0x3f;
-    case 1: return 0x40;
-    case 2: return 0x41;
-    case 3: return 0x42;
-    }
-    return 0x37; // ?? wide, LSTORE_n
-  }
+	@Override
+	public int getByteCode() {
+		switch (index) {
+		case 0:
+			return 0x3f;
+		case 1:
+			return 0x40;
+		case 2:
+			return 0x41;
+		case 3:
+			return 0x42;
+		default:
+			return 0x37; // ?? wide, LSTORE_n
+		}
+	}
   
   public String getBaseMnemonic() {
     return "lstore";
   }
   
-  @Override
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

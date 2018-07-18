@@ -30,8 +30,6 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
-import gov.nasa.jpf.util.BitSet64;
-import gov.nasa.jpf.util.FixedBitSet;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.util.OATHash;
@@ -124,9 +122,6 @@ public int nLocals;
   }
 
   static final int[] EMPTY_ARRAY = new int[0];
-  static final FixedBitSet EMPTY_BITSET = new BitSet64();
-  
-  
 
   protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){
     mi = callee;
@@ -154,14 +149,6 @@ public int nLocals;
   
   public StackFrame(FeatureExpr ctx, MethodInfo callee) {
 	  this( ctx, callee, callee.getMaxLocals(), callee.getMaxStack());
-  }
-
-
-
-  /**
-   * Creates an empty stack frame. Used by clone.
-   */
-  protected StackFrame () {
   }
 
   /**

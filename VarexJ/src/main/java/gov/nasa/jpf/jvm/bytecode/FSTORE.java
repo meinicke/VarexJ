@@ -67,7 +67,4 @@ public class FSTORE extends LocalVariableInstruction implements StoreInstruction
     return "fstore";
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

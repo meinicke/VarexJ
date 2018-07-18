@@ -45,8 +45,4 @@ public class DNEG extends JVMInstruction {
 		return 0x77;
 	}
 
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
-	}
 }

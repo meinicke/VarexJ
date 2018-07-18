@@ -69,7 +69,4 @@ public class FRETURN extends ReturnInstruction {
     return "freturn " + mi.getFullName();
   }
   
-  public void accept(InstructionVisitor insVisitor) {
-	  insVisitor.visit(this);
-  }
 }

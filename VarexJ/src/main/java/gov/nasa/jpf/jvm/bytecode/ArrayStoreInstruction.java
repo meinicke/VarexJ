@@ -19,6 +19,7 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -121,11 +122,6 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 	@Override
 	public boolean isRead() {
 		return false;
-	}
-
-	@Override
-	public void accept(InstructionVisitor insVisitor) {
-		insVisitor.visit(this);
 	}
 
 }
