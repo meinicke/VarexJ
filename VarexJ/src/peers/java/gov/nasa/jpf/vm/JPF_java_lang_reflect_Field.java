@@ -102,7 +102,7 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
 		}
 		
 		// our guards (still need IllegalAccessException)
-		if (fi.isPrivate() && !env.getBooleanField(objRef, "isAccessible").getValue()) {
+		if (fi.isPrivate() && !env.getBooleanField(objRef, "isAccessible").simplify(ctx).getValue()) {
 			env.throwException(ctx, IllegalAccessException.class.getName(), fi + "");
 			return null;
 		}
