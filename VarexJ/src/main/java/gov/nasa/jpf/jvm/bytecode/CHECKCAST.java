@@ -105,7 +105,7 @@ public class CHECKCAST extends JVMInstruction {
 					}
 
 					if (!isValid) {
-						return new One<>(ti.createAndThrowException(ctx, "java.lang.ClassCastException", e.getClassInfo().getName() + " cannot be cast to " + type));
+						return new One<>(new EXCEPTION(ClassCastException.class.getName(), e.getClassInfo().getName() + " cannot be cast to " + type));
 					}
 				}
 
