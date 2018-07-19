@@ -58,7 +58,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {
 				if (aref == MJIEnv.NULL) {
 					pushCtx = Conditional.andNot(pushCtx,ctx);
-					return new One<>(new EXCEPTION("java.lang.NullPointerException", ""));
+					return new One<>(new EXCEPTION(ArrayLoadInstruction.this, "java.lang.NullPointerException", ""));
 				}
 
 				final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
