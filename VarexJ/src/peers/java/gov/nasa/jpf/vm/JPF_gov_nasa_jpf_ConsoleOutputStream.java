@@ -28,7 +28,6 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -224,19 +223,34 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		});
 		Map<String, FeatureExpr> map = strings.toMap();
 		for (Entry<String, FeatureExpr> s : map.entrySet()) {
+			String key = s.getKey();
 			if (RuntimeConstants.ctxOutput) {
 				final FeatureExpr and = Conditional.and(s.getValue(), ctx);
 				if (!Conditional.isContradiction(and)) {
-					if (s.getKey().startsWith("test")) {
-						testExpressions.put(s.getKey(), (BDDFeatureExpr) and);
+					if (key.startsWith("test")) {
+						if (testExpressions.containsKey(key)) {
+							key = createUniqueKey(key);
+						}
+						testExpressions.put(key, and);
 					} else {
-						env.getVM().println('{' + s.getKey() + "} : " + Conditional.getCTXString(and));
+						if (Conditional.isTautology(and)) {
+							env.getVM().println('{' + key + "} : " + Conditional.getCTXString(and));
+						}
 					}
 				}
 			} else {
-				env.getVM().println(s.getKey());
+				env.getVM().println(key);
 			}
 		}
+	}
+
+	private String createUniqueKey(String key) {
+		int i = 0;
+		while (testExpressions.containsKey(key + i)) { 
+			i++;
+		}
+		key = key + i;
+		return key;
 	}
 
 	@MJI
