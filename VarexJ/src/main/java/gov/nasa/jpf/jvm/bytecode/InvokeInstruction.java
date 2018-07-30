@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -108,7 +108,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
 
   public MethodInfo getInvokedMethod () {
     if (invokedMethod == null){
-      invokedMethod = getInvokedMethod(FeatureExprFactory.True(), ThreadInfo.getCurrentThread());
+      invokedMethod = getInvokedMethod(CachedFeatureExprFactory.True(), ThreadInfo.getCurrentThread());
     }
 
     return invokedMethod;
@@ -163,7 +163,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
    * the callee) since that works for both pre- and post-exec notification
    */
   public Object[] getArgumentValues (ThreadInfo ti) {
-    MethodInfo callee = getInvokedMethod(FeatureExprFactory.True(), ti);
+    MethodInfo callee = getInvokedMethod(CachedFeatureExprFactory.True(), ti);
     StackFrame frame = getCallerFrame(ti, callee);
 
     assert frame != null : "can't find caller stackframe for: " + this;
@@ -171,7 +171,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
   }
 
   public Object[] getArgumentAttrs (ThreadInfo ti) {
-    MethodInfo callee = getInvokedMethod(FeatureExprFactory.True(), ti);
+    MethodInfo callee = getInvokedMethod(CachedFeatureExprFactory.True(), ti);
     StackFrame frame = getCallerFrame(ti, callee);
 
     assert frame != null : "can't find caller stackframe for: " + this;
@@ -184,7 +184,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
    * (use this before using any of the more expensive retrievers)
    */
   public boolean hasArgumentAttr (ThreadInfo ti, Class<?> type){
-    MethodInfo callee = getInvokedMethod(FeatureExprFactory.True(), ti);
+    MethodInfo callee = getInvokedMethod(CachedFeatureExprFactory.True(), ti);
     StackFrame frame = getCallerFrame(ti, callee);
 
     assert frame != null : "can't find caller stackframe for: " + this;
@@ -196,13 +196,13 @@ public abstract class InvokeInstruction extends JVMInstruction {
    * less efficient, but still without object creation
    */
   public boolean hasAttrRefArgument (ThreadInfo ti, Class<?> type){
-    MethodInfo callee = getInvokedMethod(FeatureExprFactory.True(), ti);
+    MethodInfo callee = getInvokedMethod(CachedFeatureExprFactory.True(), ti);
     StackFrame frame = getCallerFrame(ti, callee);
 
     int nArgSlots = callee.getArgumentsSize();
     for (int i=0; i<nArgSlots; i++){
       if (frame.isOperandRef(i)){
-        ElementInfo ei = ti.getElementInfo(frame.peek(FeatureExprFactory.True(), i).getValue());
+        ElementInfo ei = ti.getElementInfo(frame.peek(CachedFeatureExprFactory.True(), i).getValue());
         if (ei != null){
           if (ei.getObjectAttr(type) != null){
             return true;
@@ -228,7 +228,7 @@ public abstract class InvokeInstruction extends JVMInstruction {
       case Types.T_ARRAY:
       //case Types.T_OBJECT:
       case Types.T_REFERENCE:
-        int ref = frame.peek(FeatureExprFactory.True(), off).getValue();
+        int ref = frame.peek(CachedFeatureExprFactory.True(), off).getValue();
         if (ref != MJIEnv.NULL) {
           args[i] = ti.getElementInfo(ref);
         } else {
@@ -238,36 +238,36 @@ public abstract class InvokeInstruction extends JVMInstruction {
         break;
 
       case Types.T_LONG:
-        args[i] = frame.peekLong(FeatureExprFactory.True(), off).getValue();
+        args[i] = frame.peekLong(CachedFeatureExprFactory.True(), off).getValue();
         off+=2;
         break;
       case Types.T_DOUBLE:
-        args[i] = Double.valueOf(Types.longToDouble(frame.peekLong(FeatureExprFactory.True(), off).getValue()));
+        args[i] = Double.valueOf(Types.longToDouble(frame.peekLong(CachedFeatureExprFactory.True(), off).getValue()));
         off+=2;
         break;
 
       case Types.T_BOOLEAN:
-        args[i] = Boolean.valueOf(frame.peek(FeatureExprFactory.True(), off).getValue().intValue() != 0);
+        args[i] = Boolean.valueOf(frame.peek(CachedFeatureExprFactory.True(), off).getValue().intValue() != 0);
         off++;
         break;
       case Types.T_BYTE:
-        args[i] = Byte.valueOf((byte)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
+        args[i] = Byte.valueOf((byte)frame.peek(CachedFeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_CHAR:
-        args[i] = Character.valueOf((char)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
+        args[i] = Character.valueOf((char)frame.peek(CachedFeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_SHORT:
-        args[i] = Short.valueOf((short)frame.peek(FeatureExprFactory.True(), off).getValue().intValue());
+        args[i] = Short.valueOf((short)frame.peek(CachedFeatureExprFactory.True(), off).getValue().intValue());
         off++;
         break;
       case Types.T_INT:
-        args[i] = frame.peek(FeatureExprFactory.True(), off).getValue();
+        args[i] = frame.peek(CachedFeatureExprFactory.True(), off).getValue();
         off++;
         break;
       case Types.T_FLOAT:
-        args[i] = Float.valueOf(Types.intToFloat(frame.peek(FeatureExprFactory.True(), off).getValue().intValue()));
+        args[i] = Float.valueOf(Types.intToFloat(frame.peek(CachedFeatureExprFactory.True(), off).getValue().intValue()));
         off++;
         break;
       default:

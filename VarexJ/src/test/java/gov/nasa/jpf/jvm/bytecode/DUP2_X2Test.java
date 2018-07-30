@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 
@@ -19,18 +19,18 @@ public class DUP2_X2Test extends ABytecodeTest {
 		final One<Integer> value4 = One.valueOf(4);
 
 		StackFrame stackFrame = createStackFrame(6, 0, getInstruction());
-		stackFrame.push(FeatureExprFactory.True(), value4);
-		stackFrame.push(FeatureExprFactory.True(), value3);
-		stackFrame.push(FeatureExprFactory.True(), value2);
-		stackFrame.push(FeatureExprFactory.True(), value1);
+		stackFrame.push(CachedFeatureExprFactory.True(), value4);
+		stackFrame.push(CachedFeatureExprFactory.True(), value3);
+		stackFrame.push(CachedFeatureExprFactory.True(), value2);
+		stackFrame.push(CachedFeatureExprFactory.True(), value1);
 		executedCode(stackFrame);
 
-		assertEquals(value1, stackFrame.pop(FeatureExprFactory.True()));
-		assertEquals(value2, stackFrame.pop(FeatureExprFactory.True()));
-		assertEquals(value3, stackFrame.pop(FeatureExprFactory.True()));
-		assertEquals(value4, stackFrame.pop(FeatureExprFactory.True()));
-		assertEquals(value1, stackFrame.pop(FeatureExprFactory.True()));
-		assertEquals(value2, stackFrame.pop(FeatureExprFactory.True()));
+		assertEquals(value1, stackFrame.pop(CachedFeatureExprFactory.True()));
+		assertEquals(value2, stackFrame.pop(CachedFeatureExprFactory.True()));
+		assertEquals(value3, stackFrame.pop(CachedFeatureExprFactory.True()));
+		assertEquals(value4, stackFrame.pop(CachedFeatureExprFactory.True()));
+		assertEquals(value1, stackFrame.pop(CachedFeatureExprFactory.True()));
+		assertEquals(value2, stackFrame.pop(CachedFeatureExprFactory.True()));
 	}
 
 	@Override

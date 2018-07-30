@@ -22,9 +22,9 @@ package gov.nasa.jpf.util.json;
 import java.util.HashMap;
 import java.util.Set;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.JPFLogger;
@@ -205,7 +205,7 @@ public class JSONObject{
 
   private static void fillPrimitive(ElementInfo ei, FieldInfo fi, Value val) {
     String primitiveName = fi.getType();
-    FeatureExpr ctx = FeatureExprFactory.True();
+    FeatureExpr ctx = CachedFeatureExprFactory.True();
     if (primitiveName.equals("boolean")) {
       ei.setBooleanField(ctx, fi, new One<>(val.getBoolean()));
 
@@ -332,7 +332,7 @@ public class JSONObject{
           }
         }
 
-        fields.setReferenceValue(FeatureExprFactory.True(), i, new One<>(newObjRef));
+        fields.setReferenceValue(CachedFeatureExprFactory.True(), i, new One<>(newObjRef));
       }
     }
 
@@ -353,7 +353,7 @@ public class JSONObject{
   private void convertPrimititve(ElementInfo ei, FieldInfo fi, Object cgResult) {
     String primitiveName = fi.getType();
 
-    FeatureExpr ctx = FeatureExprFactory.True();
+    FeatureExpr ctx = CachedFeatureExprFactory.True();
     if (primitiveName.equals("boolean") && cgResult instanceof Boolean) {
       ei.setBooleanField(ctx, fi, new One<>((Boolean) cgResult));
     } else if (cgResult instanceof Number) {
@@ -381,7 +381,7 @@ public class JSONObject{
 	}
     } else if (cgResult instanceof Character) {
       Character c = (Character) cgResult;
-      ei.setCharField(FeatureExprFactory.True(), fi, new One<>(c));
+      ei.setCharField(CachedFeatureExprFactory.True(), fi, new One<>(c));
       
     } else {
       throw new JPFException("Can't convert " + cgResult.getClass().getCanonicalName() +

@@ -21,11 +21,11 @@ package gov.nasa.jpf.vm;
 
 import java.io.PrintStream;
 import java.util.Arrays;
-
 import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.util.HashData;

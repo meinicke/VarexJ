@@ -23,10 +23,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.function.BiFunction;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -75,7 +75,7 @@ public class MJIEnv {
   // NOTE: this is only transient - don't expect this to be preserved over
   // transition boundaries
   int                     exceptionRef;
-  FeatureExpr exceptionCTX = FeatureExprFactory.True(); 
+  FeatureExpr exceptionCTX = CachedFeatureExprFactory.True(); 
 
   protected MJIEnv (ThreadInfo ti) {
     this.ti = ti;
@@ -694,7 +694,7 @@ public VM getVM () {
   }
 
   public long getStaticLongField (int clsRef, String fname) {
-    ClassInfo ci = getReferredClassInfo(FeatureExprFactory.True(), clsRef);// TODO jens
+    ClassInfo ci = getReferredClassInfo(CachedFeatureExprFactory.True(), clsRef);// TODO jens
     return getStaticLongField(ci,fname);
   }
 
@@ -1033,11 +1033,11 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public int newBooleanArray (int size) {// TODO jens
-    return heap.newArray(FeatureExprFactory.True(), "Z", size, ti).getObjectRef();
+    return heap.newArray(CachedFeatureExprFactory.True(), "Z", size, ti).getObjectRef();
   }
 
   public int newByteArray (int size) {// TODO jens
-    return heap.newArray(FeatureExprFactory.True(), "B", size, ti).getObjectRef();
+    return heap.newArray(CachedFeatureExprFactory.True(), "B", size, ti).getObjectRef();
   }
 
   public int newByteArray (FeatureExpr ctx, byte[] buf){// TODO jens
@@ -1061,11 +1061,11 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public int newShortArray (int size) {// TODO jens
-    return heap.newArray(FeatureExprFactory.True(), "S", size, ti).getObjectRef();
+    return heap.newArray(CachedFeatureExprFactory.True(), "S", size, ti).getObjectRef();
   }
   
   public int newShortArray (FeatureExpr ctx, short[] buf){// TODO jens
-    ElementInfo eiArray = heap.newArray(FeatureExprFactory.True(), "S", buf.length, ti);
+    ElementInfo eiArray = heap.newArray(CachedFeatureExprFactory.True(), "S", buf.length, ti);
     for (int i=0; i<buf.length; i++){
       eiArray.setShortElement(ctx, i, new One<>(buf[i]));
     }
@@ -1073,7 +1073,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public int newDoubleArray (int size) {// TODO jens
-    return heap.newArray(FeatureExprFactory.True(), "D", size, ti).getObjectRef();
+    return heap.newArray(CachedFeatureExprFactory.True(), "D", size, ti).getObjectRef();
   }
 
   public int newDoubleArray (FeatureExpr ctx, double[] buf){
@@ -1085,19 +1085,19 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public int newFloatArray (int size) {// TODO jens
-    return heap.newArray(FeatureExprFactory.True(), "F", size, ti).getObjectRef();
+    return heap.newArray(CachedFeatureExprFactory.True(), "F", size, ti).getObjectRef();
   }
   
   public int newFloatArray (float[] buf){// TODO jens
-    ElementInfo eiArray =  heap.newArray(FeatureExprFactory.True(), "F", buf.length, ti);
+    ElementInfo eiArray =  heap.newArray(CachedFeatureExprFactory.True(), "F", buf.length, ti);
     for (int i=0; i<buf.length; i++){
-      eiArray.setFloatElement(FeatureExprFactory.True(), i, new One<>(buf[i]));
+      eiArray.setFloatElement(CachedFeatureExprFactory.True(), i, new One<>(buf[i]));
     }
     return eiArray.getObjectRef();
   }
 
   public int newIntArray (int size) {// TODO jens
-    return heap.newArray(FeatureExprFactory.True(), "I", size, ti).getObjectRef();
+    return heap.newArray(CachedFeatureExprFactory.True(), "I", size, ti).getObjectRef();
   }
 
   public int newIntArray (FeatureExpr ctx, int[] buf){// TODO jens
@@ -1109,7 +1109,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   public int newLongArray (int size) {// TODO jens
-    return heap.newArray(FeatureExprFactory.True(), "J", size, ti).getObjectRef();
+    return heap.newArray(CachedFeatureExprFactory.True(), "J", size, ti).getObjectRef();
   }
 
   public int newLongArray (long[] buf){// TODO jens
@@ -1125,7 +1125,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
       elementClsName = Types.getTypeSignature(elementClsName, false);
     }
 
-    return heap.newArray(FeatureExprFactory.True(), elementClsName, size, ti).getObjectRef();
+    return heap.newArray(CachedFeatureExprFactory.True(), elementClsName, size, ti).getObjectRef();
   }
   
   /**
@@ -1177,7 +1177,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     int aref = newObjectArray("Ljava/lang/String;", a.length);
 
     for (int i=0; i<a.length; i++){
-      setReferenceArrayElement(ctx, aref, i, new One<>(newString(FeatureExprFactory.True(), new One<>(a[i]))));
+      setReferenceArrayElement(ctx, aref, i, new One<>(newString(CachedFeatureExprFactory.True(), new One<>(a[i]))));
     }
 
     return aref;
@@ -1199,7 +1199,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
       return NULL;
     }
 
-    return newString(FeatureExprFactory.True(), new One<>(s));
+    return newString(CachedFeatureExprFactory.True(), new One<>(s));
   }
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1510,7 +1510,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
 
   ElementInfo getStaticElementInfo (int clsObjRef) {
-    ClassInfo ci = getReferredClassInfo( FeatureExprFactory.True(), clsObjRef);
+    ClassInfo ci = getReferredClassInfo( CachedFeatureExprFactory.True(), clsObjRef);
     if (ci != null) {
       return ci.getStaticElementInfo();
     }
@@ -1519,7 +1519,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   }
   
   ElementInfo getModifiableStaticElementInfo (int clsObjRef) {
-    ClassInfo ci = getReferredClassInfo( FeatureExprFactory.True(), clsObjRef);
+    ClassInfo ci = getReferredClassInfo( CachedFeatureExprFactory.True(), clsObjRef);
     if (ci != null) {
       return ci.getModifiableStaticElementInfo();
     }
@@ -1535,7 +1535,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
   public ClassInfo getReferredClassInfo (FeatureExpr ctx, int clsObjRef) {
     if (ctx == null) {
     	// TODO remove
-      ctx = FeatureExprFactory.True();
+      ctx = CachedFeatureExprFactory.True();
     }
     ElementInfo ei = getElementInfo(clsObjRef);
     if (ei.getClassInfo().getName().equals("java.lang.Class")) {
@@ -1710,7 +1710,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
     String ftype = fi.getType();
 
     if (v instanceof String){
-      setReferenceField(ctx, proxyRef, fname, newString(FeatureExprFactory.True(), new One<>((String)v)));
+      setReferenceField(ctx, proxyRef, fname, newString(CachedFeatureExprFactory.True(), new One<>((String)v)));
     } else if (v instanceof Boolean){
       setBooleanField(ctx, proxyRef, fname, new One<>((Boolean)v));
     } else if (v instanceof Integer){
@@ -1760,7 +1760,7 @@ public Conditional<String> getConditionalStringObject (int objRef) {
       if (ftype.equals("java.lang.String[]")){
         aref = newObjectArray("Ljava/lang/String;", a.length);
         for (int i=0; i<a.length; i++){
-          setReferenceArrayElement(ctx,aref,i, new One<>(newString(FeatureExprFactory.True(), new One<>(a[i].toString()))));
+          setReferenceArrayElement(ctx,aref,i, new One<>(newString(CachedFeatureExprFactory.True(), new One<>(a[i].toString()))));
         }
       } else if (ftype.equals("int[]")){
         aref = newIntArray(a.length);

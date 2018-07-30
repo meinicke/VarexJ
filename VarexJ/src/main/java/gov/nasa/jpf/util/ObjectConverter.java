@@ -22,9 +22,9 @@ package gov.nasa.jpf.util;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClinitRequired;
@@ -154,7 +154,7 @@ public class ObjectConverter {
     int arrRef;
 
     if (arrayElementClass == Character.TYPE) {
-      arrRef = env.newCharArray(FeatureExprFactory.True(), javaArrLength);
+      arrRef = env.newCharArray(CachedFeatureExprFactory.True(), javaArrLength);
       ElementInfo charArrRef = env.getModifiableElementInfo(arrRef);
       char[] charArr = charArrRef.asCharArray().getValue();
 

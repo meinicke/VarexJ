@@ -20,11 +20,11 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -174,7 +174,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 	public ElementInfo peekElementInfo(ThreadInfo ti) {
 		StackFrame frame = ti.getTopFrame();
-		int objRef = frame.peek(FeatureExprFactory.True()).getValue();
+		int objRef = frame.peek(CachedFeatureExprFactory.True()).getValue();
 		ElementInfo ei = ti.getElementInfo(objRef);
 		return ei;
 	}

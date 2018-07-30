@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -38,7 +38,7 @@ public abstract class ArrayInstruction extends JVMInstruction {
    */
   public int getArrayRef (ThreadInfo ti){
     if (ti.isPreExec()){
-      return peekArrayRef(FeatureExprFactory.True(), ti).getValue();
+      return peekArrayRef(CachedFeatureExprFactory.True(), ti).getValue();
     } else {
       return arrayRef.getValue();
     }

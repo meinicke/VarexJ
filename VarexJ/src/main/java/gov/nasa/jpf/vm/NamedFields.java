@@ -24,11 +24,11 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.IntVector;
 
@@ -324,11 +324,11 @@ public class NamedFields extends Fields {
 
 	@Override
 	public Conditional<Double> getDoubleValue(final int index) {
-		return values[index + 1].mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Double>>() {
+		return values[index + 1].mapf(CachedFeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Double>>() {
 
 			@Override
 			public Conditional<Double> apply(FeatureExpr ctx, final Integer y) {
-				return values[index].mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Double>>() {
+				return values[index].mapf(CachedFeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Double>>() {
 
 					@Override
 					public Conditional<Double> apply(FeatureExpr ctx, final Integer x) {

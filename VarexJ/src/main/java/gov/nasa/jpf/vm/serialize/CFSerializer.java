@@ -22,8 +22,8 @@ package gov.nasa.jpf.vm.serialize;
 import java.util.Iterator;
 import java.util.function.BiConsumer;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -129,7 +129,7 @@ public class CFSerializer extends FilteringSerializer {
 		}
 	}
 	final Instruction finalPC = pc;
-	frame.getPC().mapf(FeatureExprFactory.True(), new BiConsumer<FeatureExpr, Instruction>() {
+	frame.getPC().mapf(CachedFeatureExprFactory.True(), new BiConsumer<FeatureExpr, Instruction>() {
 		@Override
 		public void accept(FeatureExpr f, Instruction x) {
 			if (x == finalPC) {

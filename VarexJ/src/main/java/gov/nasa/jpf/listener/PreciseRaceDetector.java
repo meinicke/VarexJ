@@ -21,8 +21,8 @@ package gov.nasa.jpf.listener;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.PropertyListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.ArrayElementInstruction;
@@ -233,7 +233,7 @@ public class PreciseRaceDetector extends PropertyListenerAdapter {
 
           // these insns have been through their top half since they created CGs, but they haven't
           // removed the operands from the stack
-          int idx = ainsn.peekIndex(FeatureExprFactory.True(), ti).getValue();
+          int idx = ainsn.peekIndex(CachedFeatureExprFactory.True(), ti).getValue();
 
           candidate = ArrayElementRace.check(candidate, ti, ainsn, ei, idx);
         }

@@ -21,9 +21,9 @@ package gov.nasa.jpf.util.test;
 
 import java.util.ArrayList;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
@@ -155,7 +155,7 @@ public class JPF_gov_nasa_jpf_util_test_TestJPF extends NativePeer {
     String val = env.getConfig().getString(key);
     
     if (val != null){
-      return env.newString(FeatureExprFactory.True(), val);
+      return env.newString(CachedFeatureExprFactory.True(), val);
     } else {
       return MJIEnv.NULL;
     }

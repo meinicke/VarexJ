@@ -22,8 +22,8 @@ package gov.nasa.jpf.test.mc.basic;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.EXECUTENATIVE;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
@@ -140,8 +140,8 @@ public class CascadedCGTest extends TestJPF {
             if (!ti.willReExecuteInstruction()){
               // restore old operand stack contents
               StackFrame frame = ti.getModifiableTopFrame();
-              frame.pop(FeatureExprFactory.True());
-              frame.pushRef( FeatureExprFactory.True(), getInsn.getLastThis());
+              frame.pop(CachedFeatureExprFactory.True());
+              frame.pushRef( CachedFeatureExprFactory.True(), getInsn.getLastThis());
             }
 
             cg = new IntChoiceFromSet("fieldReplace", 42, 43);
@@ -154,8 +154,8 @@ public class CascadedCGTest extends TestJPF {
             StackFrame frame = ti.getModifiableTopFrame();
 
             int v = cg.getNextChoice();
-            int n = frame.pop(FeatureExprFactory.True()).getValue();
-            frame.push(FeatureExprFactory.True(), One.valueOf(v));
+            int n = frame.pop(CachedFeatureExprFactory.True()).getValue();
+            frame.push(CachedFeatureExprFactory.True(), One.valueOf(v));
 
             System.out.println("# listener replacing " + n + " with " + v);
           }

@@ -20,12 +20,12 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.AnnotationInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -66,7 +66,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 		lastThis = objRef;
 		
 		final PUTFIELD instruction = this;
-		popCTX = FeatureExprFactory.False();
+		popCTX = CachedFeatureExprFactory.False();
 		Conditional<Instruction> next = objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
@@ -130,7 +130,7 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 	public ElementInfo peekElementInfo(ThreadInfo ti) {
 		FieldInfo fi = getFieldInfo(null);
 		int storageSize = fi.getStorageSize();
-		int objRef = ti.getTopFrame().peek(FeatureExprFactory.True(), (storageSize == 1) ? 1 : 2).getValue();
+		int objRef = ti.getTopFrame().peek(CachedFeatureExprFactory.True(), (storageSize == 1) ? 1 : 2).getValue();
 		ElementInfo ei = ti.getElementInfo(objRef);
 
 		return ei;

@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
@@ -53,13 +54,13 @@ public class ConditionalTest {
 		ChoiceFactory.setDefault(factory);
 		FeatureExprFactory.setDefault(fexprFeactory);
 		
-		fa = FeatureExprFactory.createDefinedExternal("A");
-		fb = FeatureExprFactory.createDefinedExternal("B");
-		fc = FeatureExprFactory.createDefinedExternal("C");
-		fd = FeatureExprFactory.createDefinedExternal("D");
-		fe = FeatureExprFactory.createDefinedExternal("E");
-		ff = FeatureExprFactory.createDefinedExternal("F");
-		fg = FeatureExprFactory.createDefinedExternal("G");
+		fa = CachedFeatureExprFactory.createDefinedExternal("A");
+		fb = CachedFeatureExprFactory.createDefinedExternal("B");
+		fc = CachedFeatureExprFactory.createDefinedExternal("C");
+		fd = CachedFeatureExprFactory.createDefinedExternal("D");
+		fe = CachedFeatureExprFactory.createDefinedExternal("E");
+		ff = CachedFeatureExprFactory.createDefinedExternal("F");
+		fg = CachedFeatureExprFactory.createDefinedExternal("G");
 	}
 	
 	
@@ -151,7 +152,7 @@ public class ConditionalTest {
 			}
 			
 		});
-		v1 = v1.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+		v1 = v1.mapf(CachedFeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 			@Override
 			public Conditional<Integer> apply(FeatureExpr c, Integer x) {
 				return Choice(c.and(fb), One(3), One(x));

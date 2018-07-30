@@ -19,11 +19,11 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -138,7 +138,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     } else {
       // Hmm, this would be pre-exec, but if the current thread is not the one executing the insn 
       // this might result in false sharedness of the class object
-      return getInvokedMethod( FeatureExprFactory.True(), ThreadInfo.getCurrentThread());
+      return getInvokedMethod( CachedFeatureExprFactory.True(), ThreadInfo.getCurrentThread());
     }
   }
   

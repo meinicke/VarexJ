@@ -21,7 +21,7 @@ package gov.nasa.jpf.listener;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import cmu.conditional.CachedFeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -313,7 +313,7 @@ public class MethodAnalyzer extends ListenerAdapter {
     if (executedInsn instanceof InvokeInstruction) {
       InvokeInstruction call = (InvokeInstruction)executedInsn;
       ti = thread;
-      mi = call.getInvokedMethod(FeatureExprFactory.True(), ti);
+      mi = call.getInvokedMethod(CachedFeatureExprFactory.True(), ti);
             
       if (isAnalyzedMethod(mi)) {
         OpType type;

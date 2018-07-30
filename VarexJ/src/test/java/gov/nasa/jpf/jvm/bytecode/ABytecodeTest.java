@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import cmu.conditional.CachedFeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.jvm.JVMStackFrame;
@@ -34,7 +34,7 @@ public abstract class ABytecodeTest {
 		Config config = new Config(args);
 		JPF jpf = new JPF(config);
 		VM vm = jpf.getVM();
-		vm.initialize(FeatureExprFactory.True());
+		vm.initialize(CachedFeatureExprFactory.True());
 		ThreadInfo[] threads = vm.getLiveThreads();
 		ti = threads[0];
 		while (ti.getPC().getValue() != null) {

@@ -20,12 +20,12 @@ package gov.nasa.jpf.vm;
 
 import java.io.PrintWriter;
 import java.util.List;
-
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.CachedFeatureExprFactory;
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.util.HashData;
@@ -1020,7 +1020,7 @@ public abstract class ElementInfo implements Cloneable {
 
 
   public void setDeclaredReferenceField(String fname, String clsBase, int value) {
-    setReferenceField(FeatureExprFactory.True(), getDeclaredFieldInfo(clsBase, fname), new One<>(value));
+    setReferenceField(CachedFeatureExprFactory.True(), getDeclaredFieldInfo(clsBase, fname), new One<>(value));
   }
 
   public Conditional<Integer> getDeclaredReferenceField(String fname, String clsBase) {

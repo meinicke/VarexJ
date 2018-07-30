@@ -19,10 +19,11 @@
 package gov.nasa.jpf.vm;
 
 import java.util.function.BiFunction;
+
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
@@ -150,7 +151,7 @@ public class BoxObjectCacheManager {
   private static short shortHigh;
 
   public static int initShortCache (FeatureExpr ctx, ThreadInfo ti) {
-	  ctx = FeatureExprFactory.True();
+	  ctx = CachedFeatureExprFactory.True();
     shortLow = (short) ti.getVM().getConfig().getInt("vm.cache.low_short", defLow);
     shortHigh = (short) ti.getVM().getConfig().getInt("vm.cache.high_short", defHigh);
     int n = (shortHigh - shortLow) + 1;
@@ -177,7 +178,7 @@ public class BoxObjectCacheManager {
     int shortCache = cacheClass.getStaticElementInfo().getReferenceField("shortCache").simplify(ctx).getValue();
 
     if (shortCache == MJIEnv.NULL) { // initializing the cache on demand
-      shortCache = initShortCache(FeatureExprFactory.True(), ti);
+      shortCache = initShortCache(CachedFeatureExprFactory.True(), ti);
     }
 
     if (s >= shortLow && s <= shortHigh) { return ti.getElementInfo(shortCache).getReferenceElement(s - shortLow).simplify(ctx).getValue(); }

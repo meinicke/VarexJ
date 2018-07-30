@@ -21,8 +21,8 @@ package gov.nasa.jpf.test.mc.basic;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.INVOKESTATIC;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
@@ -46,7 +46,7 @@ public class InvokeListenerTest extends TestJPF {
     void checkArgs (ThreadInfo ti, Instruction insn, boolean isPostExec){
       if (insn instanceof InvokeInstruction){
         InvokeInstruction call = (InvokeInstruction)insn;
-        MethodInfo mi = call.getInvokedMethod(FeatureExprFactory.True(), ti);
+        MethodInfo mi = call.getInvokedMethod(CachedFeatureExprFactory.True(), ti);
         String miSignature = mi.getUniqueName();
         String mname = mi.getName();
 

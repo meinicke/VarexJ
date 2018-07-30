@@ -20,10 +20,10 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
@@ -52,7 +52,7 @@ public class MULTIANEWARRAY extends JVMInstruction {
 
 	public static Conditional<Integer> allocateArray(final Heap heap, final String type, final Conditional<Integer>[] dim, final ThreadInfo ti, final int d) {
 		Conditional<Integer> l = dim[d];
-		return l.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
+		return l.mapf(CachedFeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
 			@Override
 			public Conditional<Integer> apply(FeatureExpr ctx, Integer l) {

@@ -19,8 +19,9 @@
 
 package gov.nasa.jpf.jvm;
 
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.NativeMethodInfo;

@@ -21,8 +21,8 @@ package gov.nasa.jpf.listener;
 
 import java.util.HashMap;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
@@ -358,7 +358,7 @@ public class ExceptionInjector extends ListenerAdapter {
     }
 
     if (e != null){
-      Instruction nextInsn = ti.createAndThrowException(FeatureExprFactory.True(), e.getExceptionClassInfo(ti), e.getExceptionDetails());
+      Instruction nextInsn = ti.createAndThrowException(CachedFeatureExprFactory.True(), e.getExceptionClassInfo(ti), e.getExceptionDetails());
       ti.skipInstruction(nextInsn);
       return;
     }

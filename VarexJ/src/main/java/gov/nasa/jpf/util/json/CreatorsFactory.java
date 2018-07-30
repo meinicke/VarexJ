@@ -21,9 +21,9 @@ package gov.nasa.jpf.util.json;
 
 import java.util.HashMap;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.MJIEnv;
 
@@ -161,7 +161,7 @@ class StringCreator implements Creator {
     int stringRef = MJIEnv.NULL;
 
     if (strVal != null) {
-      stringRef = env.newString(FeatureExprFactory.True(), strVal);
+      stringRef = env.newString(CachedFeatureExprFactory.True(), strVal);
     }
 
     return stringRef;

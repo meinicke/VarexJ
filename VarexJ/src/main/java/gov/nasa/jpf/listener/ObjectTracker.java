@@ -22,7 +22,7 @@ package gov.nasa.jpf.listener;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import cmu.conditional.CachedFeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.PropertyListenerAdapter;
@@ -246,7 +246,7 @@ public class ObjectTracker extends PropertyListenerAdapter {
         Record rec = getRecord(ref);
         
         if (rec != null){
-          MethodInfo mi = call.getInvokedMethod(FeatureExprFactory.True(), ti, ref);
+          MethodInfo mi = call.getInvokedMethod(CachedFeatureExprFactory.True(), ti, ref);
           
           if (logCall){
             log(ti, "invoke %1$s.%2$s", rec.ei, mi.getUniqueName());

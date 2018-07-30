@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -31,7 +32,7 @@ public class DifferentialStackTest {
 		FeatureExprFactory.setDefault(FeatureExprFactory.bdd());
 	}
 
-	private static final FeatureExpr TRUE = FeatureExprFactory.True();
+	private static final FeatureExpr TRUE = CachedFeatureExprFactory.True();
 
 	private static final FeatureExpr A = Conditional.createFeature("A");
 	private static final boolean DEBUG = false;

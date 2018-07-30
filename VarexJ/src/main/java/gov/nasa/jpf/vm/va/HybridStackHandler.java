@@ -4,12 +4,12 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Uses two different kinsd of {@link StackHandler}.
@@ -394,11 +394,11 @@ public class HybridStackHandler implements Cloneable, IStackHandler {
 		int i = 0; 
 		final int[] slots = stackHandler.getSlots();
 		for (;i < nLocals;i++) {
-			newStackHandler.setLocal(stackHandler.getCtx(), i, slots[i], stackHandler.isRefLocal(FeatureExprFactory.True(), i));
+			newStackHandler.setLocal(stackHandler.getCtx(), i, slots[i], stackHandler.isRefLocal(CachedFeatureExprFactory.True(), i));
 		}
 		Integer top = stackHandler.getTop().getValue();
 		for (i = 0;i <= top;i++) {
-			newStackHandler.push(stackHandler.getCtx(), One.valueOf(slots[i + nLocals]), stackHandler.isRef(FeatureExprFactory.True(), top -i));
+			newStackHandler.push(stackHandler.getCtx(), One.valueOf(slots[i + nLocals]), stackHandler.isRef(CachedFeatureExprFactory.True(), top -i));
 		}
 		stackHandler = newStackHandler;
 		

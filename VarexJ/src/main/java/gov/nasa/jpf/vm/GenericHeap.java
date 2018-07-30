@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -227,7 +227,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 	          if ((refEi == null) || (refEi.isNull())) {
 	            ei = ei.getModifiableInstance();
 	            // we need to make sure the Fields are properly state managed
-	            ei.setReferenceField(FeatureExprFactory.True(), ei.getFieldInfo(0), One.MJIEnvNULL);
+	            ei.setReferenceField(CachedFeatureExprFactory.True(), ei.getFieldInfo(0), One.MJIEnvNULL);
 	          }
 	        }
         }
@@ -313,7 +313,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
 
     if (!ciArray.isInitialized()) {
       // we do this explicitly here since there are no clinits for array classes
-      ciArray.registerClass(FeatureExprFactory.True(), ti);
+      ciArray.registerClass(CachedFeatureExprFactory.True(), ti);
       ciArray.setInitialized();
     }
 
@@ -348,7 +348,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
   
   protected ElementInfo initializeStringObject( FeatureExpr ctx, String str, int index, int vref) {
     ElementInfo ei = getModifiable(index);
-    ei.setReferenceField(FeatureExprFactory.True(), "value", new One<>(vref));
+    ei.setReferenceField(CachedFeatureExprFactory.True(), "value", new One<>(vref));
 
     ElementInfo eVal = getModifiable(vref);
     CharArrayFields cf = (CharArrayFields)eVal.getFields();
@@ -381,7 +381,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
       ClassInfo ciChars = sysCl.getCharArrayClassInfo();
       
       AllocationContext ctx = getSUTAllocationContext(fexpr, ciString, ti);
-      return newString( FeatureExprFactory.True(), ciString, ciChars, str, ti, ctx);// TODO jens ???
+      return newString( CachedFeatureExprFactory.True(), ciString, ciChars, str, ti, ctx);// TODO jens ???
       
     } else {
       return null;
@@ -449,7 +449,7 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
       ClassInfo ciChars = sysCl.getCharArrayClassInfo();
       
       AllocationContext ctx = getSystemAllocationContext( ciString, ti, anchor);
-      return newString( FeatureExprFactory.True(), ciString, ciChars, str, ti, ctx);
+      return newString( CachedFeatureExprFactory.True(), ciString, ciChars, str, ti, ctx);
       
     } else {
       return null;

@@ -20,8 +20,8 @@ package gov.nasa.jpf.test.mc.basic;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.DSTORE;
 import gov.nasa.jpf.jvm.bytecode.INVOKEVIRTUAL;
@@ -447,7 +447,7 @@ public class AttrsTest extends TestJPF {
           // we are still in the caller stackframe
           frame.addLongOperandAttr("foo-arg");
           
-          Long v = Long.valueOf( frame.peekLong(FeatureExprFactory.True()).getValue());
+          Long v = Long.valueOf( frame.peekLong(CachedFeatureExprFactory.True()).getValue());
           frame.addLongOperandAttr( v);
           
           System.out.println("   operand attrs:");
@@ -504,7 +504,7 @@ public class AttrsTest extends TestJPF {
           assertTrue( frame.getNextLocalAttr(varIdx, String.class, sAttr) == null);
           
           Object lAttr = frame.getLocalAttr(varIdx, Long.class);
-          assertTrue( lAttr != null && lAttr.equals( frame.getLongLocalVariable(FeatureExprFactory.True(), varIdx)));
+          assertTrue( lAttr != null && lAttr.equals( frame.getLongLocalVariable(CachedFeatureExprFactory.True(), varIdx)));
           assertTrue( frame.getNextLocalAttr(varIdx, Long.class, lAttr) == null);
           
           frame.removeLocalAttr(varIdx, lAttr);

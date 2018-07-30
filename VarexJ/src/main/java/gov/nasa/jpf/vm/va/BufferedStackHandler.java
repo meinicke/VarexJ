@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -28,7 +29,7 @@ import gov.nasa.jpf.vm.Types;
 public class BufferedStackHandler implements Cloneable, IStackHandler {
 
 	private LinkedList<Tuple> buffer = new LinkedList<>();
-	private FeatureExpr bufferCTX = FeatureExprFactory.True();
+	private FeatureExpr bufferCTX = CachedFeatureExprFactory.True();
 	private int maxStackSize;
 	
 	private final StackHandler stackHandler;
@@ -111,14 +112,14 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 	 */
 	public void debufferAll() {
 		final FeatureExpr ctx = bufferCTX;
-		bufferCTX = FeatureExprFactory.False();
+		bufferCTX = CachedFeatureExprFactory.False();
 		while (!buffer.isEmpty()) {
 			final Tuple value = buffer.removeLast();
 			value.value.mapf(ctx, (BiConsumer<FeatureExpr, Object>) (ctx1, v) ->  {
 				stackHandler.push(ctx1, (Number) v, value.isRef);
 			});
 		}
-		bufferCTX = FeatureExprFactory.True();
+		bufferCTX = CachedFeatureExprFactory.True();
 	}
 	
 	void addToBuffer(Conditional<?> value, boolean isRef, Type t) {
@@ -512,7 +513,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 		if (!buffer.isEmpty()) {
 			if (Conditional.equivalentTo(bufferCTX, ctx)) {
 				buffer.clear();
-				bufferCTX = FeatureExprFactory.True();
+				bufferCTX = CachedFeatureExprFactory.True();
 			} else {
 				debufferAll();
 			}
@@ -644,7 +645,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 				return ChoiceFactory.create(bufferCTX, new One<>(size - 1), new One<>(-1)).simplify(stackHandler.stackCTX);
 			}
 			final int finalSize = size;
-			return stackTop.mapf(FeatureExprFactory.True(), (ctx, y) -> {
+			return stackTop.mapf(CachedFeatureExprFactory.True(), (ctx, y) -> {
 				FeatureExpr context = Conditional.and(bufferCTX, ctx);
 				if (Conditional.isContradiction(context)) {
 					return One.valueOf(y);

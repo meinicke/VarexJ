@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
@@ -688,7 +689,7 @@ public class JPF implements Runnable {
 
     if (isRunnable()) {
       try {
-        if (vm.initialize(FeatureExprFactory.True())) {
+        if (vm.initialize(CachedFeatureExprFactory.True())) {
           status = Status.RUNNING;
           search.search();
         }

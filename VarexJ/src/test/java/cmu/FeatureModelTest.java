@@ -7,6 +7,7 @@ import java.io.File;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
@@ -74,7 +75,7 @@ public class FeatureModelTest {
 		FeatureExpr Weight = FeatureExprFactory.createDefinedExternal("CONFIG_Weight");
 		FeatureExpr Overloaded = FeatureExprFactory.createDefinedExternal("CONFIG_Overloaded");
 		FeatureModel model = FeatureExprFactory.dflt().featureModelFactory().createFromDimacsFile(new File(PATH, ELEVATOR_DIMACS).getPath().toString());
-		FeatureExpr ctx = FeatureExprFactory.True();
+		FeatureExpr ctx = CachedFeatureExprFactory.True();
 		ctx = ctx.and(Overloaded);
 		ctx = ctx.and(ExecutiveFloor.not());
 		ctx = ctx.and(Weight.not());

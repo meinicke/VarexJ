@@ -27,13 +27,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.BiFunction;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
 import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFNativePeerException;
 import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
@@ -376,50 +376,50 @@ public class NativeMethodInfo extends MethodInfo {
 		for (i = 0, stackOffset = 0, j = nArgs + 1, k = nArgs - 1; i < nArgs; i++, j--, k--) {
 			switch (argTypes[k]) {
 			case Types.T_BOOLEAN:
-				ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
+				ival = caller.peek(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				a[j] = Boolean.valueOf(Types.intToBoolean(ival));
 
 				break;
 
 			case Types.T_BYTE:
-				ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
+				ival = caller.peek(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				a[j] = Byte.valueOf((byte) ival);
 
 				break;
 
 			case Types.T_CHAR:
-				ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
+				ival = caller.peek(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				a[j] = Character.valueOf((char) ival);
 
 				break;
 
 			case Types.T_SHORT:
-				ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
+				ival = caller.peek(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				a[j] = new Short((short) ival);
 
 				break;
 
 			case Types.T_INT:
-				ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
+				ival = caller.peek(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				a[j] = new Integer(ival);
 
 				break;
 
 			case Types.T_LONG:
-				lval = caller.peekLong(FeatureExprFactory.True(), stackOffset).getValue();
+				lval = caller.peekLong(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				stackOffset++; // 2 stack words
 				a[j] = new Long(lval);
 
 				break;
 
 			case Types.T_FLOAT:
-				ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
+				ival = caller.peek(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				a[j] = new Float(Types.intToFloat(ival));
 
 				break;
 
 			case Types.T_DOUBLE:
-				lval = caller.peekLong(FeatureExprFactory.True(), stackOffset).getValue();
+				lval = caller.peekLong(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				stackOffset++; // 2 stack words
 				a[j] = Double.valueOf(Types.longToDouble(lval));
 
@@ -428,7 +428,7 @@ public class NativeMethodInfo extends MethodInfo {
 			default:
 				// NOTE - we have to store T_REFERENCE as an Integer, because
 				// it shows up in our native method as an 'int'
-				ival = caller.peek(FeatureExprFactory.True(), stackOffset).getValue();
+				ival = caller.peek(CachedFeatureExprFactory.True(), stackOffset).getValue();
 				a[j] = new Integer(ival);
 			}
 

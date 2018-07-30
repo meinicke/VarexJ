@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -77,7 +77,7 @@ public class INVOKECLINIT extends INVOKESTATIC {
     }
     
     // JM initialize without condition
-    setupCallee(FeatureExprFactory.True(), ti, callee); // this creates, initializes and pushes the callee StackFrame
+    setupCallee(CachedFeatureExprFactory.True(), ti, callee); // this creates, initializes and pushes the callee StackFrame
 
     return ti.getPC(); // we can't just return the first callee insn if a listener throws an exception
   }

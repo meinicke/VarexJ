@@ -6,11 +6,11 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.Types;
 
 /**
@@ -54,7 +54,7 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		System.arraycopy(oneStackHandler.slots, 0, slots, 0, top + 1);
 		System.arraycopy(oneStackHandler.isRef, 0, isRef, 0, top + 1);
 //		stackCTX = oneStackHandler.stackCTX; // TODO this needs to be fixed (see StackHandler)
-		stackCTX = FeatureExprFactory.True();
+		stackCTX = CachedFeatureExprFactory.True();
 	}
 
 	@Override

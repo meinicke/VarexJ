@@ -24,10 +24,10 @@ import java.io.ObjectInputStream;
 import java.util.BitSet;
 import java.util.List;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -1048,7 +1048,7 @@ static <T,C extends ChoiceGenerator<T>> T getNextChoice (SystemState ss, String 
       String val = config.getString(key);
 
       if (val != null){
-        return env.newString(FeatureExprFactory.True(), val);
+        return env.newString(CachedFeatureExprFactory.True(), val);
       } else {
         return MJIEnv.NULL;
       }

@@ -21,10 +21,10 @@ package gov.nasa.jpf.jvm.bytecode;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.BooleanChoiceGenerator;
 import gov.nasa.jpf.vm.Instruction;
@@ -109,11 +109,11 @@ public abstract class IfInstruction extends JVMInstruction {
       } else {
         StackFrame frame = ti.getModifiableTopFrame();
         // some listener did override the CG, fallback to normal operation
-        conditionValue = popConditionValue(FeatureExprFactory.True(), frame);
+        conditionValue = popConditionValue(CachedFeatureExprFactory.True(), frame);
         if (conditionValue.getValue()) {
           return getTarget();
         } else {
-          return getNext(FeatureExprFactory.True(),ti).getValue();
+          return getNext(CachedFeatureExprFactory.True(),ti).getValue();
         }
       }
       
@@ -122,14 +122,14 @@ public abstract class IfInstruction extends JVMInstruction {
       assert (cg != null) : "no BooleanChoiceGenerator";
       
       StackFrame frame = ti.getModifiableTopFrame();
-      popConditionValue(FeatureExprFactory.True(), frame); // we are not interested in concrete values
+      popConditionValue(CachedFeatureExprFactory.True(), frame); // we are not interested in concrete values
       
       conditionValue = new One<>(cg.getNextChoice());
       
       if (conditionValue.getValue()) {
         return getTarget();
       } else {
-    	  return getNext(FeatureExprFactory.True(),ti).getValue();
+    	  return getNext(CachedFeatureExprFactory.True(),ti).getValue();
       }
 
     }

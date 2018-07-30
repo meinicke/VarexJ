@@ -18,8 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
-import cmu.conditional.Conditional;
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import gov.nasa.jpf.JPFException;
 

@@ -20,8 +20,8 @@ package gov.nasa.jpf.vm;
 
 import java.util.Iterator;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.util.IntTable;
 import gov.nasa.jpf.util.ObjVector;
@@ -110,7 +110,7 @@ public class OVStatics implements Statics {
   public StaticElementInfo newStartupClass (ClassInfo ci, ThreadInfo ti) {
     int id = computeId( ci);
     
-    StaticElementInfo ei = createStaticElementInfo( FeatureExprFactory.True(), id, ci, ti, null);
+    StaticElementInfo ei = createStaticElementInfo( CachedFeatureExprFactory.True(), id, ci, ti, null);
     elementInfos.set(id, ei);
     
     return ei;

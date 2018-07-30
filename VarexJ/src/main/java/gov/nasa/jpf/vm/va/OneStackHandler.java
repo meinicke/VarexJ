@@ -7,11 +7,11 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.Types;
 
@@ -52,7 +52,7 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 		}
 		stack = oneStackHandler.stack.copy();
 //		stackCTX = oneStackHandler.stackCTX; // TODO this needs to be fixed (see StackHandler)
-		stackCTX = FeatureExprFactory.True();
+		stackCTX = CachedFeatureExprFactory.True();
 	}
 
 	@Override

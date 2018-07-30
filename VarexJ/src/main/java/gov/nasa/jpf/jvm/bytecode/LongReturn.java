@@ -20,9 +20,9 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.Iterator;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 
@@ -69,7 +69,7 @@ public abstract class LongReturn extends ReturnInstruction {
    */
   public Object getReturnAttr (ThreadInfo ti){
     StackFrame frame = ti.getTopFrame();
-    return frame.getLongOperandAttr(FeatureExprFactory.True());
+    return frame.getLongOperandAttr(CachedFeatureExprFactory.True());
   }
   
   /**

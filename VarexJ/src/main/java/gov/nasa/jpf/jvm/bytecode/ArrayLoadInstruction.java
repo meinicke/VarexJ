@@ -20,11 +20,11 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
@@ -79,7 +79,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 		// we should not set 'arrayRef' before the CG check
 		// (this would kill the CG loop optimization)
 		arrayRef = frame.pop(ctx).simplify(pushCtx);
-		next = ChoiceFactory.create(pushCtx, arrayRef.mapf(FeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		next = ChoiceFactory.create(pushCtx, arrayRef.mapf(CachedFeatureExprFactory.True(), new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {

@@ -21,10 +21,10 @@ package gov.nasa.jpf.vm;
 import java.util.ArrayList;
 import java.util.List;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
@@ -107,7 +107,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
     startFinalizerThread(ctx);
     
     eiThread.setBooleanField(ctx, "done", One.FALSE);
-    ElementInfo finalizeQueue = getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", 0, this);
+    ElementInfo finalizeQueue = getHeap().newArray(CachedFeatureExprFactory.True(), "Ljava/lang/Object;", 0, this);
     eiThread.setReferenceField(ctx, "finalizeQueue", new One<>(finalizeQueue.getObjectRef()));
     
     // create an internal private lock used for lock-free wait
@@ -181,7 +181,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
       
       int n = tempFinalizeQueue.size();
       
-      ElementInfo newQueue = getHeap().newArray(FeatureExprFactory.True(), "Ljava/lang/Object;", len+n, this);
+      ElementInfo newQueue = getHeap().newArray(CachedFeatureExprFactory.True(), "Ljava/lang/Object;", len+n, this);
       Conditional<Integer>[] newValues = newQueue.asReferenceArray();
       
       System.arraycopy(oldValues, 0, newValues, 0, len);
@@ -190,7 +190,7 @@ public class FinalizerThreadInfo extends ThreadInfo {
         newValues[len++] = new One<>(ei.getObjectRef());
       }
       
-      vm.getModifiableElementInfo(objRef).setReferenceField(FeatureExprFactory.True(), "finalizeQueue", new One<>(newQueue.getObjectRef()));
+      vm.getModifiableElementInfo(objRef).setReferenceField(CachedFeatureExprFactory.True(), "finalizeQueue", new One<>(newQueue.getObjectRef()));
       tempFinalizeQueue.clear();
       
       assert hasQueuedFinalizers();

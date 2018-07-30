@@ -24,11 +24,11 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
 
 /**
@@ -593,12 +593,12 @@ public class JPF_java_lang_String extends NativePeer {
 		return env.newString(ctx, result);
 	}
 
-	private FeatureExpr exceptionCTX = FeatureExprFactory.False();
+	private FeatureExpr exceptionCTX = CachedFeatureExprFactory.False();
 	
 	@MJI
 	public Conditional<Integer> substring__II__Ljava_lang_String_2(final MJIEnv env, int objRef,
 			final Conditional<Integer> beginIndex, final Conditional<Integer> endIndex, FeatureExpr ctx) {
-		exceptionCTX = FeatureExprFactory.False();
+		exceptionCTX = CachedFeatureExprFactory.False();
 		Conditional<String> obj = env.getStringObjectNew(ctx, objRef);
 		Conditional<String> result = obj.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<String>>() {
 

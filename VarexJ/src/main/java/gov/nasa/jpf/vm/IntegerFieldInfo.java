@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 
 
@@ -36,7 +36,7 @@ public class IntegerFieldInfo extends SingleSlotFieldInfo {
   }
 
   public void initialize (FeatureExpr ctx, ElementInfo ei, ThreadInfo ti) {
-    ei.getFields().setIntValue(FeatureExprFactory.True(), storageOffset, new One<>(init));
+    ei.getFields().setIntValue(CachedFeatureExprFactory.True(), storageOffset, new One<>(init));
   }
 
   public void setConstantValue(Object constValue){

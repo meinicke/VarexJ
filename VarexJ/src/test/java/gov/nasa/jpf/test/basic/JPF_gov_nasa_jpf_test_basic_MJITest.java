@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.test.basic;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -88,7 +88,7 @@ public class JPF_gov_nasa_jpf_test_basic_MJITest extends NativePeer {
     System.out.println("# entering nativeCreateStringArray()");
 
     int ar = env.newObjectArray("Ljava/lang/String;", size);
-    env.setReferenceArrayElement(ctx, ar, 1, new One<>(env.newString(FeatureExprFactory.True(), "one")));
+    env.setReferenceArrayElement(ctx, ar, 1, new One<>(env.newString(CachedFeatureExprFactory.True(), "one")));
 
     return ar;
   }

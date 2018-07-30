@@ -236,7 +236,7 @@
 //    }    
 //  }
 //  
-//  private static FeatureExpr bufferCTX = FeatureExprFactory.True();
+//  private static FeatureExpr bufferCTX = CachedFeatureExprFactory.True();
 //  
 //  @MJI
 //  public void write___3BII__ (MJIEnv env, int objref,

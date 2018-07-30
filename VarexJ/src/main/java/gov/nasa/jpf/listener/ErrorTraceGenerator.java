@@ -20,6 +20,8 @@
 package gov.nasa.jpf.listener;
 
 
+import java.io.PrintWriter;
+
 import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
@@ -33,8 +35,6 @@ import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.SystemState;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.PrintWriter;
 
 /** 
  * A lightweight listener to generate the error trace by printing

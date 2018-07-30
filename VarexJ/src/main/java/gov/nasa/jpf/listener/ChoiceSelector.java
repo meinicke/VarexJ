@@ -21,8 +21,8 @@ package gov.nasa.jpf.listener;
 
 import java.util.Random;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -152,7 +152,7 @@ public class ChoiceSelector extends ListenerAdapter {
   public void executeInstruction(FeatureExpr ctx, VM vm, ThreadInfo ti, Instruction insnToExecute) {
     if (singleChoice && !callSeen && (calls != null)) {
       if (insnToExecute instanceof InvokeInstruction) {
-        String mthName = ((InvokeInstruction)insnToExecute).getInvokedMethod(FeatureExprFactory.True(), ti).getBaseName();
+        String mthName = ((InvokeInstruction)insnToExecute).getInvokedMethod(CachedFeatureExprFactory.True(), ti).getBaseName();
 
         if (calls.matchesAny(mthName)){
           callSeen = true;

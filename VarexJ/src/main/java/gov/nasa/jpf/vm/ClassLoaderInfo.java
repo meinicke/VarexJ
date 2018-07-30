@@ -28,9 +28,9 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -480,7 +480,7 @@ public class ClassLoaderInfo
   public ClassInfo getInitializedClassInfo (FeatureExpr ctx, String clsName, ThreadInfo ti){
     ClassInfo ci = getResolvedClassInfo(ctx, clsName);
 
-    ci.registerClass(FeatureExprFactory.True(), ti); // this is safe to call on already loaded classes
+    ci.registerClass(CachedFeatureExprFactory.True(), ti); // this is safe to call on already loaded classes
 
     if (!ci.isInitialized()) {
       if (ci.initializeClass(ctx, ti)) {
@@ -612,7 +612,7 @@ public class ClassLoaderInfo
     DirectCallStackFrame frame = miLoadClass.createDirectCallStackFrame( ctx, ti, 0);
 
     String clsName = typeName.replace('/', '.');
-    int sRef = ti.getEnv().newString(FeatureExprFactory.True(), clsName);
+    int sRef = ti.getEnv().newString(CachedFeatureExprFactory.True(), clsName);
     int argOffset = frame.setReferenceArgument( ctx, 0, objRef, null);
     frame.setReferenceArgument( ctx, argOffset, sRef, null);
 

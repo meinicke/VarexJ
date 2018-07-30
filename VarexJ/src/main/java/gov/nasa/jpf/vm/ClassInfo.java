@@ -32,9 +32,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
@@ -889,7 +889,7 @@ public String getGenericSignature() {
   protected void checkNoClinitInitialization(){
     if (!isInitialized()){
       ThreadInfo ti = ThreadInfo.getCurrentThread();
-      registerClass(FeatureExprFactory.True(), ti);
+      registerClass(CachedFeatureExprFactory.True(), ti);
       setInitialized(); // we might want to check if there is a clinit
     }
   }
@@ -1970,7 +1970,7 @@ public String getGenericSignature() {
     ClassLoaderInfo systemLoader = ClassLoaderInfo.getCurrentSystemClassLoader();
     ClassInfo ci = systemLoader.getResolvedClassInfo(ctx, clsName);
 
-    ci.registerClass(FeatureExprFactory.True(), ti); // this is safe to call on already loaded classes
+    ci.registerClass(CachedFeatureExprFactory.True(), ti); // this is safe to call on already loaded classes
 
     if (!ci.isInitialized()) {
       if (ci.initializeClass(ctx, ti)) {
@@ -2039,14 +2039,14 @@ public String getGenericSignature() {
     int clsObjRef = ei.getObjectRef();
     
     ElementInfo eiClsName = heap.newSystemString(name, ti, clsObjRef);
-    ei.setReferenceField(FeatureExprFactory.True(), "name", new One<>(eiClsName.getObjectRef()));
+    ei.setReferenceField(CachedFeatureExprFactory.True(), "name", new One<>(eiClsName.getObjectRef()));
 
     ei.setBooleanField(ctx, "isPrimitive", One.valueOf(isPrimitive()));
     
     // setting the ID_FIELD is done in registerClass once we have a StaticElementInfo
 
     // link the SUT class object to the classloader 
-    ei.setReferenceField(FeatureExprFactory.True(), "classLoader", new One<>(classLoader.getClassLoaderObjectRef()));
+    ei.setReferenceField(CachedFeatureExprFactory.True(), "classLoader", new One<>(classLoader.getClassLoaderObjectRef()));
     
     return ei;
   }
@@ -2058,7 +2058,7 @@ public String getGenericSignature() {
     id = sei.getObjectRef();  // kind of a misnomer, it's really an id    
     uniqueId = ((long)classLoader.getId() << 32) | id;
     
-    eiClsObj.setIntField(FeatureExprFactory.True(), ID_FIELD, new One<>(id));      
+    eiClsObj.setIntField(CachedFeatureExprFactory.True(), ID_FIELD, new One<>(id));      
     
     return sei;
   }
@@ -2157,7 +2157,7 @@ public String getGenericSignature() {
   public boolean pushRequiredClinits (FeatureExpr ctx, ThreadInfo ti){
     StaticElementInfo sei = getStaticElementInfo();    
     if (sei == null) {
-      sei = registerClass(FeatureExprFactory.True(), ti);
+      sei = registerClass(CachedFeatureExprFactory.True(), ti);
     }
     
     if (sei.getStatus() == UNINITIALIZED){

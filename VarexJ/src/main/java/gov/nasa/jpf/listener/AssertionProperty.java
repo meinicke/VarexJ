@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.listener;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.PropertyListenerAdapter;
@@ -85,7 +85,7 @@ public class AssertionProperty extends PropertyListenerAdapter {
       
       Heap heap = vm.getHeap();
       StackFrame frame = ti.getTopFrame();
-      int xobjref = frame.peek(FeatureExprFactory.True()).getValue();
+      int xobjref = frame.peek(CachedFeatureExprFactory.True()).getValue();
       ElementInfo ei = heap.get(xobjref);
       ClassInfo ci = ei.getClassInfo();
       
@@ -101,7 +101,7 @@ public class AssertionProperty extends PropertyListenerAdapter {
           log.warning(msg);
 
           frame = ti.getModifiableTopFrame();
-          frame.pop(FeatureExprFactory.True()); // ensure operand stack integrity (ATHROW pops)
+          frame.pop(CachedFeatureExprFactory.True()); // ensure operand stack integrity (ATHROW pops)
           
           ti.skipInstruction(insn.getNext());
 

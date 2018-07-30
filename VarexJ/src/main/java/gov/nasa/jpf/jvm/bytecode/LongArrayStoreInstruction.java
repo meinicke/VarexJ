@@ -18,10 +18,10 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.StackFrame;
@@ -46,7 +46,7 @@ public abstract class LongArrayStoreInstruction extends ArrayStoreInstruction {
 
   protected long getValue (ThreadInfo ti) {// JM unused
     StackFrame frame = ti.getModifiableTopFrame();    
-    return frame.popLong(FeatureExprFactory.True()).getValue();
+    return frame.popLong(CachedFeatureExprFactory.True()).getValue();
   }
   
   public Conditional<Integer> peekArrayRef(FeatureExpr ctx, ThreadInfo ti) {

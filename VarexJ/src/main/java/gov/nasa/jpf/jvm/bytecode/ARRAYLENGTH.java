@@ -20,11 +20,11 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
@@ -76,6 +76,6 @@ public class ARRAYLENGTH extends ArrayInstruction {
   
   @Override
   protected Conditional<Integer> peekArrayRef (FeatureExpr ctx, ThreadInfo ti) {
-    return ti.getTopFrame().peek(FeatureExprFactory.True());
+    return ti.getTopFrame().peek(CachedFeatureExprFactory.True());
   }
 }

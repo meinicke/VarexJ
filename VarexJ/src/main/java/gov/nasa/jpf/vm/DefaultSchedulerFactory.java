@@ -18,11 +18,11 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.Random;
+
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.vm.choice.BreakGenerator;
 import gov.nasa.jpf.vm.choice.ThreadChoiceFromSet;
-
-import java.util.Random;
 
 
 /**

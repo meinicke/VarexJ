@@ -24,11 +24,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ClassLoaderInfo;
@@ -101,7 +101,7 @@ public class INVOKESPECIAL extends InstanceInvocation {
 	    }      
 	
 	    if (!classes.isEmpty()) {
-			FeatureExpr invocationCtx = FeatureExprFactory.False();
+			FeatureExpr invocationCtx = CachedFeatureExprFactory.False();
 			for (FeatureExpr e : classes.get(callee.getFullName())) {
 				invocationCtx = Conditional.or(invocationCtx, e);
 			}

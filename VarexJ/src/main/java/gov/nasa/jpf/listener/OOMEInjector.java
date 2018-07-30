@@ -22,8 +22,8 @@ package gov.nasa.jpf.listener;
 import java.util.ArrayList;
 import java.util.List;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -130,7 +130,7 @@ public class OOMEInjector extends ListenerAdapter {
         // we could use Heap.setOutOfMemory(true), but then we would have to reset
         // if the app handles it so that it doesn't throw outside the specified locations.
         // This would require more effort than throwing explicitly
-        Instruction nextInsn = ti.createAndThrowException(FeatureExprFactory.True(), "java.lang.OutOfMemoryError");
+        Instruction nextInsn = ti.createAndThrowException(CachedFeatureExprFactory.True(), "java.lang.OutOfMemoryError");
         ti.skipInstruction(nextInsn);
       }
     }
@@ -154,7 +154,7 @@ public class OOMEInjector extends ListenerAdapter {
         if (objRef != MJIEnv.NULL) {
           ClassInfo ci = vm.getClassInfo(objRef);
           if (ci.hasAttr(OOME.class)) {
-            Instruction nextInsn = ti.createAndThrowException(FeatureExprFactory.True(), "java.lang.OutOfMemoryError");
+            Instruction nextInsn = ti.createAndThrowException(CachedFeatureExprFactory.True(), "java.lang.OutOfMemoryError");
             ti.setNextPC(nextInsn);
           }
         }

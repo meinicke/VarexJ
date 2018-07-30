@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 
@@ -18,10 +18,10 @@ public class D2FTest extends ABytecodeTest {
 		final One<Float> floatValue = new One<>((float) value);
 
 		StackFrame stackFrame = createStackFrame(2, 0, getInstruction());
-		stackFrame.pushDouble(FeatureExprFactory.True(), doubleValue);
+		stackFrame.pushDouble(CachedFeatureExprFactory.True(), doubleValue);
 		executedCode(stackFrame);
 
-		assertEquals(floatValue, stackFrame.popFloat(FeatureExprFactory.True()));
+		assertEquals(floatValue, stackFrame.popFloat(CachedFeatureExprFactory.True()));
 	}
 
 	@Override
