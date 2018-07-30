@@ -18,9 +18,9 @@
 //
 package gov.nasa.jpf.listener;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.LCMP;
 import gov.nasa.jpf.jvm.bytecode.LSUB;
@@ -103,7 +103,7 @@ public class StopWatchFuzzer extends ListenerAdapter {
       // attributes are stored on the first slot of a long val
       if (frame.hasOperandAttr(1, TimeVal.class) || frame.hasOperandAttr(3, TimeVal.class)){      
         // enter insn (this pops the 4 top operand slots and pushes the long result
-        ti.skipInstruction(insnToExecute.execute(FeatureExprFactory.True(), ti).getValue());
+        ti.skipInstruction(insnToExecute.execute(CachedFeatureExprFactory.True(), ti).getValue());
       
         // propagate TimeVal attr, now we need a modifiable frame
         frame = ti.getModifiableTopFrame();
@@ -129,10 +129,10 @@ public class StopWatchFuzzer extends ListenerAdapter {
           StackFrame frame = ti.getModifiableTopFrame();
           
           // pop the operands 
-          frame.popLong(FeatureExprFactory.True()).getValue();
-          frame.popLong(FeatureExprFactory.True()).getValue();
+          frame.popLong(CachedFeatureExprFactory.True()).getValue();
+          frame.popLong(CachedFeatureExprFactory.True()).getValue();
           
-          frame.push(FeatureExprFactory.True(), One.valueOf(choice));
+          frame.push(CachedFeatureExprFactory.True(), One.valueOf(choice));
           
           ti.skipInstruction(insnToExecute.getNext());
         }

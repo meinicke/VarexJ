@@ -24,10 +24,10 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.function.Function;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.util.HashData;
@@ -59,7 +59,7 @@ import gov.nasa.jpf.vm.va.StackHandlerFactory;
  */
 public abstract class StackFrame implements Cloneable {
   
-	protected FeatureExpr TRUE = FeatureExprFactory.True();// TODO remove
+	protected FeatureExpr TRUE = CachedFeatureExprFactory.True();// TODO remove
 	
   /**
    * this StackFrame is not allowed to be modified anymore because it has been state stored.
@@ -144,7 +144,7 @@ public int nLocals;
   }
   
   public StackFrame (MethodInfo callee){
-    this( FeatureExprFactory.True(), callee, callee.getMaxLocals(), callee.getMaxStack());
+    this( CachedFeatureExprFactory.True(), callee, callee.getMaxLocals(), callee.getMaxStack());
   }
   
   public StackFrame(FeatureExpr ctx, MethodInfo callee) {
@@ -158,7 +158,7 @@ public int nLocals;
   protected StackFrame (int nLocals, int nOperands){
     stackBase = nLocals;
     this.nLocals = nLocals;
-    stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), nLocals, nOperands);
+    stack = StackHandlerFactory.createStack(CachedFeatureExprFactory.True(), nLocals, nOperands);
   }
   
   
@@ -1933,7 +1933,7 @@ public String toString () {
   
   public Conditional<Integer> pop (FeatureExpr ctx) {
     if (ctx == null) {
-      ctx = FeatureExprFactory.True();
+      ctx = CachedFeatureExprFactory.True();
     }
     //assert (top() >= stackBase) : "stack empty";
     boolean isRef = stack.isRef(ctx, 0);
@@ -2073,7 +2073,7 @@ public String toString () {
   public void pushRef (FeatureExpr ctx, int ref) {
     // quick fix
     if (ctx == null) {
-      ctx = FeatureExprFactory.True();
+      ctx = CachedFeatureExprFactory.True();
     }
     pushRef(ctx, new One<>(ref));
   }

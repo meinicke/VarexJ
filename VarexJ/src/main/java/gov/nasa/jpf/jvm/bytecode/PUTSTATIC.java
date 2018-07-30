@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.IChoice;
@@ -60,7 +61,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		if (getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL) != null) {
 			StackFrame frame = ti.getModifiableTopFrame();
-			FeatureExpr feature = Conditional.createFeature(fname);
+			FeatureExpr feature = CachedFeatureExprFactory.createDefinedExternal(fname);
 			featureNumber++;
 			System.out.println("Found feature #" + featureNumber + " - " + fname + " @" + className);
 			IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));

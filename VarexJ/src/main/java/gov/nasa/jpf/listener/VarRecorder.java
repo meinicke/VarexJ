@@ -20,8 +20,8 @@ package gov.nasa.jpf.listener;
 
 import java.util.HashMap;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.ArrayInstruction;
@@ -201,7 +201,7 @@ public class VarRecorder extends ListenerAdapter {
       return(false);
     }
 
-    int objRef = frame.peek(FeatureExprFactory.True()).getValue();
+    int objRef = frame.peek(CachedFeatureExprFactory.True()).getValue();
     if (objRef == MJIEnv.NULL) {
       return(false);
     }
@@ -335,8 +335,8 @@ public class VarRecorder extends ListenerAdapter {
        if (frame.getTopPos() < 0)
          return(null);
 
-       lo = frame.peek(FeatureExprFactory.True()).getValue();
-       hi = frame.getTopPos() >= 1 ? frame.peek(FeatureExprFactory.True(), 1).getValue() : 0;
+       lo = frame.peek(CachedFeatureExprFactory.True()).getValue();
+       hi = frame.getTopPos() >= 1 ? frame.peek(CachedFeatureExprFactory.True(), 1).getValue() : 0;
 
        return(decodeValue(type, lo, hi));
     }
@@ -368,7 +368,7 @@ public class VarRecorder extends ListenerAdapter {
 
     offset = calcOffset(type, store);
 
-    return(ti.getTopFrame().peek(FeatureExprFactory.True(), offset).getValue());
+    return(ti.getTopFrame().peek(CachedFeatureExprFactory.True(), offset).getValue());
   }
 
   private final static int calcOffset(byte type, boolean store) {
@@ -383,8 +383,8 @@ public class VarRecorder extends ListenerAdapter {
     int lo, hi;
 
     frame = ti.getTopFrame();
-    lo    = frame.peek(FeatureExprFactory.True()).getValue();
-    hi    = frame.getTopPos() >= 1 ? frame.peek(FeatureExprFactory.True(), 1).getValue() : 0;
+    lo    = frame.peek(CachedFeatureExprFactory.True()).getValue();
+    hi    = frame.getTopPos() >= 1 ? frame.peek(CachedFeatureExprFactory.True(), 1).getValue() : 0;
 
     return(decodeValue(type, lo, hi));
   }

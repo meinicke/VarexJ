@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
 
@@ -17,12 +17,12 @@ public class SWAPTest extends ABytecodeTest {
 		final One<Integer> second = One.valueOf(3);
 
 		StackFrame stackFrame = createStackFrame(2, 0, getInstruction());
-		stackFrame.push(FeatureExprFactory.True(), first);
-		stackFrame.push(FeatureExprFactory.True(), second);
+		stackFrame.push(CachedFeatureExprFactory.True(), first);
+		stackFrame.push(CachedFeatureExprFactory.True(), second);
 		executedCode(stackFrame);
 
-		assertEquals(first, stackFrame.pop(FeatureExprFactory.True()));
-		assertEquals(second, stackFrame.pop(FeatureExprFactory.True()));
+		assertEquals(first, stackFrame.pop(CachedFeatureExprFactory.True()));
+		assertEquals(second, stackFrame.pop(CachedFeatureExprFactory.True()));
 	}
 
 	@Override

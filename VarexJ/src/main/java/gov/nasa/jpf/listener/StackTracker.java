@@ -20,8 +20,8 @@ package gov.nasa.jpf.listener;
 
 import java.io.PrintWriter;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -94,11 +94,11 @@ public class StackTracker extends ListenerAdapter {
 
       } else if (insnToExecute instanceof INVOKESPECIAL) {
         INVOKESPECIAL callInsn = (INVOKESPECIAL)insnToExecute;
-        callee = callInsn.getInvokedMethod(FeatureExprFactory.True(), ti);
+        callee = callInsn.getInvokedMethod(CachedFeatureExprFactory.True(), ti);
 
       } else {
         InvokeInstruction callInsn = (InvokeInstruction)insnToExecute;
-        callee = callInsn.getInvokedMethod(FeatureExprFactory.True(), ti);
+        callee = callInsn.getInvokedMethod(CachedFeatureExprFactory.True(), ti);
       }
 
       if (callee != null) {

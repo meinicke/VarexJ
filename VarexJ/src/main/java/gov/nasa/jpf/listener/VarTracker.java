@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import cmu.conditional.CachedFeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.ListenerAdapter;
@@ -176,7 +176,7 @@ public class VarTracker extends ListenerAdapter {
       // we cannot easily retrieve them in a subsequent xASTORE, which follows
       // a pattern like:  ..GETFIELD.. some-stack-operations .. xASTORE
       StackFrame frame = ti.getTopFrame();
-      int objRef = frame.peek(FeatureExprFactory.True()).getValue();
+      int objRef = frame.peek(CachedFeatureExprFactory.True()).getValue();
       if (objRef != MJIEnv.NULL) {
         ElementInfo ei = ti.getElementInfo(objRef);
         if (ei.isArray()) {

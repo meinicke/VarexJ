@@ -20,9 +20,9 @@ package gov.nasa.jpf.test.mc.basic;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.ListenerAdapter;
 import gov.nasa.jpf.jvm.bytecode.GETFIELD;
 import gov.nasa.jpf.jvm.bytecode.IRETURN;
@@ -56,8 +56,8 @@ public class SkipInstructionTest extends TestJPF {
           // simulate the operand stack behavior of the skipped insn
           StackFrame frame = ti.getModifiableTopFrame();
 
-          frame.pop(FeatureExprFactory.True());
-          frame.push(FeatureExprFactory.True(), One.valueOf(42));
+          frame.pop(CachedFeatureExprFactory.True());
+          frame.push(CachedFeatureExprFactory.True(), One.valueOf(42));
 
           ti.skipInstruction(pc.getNext());
         }
@@ -130,7 +130,7 @@ public class SkipInstructionTest extends TestJPF {
             assert lastInsn instanceof IRETURN : "last instruction not an IRETURN ";
             StackFrame frame = ti.getModifiableTopFrame(); // we are modifying it
             System.out.println("listener is skipping method body of " + mi + " returning " + choice);
-            frame.push(FeatureExprFactory.True(), One.valueOf(choice));
+            frame.push(CachedFeatureExprFactory.True(), One.valueOf(choice));
             ti.setNextPC(lastInsn);
           } else {
             System.out.println("unexpected CG: " + cg);

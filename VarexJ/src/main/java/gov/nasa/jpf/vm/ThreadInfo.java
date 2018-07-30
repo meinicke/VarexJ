@@ -32,12 +32,12 @@ import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFException;
@@ -858,7 +858,7 @@ public class ThreadInfo extends InfoObject
                 // remember the exception to be thrown when we return from the native method
                 env.throwException(throwableRef);
             } else {
-                Instruction nextPc = throwException(FeatureExprFactory.True(), throwableRef);
+                Instruction nextPc = throwException(CachedFeatureExprFactory.True(), throwableRef);
                 setNextPC(nextPc);
             }
 
@@ -868,7 +868,7 @@ public class ThreadInfo extends InfoObject
             // time this gets scheduled, and make sure the exception object does
             // not get GCed prematurely
             ElementInfo eit = getModifiableElementInfo(objRef);
-            eit.setReferenceField(FeatureExprFactory.True(), "stopException", new One<>(throwableRef));
+            eit.setReferenceField(CachedFeatureExprFactory.True(), "stopException", new One<>(throwableRef));
         }
     }
 
@@ -1073,7 +1073,7 @@ public class ThreadInfo extends InfoObject
      * Returns the this pointer of the callee from the stack.
      */
     public int getCalleeThis(MethodInfo mi) {
-        return top.getCalleeThis(FeatureExprFactory.True(), mi).getValue();
+        return top.getCalleeThis(CachedFeatureExprFactory.True(), mi).getValue();
     }
 
     /**
@@ -1102,7 +1102,7 @@ public class ThreadInfo extends InfoObject
 
         InvokeInstruction call = (InvokeInstruction) pc.getValue();
 
-        return getCalleeThis(FeatureExprFactory.True(), Types.getArgumentsSize(call.getInvokedMethodSignature()) + 1).getValue().intValue() == r.getObjectRef();
+        return getCalleeThis(CachedFeatureExprFactory.True(), Types.getArgumentsSize(call.getInvokedMethodSignature()) + 1).getValue().intValue() == r.getObjectRef();
     }
 
     public ApplicationContext getApplicationContext() {
@@ -1742,7 +1742,7 @@ public class ThreadInfo extends InfoObject
 
     @SuppressWarnings("deprecation")
 	StackTraceElement (int sRef){
-      FeatureExpr ctx = FeatureExprFactory.True();
+      FeatureExpr ctx = CachedFeatureExprFactory.True();
       clsName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "clsName").getValue());
       mthName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "mthName").getValue());
       fileName = env.getStringObject(ctx, env.getReferenceField(ctx, sRef, "fileName").getValue());
@@ -1838,7 +1838,7 @@ public class ThreadInfo extends InfoObject
     protected void processPendingSUTExceptionRequest() {
         if (pendingSUTExceptionRequest != null) {
             // <2do> we could do more specific checks for ClassNotFoundExceptions here
-            nextPc = new One<>(createAndThrowException(FeatureExprFactory.True(), pendingSUTExceptionRequest.getExceptionClassName(), pendingSUTExceptionRequest.getDetails()));
+            nextPc = new One<>(createAndThrowException(CachedFeatureExprFactory.True(), pendingSUTExceptionRequest.getExceptionClassName(), pendingSUTExceptionRequest.getDetails()));
             pendingSUTExceptionRequest = null;
         }
     }
@@ -2079,7 +2079,7 @@ public class ThreadInfo extends InfoObject
     			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
     		}
         } catch (ClassInfoException cie) {
-          nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
+          nextPc = new One<>(this.createAndThrowException(CachedFeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
       }
     // we also count the skipped ones
@@ -2219,9 +2219,9 @@ public class ThreadInfo extends InfoObject
         }
 
         try {
-            nextPc = pc.execute(FeatureExprFactory.True(), this);
+            nextPc = pc.execute(CachedFeatureExprFactory.True(), this);
         } catch (ClassInfoException cie) {
-            nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
+            nextPc = new One<>(this.createAndThrowException(CachedFeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
         }
 
         // since this is part of the inner execution loop, it is a convenient place  to check probe notifications
@@ -2670,7 +2670,7 @@ public class ThreadInfo extends InfoObject
         ElementInfo eiThread = heap.newObject(ctx, ciThread, this);
         objRef = eiThread.getObjectRef();
 
-        ElementInfo eiName = heap.newArray(FeatureExprFactory.True(), "C", MAIN_NAME.length(), this);
+        ElementInfo eiName = heap.newArray(CachedFeatureExprFactory.True(), "C", MAIN_NAME.length(), this);
         int i = 0;
         for (char c : MAIN_NAME.toCharArray()) {
         	eiName.setCharElement(ctx, i++, One.valueOf(c));
@@ -2679,7 +2679,7 @@ public class ThreadInfo extends InfoObject
         eiThread.setReferenceField(ctx, "name", new One<>(nameRef));
 
         final ClassInfo ci = ClassLoaderInfo.getSystemResolvedClassInfo(Object.class.getName());
-        final ElementInfo blockerLock = heap.newObject(FeatureExprFactory.True(), ci, this);
+        final ElementInfo blockerLock = heap.newObject(CachedFeatureExprFactory.True(), ci, this);
         eiThread.setReferenceField(ctx, "blockerLock", new One<>(blockerLock.getObjectRef()));
         
         ElementInfo eiGroup = createMainThreadGroup(ctx, sysCl);
@@ -3013,7 +3013,7 @@ public class ThreadInfo extends InfoObject
         ElementInfo ei = getModifiableThreadObject();
 
         int xRef = ei.getReferenceField("stopException").getValue();
-        ei.setReferenceField(FeatureExprFactory.True(), "stopException", new One<>(MJIEnv.NULL));
+        ei.setReferenceField(CachedFeatureExprFactory.True(), "stopException", new One<>(MJIEnv.NULL));
 
         Instruction insn = getPC().getValue();
         if (insn instanceof EXECUTENATIVE) {
@@ -3029,7 +3029,7 @@ public class ThreadInfo extends InfoObject
             return insn;
         }
 
-        return throwException(FeatureExprFactory.True(), xRef);
+        return throwException(CachedFeatureExprFactory.True(), xRef);
     }
 
     /**
@@ -3045,7 +3045,7 @@ public class ThreadInfo extends InfoObject
                 ciException = ClassInfo.getInitializedSystemClassInfo(null, "java.lang.reflect.InvocationTargetException", this);
             }
 
-            matchingHandler = frame.getHandlerFor(FeatureExprFactory.True(), ciException);
+            matchingHandler = frame.getHandlerFor(CachedFeatureExprFactory.True(), ciException);
             if (matchingHandler != null) {
                 return new HandlerContext(this, ciException, frame, matchingHandler);
             }

@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -52,7 +52,7 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
     ClassInfo ciField = f.getClassInfo();
     if (!ciField.isRegistered()){
       // classLoaded listeners might change/remove this field
-      ciField.registerClass(FeatureExprFactory.True(), ThreadInfo.getCurrentThread());
+      ciField.registerClass(CachedFeatureExprFactory.True(), ThreadInfo.getCurrentThread());
       f = ciField.getStaticField(fname);
     }
     
@@ -82,13 +82,13 @@ public abstract class StaticFieldInstruction extends FieldInstruction {
   }
 
   public StaticElementInfo getLastElementInfo() {
-    return getFieldInfo(FeatureExprFactory.True()).getClassInfo().getStaticElementInfo();
+    return getFieldInfo(CachedFeatureExprFactory.True()).getClassInfo().getStaticElementInfo();
   }
 
   // this can be different than ciField - the field might be in one of its
   // superclasses
   public ClassInfo getLastClassInfo(){
-    return getFieldInfo(FeatureExprFactory.True()).getClassInfo();
+    return getFieldInfo(CachedFeatureExprFactory.True()).getClassInfo();
   }
 
   public String getLastClassName() {

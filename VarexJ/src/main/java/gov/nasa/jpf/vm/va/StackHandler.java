@@ -7,12 +7,12 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.utils.MethodNotImplementedException;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.Types;
 
@@ -69,7 +69,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 	public StackHandler() {
 		stack = new One<>(new Stack(0));
 		locals = new Conditional[0];
-		stackCTX = FeatureExprFactory.True();
+		stackCTX = CachedFeatureExprFactory.True();
 	}
 	
 	@Override
@@ -432,7 +432,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public int[] getSlots() {
-		return getSlots(FeatureExprFactory.True());
+		return getSlots(CachedFeatureExprFactory.True());
 	}
 
 	@Override

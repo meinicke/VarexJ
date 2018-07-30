@@ -25,8 +25,8 @@ import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.Random;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 
 /**
@@ -68,7 +68,7 @@ public class Verify {
   }
 
   public static int getCounter (int id) {
-	  return getCounter(id, FeatureExprFactory.True());
+	  return getCounter(id, CachedFeatureExprFactory.True());
   }
   
   // note this is NOT marked native because we might also call it from host VM code
@@ -91,7 +91,7 @@ public class Verify {
   }
 
   public static void resetCounter (int id) {
-	  resetCounter(id, FeatureExprFactory.True());
+	  resetCounter(id, CachedFeatureExprFactory.True());
   }
   
   public static void resetCounter (int id, FeatureExpr ctx) {
@@ -105,7 +105,7 @@ public class Verify {
   }
 
   public static void setCounter (int id, int val) {
-	  setCounter(id, val, FeatureExprFactory.True());
+	  setCounter(id, val, CachedFeatureExprFactory.True());
   }
   
   public static void setCounter (int id, int val, FeatureExpr ctx) {
@@ -119,7 +119,7 @@ public class Verify {
   }
 
   public static int incrementCounter (int id) {
-	  return incrementCounter(id, FeatureExprFactory.True());
+	  return incrementCounter(id, CachedFeatureExprFactory.True());
   }
   
   public static int incrementCounter (int id, FeatureExpr ctx) {
@@ -172,7 +172,7 @@ public class Verify {
   }
 
   public static void setBitInBitSet(int id, int bit, boolean value) {
-	  setBitInBitSet(id, bit, value, FeatureExprFactory.True());
+	  setBitInBitSet(id, bit, value, CachedFeatureExprFactory.True());
   }
 
   public static void setBitInBitSet(int id, int bit, boolean value, FeatureExpr ctx) {
@@ -187,7 +187,7 @@ public class Verify {
   }
 
   public static boolean getBitInBitSet(int id, int bit) {
-	  return getBitInBitSet(id, bit, FeatureExprFactory.True());
+	  return getBitInBitSet(id, bit, CachedFeatureExprFactory.True());
   }
   
   public static boolean getBitInBitSet(int id, int bit, FeatureExpr ctx) {

@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -91,7 +92,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			MethodInfo callee = getInvokedMethod(Conditional.and(ctx, objRefEntry.getValue()), ti, objRef);
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 			if (!classes.isEmpty()) {
-				FeatureExpr invocationCtx = FeatureExprFactory.False();
+				FeatureExpr invocationCtx = CachedFeatureExprFactory.False();
 				for (FeatureExpr e : classes.get(callee.getFullName())) {
 					invocationCtx = Conditional.or(invocationCtx, e);
 				}
@@ -143,7 +144,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 		int objRef;
 
 		if (ti.getNextPC() == null) { // this is pre-exec
-			objRef = ti.getCalleeThis(FeatureExprFactory.True(), getArgSize()).getValue();
+			objRef = ti.getCalleeThis(CachedFeatureExprFactory.True(), getArgSize()).getValue();
 		} else { // this is post-exec
 			objRef = lastObj;
 		}

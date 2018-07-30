@@ -2,7 +2,7 @@ package cmu.datastructures;
 
 import org.junit.Test;
 
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
+import cmu.conditional.CachedFeatureExprFactory;
 import gov.nasa.jpf.vm.va.IStackHandler;
 import gov.nasa.jpf.vm.va.StackHandlerFactory;
 import gov.nasa.jpf.vm.va.StackHandlerFactory.SHFactory;
@@ -20,7 +20,7 @@ public class StackHandlerFactoryTest {
 	public void testSetFactory() throws Exception {
 		for (SHFactory factory : SHFactory.values()) {
 			StackHandlerFactory.setFactory(factory);
-			IStackHandler stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), 1, 1);
+			IStackHandler stack = StackHandlerFactory.createStack(CachedFeatureExprFactory.True(), 1, 1);
 			stack.toString();
 		}
 	}

@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
@@ -171,7 +172,7 @@ public class RandomDifferentialStackTest {
 		differentalTest(() -> {
 			calls.clear();
 			Random r = new Random(seed);
-			IStackHandler sh = StackHandlerFactory.createStack(FeatureExprFactory.True(), 10, 20);
+			IStackHandler sh = StackHandlerFactory.createStack(CachedFeatureExprFactory.True(), 10, 20);
 
 			List<Object> returnValues = new ArrayList<>(METHOD_CALLS);
 			for (int j = 0; j < METHOD_CALLS; j++) {
@@ -264,7 +265,7 @@ public class RandomDifferentialStackTest {
 				int var = r.nextInt(3);
 				switch (var) {
 				case 0:
-					args[i] = FeatureExprFactory.True();
+					args[i] = CachedFeatureExprFactory.True();
 					break;
 				case 1:
 					args[i] = A;

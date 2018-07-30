@@ -21,11 +21,11 @@ package gov.nasa.jpf.jvm.bytecode;
 import java.util.Iterator;
 import java.util.function.BiFunction;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.ChoiceGenerator;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -96,7 +96,7 @@ public abstract class ReturnInstruction extends JVMInstruction implements gov.na
    */
   public Object getReturnAttr (ThreadInfo ti){
     StackFrame frame = ti.getTopFrame();
-    return frame.getOperandAttr(FeatureExprFactory.True());
+    return frame.getOperandAttr(CachedFeatureExprFactory.True());
   }
 
   /**

@@ -19,6 +19,12 @@
 
 package gov.nasa.jpf.listener;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashSet;
+
 import cmu.conditional.One;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.Error;
@@ -50,12 +56,6 @@ import gov.nasa.jpf.vm.NoUncaughtExceptionsProperty;
 import gov.nasa.jpf.vm.NotDeadlockedProperty;
 import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashSet;
 
 /**
  * an alternative  Graphviz dot-file generator for simple,educational state graphs

@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import cmu.conditional.CachedFeatureExprFactory;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.Config;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFConfigException;
@@ -495,16 +495,16 @@ public abstract class VM {
     Heap heap = getHeap();
     
     if (sig.contains("([Ljava/lang/String;)")){
-      ElementInfo eiArgs = heap.newArray(FeatureExprFactory.True(), "Ljava/lang/String;", args.length, tiMain);
+      ElementInfo eiArgs = heap.newArray(CachedFeatureExprFactory.True(), "Ljava/lang/String;", args.length, tiMain);
       for (int i = 0; i < args.length; i++) {
-        ElementInfo eiArg = heap.newString(FeatureExprFactory.True(), args[i], tiMain);
-        eiArgs.setReferenceElement(FeatureExprFactory.True(), i, new One<>(eiArg.getObjectRef()));
+        ElementInfo eiArg = heap.newString(CachedFeatureExprFactory.True(), args[i], tiMain);
+        eiArgs.setReferenceElement(CachedFeatureExprFactory.True(), i, new One<>(eiArg.getObjectRef()));
       }
       frame.setReferenceArgument( ctx, 0, eiArgs.getObjectRef(), null);
 
     } else if (sig.contains("(Ljava/lang/String;)")){
       if (args.length > 1){
-        ElementInfo eiArg = heap.newString(FeatureExprFactory.True(), args[0], tiMain);
+        ElementInfo eiArg = heap.newString(CachedFeatureExprFactory.True(), args[0], tiMain);
         frame.setReferenceArgument( ctx, 0, eiArg.getObjectRef(), null);
       } else {
         frame.setReferenceArgument( ctx, 0, MJIEnv.NULL, null);
@@ -797,7 +797,7 @@ public abstract class VM {
   protected void notifyExecuteInstruction (ThreadInfo ti, Instruction insn) {
     try {
       for (int i = 0; i < listeners.length; i++) {
-        listeners[i].executeInstruction(FeatureExprFactory.True(), this, ti, insn);
+        listeners[i].executeInstruction(CachedFeatureExprFactory.True(), this, ti, insn);
       }
     } catch (UncaughtException x) {
       throw x;
