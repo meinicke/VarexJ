@@ -52,29 +52,51 @@ public abstract class Conditional<T> {
 		}
 	}
 	
+	static int notCalls = 0;
+	
 	public static FeatureExpr not(FeatureExpr a) {
+		notCalls++;
+		return notInternal(a);
+	}
+
+	private static FeatureExpr notInternal(FeatureExpr a) {
 		return cacheNot.computeIfAbsent(((BDDFeatureExpr)a).bdd(), x -> a.not());
 	}
 	
 	public static FeatureExpr orNot(final FeatureExpr a, final FeatureExpr b) {
+		orCalls++;
 		if (((BDDFeatureExpr)a).bdd() == ((BDDFeatureExpr)b).bdd()) {
 			return FeatureExprFactory.True();
 		}
-		return not(and(not(a), b));
+		return notInternal(andInternal(notInternal(a), b));
 	}
 	
+	static int orCalls = 0;
+	
 	public static FeatureExpr or(final FeatureExpr a, final FeatureExpr b) {
+		orCalls++;
+		return orInternal(a, b);
+	}
+	
+	private static FeatureExpr orInternal(FeatureExpr a, FeatureExpr b) {
 		if (((BDDFeatureExpr)a).bdd() == ((BDDFeatureExpr)b).bdd()) {
 			return a;
 		}
-		return not(and(not(a), not(b)));
+		return notInternal(andInternal(notInternal(a), notInternal(b)));
 	}
-	
+
 	public static FeatureExpr andNot(final FeatureExpr a, final FeatureExpr b) {
 		return and(a, not(b));
 	}
 	
+	static int andCalls = 0;
+	
 	public static FeatureExpr and(final FeatureExpr a, final FeatureExpr b) {
+		andCalls++;
+		return andInternal(a, b);
+	}
+
+	private static FeatureExpr andInternal(final FeatureExpr a, final FeatureExpr b) {
 		BDD bddA = ((BDDFeatureExpr)a).bdd();
 		BDD bddB = ((BDDFeatureExpr)b).bdd();
 		if (bddA == bddB) {
@@ -102,7 +124,7 @@ public abstract class Conditional<T> {
 	}
 	
 	private static FeatureExpr equiv(FeatureExpr a, FeatureExpr b) {
-		return or(and(a, b), and(not(a), not(b)));
+		return orInternal(andInternal(a, b), andInternal(notInternal(a), notInternal(b)));
 	}
 
 	/**
@@ -147,8 +169,11 @@ public abstract class Conditional<T> {
 		features.put(fname, feature);
 		return feature;
 	}
+	
+	static int satCalls = 0;
 
 	public static final boolean isContradiction(final FeatureExpr f) {
+		satCalls++;
 		final BDD bdd = ((BDDFeatureExpr)f).bdd();
 		final Boolean value = cacheIsSat.get(bdd);
 		if (value != null) {
@@ -158,6 +183,7 @@ public abstract class Conditional<T> {
 	}
 
 	public static final boolean isTautology(final FeatureExpr f) {
+		satCalls++;
 		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)not(f)).bdd(), x -> f.not().isSatisfiable(fm));
 	}
 
@@ -252,5 +278,26 @@ public abstract class Conditional<T> {
 
 	public boolean isOne() {
 		return false;
+	}
+	
+	public static void printStats() {
+//		System.out.println("orCalls: " + orCalls);
+		System.out.println("andCalls:" + (andCalls + orCalls));
+		System.out.println("SATCalls:" + satCalls);
+		System.out.println("notCalls:" + notCalls);
+		System.out.println();
+		
+		int andSize = getSize(cacheAnd);
+		System.out.println("cacheAnd:  " + andSize);
+		System.out.println("cacheNot:  " + cacheNot.size());
+		System.out.println("cacheIsSat:" + cacheIsSat.size());
+	}
+
+	private static int getSize(Map<BDD, Map<BDD, FeatureExpr>> map) {
+		int size = 0;
+		for (Map<BDD, FeatureExpr> child : map.values()) {
+			size += child.size();
+		}
+		return size;
 	}
 }

@@ -179,6 +179,8 @@ public class JPF implements Runnable {
     }
 
     start(conf, args);
+    
+    Conditional.printStats();
   }
 
   public static void start(Config conf, String[] args){
