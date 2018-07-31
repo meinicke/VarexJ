@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -162,21 +161,7 @@ public abstract class IfInstruction extends JVMInstruction {
   }
   
   protected Conditional<Boolean> maprIf(final Conditional<Integer> v1, final Conditional<Integer> v2) {
-	  return v1.mapr(new Function<Integer, Conditional<Boolean>>() {
-
-			@Override
-			public Conditional<Boolean> apply(final Integer x1) {
-				return v2.mapr(new Function<Integer, Conditional<Boolean>>() {
-
-					@Override
-					public Conditional<Boolean> apply(Integer x2) {
-						return One.valueOf(compare(x1.intValue(), x2.intValue()));
-					}
-					
-				}); 
-			}
-	    	
-		}).simplifyValues();
+	  return v1.mapr(x1 -> v2.mapr(x2 -> One.valueOf(compare(x1.intValue(), x2.intValue())))).simplifyValues();
   }
   
   protected boolean compare(int x, int y) {

@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.function.Function;
-
+import cmu.conditional.ChoiceFactory;
+import cmu.conditional.ChoiceFactory.Factory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -31,18 +31,12 @@ import gov.nasa.jpf.vm.StackFrame;
  */
 public class IFEQ extends IfInstruction {
 
-	private static final Function<Integer, Conditional<Boolean>> IFEQ_ = new Function<Integer, Conditional<Boolean>>() {
-		public Conditional<Boolean> apply(final Integer x) {
-			return One.valueOf(x.intValue() == 0);
-		}
-	};
-
 	public IFEQ(int targetPc) {
 		super(targetPc);
 	}
 
 	public Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame) {
-		return frame.pop(ctx).mapr(IFEQ_).simplifyValues();
+		return frame.pop(ctx).mapr(x -> One.valueOf(x.intValue() == 0)).simplifyValues();
 	}
 
 	public int getByteCode() {

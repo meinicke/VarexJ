@@ -18,8 +18,6 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.function.Function;
-
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -35,14 +33,8 @@ public class IFLE extends IfInstruction {
     super(targetPc);
   }
 
-  private final static Function<Integer, Conditional<Boolean>> IFLE_ = new Function<Integer, Conditional<Boolean>>() {
-	  public Conditional<Boolean> apply(Integer x) {
-		  return One.valueOf(x.intValue() <= 0);
-	  }
-  };
-
-  public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
-	return frame.pop(ctx).mapr(IFLE_).simplifyValues();
+  	public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
+	return frame.pop(ctx).mapr(x -> One.valueOf(x.intValue() <= 0)).simplifyValues();
   }
 
   public int getByteCode () {
