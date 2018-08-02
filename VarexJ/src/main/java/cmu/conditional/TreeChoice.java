@@ -195,4 +195,15 @@ class TreeChoice<T> extends IChoice<T> implements Cloneable {
 		return thenBranch.size() + elseBranch.size();
 	}
 
+	@Override
+	public FeatureExpr getContextOf(T value) {
+		return or(and(featureExpr, thenBranch.getContextOf(value)), and(featureExpr, elseBranch.getContextOf(value)));
+	}
+
+	@Override
+	public FeatureExpr getContextOf(Function<T, Boolean> function) {
+		return or(and(featureExpr, thenBranch.getContextOf(function)), and(featureExpr, elseBranch.getContextOf(function)));
+		
+	}
+
 }

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -34,7 +35,7 @@ public class IFNULL extends IfInstruction {
   }
 
   public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
-	return frame.pop(ctx).mapr(x -> One.valueOf(x.intValue() == MJIEnv.NULL)).simplifyValues();
+	  return ChoiceFactory.create(frame.pop(ctx).getContextOf(MJIEnv.NULL), One.TRUE, One.FALSE).simplify();
   }
 
   public int getByteCode () {

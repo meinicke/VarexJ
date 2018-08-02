@@ -253,4 +253,8 @@ public abstract class Conditional<T> {
 	public boolean isOne() {
 		return false;
 	}
+	
+	public abstract FeatureExpr getContextOf(T value);
+
+	public abstract FeatureExpr getContextOf(Function<T, Boolean> function);
 }

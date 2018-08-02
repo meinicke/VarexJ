@@ -8,6 +8,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.MJIEnv;
 
 /**
@@ -206,6 +207,32 @@ public class One<T> extends Conditional<T> implements Cloneable {
 	@Override
 	public boolean isOne() {
 		return true;
+	}
+
+	@Override
+	public FeatureExpr getContextOf(T value) {
+		if (value == null) {
+			if (this.value == null) {
+				return FeatureExprFactory.True();
+			} else {
+				return FeatureExprFactory.False();
+			}
+		} else {
+			if (value.equals(this.value)) {
+				return FeatureExprFactory.True(); 
+			} else {
+				return FeatureExprFactory.False();
+			}
+		}
+	}
+
+	@Override
+	public FeatureExpr getContextOf(Function<T, Boolean> function) {
+		if (function.apply(value)) {
+			return FeatureExprFactory.True();
+		} else {
+			return FeatureExprFactory.False();
+		}
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 
 /**
  * Choice implementation using a map from value to {@link FeatureExpr}.
@@ -241,6 +242,26 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 	@Override
 	public int size() {
 		return map.size();
+	}
+
+	@Override
+	public FeatureExpr getContextOf(T value) {
+		FeatureExpr ctx = map.get(value);
+		if (ctx == null) {
+			return FeatureExprFactory.False();
+		}
+		return ctx;
+	}
+
+	@Override
+	public FeatureExpr getContextOf(Function<T, Boolean> function) {
+		FeatureExpr result = FeatureExprFactory.False();
+		for (Entry<T, FeatureExpr> element : map.entrySet()) {
+			if (function.apply(element.getKey())) {
+				return or(result, element.getValue());
+			} 
+		}
+		return result;
 	}
 
 	
