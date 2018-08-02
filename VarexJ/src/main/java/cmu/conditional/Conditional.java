@@ -154,11 +154,11 @@ public abstract class Conditional<T> {
 		if (value != null) {
 			return !value;
 		}
-		return !cacheIsSat.computeIfAbsent(bdd, x -> f.isSatisfiable(fm));
+		return !cacheIsSat.computeIfAbsent(bdd, x -> and(bddFM, f).isSatisfiable());
 	}
 
 	public static final boolean isTautology(final FeatureExpr f) {
-		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)not(f)).bdd(), x -> f.not().isSatisfiable(fm));
+		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)not(f)).bdd(), x -> and(bddFM, not(f)).isSatisfiable());
 	}
 
 	public abstract T getValue();
