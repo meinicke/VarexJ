@@ -258,7 +258,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 		FeatureExpr result = FeatureExprFactory.False();
 		for (Entry<T, FeatureExpr> element : map.entrySet()) {
 			if (function.apply(element.getKey())) {
-				return or(result, element.getValue());
+				result = or(result, element.getValue());
 			} 
 		}
 		return result;

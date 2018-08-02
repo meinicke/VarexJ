@@ -211,28 +211,16 @@ public class One<T> extends Conditional<T> implements Cloneable {
 
 	@Override
 	public FeatureExpr getContextOf(T value) {
-		if (value == null) {
-			if (this.value == null) {
-				return FeatureExprFactory.True();
-			} else {
-				return FeatureExprFactory.False();
-			}
+		if (value.equals(this.value)) {
+			return FeatureExprFactory.True(); 
 		} else {
-			if (value.equals(this.value)) {
-				return FeatureExprFactory.True(); 
-			} else {
-				return FeatureExprFactory.False();
-			}
+			return FeatureExprFactory.False();
 		}
 	}
 
 	@Override
 	public FeatureExpr getContextOf(Function<T, Boolean> function) {
-		if (function.apply(value)) {
-			return FeatureExprFactory.True();
-		} else {
-			return FeatureExprFactory.False();
-		}
+		return function.apply(value) ? FeatureExprFactory.True() : FeatureExprFactory.False();
 	}
 
 }
