@@ -18,8 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.function.Function;
-
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -36,15 +35,9 @@ public class IFNE extends IfInstruction {
     super(targetPc);
   }
 
-  private final static Function<Integer, Conditional<Boolean>> IFNE_ = new Function<Integer, Conditional<Boolean>>() {
-	  public Conditional<Boolean> apply(Integer x) {
-		  return One.valueOf(x != 0);
-	  }
-  };
-
-	public Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame) {
-		return frame.pop(ctx).mapr(IFNE_);
-	}
+  public Conditional<Boolean> popConditionValue(FeatureExpr ctx, StackFrame frame) {
+	  return ChoiceFactory.create(frame.pop(ctx).getContextOf(0), One.FALSE, One.TRUE).simplify();
+  }
 
   public int getByteCode () {
     return 0x9A;

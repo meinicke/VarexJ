@@ -18,8 +18,8 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
-import java.util.function.Function;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.StackFrame;
@@ -35,14 +35,8 @@ public class IFLT extends IfInstruction {
     super(targetPc);
   }
 
-  private final static Function<Integer, Conditional<Boolean>> IFLT_ = new Function<Integer, Conditional<Boolean>>() {
-	  public Conditional<Boolean> apply(Integer x) {
-		  return One.valueOf(x.intValue() < 0);
-	  }
-  };
-
   public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
-	return frame.pop(ctx).mapr(IFLT_).simplifyValues();
+	  return ChoiceFactory.create(frame.pop(ctx).getContextOf(x -> x < 0), One.TRUE, One.FALSE).simplify();
   }
 
   public int getByteCode () {

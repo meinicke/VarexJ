@@ -13,7 +13,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
  */
 public class ChoiceFactory {
 	
-	public enum Factory{
+	public enum Factory {
 		TreeChoice, MapChoice
 	}
 	
@@ -23,11 +23,18 @@ public class ChoiceFactory {
 		return f;
 	}
 	
+	private static Factory currentFactory = Factory.TreeChoice;
+	
+	public static Factory getCurrentFactory() {
+		return currentFactory;
+	}
+	
 	public static <T> IChoice<T> create(final FeatureExpr featureExpr, final Conditional<T> thenBranch, final Conditional<T> elseBranch) {
 		return f.create(featureExpr, thenBranch, elseBranch);
 	}
 	
 	public static void setDefault(Factory factory) {
+		currentFactory = factory;
 		switch (factory) {
 		case MapChoice:
 			f = new MapChoiceFactory();

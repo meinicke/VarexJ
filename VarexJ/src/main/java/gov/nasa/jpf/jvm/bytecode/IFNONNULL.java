@@ -18,8 +18,7 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
-import java.util.function.Function;
-
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -37,14 +36,8 @@ public class IFNONNULL extends IfInstruction {
     super(targetPc);
   }
 
-  private final static Function<Integer, Conditional<Boolean>> IFNONNULL_ = new Function<Integer, Conditional<Boolean>>() {
-	  public Conditional<Boolean> apply(Integer x) {
-		  return One.valueOf(x.intValue() != MJIEnv.NULL);
-	  }
-  };
-
   public Conditional<Boolean> popConditionValue (FeatureExpr ctx, StackFrame frame) {
-		return frame.pop(ctx).mapr(IFNONNULL_).simplifyValues();
+	  return ChoiceFactory.create(frame.pop(ctx).getContextOf(MJIEnv.NULL), One.FALSE, One.TRUE).simplify();
   }
 
   public int getByteCode () {
