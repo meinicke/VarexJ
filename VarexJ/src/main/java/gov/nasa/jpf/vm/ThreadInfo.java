@@ -1966,6 +1966,7 @@ public class ThreadInfo extends InfoObject
 
     public static boolean RUN_SIMPLE = false;
 
+    public static Map<String, List<Long>> times = new HashMap<>(); 
     /**
      * Execute next instruction.
      */
@@ -2043,7 +2044,19 @@ public class ThreadInfo extends InfoObject
      		
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
+     		
+     		String name = i.getMnemonic();
+     		List<Long> timer = times.get(name);
+     		if (timer == null) {
+     			timer = new ArrayList<>();
+     			times.put(name, timer);
+     		}
+     		long start = System.nanoTime();
      		final Conditional<Instruction> next = i.execute(ctx, this);
+     		long end = System.nanoTime();
+     		if (end - start > 1000) {
+     			timer.add(end - start);
+     		}
      		
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {

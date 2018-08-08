@@ -19,11 +19,15 @@
 package gov.nasa.jpf;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import cmu.conditional.ChoiceFactory;
@@ -41,6 +45,7 @@ import gov.nasa.jpf.util.LogManager;
 import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.util.RunRegistry;
 import gov.nasa.jpf.vm.NoOutOfMemoryErrorProperty;
+import gov.nasa.jpf.vm.ThreadInfo;
 import gov.nasa.jpf.vm.VM;
 import gov.nasa.jpf.vm.VMListener;
 import gov.nasa.jpf.vm.va.BufferedStackHandler;
@@ -179,6 +184,37 @@ public class JPF implements Runnable {
     }
 
     start(conf, args);
+    
+    try (PrintWriter writer = new PrintWriter("times.csv", "UTF-8")) {
+	    for (Entry<String, List<Long>> entry : ThreadInfo.times.entrySet()) {
+	    	List<Long> list = entry.getValue();
+	    	if (!list.isEmpty()) {
+		    	writer.print(entry.getKey());
+		    	writer.print(',');
+		    	Collections.sort(list, (o1, o2) -> -Long.compare(o1, o2));
+		    	for (int i = 0; i < Math.min(50, list.size()); i++) {
+		    		writer.print(list.get(i));
+		    		writer.print(',');
+				}
+		    	
+//		    		writer.print(list.get(0));
+//		    		writer.print(',');
+		    	long sum = 0;
+//		    	long max = 0;
+		    	for (Long time : list) {
+					sum += time;
+//					max = Long.max(max, time);
+				}
+//		    	writer.print(max);
+		    	writer.print(sum / list.size());
+		    	writer.println();
+	    	}	    	
+	    }
+    } catch (FileNotFoundException e) {
+		e.printStackTrace();
+	} catch (UnsupportedEncodingException e) {
+		e.printStackTrace();
+	}
   }
 
   public static void start(Config conf, String[] args){
