@@ -18,6 +18,9 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,7 +31,10 @@ import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.utils.RuntimeConstants;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.bdd.BDDFeatureExpr;
+import de.fosd.typechef.featureexpr.bdd.FExprBuilder;
 import gov.nasa.jpf.annotation.MJI;
+import net.sf.javabdd.BDDFactory;
 
 /**
  * MJI NativePeer class to intercept all System.out and System.err
@@ -232,6 +238,13 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 							key = createUniqueKey(key);
 						}
 						testExpressions.put(key, and);
+						
+						BDDFactory bddFactory = FExprBuilder.bddFactory();
+						try (FileWriter fw = new FileWriter(key + ".txt")){
+							bddFactory.save(new BufferedWriter(fw), ((BDDFeatureExpr)and).bdd());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					} else {
 						if (Conditional.isTautology(and)) {
 							env.getVM().println('{' + key + "} : " + Conditional.getCTXString(and));
