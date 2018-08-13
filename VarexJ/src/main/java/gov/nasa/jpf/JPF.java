@@ -288,6 +288,10 @@ public class JPF implements Runnable {
     VERSION = config.getString("jpf.version", VERSION);
     memoryReserve = new byte[config.getInt("jpf.memory_reserve", 64 * 1024)]; // in bytes
     
+    System.setProperty("bddCacheSize", config.getString("bddCacheSize", Integer.toString(100000)));
+    System.setProperty("bddValNum", config.getString("bddValNum", Integer.toString(524288 / 2)));
+    System.setProperty("bddVarNum", config.getString("bddVarNum", Integer.toString(100)));
+    
     try {
       
       Class<?>[] vmArgTypes = { JPF.class, Config.class };
