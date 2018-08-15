@@ -29,6 +29,7 @@ import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
+import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.Misc;
@@ -122,7 +123,7 @@ public int nLocals;
   }
 
   static final int[] EMPTY_ARRAY = new int[0];
-
+  
   protected StackFrame (FeatureExpr ctx, MethodInfo callee, int nLocals, int nOperands){
     mi = callee;
     pc = new One<>(mi.getInstruction(0)); // ???
@@ -161,6 +162,18 @@ public int nLocals;
     stack = StackHandlerFactory.createStack(FeatureExprFactory.True(), nLocals, nOperands);
   }
   
+  private int executedInstructions = 0;
+  public static int maxInstructions =1_000_000;
+  
+  public Instruction instructionExecuted() {
+	  executedInstructions++;
+	  if (executedInstructions >= maxInstructions) {
+		  executedInstructions= 0;
+		  return new EXCEPTION(RuntimeException.class.getName(), "too many instructions:" + maxInstructions);
+	  } else {
+		  return null;
+	  }
+  }
   
 
 /**

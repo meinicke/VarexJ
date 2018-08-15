@@ -2076,7 +2076,12 @@ public class ThreadInfo extends InfoObject
 					k++;
 				}
     		} else {
-    			nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
+    			Instruction infinitLoop = top.instructionExecuted();
+    			if (infinitLoop != null) {
+    				nextPc = ChoiceFactory.create(ctx, new One<Instruction>(infinitLoop), pc);
+    			} else {
+    				nextPc = ChoiceFactory.create(ctx, next, pc).simplify(top.stack.getCtx());
+    			}
     		}
         } catch (ClassInfoException cie) {
           nextPc = new One<>(this.createAndThrowException(FeatureExprFactory.True(), cie.getExceptionClass(), cie.getMessage()));
