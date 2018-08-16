@@ -163,7 +163,7 @@ public int nLocals;
   }
   
   private int executedInstructions = 0;
-  public static int maxInstructions =1_000_000;
+  public static int maxInstructions =100_000;
   
   public Instruction instructionExecuted(Instruction i) {
 	  executedInstructions++;
