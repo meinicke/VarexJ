@@ -2076,7 +2076,7 @@ public class ThreadInfo extends InfoObject
 					k++;
 				}
     		} else {
-    			Instruction infinitLoop = top.instructionExecuted();
+    			Instruction infinitLoop = top.instructionExecuted(i);
     			if (infinitLoop != null) {
     				nextPc = ChoiceFactory.create(ctx, new One<Instruction>(infinitLoop), pc);
     			} else {

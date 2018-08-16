@@ -165,11 +165,11 @@ public int nLocals;
   private int executedInstructions = 0;
   public static int maxInstructions =1_000_000;
   
-  public Instruction instructionExecuted() {
+  public Instruction instructionExecuted(Instruction i) {
 	  executedInstructions++;
 	  if (executedInstructions >= maxInstructions) {
 		  executedInstructions= 0;
-		  return new EXCEPTION(RuntimeException.class.getName(), "too many instructions:" + maxInstructions);
+		  return new EXCEPTION(i, RuntimeException.class.getName(), "too many instructions:" + maxInstructions);
 	  } else {
 		  return null;
 	  }
