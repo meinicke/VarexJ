@@ -21,8 +21,10 @@ package gov.nasa.jpf.vm;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
 import java.util.function.Function;
+
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.NATIVERETURN;
@@ -259,9 +261,9 @@ public abstract class NativeStackFrame extends StackFrame {
     }
   }
   
-  public int getReferenceResult(FeatureExpr ctx){
+  public Conditional<Integer> getReferenceResult(FeatureExpr ctx){
     if (ret instanceof Integer){
-      return (Integer)ret; // MJI requires references to be returned as 'int'
+      return One.valueOf((Integer)ret); // MJI requires references to be returned as 'int'
     } else {
       throw new JPFException("result " + ret + " can't be converted into JPF refrence value");      
     }

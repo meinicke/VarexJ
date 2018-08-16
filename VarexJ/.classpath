@@ -21,15 +21,16 @@
 	<classpathentry kind="lib" path="lib/bcel-5.2.jar"/>
 	<classpathentry kind="lib" path="lib/ColoredLogger.jar"/>
 	<classpathentry kind="lib" path="lib/commons-math3-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/conditionallib_2.10-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/Coverage.jar"/>
 	<classpathentry kind="lib" path="lib/google-api-translate-java-0.97.jar"/>
-	<classpathentry kind="lib" path="lib/javabdd-1.0b2.jar"/>
 	<classpathentry kind="lib" path="lib/jgroups-3.2.5.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="lib/org.sat4j.core-2.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/featureexprlib_2.11-0.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/scala-library-2.11.8.jar"/>
+	<classpathentry kind="lib" path="lib/FeatureExprLib.jar"/>
+	<classpathentry kind="lib" path="lib/scala-library-2.12.6.jar"/>
+	<classpathentry kind="lib" path="lib/scala-parser-combinators_2.12-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/scalacheck_2.12-1.14.0.jar"/>
+	<classpathentry kind="lib" path="lib/jbddi-core-1.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

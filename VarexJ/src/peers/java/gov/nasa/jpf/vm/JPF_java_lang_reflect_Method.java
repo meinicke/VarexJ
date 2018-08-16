@@ -20,8 +20,8 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-
 import java.util.function.BiFunction;
+
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -211,48 +211,48 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     return ci.getClassObjectRef();
   }
     
-  static int createBoxedReturnValueObject (MJIEnv env, MethodInfo mi, DirectCallStackFrame frame, FeatureExpr ctx) {
+  static Conditional<Integer> createBoxedReturnValueObject (MJIEnv env, MethodInfo mi, DirectCallStackFrame frame, FeatureExpr ctx) {
     byte rt = mi.getReturnTypeCode();
-    int ret = MJIEnv.NULL;
+    Conditional<Integer> ret = One.MJIEnvNULL;
     ElementInfo rei;
     Object attr = null;
     
     if (rt == Types.T_DOUBLE) {
       attr = frame.getLongResultAttr();
       double v = frame.getDoubleResult();
-      ret = env.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Double"));
-      rei = env.getModifiableElementInfo(ret);
+      ret = new One<>(env.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Double")));
+      rei = env.getModifiableElementInfo(ret.getValue());
       rei.setDoubleField(ctx, "value", new One<>(v));
     } else if (rt == Types.T_FLOAT) {
       attr = frame.getResultAttr();
       float v = frame.getFloatResult();
-      ret = env.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Float"));
-      rei = env.getModifiableElementInfo(ret);
+      ret = new One<>(env.newObject(ctx, ClassLoaderInfo.getSystemResolvedClassInfo("java.lang.Float")));
+      rei = env.getModifiableElementInfo(ret.getValue());
       rei.setFloatField(ctx, "value", new One<>(v));
     } else if (rt == Types.T_LONG) {
       attr = frame.getLongResultAttr();
       long v = frame.getLongResult();
-      ret = env.valueOfLong(ctx, v);
+      ret = new One<>(env.valueOfLong(ctx, v));
     } else if (rt == Types.T_BYTE) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfByte(ctx, (byte)v);
+      ret = new One<>(env.valueOfByte(ctx, (byte)v));
     } else if (rt == Types.T_CHAR) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfCharacter(ctx, (char)v);
+      ret = new One<>(env.valueOfCharacter(ctx, (char)v));
     } else if (rt == Types.T_SHORT) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfShort(ctx, (short)v);
+      ret = new One<>(env.valueOfShort(ctx, (short)v));
     } else if (rt == Types.T_INT) {
       attr = frame.getResultAttr();
       int v = frame.getResult(); 
-      ret = env.valueOfInteger(ctx, v).getValue();
+      ret = env.valueOfInteger(ctx, v);
     } else if (rt == Types.T_BOOLEAN) {
       attr = frame.getResultAttr();
       int v = frame.getResult();
-      ret = env.valueOfBoolean((v == 1)? true: false);
+      ret = new One<>(env.valueOfBoolean((v == 1)? true: false));
     } else if (mi.isReferenceReturnType()){ 
       attr = frame.getResultAttr();
       ret = frame.getReferenceResult(ctx);
@@ -481,47 +481,48 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
   }
 
   @MJI
-  public int invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, Conditional<Integer> objRef, Conditional<Integer> argsRef, FeatureExpr ctx) {
-    ThreadInfo ti = env.getThreadInfo();
-    MethodInfo miCallee = getMethodInfo(ctx, env, mthRef);
-    ClassInfo calleeClass = miCallee.getClassInfo();
-    DirectCallStackFrame frame = ti.getReturnedDirectCall();
-    
-    if (frame == null){ // first time
-
-      //--- check the instance we are calling on
-      if (!miCallee.isStatic()) {
-        if (objRef.getValue().intValue() == MJIEnv.NULL){
-          env.throwException(ctx, "java.lang.NullPointerException");
-          return MJIEnv.NULL;
-          
-        } else {
-          ElementInfo eiObj = ti.getElementInfo(objRef.getValue());
-          ClassInfo objClass = eiObj.getClassInfo();
-        
-          if (!objClass.isInstanceOf(calleeClass)) {
-            env.throwException(ctx, IllegalArgumentException.class.getName(), "Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = " + calleeClass);
-            return MJIEnv.NULL;
-          }
-        }
-      }
-
-      //--- check accessibility
-      ElementInfo eiMth = ti.getElementInfo(mthRef);
-      Object object = eiMth.getFieldValueObject("isAccessible");
-      if (object instanceof Conditional) {
-    	  object = ((Conditional<?>)object).simplify(ctx).getValue();
-      }
-      if (! (Boolean) object) {
-        StackFrame caller = ti.getTopFrame().getPrevious();
-        ClassInfo callerClass = caller.getClassInfo();
-
-        if (callerClass != calleeClass) {
-          env.throwException(ctx, IllegalAccessException.class.getName(), "Class " + callerClass.getName() +
-                  " can not access a member of class " + calleeClass.getName()
-                  + " with modifiers \"" + Modifier.toString(miCallee.getModifiers()));
-          return MJIEnv.NULL;
-        }
+  public Conditional<Integer> invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, Conditional<Integer> objRef, Conditional<Integer> argsRef, FeatureExpr ctx) {
+	  try {
+	    ThreadInfo ti = env.getThreadInfo();
+	    MethodInfo miCallee = getMethodInfo(ctx, env, mthRef);
+	    ClassInfo calleeClass = miCallee.getClassInfo();
+	    DirectCallStackFrame frame = ti.getReturnedDirectCall();
+	    
+	    if (frame == null){ // first time
+	
+	      //--- check the instance we are calling on
+	      if (!miCallee.isStatic()) {
+	        if (objRef.getValue().intValue() == MJIEnv.NULL){
+	          env.throwException(ctx, "java.lang.NullPointerException");
+	          return One.MJIEnvNULL;
+	          
+	        } else {
+	          ElementInfo eiObj = ti.getElementInfo(objRef.getValue());
+	          ClassInfo objClass = eiObj.getClassInfo();
+	        
+	          if (!objClass.isInstanceOf(calleeClass)) {
+	            env.throwException(ctx, IllegalArgumentException.class.getName(), "Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = " + calleeClass);
+	            return One.MJIEnvNULL;
+	          }
+	        }
+	      }
+	
+	      //--- check accessibility
+	      ElementInfo eiMth = ti.getElementInfo(mthRef);
+	      Object object = eiMth.getFieldValueObject("isAccessible");
+	      if (object instanceof Conditional) {
+	    	  object = ((Conditional<?>)object).simplify(ctx).getValue();
+	      }
+	      if (! (Boolean) object) {
+	        StackFrame caller = ti.getTopFrame().getPrevious();
+	        ClassInfo callerClass = caller.getClassInfo();
+	
+	        if (callerClass != calleeClass) {
+	          env.throwException(ctx, IllegalAccessException.class.getName(), "Class " + callerClass.getName() +
+	                  " can not access a member of class " + calleeClass.getName()
+	                  + " with modifiers \"" + Modifier.toString(miCallee.getModifiers()));
+	          return One.MJIEnvNULL;
+	        }
       }
       
       //--- push the direct call
@@ -534,7 +535,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
       }
       if (!pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef.getValue(), ctx)) {
         // we've got a IllegalArgumentException
-        return MJIEnv.NULL;  
+        return One.MJIEnvNULL;  
       }
       ti.pushFrame(frame);
       
@@ -544,11 +545,16 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
         calleeClass.pushRequiredClinits(ctx, ti);
       }
       
-      return MJIEnv.NULL; // reexecute
+      return One.MJIEnvNULL; // reexecute
       
     } else { // we have returned from the direct call
       return createBoxedReturnValueObject( env, miCallee, frame, ctx);
     }
+	  } catch (Exception e) {
+			e.printStackTrace();
+//			throw e;
+			return One.MJIEnvNULL;
+		}
   }
   
 
