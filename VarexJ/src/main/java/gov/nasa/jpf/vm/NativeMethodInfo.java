@@ -127,10 +127,16 @@ public class NativeMethodInfo extends MethodInfo {
 
 		try {
 			args = nativeFrame.getArguments();
+			// somehow the ctx argument may not be the same as ctx
+			args[args.length - 1] = Conditional.and((FeatureExpr)args[args.length - 1], ctx);
 			if (RuntimeConstants.debug) {
-				System.out.print("RUN " + name + " " + mth.toString());
+				System.out.println("RUN " + name + " " + mth.toString());
 				for (Object a : args) {
-					System.out.print(" " + a.toString());
+					if (a instanceof FeatureExpr) {
+						System.out.print(" " + Conditional.getCTXString((FeatureExpr)a));
+					} else {
+						System.out.print(" " + a.toString());
+					}
 				}
 				System.out.println();
 			}

@@ -19,6 +19,7 @@
 
 package gov.nasa.jpf.jvm;
 
+import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.DirectCallStackFrame;
@@ -41,8 +42,8 @@ public class JVMDirectCallStackFrame extends DirectCallStackFrame {
   }
   
   @Override
-  public int getReferenceResult(FeatureExpr ctx){
-    return pop(ctx).getValue();
+  public Conditional<Integer> getReferenceResult(FeatureExpr ctx){
+    return pop(ctx);
   }
   
   @Override

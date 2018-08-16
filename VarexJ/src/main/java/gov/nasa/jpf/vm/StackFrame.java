@@ -2142,8 +2142,8 @@ public String toString () {
     return popLong(TRUE).getValue();
   }
 
-  public int getReferenceResult (FeatureExpr ctx) {
-    return pop(ctx).getValue();
+  public Conditional<Integer> getReferenceResult (FeatureExpr ctx) {
+    return pop(ctx);
   }
   
   public Object getResultAttr () {
