@@ -168,9 +168,12 @@ public abstract class Conditional<T> {
 	}
 	
 	public static SingleFeatureExpr createFeature(String fname) {
+		// XXX I dont understand why this does not work
+//		return features.computeIfAbsent(fname, x -> FeatureExprFactory.createDefinedExternal(fname));
+		
 		SingleFeatureExpr feature = features.get(fname);
 		if (feature == null) {
-			feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
+			feature = FeatureExprFactory.createDefinedExternal(fname);
 			System.out.println("create " + fname);
 			features.put(fname, feature);
 		}
