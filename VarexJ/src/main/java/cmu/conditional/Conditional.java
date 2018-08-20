@@ -174,7 +174,6 @@ public abstract class Conditional<T> {
 		SingleFeatureExpr feature = features.get(fname);
 		if (feature == null) {
 			feature = FeatureExprFactory.createDefinedExternal(fname);
-			System.out.println("create " + fname);
 			features.put(fname, feature);
 		}
 		return feature;
