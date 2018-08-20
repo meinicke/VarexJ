@@ -20,6 +20,7 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import cmu.varviz.trace.Statement;
@@ -53,7 +54,9 @@ public class AASTORE extends ArrayStoreInstruction {
 			throw e;
 		}
 
-		Statement statement = new ArrayStoreStatement(this, frame.method, index, ei.getReferenceElement(index), value, ei, ctx);
+		Conditional<Integer> oldValue = ei.getReferenceElement(index);
+		new ArrayStoreStatement(this, frame.method, index, oldValue, 
+				ChoiceFactory.create(ctx, value, oldValue).simplify(), ei, ctx);
 		
 		ei.setReferenceElement(ctx, index, value);
 	}

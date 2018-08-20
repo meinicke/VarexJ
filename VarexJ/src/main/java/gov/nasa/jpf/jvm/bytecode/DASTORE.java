@@ -20,7 +20,9 @@ package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.Function;
 
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
+import cmu.vatrace.ArrayStoreStatement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ArrayIndexOutOfBoundsExecutiveException;
 import gov.nasa.jpf.vm.ElementInfo;
@@ -48,6 +50,12 @@ public class DASTORE extends LongArrayStoreInstruction {
 
   protected void setField (FeatureExpr ctx, ElementInfo ei, int index, StackFrame frame) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
+    
+    Conditional<Double> oldValue = ei.getDoubleElement(index);
+	new ArrayStoreStatement(this, frame.method, index, oldValue, 
+			ChoiceFactory.create(ctx, value, oldValue).simplify(), ei, ctx);
+    
+    
     ei.setDoubleElement(ctx, index, value);
   }
 

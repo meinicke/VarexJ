@@ -70,7 +70,7 @@ public class ArrayStoreStatement extends Statement {
 	
 	@Override
 	public boolean isInteraction(int degree) {
-		return newValue.toMap().size() >= degree; 
+		return newValue.toMap().size() >= degree || oldValue.toMap().size() >= degree; 
 	}
 	
 	@Override
