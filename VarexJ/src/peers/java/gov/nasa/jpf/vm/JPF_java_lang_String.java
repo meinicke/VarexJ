@@ -837,14 +837,10 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int toCharArray_____3C(MJIEnv env, int objref, FeatureExpr ctx) {
-
+	public Conditional<Integer> toCharArray_____3C(MJIEnv env, int objref, FeatureExpr ctx) {
 		int vref = env.getReferenceField(ctx, objref, "value").getValue();
-		char[] v = env.getCharArrayObject(vref).getValue();
-
-		int cref = env.newCharArray(ctx, v);
-
-		return cref;
+		Conditional<char[]> v = env.getCharArrayObject(vref).simplify(ctx);
+		return v.map(v1 -> env.newCharArray(ctx, v1));
 	}
 
 	@MJI
