@@ -456,20 +456,23 @@ public class JPF_java_lang_String extends NativePeer {
 						@Override
 						public Conditional<Integer> apply(FeatureExpr ctx, Integer vref) {
 							ElementInfo eiVal = env.getElementInfo(vref);
-							char[] values = eiVal.asCharArray().simplify(ctx).getValue();
-							int newH = h;
-							for (int i = 0; i < values.length; i++) {
-								newH = 31 * newH + values[i];
-							}
+							Conditional<char[]> values = eiVal.asCharArray().simplify(ctx);
+							return values.map(new Function<char[], Integer>() {
 
-							ei.getModifiableInstance().setIntField(ctx, "hash", new One<>(newH));
-							return One.valueOf(newH);
+								@Override
+								public Integer apply(char[] values) {
+									int newH = h;
+									for (int i = 0; i < values.length; i++) {
+										newH = 31 * newH + values[i];
+									}
+
+									ei.getModifiableInstance().setIntField(ctx, "hash", new One<>(newH));
+									return newH;
+								}
+							});
 						}
 					});
-					
-					
 				}
-
 				return new One<>(h);
 			}
 
