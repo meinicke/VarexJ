@@ -21,7 +21,6 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -266,7 +265,11 @@ public class NativeMethodInfo extends MethodInfo {
 
 		} catch (IllegalArgumentException iax) {
 			System.out.println("invoeked:" + mth);
-			System.out.println("arguments: " + Arrays.toString(args));
+			System.out.println("arguments: ");
+			for (Object a : args) {
+				System.out.println(a.getClass().getSimpleName());
+			}
+			System.out.println("--------------");
 			
 			iax.printStackTrace();
 			logger.warning(iax.toString());
