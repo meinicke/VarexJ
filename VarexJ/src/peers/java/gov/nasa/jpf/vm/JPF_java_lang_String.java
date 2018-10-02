@@ -628,7 +628,7 @@ public class JPF_java_lang_String extends NativePeer {
 	public Conditional<Integer> substring__II__Ljava_lang_String_2(final MJIEnv env, Conditional<Integer> objRef,
 			final Conditional<Integer> beginIndex, final Conditional<Integer> endIndex, FeatureExpr ctx) {
 		exceptionCTX = FeatureExprFactory.False();
-		Conditional<String> obj = objRef.mapr((ref) -> env.getStringObjectNew(ctx, ref));
+		Conditional<String> obj = objRef.mapf(ctx, env::getStringObjectNew);
 		Conditional<String> result = obj.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<String>>() {
 
 			@Override
