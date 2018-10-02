@@ -569,7 +569,8 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int substring__I__Ljava_lang_String_2(MJIEnv env, int objRef, final Conditional<Integer> beginIndex, FeatureExpr ctx) {
+	public Conditional<Integer> substring__I__Ljava_lang_String_2(MJIEnv env, int objRef, final Conditional<Integer> beginIndex, FeatureExpr ctx) {
+		exceptionCTX = FeatureExprFactory.False();
 		Conditional<String> obj = env.getStringObjectNew(ctx, objRef);
 		Conditional<String> result = obj.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<String>>() {
 
@@ -582,15 +583,23 @@ public class JPF_java_lang_String extends NativePeer {
 						if (Conditional.isContradiction(ctx)) {
 							return new One<>("");
 						}
-						String result = obj.substring(beginIndex);
-						return new One<>(result);
+						try {
+							return new One<>(obj.substring(beginIndex));
+						} catch (StringIndexOutOfBoundsException e) {
+							String exceptionClass = e.toString();
+							exceptionClass = exceptionClass.substring(0, exceptionClass.indexOf(":"));
+							env.throwException(ctx, exceptionClass, e.getMessage());
+							exceptionCTX = Conditional.or(exceptionCTX, ctx);
+							return new One<>(null);
+						}
 					}
 
 				});
 			}
 
-		}).simplify();
-		return env.newString(ctx, result);
+		}).simplify(Conditional.not(exceptionCTX));
+		return ChoiceFactory.create(exceptionCTX, One.valueOf(-1), new One<>(env.newString(Conditional.not(exceptionCTX),
+				result))).simplify();
 	}
 
 	private FeatureExpr exceptionCTX = FeatureExprFactory.False();

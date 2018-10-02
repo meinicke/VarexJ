@@ -353,6 +353,18 @@ public class StringTest extends TestJPF {
 			System.out.printf("%d%d", s, s2);
 		}
 	}
+	
+	@Test
+	public void substringOutOfBoundsTest() throws Exception {
+		if (verifyUnhandledException(StringIndexOutOfBoundsException.class.getName(), JPF_CONFIGURATION)) {
+			String s = "ABC";
+			int index = 1;
+			if (x) {
+				index = -1;
+			}
+			s = s.substring(index);
+		}
+	}
 }
 
 class Main {
