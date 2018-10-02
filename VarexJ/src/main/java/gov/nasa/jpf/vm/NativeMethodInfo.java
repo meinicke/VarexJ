@@ -264,6 +264,8 @@ public class NativeMethodInfo extends MethodInfo {
 			}
 
 		} catch (IllegalArgumentException iax) {
+			System.out.println("invoeked:" + mth);
+			iax.printStackTrace();
 			logger.warning(iax.toString());
 			return new One<>(ti.createAndThrowException(ctx, "java.lang.IllegalArgumentException", "calling " + ci.getName() + '.' + getName()));
 		} catch (IllegalAccessException ilax) {
