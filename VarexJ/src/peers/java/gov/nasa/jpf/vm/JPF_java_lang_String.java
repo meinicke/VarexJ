@@ -493,25 +493,32 @@ public class JPF_java_lang_String extends NativePeer {
 			@Override
 			public Conditional<Integer> apply(FeatureExpr ctx, Integer vref) {
 				ElementInfo ei = env.getElementInfo(vref);
-				char[] values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx).getValue();
+				Conditional<char[]> values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx);
+				return values.map(new Function<char[], Integer>() {
 
-				int len = values.length;
+					@Override
+					public Integer apply(char[] values) {
+						int len = values.length;
 
-				int fromIndex = fromIndexPar;
-				if (fromIndex >= len) {
-					return One.valueOf(-1);
-				}
-				if (fromIndex < 0) {
-					fromIndex = 0;
-				}
+						int fromIndex = fromIndexPar;
+						if (fromIndex >= len) {
+							return -1;
+						}
+						if (fromIndex < 0) {
+							fromIndex = 0;
+						}
 
-				for (int i = fromIndex; i < len; i++) {
-					if (values[i] == c) {
-						return One.valueOf(i);
+						for (int i = fromIndex; i < len; i++) {
+							if (values[i] == c) {
+								return i;
+							}
+						}
+
+						return -1;
 					}
-				}
-
-				return One.valueOf(-1);
+					
+				});
+				
 			}
 			
 		});
