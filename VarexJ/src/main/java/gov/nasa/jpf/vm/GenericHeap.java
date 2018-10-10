@@ -21,7 +21,6 @@ package gov.nasa.jpf.vm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -216,26 +215,25 @@ public abstract class GenericHeap implements Heap, Iterable<ElementInfo> {
    * NOTE: this implementation requires our own Reference/WeakReference implementation, to
    * make sure the 'ref' field is the first one
    */
-  protected void cleanupWeakRefs () {
-    if (weakRefs != null) {
-      for (ElementInfo ei : weakRefs) {
-        Fields f = ei.getFields();
-        List<Integer> refs = f.getIntValue(0).toList(); // watch out, the 0 only works with our own WeakReference impl
-        for (int ref: refs) {
-	        if (ref != MJIEnv.NULL) {
-	          ElementInfo refEi = get(ref);
-	          if ((refEi == null) || (refEi.isNull())) {
-	            ei = ei.getModifiableInstance();
-	            // we need to make sure the Fields are properly state managed
-	            ei.setReferenceField(FeatureExprFactory.True(), ei.getFieldInfo(0), One.MJIEnvNULL);
-	          }
-	        }
-        }
-      }
-
-      weakRefs = null;
-    }
-  }
+	protected void cleanupWeakRefs() {
+		if (weakRefs != null) {
+			for (ElementInfo ei : weakRefs) {
+				Fields f = ei.getFields();
+				Conditional<Integer> refs = f.getIntValue(0); // watch out, the 0 only works with our own WeakReference impl
+				refs.mapf(FeatureExprFactory.True(), (ctx, ref) -> {
+					if (ref != MJIEnv.NULL) {
+						ElementInfo refEi = get(ref);
+						if ((refEi == null) || (refEi.isNull())) {
+							ElementInfo modifiableInstance = ei.getModifiableInstance();
+							// we need to make sure the Fields are properly state managed
+							modifiableInstance.setReferenceField(ctx, ei.getFieldInfo(0), One.MJIEnvNULL);
+						}
+					}
+				});
+			}
+			weakRefs = null;
+		}
+	}
   
   // NOTE - this is where to assert if this index isn't occupied yet, since only concrete classes know
   // if there can be collisions, and how elements are stored
