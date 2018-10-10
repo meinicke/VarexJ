@@ -296,64 +296,74 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public Conditional<Boolean> equals__Ljava_lang_Object_2__Z(final MJIEnv env, final int objRef, Conditional<Integer> argRef, FeatureExpr ctx) {
+	public Conditional<Boolean> equals__Ljava_lang_Object_2__Z(final MJIEnv env, final Conditional<Integer> objRef,
+			Conditional<Integer> argRef, FeatureExpr ctx) {
 		try {
-			return argRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
+			return objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
 
 				@Override
-				public Conditional<Boolean> apply(FeatureExpr ctx, Integer argRef) {
-					if (Conditional.isContradiction(ctx)) {
-						return One.TRUE;
-					}
-					if (argRef == MJIEnv.NULL) {
-						return One.FALSE;
-					}
+				public Conditional<Boolean> apply(FeatureExpr t, Integer objRef) {
+					return argRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
 
-					Heap heap = env.getHeap();
-					ElementInfo s1 = heap.get(objRef);
-					ElementInfo s2 = heap.get(argRef);
+						@Override
+						public Conditional<Boolean> apply(FeatureExpr ctx, Integer argRef) {
+							if (Conditional.isContradiction(ctx)) {
+								return One.TRUE;
+							}
+							if (argRef == MJIEnv.NULL) {
+								return One.FALSE;
+							}
 
-					if (!env.isInstanceOf(argRef, "java.lang.String")) {
-						return One.FALSE;
-					}
+							Heap heap = env.getHeap();
 
-					Conditional<Integer> value1c = s1.getReferenceField("value").simplify(ctx);
-					return value1c.mapf(ctx, (ctx1, value1)-> {
-						Fields f1 = heap.get(value1).getFields();
-						Conditional<Integer> value2c = s2.getReferenceField("value").simplify(ctx);
-						return value2c.mapf(ctx1, (ctx2, value2) -> {
-							final Fields f2 = heap.get(value2).getFields();
-		
-							Conditional<char[]> c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx2);
-							return c1.mapf(ctx2, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
-		
-								@Override
-								public Conditional<Boolean> apply(FeatureExpr ctx, final char[] c1) {
-									return ((CharArrayFields) f2).asCharArray().mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
-		
+							ElementInfo s1 = heap.get(objRef);
+
+							ElementInfo s2 = heap.get(argRef);
+
+							if (!env.isInstanceOf(argRef, "java.lang.String")) {
+								return One.FALSE;
+							}
+
+							Conditional<Integer> value1c = s1.getReferenceField("value").simplify(ctx);
+							return value1c.mapf(ctx, (ctx1, value1) -> {
+								Fields f1 = heap.get(value1).getFields();
+								Conditional<Integer> value2c = s2.getReferenceField("value").simplify(ctx);
+								return value2c.mapf(ctx1, (ctx2, value2) -> {
+									final Fields f2 = heap.get(value2).getFields();
+
+									Conditional<char[]> c1 = ((CharArrayFields) f1).asCharArray().simplify(ctx2);
+									return c1.mapf(ctx2, new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
+
 										@Override
-										public Conditional<Boolean> apply(FeatureExpr x, char[] c2) {
-											if (c1.length != c2.length) {
-												return One.FALSE;
-											}
-		
-											for (int i = 0; i < c1.length; i++) {
-												if (c1[i] != c2[i]) {
-													return One.FALSE;
-												}
-											}
-		
-											return One.TRUE;
+										public Conditional<Boolean> apply(FeatureExpr ctx, final char[] c1) {
+											return ((CharArrayFields) f2).asCharArray().mapf(ctx,
+													new BiFunction<FeatureExpr, char[], Conditional<Boolean>>() {
+
+														@Override
+														public Conditional<Boolean> apply(FeatureExpr x, char[] c2) {
+															if (c1.length != c2.length) {
+																return One.FALSE;
+															}
+
+															for (int i = 0; i < c1.length; i++) {
+																if (c1[i] != c2[i]) {
+																	return One.FALSE;
+																}
+															}
+
+															return One.TRUE;
+														}
+
+													});
 										}
-		
 									});
-								}
+								});
 							});
-						});
+
+						}
+
 					});
-
 				}
-
 			});
 		} catch (Exception e) {
 			System.out.println(e);
@@ -456,20 +466,23 @@ public class JPF_java_lang_String extends NativePeer {
 						@Override
 						public Conditional<Integer> apply(FeatureExpr ctx, Integer vref) {
 							ElementInfo eiVal = env.getElementInfo(vref);
-							char[] values = eiVal.asCharArray().simplify(ctx).getValue();
-							int newH = h;
-							for (int i = 0; i < values.length; i++) {
-								newH = 31 * newH + values[i];
-							}
+							Conditional<char[]> values = eiVal.asCharArray().simplify(ctx);
+							return values.map(new Function<char[], Integer>() {
 
-							ei.getModifiableInstance().setIntField(ctx, "hash", new One<>(newH));
-							return One.valueOf(newH);
+								@Override
+								public Integer apply(char[] values) {
+									int newH = h;
+									for (int i = 0; i < values.length; i++) {
+										newH = 31 * newH + values[i];
+									}
+
+									ei.getModifiableInstance().setIntField(ctx, "hash", new One<>(newH));
+									return newH;
+								}
+							});
 						}
 					});
-					
-					
 				}
-
 				return new One<>(h);
 			}
 
@@ -490,25 +503,32 @@ public class JPF_java_lang_String extends NativePeer {
 			@Override
 			public Conditional<Integer> apply(FeatureExpr ctx, Integer vref) {
 				ElementInfo ei = env.getElementInfo(vref);
-				char[] values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx).getValue();
+				Conditional<char[]> values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx);
+				return values.map(new Function<char[], Integer>() {
 
-				int len = values.length;
+					@Override
+					public Integer apply(char[] values) {
+						int len = values.length;
 
-				int fromIndex = fromIndexPar;
-				if (fromIndex >= len) {
-					return One.valueOf(-1);
-				}
-				if (fromIndex < 0) {
-					fromIndex = 0;
-				}
+						int fromIndex = fromIndexPar;
+						if (fromIndex >= len) {
+							return -1;
+						}
+						if (fromIndex < 0) {
+							fromIndex = 0;
+						}
 
-				for (int i = fromIndex; i < len; i++) {
-					if (values[i] == c) {
-						return One.valueOf(i);
+						for (int i = fromIndex; i < len; i++) {
+							if (values[i] == c) {
+								return i;
+							}
+						}
+
+						return -1;
 					}
-				}
-
-				return One.valueOf(-1);
+					
+				});
+				
 			}
 			
 		});
@@ -569,8 +589,9 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int substring__I__Ljava_lang_String_2(MJIEnv env, int objRef, final Conditional<Integer> beginIndex, FeatureExpr ctx) {
-		Conditional<String> obj = env.getStringObjectNew(ctx, objRef);
+	public Conditional<Integer> substring__I__Ljava_lang_String_2(MJIEnv env, Conditional<Integer> objRef, final Conditional<Integer> beginIndex, FeatureExpr ctx) {
+		exceptionCTX = FeatureExprFactory.False();
+		Conditional<String> obj = objRef.mapr((ref) -> env.getStringObjectNew(ctx, ref));
 		Conditional<String> result = obj.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<String>>() {
 
 			@Override
@@ -582,24 +603,32 @@ public class JPF_java_lang_String extends NativePeer {
 						if (Conditional.isContradiction(ctx)) {
 							return new One<>("");
 						}
-						String result = obj.substring(beginIndex);
-						return new One<>(result);
+						try {
+							return new One<>(obj.substring(beginIndex));
+						} catch (StringIndexOutOfBoundsException e) {
+							String exceptionClass = e.toString();
+							exceptionClass = exceptionClass.substring(0, exceptionClass.indexOf(":"));
+							env.throwException(ctx, exceptionClass, e.getMessage());
+							exceptionCTX = Conditional.or(exceptionCTX, ctx);
+							return new One<>(null);
+						}
 					}
 
 				});
 			}
 
-		}).simplify();
-		return env.newString(ctx, result);
+		}).simplify(Conditional.not(exceptionCTX));
+		return ChoiceFactory.create(exceptionCTX, One.valueOf(-1), new One<>(env.newString(Conditional.not(exceptionCTX),
+				result))).simplify();
 	}
 
 	private FeatureExpr exceptionCTX = FeatureExprFactory.False();
 	
 	@MJI
-	public Conditional<Integer> substring__II__Ljava_lang_String_2(final MJIEnv env, int objRef,
+	public Conditional<Integer> substring__II__Ljava_lang_String_2(final MJIEnv env, Conditional<Integer> objRef,
 			final Conditional<Integer> beginIndex, final Conditional<Integer> endIndex, FeatureExpr ctx) {
 		exceptionCTX = FeatureExprFactory.False();
-		Conditional<String> obj = env.getStringObjectNew(ctx, objRef);
+		Conditional<String> obj = objRef.mapf(ctx, env::getStringObjectNew);
 		Conditional<String> result = obj.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<String>>() {
 
 			@Override
@@ -837,14 +866,10 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int toCharArray_____3C(MJIEnv env, int objref, FeatureExpr ctx) {
-
+	public Conditional<Integer> toCharArray_____3C(MJIEnv env, int objref, FeatureExpr ctx) {
 		int vref = env.getReferenceField(ctx, objref, "value").getValue();
-		char[] v = env.getCharArrayObject(vref).getValue();
-
-		int cref = env.newCharArray(ctx, v);
-
-		return cref;
+		Conditional<char[]> v = env.getCharArrayObject(vref).simplify(ctx);
+		return v.map(v1 -> env.newCharArray(ctx, v1));
 	}
 
 	@MJI
