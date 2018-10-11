@@ -18,6 +18,10 @@
 //
 package gov.nasa.jpf.vm;
 
+import java.util.function.BiFunction;
+
+import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -28,16 +32,25 @@ import gov.nasa.jpf.annotation.MJI;
 public class JPF_java_lang_Long extends NativePeer {
   // <2do> at this point we deliberately do not override clinit
 
-  @MJI
-  public long parseLong__Ljava_lang_String_2I__J (MJIEnv env, int clsObjRef, 
-                                                     int strRef, int radix, FeatureExpr ctx) {
-    try {
-      return Long.parseLong(env.getStringObject(ctx, strRef), radix);
-    } catch (NumberFormatException e) {
-      env.throwException(ctx, "java.lang.NumberFormatException");
+	@MJI
+	public Conditional<Long> parseLong__Ljava_lang_String_2I__J(MJIEnv env, int clsObjRef, int strRef, int radix,
+			FeatureExpr ctx) {
+		Conditional<String> string = env.getStringObjectNew(ctx, strRef);
+		return string.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<Long>>() {
 
-      return 0;
-    }
+			@Override
+			public Conditional<Long> apply(FeatureExpr ctx, String s) {
+				try {
+					return new One<>(Long.parseLong(s, radix));
+				} catch (NumberFormatException e) {
+					env.throwException(ctx, "java.lang.NumberFormatException");
+
+					return new One<>(0l);
+				}
+			}
+
+		});
+    
   }
 
   @MJI
