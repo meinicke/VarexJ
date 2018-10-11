@@ -23,8 +23,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
 import java.util.function.BiFunction;
+
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
@@ -177,46 +177,57 @@ public class JPF_java_lang_Class extends NativePeer {
 	}
 
 	@MJI
-	public int forName__Ljava_lang_String_2__Ljava_lang_Class_2(MJIEnv env, int rcls, Conditional<Integer> clsNameRef, FeatureExpr ctx) {
-		if (clsNameRef.getValue().intValue() == MJIEnv.NULL) {
-			env.throwException(ctx, "java.lang.NullPointerException", "no class name provided");
-			return MJIEnv.NULL;
-		}
+	public Conditional<Integer> forName__Ljava_lang_String_2__Ljava_lang_Class_2(MJIEnv env, int rcls, Conditional<Integer> clsNameRef, FeatureExpr ctx) {
+		return clsNameRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
 
-		String clsName = env.getStringObject(ctx, clsNameRef.getValue());
+			@Override
+			public Conditional<Integer> apply(FeatureExpr ctx, Integer ref) {
+				if (ref == MJIEnv.NULL) {
+					env.throwException(ctx, "java.lang.NullPointerException", "no class name provided");
+					return One.MJIEnvNULL;
+				}
 
-		if (clsName.isEmpty()) {
-			env.throwException(ctx, "java.lang.ClassNotFoundException", "empty class name");
-			return MJIEnv.NULL;
-		}
+				Conditional<String> clsName = env.getStringObjectNew(ctx, ref);
+				return clsName.mapf(ctx, new BiFunction<FeatureExpr, String, Conditional<Integer>>() {
 
-		ThreadInfo ti = env.getThreadInfo();
-		MethodInfo mi = ti.getTopFrame().getPrevious().getMethodInfo();
-		// class of the method that includes the invocation of Class.forName()
-		ClassInfo cls = mi.getClassInfo();
+					@Override
+					public Conditional<Integer> apply(FeatureExpr ctx, String clsName) {
+						if (clsName.isEmpty()) {
+							env.throwException(ctx, "java.lang.ClassNotFoundException", "empty class name");
+							return One.MJIEnvNULL;
+						}
 
-		String name;
-		// for array type, the component terminal must be resolved
-		if (clsName.charAt(0) == '[') {
-			name = Types.getComponentTerminal(clsName);
-		} else {
-			name = clsName;
-		}
+						ThreadInfo ti = env.getThreadInfo();
+						MethodInfo mi = ti.getTopFrame().getPrevious().getMethodInfo();
+						// class of the method that includes the invocation of Class.forName()
+						ClassInfo cls = mi.getClassInfo();
 
-		// make the classloader of the class including the invocation of
-		// Class.forName() resolve the class with the given name
-		try {
-			cls.resolveReferencedClass(ctx, name);
-		} catch (LoadOnJPFRequired lre) {
-			env.repeatInvocation();
-			return MJIEnv.NULL;
-		}
+						String name;
+						// for array type, the component terminal must be resolved
+						if (clsName.charAt(0) == '[') {
+							name = Types.getComponentTerminal(clsName);
+						} else {
+							name = clsName;
+						}
 
-		// The class obtained here is the same as the resolved one, except
-		// if it represents an array type
-		ClassInfo ci = cls.getClassLoaderInfo().getResolvedClassInfo(ctx, clsName);
+						// make the classloader of the class including the invocation of
+						// Class.forName() resolve the class with the given name
+						try {
+							cls.resolveReferencedClass(ctx, name);
+						} catch (LoadOnJPFRequired lre) {
+							env.repeatInvocation();
+							return One.MJIEnvNULL;
+						}
 
-		return getClassObject(env, ci, ctx);
+						// The class obtained here is the same as the resolved one, except
+						// if it represents an array type
+						ClassInfo ci = cls.getClassLoaderInfo().getResolvedClassInfo(ctx, clsName);
+
+						return new One<>(getClassObject(env, ci, ctx));
+					}
+				});
+			}
+		}).simplify();
 	}
 
 	/**
