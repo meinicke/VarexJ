@@ -426,12 +426,11 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public boolean regionMatches__ZILjava_lang_String_2II__Z(MJIEnv env, int objRef, Conditional<Boolean> ignoreCase, Conditional<Integer> toffset, Conditional<Integer> otherRef,
+	public Conditional<Boolean> regionMatches__ZILjava_lang_String_2II__Z(MJIEnv env, int objRef, Conditional<Boolean> ignoreCase, Conditional<Integer> toffset, Conditional<Integer> otherRef,
 			Conditional<Integer> ooffset, Conditional<Integer> len, FeatureExpr ctx) {
 		String obj = env.getStringObject(ctx, objRef);
-		String other = env.getStringObject(ctx, otherRef.getValue());
-		return obj.regionMatches(ignoreCase.getValue(), toffset.getValue(), other, ooffset.getValue(), len.getValue());
-
+		Conditional<String> other = env.getStringObject(ctx, otherRef);
+		return other.map(other1 -> obj.regionMatches(ignoreCase.getValue(), toffset.getValue(), other1, ooffset.getValue(), len.getValue()));
 	}
 
 	@MJI
