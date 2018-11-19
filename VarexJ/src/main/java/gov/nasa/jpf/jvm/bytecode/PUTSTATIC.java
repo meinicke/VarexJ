@@ -54,11 +54,13 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 	}
 
 	static final String ANNOTATION_CONDITIONAL = gov.nasa.jpf.annotation.Conditional.class.getName();
+	static final String ANNOTATION_CONDITIONAL_VBC = edu.cmu.cs.varex.annotations.VConditional.class.getName();
 	static int featureNumber = 0;
 	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
-		if (getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL) != null) {
+		if (getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL) != null || 
+			getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL_VBC) != null) {
 			StackFrame frame = ti.getModifiableTopFrame();
 			FeatureExpr feature = Conditional.createFeature(fname);
 			featureNumber++;
