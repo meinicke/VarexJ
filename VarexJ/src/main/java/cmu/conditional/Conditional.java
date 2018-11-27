@@ -1,5 +1,10 @@
 package cmu.conditional;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,9 +147,35 @@ public abstract class Conditional<T> {
 		bddFM = (BDDFeatureExpr) construction;
 	}
 	
+	public static List<String> createAndGetFeatures(String path) {
+		List<String> features = new ArrayList<>();
+		File file = new File(path);
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] split = line.split(" ");
+				for (String mutant : split) {
+					if (!features.contains(mutant)) {
+						Conditional.createFeature(mutant);
+						features.add(mutant);
+					}
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return features;
+	}
+	
 	public static SingleFeatureExpr createFeature(String fname) {
-		final SingleFeatureExpr feature = FeatureExprFactory.createDefinedExternal("CONFIG_" + fname);
-		features.put(fname, feature);
+		// XXX I dont understand why this does not work
+//		return features.computeIfAbsent(fname, x -> FeatureExprFactory.createDefinedExternal(fname));
+		
+		SingleFeatureExpr feature = features.get(fname);
+		if (feature == null) {
+			feature = FeatureExprFactory.createDefinedExternal(fname);
+			features.put(fname, feature);
+		}
 		return feature;
 	}
 

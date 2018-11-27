@@ -18,7 +18,12 @@
 //
 package gov.nasa.jpf;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -351,9 +356,9 @@ public class JPF implements Runnable {
       // Set the ChoiceFactory
       String choice = config.getString("choice", Factory.TreeChoice.toString());
       ChoiceFactory.setDefault(Factory.valueOf(choice));
-      
       // Set the feature model
       Conditional.setFM(config.getString("featuremodel", ""));
+      Conditional.createAndGetFeatures(config.getString("mutants", ""));
       
       addListeners();
       
@@ -366,7 +371,7 @@ public class JPF implements Runnable {
     }
   }
   
-  public enum COVERAGE_TYPE {
+public enum COVERAGE_TYPE {
 	  feature, stack, local, context, composedContext, time, interaction, frame
   }
   
