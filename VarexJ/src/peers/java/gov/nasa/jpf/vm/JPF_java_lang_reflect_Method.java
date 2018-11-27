@@ -480,83 +480,84 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
     }
   }
 
-  @MJI
-  public Conditional<Integer> invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int mthRef, Conditional<Integer> objRef, Conditional<Integer> argsRef, FeatureExpr ctx) {
-	  try {
-	    ThreadInfo ti = env.getThreadInfo();
-	    MethodInfo miCallee = getMethodInfo(ctx, env, mthRef);
-	    ClassInfo calleeClass = miCallee.getClassInfo();
-	    DirectCallStackFrame frame = ti.getReturnedDirectCall();
-	    
-	    if (frame == null){ // first time
-	
-	      //--- check the instance we are calling on
-	      if (!miCallee.isStatic()) {
-	        if (objRef.getValue().intValue() == MJIEnv.NULL){
-	          env.throwException(ctx, "java.lang.NullPointerException");
-	          return One.MJIEnvNULL;
-	          
-	        } else {
-	          ElementInfo eiObj = ti.getElementInfo(objRef.getValue());
-	          ClassInfo objClass = eiObj.getClassInfo();
-	        
-	          if (!objClass.isInstanceOf(calleeClass)) {
-	            env.throwException(ctx, IllegalArgumentException.class.getName(), "Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = " + calleeClass);
-	            return One.MJIEnvNULL;
-	          }
-	        }
-	      }
-	
-	      //--- check accessibility
-	      ElementInfo eiMth = ti.getElementInfo(mthRef);
-	      Object object = eiMth.getFieldValueObject("isAccessible");
-	      if (object instanceof Conditional) {
-	    	  object = ((Conditional<?>)object).simplify(ctx).getValue();
-	      }
-	      if (! (Boolean) object) {
-	        StackFrame caller = ti.getTopFrame().getPrevious();
-	        ClassInfo callerClass = caller.getClassInfo();
-	
-	        if (callerClass != calleeClass) {
-	          env.throwException(ctx, IllegalAccessException.class.getName(), "Class " + callerClass.getName() +
-	                  " can not access a member of class " + calleeClass.getName()
-	                  + " with modifiers \"" + Modifier.toString(miCallee.getModifiers()));
-	          return One.MJIEnvNULL;
-	        }
-      }
-      
-      //--- push the direct call
-      frame = miCallee.createDirectCallStackFrame(ctx, ti, 0);
-      frame.setReflection();
-      
-      int argOffset = 0;
-      if (!miCallee.isStatic()) {
-        frame.setReferenceArgument( ctx, argOffset++, objRef.getValue(), null);
-      }
-      if (!pushUnboxedArguments( env, miCallee, frame, argOffset, argsRef.getValue(), ctx)) {
-        // we've got a IllegalArgumentException
-        return One.MJIEnvNULL;  
-      }
-      ti.pushFrame(frame);
-      
-      
-      //--- check for and push required clinits
-      if (miCallee.isStatic()){
-        calleeClass.pushRequiredClinits(ctx, ti);
-      }
-      
-      return One.MJIEnvNULL; // reexecute
-      
-    } else { // we have returned from the direct call
-      return createBoxedReturnValueObject( env, miCallee, frame, ctx);
-    }
-	  } catch (Exception e) {
+	@MJI
+	public Conditional<Integer> invoke__Ljava_lang_Object_2_3Ljava_lang_Object_2__Ljava_lang_Object_2(MJIEnv env,
+			Conditional<Integer> mthRef, Conditional<Integer> objRef, Conditional<Integer> argsRef, FeatureExpr ctx) {
+		try {
+			ThreadInfo ti = env.getThreadInfo();
+			MethodInfo miCallee = getMethodInfo(ctx, env, mthRef.getValue());
+			ClassInfo calleeClass = miCallee.getClassInfo();
+			DirectCallStackFrame frame = ti.getReturnedDirectCall();
+
+			if (frame == null) { // first time
+
+				//--- check the instance we are calling on
+				if (!miCallee.isStatic()) {
+					if (objRef.getValue().intValue() == MJIEnv.NULL) {
+						env.throwException(ctx, "java.lang.NullPointerException");
+						return One.MJIEnvNULL;
+
+					} else {
+						ElementInfo eiObj = ti.getElementInfo(objRef.getValue());
+						ClassInfo objClass = eiObj.getClassInfo();
+
+						if (!objClass.isInstanceOf(calleeClass)) {
+							env.throwException(ctx, IllegalArgumentException.class.getName(),
+									"Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = "
+											+ calleeClass);
+							return One.MJIEnvNULL;
+						}
+					}
+				}
+
+				//--- check accessibility
+				ElementInfo eiMth = ti.getElementInfo(mthRef.getValue());
+				Object object = eiMth.getFieldValueObject("isAccessible");
+				if (object instanceof Conditional) {
+					object = ((Conditional<?>) object).simplify(ctx).getValue();
+				}
+				if (!(Boolean) object) {
+					StackFrame caller = ti.getTopFrame().getPrevious();
+					ClassInfo callerClass = caller.getClassInfo();
+
+					if (callerClass != calleeClass) {
+						env.throwException(ctx, IllegalAccessException.class.getName(), "Class " + callerClass.getName()
+								+ " can not access a member of class " + calleeClass.getName() + " with modifiers \"" + Modifier
+										.toString(miCallee.getModifiers()));
+						return One.MJIEnvNULL;
+					}
+				}
+
+				//--- push the direct call
+				frame = miCallee.createDirectCallStackFrame(ctx, ti, 0);
+				frame.setReflection();
+
+				int argOffset = 0;
+				if (!miCallee.isStatic()) {
+					frame.setReferenceArgument(ctx, argOffset++, objRef.getValue(), null);
+				}
+				if (!pushUnboxedArguments(env, miCallee, frame, argOffset, argsRef.getValue(), ctx)) {
+					// we've got a IllegalArgumentException
+					return One.MJIEnvNULL;
+				}
+				ti.pushFrame(frame);
+
+				//--- check for and push required clinits
+				if (miCallee.isStatic()) {
+					calleeClass.pushRequiredClinits(ctx, ti);
+				}
+
+				return One.MJIEnvNULL; // reexecute
+
+			} else { // we have returned from the direct call
+				return createBoxedReturnValueObject(env, miCallee, frame, ctx);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 //			throw e;
 			return One.MJIEnvNULL;
 		}
-  }
-  
+	}
 
   // this one has to collect annotations upwards in the inheritance chain
   static int getAnnotations (MJIEnv env, MethodInfo mi, FeatureExpr ctx){
