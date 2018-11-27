@@ -215,7 +215,6 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 		});
 	}
 	
-	public static String testIdentifyer = "test";
 	public static Map<String, FeatureExpr> testExpressions = new HashMap<>(); 
 
 	@MJI
@@ -239,8 +238,12 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 						}
 						testExpressions.put(key, and);
 						
+//						System.out.println("toSAT");
+//						DimacsWriter.instance.bddToDimacsTseytinTransformation((BDDFeatureExpr) and, key);
+//						System.out.println("toSAT fin");
 						BDDFactory bddFactory = FExprBuilder.bddFactory();
 						try (FileWriter fw = new FileWriter(key + ".txt")){
+							env.getVM().println('-' + key + "- : " + Conditional.getCTXString(and));
 							bddFactory.save(new BufferedWriter(fw), ((BDDFeatureExpr)and).bdd());
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -256,6 +259,8 @@ public class JPF_gov_nasa_jpf_ConsoleOutputStream extends NativePeer {
 			}
 		}
 	}
+
+	
 
 	private String createUniqueKey(String key) {
 		int i = 0;

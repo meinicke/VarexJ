@@ -36,7 +36,6 @@ import gov.nasa.jpf.Config;
 import gov.nasa.jpf.Error;
 import gov.nasa.jpf.util.Left;
 import gov.nasa.jpf.vm.ClassInfo;
-import gov.nasa.jpf.vm.ClassLoaderInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.Path;
@@ -138,7 +137,7 @@ public class ConsolePublisher extends Publisher {
     out.println("    VarexJ v1.0 (" + FeatureExprFactory.dflt().getClass().getSimpleName().substring(0, 3)
     		+ ", " + ChoiceFactory.getCurrent()
     		+ ", " + StackHandlerFactory.getCurrent() + ")");
-    out.println();
+//    out.println();
   }
 
   protected void publishDTG() {
@@ -360,29 +359,29 @@ public class ConsolePublisher extends Publisher {
     Statistics stat = reporter.getStatistics();
     
     pw.println("elapsed time:       " + formatHMS(reporter.getElapsedTime()));
-    pw.println("elapsed time ms:    " + reporter.getElapsedTime());
-    pw.println("states:             new=" + stat.newStates + ",visited=" + stat.visitedStates
-            + ",backtracked=" + stat.backtracked + ",end=" + stat.endStates);
-    pw.println("search:             maxDepth=" + stat.maxDepth + ",constraints=" + stat.constraints);
-    pw.println("choice generators:  thread=" + stat.threadCGs
-            + " (signal=" + stat.signalCGs + ",lock=" + stat.monitorCGs + ",sharedRef=" + stat.sharedAccessCGs
-            + ",threadApi=" + stat.threadApiCGs + ",reschedule=" + stat.breakTransitionCGs
-            + "), data=" + stat.dataCGs);
-    pw.println("heap:               " + "new=" + stat.nNewObjects
-            + ",released=" + stat.nReleasedObjects
-            + ",maxLive=" + stat.maxLiveObjects
-            + ",gcCycles=" + stat.gcCycles);
+//    pw.println("elapsed time ms:    " + reporter.getElapsedTime());
+//    pw.println("states:             new=" + stat.newStates + ",visited=" + stat.visitedStates
+//            + ",backtracked=" + stat.backtracked + ",end=" + stat.endStates);
+//    pw.println("search:             maxDepth=" + stat.maxDepth + ",constraints=" + stat.constraints);
+//    pw.println("choice generators:  thread=" + stat.threadCGs
+//            + " (signal=" + stat.signalCGs + ",lock=" + stat.monitorCGs + ",sharedRef=" + stat.sharedAccessCGs
+//            + ",threadApi=" + stat.threadApiCGs + ",reschedule=" + stat.breakTransitionCGs
+//            + "), data=" + stat.dataCGs);
+//    pw.println("heap:               " + "new=" + stat.nNewObjects
+//            + ",released=" + stat.nReleasedObjects
+//            + ",maxLive=" + stat.maxLiveObjects
+//            + ",gcCycles=" + stat.gcCycles);
     pw.println("instructions:       " + ThreadInfo.insertDots((int)stat.insns));
-    long elepsedTime = reporter.getElapsedTime()/1000l;
-    if (elepsedTime == 0) {
-    	pw.println("instructions/s:     more than " + ThreadInfo.insertDots((int)(stat.insns)));
-    } else {
-    	pw.println("instructions/s:     " + ThreadInfo.insertDots((int)(stat.insns/elepsedTime)));
-    }
+//    long elepsedTime = reporter.getElapsedTime()/1000l;
+//    if (elepsedTime == 0) {
+//    	pw.println("instructions/s:     more than " + ThreadInfo.insertDots((int)(stat.insns)));
+//    } else {
+//    	pw.println("instructions/s:     " + ThreadInfo.insertDots((int)(stat.insns/elepsedTime)));
+//    }
     pw.println("max memory:         " + (stat.maxUsed >> 20) + "MB");
 
-    pw.println("loaded code:        classes=" + ClassLoaderInfo.getNumberOfLoadedClasses() + ",methods="
-            + MethodInfo.getNumberOfLoadedMethods());
+//    pw.println("loaded code:        classes=" + ClassLoaderInfo.getNumberOfLoadedClasses() + ",methods="
+//            + MethodInfo.getNumberOfLoadedMethods());
     // createOutput(reporter.getElapsedTime(), stat.visitedStates,(stat.maxUsed >> 20), stat.insns);
   }
  
