@@ -148,6 +148,7 @@ public abstract class Conditional<T> {
 	}
 	
 	public static List<String> createAndGetFeatures(String path) {
+		System.out.println("Load features from " + path);
 		List<String> features = new ArrayList<>();
 		File file = new File(path);
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
