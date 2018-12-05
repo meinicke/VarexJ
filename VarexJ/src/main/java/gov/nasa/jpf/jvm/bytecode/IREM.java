@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
@@ -35,42 +34,33 @@ import gov.nasa.jpf.vm.ThreadInfo;
  */
 public class IREM extends JVMInstruction {
 
-	private Conditional<Integer> pushValue = One.valueOf(0);
-	private FeatureExpr pushCtx;
-	
-	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
-		pushValue = One.valueOf(0);
-		final StackFrame frame = ti.getModifiableTopFrame();
+	@Override
+	  public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
+		  final StackFrame frame = ti.getModifiableTopFrame();
 
-		Conditional<Integer> v1 = frame.pop(ctx);
-		final Conditional<Integer> v2 = frame.pop(ctx);
-		final Instruction thisInstruction = this;
-		pushCtx = ctx;
-		final Conditional<Instruction> returnInstruction = v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		  @SuppressWarnings("unchecked")
+		  final Conditional<Integer>[] pushValue = new Conditional[] {One.valueOf(0)};
+		  final FeatureExpr[] pushCtx = new FeatureExpr[] {ctx};
+		  final Conditional<Integer> v1 = frame.pop(ctx);
+		  final Conditional<Integer> v2 = frame.pop(ctx);
+		  final Conditional<Instruction> returnInstruction = v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 				@Override
 				public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
 				    if (v1 == 0){
-				    	pushCtx = Conditional.andNot(pushCtx,ctx);
-				    	return new One<>(new EXCEPTION(thisInstruction, java.lang.ArithmeticException.class.getName(), "division by zero"));
+				    	pushCtx[0] = Conditional.andNot(pushCtx[0],ctx);
+				    	return new One<>(new EXCEPTION(IREM.this, java.lang.ArithmeticException.class.getName(), "division by zero"));
 				    }
 				    
-				    pushValue = ChoiceFactory.create(ctx, v2.mapr(new Function<Integer, Conditional<Integer>>() {
-
-						@Override
-						public Conditional<Integer> apply(Integer v2) {
-							return new One<>(v2.intValue() % v1.intValue());
-						}
-
-					}), pushValue);
+				    pushValue[0] = ChoiceFactory.create(ctx, v2.mapr(v2 -> One.valueOf(v2 % v1)), pushValue[0]);
 					return getNext(ctx, ti);
 
 				}
 		    	
 	    });
-		frame.push(pushCtx, pushValue);
-		return returnInstruction;
-	}
+		frame.push(pushCtx[0], pushValue[0]);
+	    return returnInstruction;
+	  }
 
 	public int getByteCode() {
 		return 0x70;
