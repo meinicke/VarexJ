@@ -18,7 +18,11 @@
 //
 package gov.nasa.jpf.jvm.bytecode;
 
+import java.util.function.BiFunction;
+
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.jvm.JVMInstruction;
 import gov.nasa.jpf.vm.Instruction;
@@ -34,13 +38,30 @@ public class LREM extends JVMInstruction {
 
   @Override
   public Conditional<Instruction> execute (FeatureExpr ctx, ThreadInfo ti) {
-    StackFrame frame = ti.getModifiableTopFrame();
-    
-    final Conditional<Long> v1 = frame.popLong(ctx);
-    final Conditional<Long> v2 = frame.popLong(ctx);
-    frame.pushLong(ctx, v2.mapr(x2 -> v1.map(x1 -> x2 % x1)).simplify());
-    
-    return getNext(ctx, ti);
+	  final StackFrame frame = ti.getModifiableTopFrame();
+
+	  @SuppressWarnings("unchecked")
+	  final Conditional<Long>[] pushValue = new Conditional[] {new One<>(0L)};
+	  final FeatureExpr[] pushCtx = new FeatureExpr[] {ctx};
+	  final Conditional<Long> v1 = frame.popLong(ctx);
+	  final Conditional<Long> v2 = frame.popLong(ctx);
+	  final Conditional<Instruction> returnInstruction = v1.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Instruction>>() {
+
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, final Long v1) {
+			    if (v1 == 0){
+			    	pushCtx[0] = Conditional.andNot(pushCtx[0],ctx);
+			    	return new One<>(new EXCEPTION(LREM.this, java.lang.ArithmeticException.class.getName(), "division by zero"));
+			    }
+			    
+			    pushValue[0] = ChoiceFactory.create(ctx, v2.mapr(v2 -> new One<>(v2 % v1)), pushValue[0]);
+				return getNext(ctx, ti);
+
+			}
+	    	
+    });
+	frame.pushLong(pushCtx[0], pushValue[0]);
+    return returnInstruction;
   }
 
   @Override
