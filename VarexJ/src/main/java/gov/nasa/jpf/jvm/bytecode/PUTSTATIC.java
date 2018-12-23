@@ -61,13 +61,16 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 	public Conditional<Instruction> execute(FeatureExpr ctx, ThreadInfo ti) {
 		if (getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL) != null || 
 			getFieldInfo(ctx).getAnnotation(ANNOTATION_CONDITIONAL_VBC) != null) {
-			StackFrame frame = ti.getModifiableTopFrame();
-			FeatureExpr feature = Conditional.createFeature(fname);
-			featureNumber++;
-//			System.out.println("Found feature #" + featureNumber + " - " + fname + " @" + className);
-			IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
-			frame.pop(ctx);
-			frame.push(ctx, create);
+			if (checkName(fname)) {
+				StackFrame frame = ti.getModifiableTopFrame();
+				
+				FeatureExpr feature = Conditional.createFeature(fname);
+				featureNumber++;
+				System.out.println("Found feature #" + featureNumber + " - " + fname + " @" + className);
+				IChoice<Integer> create = ChoiceFactory.create(feature, One.valueOf(1), One.valueOf(0));
+				frame.pop(ctx);
+				frame.push(ctx, create);
+			}
 		}
 		
 		if (!ti.isFirstStepInsn()) { // top half
@@ -108,6 +111,27 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			ei = ei.getModifiableInstance();
 			return put(ctx, ti, ti.getTopFrame(), ei, false);
 		}
+	}
+
+//	static final String[] names = new String[] {
+//	"_M_Jugador_mut32", 
+//	"_M_Tablero_mut43", 
+//	"_M_Tablero_mut49", 
+//	"_M_Tablero_mut38",
+//	"_M_Tablero_mut46", 
+//	"_M_Tablero_mut33"
+//	};
+	static final String[] names = new String[] {"_M_Jugador", "_M_Tablero"};
+	
+	
+	private boolean checkName(String fname) {
+//		for (String n : names) {
+//			if (fname.startsWith(n)) {
+//				return true;
+//			}
+//		}
+		
+		return true;
 	}
 
 	public int getLength() {

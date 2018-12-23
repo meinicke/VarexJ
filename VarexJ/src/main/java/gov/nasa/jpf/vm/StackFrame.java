@@ -21,7 +21,9 @@ package gov.nasa.jpf.vm;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Function;
 
 import cmu.conditional.Conditional;
@@ -30,6 +32,8 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPFException;
 import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
+import gov.nasa.jpf.jvm.bytecode.GOTO;
+import gov.nasa.jpf.jvm.bytecode.IfInstruction;
 import gov.nasa.jpf.jvm.bytecode.InvokeInstruction;
 import gov.nasa.jpf.util.HashData;
 import gov.nasa.jpf.util.Misc;
@@ -163,18 +167,46 @@ public int nLocals;
   }
   
   private int executedInstructions = 0;
-  public static int maxInstructions =100_000;
+  public static int maxInstructions = 100;
   
-  public Instruction instructionExecuted(Instruction i) {
-	  executedInstructions++;
-	  if (executedInstructions >= maxInstructions) {
-		  executedInstructions= 0;
-		  return new EXCEPTION(i, RuntimeException.class.getName(), "too many instructions:" + maxInstructions);
-	  } else {
-		  return null;
+  public Instruction instructionExecuted(FeatureExpr ctx, Instruction i) {
+	  int pos = i.position;
+	  int target = pos;
+	  
+//	  if (i instanceof IfInstruction) {
+//		  target = ((IfInstruction) i).getTarget().position;
+//	  }
+	  if (i instanceof GOTO) {
+		  target = ((GOTO) i).getTarget().position;
+		  if (target < pos) {
+			  if (mi.getName().contains("cambiarTurno") || mi.getName().contains("comenzarPartida")) {
+				  executedInstructions++;
+				  if (executedInstructions >= maxInstructions) {
+					  executedInstructions= 0;
+					  System.out.println("too many instructions");
+					  System.out.print(mi);
+					  System.out.println(" line " + mi.getLineNumber(i));
+					  
+					  return new EXCEPTION(i, RuntimeException.class.getName(), "too many instructions:" + maxInstructions);
+				  }
+			  }
+		  }
 	  }
+	  return null;
   }
   
+  public void printTrace() {
+	  printTrace(this);
+  }
+  public void printTrace(StackFrame frame) {
+	  StringBuilder sb = new StringBuilder();
+	  while (frame != null) {
+		  sb.append(frame.getStackTraceInfo());
+		  sb.append("\n");
+		  frame = frame.getPrevious();
+	  }
+	  System.out.println(sb);
+  }
 
 /**
    * re-execute method from the beginning - use with care
@@ -1268,7 +1300,9 @@ public Object[] getArgumentsValues (FeatureExpr ctx, ThreadInfo ti, byte[] argTy
     	
     	if(pc != null) {
     		sb.append('(');
-            sb.append( pc.getValue(true).getFilePos());
+    		List<Instruction> list = pc.toList();
+    		Collections.sort(list, (i1, i2) -> i1.insnIndex - i2.insnIndex);
+			list.forEach(i -> sb.append(mi.getLineNumber(i)).append(" ").append(i.getMnemonic()).append(", "));
             sb.append(')');
     	}
     } else {
@@ -1949,20 +1983,20 @@ public String toString () {
       ctx = FeatureExprFactory.True();
     }
     //assert (top() >= stackBase) : "stack empty";
-    boolean isRef = stack.isRef(ctx, 0);
+//    boolean isRef = stack.isRef(ctx, 0);
 
     Conditional<Integer> v = stack.pop(ctx);
 
     // <2do> get rid of this
-    if (isRef) {
-      if (v instanceof One && v.getValue() != MJIEnv.NULL) {
-        VM.getVM().getSystemState().activateGC();
-      }
-    }
+//    if (isRef) {
+//      if (v instanceof One && v.getValue() != MJIEnv.NULL) {
+//        VM.getVM().getSystemState().activateGC();
+//      }
+//    }
 
-    if (attrs != null) { // just to avoid memory leaks
-      attrs[top() + 1] = null;
-    }
+//    if (attrs != null) { // just to avoid memory leaks
+//      attrs[top() + 1] = null;
+//    }
 
 //    top()--;
 

@@ -25,6 +25,7 @@ import java.util.function.BiConsumer;
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.annotation.MJI;
 
 
@@ -85,21 +86,21 @@ public class JPF_java_lang_Throwable extends NativePeer {
   
   @MJI
   public int toString____Ljava_lang_String_2 (MJIEnv env, int objRef, FeatureExpr ctx){
-    ClassInfo ci = env.getClassInfo(objRef);
+//    ClassInfo ci = env.getClassInfo(objRef);
+//    
+//    int msgRef = env.getReferenceField(ctx, objRef, "detailMessage").getValue();
+//    
+//    String s = ci.getName();
+//    if (msgRef != MJIEnv.NULL){
+//      s += ": ";
+//      Conditional<String> message = env.getStringObjectNew(ctx, msgRef);
+//      if (message instanceof One) {
+//    	  s += message.getValue();
+//      } else {
+//    	  s += message;
+//      }
+//    }
     
-    int msgRef = env.getReferenceField(ctx, objRef, "detailMessage").getValue();
-    
-    String s = ci.getName();
-    if (msgRef != MJIEnv.NULL){
-      s += ": ";
-      Conditional<String> message = env.getStringObjectNew(ctx, msgRef);
-      if (message instanceof One) {
-    	  s += message.getValue();
-      } else {
-    	  s += message;
-      }
-    }
-    
-    return env.newString(ctx, s);
+    return env.newString(FeatureExprFactory.True(), "nothing");
   }
 }

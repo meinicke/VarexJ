@@ -403,27 +403,32 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 		if (!buffer.isEmpty()) {
 			if (getBufferSize() > offset && Conditional.equivalentTo(bufferCTX, ctx)) {
 				int pointer = offset;
-				int n = 0;
-				while (n <= pointer) {
-					Conditional value = buffer.get(n).value;
-					Object type = value.getValue(true);
-					if (type instanceof Integer) {
-						if (n == offset) {
-							return value;
+				for (Tuple entry : buffer) {
+					if (entry.size == 1) {
+						if (pointer == 0) {
+							if (entry.t == Type.INT) {
+								return entry.value;
+							} else {// float
+								return entry.value.map(x -> Types.floatToInt(((Float) x).floatValue()));
+							}
 						}
-						n++;
-						continue;
-					} else if (type instanceof Float) {
-						if (n == offset) {
-							return value.map(x -> Types.floatToInt(((Float) x).floatValue()));
-						}
-						n++;
-						continue;
+						pointer--;
 					} else {
-						debufferAll();
-						return stackHandler.peek(ctx, offset);
+						if (pointer == 0) {
+							if (entry.t == Type.LONG) {
+								return entry.value.map(x -> Types.loLong((Long) x));
+							} else {// double
+								return entry.value.map(x -> Types.loDouble((Double) x));
+							}
+						} else if (pointer == 1) {
+							if (entry.t == Type.LONG) {
+								return entry.value.map(x -> Types.hiLong((Long) x));
+							} else {// double
+								return entry.value.map(x -> Types.hiDouble((Double) x));
+							}
+						}
+						pointer-=2;
 					}
-					
 				}
 			}
 			debufferAll();
@@ -503,7 +508,26 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 	
 	@Override
 	public void storeLongOperand(FeatureExpr ctx, int index) {
-		debufferAll();// TODO improve
+		if (!buffer.isEmpty()) {
+			if (Conditional.equivalentTo(bufferCTX, ctx)) {
+				Tuple v1 = buffer.pop();
+				if (v1.size == 2) {
+					if (v1.t == Type.LONG) {
+						stackHandler.locals[index + 1] = ChoiceFactory.create(ctx, v1.value.map(x -> new Entry(Types.loLong((Long) x), false)), stackHandler.locals[index + 1]);
+						stackHandler.locals[index] = ChoiceFactory.create(ctx, v1.value.map(x -> new Entry(Types.hiLong((Long) x), false)), stackHandler.locals[index]);
+					} else {// Double
+						stackHandler.locals[index + 1] = ChoiceFactory.create(ctx, v1.value.map(x -> new Entry(Types.loDouble((Double) x), false)), stackHandler.locals[index + 1]);
+						stackHandler.locals[index] = ChoiceFactory.create(ctx, v1.value.map(x -> new Entry(Types.hiDouble((Double) x), false)), stackHandler.locals[index]);
+					}
+					return;
+				} else {
+					debufferAll();
+				}
+			} else {
+				debufferAll();
+			}
+		}
+		
 		stackHandler.storeLongOperand(ctx, index);
 	}
 

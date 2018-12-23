@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,14 +40,15 @@ public abstract class Conditional<T> {
 	public static BDDFeatureExpr bddFM;
 	public static final Map<String, SingleFeatureExpr> features = new HashMap<>();
 	
-	private static final Map<BDD, Boolean> cacheIsSat = new HashMap<>();
+//	private static final Map<BDD, Boolean> cacheIsSat = new HashMap<>();
 	
 	private static final Map<BDD, Map<BDD, FeatureExpr>> cacheAnd = new HashMap<>();
+	private static final Map<BDD, Map<BDD, FeatureExpr>> cacheOr = new HashMap<>();
 	
 	private static final Map<BDD, FeatureExpr> cacheNot = new HashMap<>();
 	
 	public static void setFM(final String fmfile) {
-		cacheIsSat.clear();
+//		cacheIsSat.clear();
 		features.clear();
 		cacheNot.clear();
 		cacheAnd.clear();
@@ -65,14 +69,31 @@ public abstract class Conditional<T> {
 		if (((BDDFeatureExpr)a).bdd() == ((BDDFeatureExpr)b).bdd()) {
 			return FeatureExprFactory.True();
 		}
-		return not(and(not(a), b));
+		return or(a, not(b));
 	}
 	
 	public static FeatureExpr or(final FeatureExpr a, final FeatureExpr b) {
-		if (((BDDFeatureExpr)a).bdd() == ((BDDFeatureExpr)b).bdd()) {
+		BDD bddA = ((BDDFeatureExpr)a).bdd();
+		BDD bddB = ((BDDFeatureExpr)b).bdd();
+		if (bddA == bddB) {
 			return a;
 		}
-		return not(and(not(a), not(b)));
+		if (bddA.isOne()) {
+			return a;
+		}
+		if (bddB.isOne()) {
+			return b;
+		}
+		if (bddA.hashCode() > bddB.hashCode()) {
+			bddA = bddB;
+			bddB = ((BDDFeatureExpr)a).bdd();
+		}
+		Map<BDD, FeatureExpr> aMap = cacheOr.get(bddA);
+		if (aMap == null) {
+			aMap = new HashMap<>();
+			cacheOr.put(bddA, aMap);
+		}
+		return aMap.computeIfAbsent(bddB, x -> a.or(b));
 	}
 	
 	public static FeatureExpr andNot(final FeatureExpr a, final FeatureExpr b) {
@@ -83,6 +104,12 @@ public abstract class Conditional<T> {
 		BDD bddA = ((BDDFeatureExpr)a).bdd();
 		BDD bddB = ((BDDFeatureExpr)b).bdd();
 		if (bddA == bddB) {
+			return a;
+		}
+		if (bddA.isOne()) {
+			return b;
+		}
+		if (bddB.isOne()) {
 			return a;
 		}
 		if (bddA.hashCode() > bddB.hashCode()) {
@@ -148,6 +175,9 @@ public abstract class Conditional<T> {
 	}
 	
 	public static List<String> createAndGetFeatures(String path) {
+		if (path.isEmpty()) {
+			return Collections.emptyList();
+		}
 		System.out.println("Load features from " + path);
 		List<String> features = new ArrayList<>();
 		File file = new File(path);
@@ -182,15 +212,49 @@ public abstract class Conditional<T> {
 
 	public static final boolean isContradiction(final FeatureExpr f) {
 		final BDD bdd = ((BDDFeatureExpr)f).bdd();
-		final Boolean value = cacheIsSat.get(bdd);
-		if (value != null) {
-			return !value;
+		return bdd.isZero();
+//		final Boolean value = cacheIsSat.get(bdd);
+//		if (value != null) {
+//			return !value;
+//		}
+//		return !cacheIsSat.computeIfAbsent(bdd, x -> isSatisfiable(and(bddFM, f)));
+	}
+
+	private static boolean isSatisfiable(FeatureExpr expr) {
+		return expr.isSatisfiable();
+		
+//		BDD bdd = ((BDDFeatureExpr)expr).bdd();
+//		int min = getMinPath(bdd, 0);
+		
+//		return min <= 10;
+	}
+	
+	private static final Map<BDD, Integer> minPath = new HashMap<>();
+
+	private static int getMinPath(BDD bdd, int i) {
+		Integer min = minPath.get(bdd);
+		if (min != null) {
+			return min;
 		}
-		return !cacheIsSat.computeIfAbsent(bdd, x -> and(bddFM, f).isSatisfiable());
+		if (bdd.isOne()) {
+			minPath.put(bdd, i);
+			return i;
+		}
+		if (bdd.isZero()) {
+			return 10000;
+		}
+		if (i > 10) {
+			return 10000;
+		}
+		min = Math.min(getMinPath(bdd.high(), i+1), getMinPath(bdd.low(), i)) + 1;
+		minPath.put(bdd, min);
+		return min;
 	}
 
 	public static final boolean isTautology(final FeatureExpr f) {
-		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)not(f)).bdd(), x -> and(bddFM, not(f)).isSatisfiable());
+		return ((BDDFeatureExpr)f).bdd().isOne();
+		
+//		return !cacheIsSat.computeIfAbsent(((BDDFeatureExpr)not(f)).bdd(), x -> isSatisfiable(and(bddFM, not(f))));
 	}
 
 	public abstract T getValue();

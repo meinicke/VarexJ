@@ -2,8 +2,11 @@ package cmu.datastructures;
 
 import org.junit.Test;
 
+import cmu.conditional.One;
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.va.IStackHandler;
+import gov.nasa.jpf.vm.va.StackHandlerFactory;
 
 /**
  * Checks which type of StackHandler is used.<br>
@@ -178,5 +181,5 @@ public class BufferedStackHandlerTest extends TestJPF {
 //			}
 		}
 	}
-
+	
 }

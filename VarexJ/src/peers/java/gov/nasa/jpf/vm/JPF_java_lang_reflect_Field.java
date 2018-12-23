@@ -362,48 +362,47 @@ public class JPF_java_lang_reflect_Field extends NativePeer {
   }
 
   @MJI
-  public int get__Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
+  public Conditional<Integer> get__Ljava_lang_Object_2__Ljava_lang_Object_2 (MJIEnv env, int objRef, int fobjRef, FeatureExpr ctx) {
     FieldInfo fi = getFieldInfo(ctx, env, objRef);
     ElementInfo ei = getCheckedElementInfo( env, objRef, fi, fobjRef, null, null, false, ctx); // no type check here
     if (ei == null){
-      return 0;
+      return One.valueOf(0);
     }
    
 	if (!(fi instanceof ReferenceFieldInfo)) { // primitive type, we need to box it
       if (fi instanceof DoubleFieldInfo){
         Conditional<Double> d = ei.getDoubleField(fi);
-        return env.newDouble(ctx, d);
+        return new One<>(env.newDouble(ctx, d));
       } else if (fi instanceof FloatFieldInfo){
         Conditional<Float> f = ei.getFloatField(fi);
-        return env.newFloat(ctx, f);
+        return new One<>(env.newFloat(ctx, f));
       } else if (fi instanceof LongFieldInfo){
         Conditional<Long> l = ei.getLongField(fi);
-        return env.newLong(ctx, l);
+        return new One<>(env.newLong(ctx, l));
       } else if (fi instanceof IntegerFieldInfo){
         // this might actually represent a plethora of types
         Conditional<Integer> i = ei.getIntField(fi);
-        return env.newInteger(ctx, i);
+        return new One<>(env.newInteger(ctx, i));
       } else if (fi instanceof BooleanFieldInfo){
         Conditional<Boolean> b = ei.getBooleanField(fi);
-        return env.newBoolean(b.getValue());
+        return new One<>(env.newBoolean(b.getValue()));
       } else if (fi instanceof ByteFieldInfo){
         Conditional<Byte> z = ei.getByteField(fi);
-        return env.newByte(ctx, z);
+        return new One<>(env.newByte(ctx, z));
       } else if (fi instanceof CharFieldInfo){
         Conditional<Character> c = ei.getCharField(fi);
-        return env.newCharacter(ctx, c);
+        return new One<>(env.newCharacter(ctx, c));
       } else if (fi instanceof ShortFieldInfo){
         Conditional<Short> s = ei.getShortField(fi);
-        return env.newShort(ctx, s);
+        return new One<>(env.newShort(ctx, s));
       }
       
     } else { // it's a reference
-      int ref = ei.getReferenceField(fi).simplify(ctx).getValue(); // we internally store it as int
-      return ref;
+      return ei.getReferenceField(fi).simplify(ctx); // we internally store it as int
     }
     
     env.throwException(ctx, "java.lang.IllegalArgumentException", "unknown field type");
-    return MJIEnv.NULL;
+    return One.MJIEnvNULL;
   }
 
   @MJI

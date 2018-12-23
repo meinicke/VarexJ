@@ -2001,7 +2001,7 @@ public class ThreadInfo extends InfoObject
 	    		time = System.currentTimeMillis();
 	        }
 	        count++;
-	        if (System.currentTimeMillis() - time > 10_000) {
+	        if (System.currentTimeMillis() - time > 5_000) {
 	        	int instructions = count;
 	        	count = 0;
 	        	printSpeedLog(instructions / 10);
@@ -2009,6 +2009,8 @@ public class ThreadInfo extends InfoObject
 	        		vm.getSystemState().gcIfNeeded();
 	        	}
 	        	time = System.currentTimeMillis();
+	        	top.printTrace();
+	        	System.out.println("------------------------");
 	        }
 	        Instruction i = null;
  	        FeatureExpr ctx = top.stack.getCtx();
@@ -2076,7 +2078,7 @@ public class ThreadInfo extends InfoObject
 					k++;
 				}
     		} else {
-    			Instruction infinitLoop = top.instructionExecuted(i);
+    			Instruction infinitLoop = top.instructionExecuted(ctx, i);
     			if (infinitLoop != null) {
     				nextPc = ChoiceFactory.create(ctx, new One<Instruction>(infinitLoop), pc);
     			} else {

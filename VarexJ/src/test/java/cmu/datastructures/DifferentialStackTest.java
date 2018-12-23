@@ -39,7 +39,6 @@ public class DifferentialStackTest {
 	private final List<Object[]> stackHandlers = new ArrayList<>();
 
 	public DifferentialStackTest() {
-
 		for (SHFactory shFactory : SHFactory.values()) {
 			if (shFactory == SHFactory.Hybid) {
 				for (LiftedStack liftedStack : LiftedStack.values()) {
@@ -554,6 +553,50 @@ public class DifferentialStackTest {
 			}
 		});
 	}
+	
+	@Test
+	public void TestPeekNLong() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 10, 10);
+			sh.push(A, One.valueOf(1), true);
+			sh.pushLong(A, new One<>(850660968358656L));
+			try {
+				Conditional<Integer> value = sh.peek(A, 2);
+				return value;
+			} catch (Throwable e) {
+				return -1;
+			}
+		});
+	}
+	
+	@Test
+	public void TestPeekNLong2() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 10, 10);
+			sh.push(A, One.valueOf(1), true);
+			sh.pushLong(A, new One<>(850660968358656L));
+			try {
+				return sh.peek(A, 1);
+			} catch (Throwable e) {
+				return -1;
+			}
+		});
+	}
+	
+	@Test
+	public void TestPeekNLong3() {
+		differentalTest(() -> {
+			IStackHandler sh = StackHandlerFactory.createStack(TRUE, 10, 10);
+			sh.push(A, One.valueOf(1), true);
+			sh.pushLong(A, new One<>(850660968358656L));
+			try {
+				return sh.peek(A, 0);
+			} catch (Throwable e) {
+				return -1;
+			}
+		});
+	}
+
 
 	@Test
 	public void TestPeekDouble() {
@@ -1127,5 +1170,7 @@ public class DifferentialStackTest {
 			return sh.isRef(TRUE, 2);
 		});
 	}
+	
+	
 
 }

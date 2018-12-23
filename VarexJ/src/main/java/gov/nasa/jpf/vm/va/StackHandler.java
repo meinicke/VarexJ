@@ -255,7 +255,7 @@ public class StackHandler implements Cloneable, IStackHandler {
 			} else {
 				clone.push(Float.floatToIntBits((Float) value), isRef);
 			}
-			if (stackCTX.equivalentTo(f)) {
+			if (Conditional.equivalentTo(stackCTX, f)) {
 				return new One<>(clone);
 			}
 			return ChoiceFactory.create(ctx, new One<>(clone), new One<>(stack));
@@ -309,11 +309,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 			default:
 				return null;
 			}
-			if (stackCTX.equivalentTo(f)) {
-				stack = new One<>(clone);
-			} else {
+//			if (stackCTX.equivalentTo(f)) {
+//				stack = new One<>(clone);
+//			} else {
 				stack = ChoiceFactory.create(f, new One<>(clone), stack);
-			}
+//			}
 			return (Conditional<T>) new One<>(res);
 
 		}).simplifyValues();
