@@ -1,27 +1,32 @@
 package cmu.vatrace;
 
-import java.util.function.Function;
-
+import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import cmu.varviz.trace.Method;
 import cmu.varviz.trace.NodeColor;
-import cmu.varviz.trace.Statement;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.Types;
 
-public class ArrayStoreStatement extends Statement {
+public class ArrayStoreStatement extends VarexJStatement {
 
-	private Conditional<Object> oldValue;
-	private Conditional<Object> newValue;
 	private int index;
 	private ElementInfo ei;
 
 	public ArrayStoreStatement(Instruction op, Method method, int index, Conditional oldValue, Conditional newValue, ElementInfo ei, FeatureExpr ctx) {
 		super(op, method, op.getLineNumber(), ctx);
-		this.oldValue = oldValue;
-		this.newValue = newValue;
+		if (oldValue != null) {
+			oldValue = oldValue.simplify(method.getCTX());
+			this.oldValue = oldValue.mapf(method.getCTX(), f).simplify(method.getCTX());
+		}
+
+		newValue = newValue.simplify(method.getCTX());
+		this.value = newValue.mapf(method.getCTX(), f).simplify(ctx);
+		if (this.oldValue != null) {
+			this.value = ChoiceFactory.create(ctx, (Conditional<String>)this.value, (Conditional<String>)this.oldValue).simplify(method.getCTX()).simplifyValues();
+		}
 		this.index = index;
 		this.ei = ei;
 		
@@ -31,32 +36,6 @@ public class ArrayStoreStatement extends Statement {
 			setColor(NodeColor.limegreen);
 		}
 	}
-	
-	private final Function<Object, String> f = val -> {
-		if (ei.getArrayType().equals("C")) {
-			return "0x" + String.format("%02x", (int)((Character)val).charValue());
-		} else if (ei.getArrayType().equals("Z")) {
-			if (val instanceof Byte) {
-				return Boolean.valueOf(((Byte)val) != 0).toString();
-			} else {
-				return val.toString();
-			}
-		}
-		if (ei.isReferenceArray()) {
-			if ((Integer)val == 0) {
-				return "null";
-			}
-			if (TraceUtils.enums.containsKey(val)) {
-				return TraceUtils.enums.get(val);
-			}
-			if (ei.getClassInfo().isEnum()) {
-				return TraceUtils.enums.get(val);
-			}
-			return '@' + val.toString();
-		}
-		
-		return val.toString();
-	};
 	
 	@Override
 	public String toString() {
@@ -70,16 +49,39 @@ public class ArrayStoreStatement extends Statement {
 	
 	@Override
 	public boolean isInteraction(int degree) {
-		return newValue.toMap().size() >= degree || oldValue.toMap().size() >= degree; 
+		if (oldValue != null) {
+			if (oldValue.equals(value)) {
+				return false;
+			}
+			if (value.toMap().size() >= degree) {
+				return true;
+			}
+			if (Math.abs(oldValue.toMap().size() - value.toMap().size()) >= degree - 1) {
+				return true;
+			}
+		} else {
+			if (value.toMap().size() >= degree) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Override
 	public Conditional<String> getOldValue() {
-		return oldValue.map(f);
+		if (oldValue == null) {
+			return new One<>("null");
+		}
+		return (Conditional<String>) oldValue;
+	}
+
+	@Override
+	public Conditional<String> getValue() {
+		return (Conditional<String>) value;
 	}
 	
 	@Override
-	public Conditional<String> getValue() {
-		return newValue.map(f);
+	protected Object getInfo() {
+		return ei;
 	}
 }

@@ -107,7 +107,7 @@ public class PUTSTATIC extends StaticFieldInstruction implements StoreInstructio
 			}
 
 			ei = ei.getModifiableInstance();
-			return put(ctx, ti, ti.getTopFrame(), ei, true);
+			return put(ctx, ti, ti.getTopFrame(), ei, mi.isClinit(ciField));
 
 		} else { // re-execution
 			// no need to redo the exception checks, we already had them in the top half

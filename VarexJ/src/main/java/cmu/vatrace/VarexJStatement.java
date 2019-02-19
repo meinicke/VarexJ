@@ -102,10 +102,12 @@ public abstract class VarexJStatement extends Statement {
 		}
 		
 		if (isChar()) {
-			if (Character.isJavaIdentifierPart((Integer)val)) {
-				return new One<>(val.toString());
-			}
-			return new One<>("0x" + String.format("%02x", ((Integer)val)));
+			return new One<>(((Character)((char)((Integer)val).intValue())).toString());
+//			return new One<>(((char)((Integer)val).intValue()));
+//			if (Character.isJavaIdentifierPart((Integer)val)) {
+//				return new One<>(val.toString());
+//			}
+//			return new One<>("0x" + String.format("%02x", ((Integer)val)));
 		}
 		
 		if (isReference()) {

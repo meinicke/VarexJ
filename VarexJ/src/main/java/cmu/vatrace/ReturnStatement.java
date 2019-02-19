@@ -17,7 +17,7 @@ public class ReturnStatement extends VarexJStatement {
 
 	public ReturnStatement(Instruction op, Method method, Conditional returnValue, FeatureExpr ctx) {
 		super(op, method, op.getLineNumber(), ctx);
-		value = returnValue.mapf(ctx, f);
+		value = returnValue.mapf(ctx, f).simplify(method.getCTX());
 		setColor(NodeColor.darkorange);
 	}
 
