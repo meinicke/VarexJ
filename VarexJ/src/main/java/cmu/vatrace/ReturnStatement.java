@@ -22,10 +22,8 @@ public class ReturnStatement extends VarexJStatement {
 	}
 
 	private MethodInfo getParentMethodInfo() {
-		@SuppressWarnings("unchecked")
-		Method parent = (Method) getParent();
-		MethodInfo mi = (MethodInfo) parent.getContent();
-		return mi;
+		Method parent = getParent();
+		return (MethodInfo) parent.getContent();
 	}
 	
 	@Override

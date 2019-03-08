@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/meinicke/VarexJ.svg?branch=master)](https://travis-ci.org/meinicke/VarexJ)
+[![codecov](https://codecov.io/gh/meinicke/VarexJ/branch/master/graph/badge.svg)](https://codecov.io/gh/meinicke/VarexJ)
 
 # Overview
 

@@ -1,7 +1,10 @@
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
+	apply plugin: 'jacoco'
 	sourceCompatibility = JavaVersion.VERSION_1_8
+	
+	
 }
 
 task wrapper(type: Wrapper) {

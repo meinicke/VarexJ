@@ -1,5 +1,6 @@
 package cmu.vatrace;
 
+import java.util.Arrays;
 import java.util.function.BiFunction;
 
 import cmu.conditional.Conditional;
@@ -46,7 +47,8 @@ public abstract class VarexJStatement extends Statement {
 			return !((LocalVarInfo) info).isNumeric();
 		}
 		if (info instanceof MethodInfo) {
-			return ((MethodInfo) info).getReturnTypeCode() == Types.T_REFERENCE;
+			return ((MethodInfo) info).getReturnTypeCode() == Types.T_REFERENCE ||
+					((MethodInfo) info).getReturnTypeCode() == Types.T_ARRAY;
 		}
 		return false;
 	}
@@ -133,7 +135,11 @@ public abstract class VarexJStatement extends Statement {
 				return new One<>("null");
 			}
 			if (ei.isArray()) {
-				return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, (Integer)val) + "]");
+				if ("C".equals(ei.getArrayType())) {
+					return ei.asCharArray().simplify(ctx).map(Arrays::toString);
+				} else {
+					return new One<>('@' + val.toString() + "[" + ThreadInfo.getCurrentThread().getEnv().getArrayLength(ctx, (Integer)val) + "]");
+				}
 			}
 			if (ei.getClassInfo().getName().equals(String.class.getCanonicalName())) {
 				Conditional<Integer> cref = ei.getReferenceField("value");
