@@ -94,7 +94,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
 	
 	@MJI
 	public boolean compareAndSwapInt__Ljava_lang_Object_2JII__Z(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, int expect, int update, FeatureExpr ctx) {
-		int actual = getInt__Ljava_lang_Object_2J__I(env, unsafeRef, objRef, fieldOffset, ctx);
+		int actual = getInt__Ljava_lang_Object_2J__I(env, unsafeRef, objRef, fieldOffset, ctx).getValue();
 		if (actual == expect) {
 			putInt__Ljava_lang_Object_2JI__V(env, unsafeRef, objRef, fieldOffset, update, ctx);
 			return true;
@@ -260,18 +260,18 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
 	}
 
 	@MJI
-	public boolean getBoolean__Ljava_lang_Object_2J__Z(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, FeatureExpr ctx) {
+	public Conditional<Boolean> getBoolean__Ljava_lang_Object_2J__Z(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, FeatureExpr ctx) {
 		ElementInfo ei = env.getElementInfo(objRef);
 		if (!ei.isArray()) {
 			FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-			return ei.getBooleanField(fi).getValue();
+			return ei.getBooleanField(fi);
 		} else {
-			return ei.getBooleanElement((int) fieldOffset).getValue();
+			return ei.getBooleanElement((int) fieldOffset);
 		}
 	}
 
 	@MJI
-	public boolean getBooleanVolatile__Ljava_lang_Object_2J__Z(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, FeatureExpr ctx) {
+	public Conditional<Boolean> getBooleanVolatile__Ljava_lang_Object_2J__Z(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, FeatureExpr ctx) {
 		return getBoolean__Ljava_lang_Object_2J__Z(env, unsafeRef, objRef, fieldOffset, ctx);
 	}
 
@@ -388,18 +388,18 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
 	}
 
 	@MJI
-	public int getInt__Ljava_lang_Object_2J__I(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, FeatureExpr ctx) {
+	public Conditional<Integer> getInt__Ljava_lang_Object_2J__I(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, FeatureExpr ctx) {
 		ElementInfo ei = env.getElementInfo(objRef);
 		if (!ei.isArray()) {
 			FieldInfo fi = getRegisteredFieldInfo(fieldOffset);
-			return ei.getIntField(fi).simplify(ctx).getValue();
+			return ei.getIntField(fi).simplify(ctx);
 		} else {
-			return ei.getIntElement((int) fieldOffset).simplify(ctx).getValue();
+			return ei.getIntElement((int) fieldOffset).simplify(ctx);
 		}
 	}
 
 	@MJI
-	public int getIntVolatile__Ljava_lang_Object_2J__I(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, FeatureExpr ctx) {
+	public Conditional<Integer> getIntVolatile__Ljava_lang_Object_2J__I(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, FeatureExpr ctx) {
 		return getInt__Ljava_lang_Object_2J__I(env, unsafeRef, objRef, fieldOffset, ctx);
 	}
 
@@ -523,7 +523,7 @@ public class JPF_sun_misc_Unsafe extends NativePeer {
 
 	@MJI
 	public int getAndAddInt__Ljava_lang_Object_2JI__I(MJIEnv env, int unsafeRef, int objRef, long fieldOffset, int val, FeatureExpr ctx) {
-		int actual = getInt__Ljava_lang_Object_2J__I(env, unsafeRef, objRef, fieldOffset, ctx);
+		int actual = getInt__Ljava_lang_Object_2J__I(env, unsafeRef, objRef, fieldOffset, ctx).getValue();
 		putInt__Ljava_lang_Object_2JI__V(env, unsafeRef, objRef, fieldOffset, actual + val, ctx);
 		return actual + val;
 	}

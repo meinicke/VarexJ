@@ -20,6 +20,7 @@ package gov.nasa.jpf.vm;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.util.function.BiFunction;
 
 import cmu.conditional.ChoiceFactory;
@@ -493,19 +494,21 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
 				//--- check the instance we are calling on
 				if (!miCallee.isStatic()) {
-					if (objRef.getValue().intValue() == MJIEnv.NULL) {
+					if (!Conditional.isContradiction(objRef.getContextOf(MJIEnv.NULL))) {
 						env.throwException(ctx, "java.lang.NullPointerException");
 						return One.MJIEnvNULL;
 
 					} else {
-						ElementInfo eiObj = ti.getElementInfo(objRef.getValue());
-						ClassInfo objClass = eiObj.getClassInfo();
-
-						if (!objClass.isInstanceOf(calleeClass)) {
-							env.throwException(ctx, IllegalArgumentException.class.getName(),
-									"Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = "
-											+ calleeClass);
-							return One.MJIEnvNULL;
+						for (Entry<Integer, FeatureExpr> entry : objRef.toMap().entrySet()) {
+							ElementInfo eiObj = ti.getElementInfo(entry.getKey());
+							ClassInfo objClass = eiObj.getClassInfo();
+	
+							if (!objClass.isInstanceOf(calleeClass)) {
+								env.throwException(entry.getValue(), IllegalArgumentException.class.getName(),
+										"Object is not an instance of declaring class.  Actual = " + objClass + ".  Expected = "
+												+ calleeClass);
+								return One.MJIEnvNULL;
+							}
 						}
 					}
 				}
@@ -534,7 +537,7 @@ public class JPF_java_lang_reflect_Method extends NativePeer {
 
 				int argOffset = 0;
 				if (!miCallee.isStatic()) {
-					frame.setReferenceArgument(ctx, argOffset++, objRef.getValue(), null);
+					frame.setReferenceArgument(ctx, argOffset++, objRef, null);
 				}
 				if (!pushUnboxedArguments(env, miCallee, frame, argOffset, argsRef.getValue(), ctx)) {
 					// we've got a IllegalArgumentException

@@ -18,6 +18,7 @@
 //
 package gov.nasa.jpf.vm;
 
+import cmu.conditional.Conditional;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.SystemAttribute;
@@ -96,6 +97,7 @@ public abstract class DirectCallStackFrame extends StackFrame implements SystemA
   public abstract int setArgument (int argOffset, int value, Object attr);
   public abstract int setLongArgument (int argOffset, long value, Object attr);
   public abstract int setReferenceArgument (FeatureExpr ctx, int argOffset, int ref, Object attr);
+  public abstract int setReferenceArgument (FeatureExpr ctx, int argOffset, Conditional<Integer> ref, Object attr);
 
   public int setFloatArgument (int argOffset, float value, Object attr){
     return setArgument( argOffset, Float.floatToIntBits(value), attr);
