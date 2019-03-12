@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
 
 @SuppressWarnings("unused")
 public class LongTest extends TestJPF {
@@ -60,5 +61,28 @@ public class LongTest extends TestJPF {
 		}
 		long g = 1;
 		return 0;
+	}
+
+	@Test
+	public void testConditionalLongDIVbyZeroException() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION)) {
+			long l1 = 42;
+			long l2 = a ? 312 : 0;
+			long result = 0;
+			try {
+				Verify.resetCounter(0);
+				result = div(l1, l2);
+				Verify.incrementCounter(0);
+			} catch (ArithmeticException e) {
+				e.printStackTrace();
+				Verify.incrementCounter(0);
+			}
+			Verify.incrementCounter(0);
+			assertEquals(3, Verify.getCounter(0));
+		}
+	}
+
+	private long div(long l1, long l2) {
+		return l1 / l2;
 	}
 }

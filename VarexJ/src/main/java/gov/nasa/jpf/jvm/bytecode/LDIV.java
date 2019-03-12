@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import cmu.conditional.Conditional;
 import cmu.conditional.One;
@@ -38,30 +37,22 @@ public class LDIV extends JVMInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		final StackFrame frame = ti.getModifiableTopFrame();
 
-		Conditional<Long> v1 = frame.popLong(ctx);
+		final Conditional<Long> v1 = frame.popLong(ctx);
 		final Conditional<Long> v2 = frame.popLong(ctx);
 
-		 return v1.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Instruction>>() {
+		return v1.mapf(ctx, new BiFunction<FeatureExpr, Long, Conditional<Instruction>>() {
 
-				@Override
-				public Conditional<Instruction> apply(FeatureExpr ctx, final Long v1) {
-				    if (v1 == 0){
-				      return new One<>(ti.createAndThrowException(ctx,"java.lang.ArithmeticException", "division by zero"));
-				    }
-				    
-					frame.pushLong(ctx, v2.map(new Function<Long, Long>() {
-
-						@Override
-						public Long apply(Long v2) {
-							return v2.longValue() / v1.longValue();
-						}
-						
-					}));
-
-				    return getNext(ctx, ti);
+			@Override
+			public Conditional<Instruction> apply(FeatureExpr ctx, final Long v1) {
+				if (v1 == 0) {
+					return new One<>(new EXCEPTION(LDIV.this, ArithmeticException.class, "division by zero"));
 				}
-		    	
-		    });
+
+				frame.pushLong(ctx, v2.map(v2 -> v2 / v1));
+				return getNext(ctx, ti);
+			}
+
+		});
 	}
 
 	@Override
