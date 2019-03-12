@@ -38,6 +38,10 @@ public class EXCEPTION extends JVMInstruction {
 		this.cname = cname;
 		this.details = details;
 	}
+	
+	public EXCEPTION(Instruction callee, Class<?> exceptionClass, String details) {
+		this(callee, exceptionClass.getName(), details);
+	}
 
 	public EXCEPTION(Instruction callee, String cname, String details) {
 		this(cname, details);

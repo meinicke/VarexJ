@@ -74,13 +74,13 @@ public class PUTFIELD extends InstanceFieldInstruction implements StoreInstructi
 				if (!ti.isFirstStepInsn()) { // top half
 					// if this produces an NPE, force the error w/o further ado
 					if (objRef == MJIEnv.NULL) {
-						return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
+						return new One<>(new EXCEPTION(PUTFIELD.this, NullPointerException.class, "referencing field '" + fname + "' on null object"));
 					}
 
 					ElementInfo ei = ti.getModifiableElementInfoWithUpdatedSharedness(objRef);
 					FieldInfo fi = getFieldInfo(ctx);
 					if (fi == null) {
-						return new One<>(ti.createAndThrowException(ctx, "java.lang.NoSuchFieldError", "no field " + fname + " in " + ei));
+						return new One<>(new EXCEPTION(PUTFIELD.this, NoSuchFieldError.class, "no field " + fname + " in " + ei));
 					}
 
 					// check if this breaks the current transition
