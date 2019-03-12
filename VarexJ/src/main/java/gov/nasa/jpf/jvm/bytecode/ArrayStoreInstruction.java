@@ -40,7 +40,6 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		Conditional<Integer> aref = peekArrayRef(ctx, ti); // need to be poly, could be LongArrayStore
-		final ArrayStoreInstruction instruction = this;
 		return aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
@@ -52,7 +51,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 				final ElementInfo e = ti.getModifiableElementInfoWithUpdatedSharedness(aref);
 				if (isNewPorBoundary(e, ti)) {
 					if (createAndSetArrayCG(e, ti, aref, peekIndex(ctx, ti), false)) {
-						return new One<Instruction>(instruction);
+						return new One<Instruction>(ArrayStoreInstruction.this);
 					}
 				}
 
@@ -85,7 +84,7 @@ public abstract class ArrayStoreInstruction extends ArrayElementInstruction impl
 									return getNext(ctx, ti);
 
 								} catch (ArrayIndexOutOfBoundsException ex) { // at this point, the AIOBX is already processed
-									return new One<Instruction>(new EXCEPTION(instruction, ArrayIndexOutOfBoundsException.class.getName(), "Array index out of range: " + index));
+									return new One<Instruction>(new EXCEPTION(ArrayStoreInstruction.this, ArrayIndexOutOfBoundsException.class, "Array index out of range: " + index));
 								}
 							}
 

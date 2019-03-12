@@ -34,22 +34,18 @@ public class EXCEPTION extends JVMInstruction {
 	private final String details;
 	private final String cname;
 
-	public EXCEPTION(String cname, String details) {
-		this.cname = cname;
-		this.details = details;
-	}
-	
 	public EXCEPTION(Instruction callee, Class<?> exceptionClass, String details) {
-		this(callee, exceptionClass.getName(), details);
-	}
-
-	public EXCEPTION(Instruction callee, String cname, String details) {
-		this(cname, details);
+		this(exceptionClass.getName(), details);
 		this.insnIndex = callee.getInstructionIndex();
 		this.mi = callee.getMethodInfo();
 		this.position = callee.getPosition();
 	}
 
+	public EXCEPTION(String cname, String details) {
+		this.cname = cname;
+		this.details = details;
+	}
+	
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		return new One<>(ti.createAndThrowException(ctx, cname, details));
 	}

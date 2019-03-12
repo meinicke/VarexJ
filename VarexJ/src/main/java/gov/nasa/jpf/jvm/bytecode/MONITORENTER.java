@@ -41,8 +41,6 @@ public class MONITORENTER extends LockInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		StackFrame frame = ti.getTopFrame();
 
-		final MONITORENTER thisInstruction = this;
-
 		Conditional<Integer> objref = frame.peek(ctx); // Don't pop yet before we know we really enter
 		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
@@ -66,7 +64,7 @@ public class MONITORENTER extends LockInstruction {
 								if (cg != null) {
 									if (vm.setNextChoiceGenerator(cg)) {
 										ei.registerLockContender(ti); // Record that this thread would lock the object upon next execution
-										return new One<Instruction>(thisInstruction);
+										return new One<>(MONITORENTER.this);
 									}
 								}
 							}
@@ -79,7 +77,7 @@ public class MONITORENTER extends LockInstruction {
 							ChoiceGenerator<?> cg = vm.getSchedulerFactory().createMonitorEnterCG(ei, ti);
 							if (cg != null) {
 								if (vm.setNextChoiceGenerator(cg)) {
-									return new One<Instruction>(thisInstruction);
+									return new One<>(MONITORENTER.this);
 								} else {
 									throw new JPFException("listener did override ChoiceGenerator for blocking MONITOR_ENTER");
 								}

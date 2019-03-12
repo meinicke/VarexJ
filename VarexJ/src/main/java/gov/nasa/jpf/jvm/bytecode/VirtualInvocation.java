@@ -85,7 +85,7 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 			Integer objRef = objRefEntry.getKey();
 			if (objRef == MJIEnv.NULL) {
 				lastObj = MJIEnv.NULL;
-				return ChoiceFactory.create(Conditional.and(ctx, objRefEntry.getValue()), new One<Instruction>(new EXCEPTION(this, java.lang.NullPointerException.class.getName(), "Calling '" + mname + "' on null object")), 
+				return ChoiceFactory.create(Conditional.and(ctx, objRefEntry.getValue()), new One<>(new EXCEPTION(this, NullPointerException.class, "Calling '" + mname + "' on null object")), 
 						ChoiceFactory.create(ctx, new One<>(typeSafeClone(mi)), ti.getPC())).simplify();
 			}
 			MethodInfo callee = getInvokedMethod(Conditional.and(ctx, objRefEntry.getValue()), ti, objRef);
@@ -102,10 +102,10 @@ public abstract class VirtualInvocation extends InstanceInvocation {
 
 			if (callee == null) {
 				String clsName = ti.getClassInfo(objRef).getName();
-				return new One<>(ti.createAndThrowException(ctx, java.lang.NoSuchMethodError.class.getName(), clsName + '.' + mname));
+				return new One<>(ti.createAndThrowException(ctx, NoSuchMethodError.class.getName(), clsName + '.' + mname));
 			} else {
 				if (callee.isAbstract()) {
-					return new One<>(ti.createAndThrowException(ctx, java.lang.AbstractMethodError.class.getName(), callee.getFullName() + ", object: " + ei));
+					return new One<>(ti.createAndThrowException(ctx, AbstractMethodError.class.getName(), callee.getFullName() + ", object: " + ei));
 				}
 			}
 			

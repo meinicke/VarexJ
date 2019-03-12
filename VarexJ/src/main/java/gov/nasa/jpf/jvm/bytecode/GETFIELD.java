@@ -68,12 +68,11 @@ public class GETFIELD extends InstanceFieldInstruction {
 		}
 		
 		pushValue = One.valueOf(0);
-		final GETFIELD thisInstruction = this;
 		pushCTX = ctx;
 		Conditional<Instruction> next = objRef.mapf(ctx, (BiFunction<FeatureExpr, Integer, Conditional<Instruction>>) (ctx1, objRef1) -> {
 			if (objRef1 == MJIEnv.NULL) {
 				pushCTX = Conditional.andNot(pushCTX,ctx1);
-				return new One<>(new EXCEPTION(GETFIELD.this, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
+				return new One<>(new EXCEPTION(GETFIELD.this, NullPointerException.class, "referencing field '" + fname + "' on null object"));
 			}
 
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef1);
@@ -81,14 +80,14 @@ public class GETFIELD extends InstanceFieldInstruction {
 			FieldInfo fi = getFieldInfo(ctx1);
 			if (fi == null) {
 				pushCTX = Conditional.andNot(pushCTX,ctx1);
-				return new One<>(new EXCEPTION(GETFIELD.this, "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
+				return new One<>(new EXCEPTION(GETFIELD.this, NoSuchFieldError.class, "referencing field '" + fname + "' in " + ei));
 			}
 
 			// check if this breaks the current transition
 			if (isNewPorFieldBoundary(ti, fi, objRef1)) {
 				if (createAndSetSharedFieldAccessCG(ei, ti)) {
 					pushCTX = Conditional.andNot(pushCTX,ctx1);
-					return new One<Instruction>(thisInstruction);
+					return new One<Instruction>(GETFIELD.this);
 				}
 			}
 			return (Conditional<Instruction>) One.NULL;

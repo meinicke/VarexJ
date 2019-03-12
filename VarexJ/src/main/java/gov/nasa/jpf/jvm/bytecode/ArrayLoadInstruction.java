@@ -47,10 +47,8 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
 		pushValue = One.valueOf(0);
 		final StackFrame frame = ti.getModifiableTopFrame();
-		final Instruction thisInstruction = this;
 		// we need to get the object first, to check if it is shared
 		Conditional<Integer> aref = frame.peek(ctx, 1); // ..,arrayRef,idx
-		final ArrayLoadInstruction instruction = this;
 		pushCtx = ctx;
 		Conditional<Instruction> next = aref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
@@ -58,14 +56,14 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer aref) {
 				if (aref == MJIEnv.NULL) {
 					pushCtx = Conditional.andNot(pushCtx,ctx);
-					return new One<>(new EXCEPTION(ArrayLoadInstruction.this, "java.lang.NullPointerException", ""));
+					return new One<>(new EXCEPTION(ArrayLoadInstruction.this, NullPointerException.class, ""));
 				}
 
 				final ElementInfo e = ti.getElementInfoWithUpdatedSharedness(aref);
 				if (isNewPorBoundary(e, ti)) {
 					if (createAndSetArrayCG(e, ti, aref, peekIndex(ctx, ti), true)) {
 						pushCtx = Conditional.andNot(pushCtx,ctx);
-						return new One<>(instruction);
+						return new One<>(ArrayLoadInstruction.this);
 					}
 				}
 				return new One<>(null);
@@ -95,8 +93,8 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 							return getNext(ctx, ti);
 						} catch (ArrayIndexOutOfBoundsException ex) {
 							pushCtx = Conditional.andNot(pushCtx,ctx);
-							return new One<>(new EXCEPTION(thisInstruction,
-									java.lang.ArrayIndexOutOfBoundsException.class.getName(), Integer.toString(index)));
+							return new One<>(new EXCEPTION(ArrayLoadInstruction.this,
+									ArrayIndexOutOfBoundsException.class, Integer.toString(index)));
 						}
 					}
 

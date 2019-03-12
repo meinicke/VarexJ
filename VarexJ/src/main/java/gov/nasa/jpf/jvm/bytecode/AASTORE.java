@@ -60,9 +60,8 @@ public class AASTORE extends ArrayStoreInstruction {
 					ClassInfo elementCi = ti.getClassInfo(value);
 					ClassInfo arrayElementCi = c.getComponentClassInfo();
 					if (!elementCi.isInstanceOf(arrayElementCi)) {
-						String exception = "java.lang.ArrayStoreException";
 						String exceptionDescription = elementCi.getName();
-						return new One<>(new EXCEPTION(AASTORE.this, exception, exceptionDescription));
+						return new One<>(new EXCEPTION(AASTORE.this, ArrayStoreException.class, exceptionDescription));
 					}
 				}
 

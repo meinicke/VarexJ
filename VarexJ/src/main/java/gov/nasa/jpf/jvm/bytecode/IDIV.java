@@ -19,7 +19,6 @@
 package gov.nasa.jpf.jvm.bytecode;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import cmu.conditional.ChoiceFactory;
 import cmu.conditional.Conditional;
@@ -44,7 +43,6 @@ public class IDIV extends JVMInstruction {
 
 		Conditional<Integer> v1 = frame.pop(ctx);
 		final Conditional<Integer> v2 = frame.pop(ctx);
-		final IDIV thisInstruction = this;
 
 		pushCtx = ctx;
 		final Conditional<Instruction> returnInstruction = v1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
@@ -53,18 +51,11 @@ public class IDIV extends JVMInstruction {
 					public Conditional<Instruction> apply(FeatureExpr ctx, final Integer v1) {
 						if (v1 == 0) {
 							pushCtx = Conditional.andNot(pushCtx,ctx);
-							return new One<>(new EXCEPTION(thisInstruction, "java.lang.ArithmeticException",
+							return new One<>(new EXCEPTION(IDIV.this, ArithmeticException.class,
 									"division by zero"));
 						}
 
-						pushValue = ChoiceFactory.create(ctx, v2.mapr(new Function<Integer, Conditional<Integer>>() {
-
-							@Override
-							public Conditional<Integer> apply(Integer v2) {
-								return new One<>(v2.intValue() / v1.intValue());
-							}
-
-						}), pushValue);
+						pushValue = ChoiceFactory.create(ctx, v2.mapr(v2 -> One.valueOf(v2 / v1)), pushValue);
 						return getNext(ctx, ti);
 					}
 

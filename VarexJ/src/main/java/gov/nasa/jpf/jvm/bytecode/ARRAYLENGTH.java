@@ -47,14 +47,13 @@ public class ARRAYLENGTH extends ArrayInstruction {
 
 		arrayRef = frame.pop(ctx);
 		pushCtx = ctx;
-		final Instruction thisInstruction = this;
 		final Conditional<Instruction> next = arrayRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer arrayRef) {
 				if (arrayRef == MJIEnv.NULL) {
 					pushCtx = Conditional.andNot(pushCtx,ctx);
-					return new One<>(new EXCEPTION(thisInstruction, "java.lang.NullPointerException",
+					return new One<>(new EXCEPTION(ARRAYLENGTH.this, NullPointerException.class,
 							"array length of null object"));
 				}
 

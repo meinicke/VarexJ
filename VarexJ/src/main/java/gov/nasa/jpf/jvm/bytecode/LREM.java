@@ -51,7 +51,7 @@ public class LREM extends JVMInstruction {
 			public Conditional<Instruction> apply(FeatureExpr ctx, final Long v1) {
 			    if (v1 == 0){
 			    	pushCtx[0] = Conditional.andNot(pushCtx[0],ctx);
-			    	return new One<>(new EXCEPTION(LREM.this, java.lang.ArithmeticException.class.getName(), "division by zero"));
+			    	return new One<>(new EXCEPTION(LREM.this, java.lang.ArithmeticException.class, "division by zero"));
 			    }
 			    
 			    pushValue[0] = ChoiceFactory.create(ctx, v2.mapr(v2 -> new One<>(v2 % v1)), pushValue[0]);

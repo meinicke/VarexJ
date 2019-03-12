@@ -41,7 +41,6 @@ public class MONITOREXIT extends LockInstruction {
 		StackFrame frame = ti.getModifiableTopFrame();
 
 		Conditional<Integer> objref = frame.peek(ctx);
-		final MONITOREXIT thisInstruction = this;
 		return objref.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
@@ -68,7 +67,7 @@ public class MONITOREXIT extends LockInstruction {
 							ChoiceGenerator<?> cg = vm.getSchedulerFactory().createMonitorExitCG(ei, ti);
 							if (cg != null) {
 								if (vm.setNextChoiceGenerator(cg)) {
-									return new One<Instruction>(thisInstruction);
+									return new One<Instruction>(MONITOREXIT.this);
 								}
 							}
 						}
