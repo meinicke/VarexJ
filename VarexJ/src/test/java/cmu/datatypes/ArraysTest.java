@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
+import gov.nasa.jpf.vm.Verify;
 
 /**
  * Test for java.util.Arrays and the peer implementations.
@@ -125,4 +126,74 @@ public class ArraysTest extends TestJPF {// TODO actually test the results
 			assertEquals(array[0], 1.0);
 		}
 	}
+	
+	@Test
+	public void conditionalNullPointerDoubleArrayTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION, "+stack=StackHandler")) {
+			double[] array = null;
+			if (a) {
+				array = new double[1];
+			}
+			
+			Verify.resetCounter(0);
+			try {
+				Verify.incrementCounter(0);
+				array[0] = 1;
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				Verify.incrementCounter(0);
+			}
+			Verify.incrementCounter(0);
+			assertEquals(3, Verify.getCounter(0));
+			
+		}
+	}
+	
+	@Test
+	public void conditionalNullPointerObjectArrayTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION, "+stack=StackHandler")) {
+			Object[] array = null;
+			if (a) {
+				array = new Object[1];
+			}
+			Verify.resetCounter(0);
+			try {
+				Verify.incrementCounter(0);
+				array[0] = new Object();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				Verify.incrementCounter(0);
+			}
+			Verify.incrementCounter(0);
+			assertEquals(3, Verify.getCounter(0));
+		}
+	}
+	
+	@Test
+	public void conditionalArrayStoreExceptionTest() throws Exception {
+		if (verifyNoPropertyViolation(JPF_CONFIGURATION, "+stack=StackHandler")) {
+			Number[] array = new Double[2]; 
+			Number o = new Double(1.9);
+			if (a) {
+				o = new Integer(1);
+			}
+			Verify.resetCounter(0);
+			try {
+				method(array, o);
+				assertEquals(o, array[0]);
+				Verify.incrementCounter(0);
+			} catch (ArrayStoreException e) {
+				e.printStackTrace();
+				Verify.incrementCounter(0);
+			}
+			Verify.incrementCounter(0);
+			assertEquals(3,	Verify.getCounter(0));
+			Verify.resetCounter(0);
+		}
+	}
+
+	private void method(Number[] array, Number object) {
+		array[0] = object;
+	}
+	
 }

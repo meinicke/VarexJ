@@ -62,7 +62,7 @@ public class AASTORE extends ArrayStoreInstruction {
 					if (!elementCi.isInstanceOf(arrayElementCi)) {
 						String exception = "java.lang.ArrayStoreException";
 						String exceptionDescription = elementCi.getName();
-						return new One<>(ti.createAndThrowException(ctx, exception, exceptionDescription));
+						return new One<>(new EXCEPTION(AASTORE.this, exception, exceptionDescription));
 					}
 				}
 
