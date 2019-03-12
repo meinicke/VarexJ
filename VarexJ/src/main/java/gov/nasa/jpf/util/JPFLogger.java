@@ -98,18 +98,22 @@ public class JPFLogger extends Logger {
     logger.logp(level, sourceClass, sourceMethod, msg, thrown);
   }
   
+  @SuppressWarnings("deprecation")
   public void logrb(Level level, String sourceClass, String sourceMethod, String bundleName, String msg) {
     logger.logrb(level, sourceClass, sourceMethod, bundleName, msg);
   }
   
+  @SuppressWarnings("deprecation")
   public void logrb(Level level, String sourceClass, String sourceMethod, String bundleName, String msg, Object param1) {
     logger.logrb(level, sourceClass, sourceMethod, bundleName, msg, param1);
   }
   
+  @SuppressWarnings("deprecation")
   public void logrb(Level level, String sourceClass, String sourceMethod, String bundleName, String msg, Object params[]) {
     logger.logrb(level, sourceClass, sourceMethod, bundleName, msg, params);
   }
   
+  @SuppressWarnings("deprecation")
   public void logrb(Level level, String sourceClass, String sourceMethod, String bundleName, String msg, Throwable thrown) {
     logger.logrb(level, sourceClass, sourceMethod, bundleName, msg, thrown);
   }

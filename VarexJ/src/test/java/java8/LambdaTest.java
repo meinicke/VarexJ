@@ -148,7 +148,8 @@ public class LambdaTest extends TestJPF{
   }
   
   // When invokedynamic executes for the first time, it creates a new function object.
-  // Re-executing the same bytecode returns the existing function object.
+// Re-executing the same bytecode returns the existing function object.
+  @SuppressWarnings("unused")
   @Test
   public void testRepeatInvokedynamic() {
     if (verifyNoPropertyViolation()) {
@@ -276,7 +277,8 @@ public class LambdaTest extends TestJPF{
     }
     
     
-    public FI1 withFreeVar() {
+    @SuppressWarnings("unused")
+	public FI1 withFreeVar() {
       return invokSam(()->{Foo foo = this;});
     }
     

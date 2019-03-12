@@ -825,7 +825,8 @@ public class ClassFile extends BinaryClassSource {
    *   u2 attributes_count;
    *   attribute_info attributes[attributes_count];
    */
-  public void parse( ClassFileReader reader)  throws ClassParseException {
+  @SuppressWarnings("unused")
+public void parse( ClassFileReader reader)  throws ClassParseException {
     int cpIdx;
 
     try {
@@ -1202,7 +1203,6 @@ public class ClassFile extends BinaryClassSource {
     int maxStack = readU2();
     int maxLocals = readU2();
     int codeLength = readI4();  // no code length > 2GB supported
-    int codeStartPos = pos;
 
     setCode(reader, tag, maxStack, maxLocals, codeLength);
 

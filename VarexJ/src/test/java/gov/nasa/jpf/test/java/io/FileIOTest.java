@@ -126,6 +126,7 @@ public class FileIOTest extends TestJPF {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@Test
 	public void testRoundtrip2() throws IOException, FileNotFoundException {
 		if (verifyNoPropertyViolation()) {

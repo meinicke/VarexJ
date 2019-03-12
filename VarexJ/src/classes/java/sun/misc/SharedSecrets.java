@@ -62,6 +62,7 @@ public class SharedSecrets {
 	private static JavaOISAccess javaOISAccess;
   
     private static JavaUtilZipFileAccess javaUtilZipFileAccess;
+	@SuppressWarnings("unused")
 	private static JavaObjectInputStreamAccess javaObjectInputStreamAccess;
 
   // (required for EnumSet ops)

@@ -79,7 +79,8 @@ public class JVM2JPFGenericConverter extends JVM2JPFConverter {
 		}
 	}
 
-  @Override
+  @SuppressWarnings("unlikely-arg-type")
+@Override
   protected void setInstanceFields(Object JVMObj, DynamicElementInfo dei, MJIEnv env, FeatureExpr ctx) throws ConversionException {
     Class<?> JVMCl = JVMObj.getClass();
     ClassInfo JPFCl = this.getJPFCls(JVMObj.getClass(), env, ctx);

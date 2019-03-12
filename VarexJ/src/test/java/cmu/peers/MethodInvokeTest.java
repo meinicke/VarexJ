@@ -33,7 +33,8 @@ public class MethodInvokeTest extends TestJPF {
 	}
 	
 	class A {
-		 public void run() {
+		 @SuppressWarnings("unused")
+		public void run() {
 			int i = 0;
 		}
 	}

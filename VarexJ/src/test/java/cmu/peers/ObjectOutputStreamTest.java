@@ -9,7 +9,6 @@ import java.util.Vector;
 
 import org.junit.Test;
 
-import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 
 
@@ -24,6 +23,7 @@ public class ObjectOutputStreamTest extends TestJPF {
 			Stack<Integer> stack = new Stack<>();
 			ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File("save")));
 			o.writeObject(stack);
+			o.close();
 		}
 	}
 	
@@ -34,6 +34,7 @@ public class ObjectOutputStreamTest extends TestJPF {
 			Vector<Integer> stack = new Vector<>();
 			ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File("save")));
 			o.writeObject(stack);
+			o.close();
 		}
 	}
 	

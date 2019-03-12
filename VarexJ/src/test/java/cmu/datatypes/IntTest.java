@@ -97,6 +97,7 @@ public class IntTest extends TestJPF {
 		}
 	}
 	
+	@SuppressWarnings("null")
 	private static int conditionalNulpointerReturn() {
 		Integer err = null;
 		if (a) {

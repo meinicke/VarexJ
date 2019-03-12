@@ -124,7 +124,8 @@ public class DefaultMethodTest extends TestJPF {
   }
 
   static class H implements G1 {
-    void bar (){
+    @SuppressWarnings("unused")
+	void bar (){
       int r = foo();
       //assertTrue(r == 42);
     }
