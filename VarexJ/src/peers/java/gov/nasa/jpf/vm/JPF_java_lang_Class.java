@@ -87,20 +87,25 @@ public class JPF_java_lang_Class extends NativePeer {
 		return ci.isInterface();
 	}
 
+	/**
+	 * Determines if the class or interface represented by this Class object is either the same as,
+	 * or is a superclass or superinterface of, the class or interface represented by the specified
+	 *  Class parameter. It returns true if so; otherwise it returns false.
+	 * 
+	 *  If this Class object represents a primitive type, this method returns true if the specified
+	 *  Class parameter is exactly this Class object; otherwise it returns false.
+	 */
 	@MJI
-	public Conditional<Boolean> isAssignableFrom__Ljava_lang_Class_2__Z(final MJIEnv env, int rcls, Conditional<Integer> r1, FeatureExpr ctx) {
-		ElementInfo sei1 = env.getStaticElementInfo(rcls);
-		final ClassInfo ci1 = sei1.getClassInfo();
-
-		return r1.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Boolean>>() {
-
-			@Override
-			public Conditional<Boolean> apply(FeatureExpr ctx, Integer r1) {
-				ElementInfo sei2 = env.getStaticElementInfo(r1);
-				ClassInfo ci2 = sei2.getClassInfo();
-				return new One<>(ci2.isInstanceOf(ci1.getName()));
+	public Conditional<Boolean> isAssignableFrom__Ljava_lang_Class_2__Z(final MJIEnv env, int refClass1, Conditional<Integer> refClass2, FeatureExpr ctx) {
+		ElementInfo sei1 = env.getStaticElementInfo(refClass1);
+		final ClassInfo classInfo1 = sei1.getClassInfo();
+		return refClass2.mapf(ctx, (ctx1, ref2) -> {
+			ElementInfo sei2 = env.getStaticElementInfo(ref2);
+			ClassInfo classInfo2 = sei2.getClassInfo();
+			if (classInfo1.isPrimitive() || classInfo2.isPrimitive()) {
+				return One.valueOf(classInfo1.equals(classInfo2));
 			}
-
+			return One.valueOf(classInfo2.isInstanceOf(classInfo1));
 		});
 	}
 
