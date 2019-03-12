@@ -73,7 +73,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 		Conditional<Instruction> next = objRef.mapf(ctx, (BiFunction<FeatureExpr, Integer, Conditional<Instruction>>) (ctx1, objRef1) -> {
 			if (objRef1 == MJIEnv.NULL) {
 				pushCTX = Conditional.andNot(pushCTX,ctx1);
-				return new One<>(ti.createAndThrowException(ctx1, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
+				return new One<>(new EXCEPTION(GETFIELD.this, "java.lang.NullPointerException", "referencing field '" + fname + "' on null object"));
 			}
 
 			ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef1);
@@ -81,7 +81,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 			FieldInfo fi = getFieldInfo(ctx1);
 			if (fi == null) {
 				pushCTX = Conditional.andNot(pushCTX,ctx1);
-				return new One<>(ti.createAndThrowException(ctx1, "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
+				return new One<>(new EXCEPTION(GETFIELD.this, "java.lang.NoSuchFieldError", "referencing field '" + fname + "' in " + ei));
 			}
 
 			// check if this breaks the current transition
@@ -97,10 +97,13 @@ public class GETFIELD extends InstanceFieldInstruction {
 			return next;
 		}
 		frame.pop(pushCTX, 1); // Ok, now we can remove the object ref from the stack
-		next = ChoiceFactory.create(pushCTX, objRef.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
+		next = ChoiceFactory.create(pushCTX, objRef.mapf(pushCTX, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objRef) {
+				if (Conditional.isContradiction(ctx)) {
+					return (Conditional<Instruction>) One.NULL;
+				}
 				ElementInfo ei = ti.getElementInfoWithUpdatedSharedness(objRef);
 				attr = ei.getFieldAttr(fi);
 
@@ -113,7 +116,7 @@ public class GETFIELD extends InstanceFieldInstruction {
 				return getNext(ctx, ti);
 
 			}
-		}), next);
+		}), next).simplify();
 		if (isReferenceField) {
 			frame.pushRef(pushCTX, pushValue);
 		} else {
@@ -128,7 +131,6 @@ public class GETFIELD extends InstanceFieldInstruction {
 				frame.setLongOperandAttr(attr);
 			}
 		}
-		
 		return next;
 	}
 

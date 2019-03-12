@@ -420,7 +420,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 						n++;
 						continue;
 					} else {
-						debufferAll();
+						debufferAll();// TODO
 						return stackHandler.peek(ctx, offset);
 					}
 					
