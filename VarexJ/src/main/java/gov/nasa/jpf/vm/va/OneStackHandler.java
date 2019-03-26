@@ -2,6 +2,7 @@ package gov.nasa.jpf.vm.va;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,8 +52,7 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 			locals[i] = oneStackHandler.locals[i].copy();
 		}
 		stack = oneStackHandler.stack.copy();
-//		stackCTX = oneStackHandler.stackCTX; // TODO this needs to be fixed (see StackHandler)
-		stackCTX = FeatureExprFactory.True();
+		stackCTX = oneStackHandler.stackCTX;
 	}
 
 	@Override
@@ -345,10 +345,16 @@ public class OneStackHandler implements Cloneable, IStackHandler {
 	@Override
 	public void setCtx(FeatureExpr ctx) {
 		stackCTX = ctx;
+		if (Conditional.isContradiction(stackCTX)) {
+			clear(FeatureExprFactory.True());
+		}
 	}
 
 	@Override
 	public Collection<Integer> getAllReferences() {
+		if (Conditional.isContradiction(getCtx())) {
+			return Collections.emptySet();
+		}
 		Set<Integer> references = new HashSet<>();
 		for (Entry l : locals) {
 				if (l.isRef) {

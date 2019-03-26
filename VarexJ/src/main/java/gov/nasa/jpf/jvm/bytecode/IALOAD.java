@@ -44,4 +44,9 @@ public class IALOAD extends ArrayLoadInstruction {
 	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
 		frame.push(ctx, value);
 	}
+
+	@Override
+	Number getZeroValue() {
+		return 0;
+	}
 }

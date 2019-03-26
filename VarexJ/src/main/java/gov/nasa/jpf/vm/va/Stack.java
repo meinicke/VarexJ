@@ -1,8 +1,8 @@
 package gov.nasa.jpf.vm.va;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -238,7 +238,7 @@ public class Stack {
 	}
 
 	public Collection<Integer> getReferences() {
-		List<Integer> references = new LinkedList<>();
+		Set<Integer> references = new HashSet<>();
 		for (int i = 0; i <= top; i++) {
 			Entry e = slots[i];
 			if (e.isRef) {

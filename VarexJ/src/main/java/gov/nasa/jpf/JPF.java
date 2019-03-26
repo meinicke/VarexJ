@@ -340,6 +340,8 @@ public class JPF implements Runnable {
 				}
 			} else if (stackHandlerFactory.equals(StackHandler.class.getSimpleName())) {
 				StackHandlerFactory.activateDefaultStackHandler();
+			} else if (stackHandlerFactory.equals("debug")) {
+				StackHandlerFactory.setToDebugMode();
 			} else {
 				StackHandlerFactory.activateHybridStackHandler();
 			}

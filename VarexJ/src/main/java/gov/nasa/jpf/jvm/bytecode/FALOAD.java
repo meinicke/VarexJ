@@ -33,7 +33,7 @@ public class FALOAD extends ArrayLoadInstruction {
   protected Conditional<?> getPushValue (FeatureExpr ctx, StackFrame frame, ElementInfo ei, int index) throws ArrayIndexOutOfBoundsExecutiveException {
     ei.checkArrayBounds(ctx, index);
     Conditional<Float> value = ei.getFloatElement(index);
-    return value.map(Float::floatToIntBits);
+    return value;
   }
 
   public int getByteCode () {
@@ -44,6 +44,11 @@ public class FALOAD extends ArrayLoadInstruction {
 	@Override
 	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
 		frame.pushFloat(ctx, value);
+	}
+
+	@Override
+	Number getZeroValue() {
+		return (float)0;
 	}
   
 }

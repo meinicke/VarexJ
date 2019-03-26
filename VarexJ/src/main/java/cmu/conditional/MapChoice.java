@@ -144,7 +144,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 				return (Conditional<T>) One.valueOf((Boolean)value);
 			}
 			if (value instanceof Integer) {
-				return (Conditional<T>) new One<>((Integer)value);
+				return (Conditional<T>) One.valueOf((Integer)value);
 			}
 			return new One<>(value);
 		}
@@ -174,7 +174,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 						return (Conditional<T>) One.valueOf((Boolean)key);
 					}
 					if (key instanceof Integer) {
-						return (Conditional<T>) new One<>((Integer)key);
+						return (Conditional<T>) One.valueOf((Integer)key);
 					}
 					return new One<>(key);
 				} else {
@@ -183,7 +183,7 @@ public class MapChoice<T> extends IChoice<T> implements Cloneable {
 			}
 		}
 
-		return new MapChoice<>(newMap);
+		return new MapChoice<>(newMap).simplifyValues();
 
 	}
 

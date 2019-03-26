@@ -50,4 +50,10 @@ public class AALOAD extends ArrayLoadInstruction {
 		frame.pushRef(ctx, value);
 	}
 
+
+	@Override
+	Number getZeroValue() {
+		return 0;
+	}
+
 }

@@ -40,12 +40,12 @@ import gov.nasa.jpf.vm.ThreadInfo;
 @SuppressWarnings("rawtypes")
 public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 
-	private Conditional pushValue = One.valueOf(0);
+	private Conditional pushValue = null;
 	private FeatureExpr pushCtx;
 	
 	@Override
 	public Conditional<Instruction> execute(FeatureExpr ctx, final ThreadInfo ti) {
-		pushValue = One.valueOf(0);
+		pushValue = new One<>(getZeroValue());
 		final StackFrame frame = ti.getModifiableTopFrame();
 		// we need to get the object first, to check if it is shared
 		Conditional<Integer> aref = frame.peek(ctx, 1); // ..,arrayRef,idx
@@ -147,5 +147,7 @@ public abstract class ArrayLoadInstruction extends ArrayElementInstruction {
 	public boolean isRead() {
 		return true;
 	}
+	
+	abstract Number getZeroValue();
 
 }

@@ -2030,7 +2030,7 @@ public class ThreadInfo extends InfoObject
 		   		ctx = Conditional.and(map.get(i),ctx);
  	        }
  	        	
-				if (RuntimeConstants.debug) {
+			if (RuntimeConstants.debug) {
      			System.out.print(executedInstructions);
      			System.out.print("  ");
      			System.out.print(top.getDepth());
@@ -2043,7 +2043,13 @@ public class ThreadInfo extends InfoObject
      		
      		final int currentStackDepth = stackDepth;
      		// the point where the instruction is executed
-     		final Conditional<Instruction> next = i.execute(ctx, this);
+     		final Conditional<Instruction> next;
+     		if (ctx.isContradiction()) {
+ 	        	popFrame(FeatureExprFactory.True());
+ 	        	next = null;
+ 	        } else {
+ 	        	next = i.execute(ctx, this);
+ 	        }
      		
     		final int poped = currentStackDepth - stackDepth;
     		if (i instanceof InvokeInstruction) {

@@ -56,4 +56,9 @@ public class CALOAD extends ArrayLoadInstruction {
 		frame.push(ctx, value);
 	}
 
+	@Override
+	Number getZeroValue() {
+		return 0;
+	}
+
 }

@@ -1,5 +1,8 @@
 package gov.nasa.jpf.vm.va;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
 public class StackHandlerFactory {
@@ -27,6 +30,10 @@ public class StackHandlerFactory {
 			throw new RuntimeException(factory + " not supported");
 		}
 	}
+	
+	public static void setToDebugMode() {
+		f = new DifferentialStackHandlerFactory();
+	}
 
 	static Factory f = new HybridStackHandlerFactory();
 
@@ -48,6 +55,17 @@ public class StackHandlerFactory {
 
 	public static void activateDefaultStackHandler() {
 		f = new DefaultStackHandlerFactory();
+	}
+	
+	/**
+	 * returns a set of all {@link StackHandler} factories.
+	 */
+	public static List<Factory> getAllFactories() {
+		List<Factory> factories = new ArrayList<>();
+		factories.add(new BufferedStackHandlerFactory());
+		factories.add(new DefaultStackHandlerFactory());
+		factories.add(new HybridStackHandlerFactory());
+		return factories;
 	}
 }
 
@@ -84,5 +102,17 @@ class HybridStackHandlerFactory implements Factory {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "(" + HybridStackHandler.normalStack + " -> " + HybridStackHandler.liftedStack + ")";
+	}
+}
+
+class DifferentialStackHandlerFactory implements Factory {
+	@Override
+	public IStackHandler createStack(FeatureExpr ctx, int nLocals, int nOperands) {
+		return new DifferentialStackHandler(ctx, nLocals, nOperands);
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
 	}
 }

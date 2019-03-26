@@ -1,5 +1,7 @@
 package gov.nasa.jpf.vm.va;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -87,6 +89,7 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 		clone.bufferCTX = bufferCTX;
 
 		clone.stackHandler.stack = stackHandler.stack.map(new CopyStack());
+		clone.setCtx(getCtx());
 		return clone;
 	}
 
@@ -783,7 +786,10 @@ public class BufferedStackHandler implements Cloneable, IStackHandler {
 
 
 	@Override
-	public Set<Integer> getAllReferences() {
+	public Collection<Integer> getAllReferences() {
+		if (Conditional.isContradiction(getCtx())) {
+			return Collections.emptySet();
+		}
 		Set<Integer> references = stackHandler.getAllReferences();
 		for (Tuple entry : buffer) {
 			if (entry.isRef) {

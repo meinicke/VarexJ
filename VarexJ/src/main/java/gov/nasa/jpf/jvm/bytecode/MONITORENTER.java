@@ -46,6 +46,9 @@ public class MONITORENTER extends LockInstruction {
 
 			@Override
 			public Conditional<Instruction> apply(FeatureExpr ctx, Integer objref) {
+				if (Conditional.isContradiction(ctx)) {
+					return new One<>(null);
+				}
 				if (objref == MJIEnv.NULL) {
 					return new One<>(ti.createAndThrowException(ctx, "java.lang.NullPointerException", "Attempt to acquire lock for null object"));
 				}

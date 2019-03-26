@@ -27,6 +27,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.ElementInfo;
 import gov.nasa.jpf.vm.FieldInfo;
+import gov.nasa.jpf.vm.Fields;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.MJIEnv;
 import gov.nasa.jpf.vm.StackFrame;
@@ -67,7 +68,6 @@ public class GETFIELD extends InstanceFieldInstruction {
 			return unconditionalGetField(ctx, ti, frame, objRef.getValue());
 		}
 		
-		pushValue = One.valueOf(0);
 		pushCTX = ctx;
 		Conditional<Instruction> next = objRef.mapf(ctx, (BiFunction<FeatureExpr, Integer, Conditional<Instruction>>) (ctx1, objRef1) -> {
 			if (objRef1 == MJIEnv.NULL) {
@@ -95,6 +95,13 @@ public class GETFIELD extends InstanceFieldInstruction {
 		if (Conditional.isContradiction(pushCTX)) {
 			return next;
 		}
+		
+		if (fi.isLongField()) {
+			pushValue = new One<>(0l);
+		} else {
+			pushValue = One.valueOf(0);
+		}
+		
 		frame.pop(pushCTX, 1); // Ok, now we can remove the object ref from the stack
 		next = ChoiceFactory.create(pushCTX, objRef.mapf(pushCTX, new BiFunction<FeatureExpr, Integer, Conditional<Instruction>>() {
 
@@ -116,10 +123,15 @@ public class GETFIELD extends InstanceFieldInstruction {
 
 			}
 		}), next).simplify();
+		pushValue = pushValue.simplify(ctx);
 		if (isReferenceField) {
 			frame.pushRef(pushCTX, pushValue);
 		} else {
-			frame.push(pushCTX, pushValue);
+			if (size == 1) {
+				frame.push(pushCTX, pushValue);
+			} else {
+				frame.pushLong(pushCTX, pushValue);
+			}
 		}
 		if (size == 1) {
 			if (attr != null) {

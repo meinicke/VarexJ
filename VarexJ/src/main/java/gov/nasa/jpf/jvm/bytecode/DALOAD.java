@@ -54,4 +54,9 @@ public class DALOAD extends LongArrayLoadInstruction {
 	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
 		frame.pushLong(ctx, value.simplify(ctx));
 	}
+
+	@Override
+	Number getZeroValue() {
+		return 0d;
+	}
 }

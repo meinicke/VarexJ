@@ -64,4 +64,10 @@ public class BALOAD extends ArrayLoadInstruction {
 		frame.push(ctx, value);
 	}
 
+
+	@Override
+	Number getZeroValue() {
+		return 0;
+	}
+
 }

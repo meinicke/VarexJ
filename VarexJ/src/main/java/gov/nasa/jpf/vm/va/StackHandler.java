@@ -1,6 +1,7 @@
 package gov.nasa.jpf.vm.va;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -80,6 +81,11 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@Override
 	public void setCtx(FeatureExpr ctx) {
 		stackCTX = ctx;
+		if (Conditional.isContradiction(stackCTX)) {
+			clear(FeatureExprFactory.True());
+			return;
+		}
+		
 		stack = stack.simplify(stackCTX);
 		for (int i = 0; i < locals.length; i++) {
 			locals[i] = locals[i].simplify(stackCTX);
@@ -90,15 +96,15 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@SuppressWarnings("unchecked")
 	public StackHandler clone() {
 		StackHandler clone = new StackHandler();
-//		clone.setCtx(stackCTX); // TODO ThreadStopTest.testStopRunning() fails
+		clone.setCtx(stackCTX); // TODO ThreadStopTest.testStopRunning() fails
 		clone.length = length;
 		clone.locals = new Conditional[locals.length];
 		for (int i = 0; i < locals.length; i++) {
 			Conditional<Entry> local = locals[i];
-			clone.locals[i] = local.map(entry -> entry.copy());
+			clone.locals[i] = local.map(Entry::copy);
 		}
 
-		clone.stack = stack.map(stack -> stack.copy());
+		clone.stack = stack.map(Stack::copy);
 		return clone;
 	}
 	
@@ -204,6 +210,9 @@ public class StackHandler implements Cloneable, IStackHandler {
 	@Override
 	public boolean isRefLocal(FeatureExpr ctx, final int index) {
 		assert index < locals.length : "index larger than locals";
+		if (Conditional.isContradiction(stackCTX)) {
+			return false;
+		}
 		return locals[index].simplify(ctx).map(y -> y.isRef).toMap().containsKey(Boolean.TRUE);
 	}
 	
@@ -593,6 +602,9 @@ public class StackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public Set<Integer> getAllReferences() {
+		if (Conditional.isContradiction(getCtx())) {
+			return Collections.emptySet();
+		}
 		Set<Integer> references = new HashSet<>();
 		for (Conditional<Entry> cl : locals) {
 			for (Entry l: cl.toList()) {

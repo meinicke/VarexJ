@@ -45,4 +45,9 @@ public class LALOAD extends LongArrayLoadInstruction {
 	protected void pushValue(FeatureExpr ctx, StackFrame frame, Conditional value) {
 		frame.pushLong(ctx, value);
 	}
+
+	@Override
+	Number getZeroValue() {
+		return 0l;
+	}
 }

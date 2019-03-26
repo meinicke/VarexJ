@@ -1,6 +1,7 @@
 package gov.nasa.jpf.vm.va;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,7 +40,6 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		length = nLocals + nOperands;
 		slots = new int[length];
 		isRef = new boolean[length];
-		this.nLocals = nLocals;
 		stackCTX = ctx;
 		top = nLocals - 1;
 	}
@@ -53,8 +53,8 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 		top = oneStackHandler.top;
 		System.arraycopy(oneStackHandler.slots, 0, slots, 0, top + 1);
 		System.arraycopy(oneStackHandler.isRef, 0, isRef, 0, top + 1);
-//		stackCTX = oneStackHandler.stackCTX; // TODO this needs to be fixed (see StackHandler)
-		stackCTX = FeatureExprFactory.True();
+		stackCTX = oneStackHandler.stackCTX; // TODO this needs to be fixed (see StackHandler)
+//		stackCTX = FeatureExprFactory.True();
 	}
 
 	@Override
@@ -476,6 +476,9 @@ public class JPFStackHandler implements Cloneable, IStackHandler {
 
 	@Override
 	public Collection<Integer> getAllReferences() {
+		if (Conditional.isContradiction(getCtx())) {
+			return Collections.emptySet();
+		}
 		Set<Integer> references = new HashSet<>();
 		for (int i = 0; i <= top; i++) {
 			if (isRef[i]) {

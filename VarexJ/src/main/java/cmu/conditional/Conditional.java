@@ -93,12 +93,11 @@ public abstract class Conditional<T> {
 	}
 	
 	public static boolean equals(FeatureExpr a, FeatureExpr b) {
-		if (a == b) return true;
-		return ((BDDFeatureExpr)a).bdd().equals(((BDDFeatureExpr)b).bdd());
+		return ((BDDFeatureExpr)a).bdd() == (((BDDFeatureExpr)b).bdd());
 	}
 	
 	public static boolean equivalentTo(FeatureExpr a, FeatureExpr b) {
-		return a.equals(b) || isTautology(equiv(a, b));
+		return a.equals(b) || (fm != null && isTautology(equiv(a, b)));
 	}
 	
 	private static FeatureExpr equiv(FeatureExpr a, FeatureExpr b) {
