@@ -133,4 +133,7 @@ Tool Description:
 
 > Jens Meinicke. [VarexJ: A Variability-Aware Interpreter for Java Application](http://wwwiti.cs.uni-magdeburg.de/iti_db/publikationen/ps/auto/M14.pdf). Master's thesis, University of Magdeburg, Germany, December 2014.
 
+Thesis:
+> Jens Meinicke. [Variational Debugging: Understanding Differences among Executions](http://wwwiti.cs.uni-magdeburg.de/iti_db/publikationen/ps/auto/thesisMeinicke19.pdf). PhD thesis, University of Magdeburg, January 2019.
+
 gh-pages/README.md
