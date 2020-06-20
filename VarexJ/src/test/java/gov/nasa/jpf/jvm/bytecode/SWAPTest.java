@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import cmu.conditional.One;
+import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.vm.Instruction;
 import gov.nasa.jpf.vm.StackFrame;
@@ -23,6 +24,21 @@ public class SWAPTest extends ABytecodeTest {
 
 		assertEquals(first, stackFrame.pop(FeatureExprFactory.True()));
 		assertEquals(second, stackFrame.pop(FeatureExprFactory.True()));
+	}
+	
+	@Test
+	public void testSWAPConditional() throws Exception {
+		final One<Integer> first = One.valueOf(1);
+		final One<Integer> second = One.valueOf(2);
+
+		FeatureExpr x = FeatureExprFactory.createDefinedExternal("X");
+		StackFrame stackFrame = createStackFrame(2, 0, getInstruction());
+		stackFrame.push(x, first);
+		stackFrame.push(x, second);
+		stackFrame.swap(x);
+
+		assertEquals(first, stackFrame.pop(x));
+		assertEquals(second, stackFrame.pop(x));
 	}
 
 	@Override

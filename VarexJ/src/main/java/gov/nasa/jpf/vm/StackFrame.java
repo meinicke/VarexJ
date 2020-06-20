@@ -1722,10 +1722,10 @@ public int hashCode () {
     System.out.println( getStackTraceInfo());
   }
 
-  public void swap () {
-    int t = top();
+  public void swap (FeatureExpr ctx) {
+    int t = stack.getTop().simplify(ctx).getValue();
     
-    stack.swap(TRUE);
+    stack.swap(ctx);
 
     if (attrs != null){
       Object a = attrs[t];
