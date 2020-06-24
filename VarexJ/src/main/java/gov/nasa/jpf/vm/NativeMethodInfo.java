@@ -37,6 +37,7 @@ import de.fosd.typechef.featureexpr.FeatureExpr;
 import de.fosd.typechef.featureexpr.FeatureExprFactory;
 import gov.nasa.jpf.JPF;
 import gov.nasa.jpf.JPFNativePeerException;
+import gov.nasa.jpf.jvm.JVMClassInfo;
 import gov.nasa.jpf.jvm.bytecode.EXCEPTION;
 import gov.nasa.jpf.util.JPFLogger;
 
@@ -206,13 +207,22 @@ public class NativeMethodInfo extends MethodInfo {
 				throw e;
 			}
 			
+			FeatureExpr exceptionCtx = FeatureExprFactory.False(); 
+			Instruction exceptionInstruction = null;
 			if (env.hasException()) {
 				// even though we should prefer throwing normal exceptionHandlers,
 				// sometimes it might be better/required to explicitly throw
 				// something that's not wrapped into a InvocationTargetException
 				// (e.g. InterruptedException), which is why there still is a
 				// MJIEnv.throwException()
-				return new One<>(ti.throwException(ctx, env.popException()));
+				int exceptionRef = env.popException();
+				Heap heap = env.getHeap();
+		        ElementInfo eiException = heap.get(exceptionRef);
+		        exceptionCtx = eiException.ctx;
+		        exceptionInstruction = ti.throwException(eiException.ctx, exceptionRef);
+		        if (Conditional.equivalentTo(ctx, exceptionCtx)) {
+					return new One<>(exceptionInstruction);
+		        }
 			}
 
 			StackFrame top = ti.getTopFrame();
@@ -230,7 +240,7 @@ public class NativeMethodInfo extends MethodInfo {
 					nativeFrame.setReturnValue(ret);
 					nativeFrame.setReturnAttr(env.getReturnAttribute());
 
-					return nativeFrame.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
+					Conditional<Instruction> returnInstruction = nativeFrame.getPC().mapf(ctx, new BiFunction<FeatureExpr, Instruction, Conditional<Instruction>>() {
 
 						@Override
 						public Conditional<Instruction> apply(FeatureExpr f, Instruction y) {
@@ -244,7 +254,11 @@ public class NativeMethodInfo extends MethodInfo {
 						}
 
 					}).simplify();
-
+					if (Conditional.isContradiction(exceptionCtx)) {
+						return returnInstruction;
+					} else {
+						return ChoiceFactory.create(exceptionCtx, new One<>(exceptionInstruction), returnInstruction);
+					}
 					// return nativeFrame.getPC().getValue().getNext(); // that should be the NATIVERETURN
 				}
 

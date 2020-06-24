@@ -19,6 +19,7 @@
 package gov.nasa.jpf.vm;
 
 import cmu.conditional.Conditional;
+import cmu.conditional.One;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import gov.nasa.jpf.annotation.MJI;
 
@@ -29,17 +30,19 @@ import gov.nasa.jpf.annotation.MJI;
 public class JPF_java_lang_Integer extends NativePeer {
   // <2do> at this point we deliberately do not override clinit
 
-  @MJI
-  public int parseInt__Ljava_lang_String_2__I (MJIEnv env, int clsObjRef, 
-                                                   int strRef, FeatureExpr ctx) {
-    try {
-      return Integer.parseInt(env.getStringObject(ctx, strRef));
-    } catch (NumberFormatException e) {
-      env.throwException(ctx, "java.lang.NumberFormatException");
+	@MJI
+	public Conditional<?> parseInt__Ljava_lang_String_2__I(MJIEnv env, int clsObjRef, int strRef,
+			FeatureExpr ctx) {
+		return env.getStringObjectNew(ctx, strRef).mapf(ctx, (ctx2, str) -> {
+			try {
+				return One.valueOf(Integer.parseInt(str));
+			} catch (NumberFormatException e) {
+				env.throwException(ctx2, java.lang.NumberFormatException.class.getName());
+				return One.valueOf(0);
+			}
+		});
 
-      return 0;
-    }
-  }
+	}
 
   @MJI
   public int parseInt__Ljava_lang_String_2I__I (MJIEnv env, int clsObjRef, 
