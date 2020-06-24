@@ -26,6 +26,7 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
+import gov.nasa.jpf.annotation.Conditional;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.Verify;
 
@@ -138,6 +139,29 @@ public class StringTest extends TestJPF {
 			assert "Test".trim().equals("Test");
 			assert "       ".trim().equals("");
 
+		}
+	}
+	
+	@Conditional private static boolean x = true;
+	@Conditional private static boolean y = true;
+	
+	@Test
+	public void testTrimVarex() {
+		if (verifyNoPropertyViolation()) {
+			if (y) {
+				String s = x ? "" : " ";
+				String s1 = "   Test    " + s;
+				assert s1.trim().equals("Test");
+
+				String s2 = s + "   Test";
+				assert s2.trim().equals("Test");
+
+				String s3 = "Test    " + s;
+				assert s3.trim().equals("Test");
+
+				String s4 = "       " + s;
+				assert s4.trim().equals("");
+			}
 		}
 	}
 

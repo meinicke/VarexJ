@@ -784,32 +784,19 @@ public class JPF_java_lang_String extends NativePeer {
 	}
 
 	@MJI
-	public int trim____Ljava_lang_String_2(MJIEnv env, int objRef, FeatureExpr ctx) {
+	public Conditional<Integer> trim____Ljava_lang_String_2(MJIEnv env, int objRef, FeatureExpr ctx) {
 		Heap heap = env.getHeap();
 		ElementInfo thisStr = heap.get(objRef);
 
 		CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value").simplify(ctx).getValue()).getFields();
-		char[] thisChars = thisFields.asCharArray().simplify(ctx).getValue();
-		int thisLength = thisChars.length;
-
-		int start = 0;
-		int end = thisLength;
-
-		while ((start < end) && (thisChars[start] <= ' ')) {
-			start++;
-		}
-
-		while ((start < end) && (thisChars[end - 1] <= ' ')) {
-			end--;
-		}
-
-		if (start == 0 && end == thisLength) {
-			// if there was no white space, return the string itself
-			return objRef;
-		}
-
-		String result = new String(thisChars, start, end - start);
-		return env.newString(ctx, result);
+		return thisFields.asCharArray().simplify(ctx).mapf(ctx, (ctx2, chars) -> {
+			String result = new String(chars).trim();
+			if (result.length() == chars.length) {
+				// trim did not change the string
+				return One.valueOf(objRef);
+			}
+			return One.valueOf(env.newString(ctx2, result));
+		});
 	}
 
 	@MJI
