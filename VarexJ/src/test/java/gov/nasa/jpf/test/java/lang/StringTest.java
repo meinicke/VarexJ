@@ -174,6 +174,31 @@ public class StringTest extends TestJPF {
 			assert "eve".replace('e', 'a').equals("ava") == true;
 		}
 	}
+	
+	@Test
+	public void testReplaceVarex() {
+		if (verifyNoPropertyViolation()) {
+			String s = "";
+			if (x) {
+				s = "X";
+			}
+			String s1 = "hello" + s;
+			s1 = s1.replace('l', 'a');
+			if (x) {
+				assert s1.equals("heaaoX");
+			} else {
+				assert s1.equals("heaao");
+			}
+			
+			String s2 = "hello" + s;
+			s2 = s2.replace('f', 'a');
+			if (x) {
+				assert s2.equals("helloX");
+			} else {
+				assert s2.equals("hello");
+			}
+		}
+	}
 
 	@Test
 	public void testNullChar(){

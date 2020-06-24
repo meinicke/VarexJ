@@ -660,43 +660,22 @@ public class JPF_java_lang_String extends NativePeer {
 	// --- the various replaces
 
 	@MJI
-	public int replace__CC__Ljava_lang_String_2(MJIEnv env, int objRef, char oldChar, char newChar, FeatureExpr ctx) {
-
+	public Conditional<Integer> replace__CC__Ljava_lang_String_2(MJIEnv env, int objRef, char oldChar, char newChar, FeatureExpr ctx) {
 		if (oldChar == newChar) { // nothing to replace
-			return objRef;
+			return One.valueOf(objRef);
 		}
 
 		int vref = env.getReferenceField(ctx, objRef, "value").getValue();
 		ElementInfo ei = env.getModifiableElementInfo(vref);
-		char[] values = ((CharArrayFields) ei.getFields()).asCharArray().getValue();
-		int len = values.length;
-
-		char[] newValues = null;
-
-		for (int i = 0, j = 0; j < len; i++, j++) {
-			char c = values[i];
-			if (c == oldChar) {
-				if (newValues == null) {
-					newValues = new char[len];
-					if (j > 0) {
-						System.arraycopy(values, 0, newValues, 0, j);
-					}
-				}
-				newValues[j] = newChar;
-			} else {
-				if (newValues != null) {
-					newValues[j] = c;
-				}
+		Conditional<char[]> values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx);
+		return values.mapf(ctx, (ctx2, chars) -> {
+				String oldString = new String(chars);
+				if (oldString.indexOf(oldChar) == -1) {
+					return One.valueOf(objRef);
+				}				
+				return One.valueOf(env.newString(ctx, oldString.replace(oldChar, newChar)));
 			}
-		}
-
-		if (newValues != null) {
-			String s = new String(newValues);
-			return env.newString(ctx, s);
-
-		} else { // oldChar not found, return the original string
-			return objRef;
-		}
+		);
 	}
 
 	@MJI
