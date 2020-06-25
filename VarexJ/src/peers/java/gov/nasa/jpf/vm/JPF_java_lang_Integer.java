@@ -45,16 +45,17 @@ public class JPF_java_lang_Integer extends NativePeer {
 	}
 
   @MJI
-  public int parseInt__Ljava_lang_String_2I__I (MJIEnv env, int clsObjRef, 
-                                                    int strRef, int radix, FeatureExpr ctx) {
-    try {
-      return Integer.parseInt(env.getStringObject(ctx, strRef), radix);
-    } catch (NumberFormatException e) {
-      env.throwException(ctx, "java.lang.NumberFormatException");
-
-      return 0;
-    }
-  }
+	public Conditional<Integer> parseInt__Ljava_lang_String_2I__I(MJIEnv env, int clsObjRef, int strRef, int radix,
+			FeatureExpr ctx) {
+		return env.getStringObjectNew(ctx, strRef).mapf(ctx, (ctx2, str) -> {
+			try {
+				return One.valueOf(Integer.parseInt(str, radix));
+			} catch (NumberFormatException e) {
+				env.throwException(ctx2, java.lang.NumberFormatException.class.getName());
+				return One.valueOf(0);
+			}
+		});
+	}
 
   @MJI
   public int toBinaryString__I__Ljava_lang_String_2 (MJIEnv env, int objref, int val, FeatureExpr ctx) {

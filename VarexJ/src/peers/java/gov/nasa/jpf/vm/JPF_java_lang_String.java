@@ -767,14 +767,17 @@ public class JPF_java_lang_String extends NativePeer {
 		Heap heap = env.getHeap();
 		ElementInfo thisStr = heap.get(objRef);
 
-		CharArrayFields thisFields = (CharArrayFields) heap.get(thisStr.getReferenceField("value").simplify(ctx).getValue()).getFields();
-		return thisFields.asCharArray().simplify(ctx).mapf(ctx, (ctx2, chars) -> {
-			String result = new String(chars).trim();
-			if (result.length() == chars.length) {
-				// trim did not change the string
-				return One.valueOf(objRef);
-			}
-			return One.valueOf(env.newString(ctx2, result));
+		Conditional<Integer> refs = thisStr.getReferenceField("value").simplify(ctx);
+		return refs.mapf(ctx, (ctx2, ref) -> {
+			CharArrayFields thisFields = (CharArrayFields) heap.get(ref).getFields();
+			return thisFields.asCharArray().simplify(ctx).mapf(ctx2, (ctx3, chars) -> {
+				String result = new String(chars).trim();
+				if (result.length() == chars.length) {
+					// trim did not change the string
+					return One.valueOf(objRef);
+				}
+				return One.valueOf(env.newString(ctx3, result));
+			});
 		});
 	}
 
