@@ -695,43 +695,22 @@ public class JPF_java_lang_String extends NativePeer {
 	// --- the various replaces
 
 	@MJI
-	public int replace__CC__Ljava_lang_String_2(MJIEnv env, int objRef, char oldChar, char newChar, FeatureExpr ctx) {
-
+	public Conditional<Integer> replace__CC__Ljava_lang_String_2(MJIEnv env, int objRef, char oldChar, char newChar,
+			FeatureExpr ctx) {
 		if (oldChar == newChar) { // nothing to replace
-			return objRef;
+			return One.valueOf(objRef);
 		}
 
 		int vref = env.getReferenceField(ctx, objRef, "value").getValue();
 		ElementInfo ei = env.getModifiableElementInfo(vref);
-		char[] values = ((CharArrayFields) ei.getFields()).asCharArray().getValue();
-		int len = values.length;
-
-		char[] newValues = null;
-
-		for (int i = 0, j = 0; j < len; i++, j++) {
-			char c = values[i];
-			if (c == oldChar) {
-				if (newValues == null) {
-					newValues = new char[len];
-					if (j > 0) {
-						System.arraycopy(values, 0, newValues, 0, j);
-					}
-				}
-				newValues[j] = newChar;
-			} else {
-				if (newValues != null) {
-					newValues[j] = c;
-				}
+		Conditional<char[]> values = ((CharArrayFields) ei.getFields()).asCharArray().simplify(ctx);
+		return values.mapf(ctx, (ctx2, chars) -> {
+			String oldString = new String(chars);
+			if (oldString.indexOf(oldChar) == -1) {
+				return One.valueOf(objRef);
 			}
-		}
-
-		if (newValues != null) {
-			String s = new String(newValues);
-			return env.newString(ctx, s);
-
-		} else { // oldChar not found, return the original string
-			return objRef;
-		}
+			return One.valueOf(env.newString(ctx, oldString.replace(oldChar, newChar)));
+		});
 	}
 
 	@MJI
@@ -823,47 +802,18 @@ public class JPF_java_lang_String extends NativePeer {
 		Heap heap = env.getHeap();
 		ElementInfo thisStr = heap.get(objRef);
 
-		Conditional<Integer> referenceField = thisStr.getReferenceField("value").simplify(ctx);
-		return referenceField.mapf(ctx, new BiFunction<FeatureExpr, Integer, Conditional<Integer>>() {
-
-			@Override
-			public Conditional<Integer> apply(FeatureExpr ctx, Integer reference) {
-				CharArrayFields thisFields = (CharArrayFields) heap.get(reference).getFields();
-				Conditional<char[]> charArray = thisFields.asCharArray().simplify(ctx);
-				return charArray.mapf(ctx, new BiFunction<FeatureExpr, char[], Conditional<Integer>>() {
-
-					@Override
-					public Conditional<Integer> apply(FeatureExpr ctx, char[] charArray) {
-						if (Conditional.isContradiction(ctx)) {
-							return One.valueOf(-1);
-						}
-						int thisLength = charArray.length;
-
-						int start = 0;
-						int end = thisLength;
-
-						while ((start < end) && (charArray[start] <= ' ')) {
-							start++;
-						}
-
-						while ((start < end) && (charArray[end - 1] <= ' ')) {
-							end--;
-						}
-
-						if (start == 0 && end == thisLength) {
-							// if there was no white space, return the string itself
-							return One.valueOf(objRef);
-						}
-
-						String result = new String(charArray, start, end - start);
-						return One.valueOf(env.newString(ctx, result));
-					}
-				});
-			}
-			
+		Conditional<Integer> refs = thisStr.getReferenceField("value").simplify(ctx);
+		return refs.mapf(ctx, (ctx2, ref) -> {
+			CharArrayFields thisFields = (CharArrayFields) heap.get(ref).getFields();
+			return thisFields.asCharArray().simplify(ctx).mapf(ctx2, (ctx3, chars) -> {
+				String result = new String(chars).trim();
+				if (result.length() == chars.length) {
+					// trim did not change the string
+					return One.valueOf(objRef);
+				}
+				return One.valueOf(env.newString(ctx3, result));
+			});
 		});
-		
-		
 	}
 
 	@MJI
@@ -891,7 +841,6 @@ public class JPF_java_lang_String extends NativePeer {
 
 		String s = env.getStringObject(ctx, robj);
 		ElementInfo ei = heap.newInternString(ctx, s, env.getThreadInfo());
-
 		return ei.getObjectRef();
 	}
 
